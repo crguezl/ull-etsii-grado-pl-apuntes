@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Ejemplo Simple</TITLE>
-<META NAME="description" CONTENT="Ejemplo Simple">
+<TITLE>Espacios en blanco dentro de la expresión regular</TITLE>
+<META NAME="description" CONTENT="Espacios en blanco dentro de la expresión regular">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node86.html">
 <LINK REL="previous" HREF="node84.html">
-<LINK REL="up" HREF="node81.html">
+<LINK REL="up" HREF="node82.html">
 <LINK REL="next" HREF="node86.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html2809"
+<A NAME="tex2html2814"
   HREF="node86.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2803"
-  HREF="node81.html">
+<A NAME="tex2html2808"
+  HREF="node82.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2797"
+<A NAME="tex2html2802"
   HREF="node84.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2805"
-  HREF="node217.html">
+<A NAME="tex2html2810"
+  HREF="node218.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2807"
-  HREF="node220.html">
+<A NAME="tex2html2812"
+  HREF="node221.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,71 +88,73 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2810"
-  HREF="node86.html">Suprimir</A>
-<B>Sup:</B> <A NAME="tex2html2804"
-  HREF="node81.html">Expresiones Regulares en Flex</A>
-<B> Ant:</B> <A NAME="tex2html2798"
-  HREF="node84.html">Espacios en blanco dentro</A>
+<B> Sig:</B> <A NAME="tex2html2815"
+  HREF="node86.html">Ejemplo Simple</A>
+<B>Sup:</B> <A NAME="tex2html2809"
+  HREF="node82.html">Expresiones Regulares en Flex</A>
+<B> Ant:</B> <A NAME="tex2html2803"
+  HREF="node84.html">Versi&#243;n Utilizada</A>
 <B> Con:</B> 
-<A NAME="tex2html2805"
-  HREF="node217.html">
+<A NAME="tex2html2810"
+  HREF="node218.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html2807"
-  HREF="node220.html">
+<A NAME="tex2html2812"
+  HREF="node221.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION05240000000000000000"></A>
-<A NAME="section:ejemplosimple"></A>
+<H1><A NAME="SECTION05230000000000000000"></A>
+<A NAME="section:blancos"></A>
 <BR>
-Ejemplo Simple
+Espacios en blanco dentro de la expresión regular
 </H1>
-Este primer ejemplo sustituye las apariciones de la palabra 
-<SPAN  CLASS="textit">username</SPAN> por el <SPAN  CLASS="textit">login</SPAN> del usuario:
+La expresión regular va desde el comienzo de la línea hasta el primer espacio en blanco 
+no escapado. Todos los espacios en blanco que formen parte de la 
+expresión regular 
+deben ser escapados o protegidos entre comillas. Así, el siguiente
+programa produce un error en tiempo de compilación C:
 <PRE>
-$ cat subst.l
-%option main
-%{
-#include &lt;unistd.h&gt;
-%}
+&gt; cat spaces.l
 %%
-username    printf( "%s",  getlogin());
+one two { printf("spaces\n"; }
 %%
-$ flex -osubst.c subst.l
-$ gcc -o subst subst.c
-$ subst
-Dear username:
-Dear pl:
+nereida:~/public_html/regexpr/lex/src&gt; flex spaces.l
+nereida:~/public_html/regexpr/lex/src&gt; gcc lex.yy.c
+spaces.l: In function `yylex':
+spaces.l:2: `two' undeclared (first use in this function)
+spaces.l:2: (Each undeclared identifier is reported only once
+spaces.l:2: for each function it appears in.)
+spaces.l:2: parse error before `{'
+spaces.l:4: case label not within a switch statement
+lex.yy.c:632: case label not within a switch statement
+lex.yy.c:635: case label not within a switch statement
+lex.yy.c:757: default label not within a switch statement
+lex.yy.c: At top level:
+lex.yy.c:762: parse error before `}'
 </PRE>
-He presionado CTRL-D para finalizar la entrada.
-<BR>
-Observe el uso de la opci&#243;n <code>%option main</code> en el fichero
-<SPAN  CLASS="textit">subst.l</SPAN> para hacer que <SPAN  CLASS="textit">flex</SPAN> genere una funci&#243;n
-<SPAN  CLASS="textit">main</SPAN>. Tambi&#233;n merece especial
-atenci&#243;n el uso de la opci&#243;n  <code>-osubst</code> para cambiar el
-nombre del fichero de salida, que por defecto ser&#225; <SPAN  CLASS="textit">lex.yy.c</SPAN>.
+Deberíamos escapar el blanco entre <code>one</code> y <code>two</code> o bien
+proteger la cadena poniéndola entre comillas: <code>"one two"</code>.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html2809"
+<A NAME="tex2html2814"
   HREF="node86.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2803"
-  HREF="node81.html">
+<A NAME="tex2html2808"
+  HREF="node82.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2797"
+<A NAME="tex2html2802"
   HREF="node84.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2805"
-  HREF="node217.html">
+<A NAME="tex2html2810"
+  HREF="node218.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2807"
-  HREF="node220.html">
+<A NAME="tex2html2812"
+  HREF="node221.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -199,12 +201,12 @@ nombre del fichero de salida, que por defecto ser&#225; <SPAN  CLASS="textit">le
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2810"
-  HREF="node86.html">Suprimir</A>
-<B>Sup:</B> <A NAME="tex2html2804"
-  HREF="node81.html">Expresiones Regulares en Flex</A>
-<B> Ant:</B> <A NAME="tex2html2798"
-  HREF="node84.html">Espacios en blanco dentro</A>
+<B> Sig:</B> <A NAME="tex2html2815"
+  HREF="node86.html">Ejemplo Simple</A>
+<B>Sup:</B> <A NAME="tex2html2809"
+  HREF="node82.html">Expresiones Regulares en Flex</A>
+<B> Ant:</B> <A NAME="tex2html2803"
+  HREF="node84.html">Versi&#243;n Utilizada</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

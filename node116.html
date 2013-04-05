@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Traducción entre Tablas</TITLE>
-<META NAME="description" CONTENT="Traducción entre Tablas">
+<TITLE>Manipulando tablas numéricas</TITLE>
+<META NAME="description" CONTENT="Manipulando tablas numéricas">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node117.html">
 <LINK REL="previous" HREF="node115.html">
-<LINK REL="up" HREF="node109.html">
+<LINK REL="up" HREF="node110.html">
 <LINK REL="next" HREF="node117.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3254"
+<A NAME="tex2html3259"
   HREF="node117.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3248"
-  HREF="node109.html">
+<A NAME="tex2html3253"
+  HREF="node110.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3242"
+<A NAME="tex2html3247"
   HREF="node115.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3250"
-  HREF="node217.html">
+<A NAME="tex2html3255"
+  HREF="node218.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3252"
-  HREF="node220.html">
+<A NAME="tex2html3257"
+  HREF="node221.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,58 +88,130 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3255"
-  HREF="node117.html">Del espacio de Patrones</A>
-<B>Sup:</B> <A NAME="tex2html3249"
-  HREF="node109.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html3243"
-  HREF="node115.html">Manipulando tablas numéricas</A>
+<B> Sig:</B> <A NAME="tex2html3260"
+  HREF="node117.html">Traducción entre Tablas</A>
+<B>Sup:</B> <A NAME="tex2html3254"
+  HREF="node110.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html3248"
+  HREF="node115.html">Siguiente Línea: La orden</A>
 <B> Con:</B> 
-<A NAME="tex2html3250"
-  HREF="node217.html">
+<A NAME="tex2html3255"
+  HREF="node218.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3252"
-  HREF="node220.html">
+<A NAME="tex2html3257"
+  HREF="node221.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION05370000000000000000">
-Traducción entre Tablas</A>
+<H1><A NAME="SECTION05360000000000000000">
+Manipulando tablas numéricas</A>
 </H1>
-El  comando <I>y</I> realiza una traducción entre dos tablas de caracteres.
-Observa el ejemplo:
+El siguiente ejemplo intercambia la primera y ultima columnas
+de un fichero como el que sigue:
 <PRE>
-$ cat toupper.sed
-y/aáéíóúäëïöübcdefghijklmnopqrstuvxyzñ/AÁÉÍÓÚÄËÏÖÜBCDEFGHIJKLMNOPQRSTUVXYZÑ/
-$ cat sp2en.test
-¡Coño! ¿Es plím el que hizo plúm?
+$ cat columns.test
+11111 22222 33333 44444 55555
+  111    22    33  4444  5555
+11111 22222 33333 44444 55555
+   11    22     3   444  5555
 </PRE>
-Obtenemos asi los contenidos del fichero en mayúsculas:
+La parte mas complicada es preservar el sangrado.
+El truco reside, en parte, en el patrón central <!-- MATH
+ $\backslash$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.png"
+ ALT="$ \backslash$"></SPAN>2, que 
+memoriza los blancos después de la primera columna y un sólo blanco 
+antes de la última.
 <PRE>
-$ sed -f toupper.sed sp2en.test
-¡COÑO! ¿ES PLÍM EL QUE HIZO PLÚM?
+$ cat columns.sed
+s/^\( *[0-9][0-9]*\)\( .*[0-9] \)\( *[0-9][0-9]*\)$/\3\2\1/
+$ sed -f columns.sed columns.test
+55555 22222 33333 44444 11111
+ 5555    22    33  4444   111
+55555 22222 33333 44444 11111
+ 5555    22     3   444    11
+</PRE>
+El siguiente ejemplo utiliza
+una opción del operador de sustitución que permite decidir que aparición
+del patrón deseamos sustituir. Asi,
+
+<P>
+<code>s/A/B/3</code>
+
+<P>
+sustituirá la 3 aparición de <code>A</code> por <code>B</code>, obviando las otras.
+
+<P>
+El ejemplo selecciona la columna dos del fichero:
+<PRE>
+$ cat col2.sed
+#extracts the second column
+s/^  *//
+s/\&lt;[0-9][0-9]*\&gt;//1
+s/\&lt;[0-9][0-9]*\&gt;//2
+s/\&lt;[0-9][0-9]*\&gt;//2
+s/\&lt;[0-9][0-9]*\&gt;//2
+s/  *$//
+$ sed -f col2.sed columns.test
+ 22222
+    22
+ 22222
+    22
+</PRE>
+Mas general que el anterior, el siguiente ejemplo elimina 
+un número de columnas arbitrario <code>$1</code> por la izquierda y otro 
+número <code>$2</code> por la derecha.
+Para lograrlo, es necesario utilizar un un guión para la <code>shell</code> 
+que llama al correspondiente guión <code>sed</code>. Los parámetros 
+son introducidos en el guión <code>sed</code> mediante el uso apropiado
+de las comillas dobles y simples:
+
+<P>
+<PRE>
+&gt; cat colbranch.sh
+#!/bin/bash
+sed -e '
+s/^\( *[0-9]\+\)\{'"$1"'\}//
+s/\( *[0-9]\+\)\{'"$2"'\}$//
+'
+</PRE>
+Veamos un ejemplo de uso:
+<PRE>
+&gt; cat columns.test
+11111 22222 33333 44444 55555
+  111    22    33  4444  5555
+11111 22222 33333 44444 55555
+   11    22     3   444  5555
+&gt; colbranch.sh 2 1 &lt; columns.test
+ 33333 44444
+    33  4444
+ 33333 44444
+     3   444
 </PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3254"
+<A NAME="tex2html3259"
   HREF="node117.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3248"
-  HREF="node109.html">
+<A NAME="tex2html3253"
+  HREF="node110.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3242"
+<A NAME="tex2html3247"
   HREF="node115.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3250"
-  HREF="node217.html">
+<A NAME="tex2html3255"
+  HREF="node218.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3252"
-  HREF="node220.html">
+<A NAME="tex2html3257"
+  HREF="node221.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -186,12 +258,12 @@ $ sed -f toupper.sed sp2en.test
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3255"
-  HREF="node117.html">Del espacio de Patrones</A>
-<B>Sup:</B> <A NAME="tex2html3249"
-  HREF="node109.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html3243"
-  HREF="node115.html">Manipulando tablas numéricas</A>
+<B> Sig:</B> <A NAME="tex2html3260"
+  HREF="node117.html">Traducción entre Tablas</A>
+<B>Sup:</B> <A NAME="tex2html3254"
+  HREF="node110.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html3248"
+  HREF="node115.html">Siguiente Línea: La orden</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

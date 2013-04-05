@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Final de Fichero</TITLE>
-<META NAME="description" CONTENT="Final de Fichero">
+<TITLE>La pila de estados</TITLE>
+<META NAME="description" CONTENT="La pila de estados">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node98.html">
 <LINK REL="previous" HREF="node96.html">
-<LINK REL="up" HREF="node81.html">
+<LINK REL="up" HREF="node82.html">
 <LINK REL="next" HREF="node98.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html2978"
+<A NAME="tex2html2982"
   HREF="node98.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2972"
-  HREF="node81.html">
+<A NAME="tex2html2976"
+  HREF="node82.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2966"
+<A NAME="tex2html2970"
   HREF="node96.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2974"
-  HREF="node217.html">
+<A NAME="tex2html2978"
+  HREF="node218.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2976"
-  HREF="node220.html">
+<A NAME="tex2html2980"
+  HREF="node221.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,116 +88,125 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2979"
-  HREF="node98.html">Uso de Dos Analizadores</A>
-<B>Sup:</B> <A NAME="tex2html2973"
-  HREF="node81.html">Expresiones Regulares en Flex</A>
-<B> Ant:</B> <A NAME="tex2html2967"
-  HREF="node96.html">La pila de estados</A>
+<B> Sig:</B> <A NAME="tex2html2983"
+  HREF="node98.html">Final de Fichero</A>
+<B>Sup:</B> <A NAME="tex2html2977"
+  HREF="node82.html">Expresiones Regulares en Flex</A>
+<B> Ant:</B> <A NAME="tex2html2971"
+  HREF="node96.html">Estados</A>
 <B> Con:</B> 
-<A NAME="tex2html2974"
-  HREF="node217.html">
+<A NAME="tex2html2978"
+  HREF="node218.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html2976"
-  HREF="node220.html">
+<A NAME="tex2html2980"
+  HREF="node221.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<H1><A NAME="SECTION052160000000000000000">
-Final de Fichero</A>
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html2984"
+  HREF="node97.html#SECTION052151000000000000000">Ejemplo</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION052150000000000000000">
+La pila de estados</A>
 </H1>
-El patrón <code>&lt;&lt;EOF&gt;&gt;</code> permite asociar acciones que se deban 
-ejecutar cuando se ha encontrado un <SPAN  CLASS="textit">end of file</SPAN> y la 
-macro <code>yywrap()</code> ha devuelto un valor no nulo. 
+Mediante el uso de la opción
 
 <P>
-Cualquiera que sea, la acción asociada deberá de optar por una de estas 
-cuatro alternativas:
+<code>%option stack</code>
 
+<P>
+tendremos acceso a una pila de estados y a tres rutinas para  manipularla:
+<BR>
 <UL>
-<LI>Asignar <code>yyin</code> a un nuevo fichero de entrada
-</LI>
-<LI>Ejecutar <code>return</code>
-</LI>
-<LI>Ejecutar <code>yyterminate()</code> (véase  la sección <A HREF="node91.html#section:input">29.10</A>)
-</LI>
-<LI>Cambiar de <SPAN  CLASS="textit">buffer</SPAN> de entrada utilizando la función
-<code>yy_switch_buffer</code> (véase  la sección <A HREF="node102.html#section:include">29.21</A>).
+<LI><code>void yy_push_state(int new_state)</code>
+<BR>
+Empuja el estado actual y bifurca a <code>new_state</code>.
+<BR></LI>
+<LI><code>void yy_pop_state()</code>
+<BR>
+Saca el estado en el <SPAN  CLASS="textit">top</SPAN> de la pila y bifurca a el mismo.
+<BR></LI>
+<LI><code>int yy_top_state()</code>
+<BR>
+Nos devuelve el estado en el <SPAN  CLASS="textit">top</SPAN> de la pila, sin alterar
+los contenidos de la misma.
 </LI>
 </UL>
 
 <P>
-El patrón <code>&lt;&lt;EOF&gt;&gt;</code> no puede usarse con otras expresiones regulares. Sin embargo, es correcto prefijarlo con estados.
 
-<P>
-Si  <code>&lt;&lt;EOF&gt;&gt;</code> aparece sin condiciones de arranque, la regla se aplica a todos los estados que no tienen una regla  <code>&lt;&lt;EOF&gt;&gt;</code> específica.
-Si lo que se quiere es que la regla se restringa al ámbito del estado inicial se deberá escribir:
-
-<P>
-<code>&lt;INITIAL&gt;&lt;&lt;EOF&gt;&gt;</code> 
-
-<P>
-Sigue un programa que reconoce los comentarios anidados en C.
-Para detectar comentarios incacabados usaremos  <code>&lt;&lt;EOF&gt;&gt;</code>.
-<A NAME="nestedcomments"></A><PRE>
-%option stack
-%x comment
-%%
-"/*"   { yy_push_state(comment); }
-(.|\n) ECHO;
-&lt;comment&gt;"/*"     { yy_push_state(comment); } 
-&lt;comment&gt;"*/"     { yy_pop_state(); } 
-&lt;comment&gt;(.|\n)   ;
-&lt;comment&gt;&lt;&lt;EOF&gt;&gt;  { fprintf(stderr,"Error\n"); exit(1); }
-%%
-</PRE>
+<H2><A NAME="SECTION052151000000000000000">
+Ejemplo</A>
+</H2>
+El siguiente programa <code>flex</code> utiliza las funciones de la pila
+de estados para reconocer el lenguaje (no regular) 
+<!-- MATH
+ $\{a^n b^n\ /\ n \in N\}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="125" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$ \{a^n b^n / n \in N\}$"></SPAN>
 
 <P>
 <PRE>
-$ cat hello.c
-main() {
-int a[1]; /* a /* nested comment */. */
-  a[0] = 4; /* a  /* nested comment in
-                 /* two */ lines  */ *****/
-}                                                   
-$ flex nestedcom.l ; gcc lex.yy.c -lfl ; a.out &lt; hello.c
-main() {
-int a[1];
-  a[0] = 4;
+%option main
+%option noyywrap
+%option stack
+%{
+#include &lt;stdio.h&gt;
+#include  &lt;stdlib.h&gt;
+%}
+%x estado_a
+%%
+^a { yy_push_state(estado_a);}
+&lt;estado_a&gt;{
+a      { yy_push_state(estado_a); }
+b      { yy_pop_state();  }
+b[^b\n]+    {   printf ("Error\n"); 
+        while (YYSTATE != INITIAL)
+          yy_pop_state();
+        while (input() != '\n') ;
+      }
+(.|\n)  {  printf ("Error\n"); 
+        while (YYSTATE != INITIAL)
+          yy_pop_state();
+        while (input() != '\n') ;
+      }
 }
-$ cat hello4.c
-main() {
-int a[1]; /* a /* nested comment */. */
-  a[0] = 4; /* an  /* incorrectly nested comment in
-                 /* two  lines  */ *****/
-}
-$ a.out &lt; hello4.c
-main() {
-int a[1];
-Error
-  a[0] = 4;
+.      {  printf ("Error\n");
+        while (input() != '\n') ;
+      }
+\n      { printf("Aceptar\n");}
+%%
 </PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html2978"
+<A NAME="tex2html2982"
   HREF="node98.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2972"
-  HREF="node81.html">
+<A NAME="tex2html2976"
+  HREF="node82.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2966"
+<A NAME="tex2html2970"
   HREF="node96.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2974"
-  HREF="node217.html">
+<A NAME="tex2html2978"
+  HREF="node218.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2976"
-  HREF="node220.html">
+<A NAME="tex2html2980"
+  HREF="node221.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -244,12 +253,12 @@ Error
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2979"
-  HREF="node98.html">Uso de Dos Analizadores</A>
-<B>Sup:</B> <A NAME="tex2html2973"
-  HREF="node81.html">Expresiones Regulares en Flex</A>
-<B> Ant:</B> <A NAME="tex2html2967"
-  HREF="node96.html">La pila de estados</A>
+<B> Sig:</B> <A NAME="tex2html2983"
+  HREF="node98.html">Final de Fichero</A>
+<B>Sup:</B> <A NAME="tex2html2977"
+  HREF="node82.html">Expresiones Regulares en Flex</A>
+<B> Ant:</B> <A NAME="tex2html2971"
+  HREF="node96.html">Estados</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

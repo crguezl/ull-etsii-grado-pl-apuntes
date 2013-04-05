@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Estados</TITLE>
-<META NAME="description" CONTENT="Estados">
+<TITLE>yyless()</TITLE>
+<META NAME="description" CONTENT="yyless()">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node96.html">
 <LINK REL="previous" HREF="node94.html">
-<LINK REL="up" HREF="node81.html">
+<LINK REL="up" HREF="node82.html">
 <LINK REL="next" HREF="node96.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html2949"
+<A NAME="tex2html2954"
   HREF="node96.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2943"
-  HREF="node81.html">
+<A NAME="tex2html2948"
+  HREF="node82.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2937"
+<A NAME="tex2html2942"
   HREF="node94.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2945"
-  HREF="node217.html">
+<A NAME="tex2html2950"
+  HREF="node218.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2947"
-  HREF="node220.html">
+<A NAME="tex2html2952"
+  HREF="node221.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,178 +88,110 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2950"
-  HREF="node96.html">La pila de estados</A>
-<B>Sup:</B> <A NAME="tex2html2944"
-  HREF="node81.html">Expresiones Regulares en Flex</A>
-<B> Ant:</B> <A NAME="tex2html2938"
-  HREF="node94.html">yyless()</A>
+<B> Sig:</B> <A NAME="tex2html2955"
+  HREF="node96.html">Estados</A>
+<B>Sup:</B> <A NAME="tex2html2949"
+  HREF="node82.html">Expresiones Regulares en Flex</A>
+<B> Ant:</B> <A NAME="tex2html2943"
+  HREF="node94.html">yymore()</A>
 <B> Con:</B> 
-<A NAME="tex2html2945"
-  HREF="node217.html">
+<A NAME="tex2html2950"
+  HREF="node218.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html2947"
-  HREF="node220.html">
+<A NAME="tex2html2952"
+  HREF="node221.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION052140000000000000000">
-Estados</A>
+<H1><A NAME="SECTION052130000000000000000">
+yyless()</A>
 </H1>
-Las expresiones regulares pueden ser prefijadas mediante <SPAN  CLASS="textit">estados</SPAN>.
-Los estados o condiciones de arranque, se denotan mediante un
-identificador entre &#225;ngulos y se declaran
-en la parte de las definiciones. Las declaraciones se hacen mediante 
-<code>%s</code> para los estados ``inclusivos'' o bien <code>%x</code> para los estados ``exclusivos'',
-seguidos de los nombres de los estados. No pueden haber caracteres en blanco antes de la declaración.
-Un <SPAN  CLASS="textit">estado</SPAN> se activa mediante la 
-acci&#243;n BEGIN <SPAN  CLASS="textit">estado</SPAN>. A partir de ese momento, las reglas que esten
-prefijadas con el estado pasan a estar activas. En el caso de que el estado
-sea inclusivo, las reglas no prefijadas tambi&#233;n permanecen activas.
-Los estados exclusivos son especialmente útiles para especificar ``sub analizadores''
-que analizan porciones de la entrada cuya estructura ``sintáctica'' es diferente
-de la del resto de la entrada.
+La funci&#243;n <code>yyless(n)</code> permite retrasar el puntero de lectura  
+de manera que apunta al car&#225;cter <SPAN  CLASS="textit">n</SPAN> de <SPAN  CLASS="textit">yytext</SPAN>. 
+Veamos un ejemplo:
+<PRE>
+$ cat yyless.l
+%%
+foobar ECHO; yyless(4);
+[a-z]+ ECHO;
+ 
+$ flex yyless.l; gcc lex.yy.c -lfl; a.out
+foobar
+foobarar
+</PRE>
+Veamos un ejemplo mas ``real''. supongamos que tenemos que reconocer 
+las cadenas entre comillas dobles, pero que pueden aparecer en las
+mismas secuencias de escape <code>\"</code>. La estrategia general del algoritmo
+es utilizar la expresión regular <code>\"[^"]+\"</code> y examinar si
+los dos últimos  carácteres en <code>yytext</code> son <code>\"</code>. En tal caso, 
+se concatena la cadena actual (sin la <code>"</code> final) como prefijo para
+el próximo emparejamiento (utilizando <code>yymore</code>). 
+La eliminación de la <code>"</code> se hace a través de la ejecución de 
+<code>yyless(yyleng-1)</code>, que al mismo tiempo garantiza que el próximo emparejamiento 
+tendrá lugar con este mismo patrón <code>\"[^"]+\"</code>.
+<PRE>
+$ cat quotes.l
+%%
+\"[^"]+\" {
+            printf("Processing string. %d: %s\n",yyleng,yytext);
+            if (yytext[yyleng-2] =='\\') {
+             yyless(yyleng-1); /* so that it will match next time */
+             yymore(); /* concatenate  with current yytext */
+             printf("After yyless. %d: %s\n",yyleng,yytext);
+            } else {
+              printf("Finished. The string is: %s\n",yytext);
+            }
+          }
+</PRE>
+El ejemplo no puede entenderse si no se tiene en cuenta que
+<code>yyless(yyleng-1)</code> actualiza los valores de <SPAN  CLASS="textit">yyleng</SPAN> 
+y <SPAN  CLASS="textit">yytext</SPAN>, como muestra la salida.
+<BR>¿Qu&#233; ocurre si intercambiamos las posiciones de <code>yymore()</code>
+e <code>yyless(yyleng-1)</code> en el c&#243;digo? &gt;Cambiara la salida? 
+La respuesta es que no. Parece que la concatenaci&#243;n se hace con el valor
+final de <SPAN  CLASS="textit">yytext</SPAN> y no con el valor que este ten&#305;a en el momento de
+la llamada a <SPAN  CLASS="textit">yymore</SPAN>.
+<BR>
+Otra observaci&#243;n  a tener en cuenta es que <SPAN  CLASS="textit">yyless()</SPAN>
+es una macro y que, por tanto,
+s&#243;lo puede ser utilizada dentro del fichero <SPAN  CLASS="textit">lex</SPAN> y no en otros
+ficheros fuentes.
 
 <P>
-El ejemplo ``absorbe'' los comentarios, conservando el numero de
-l&#305;neas del fichero en la variable <code>linenum</code>
-
-<P>
+En general, el uso de estas funciones  nos puede resolver el problema
+de reconocer l&#305;mites que de otra forma ser&#305;an dif&#305;ciles de expresar
+con una expresi&#243;n regular.
 <PRE>
-$ cat comments.l
-%option noyywrap
-%{
-  int linenum = 0;
-%}
-%x comment
-%%
- 
-"/*" BEGIN(comment); printf("comment=%d, YY_START = %d, YYSTATE = %d",comment,YY_START,YYSTATE);
-&lt;comment&gt;[^*\n]* /* eat anything that is not a star * /
-&lt;comment&gt;"*"+[^*/\n]* /* eat up starts not followed by / */
-&lt;comment&gt;\n ++linenum; /* update number of lines */
-&lt;comment&gt;"*"+"/" BEGIN(0);
- 
-\n ECHO; linenum++;
-.  ECHO;
-%%
-main() {
-  yylex();
-  printf("\n%d lines\n",linenum);
-}
+$ flex quotes.l ; gcc lex.yy.c -lfl ; a.out
+"Hello \"Peter\", nice to meet you"
+Procesing string. 9: "Hello \"
+After yyless. 8: "Hello \
+Procesing string. 16: "Hello \"Peter\"
+After yyless. 15: "Hello \"Peter\
+Procesing string. 35: "Hello \"Peter\", nice to meet you"
+Finished. The string is: "Hello \"Peter\", nice to meet you"
 </PRE>
-La opción <code>noyywrap</code> hace que <code>yylex()</code> no llame a la función <code>yywrap()</code>
-al final del fichero y que asuma que no hay mas entrada por procesar.
-
-<P>
-Los estados se traducen por enteros, pudiendo ser manipulados como tales.
-La macro <code>INITIAL</code> puede utilizarse para referirse al estado 0.
-Las macros <code>YY_START</code> y <code>YYSTATE</code> contienen el valor del estado actual.
-<PRE>
-$ flex comments.l ; gcc lex.yy.c ; a.out &lt; hello.c
-main() &lt;%
-int a&lt;:1:&gt;; comment=1, YY_START = 1, YYSTATE = 1
-  a&lt;:0:&gt; = 4; comment=1, YY_START = 1, YYSTATE = 1
-  printf("hello world! a(0) is %d\n",a&lt;:0:&gt;);
-%&gt;
- 
-6 lines     
-$ cat hello.c
-main() &lt;%
-int a&lt;:1:&gt;; /* a comment */
-  a&lt;:0:&gt; = 4; /* a comment in
-                 two lines */
-  printf("hello world! a(0) is %d\n",a&lt;:0:&gt;);
-%&gt;                                  
-</PRE>
-En <SPAN  CLASS="textit">flex</SPAN> es posible asociar un &#225;mbito con los estados o 
-condiciones iniciales. Basta con colocar entre llaves las 
-parejas <SPAN  CLASS="textit">patr&#243;n acci&#243;n</SPAN> gobernadas por ese estado.
-El siguiente ejemplo procesa las cadenas <SPAN  CLASS="textit">C</SPAN>:
-<PRE>
-$ cat ststring.l
-%option main
-%x str
-%{
-#define MAX_STR_CONST 256
- 
-  char string_buffer[MAX_STR_CONST];
-  char *string_buf_ptr;
-%}
- 
-%%
-\"  string_buf_ptr  = string_buffer; BEGIN(str);
-&lt;str&gt;{
-\"             {BEGIN (INITIAL); *string_buf_ptr = '\0'; printf("%s",string_buffer); }
-\n             { printf("Error: non terminated string\n"); exit(1); }
-\\[0-7]{1,3}   { int result; /* octal escape sequence */
-                        (void) sscanf(yytext+1,"%o",&amp;result);
-                         if (result &gt; 0xff) {printf("Error: constant out of bounds\n"); exit(2); }
-                         *string_buf_ptr++ = result;
-                    }
-\\[0-9]+       { printf("Error: bad escape sequence\n"); exit(2); }
-\\n            {*string_buf_ptr++ = '\n';}
-\\t            {*string_buf_ptr++ = '\t';}
-\\b            {*string_buf_ptr++ = '\b';}
-\\r            {*string_buf_ptr++ = '\r';}
-\\f            {*string_buf_ptr++ = '\f';}
-\\(.|\n)       {*string_buf_ptr++ = yytext[1];}
-[^\\\n\"]+     {char *yptr = yytext; while(*yptr) *string_buf_ptr++ = *yptr++; }
-}
-(.|\n)
-%%                            
-$ flex ststring.l ; gcc lex.yy.c ; a.out &lt; hello.c
-        hello
-world! a(0) is %d
-$ cat hello.c
-main() &lt;%
-int a&lt;:1:&gt;; /* a comment */
-  a&lt;:0:&gt; = 4; /* a comment in
-                 two lines */
-  printf("\thell\157\nworld! a(0) is %d\n",a&lt;:0:&gt;);
-%&gt;                                   
-</PRE>
-Obsérve la conducta del programa ante las siguientes entradas:
-
-<UL>
-<LI>Entrada:
-<PRE>
-"hello \
-dolly"
-</PRE>
-¿Cuál será la salida? ¿Que patrón del programa anterior es el que casa aqui?
-</LI>
-<LI>Entrada:
-<code>"hello\ndolly"</code>.
-¿Cuál será la salida? ¿Que patrón del programa anterior es el que casa aqui?
-</LI>
-<LI><PRE>|
-"hello
-</PRE>
-Donde hay un retorno del carro después de <code>hello</code>.
-¿Cuál será la salida? </LI>
-</UL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html2949"
+<A NAME="tex2html2954"
   HREF="node96.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2943"
-  HREF="node81.html">
+<A NAME="tex2html2948"
+  HREF="node82.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2937"
+<A NAME="tex2html2942"
   HREF="node94.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2945"
-  HREF="node217.html">
+<A NAME="tex2html2950"
+  HREF="node218.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2947"
-  HREF="node220.html">
+<A NAME="tex2html2952"
+  HREF="node221.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -306,12 +238,12 @@ Donde hay un retorno del carro después de <code>hello</code>.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2950"
-  HREF="node96.html">La pila de estados</A>
-<B>Sup:</B> <A NAME="tex2html2944"
-  HREF="node81.html">Expresiones Regulares en Flex</A>
-<B> Ant:</B> <A NAME="tex2html2938"
-  HREF="node94.html">yyless()</A>
+<B> Sig:</B> <A NAME="tex2html2955"
+  HREF="node96.html">Estados</A>
+<B>Sup:</B> <A NAME="tex2html2949"
+  HREF="node82.html">Expresiones Regulares en Flex</A>
+<B> Ant:</B> <A NAME="tex2html2943"
+  HREF="node94.html">yymore()</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

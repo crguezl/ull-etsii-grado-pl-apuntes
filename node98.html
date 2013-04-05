@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Uso de Dos Analizadores</TITLE>
-<META NAME="description" CONTENT="Uso de Dos Analizadores">
+<TITLE>Final de Fichero</TITLE>
+<META NAME="description" CONTENT="Final de Fichero">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node99.html">
 <LINK REL="previous" HREF="node97.html">
-<LINK REL="up" HREF="node81.html">
+<LINK REL="up" HREF="node82.html">
 <LINK REL="next" HREF="node99.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html2992"
+<A NAME="tex2html2997"
   HREF="node99.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2986"
-  HREF="node81.html">
+<A NAME="tex2html2991"
+  HREF="node82.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2980"
+<A NAME="tex2html2985"
   HREF="node97.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2988"
-  HREF="node217.html">
+<A NAME="tex2html2993"
+  HREF="node218.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2990"
-  HREF="node220.html">
+<A NAME="tex2html2995"
+  HREF="node221.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,130 +88,116 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2993"
-  HREF="node99.html">La Opción outfile</A>
-<B>Sup:</B> <A NAME="tex2html2987"
-  HREF="node81.html">Expresiones Regulares en Flex</A>
-<B> Ant:</B> <A NAME="tex2html2981"
-  HREF="node97.html">Final de Fichero</A>
+<B> Sig:</B> <A NAME="tex2html2998"
+  HREF="node99.html">Uso de Dos Analizadores</A>
+<B>Sup:</B> <A NAME="tex2html2992"
+  HREF="node82.html">Expresiones Regulares en Flex</A>
+<B> Ant:</B> <A NAME="tex2html2986"
+  HREF="node97.html">La pila de estados</A>
 <B> Con:</B> 
-<A NAME="tex2html2988"
-  HREF="node217.html">
+<A NAME="tex2html2993"
+  HREF="node218.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html2990"
-  HREF="node220.html">
+<A NAME="tex2html2995"
+  HREF="node221.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION052170000000000000000">
-Uso de Dos Analizadores</A>
+<H1><A NAME="SECTION052160000000000000000">
+Final de Fichero</A>
 </H1>
-La opción <code>-Pprefix</code> de flex cambia el prefijo por defecto <code>yy</code>
-para todas las variables globales y funciones. Por ejemplo 
-<code>-Pfoo</code> cambia el nombre de  <code>yytext</code> <code>footext</code>.  
-También cambia el nombre del fichero de salida 
-de  <code>lex.yy.c</code>  a <code>lex.foo.c</code>.  
-Sigue la lista de identificadores afectados:
-<PRE> 
-yy_create_buffer
-yy_delete_buffer
-yy_flex_debug
-yy_init_buffer
-yy_flush_buffer
-yy_load_buffer_state
-yy_switch_to_buffer
-yyin
-yyleng
-yylex
-yylineno
-yyout
-yyrestart
-yytext
-yywrap
-</PRE> 
-Desde dentro del analizador léxico puedes referirte a las 
-variables globales y funciones por cualquiera de los nombres,
-pero externamente tienen el nombre cambiado.
-Esta opción nos permite enlazar diferentes programas flex en un mismo ejecutable.
+El patrón <code>&lt;&lt;EOF&gt;&gt;</code> permite asociar acciones que se deban 
+ejecutar cuando se ha encontrado un <SPAN  CLASS="textit">end of file</SPAN> y la 
+macro <code>yywrap()</code> ha devuelto un valor no nulo. 
 
 <P>
-Sigue un ejemplo de uso de dos analizadores l&#233;xicos dentro del mismo programa:
-<PRE>
-$ cat one.l
+Cualquiera que sea, la acción asociada deberá de optar por una de estas 
+cuatro alternativas:
+
+<UL>
+<LI>Asignar <code>yyin</code> a un nuevo fichero de entrada
+</LI>
+<LI>Ejecutar <code>return</code>
+</LI>
+<LI>Ejecutar <code>yyterminate()</code> (véase  la sección <A HREF="node92.html#section:input">29.10</A>)
+</LI>
+<LI>Cambiar de <SPAN  CLASS="textit">buffer</SPAN> de entrada utilizando la función
+<code>yy_switch_buffer</code> (véase  la sección <A HREF="node103.html#section:include">29.21</A>).
+</LI>
+</UL>
+
+<P>
+El patrón <code>&lt;&lt;EOF&gt;&gt;</code> no puede usarse con otras expresiones regulares. Sin embargo, es correcto prefijarlo con estados.
+
+<P>
+Si  <code>&lt;&lt;EOF&gt;&gt;</code> aparece sin condiciones de arranque, la regla se aplica a todos los estados que no tienen una regla  <code>&lt;&lt;EOF&gt;&gt;</code> específica.
+Si lo que se quiere es que la regla se restringa al ámbito del estado inicial se deberá escribir:
+
+<P>
+<code>&lt;INITIAL&gt;&lt;&lt;EOF&gt;&gt;</code> 
+
+<P>
+Sigue un programa que reconoce los comentarios anidados en C.
+Para detectar comentarios incacabados usaremos  <code>&lt;&lt;EOF&gt;&gt;</code>.
+<A NAME="nestedcomments"></A><PRE>
+%option stack
+%x comment
 %%
-one {printf("1\n"); return 1;}
-.   {printf("First analyzer: %s\n",yytext);}
+"/*"   { yy_push_state(comment); }
+(.|\n) ECHO;
+&lt;comment&gt;"/*"     { yy_push_state(comment); } 
+&lt;comment&gt;"*/"     { yy_pop_state(); } 
+&lt;comment&gt;(.|\n)   ;
+&lt;comment&gt;&lt;&lt;EOF&gt;&gt;  { fprintf(stderr,"Error\n"); exit(1); }
 %%
- 
-int onewrap(void) {
-  return 1;
-}
- 
-$ cat two.l
-%%
-two {printf("2\n"); return 2;}
-.   {printf("Second analyzer: %s\n",yytext);}
-%%
-int twowrap(void) {
-  return 1;
-}
-$ cat onetwo.c
-main() {
-  onelex();
-  twolex();
-}
 </PRE>
-Como hemos mencionado, la compilaci&#243;n <SPAN  CLASS="textit">flex</SPAN> se debe realizar con el opci&#243;n <code>-P</code>,
-que cambia el prefijo por defecto <code>yy</code> de las funciones
-y variables accesibles por el usuario.
-El mismo efecto puede conseguirse utilizando la opción <code>prefix</code>, escribiendo
-<code>%option prefix="one"</code> y <code>%option prefix="two"</code> en los respectivos programas 
-<code>one.l</code> y <code>two.l</code>. 
+
+<P>
 <PRE>
-$ flex -Pone one.l
-$ flex -Ptwo two.l
-$ ls -ltr | tail -2
--rw-rw----   1 pl       casiano     36537 Nov  7 09:52 lex.one.c
--rw-rw----   1 pl       casiano     36524 Nov  7 09:52 lex.two.c
-$ gcc onetwo.c lex.one.c lex.two.c
-$ a.out
-two
-First analyzer: t
-First analyzer: w
-First analyzer: o
- 
-one
-1
-one
-Second analyzer: o
-Second analyzer: n
-Second analyzer: e
- 
-two
-2
-$
+$ cat hello.c
+main() {
+int a[1]; /* a /* nested comment */. */
+  a[0] = 4; /* a  /* nested comment in
+                 /* two */ lines  */ *****/
+}                                                   
+$ flex nestedcom.l ; gcc lex.yy.c -lfl ; a.out &lt; hello.c
+main() {
+int a[1];
+  a[0] = 4;
+}
+$ cat hello4.c
+main() {
+int a[1]; /* a /* nested comment */. */
+  a[0] = 4; /* an  /* incorrectly nested comment in
+                 /* two  lines  */ *****/
+}
+$ a.out &lt; hello4.c
+main() {
+int a[1];
+Error
+  a[0] = 4;
 </PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html2992"
+<A NAME="tex2html2997"
   HREF="node99.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2986"
-  HREF="node81.html">
+<A NAME="tex2html2991"
+  HREF="node82.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2980"
+<A NAME="tex2html2985"
   HREF="node97.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2988"
-  HREF="node217.html">
+<A NAME="tex2html2993"
+  HREF="node218.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2990"
-  HREF="node220.html">
+<A NAME="tex2html2995"
+  HREF="node221.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -258,12 +244,12 @@ $
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2993"
-  HREF="node99.html">La Opción outfile</A>
-<B>Sup:</B> <A NAME="tex2html2987"
-  HREF="node81.html">Expresiones Regulares en Flex</A>
-<B> Ant:</B> <A NAME="tex2html2981"
-  HREF="node97.html">Final de Fichero</A>
+<B> Sig:</B> <A NAME="tex2html2998"
+  HREF="node99.html">Uso de Dos Analizadores</A>
+<B>Sup:</B> <A NAME="tex2html2992"
+  HREF="node82.html">Expresiones Regulares en Flex</A>
+<B> Ant:</B> <A NAME="tex2html2986"
+  HREF="node97.html">La pila de estados</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

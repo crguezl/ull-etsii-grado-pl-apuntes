@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Transferencia de Control</TITLE>
-<META NAME="description" CONTENT="Transferencia de Control">
+<TITLE>Expresiones Regulares en sed</TITLE>
+<META NAME="description" CONTENT="Expresiones Regulares en sed">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node111.html">
-<LINK REL="previous" HREF="node109.html">
-<LINK REL="up" HREF="node109.html">
+<LINK REL="next" HREF="node123.html">
+<LINK REL="previous" HREF="node82.html">
+<LINK REL="up" HREF="node69.html">
 <LINK REL="next" HREF="node111.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3170"
+<A NAME="tex2html3163"
   HREF="node111.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3164"
-  HREF="node109.html">
+<A NAME="tex2html3157"
+  HREF="node69.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3158"
+<A NAME="tex2html3151"
   HREF="node109.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3166"
-  HREF="node217.html">
+<A NAME="tex2html3159"
+  HREF="node218.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3168"
-  HREF="node220.html">
+<A NAME="tex2html3161"
+  HREF="node221.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,73 +88,115 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3171"
-  HREF="node111.html">Inserción de Texto</A>
-<B>Sup:</B> <A NAME="tex2html3165"
-  HREF="node109.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html3159"
-  HREF="node109.html">Expresiones Regulares en sed</A>
+<B> Sig:</B> <A NAME="tex2html3164"
+  HREF="node111.html">Transferencia de Control</A>
+<B>Sup:</B> <A NAME="tex2html3158"
+  HREF="node69.html">SEGUNDA PARTE: APUNTES DE</A>
+<B> Ant:</B> <A NAME="tex2html3152"
+  HREF="node109.html">La macro YY_BREAK</A>
 <B> Con:</B> 
-<A NAME="tex2html3166"
-  HREF="node217.html">
+<A NAME="tex2html3159"
+  HREF="node218.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3168"
-  HREF="node220.html">
+<A NAME="tex2html3161"
+  HREF="node221.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION05310000000000000000">
-Transferencia de Control</A>
-</H1>
-La orden <SPAN  CLASS="textit">b</SPAN> tiene la sintáxis:
-<BR><I>[address1][,address2]b[label]</I>
-<BR>
-Transfiere el control a la etiqueta especificada. Si no se especifica
-la etiqueta, el control se transfiere al final del <I>script</I>, por lo que
-no se aplica ningún otro comando a la línea actual. Los dos siguientes
-ejemplos utilizan <I>b</I>:
+<H1><A NAME="SECTION05300000000000000000">
+Expresiones Regulares en sed</A>
+</H1>·
+El editor <code>sed</code> es un editor no interactivo que actúa
+ejecutando los comandos (similares a los de <code>ex</code>) que
+figuran en el guión <code>sed</code> (<A NAME="3327"></A><SPAN  CLASS="textit">script sed</SPAN>) 
+sobre los ficheros de entrada y escribiendo el resultado en la salida estandar.
+Normalmente se llama en una de estas dos formas:
 <PRE>
-$ cat b.sed
-s/fish/cow/
-b
-s/cow/horse/
-$ sed -f b.sed b.test
-cow
-cow
+sed [opciones] 'comando' fichero(s)
+sed [opciones] -f guion fichero(s)
 </PRE>
-Utilizando <I>b</I> con una etiqueta:
+Si no se especifican ficheros de entrada, <code>sed</code> lee su entrada 
+desde la entrada estandar.
+
+<P>
+Todos los comandos en el guión son ejecutados sobre todas las líneas de la
+entrada, salvo que las condiciones en el ámbito del comando indiquen lo contrario.
+
+<P>
 <PRE>
-$ cat blabel.sed
+nereida:~/sed&gt; cat b.without.sed
+#example of succesive replacements
 s/fish/cow/
-b another
 s/cow/horse/
-:another
-s/cow/cat/
-$ sed -f blabel.sed b.test
-cat
-cat
+nereida:~/sed&gt; cat b.test
+fish
+cow
+nereida:~/sed&gt; sed -f b.without.sed b.test
+horse
+horse
+</PRE>
+como se ve en el ejemplo, si un comando cambia la entrada, los siguientes 
+comandos se aplican a la línea modificada (denominada <A NAME="3329"></A><SPAN  CLASS="textit">pattern space</SPAN>).
+
+<P>
+Los comandos <code>sed</code> tienen el formato:
+
+<P>
+<PRE>
+[direccion1][,direccion2][!]comando[argumentos]
 </PRE>
 
 <P>
+<BR> <HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html3165"
+  HREF="node111.html">Transferencia de Control</A>
+<LI><A NAME="tex2html3166"
+  HREF="node112.html">Inserción de Texto</A>
+<LI><A NAME="tex2html3167"
+  HREF="node113.html">Trasferencia de Control Condicional</A>
+<LI><A NAME="tex2html3168"
+  HREF="node114.html">Rangos</A>
+<LI><A NAME="tex2html3169"
+  HREF="node115.html">Siguiente Línea: La orden <I>n</I></A>
+<LI><A NAME="tex2html3170"
+  HREF="node116.html">Manipulando tablas numéricas</A>
+<LI><A NAME="tex2html3171"
+  HREF="node117.html">Traducción entre Tablas</A>
+<LI><A NAME="tex2html3172"
+  HREF="node118.html">Del espacio de Patrones al de Mantenimiento</A>
+<LI><A NAME="tex2html3173"
+  HREF="node119.html">La orden <I>N</I></A>
+<LI><A NAME="tex2html3174"
+  HREF="node120.html">Suprimir: El Comando <I>D</I></A>
+<LI><A NAME="tex2html3175"
+  HREF="node121.html">Búsqueda entre líneas</A>
+<LI><A NAME="tex2html3176"
+  HREF="node122.html">Seleccionando Items en un Registro Multilínea</A>
+</UL>
+<!--End of Table of Child-Links-->
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3170"
+<A NAME="tex2html3163"
   HREF="node111.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3164"
-  HREF="node109.html">
+<A NAME="tex2html3157"
+  HREF="node69.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3158"
+<A NAME="tex2html3151"
   HREF="node109.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3166"
-  HREF="node217.html">
+<A NAME="tex2html3159"
+  HREF="node218.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3168"
-  HREF="node220.html">
+<A NAME="tex2html3161"
+  HREF="node221.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -201,12 +243,12 @@ cat
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3171"
-  HREF="node111.html">Inserción de Texto</A>
-<B>Sup:</B> <A NAME="tex2html3165"
-  HREF="node109.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html3159"
-  HREF="node109.html">Expresiones Regulares en sed</A>
+<B> Sig:</B> <A NAME="tex2html3164"
+  HREF="node111.html">Transferencia de Control</A>
+<B>Sup:</B> <A NAME="tex2html3158"
+  HREF="node69.html">SEGUNDA PARTE: APUNTES DE</A>
+<B> Ant:</B> <A NAME="tex2html3152"
+  HREF="node109.html">La macro YY_BREAK</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

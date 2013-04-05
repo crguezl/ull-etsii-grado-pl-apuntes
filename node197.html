@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Práctica: Generación Automática de Árboles</TITLE>
-<META NAME="description" CONTENT="Práctica: Generación Automática de Árboles">
+<TITLE>Práctica: Nuevos Métodos</TITLE>
+<META NAME="description" CONTENT="Práctica: Nuevos Métodos">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node198.html">
 <LINK REL="previous" HREF="node196.html">
-<LINK REL="up" HREF="node172.html">
+<LINK REL="up" HREF="node173.html">
 <LINK REL="next" HREF="node198.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5143"
+<A NAME="tex2html5148"
   HREF="node198.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5137"
-  HREF="node172.html">
+<A NAME="tex2html5142"
+  HREF="node173.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5131"
+<A NAME="tex2html5136"
   HREF="node196.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5139"
-  HREF="node217.html">
+<A NAME="tex2html5144"
+  HREF="node218.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5141"
-  HREF="node220.html">
+<A NAME="tex2html5146"
+  HREF="node221.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,56 +88,108 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5144"
-  HREF="node198.html">Recuperacion de Errores: Visión</A>
-<B>Sup:</B> <A NAME="tex2html5138"
-  HREF="node172.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5132"
-  HREF="node196.html">Práctica: Nuevos Métodos</A>
+<B> Sig:</B> <A NAME="tex2html5149"
+  HREF="node198.html">Práctica: Generación Automática de</A>
+<B>Sup:</B> <A NAME="tex2html5143"
+  HREF="node173.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5137"
+  HREF="node196.html">Práctica: Autoacciones</A>
 <B> Con:</B> 
-<A NAME="tex2html5139"
-  HREF="node217.html">
+<A NAME="tex2html5144"
+  HREF="node218.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5141"
-  HREF="node220.html">
+<A NAME="tex2html5146"
+  HREF="node221.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION058250000000000000000"></A>
-   <A NAME="18494"></A>
+<H1><A NAME="SECTION058240000000000000000"></A>
+   <A NAME="18499"></A>
 <BR>
-Práctica: Generación Automática de Árboles
+Práctica: Nuevos Métodos
 </H1>
   
-Partiendo de la práctica anterior, introduzca una directiva
-<code>%autotree</code> que de lugar a la construcción del árbol de análisis
-concreto. La acción de construcción del árbol:
+Continuemos extendiendo <code>Yapp</code>.
+
+<UL>
+<LI>Introduzca en el módulo <code>Driver.pm</code> de <code>Yapp</code>
+un método <code>YYLhs</code> que devuelva el identificador
+de la variable sintáctica en el lado izquierdo de la regla 
+de producción por la que se está reduciendo. 
+</LI>
+<LI>Para tener disponible el lado izquierdo
+deberá modificar la conducta del analizador LALR 
+(subrutina <code>_Parse</code>) para que guarde como un atributo
+el identificador de dicho noterminal.
+</LI>
+<LI>¿Que identificador se devuelve asociado con las acciones
+intermedias?
+</LI>
+</UL>
+
+<P>
+Sigue un ejemplo de como programar haciendo uso de esta y la 
+anterior extensión:
 <PRE>
-{ my $n = $#_;  bless [@_[1..$n]], $_[0]-&gt;YYLhs }
+%right  '='
+%left   '-' '+'
+%left   '*' '/'
+%left   NEG
+%autoaction { my $n = $#_;  bless [@_[1..$n]], $_[0]-&gt;YYLhs }
+%%
+input:                 
+        |   input line 
+;
+line:     '\n'       { } 
+        | exp '\n'   { [ $_[1] ] } 
+        | error '\n' { }
+;
+exp:        NUM         |   VAR         |   VAR '=' exp         
+        |   exp '+' exp |   exp '-' exp |   exp '*' exp |   exp '/' exp      
+        |   '-' exp %prec NEG 
+        |   '(' exp ')' { [ $_[2] ] }     
+;
+%%
+...
 </PRE>
-se ejecutará para cualquier regla que no tenga una acción
-explícita asociada.
+Veamos la ejecución correspondiente al ejemplo anterior:
+<PRE>
+$ ./uselhs2.pl
+2+3*4
+$VAR1 = bless( 
+[
+  bless( [], 'input' ),
+  [
+    bless( [
+      bless( [ '2' ], 'exp' ),
+      '+',
+      bless( [
+        bless( [ '3' ], 'exp' ), '*', bless( [ '4' ], 'exp' ) ], 'exp' )
+    ], 'exp' )
+  ]
+], 'input' );
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5143"
+<A NAME="tex2html5148"
   HREF="node198.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5137"
-  HREF="node172.html">
+<A NAME="tex2html5142"
+  HREF="node173.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5131"
+<A NAME="tex2html5136"
   HREF="node196.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5139"
-  HREF="node217.html">
+<A NAME="tex2html5144"
+  HREF="node218.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5141"
-  HREF="node220.html">
+<A NAME="tex2html5146"
+  HREF="node221.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -184,12 +236,12 @@ explícita asociada.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5144"
-  HREF="node198.html">Recuperacion de Errores: Visión</A>
-<B>Sup:</B> <A NAME="tex2html5138"
-  HREF="node172.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5132"
-  HREF="node196.html">Práctica: Nuevos Métodos</A>
+<B> Sig:</B> <A NAME="tex2html5149"
+  HREF="node198.html">Práctica: Generación Automática de</A>
+<B>Sup:</B> <A NAME="tex2html5143"
+  HREF="node173.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5137"
+  HREF="node196.html">Práctica: Autoacciones</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

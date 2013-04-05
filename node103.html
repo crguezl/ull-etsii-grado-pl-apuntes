@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>An&#225;lisis Léxico desde una Cadena: yy_scan_string</TITLE>
-<META NAME="description" CONTENT="An&#225;lisis Léxico desde una Cadena: yy_scan_string">
+<TITLE>Manejo de directivas include</TITLE>
+<META NAME="description" CONTENT="Manejo de directivas include">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node104.html">
 <LINK REL="previous" HREF="node102.html">
-<LINK REL="up" HREF="node81.html">
+<LINK REL="up" HREF="node82.html">
 <LINK REL="next" HREF="node104.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3062"
+<A NAME="tex2html3067"
   HREF="node104.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3056"
-  HREF="node81.html">
+<A NAME="tex2html3061"
+  HREF="node82.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3050"
+<A NAME="tex2html3055"
   HREF="node102.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3058"
-  HREF="node217.html">
+<A NAME="tex2html3063"
+  HREF="node218.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3060"
-  HREF="node220.html">
+<A NAME="tex2html3065"
+  HREF="node221.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,118 +88,215 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3063"
-  HREF="node104.html">An&#225;lisis de la L&#305;nea</A>
-<B>Sup:</B> <A NAME="tex2html3057"
-  HREF="node81.html">Expresiones Regulares en Flex</A>
-<B> Ant:</B> <A NAME="tex2html3051"
-  HREF="node102.html">Manejo de directivas include</A>
+<B> Sig:</B> <A NAME="tex2html3068"
+  HREF="node104.html">An&#225;lisis Léxico desde una</A>
+<B>Sup:</B> <A NAME="tex2html3062"
+  HREF="node82.html">Expresiones Regulares en Flex</A>
+<B> Ant:</B> <A NAME="tex2html3056"
+  HREF="node102.html">El operador de ``trailing</A>
 <B> Con:</B> 
-<A NAME="tex2html3058"
-  HREF="node217.html">
+<A NAME="tex2html3063"
+  HREF="node218.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3060"
-  HREF="node220.html">
+<A NAME="tex2html3065"
+  HREF="node221.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION052220000000000000000">
-An&#225;lisis Léxico desde una Cadena: <TT>yy_scan_string</TT></A>
+<H1><A NAME="SECTION052210000000000000000"></A>
+<A NAME="section:include"></A>
+<BR>
+Manejo de directivas <TT>include</TT>
 </H1>
-El objetivo de este ejercicio es mostrar como realizar un
-an&#225;lisis l&#233;xico de los argumentos pasados en la l&#305;nea de
-comandos. Para ello <SPAN  CLASS="textit">flex</SPAN> provee la funci&#243;n <code>yy_scan_string(const char * str)</code>.
-Esta rutina crea un nuevo <SPAN  CLASS="textit">buffer</SPAN> de entrada y devuelve el correspondiente
-manejador <code>YY_BUFFER_STATE</code> asociado con la cadena
-<code>str</code>. Esta cadena debe estar terminada por un car&#225;cter <code>\0</code>. 
-Podemos liberar la memoria asociada con
-dicho <SPAN  CLASS="textit">buffer</SPAN> utilizando <code>yy_delete_buffer(BUFFER)</code>.
-La siguiente llamada a <code>yylex()</code> realizar&#225; el an&#225;lisis l&#233;xico
-de la cadena <code>str</code>.
-
-<P>
+El analisis l&#233;xico de algunos lenguajes requiere que, durante la
+ejecuci&#243;n, se realice la lectura desde
+diferentes ficheros de entrada. El ejemplo t&#305;pico es el manejo de las
+directivas <SPAN  CLASS="textit">include file</SPAN> existentes en la mayor&#305;a de los lenguajes de
+programaci&#243;n.
+<BR>¿Donde est&#225; el problema? La dificultad reside en que los
+analizadores generados por <SPAN  CLASS="textit">flex</SPAN>
+proveen almacenamiento intermedio (<SPAN  CLASS="textit">buffers</SPAN>) para aumentar el
+rendimiento. No basta con reescribir nuestro propio <SPAN  CLASS="textit">YY_INPUT</SPAN> de
+manera que tenga en cuenta con que fichero se esta trabajando. 
+El analizador s&#243;lo llama a <SPAN  CLASS="textit">YY_INPUT</SPAN> cuando alcanza el final de su
+<SPAN  CLASS="textit">buffer</SPAN>, lo cual puede ocurrir bastante despu&#233;s de haber
+encontrado la sentencia <SPAN  CLASS="textit">include</SPAN> que requiere el cambio de
+fichero de entrada.
 <PRE>
-$ cat scan_str.l
+$ cat include.l
+%x incl
+%{
+#define yywrap() 1
+#define MAX_INCLUDE_DEPTH 10
+YY_BUFFER_STATE include_stack[MAX_INCLUDE_DEPTH];
+int include_stack_ptr = 0;
+%}
 %%
-[0-9]+     printf("num\n");
-[a-zA-Z]+  printf("Id\n");
+include          BEGIN(incl);
+.                ECHO;
+&lt;incl&gt;[ \t]*
+&lt;incl&gt;[^ \t\n]+  { /* got the file name */
+                   if (include_stack_ptr &gt;= MAX_INCLUDE_DEPTH) {
+                     fprintf(stderr,"Includes nested too deeply\n");
+                     exit(1);
+                   }
+                   include_stack[include_stack_ptr++] = YY_CURRENT_BUFFER;
+                   yyin = fopen(yytext,"r");
+                   if (!yyin) {
+                     fprintf(stderr,"File %s not found\n",yytext);
+                     exit(1);
+                   }
+                   yy_switch_to_buffer(yy_create_buffer(yyin, YY_BUF_SIZE));
+                   BEGIN(INITIAL);
+                 }
+&lt;&lt;EOF&gt;&gt; {
+          if ( --include_stack_ptr &lt; 0) {
+            yyterminate();
+          } else {
+            yy_delete_buffer(YY_CURRENT_BUFFER);
+            yy_switch_to_buffer(include_stack[include_stack_ptr]);
+          }
+        }
 %%
 main(int argc, char ** argv) {
-int i;
  
-  for(i=1;i&lt;argc;i++) {
-    yy_scan_string(argv[i]);
-    yylex();
+  yyin = fopen(argv[1],"r");
+  yylex();
+}
+</PRE>
+La funci&#243;n <code>yy_create_buffer(yyin, YY_BUF_SIZE));</code> crea  un <SPAN  CLASS="textit">buffer</SPAN>
+lo suficientemente grande para mantener <code>YY_BUF_SIZE</code> caracteres. Devuelve un 
+<code>YY_BUFFER_STATE</code>, que puede ser pasado a otras rutinas. <code>YY_BUFFER_STATE</code> es un puntero a
+una estructura de datos opaca (<code>struct yy_buffer_state</code>) que contiene la informaci&#243;n para la manipulaci&#243;n
+del <SPAN  CLASS="textit">buffer</SPAN>. Es posible por tanto inicializar un puntero <code>YY_BUFFER_STATE</code>
+usando la expresión <code>((YY_BUFFER_STATE) 0)</code>.
+
+<P>
+La funci&#243;n <code>yy_switch_to_buffer(YY_BUFFER_STATE new_buffer);</code> conmuta la entrada 
+del analizador l&#233;xico. La funci&#243;n <code>void yy_delete_buffer( YY_BUFFER_STATE buffer )</code>
+se usa para recuperar la memoria consumida por un <SPAN  CLASS="textit">buffer</SPAN>.  Tambi&#233;n se pueden limpiar 
+los contenidos actuales de un buffer llamando a:
+<code>void yy_flush_buffer( YY_BUFFER_STATE buffer )</code>
+
+<P>
+La regla especial <code>&lt;&lt;EOF&gt;&gt;</code> indica la acci&#243;n a ejecutar cuando 
+se ha encontrado un final de fichero e <code>yywrap()</code> retorna un valor
+distinto de cero. Cualquiera que sea la acci&#243;n asociada, esta debe terminar 
+con uno de estos cuatro supuestos:
+
+<OL>
+<LI>Asignar <code>yyin</code> a un nuevo fichero de entrada.
+</LI>
+<LI>Ejecutar <code>return</code>.
+</LI>
+<LI>Ejecutar <code>yyterminate()</code>.
+</LI>
+<LI>Cambiar a un nuevo buffer usando <code>yy_switch_to_buffer()</code>.
+
+<P>
+La regla <code>&lt;&lt;EOF&gt;&gt;</code> no se puede mezclar con otros patrones.
+</LI>
+</OL>
+
+<P>
+Este es el resultado de una ejecuci&#243;n del programa:
+<PRE>
+$ cat hello.c
+#include hello2.c
+main() &lt;%
+int a&lt;:1:&gt;; /* a comment */
+  a&lt;:0:&gt; = 4; /* a comment in
+                 two lines */
+  printf("\thell\157\nworld! a(0) is %d\n",a&lt;:0:&gt;);
+%&gt;
+$ cat hello2.c
+#include hello3.c
+/* file hello2.c  */
+$ cat hello3.c
+/*
+third file
+*/
+$ flex include.l ; gcc lex.yy.c ; a.out hello.c
+##/*
+third file
+*/
+ 
+/* file hello2.c  */
+ 
+main() &lt;%
+int a&lt;:1:&gt;; /* a comment */
+  a&lt;:0:&gt; = 4; /* a comment in
+                 two lines */
+  printf("\thell\157\nworld! a(0) is %d\n",a&lt;:0:&gt;);
+%&gt;                                                            
+</PRE>
+Una alternativa a usar el patrón <code>&lt;&lt;EOF&gt;&gt;</code>
+es dejar la responsabilidad de recuperar el <SPAN  CLASS="textit">buffer</SPAN> anterior
+a <code>yywrap()</code>. En tal caso suprimiríamos esta parajea patrón-acción
+y reescribiríamos <code>yywrap()</code>:
+<PRE>
+%x incl
+%{
+#define MAX_INCLUDE_DEPTH 10
+YY_BUFFER_STATE include_stack[MAX_INCLUDE_DEPTH];
+int include_stack_ptr = 0;
+%}
+%%
+include          BEGIN(incl);
+.                ECHO;
+&lt;incl&gt;[ \t]*
+&lt;incl&gt;[^ \t\n]+  { /* got the file name */
+                   if (include_stack_ptr &gt;= MAX_INCLUDE_DEPTH) {
+		     fprintf(stderr,"Includes nested too deeply\n");
+		     exit(1);
+		   }
+		   include_stack[include_stack_ptr++] = YY_CURRENT_BUFFER;
+		   yyin = fopen(yytext,"r");
+		   if (!yyin) {
+		     fprintf(stderr,"File %s not found\n",yytext);
+		     exit(1);
+		   }
+		   yy_switch_to_buffer(yy_create_buffer(yyin, YY_BUF_SIZE));
+		   BEGIN(INITIAL);
+		 }
+%%
+main(int argc, char ** argv) {
+
+  yyin = fopen(argv[1],"r");
+  yylex();
+}
+
+int yywrap() {
+  if ( --include_stack_ptr &lt; 0) { 
+    return 1;
+  } else {
     yy_delete_buffer(YY_CURRENT_BUFFER);
-  }
-}
- 
-int yywrap() { return 1; }
-$ flex scan_str.l ; gcc lex.yy.c ; a.out Hello World! 1234
-Id
-Id
-!num
-</PRE>
-Alternativamente, la función <code>main()</code> podría haber sido escrita asi:
-<PRE>
-main(int argc, char ** argv) {
-int i;
-YY_BUFFER_STATE p;
-
-  for(i=1;i&lt;argc;i++) {
-    p = yy_scan_string(argv[i]);
-    yylex();
-    yy_delete_buffer(p);
+    yy_switch_to_buffer(include_stack[include_stack_ptr]);
+    return 0;
   }
 }
 </PRE>
-La funci&#243;n <code>yy_scan_bytes(const char * bytes, int len)</code> hace lo mismo que 
-<code>yy_scan_string</code> pero en vez de una cadena terminada en
-el car&#225;cter nulo, se usa la longitud <code>len</code>.
-Ambas funciones <code>yy_scan_string(const char * str)</code> y
-<code>yy_scan_bytes(const char * bytes, int len)</code> hacen una copia
-de la cadena pasada como argumento.
-
-<P>
-Estas dos funciones crean una copia de la cadena original. Es mejor que sea asi, ya que <code>yylex()</code>
-modifica los contenidos del <SPAN  CLASS="textit">buffer</SPAN> de trabajo. Si queremos evitar la copia,
-podemos usar 
-
-<P>
-<code>yy_scan_buffer(char *base, yy_size_t size)</code>,
-
-<P>
-la cual trabaja directamente con el <SPAN  CLASS="textit">buffer</SPAN> que comienza en <code>base</code>, 
-de tamaño <code>size</code> <SPAN  CLASS="textit">bytes</SPAN>, los últimos dos de los cuáles deben
-ser <code>YY_END_OF_BUFFER_CHAR</code> (ASCII  NUL).   
-Estos dos últimos <SPAN  CLASS="textit">bytes</SPAN> no son ``escaneados''. El área de rastreo va
-desde <code>base[0]</code> a <code>base[size-2]</code>, inclusive.
-Si nos olvidamos de hacerlo de este modo y no establecemos los dos <SPAN  CLASS="textit">bytes</SPAN> finales,
-la función <code>yy_scan_buffer()</code> devuelve un puntero nulo
-y no llega a crear el nuevo buffer de entrada.
-El tipo  <code>yy_size_t</code> es un tipo entero.
-Como cabe esperar, <code>size</code> se refiere al tamaño del <SPAN  CLASS="textit">buffer</SPAN>.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3062"
+<A NAME="tex2html3067"
   HREF="node104.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3056"
-  HREF="node81.html">
+<A NAME="tex2html3061"
+  HREF="node82.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3050"
+<A NAME="tex2html3055"
   HREF="node102.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3058"
-  HREF="node217.html">
+<A NAME="tex2html3063"
+  HREF="node218.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3060"
-  HREF="node220.html">
+<A NAME="tex2html3065"
+  HREF="node221.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -246,12 +343,12 @@ Como cabe esperar, <code>size</code> se refiere al tamaño del <SPAN  CLASS="tex
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3063"
-  HREF="node104.html">An&#225;lisis de la L&#305;nea</A>
-<B>Sup:</B> <A NAME="tex2html3057"
-  HREF="node81.html">Expresiones Regulares en Flex</A>
-<B> Ant:</B> <A NAME="tex2html3051"
-  HREF="node102.html">Manejo de directivas include</A>
+<B> Sig:</B> <A NAME="tex2html3068"
+  HREF="node104.html">An&#225;lisis Léxico desde una</A>
+<B>Sup:</B> <A NAME="tex2html3062"
+  HREF="node82.html">Expresiones Regulares en Flex</A>
+<B> Ant:</B> <A NAME="tex2html3056"
+  HREF="node102.html">El operador de ``trailing</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Análisis Léxico</TITLE>
-<META NAME="description" CONTENT="Análisis Léxico">
+<TITLE>Las Fases de un Compilador</TITLE>
+<META NAME="description" CONTENT="Las Fases de un Compilador">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node141.html">
 <LINK REL="previous" HREF="node139.html">
-<LINK REL="up" HREF="node137.html">
+<LINK REL="up" HREF="node138.html">
 <LINK REL="next" HREF="node141.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4157"
+<A NAME="tex2html4152"
   HREF="node141.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4151"
-  HREF="node137.html">
+<A NAME="tex2html4146"
+  HREF="node138.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4145"
+<A NAME="tex2html4140"
   HREF="node139.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4153"
-  HREF="node217.html">
+<A NAME="tex2html4148"
+  HREF="node218.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4155"
-  HREF="node220.html">
+<A NAME="tex2html4150"
+  HREF="node221.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,19 +88,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4158"
-  HREF="node141.html">Pruebas para el Analizador</A>
-<B>Sup:</B> <A NAME="tex2html4152"
-  HREF="node137.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html4146"
-  HREF="node139.html">Las Fases de un</A>
+<B> Sig:</B> <A NAME="tex2html4153"
+  HREF="node141.html">Análisis Léxico</A>
+<B>Sup:</B> <A NAME="tex2html4147"
+  HREF="node138.html">Análisis Sintáctico Descendente en</A>
+<B> Ant:</B> <A NAME="tex2html4141"
+  HREF="node139.html">Las Bases</A>
 <B> Con:</B> 
-<A NAME="tex2html4153"
-  HREF="node217.html">
+<A NAME="tex2html4148"
+  HREF="node218.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4155"
-  HREF="node220.html">
+<A NAME="tex2html4150"
+  HREF="node221.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
@@ -111,731 +111,764 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <UL CLASS="ChildLinks">
 <LI><UL>
 <LI><UL>
+<LI><A NAME="tex2html4154"
+  HREF="node140.html#SECTION05620010000000000000">Esquema del Compilador</A>
+<LI><A NAME="tex2html4155"
+  HREF="node140.html#SECTION05620020000000000000">Añadiendo Ejecutables</A>
+<LI><A NAME="tex2html4156"
+  HREF="node140.html#SECTION05620030000000000000">Búsqueda de Librerías en Tiempo de Desarrollo</A>
+<LI><A NAME="tex2html4157"
+  HREF="node140.html#SECTION05620040000000000000">Añadiendo Los Ejecutables al <TT>MANIFEST</TT></A>
+<LI><A NAME="tex2html4158"
+  HREF="node140.html#SECTION05620050000000000000">Indicando al Sistema de Distribución que los Ficheros son Ejecutables</A>
 <LI><A NAME="tex2html4159"
-  HREF="node140.html#SECTION05630010000000000000">El Operador de Binding</A>
+  HREF="node140.html#SECTION05620060000000000000">Reconstrucci&#243;n de la aplicación</A>
 <LI><A NAME="tex2html4160"
-  HREF="node140.html#SECTION05630020000000000000">Casando a partir del Ültimo Emparejamiento</A>
+  HREF="node140.html#SECTION05620070000000000000">Ejecución</A>
 <LI><A NAME="tex2html4161"
-  HREF="node140.html#SECTION05630030000000000000">La opción <TT>g</TT></A>
-<LI><A NAME="tex2html4162"
-  HREF="node140.html#SECTION05630040000000000000">La opción <TT>c</TT></A>
-<LI><A NAME="tex2html4163"
-  HREF="node140.html#SECTION05630050000000000000">La opción <TT>i</TT></A>
-<LI><A NAME="tex2html4164"
-  HREF="node140.html#SECTION05630060000000000000">Código del Analizador Léxico</A>
-<LI><A NAME="tex2html4165"
-  HREF="node140.html#SECTION05630070000000000000">Relación de corutina con el Analizador Sintáctico</A>
-<LI><A NAME="tex2html4166"
-  HREF="node140.html#SECTION05630080000000000000">Manejo de Errores</A>
+  HREF="node140.html#SECTION05620080000000000000">Construcción de una Distribución</A>
 </UL>
 </UL>
 <BR>
-<LI><A NAME="tex2html4167"
-  HREF="node140.html#SECTION05631000000000000000">Ejercicio: La opción <TT>g</TT></A>
-<LI><A NAME="tex2html4168"
-  HREF="node140.html#SECTION05632000000000000000">Ejercicio: Opciones <TT>g</TT> y <TT>c</TT> en Expresiones Regulares</A>
-<LI><A NAME="tex2html4169"
-  HREF="node140.html#SECTION05633000000000000000">Ejercicio: El orden de las expresiones regulares</A>
-<LI><A NAME="tex2html4170"
-  HREF="node140.html#SECTION05634000000000000000">Ejercicio: Regexp para cadenas</A>
-<LI><A NAME="tex2html4171"
-  HREF="node140.html#SECTION05635000000000000000">Ejercicio: El <TT>or</TT> es vago</A>
-<LI><A NAME="tex2html4172"
-  HREF="node140.html#SECTION05636000000000000000">Práctica: Números de Línea, Errores, Cadenas y Comentarios</A>
+<LI><A NAME="tex2html4162"
+  HREF="node140.html#SECTION05621000000000000000">Repaso: Fases de un Compilador</A>
+<LI><A NAME="tex2html4163"
+  HREF="node140.html#SECTION05622000000000000000">Práctica: Fases de un Compilador</A>
 </UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION05630000000000000000"></A>
-<A NAME="section:analisislexico"></A>
+<H1><A NAME="SECTION05620000000000000000"></A>
+<A NAME="section:fases"></A>
 <BR>
-Análisis Léxico
+Las Fases de un Compilador
 </H1>
-Comenzaremos con la parte mas sencilla del compilador: el analizador 
-léxico. 
-Habitualmente el término ``análisis léxico'' se refiere al tratamiento
-de la entrada que produce como salida
-la lista de <SPAN  CLASS="textbf">tokens</SPAN>. Un <SPAN  CLASS="textbf">token</SPAN> hace alusión 
-a las unidades mas simples que tiene significado. Habitualmente 
-un <SPAN  CLASS="textbf">token</SPAN> o lexema queda descrito por una expresión regular.
-Léxico viene del griego <SPAN  CLASS="textbf">lexis</SPAN>, que significa ``palabra''.
-Perl es, sobra decirlo, una herramienta eficaz para encontrar en que lugar 
-de la cadena se produce un emparejamiento.
-Sin embargo, en el análisis léxico, el problema es encontrar la subcadena
-a partir de la última posición en la que se produjo un emparejamiento
-y que es aceptada por una de las expresiones
-regulares que definen los lexemas del lenguaje dado.
+La estructura del compilador, descompuesto en fases, queda explicitada 
+en el código de la subrutina <code>compile</code>:
 
 <P>
-La estructura general del analizador léxico consiste en un bucle en el que se va
-recorriendo la entrada, buscando por un emparejamiento con 
-uno de los patrones/lexemas especificados y, cuando se encuentra, se retorna esa información
-al analziador sintáctico. Como no tenemos escrito el analaizador sintáctico 
-simplemente iremos añadiéndo los terminales al final de una lista.
 
-<P>
-Una iteración del bucle tiene la forma de una secuencia de condicionales
-en las que se va comprobando si la entrada casa con cada una de las expresiones regulares
-que definen los terminales del lenguaje. Las condiciones tienen un aspecto similar a este:
+<H4><A NAME="SECTION05620010000000000000">
+Esquema del Compilador</A>
+</H4>
+  
 
 <P>
 <PRE>
-     ...
-     if (m{\G\s*(\d+)}gc) {
-       push @tokens, 'NUM', $1;
-     } 
-     elsif (m{\G\s*([a-z_]\w*)\b}igc) {
-       push @tokens, 'ID', $1;
-     } 
-     ...
-</PRE>
-
-<P>
-Una expresión como <code>m{\G\s*(\d+)}gc</code> es una expresión regular.
-Es conveniente que en este punto repase la introducción a las 
-expresiones regulares en 
-<A HREF="#section:introregexp">
-<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
- HREF="node221.html#CasianoIntroAPerl">10</A>]. 
-
-<P>
-
-<H4><A NAME="SECTION05630010000000000000">
-El Operador de Binding</A>
-</H4>
-  
-
-<P>
-Nótese que, puesto que no se menciona sobre que variable
-se hace el <SPAN  CLASS="textbf">binding</SPAN> (no se usa ninguno de los operadores
-de <SPAN  CLASS="textbf">binding</SPAN> <code>=~</code> y <code>!~</code>): se entiende que 
-es sobre la variable por defecto <code>$_</code> sobre la que se 
-hace el matching.
-
-<P>
-
-<H4><A NAME="SECTION05630020000000000000">
-Casando a partir del Ültimo Emparejamiento</A>
-</H4>
-  
-
-<P>
-El ancla <code>\G</code> 
-casa con el punto en la cadena en el que terminó el último emparejamiento.
-
-<P>
-La expresión regular describiendo el patrón de interés se pone
-entre paréntesis para usar la estrategia de los paréntesis
-con memoria (véanse 
-<A HREF="node123.html#section:variablesmagicasereg">31.1.4</A>
-y
-<A HREF="node123.html#section:dolar1">31.1.1</A>). 
-
-<P>
-Las opciones <code>c</code> y <code>g</code> son especialmente 
-útiles para la construcción del analizador.
-
-<P>
-
-<H4><A NAME="SECTION05630030000000000000">
-La opción <TT>g</TT></A>
-</H4>
-  
-
-<P>
-<SPAN  CLASS="textbf">
-Como lo usamos en un contexto escalar, la opción <TT>g</TT> itera sobre la cadena, devolviendo
-cierto cada vez que casa, y falso cuando deja de casar.</SPAN> 
-Se puede averiguar la posicion del emparejamiento
-utilizando la función <code>pos</code>. 
-(véase la sección <A HREF="node123.html#section:g">31.1.6</A> para mas información sobre la opción <code>g</code>).
-
-<P>
-
-<H4><A NAME="SECTION05630040000000000000">
-La opción <TT>c</TT></A>
-</H4>
-  
-
-<P>
-La opción
-<code>/c</code> afecta a las operaciones de emparejamiento
-con <code>/g</code> en un contexto escalar. Normalmente, <SPAN  CLASS="textbf">cuando una
-búsqueda global escalar tiene lugar y no ocurre casamiento,
-la posici&#243;n de comienzo de búsqueda es reestablecida</SPAN> al comienzo de
-la cadena.
-La opci&#243;n <code>/c</code> hace que la posici&#243;n inicial de 
-emparejamiento permanezca donde la dej&#243; el &#250;ltimo
-emparejamiento con &#233;xito y no se vaya al comienzo. 
-Al combinar esto con el ancla <code>\G</code>, la cuál
-casa con el final del último emparejamiento, obtenemos que la combinación
-
-<P>
-<PRE>
-                            m{\G\s*(...)}gc
-</PRE>
-
-<P>
-logra el efecto deseado: Si la primera expresión regular
-en la cadena <code>elsif</code> fracasa, la posición de búsqueda no es inicializada
-de nuevo gracias a la opción <code>c</code> y el ancla <code>\G</code> sigue recordando
-donde terminó el ultimo casamiento.
-
-<P>
-
-<H4><A NAME="SECTION05630050000000000000">
-La opción <TT>i</TT></A>
-</H4>
-  
-
-<P>
-Por último, la opción <code>i</code> permite ignorar el tipo de letra (mayúsculas 
-o minúsculas).
-
-<P>
-Repase la sección
-<A HREF="node123.html#section:opciones">31.1.6</A>
-para ver algunas de las opciones mas usadas.
-
-<P>
-
-<H4><A NAME="SECTION05630060000000000000">
-Código del Analizador Léxico</A>
-</H4>
-  
-
-<P>
-Este es el código completo de la subrutina <code>scanner</code> que se encarga
-del análisis léxico:
-
-<P>
-<PRE>
- 1 package Lexical::Analysis;
- 2 sub scanner {
- 3   local $_ = shift;
- 4   { # Con el redo del final hacemos un bucle "infinito"
- 5     if (m{\G\s*(\d+)}gc) {
- 6       push @tokens, 'NUM', $1;
- 7     } 
- 8     elsif (m{\G\s*int\b}igc) {
- 9       push @tokens, 'INT', 'INT';
-10     } 
-11     elsif (m{\G\s*string\b}igc) {
-12       push @tokens, 'STRING', 'STRING';
-13     } 
-14     elsif (m{\G\s*p\b}igc) {
-15       push @tokens, 'P', 'P'; # P para imprimir
-16     } 
-17     elsif (m{\G\s*([a-z_]\w*)\b}igc) {
-18       push @tokens, 'ID', $1;
-19     } 
-20     elsif (m{\G\s*\"([^"]*)\"}igc) {
-21       push @tokens, 'STR', $1;
-22     } 
-23     elsif (m{\G\s*([+*()=;,])}gc) {
-24       push @tokens, 'PUN', $1;
-25     }
-26     elsif (m{\G\s*(\S)}gc) { # Hay un caracter "no blanco"
-27       Error::fatal "Caracter invalido: $1\n";
-28     }
-29     else {
-30       last;
-31     }
-32     redo;
-33   }
+ 1 package PL::Tutu;
+ 2 use 5.008004;   # Versión mínima de Perl 5.84
+ 3 use strict;     # Variables deben ser declaradas, etc.
+ 4 use warnings;   # Enviar warnings
+ 5 use IO::File;
+ 6 use Carp;       # Provee alternativas a "die" and "warn" 
+ 7 
+ 8 require Exporter;
+ 9 
+10 our @ISA = qw(Exporter);   # Heredamos los métodos de la clase Exporter
+11 our @EXPORT = qw( compile compile_from_file); # Estas funciones serán exportadas
+12 our $VERSION = '0.01';     # Variable que define la versión del módulo
+13 
+14 our %symbol_table;         # La tabla de símbolos $symbol_table{x} contiene
+15 our $data;                 # la información asociada con el objeto 'x'
+16 our $target;               # tipo, dirección, etc.
+17 our @tokens;               # La lista de terminales
+18 our $errorflag;
+19 our ($lookahead, $value);  # Token actual y su atributo
+20 our $tree;                 # referencia al objeto que contiene
+21 our $global_address;       # el árbol sintáctico
+22 
+23 # Lexical analyzer 
+24 package Lexical::Analysis;
+25 sub scanner {
+26 }
+27 
+28 package Syntax::Analysis;
+29 sub parser {
+30 }
+31 
+32 package Machine::Independent::Optimization;
+33 sub Optimize {
 34 }
+35 
+36 package Code::Generation;
+37 sub code_generator {
+38 }
+39   
+40 package Peephole::Optimization;
+41 sub transform {
+42 }
+43 
+44 package PL::Tutu;
+45 sub compile {
+46   my ($input) = @_; # Observe el contexto!
+47   local %symbol_table = (); 
+48   local $data = ""; # Contiene todas las cadenas en el programa fuente
+49   local $target = ""; # target code
+50   local @tokens =();    # "local" salva el valor que serÃ¡ recuperado al finalizar
+51   local $errorflag = 0; # el Ã¡mbito
+52   local ($lookahead, $value) = ();
+53   local $tree = undef; # Referencia al Ã¡rbol sintÃctico abstracto 
+54   local $global_address = 0; # Usado para guardar la Ãltima direcciÃn ocupada
+55   
+56   ########lexical analysis
+57   &amp;Lexical::Analysis::scanner($input);
+58 
+59   ########syntax (and semantic) analysis
+60   $tree = &amp;Syntax::Analysis::parser;
+61 
+62   ########machine independent optimizations
+63   &amp;Machine::Independent::Optimization::Optimize;
+64 
+65   ########code generation
+66   &amp;Code::Generation::code_generator;
+67 
+68   ########peephole optimization
+69   &amp;Peephole::Optimization::transform($target);
+70 
+71   return \$target; #retornamos una referencia a $target
+72 }
+73 
+74 sub compile_from_file {
+75   my ($input_name, $output_name) = @_; # Nombres de ficheros
+76   my $fhi;                             # de entrada y de salida
+77   my $targetref;
+78   
+79   if (defined($input_name) and (-r $input_name)) {
+80     $fhi = IO::File-&gt;new("&lt; $input_name");
+81   }
+82   else { $fhi = 'STDIN'; }
+83   my $input;
+84   { # leer todo el fichero
+85     local $/ = undef; # localizamos para evitar efectos laterales
+86     $input = &lt;$fhi&gt;;
+87   }
+88   $targetref = compile($input);
+89 
+90   ########code output
+91   my $fh = defined($output_name)? IO::File-&gt;new("&gt; $output_name") : 'STDOUT';
+92   $fh-&gt;print($$targetref);
+93   $fh-&gt;close;
+94   1; # El Ãºltimo valor evaluado es el valor retornado
+95 }
+96 
+97 1;  # El 1 indica que la fase de carga termina con éxito
+98 # Sigue la documentación ...
 </PRE>
 
 <P>
 
-<H4><A NAME="SECTION05630070000000000000">
-Relación de corutina con el Analizador Sintáctico</A>
+<H4><A NAME="SECTION05620020000000000000">
+Añadiendo Ejecutables</A>
 </H4>
   
 
 <P>
-Si decidieramos establecer una relación de corutina con el analizador léxico los 
-condicionales se pueden programar siguiendo secuencias con esta estructura:
+Vamos a añadir un <SPAN  CLASS="textbf">script</SPAN> que use el módulo
+<code>PL::Tutu</code> para asi poder ejecutar nuestro compilador:
+<PRE>
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu/$ mkdir scripts
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu$ cd scripts/
+</PRE>
+A continuación creamos dos versiones del compilador <code>tutu.pl</code>
+y <code>tutu</code> y un programa de prueba <code>test01.tutu</code>:
 
 <P>
 <PRE>
-      return ('INT', 'INT') if (m{\G\s*int\b}igc);
+... # despues de crear los ficheros
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu/scripts$ ls
+test01.tutu  tutu  tutu.pl
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu/scripts$ cat tutu.pl
+#!/usr/bin/perl -w -I../lib/
+use PL::Tutu;
+
+PL::Tutu::compile_from_file(@ARGV);
 </PRE>
 
 <P>
 
-<H4><A NAME="SECTION05630080000000000000">
-Manejo de Errores</A>
+<H4><A NAME="SECTION05620030000000000000">
+Búsqueda de Librerías en Tiempo de Desarrollo</A>
 </H4>
   
 
 <P>
-Para completar el analizador solo quedan declarar 
-las variables usadas y las subrutinas de manejo de errores:
+El programa <code>tutu</code> ilustra otra forma de conseguir que el intérprete
+Perl busque por la librería que está siendo desarrollada, mediante el
+uso de <code>use lib</code>:
 
 <P>
 <PRE>
-######## global scope variables
-our @tokens = ();
-our $errorflag = 0;
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu/scripts$ cat tutu
+#!/usr/bin/perl -w
+use lib ('../lib');
+use PL::Tutu;
 
-package Error;
-
-sub error($) {
-  my $msg = shift;
-  if (!$errorflag) {
-    warn "Error: $msg\n";
-    $errorflag = 1;
-  }
-}
-
-sub fatal($) {
-  my $msg = shift;
-  die "Error: $msg\n";
-}
+&amp;PL::Tutu::compile_from_file(@ARGV);
 </PRE>
 
 <P>
-El uso de <code>our</code> es necesario porque hemos 
-declarado al comienzo del módulo <code>use strict</code>.
-El pragma <TT>use strict</TT> le indica al compilador Perl 
-que debe considerar como obligatorias un conjunto de reglas de
-buen estilo de programación. Entre otras restricciones, el uso del
-pragma implica que
-todas las variables (no-mágicas) 
-deben ser declaradas explícitamente (uso de <code>my</code>, <code>our</code>, etc.)
-La declaración <code>our</code> se describe en <A HREF="#subsection:our">
+Una tercera forma (la que recomiendo):
+<PRE>
+$ export PERL5LIB=~/Lperl/src/topdown/PL0506/02fases/PL-Tutu/lib
+$ perl -MPL::Tutu -e 'PL::Tutu::compile_from_file("test01.tutu")'
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION05620040000000000000">
+Añadiendo Los Ejecutables al <TT>MANIFEST</TT></A>
+</H4>
+  
+
+<P>
+Ahora tenemos que añadir estos ficheros en <code>MANIFEST</code> para que formen
+parte del proyecto. En vez de eso lo que podemos hacer es crear un fichero
+<code>MANIFEST.SKIP</code>:
+<PRE>
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu$ cat MANIFEST.SKIP
+\.o$
+^\.cvsignore$
+/\.cvsignore$
+\.cvsignore$
+CVS/[^/]+$
+\.svn\b
+^Makefile$
+/Makefile$
+^blib/
+\.swp$
+\.bak$
+\.pdf$
+\.ps$
+\.sal$
+pm_to_blib
+\.pdf$
+\.tar.gz$
+\.tgz$
+^META.yml$
+</PRE>
+Ahora al hacer
+<PRE>
+make manifest
+</PRE>
+se crea un fichero <code>MANIFEST</code> que contiene los caminos 
+relativos de todos los ficheros
+en la jerarquía cuyos nombres no casan con una de las expresiones
+regulares en <code>MANIFEST.SKIP</code>.
+
+<P>
+Para saber mas sobre <code>MANIFEST</code> léa 
+<A HREF="#subsection:MANIFEST">
 <IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
- HREF="node221.html#CasianoIntroAPerl">10</A>].
+ HREF="node222.html#CasianoIntroAPerl">10</A>].
+
+<P>
+No recomiendo el uso de <code>MANIFEST.SKIP</code>. Prefiero un control manual de los
+ficheros que integran la aplicacion.
 
 <P>
 
-<H2><A NAME="SECTION05631000000000000000">
-Ejercicio: La opción <TT>g</TT></A>
-</H2>
-   <A NAME="12028"></A>
+<H4><A NAME="SECTION05620050000000000000">
+Indicando al Sistema de Distribución que los Ficheros son Ejecutables</A>
+</H4>
+  
 
 <P>
-Explique cada una de las líneas que siguen:
+Es necesario indicarle a Perl que los ficheros añadidos son ejecutables.
+Esto se hace mediante el par&#225;metro <code>EXE_FILES</code> de <code>WriteMakefile</code>:
 <PRE>
-$ perl -wde 0
-main::(-e:1):   0
-  DB&lt;1&gt; $x = "ababab"
-  DB&lt;2&gt; $x =~ m{b}g; print "match= ".$&amp;." pos = ".pos($x)
-match= b pos = 2
-  DB&lt;3&gt; $x =~ m{b}g; print "match= ".$&amp;." pos = ".pos($x)
-match= b pos = 4
-  DB&lt;4&gt; $x =~ m{b}g; print "match= ".$&amp;." pos = ".pos($x)
-match= b pos = 6
-  DB&lt;5&gt; print "falso" unless $x =~ m{b}g
-falso
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu$ cat Makefile.PL
+use 5.008004;
+use ExtUtils::MakeMaker;
+# See lib/ExtUtils/MakeMaker.pm for details of how to influence
+# the contents of the Makefile that is written.
+WriteMakefile(
+    NAME              =&gt; 'PL::Tutu',
+    VERSION_FROM      =&gt; 'lib/PL/Tutu.pm', # finds $VERSION
+    PREREQ_PM         =&gt; {}, # e.g., Module::Name =&gt; 1.1
+    EXE_FILES         =&gt; [ 'scripts/tutu.pl', 'scripts/tutu' ],
+    ($] &gt;= 5.005 ?     ## Add these new keywords supported since 5.005
+      (ABSTRACT_FROM  =&gt; 'lib/PL/Tutu.pm', # retrieve abstract from module
+       AUTHOR         =&gt; 'Lenguajes y Herramientas de Programacion &lt;lhp@&gt;') : ()),
+);
+</PRE>
+Perl utilizará esa información durante la fase de instalación
+para instalar los ejecutables en el <SPAN  CLASS="textbf">path</SPAN> de búsqueda.
+
+<P>
+
+<H4><A NAME="SECTION05620060000000000000">
+Reconstrucci&#243;n de la aplicación</A>
+</H4>
+  
+
+<P>
+A continuación hay que rehacer el <code>Makefile</code>:
+<PRE>
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu$ perl Makefile.PL
+Writing Makefile for PL::Tutu
+</PRE>
+
+<P>
+Para crear una versión funcional hacemos <code>make</code>:
+<PRE>
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu$ make
+cp scripts/tutu blib/script/tutu
+/usr/bin/perl "-MExtUtils::MY" -e "MY-&gt;fixin(shift)" blib/script/tutu
+cp scripts/tutu.pl blib/script/tutu.pl
+/usr/bin/perl "-MExtUtils::MY" -e "MY-&gt;fixin(shift)" blib/script/tutu.pl
+Manifying blib/man3/PL::Tutu.3pm
+</PRE>
+
+<P>
+Para crear el <code>MANIFEST</code> hacemos <code>make manifest</code>:
+<PRE>
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu$ make manifest
+/usr/bin/perl "-MExtUtils::Manifest=mkmanifest" -e mkmanifest
+Added to MANIFEST: scripts/tutu
+</PRE>
+
+<P>
+Comprobemos que el test de prueba generado automáticamente por
+<code>h2xs</code> se pasa correctamente:
+<PRE>
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu$ make test
+PERL_DL_NONLAZY=1 /usr/bin/perl "-MExtUtils::Command::MM" "-e" "test_harness(0, 'blib/lib', 'blib/arch')" t/*.t
+t/PL-Tutu....ok
+All tests successful.
+Files=1, Tests=1,  0 wallclock secs ( 0.08 cusr +  0.00 csys =  0.08 CPU)
 </PRE>
 
 <P>
 
-<H2><A NAME="SECTION05632000000000000000">
-Ejercicio: Opciones <TT>g</TT> y <TT>c</TT> en Expresiones Regulares</A>
-</H2>
-   <A NAME="12036"></A>
+<H4><A NAME="SECTION05620070000000000000">
+Ejecución</A>
+</H4>
+  
 
 <P>
-Explique cada una de las conductas que siguen
+Podemos ahora ejecutar los guiones:
+<PRE>
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu$ cd scripts/
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu/scripts$ ls -l
+total 12
+-rw-r--r--  1 lhp lhp 15 2005-09-29 12:56 test01.tutu
+-rwxr-xr-x  1 lhp lhp 92 2005-09-29 13:29 tutu
+-rwxr-xr-x  1 lhp lhp 80 2005-09-29 12:58 tutu.pl
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu/scripts$ tutu test01.tutu test01.sal
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu/scripts$ ls -l
+total 12
+-rw-r--r--  1 lhp lhp  0 2005-09-29 13:53 test01.sal
+-rw-r--r--  1 lhp lhp 15 2005-09-29 12:56 test01.tutu
+-rwxr-xr-x  1 lhp lhp 92 2005-09-29 13:29 tutu
+-rwxr-xr-x  1 lhp lhp 80 2005-09-29 12:58 tutu.pl
+</PRE>
+
+<P>
+Veamos los contenidos del programa fuente <code>test01.tutu</code>
+que usaremos para hacer una prueba:
+<PRE>
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu/scripts$ cat test01.tutu
+int a,b;
+a = 4
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION05620080000000000000">
+Construcción de una Distribución</A>
+</H4>
+  
+
+<P>
+Para hacer una distribución instalable hacemos <code>make dist</code>:
+<PRE>
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu$ make dist
+rm -rf PL-Tutu-0.01
+/usr/bin/perl "-MExtUtils::Manifest=manicopy,maniread" \
+        -e "manicopy(maniread(),'PL-Tutu-0.01', 'best');"
+mkdir PL-Tutu-0.01
+mkdir PL-Tutu-0.01/scripts
+mkdir PL-Tutu-0.01/lib
+mkdir PL-Tutu-0.01/lib/PL
+mkdir PL-Tutu-0.01/t
+tar cvf PL-Tutu-0.01.tar PL-Tutu-0.01
+PL-Tutu-0.01/
+PL-Tutu-0.01/scripts/
+PL-Tutu-0.01/scripts/test01.tutu
+PL-Tutu-0.01/scripts/tutu
+PL-Tutu-0.01/scripts/tutu.pl
+PL-Tutu-0.01/META.yml
+PL-Tutu-0.01/Changes
+PL-Tutu-0.01/MANIFEST
+PL-Tutu-0.01/lib/
+PL-Tutu-0.01/lib/PL/
+PL-Tutu-0.01/lib/PL/Tutu.pm
+PL-Tutu-0.01/MANIFEST.SKIP
+PL-Tutu-0.01/t/
+PL-Tutu-0.01/t/PL-Tutu.t
+PL-Tutu-0.01/Makefile.PL
+PL-Tutu-0.01/README
+rm -rf PL-Tutu-0.01
+gzip --best PL-Tutu-0.01.tar
+</PRE>
+Después de esto tenemos en el directorio de trabajo
+el fichero  <code>PL-Tutu-0.01.tar.gz</code> con la distribución:
+<PRE>
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu$ ls -ltr
+total 72
+drwxr-xr-x  2 lhp lhp  4096 2005-09-29 12:01 t
+-rw-r--r--  1 lhp lhp  1196 2005-09-29 12:01 README
+drwxr-xr-x  3 lhp lhp  4096 2005-09-29 12:01 lib
+-rw-r--r--  1 lhp lhp   152 2005-09-29 12:01 Changes
+-rw-r--r--  1 lhp lhp   167 2005-09-29 13:23 MANIFEST.SKIP
+-rw-r--r--  1 lhp lhp     0 2005-09-29 13:23 pm_to_blib
+drwxr-xr-x  6 lhp lhp  4096 2005-09-29 13:23 blib
+-rw-r--r--  1 lhp lhp   113 2005-09-29 13:23 MANIFEST.bak
+drwxr-xr-x  2 lhp lhp  4096 2005-09-29 13:29 scripts
+-rw-r--r--  1 lhp lhp   616 2005-09-29 13:49 Makefile.PL
+-rw-r--r--  1 lhp lhp 20509 2005-09-29 13:51 Makefile
+-rw-r--r--  1 lhp lhp  3654 2005-09-29 16:34 PL-Tutu-0.01.tar.gz
+-rw-r--r--  1 lhp lhp   298 2005-09-29 16:34 META.yml
+-rw-r--r--  1 lhp lhp   205 2005-09-29 16:34 MANIFEST
+</PRE>
+
+<P>
+
+<H2><A NAME="SECTION05621000000000000000"></A>
+   <A NAME="11967"></A>
+  
+<A NAME="repaso:fases"></A>
+<BR>
+Repaso: Fases de un Compilador
+</H2>
+
+<OL>
+<LI>¿Que hace la declaración 
+<code>package nombredepaquete</code>?
+</LI>
+<LI>¿Cual es la función de la declaración <code>use 5.008004</code>?
+</LI>
+<LI>¿Cuál es la función de la declaración <code>use strict</code>?
+</LI>
+<LI>¿Cuál es la función de la declaración <code>use warnings</code>?
+</LI>
+<LI>¿Que diferencia hay entre <code>use warnings</code> y <code>perl -w</code>?
+</LI>
+<LI>¿Cuál es la función de la declaración <code>use Carp</code>?
+¿Que diferencia hay entre <code>croak</code> y <code>die</code>?
+</LI>
+<LI>¿Qué hace la declaración <code>our</code>? 
+</LI>
+<LI>¿Qué es una variable de paquete?
+</LI>
+<LI>¿Cuál es el nombre completo de una variable de paquete?
+</LI>
+<LI>¿En que variable especial se situán los argumentos pasados a una subrutina?
+</LI>
+<LI>¿Que hace la declaración <code>local</code>?
+</LI>
+<LI>¿Cómo se declara una variable léxica?
+</LI>
+<LI>¿Cuál es el prefijo para los hashes?
+</LI>
+<LI>¿Cómo se hace referencia a un elemento de un hash <code>%h</code> de clave <code>k</code>?
+</LI>
+<LI>¿Cómo se hace referencia a un elemento de un array <code>@a</code> de índice <code>7</code>?
+¿Que lugar ocupa ese elemento en el array?
+</LI>
+<LI>¿Cuál es el significado de <code>undef</code>?
+</LI>
+<LI>¿Cuál es el prefijo para las subrutinas?
+</LI>
+<LI>Señale la diferencia entre
+<PRE>
+my ($input) = @_;
+</PRE>
+y
+<PRE>
+my $input = @_;
+</PRE>
+Repase 
+<A HREF="#section:referencias">
+<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
+ HREF="node222.html#CasianoIntroAPerl">10</A>].
+</LI>
+<LI>Toda referencia es un escalar: ¿Cierto o falso?
+</LI>
+<LI>Toda referencia es verdadera ¿Cierto o falso?
+</LI>
+<LI>¿Que diferencia hay entre <code>use</code> y <code>require</code>?
+¿La línea <code>require Exporter</code> se ejecuta en tiempo de compilación 
+o en tiempo de ejecución?
+</LI>
+<LI>¿Que hace la línea 
+<code>our @ISA = qw(Exporter)</code>?. Repáse 
+<A HREF="#section:herencia">
+<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
+ HREF="node222.html#CasianoIntroAPerl">10</A>].
+
+<P>
+</LI>
+<LI>¿Que hace la línea
+<code>our @EXPORT = qw( compile compile_from_file)</code>?
+</LI>
+<LI>¿Que diferencia hay entre <code>EXPORT</code> y <code>EXPORT_OK</code>?.
+Repase <A HREF="#section:exportacion">
+<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
+ HREF="node222.html#CasianoIntroAPerl">10</A>].
+</LI>
+<LI>¿Que hace la línea
+<code>our $VERSION = '0.01</code>?
+</LI>
+<LI>¿Que valor tiene una variable no incializada? ¿y si es un array?
+</LI>
+<LI>¿Que es un array anónimo? 
+(Repase <A HREF="#section:anonimos">
+<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
+ HREF="node222.html#CasianoIntroAPerl">10</A>])
+</LI>
+<LI>¿Que es un hash anónimo?
+(Repase <A HREF="#section:anonimos">
+<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
+ HREF="node222.html#CasianoIntroAPerl">10</A>])
+</LI>
+<LI>¿Que hace el operador <code>=&gt;</code>?.
+Repase 
+<A HREF="#subsection:flechagrande">
+<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
+ HREF="node222.html#CasianoIntroAPerl">10</A>].
+</LI>
+<LI>¿En que lugar se dejan los ejecutables asociados con una distribución?
+¿Cómo se informa a Perl que se trata de ejecutables?
+</LI>
+<LI>¿Cuál es la función de <code>MANIFEST.SKIP</code>?
+¿Que hace <code>make manifest</code>?
+</LI>
+<LI>¿Que hace la opción <code>-I</code>?
+¿Porqué la primera línea de <code>tutu.pl</code> comienza:
+<BR><code>#!/usr/bin/perl -w -I../lib/</code>?
+</LI>
+<LI>¿Cómo puedo saber lo que hace el módulo <code>lib</code>?
+¿Qué hace la línea <code>use lib ('../lib')</code> en el programa <code>tutu</code>?
+</LI>
+<LI>¿Que contiene la variable <code>PERL5LIB</code>?
+</LI>
+<LI>¿Cómo se crea una distribución?
+</LI>
+<LI>¿Que devuelve <code>-r $input_name</code> en la línea 79?
+Repase 
+<A HREF="#subsection:filetests">
+<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
+ HREF="node222.html#CasianoIntroAPerl">10</A>].
+</LI>
+<LI>¿Cuál es la función de la variable mágica <code>$/</code>?
+¿Que se leerá en la línea 86
+<PRE>
+85   local $/ = undef;
+86   my $input = &lt;$fhi&gt;;
+</PRE>
+</LI>
+<LI>¿Que hace el operador <code>\</code>? ¿Que relación hay entre <code>\$target</code> y <code>$target</code>?.
+</LI>
+<LI>Si <code>$targetref</code> es una referencia a la cadena que va a contener el
+código objeto, ¿Cómo se denota a la cadena referenciada por <code>$targetref</code>?
+Explique la línea 
+<PRE>
+92   $fh-&gt;print($$targetref);
+</PRE>
+</LI>
+</OL>
+
+<P>
+
+<H2><A NAME="SECTION05622000000000000000"></A>
+   <A NAME="11983"></A>
+  
+<A NAME="practica:fases"></A>
+<BR>
+Práctica: Fases de un Compilador
+</H2>
+Reproduzca los pasos explicados en la sección
+<A HREF="#section:fases">33.2</A> extendiendo el módulo <code>PL::Tutu</code>
+con las funciones de compilación y los correspondientes
+guiones de compilación.
+
+<P>
+Mejore el script <code>tutu</code> para que acepte opciones desde la línea de comandos.
+Debera soportar al menos las siguientes opciones:
 
 <UL>
-<LI>¿Porqué en la línea 18 se casa con la primera <code>b</code>?
-<PRE>
-  DB&lt;5&gt; $x = "bbabab"
-  DB&lt;6&gt; $x =~ m{a}g; print "match= ".$&amp;." pos = ".pos($x)
-match= a pos = 3
-  DB&lt;7&gt; $x =~ m{b}g; print "match= ".$&amp;." pos = ".pos($x)
-match= b pos = 4
-  DB&lt;8&gt; $x =~ m{c}g; print "match= ".$&amp;." pos = ".pos($x)
-Use of uninitialized value in concatenation (.) 
-  DB&lt;18&gt; $x =~ m{b}g; print "match= ".$&amp;." pos = ".pos($x)
-match= b pos = 1
-</PRE>
+<LI><code>--usage</code> 
+
+<P>
+Muestra de forma concisa el comando de uso
+</LI>
+<LI><code>--help</code> 
+
+<P>
+Un resumen de cada opción disponible
 
 <P>
 </LI>
-<LI>¿Porqué en la línea 27 se casa con la última <code>b</code>?
-<PRE>
-  DB&lt;23&gt; $x = "bbabab"
-  DB&lt;24&gt; $x =~ m{a}g; print "match= ".$&amp;." pos = ".pos($x)
-match= a pos = 3
-  DB&lt;25&gt; $x =~ m{b}g; print "match= ".$&amp;." pos = ".pos($x)
-match= b pos = 4
-  DB&lt;26&gt; $x =~ m{c}gc
-  DB&lt;27&gt; $x =~ m{b}g; print "match= ".$&amp;." pos = ".pos($x)
-match= b pos = 6
-</PRE>
+<LI><code>--version</code>
+
+<P>
+Muestra la versión del programa
 
 <P>
 </LI>
-<LI>¿Porqué en la línea 5 se produce casamiento y en la línea 8 no?
-<PRE>
-  DB&lt;3&gt; $x = "bcbabab"
-  DB&lt;4&gt; $x =~ m{b}gc; print "match= ".$&amp;." pos = ".pos($x)
-match= b pos = 1
-  DB&lt;5&gt; $x =~ m{a}gc; print "match= ".$&amp;." pos = ".pos($x)
-match= a pos = 4
+<LI><code>--man</code> 
 
-  DB&lt;6&gt; $x = "bcbabab"
-  DB&lt;7&gt; $x =~ m{b}gc; print "match= ".$&amp;." pos = ".pos($x)
-match= b pos = 1
-  DB&lt;8&gt; $x =~ m{\Ga}gc; print "match= ".$&amp;." pos = ".pos($x)
-Use of uninitialized value in concatenation 
-match=  pos = 1
-</PRE>
+<P>
+Muestra la documentación
 </LI>
 </UL>
 
 <P>
-
-<H2><A NAME="SECTION05633000000000000000"></A>
-   <A NAME="12042"></A>
-<BR>
-Ejercicio: El orden de las expresiones regulares
-</H2>
-  
-¿Que ocurriría en la subrutina <code>scanner</code> si el código en las líneas
-17-19 que reconoce los identificadores se adelanta a la línea 8? 
-¿Que ocurriría con el reconocimiento de las palabras reservadas como
-<code>INT</code>? ¿Seguiría funcionando correctamente 
-el analizador?
+Use para ello el módulo  <TT>Getopt::Long</TT> .
+Este módulo provee la función  <TT>GetOptions</TT>  la cual
+se atiene a los estándares de especificación
+de opciones en la línea de comandos POSIX y GNU.
+Esta función soporta el uso del guión doble <code>--</code>
+y el simple así como admitir el prefijo mas corto
+que deshace la ambiguedad entre las diferentes opciones.
 
 <P>
-
-<H2><A NAME="SECTION05634000000000000000"></A>
-   <A NAME="12044"></A>
-<BR>
-Ejercicio: Regexp para cadenas
-</H2>
-  
-En la rutina <code>scanner</code>. ¿Es legal que una cadena correspondiente
-al terminal <code>STR</code> contenga retornos de carro entre las comillas dobles?
+La llamada a 
+ <TT>GetOptions</TT>  analiza la l&#237;nea de comandos en
+<code>ARGV</code>
+inicializa la variable asociada de manera adecuada. Retorna un valor verdadero
+si la l&#237;nea de comandos pudo ser procesada con
+En caso contrario emitir&#225;
+un mensaje de error y devolver&#225; falso. Recuerde hacer
+<code>perldoc Getopt::Long</code>
+para obtener informaci&#243;n mas detallada
 
 <P>
+El siguiente ejemplo ilustra el uso de <code>Getopt::Long</code>.
+Se hace uso también del módulo (función  <TT>pod2usage</TT>  en la línea 63)
+<code>Pod::Usage</code> el cual permite la documentación empotrada.
 
-<H2><A NAME="SECTION05635000000000000000">
-Ejercicio: El <TT>or</TT> es vago</A>
-</H2>
-   <A NAME="12049"></A>
-  
-Explique el resultado de la siguiente sesión con el depurador:
+<P>
 <PRE>
-lhp@nereida:~/Lperl/src/topdown/PL0506/03lexico/PL-Tutu/lib/PL/Lexical$ perl -de 0
-  DB&lt;1&gt; 'bb' =~ m{b|bb}; print $&amp;
-  b
-  DB&lt;2&gt; 'bb' =~ m{bb|b}; print $&amp;
-  bb
-</PRE>
-Perl convierte la expresión regular en un NFA. A diferencia de lo 
-que ocurre en otras herramientas, el NFA no es convertido en un DFA.
-El NFA es entonces simulado. ¿Que está ocurriendo en la simulación? 
-
-<P>
-
-<H2><A NAME="SECTION05636000000000000000"></A>
-   <A NAME="12053"></A>
-  
-<A NAME="practica:lineasyerrores"></A>
-<BR>
-Práctica: Números de Línea, Errores, Cadenas y Comentarios
-</H2>
-Extienda el analizador léxico para que:
-
-<UL>
-<LI>Reescriba la expresión regular para las cadenas de manera que acepte comillas dobles 
-escapadas <code>\"</code> en el interior de una cadena.
-Por ejemplo en <code>"esta \"palabra\" va entre comillas"</code>.
-
-<P>
-Analice esta solución ¿Es correcta?:
-<PRE>
- DB&lt;1&gt; $stringre = qr{"(\\.|[^\\"])*"}
- DB&lt;2&gt; print $&amp; if '"esta \"palabra\" va entre comillas"' =~ $stringre
- "esta \"palabra\" va entre comillas"
-</PRE>
-
-<P>
-</LI>
-<LI>Consuma comentarios a la Perl: 
-cualesquiera caracteres después de una almohadilla hasta el final 
-de la línea (<code># ...</code>).
-</LI>
-<LI>Consuma comentarios no anidados a la <SPAN  CLASS="textbf">C</SPAN> (<code>/* ... */</code>.).
-Repase las secciones sobre expresiones regulares no ``greedy'' (p. ej. sección
-<A HREF="node123.html#section:nogreedy">31.1.1</A>) y la sección <A HREF="node123.html#section:x">31.1.1</A>.
-Recuerde que, en una expresión regular, 
-la opción <code>/s</code> hace que el punto <code>'.'</code> empareje con un 
-retorno de carro <code>\n</code>.  Esto es, el punto ``casa'' con cualquier carácter.
-
-<P>
-Observe el siguiente ejemplo:
-<PRE>
-pl@nereida:~/src/perl/testing$ cat -n ccomments.pl
+nereida:~/LEyapp/examples&gt; cat -n treereg
  1  #!/usr/bin/perl -w
  2  use strict;
- 3
- 4  sub showmatches {
- 5   my ($x, $re) = @_;
- 6
- 7    for (my $i = 0; $x =~ /$re/gsx; $i++) {
- 8      print "matching $i: $1\n";
- 9      $i++;
-10    }
-11  }
-12
-13  my $x = &lt;&lt;'EOC';
-14  if (x) {
-15    /* a comment */ return x + 1; /* another comment */
-16  }
-17  else {
-18    return x + 2; /* a last comment */
-19  }
-20  EOC
-21
-22  print "\n************************\n";
-23
-24  my $greedy = q{ (
-25           /\*  # Abrir comentario
-26           .*   # Consumir caracteres (greedy)
-27           \*/  # Cerrar comentario
-28           )
-29  };
-30  print "Greedy:\n";
-31  showmatches($x, $greedy);
-32
-33  print "\n************************\n";
+ 3  use Parse::Eyapp::YATW;
+ 4  use Parse::Eyapp::Node;
+ 5  use Parse::Eyapp::Treeregexp;
+ 6  use Carp;
+ 7  use Getopt::Long;
+ 8  use Pod::Usage;
+ 9
+10  my $infile;
+11  my $outfile;
+12  my $packagename;
+13  my $prefix = '';
+14  my $syntax = 1;
+15  my $numbers = 1;
+16  my $severity = 0; # 0 = Don't  check arity. 1 = Check arity. 
+17                    # 2 = Check arity and give a warning 3 = ... and croak
+18  GetOptions(
+19    'in=s'       =&gt; \$infile,
+20    'out=s'      =&gt; \$outfile,
+21    'mod=s'      =&gt; \$packagename,
+22    'prefix=s'   =&gt; \$prefix,
+23    'severity=i' =&gt; \$severity,
+24    'syntax!'    =&gt; \$syntax,
+25    'numbers!'   =&gt; \$numbers,
+26    'version'    =&gt; \&amp;version,
+27    'usage'      =&gt; \&amp;usage,
+28    'help'       =&gt; \&amp;man,
+29  ) or croak usage();
+30
+31  # If an argument remains is the inputfile 
+32  ($infile) = @ARGV unless defined($infile);
+33  die usage() unless defined($infile);
 34
-35  my $lazy = q{ (
-36           /\*  # Abrir comentario
-37           .*?  # Consumir caracteres (lazy)
-38           \*/  # Cerrar comentario
-39           )
-40  };
-41  print "Lazy:\n";
-42  showmatches($x, $lazy);
+35  my $treeparser = Parse::Eyapp::Treeregexp-&gt;new(
+36                      INFILE   =&gt; $infile,
+37                      OUTFILE  =&gt; $outfile,
+38                      PACKAGE  =&gt; $packagename,
+39                      PREFIX   =&gt; $prefix,
+40                      SYNTAX   =&gt; $syntax,
+41                      NUMBERS  =&gt; $numbers,
+42                      SEVERITY =&gt; $severity
+43                    );
+44
+45  $treeparser-&gt;generate();
+46
+47  sub version {
+48    print "Version $Parse::Eyapp::Treeregexp::VERSION\n";
+49    exit;
+50  }
+51
+52  sub usage {
+53    print &lt;&lt;"END_ERR";
+54  Supply the name of a file containing a tree grammar (.trg)
+55  Usage is:
+56  treereg [-m packagename] [[no]syntax] [[no]numbers] [-severity 0|1|2|3] \
+57          [-p treeprefix] [-o outputfile] -i filename[.trg]
+58  END_ERR
+59    exit;
+60  }
+61
+62  sub man {
+63    pod2usage(
+64      -exitval =&gt; 1,
+65      -verbose =&gt; 2
+66    );
+67  }
+68  __END__
+69
+70  =head1 SYNOPSIS
+71
+72    treereg [-m packagename] [[no]syntax] [[no]numbers] [-severity 0|1|2|3] \
+73            [-p treeprefix] [-o outputfile] -i filename[.trg]
+74    treereg [-m packagename] [[no]syntax] [[no]numbers] [-severity 0|1|2|3] \
+75            [-p treeprefix] [-o outputfile] filename[.trg]
+76 ... # Follows the documentation bla, bla, bla
 </PRE>
-Cuando se ejecuta produce:
+
+<P>
+Ahora podemos ejecutar el guión de múltiples formas:
 <PRE>
-pl@nereida:~/src/perl/testing$ ccomments.pl
-
-************************
-Greedy:
-matching 0: /* a comment */ return x + 1; /* another comment */
-}
-else {
-  return x + 2; /* a last comment */
-
-************************
-Lazy:
-matching 0: /* a comment */
-matching 2: /* another comment */
-matching 4: /* a last comment */
+nereida:~/LEyapp/examples&gt; treereg -nos -nonu -se 3 -m Tutu Foldonly1.trg 
+nereida:~/LEyapp/examples&gt; treereg -nos -nonu -s 3 -m Tutu Foldonly1.trg  
+Option s is ambiguous (severity, syntax)
+nereida:~/LEyapp/examples&gt; treereg -nos -bla -nonu -m Tutu Foldonly1.trg
+Unknown option: bla
+nereida:~/LEyapp/examples&gt;
 </PRE>
 
 <P>
-Explique la conducta.
-
-<P>
-</LI>
-<LI>Números en punto flotante (como <code>-1.32e-04</code> o <code>.91</code>).
-El siguiente ejemplo intenta ayudarle en la búsqueda de la solución:
-<PRE>
-lhp@nereida:~$ perl -de 0
-  DB&lt;1&gt; print "Si" if  ('.5' =~ m{\d+})
-Si
-  DB&lt;2&gt; print "Si" if  ('.5' =~ m{^\d+})
-
-  DB&lt;3&gt; print "Si" if  '0.7' =~ m{^\d+(\.\d+)?(e[+-]?\d+)?$}
-Si
-  DB&lt;4&gt; print "Si" if  '.7' =~ m{^\d+(\.\d+)?(e[+-]?\d+)?$}
-
-  DB&lt;5&gt; print "Si" if  '1e2' =~ m{^\d+(\.\d+)?(e[+-]?\d+)?$}
-Si
-  DB&lt;6&gt; print "Si " while  'ababa' =~ m{a}g
-Si Si Si
-  DB&lt;7&gt; print "@a" if @a = 'ababa' =~ m{(a)}g
-a a a
-</PRE>
-¿Sabría decir porque la respuesta al primer comando del depurador es
-<code>si</code>?.
-
-<P>
-</LI>
-<LI>Tenga presente el posible conflicto entre los terminales <code>INT</code> y <code>FLOAT</code>.
-Si la entrada contiene <code>3.5</code> el terminal debería ser <code>(FLOAT, '3.5')</code>
-y no <code>(INT, 3), ('.', '.'), (INT, 5)</code>.
-
-<P>
-</LI>
-<LI>En esta práctica si lo desea puede instalar y usar 
-<A NAME="tex2html349"
-  HREF="http://search.cpan.org/~abigail/Regexp-Common-2.120/lib/Regexp/Common.pm">el módulo</A>
-<TT>Regexp::Common</TT> 
-<A NAME="tex2html350"
-  HREF="http://search.cpan.org/~abigail/">mantenido por</A>
-<A NAME="12055"></A><SPAN  CLASS="textbf">Abigail</SPAN> el cual provee expresiones regulares para las situaciones mas comunes: números, 
-teléfonos, IP, códigos postales, listas, etc. Puede incluso usarlo para encontrar 
-soluciones a las cuestiones planteadas en esta práctica:
-
-<P>
-<PRE>
-nereida:~/doc/casiano/PLBOOK/PLBOOK&gt; perl -MRegexp::Common -e 'print "$RE{num}{int}\n"'
-(?:(?:[+-]?)(?:[0123456789]+))
-</PRE>
-Podemos hacer uso directo del hash <code>%RE</code> directamente 
-en las expresiones regulares aprovechando que estas interpolan
-las variables en su interior:
- <PRE>
-nereida:/tmp&gt; cat -n prueba.pl
-     1  #!/usr/bin/perl -w
-     2  use strict;
-     3  use Regexp::Common;
-     4
-     5  my $input = &lt;&gt;;
-     6
-     7  print "$&amp;\n" if $input =~ /^$RE{num}{real}$/;
-nereida:/tmp&gt; ./prueba.pl
-23.45
-23.45
-nereida:/tmp&gt; ./prueba.pl
-jshdf
-nereida:/tmp&gt;
-</PRE>
-</LI>
-<LI>Para mejorar la calidad de los mensajes de error extienda el par <code>(terminal, valor)</code>
-devuelto por el <code>scanner</code> a un par <code>(terminal, [valor, número de línea ])</code> cuya
-segunda componente es un array anónimo conteniendo 
-el valor y el número de línea en el que aparece el terminal.
-
-<P>
-El siguiente extracto de un analizador léxico muestra como hacerlo:
-
-<P>
-<PRE>
-sub _Lexer {
-
-  return('', undef) unless defined($input);
-
-  #Skip blanks
-      $input=~m{\G((?:
-              \s+       # any white space char
-          |   \#[^\n]*  # Perl like comments
-          )+)}xsgc
-    and do {
-        my($blanks)=$1;
-
-        #Maybe At EOF
-            pos($input) &gt;= length($input)
-        and return('', undef);
-        $tokenend += $blanks =~ tr/\n//;
-    };
-    
-    $tokenbegin = $tokenend;
-
-      $input=~/\G(and)/gc
-    and return($1, [$1, $tokenbegin]);
-
-      $input=~/\G(?:[A-Za-z_][A-Za-z0-9_]*::)*([A-Za-z_][A-Za-z0-9_]*)/gc
-    and do {
-      return('IDENT', [$1, $tokenbegin]);
-    };
-
-    ....................
-
-        $input=~/\G{/gc
-    and do {
-        my($level,$from,$code);
-
-        $from=pos($input);
-
-        $level=1;
-        while($input=~/([{}])/gc) {
-                substr($input,pos($input)-1,1) eq '\\' #Quoted
-            and next;
-                $level += ($1 eq '{' ? 1 : -1)
-            or last;
-        }
-            $level
-        and  _SyntaxError("Not closed open curly bracket { at $tokenbegin");
-        $code = substr($input,$from,pos($input)-$from-1);
-        $tokenend+= $code=~tr/\n//;
-        return('CODE', [$code, $tokenbegin]);
-    };
-
-
-    #Always return something
-      $input=~/\G(.)/sg
-    and do {
-      $1 eq "\n" and ++$tokenend;
-      return ($1, [$1, $tokenbegin]);
-    };
-    #At EOF
-    return('', undef);
-}
-</PRE>
-El operador <code>tr</code> ha sido utilizado para contar los retornos de carro
-(descrito en la sección 
-<A HREF="node128.html#section:tr">31.5</A>). El operador, ademas de reemplazar
-devuelve el número de carácteres reeemplazados
-o suprimidos: 
-<PRE>
-$cuenta = $cielo =~ tr/*/*/; # cuenta el numero de estrellas en cielo
-</PRE>
-Para aprender soluciones alternativas consulte 
-<code>perldoc -q 'substring'</code>.
-</LI>
-<LI>Mejore sus mensajes de error ahora que lleva la cuenta de los números
-de línea. En vez de usar las rutinas <code>error</code> y <code>fatal</code>
-introducidas en la sección anterior escriba una sola rutina
-que recibe el nivel de severidad del error (parámetro <code>$level</code>
-en el siguiente ejemplo)
-y ejecuta la acción apropiada. El código de <code>_SyntaxError</code>
-ilustra como hacerlo:
-<PRE>
-sub _SyntaxError {
-  my($level,$message,$lineno)=@_;
-
-  $message= "*".
-      [ 'Warning', 'Error', 'Fatal' ]-&gt;[$level].
-      "* $message, at ".
-      ($lineno &lt; 0 ? "eof" : "line $lineno")." at file $filename\n";
-
-      $level &gt; 1
-  and die $message;
-
-  warn $message;
-
-  $level &gt; 0 and ++$nberr;
-
-      $nberr == $max_errors
-  and die "*Fatal* Too many errors detected.\n"
-}
-</PRE>
-
-<P>
-</LI>
-</UL>
+La librería estandar de Perl incluye el módulo <code>Getopt::Long</code>. 
+No es el caso de <code>Pod::Usage</code>. Descarge el módulo e instalelo
+en un directorio local en el que tenga permisos. Si es preciso repase las secciones
+<A HREF="#section:instalacionamano">
+<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
+ HREF="node222.html#CasianoIntroAPerl">10</A>] y <A HREF="#section:CPAN">
+<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
+ HREF="node222.html#CasianoIntroAPerl">10</A>]  de los apuntes de 
+introducción a Perl.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4157"
+<A NAME="tex2html4152"
   HREF="node141.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4151"
-  HREF="node137.html">
+<A NAME="tex2html4146"
+  HREF="node138.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4145"
+<A NAME="tex2html4140"
   HREF="node139.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4153"
-  HREF="node217.html">
+<A NAME="tex2html4148"
+  HREF="node218.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4155"
-  HREF="node220.html">
+<A NAME="tex2html4150"
+  HREF="node221.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -882,12 +915,12 @@ sub _SyntaxError {
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4158"
-  HREF="node141.html">Pruebas para el Analizador</A>
-<B>Sup:</B> <A NAME="tex2html4152"
-  HREF="node137.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html4146"
-  HREF="node139.html">Las Fases de un</A>
+<B> Sig:</B> <A NAME="tex2html4153"
+  HREF="node141.html">Análisis Léxico</A>
+<B>Sup:</B> <A NAME="tex2html4147"
+  HREF="node138.html">Análisis Sintáctico Descendente en</A>
+<B> Ant:</B> <A NAME="tex2html4141"
+  HREF="node139.html">Las Bases</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

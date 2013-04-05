@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Trasferencia de Control Condicional</TITLE>
-<META NAME="description" CONTENT="Trasferencia de Control Condicional">
+<TITLE>Inserción de Texto</TITLE>
+<META NAME="description" CONTENT="Inserción de Texto">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node113.html">
 <LINK REL="previous" HREF="node111.html">
-<LINK REL="up" HREF="node109.html">
+<LINK REL="up" HREF="node110.html">
 <LINK REL="next" HREF="node113.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3198"
+<A NAME="tex2html3203"
   HREF="node113.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3192"
-  HREF="node109.html">
+<A NAME="tex2html3197"
+  HREF="node110.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3186"
+<A NAME="tex2html3191"
   HREF="node111.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3194"
-  HREF="node217.html">
+<A NAME="tex2html3199"
+  HREF="node218.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3196"
-  HREF="node220.html">
+<A NAME="tex2html3201"
+  HREF="node221.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,126 +88,113 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3199"
-  HREF="node113.html">Rangos</A>
-<B>Sup:</B> <A NAME="tex2html3193"
-  HREF="node109.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html3187"
-  HREF="node111.html">Inserción de Texto</A>
+<B> Sig:</B> <A NAME="tex2html3204"
+  HREF="node113.html">Trasferencia de Control Condicional</A>
+<B>Sup:</B> <A NAME="tex2html3198"
+  HREF="node110.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html3192"
+  HREF="node111.html">Transferencia de Control</A>
 <B> Con:</B> 
-<A NAME="tex2html3194"
-  HREF="node217.html">
+<A NAME="tex2html3199"
+  HREF="node218.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3196"
-  HREF="node220.html">
+<A NAME="tex2html3201"
+  HREF="node221.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION05330000000000000000">
-Trasferencia de Control Condicional</A>
+<H1><A NAME="SECTION05320000000000000000">
+Inserción de Texto</A>
 </H1>
-La sintaxis de la orden <I>t</I> es:
-<DIV ALIGN="CENTER">
-<I>[address1][,address2]t[label]</I> 
-</DIV>
-Si la sustitución tiene éxito, se bifurca a <I>label</I>, Si la etiqueta no se especifica, 
-se salta al final del <I>script</I>.
+El uso de llaves {, } permite  ejecutar los comandos en la lista entre llaves
+a las líneas seleccionadas. La llave que cierra debe estar en su propia línea aparte.
+Las llaves nos permiten, como se ve en el ejemplo, anidar selecciones
+y expresar condiciones del tipo ``si esta entre estos dos patrones y además 
+está entre estos otros dos ...''.
 <BR>
-Consideremos el siguiente fichero de entrada:
-<PRE>
-$ cat t.test
-name: "fulano de tal" address: "Leganitos,4" phone: "342255"
-name: "fulano de cual"
-name: "fulano de alli" address: "Legitos,4"
-name: "zutano de tal"  address: "Leg,8"  phone: "342255"
-</PRE>
-Se asume que siempre que figura el teléfono se ha puesto la dirección y que si está
-la dirección se ha escrito el nombre. Se pretenden rellenar las líneas con un campo por defecto:
-<PRE>
-$ cat t.sed
-/name:/{
-s/.*name:[ ]*".*"[ ]*address:[ ]*".*"[ ].*phone:[ ]*".*".*/&amp;/
-t
-s/.*name:[ ]*".*"[ ]*address:[ ]*".*"/&amp; phone: "????"/
-t
-s/.*name:[ ]*".*"/&amp; address: "???? ????" phone: "????"/
-}
-</PRE>
-Esta es la llamada al script y la salida generada:
-<PRE>
-$ sed -f t.sed t.test
-name: "fulano de tal" address: "Leganitos,4" phone: "342255"
-name: "fulano de cual" address: "???? ????" phone: "????"
-name: "fulano de alli" address: "Legitos,4" phone: "????"
-name: "zutano de tal"  address: "Leg,8"  phone: "342255"
-$
-</PRE>
-
 <P>
-<SPAN  CLASS="textit">Ejemplo:</SPAN>
-
-<P>
-El fichero de entrada es un <SPAN  CLASS="textit">folder</SPAN> de 
-
-...
+Los comandos <I>a</I> e <I>i</I> tienen una sintaxis parecida:
+<BR><TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="CENTER"><I>
+	[address]a<!-- MATH
+ $\backslash$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.png"
+ ALT="$ \backslash$"></SPAN> </I></TD>
+<TD ALIGN="CENTER"><I> [address]i<!-- MATH
+ $\backslash$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.png"
+ ALT="$ \backslash$"></SPAN></I></TD>
+</TR>
+<TR><TD ALIGN="CENTER"><I>  
+        text                   </I></TD>
+<TD ALIGN="CENTER"><I> text</I></TD>
+</TR>
+</TABLE><I>
+<BR></I>
+<I>a</I> añade (<I>i</I> inserta) el texto en cada línea que
+casa con la dirección especificada.
+El <I>text</I> no queda disponible en el ``<I>pattern space</I>'',
+de manera que los subsiguientes comandos no le afectan. El
+siguiente ejemplo convierte un fichero <I>ascii</I> a <I>html</I>:
 <PRE>
-01_NAME: XXX
-02_SURNAME: XXX
-03_TITLE: SISTEMAS
-04_OtherTitle:
-05_BIRTHDAY: XXX
-06_BIRTHMONTH: XXX
-07_BIRTHYEAR: XXX
-08_ADDRESSFAMILY: XXX
-09_ADDRESSACTUAL: XXX
-10_POSTALCODE: XXX
-11_EMAIL: XXX@csi.ull.es
-12_TELEPHONE: XXX
-13_FAX: XXX
-14_LABGROUP: xxx
-15_COMMENTS:
-</PRE>
-...
-
-<P>
-Se trata de escribir un script que produzca como salida los <SPAN  CLASS="textit">emails</SPAN>
-de los diferentes alumnos. Esta es una solución (suponemos que el <SPAN  CLASS="textit">script</SPAN> se llama con la opción <PRE>
-#!/bin/sed -f
-/^11_EMAIL:/{
-s/11_EMAIL: *\([a-zA-Z0-9]*@[a-zA-Z0-9.]*\)/\1/
-t print
-s/11_EMAIL: *\([a-zA-Z0-9]*\)/\1@csi.ull.es/
-:print
+$ cat aandi.sed
+1{
+i\
+&lt;html&gt;\
+&lt;head&gt;\
+&lt;title&gt;
 p
+i\
+&lt;/title&gt;\
+&lt;/head&gt;\
+&lt;body bgcolor=white&gt;
 }
+$a\
+&lt;/pre&gt;\
+&lt;/body&gt;\
+&lt;/html&gt;
+$ cat aandi.test
+hello.world!
+$ sed -f aandi.sed aandi.test
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;
+hello.world!
+&lt;/title&gt;
+&lt;/head&gt;
+&lt;body bgcolor=white&gt;
+hello.world!
+&lt;/pre&gt;
+&lt;/body&gt;
+&lt;/html&gt;
 </PRE>
-
-<P>
-Una característica no comentada y observada en algunos <code>sed</code>, incluyendo 
-la versión Linux, es que, si existen varias sustituciones consecutivas antes de la
-sentencia de transferencia de control, basta con que una tenga éxito para que el salto
-se realice. 
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3198"
+<A NAME="tex2html3203"
   HREF="node113.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3192"
-  HREF="node109.html">
+<A NAME="tex2html3197"
+  HREF="node110.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3186"
+<A NAME="tex2html3191"
   HREF="node111.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3194"
-  HREF="node217.html">
+<A NAME="tex2html3199"
+  HREF="node218.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3196"
-  HREF="node220.html">
+<A NAME="tex2html3201"
+  HREF="node221.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -254,12 +241,12 @@ se realice.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3199"
-  HREF="node113.html">Rangos</A>
-<B>Sup:</B> <A NAME="tex2html3193"
-  HREF="node109.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html3187"
-  HREF="node111.html">Inserción de Texto</A>
+<B> Sig:</B> <A NAME="tex2html3204"
+  HREF="node113.html">Trasferencia de Control Condicional</A>
+<B>Sup:</B> <A NAME="tex2html3198"
+  HREF="node110.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html3192"
+  HREF="node111.html">Transferencia de Control</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
