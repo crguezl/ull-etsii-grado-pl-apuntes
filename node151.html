@@ -1,0 +1,414 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Generación de Código: Máquina Pila</TITLE>
+<META NAME="description" CONTENT="Generación de Código: Máquina Pila">
+<META NAME="keywords" CONTENT="javascriptexamples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="mystyle.css">
+
+<LINK REL="next" HREF="node152.html">
+<LINK REL="previous" HREF="node150.html">
+<LINK REL="up" HREF="node137.html">
+<LINK REL="next" HREF="node152.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation">
+<A NAME="tex2html4373"
+  HREF="node152.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html4367"
+  HREF="node137.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html4361"
+  HREF="node150.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html4369"
+  HREF="node217.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html4371"
+  HREF="node220.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
+  HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="logoLPP.png"
+ ALT="PL"></A><A NAME="tex2html3"
+  HREF="http://campusvirtual.ull.es/1213m2/course/view.php?id=271"><IMG
+  WIDTH="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="moodleLHPlogo.jpeg"
+ ALT="PL moodle"></A><A NAME="tex2html4"
+  HREF="javascriptexamples.pdf"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="gv.jpeg"
+ ALT="ps"></A><A NAME="tex2html5"
+  HREF="https://dl.dropbox.com/u/14539152/PLgrado/PLgradoBOOK/index.html"><IMG
+  WIDTH="60" ALIGN="BOTTOM" BORDER="0"
+ SRC="lupa.gif"
+ ALT="ruby gems"></A><A NAME="tex2html6"
+  HREF="https://developer.mozilla.org/es/docs/JavaScript"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="perlonion.jpeg"
+ ALT="perldoc"></A><A NAME="tex2html7"
+  HREF="http://github.com"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="google-code-project-hosting.jpeg"
+ ALT="google code project hosting"></A><A NAME="tex2html8"
+  HREF="http://jquery.com/"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="perl6.jpg"
+ ALT="blogs"></A><A NAME="tex2html9"
+  HREF="http://www.google.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ggoogle.gif"
+ ALT="google"></A><A NAME="tex2html10"
+  HREF="http://www.ull.es/view/centros/etsii/Grado/es"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="etsii.png"
+ ALT="etsii"></A><A NAME="tex2html11"
+  HREF="http://www.ull.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ull.gif"
+ ALT="ull"></A><A NAME="tex2html12"
+  HREF="http://crondinosaur.blogspot.com/"><IMG
+  WIDTH="32" ALIGN="BOTTOM" BORDER="0"
+ SRC="logopcgull.gif"
+ ALT="pcgull"></A>
+<BR>
+<B> Sig:</B> <A NAME="tex2html4374"
+  HREF="node152.html">Generación de Código: Máquina</A>
+<B>Sup:</B> <A NAME="tex2html4368"
+  HREF="node137.html">Análisis Sintáctico Descendente en</A>
+<B> Ant:</B> <A NAME="tex2html4362"
+  HREF="node150.html">Asignación de Direcciones</A>
+<B> Con:</B> 
+<A NAME="tex2html4369"
+  HREF="node217.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
+<B> Ind:</B> 
+<A NAME="tex2html4371"
+  HREF="node220.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
+<BR> <P>
+</DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION056140000000000000000"></A>
+<A NAME="section:pila"></A>
+<BR>
+Generación de Código: Máquina Pila
+</H1>
+El generador de código emite el código para el lenguaje objeto, utilizando
+las direcciones calculadas en la fase anterior. Hemos simplificado esta fase
+considerando una máquina orientada a pila: una memoria de pila en la que se
+computan las expresiones, un segmento de datos en el que se guardan las variables
+y un segmento para guardar las cadenas.
+La estrategia utilizada es similar a la que vimos en el plegado de las constantes.
+Definimos un método para la traducción de cada clase de nodo del AAA.
+Entonces, para traducir el programa basta con llamar al correspondiente método:
+
+<P>
+<PRE>
+  $tree = Syntax::Analysis::parser;
+  ... # otras fases
+  ########code generation
+  local $target = ""; # target code
+  $tree-&gt;translate;
+  ...
+</PRE>
+
+<P>
+en la cadena <code>$target</code> dejamos el código emitido.
+Cada método visita los hijos, traduciéndolos y añadiendo 
+el código que fuera necesario para la traducción del nodo.
+
+<P>
+<PRE>
+sub PROGRAM::translate {
+  my $tree = shift;
+
+  $target .= "DATA ". $data."\n" if $data;
+  $tree-&gt;STS-&gt;translate;
+}
+</PRE>
+
+<P>
+Traducir la lista de sentencias es concatenar la traducción
+de cada una de las sentencias en la lista:
+
+<P>
+<PRE>
+sub STATEMENTS::translate {
+  my $statements = shift;
+  my @statements = @{$statements};
+
+  for my $s (@statements) {
+    $s-&gt;translate;
+  }
+}
+</PRE>
+
+<P>
+Si suponemos que disponemos en el ensamblador de nuestra máquina
+objeto de instrucciones <code>PRINT_INT</code>  y <code>PRINT_STR</code>
+que imprimen el contenido 
+de la expresión que esta en la cima de la pila, la traducción será:
+
+<P>
+<PRE>
+sub PRINT::translate {
+  my $self = shift;
+
+  $self-&gt;EXPRESSION-&gt;translate;
+  if ($self-&gt;EXPRESSION-&gt;TYPE == $int_type) { emit "PRINT_INT\n"; }
+  else {emit "PRINT_STR\n"; }
+}
+</PRE>
+Asi, si la sentencia era <code>P c</code>, donde <code>c</code> es del tipo cadena, 
+se debería eventualmente llamar al método de traducción del identificador:
+
+<P>
+<PRE>
+sub ID::translate {
+  my $self = shift;
+
+  my $id = $self-&gt;VAL;
+  my $type =  Semantic::Analysis::get_type($id);
+  if ($type == $int_type) {
+    emit "LOAD ".$symbol_table{$id}-&gt;{ADDRESS}."\n";
+  }
+  else {
+    emit "LOAD_STRING ".$symbol_table{$id}-&gt;{ADDRESS}."\n";
+  }
+}
+</PRE>
+la función <code>emit</code> simplemente concatena el código 
+producido a la salida:
+
+<P>
+<PRE>
+sub emit { $target .= shift; }
+</PRE>
+
+<P>
+Para la traducción de una sentencia de asignación
+supondremos de la existencia de isntrucciones <code>STORE_INT</code>
+y <code>STORE_STRING</code>. La instrucción <code>STORE_STRING</code> asume 
+que en la cima de la pila están la dirección y la cadena a almacenar.
+
+<P>
+<PRE>
+sub ASSIGN::translate {
+  my $self = shift;
+
+  $self-&gt;RIGHT-&gt;translate;
+  my $id = $self-&gt;LEFT;
+  $id-&gt;translate;
+  my $type =  Semantic::Analysis::get_type($id-&gt;VAL);
+
+  if ($type == $int_type) {
+    emit "STORE_INT\n";
+  }
+  else {
+    emit "STORE_STRING\n";
+  }
+}
+</PRE>
+Si se está traduciendo una sentencia como <code>a = "hola"</code>,
+se acabará llamando al método 
+de traducción asociado con la clase <code>STR</code>
+el cual actúa empujando la dirección y la longitud de la cadena en
+la pila:
+<PRE>
+sub STR::translate {
+  my $self = shift;
+
+  emit "PUSHSTR ".$self-&gt;OFFSET." ".$self-&gt;LENGTH."\n";
+}
+</PRE>
+Así la traducción de este fuente:
+
+<P>
+<PRE>
+$ cat test06.tutu
+string a;
+a = "hola";
+p a
+</PRE>
+
+<P>
+es:
+
+<P>
+<PRE>
+$ ./main.pl test06.tutu test06.ok
+$ cat test06.ok
+DATA 2, hola
+PUSHSTR 2 4
+PUSHADDR 0
+STORE_STRING
+LOAD_STRING 0
+PRINT_STR
+</PRE>
+
+<P>
+El resto de los métodos de traducción es similar:
+<PRE>
+sub LEFTVALUE::translate {
+  my $id = shift -&gt;VAL;
+
+  emit "PUSHADDR ".$symbol_table{$id}-&gt;{ADDRESS}."\n";
+}
+
+sub NUM::translate {
+  my $self = shift;
+
+  emit "PUSH ".$self-&gt;VAL."\n";
+}
+
+sub PLUS::translate {
+  my $self = shift;
+
+  $self-&gt;LEFT-&gt;translate;
+  $self-&gt;RIGHT-&gt;translate;
+  emit "PLUS\n";
+}
+
+sub TIMES::translate {
+  my $self = shift;
+
+  $self-&gt;LEFT-&gt;translate;
+  $self-&gt;RIGHT-&gt;translate;
+  emit "MULT\n";
+}
+</PRE>
+
+<P>
+Veamos un ejemplo. Dado el código fuente:
+<PRE>
+$ cat test02.tutu
+int a,b; string c; 
+a = 2+3; b = 3*4; c = "hola"; p c; 
+c = "mundo"; p c; p 9+2; p a+1; p b+1
+</PRE>
+el código generado es:
+<PRE>
+$ ./main.pl test02.tutu test02.ok
+$ cat test02.ok
+DATA 4, holamundo
+PUSH 5
+PUSHADDR 0
+STORE_INT
+PUSH 12
+PUSHADDR 1
+STORE_INT
+PUSHSTR 4 4
+PUSHADDR 2
+STORE_STRING
+LOAD_STRING 2
+PRINT_STR
+PUSHSTR 8 5
+PUSHADDR 2
+STORE_STRING
+LOAD_STRING 2
+PRINT_STR
+PUSH 11
+PRINT_INT
+LOAD 0
+INC
+PRINT_INT
+LOAD 1
+INC
+PRINT_INT
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<A NAME="tex2html4373"
+  HREF="node152.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html4367"
+  HREF="node137.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html4361"
+  HREF="node150.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html4369"
+  HREF="node217.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html4371"
+  HREF="node220.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
+  HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="logoLPP.png"
+ ALT="PL"></A><A NAME="tex2html3"
+  HREF="http://campusvirtual.ull.es/1213m2/course/view.php?id=271"><IMG
+  WIDTH="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="moodleLHPlogo.jpeg"
+ ALT="PL moodle"></A><A NAME="tex2html4"
+  HREF="javascriptexamples.pdf"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="gv.jpeg"
+ ALT="ps"></A><A NAME="tex2html5"
+  HREF="https://dl.dropbox.com/u/14539152/PLgrado/PLgradoBOOK/index.html"><IMG
+  WIDTH="60" ALIGN="BOTTOM" BORDER="0"
+ SRC="lupa.gif"
+ ALT="ruby gems"></A><A NAME="tex2html6"
+  HREF="https://developer.mozilla.org/es/docs/JavaScript"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="perlonion.jpeg"
+ ALT="perldoc"></A><A NAME="tex2html7"
+  HREF="http://github.com"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="google-code-project-hosting.jpeg"
+ ALT="google code project hosting"></A><A NAME="tex2html8"
+  HREF="http://jquery.com/"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="perl6.jpg"
+ ALT="blogs"></A><A NAME="tex2html9"
+  HREF="http://www.google.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ggoogle.gif"
+ ALT="google"></A><A NAME="tex2html10"
+  HREF="http://www.ull.es/view/centros/etsii/Grado/es"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="etsii.png"
+ ALT="etsii"></A><A NAME="tex2html11"
+  HREF="http://www.ull.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ull.gif"
+ ALT="ull"></A><A NAME="tex2html12"
+  HREF="http://crondinosaur.blogspot.com/"><IMG
+  WIDTH="32" ALIGN="BOTTOM" BORDER="0"
+ SRC="logopcgull.gif"
+ ALT="pcgull"></A>
+<BR>
+<B> Sig:</B> <A NAME="tex2html4374"
+  HREF="node152.html">Generación de Código: Máquina</A>
+<B>Sup:</B> <A NAME="tex2html4368"
+  HREF="node137.html">Análisis Sintáctico Descendente en</A>
+<B> Ant:</B> <A NAME="tex2html4362"
+  HREF="node150.html">Asignación de Direcciones</A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+<I>Casiano Rodríguez León <BR>
+2013-04-04</I>
+</ADDRESS>
+</BODY>
+</HTML>

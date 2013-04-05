@@ -1,0 +1,305 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Análisis Sintáctico Ascendente en JavaScript</TITLE>
+<META NAME="description" CONTENT="Análisis Sintáctico Ascendente en JavaScript">
+<META NAME="keywords" CONTENT="javascriptexamples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="mystyle.css">
+
+<LINK REL="next" HREF="node172.html">
+<LINK REL="previous" HREF="node137.html">
+<LINK REL="up" HREF="node68.html">
+<LINK REL="next" HREF="node155.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation">
+<A NAME="tex2html4415"
+  HREF="node155.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html4409"
+  HREF="node68.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html4403"
+  HREF="node153.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html4411"
+  HREF="node217.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html4413"
+  HREF="node220.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
+  HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="logoLPP.png"
+ ALT="PL"></A><A NAME="tex2html3"
+  HREF="http://campusvirtual.ull.es/1213m2/course/view.php?id=271"><IMG
+  WIDTH="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="moodleLHPlogo.jpeg"
+ ALT="PL moodle"></A><A NAME="tex2html4"
+  HREF="javascriptexamples.pdf"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="gv.jpeg"
+ ALT="ps"></A><A NAME="tex2html5"
+  HREF="https://dl.dropbox.com/u/14539152/PLgrado/PLgradoBOOK/index.html"><IMG
+  WIDTH="60" ALIGN="BOTTOM" BORDER="0"
+ SRC="lupa.gif"
+ ALT="ruby gems"></A><A NAME="tex2html6"
+  HREF="https://developer.mozilla.org/es/docs/JavaScript"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="perlonion.jpeg"
+ ALT="perldoc"></A><A NAME="tex2html7"
+  HREF="http://github.com"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="google-code-project-hosting.jpeg"
+ ALT="google code project hosting"></A><A NAME="tex2html8"
+  HREF="http://jquery.com/"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="perl6.jpg"
+ ALT="blogs"></A><A NAME="tex2html9"
+  HREF="http://www.google.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ggoogle.gif"
+ ALT="google"></A><A NAME="tex2html10"
+  HREF="http://www.ull.es/view/centros/etsii/Grado/es"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="etsii.png"
+ ALT="etsii"></A><A NAME="tex2html11"
+  HREF="http://www.ull.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ull.gif"
+ ALT="ull"></A><A NAME="tex2html12"
+  HREF="http://crondinosaur.blogspot.com/"><IMG
+  WIDTH="32" ALIGN="BOTTOM" BORDER="0"
+ SRC="logopcgull.gif"
+ ALT="pcgull"></A>
+<BR>
+<B> Sig:</B> <A NAME="tex2html4416"
+  HREF="node155.html">Conceptos Básicos para el</A>
+<B>Sup:</B> <A NAME="tex2html4410"
+  HREF="node68.html">SEGUNDA PARTE: APUNTES DE</A>
+<B> Ant:</B> <A NAME="tex2html4404"
+  HREF="node153.html">Optimización de Código</A>
+<B> Con:</B> 
+<A NAME="tex2html4411"
+  HREF="node217.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
+<B> Ind:</B> 
+<A NAME="tex2html4413"
+  HREF="node220.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
+<BR> <P>
+</DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION05700000000000000000">
+Análisis Sintáctico Ascendente en JavaScript</A>
+</H1>
+<BR> <HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html4417"
+  HREF="node155.html">Conceptos Básicos para el Análisis Sintáctico</A>
+<UL>
+<LI><A NAME="tex2html4418"
+  HREF="node155.html#SECTION05711000000000000000">Ejercicio</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html4419"
+  HREF="node156.html">Ejemplo Simple en Jison</A>
+<UL>
+<LI><A NAME="tex2html4420"
+  HREF="node156.html#SECTION05720010000000000000">Gramática</A>
+<LI><A NAME="tex2html4421"
+  HREF="node156.html#SECTION05720020000000000000">basic2_lex.jison</A>
+<LI><A NAME="tex2html4422"
+  HREF="node156.html#SECTION05720030000000000000">index.html</A>
+<LI><A NAME="tex2html4423"
+  HREF="node156.html#SECTION05720040000000000000">Rakefile</A>
+<LI><A NAME="tex2html4424"
+  HREF="node156.html#SECTION05720050000000000000">Véase También</A>
+<LI><A NAME="tex2html4425"
+  HREF="node156.html#SECTION05720060000000000000">global.css</A>
+<LI><A NAME="tex2html4426"
+  HREF="node156.html#SECTION05721000000000000000">Véase También</A>
+<LI><A NAME="tex2html4427"
+  HREF="node156.html#SECTION05722000000000000000">Práctica: Secuencia de Asignaciones Simples</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html4428"
+  HREF="node157.html">Ejemplo en Jison: Calculadora Simple</A>
+<UL>
+<LI><A NAME="tex2html4429"
+  HREF="node157.html#SECTION05730010000000000000">calculator.jison</A>
+<LI><A NAME="tex2html4430"
+  HREF="node157.html#SECTION05730020000000000000">main.js</A>
+<LI><A NAME="tex2html4431"
+  HREF="node157.html#SECTION05730030000000000000">calculator.html</A>
+<LI><A NAME="tex2html4432"
+  HREF="node157.html#SECTION05730040000000000000">Rakefile</A>
+<LI><A NAME="tex2html4433"
+  HREF="node157.html#SECTION05730050000000000000">global.css</A>
+<LI><A NAME="tex2html4434"
+  HREF="node157.html#SECTION05730060000000000000">test/assert.html</A>
+<LI><A NAME="tex2html4435"
+  HREF="node157.html#SECTION05730070000000000000">test/test.css</A>
+<LI><A NAME="tex2html4436"
+  HREF="node157.html#SECTION05730080000000000000">test/test.html</A>
+<LI><A NAME="tex2html4437"
+  HREF="node157.html#SECTION05731000000000000000">Práctica: Calculadora con Listas de Expresiones y Variables</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html4438"
+  HREF="node158.html">Conceptos Básicos del Análisis LR</A>
+<LI><A NAME="tex2html4439"
+  HREF="node159.html">Construcción de las Tablas para el Análisis SLR</A>
+<UL>
+<LI><A NAME="tex2html4440"
+  HREF="node159.html#SECTION05751000000000000000">Los conjuntos de Primeros y Siguientes</A>
+<LI><A NAME="tex2html4441"
+  HREF="node159.html#SECTION05752000000000000000">Construcción de las Tablas</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html4442"
+  HREF="node160.html">Algoritmo de Análisis LR</A>
+<LI><A NAME="tex2html4443"
+  HREF="node161.html">Práctica: Traducción de Infijo a Postfijo</A>
+<LI><A NAME="tex2html4444"
+  HREF="node162.html">El módulo Generado por <TT>jison</TT></A>
+<UL>
+<LI><A NAME="tex2html4445"
+  HREF="node162.html#SECTION05781000000000000000">Version</A>
+<LI><A NAME="tex2html4446"
+  HREF="node162.html#SECTION05782000000000000000">Gramática Inicial</A>
+<LI><A NAME="tex2html4447"
+  HREF="node162.html#SECTION05783000000000000000">Tablas</A>
+<LI><A NAME="tex2html4448"
+  HREF="node162.html#SECTION05784000000000000000">Acciones Semánticas</A>
+<LI><A NAME="tex2html4449"
+  HREF="node162.html#SECTION05785000000000000000">Tabla de Acciones y GOTOs</A>
+<LI><A NAME="tex2html4450"
+  HREF="node162.html#SECTION05786000000000000000">defaultActions</A>
+<LI><A NAME="tex2html4451"
+  HREF="node162.html#SECTION05787000000000000000">Reducciones</A>
+<LI><A NAME="tex2html4452"
+  HREF="node162.html#SECTION05788000000000000000">Desplazamientos/Shifts</A>
+<LI><A NAME="tex2html4453"
+  HREF="node162.html#SECTION05789000000000000000">Manejo de Errores</A>
+<LI><A NAME="tex2html4454"
+  HREF="node162.html#SECTION057810000000000000000">Analizador Léxico</A>
+<LI><A NAME="tex2html4455"
+  HREF="node162.html#SECTION057811000000000000000">Exportación</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html4456"
+  HREF="node163.html">Precedencia y Asociatividad</A>
+<LI><A NAME="tex2html4457"
+  HREF="node164.html">Depuración en <TT>jison</TT></A>
+<LI><A NAME="tex2html4458"
+  HREF="node165.html">Construcción del Árbol Sintáctico</A>
+<LI><A NAME="tex2html4459"
+  HREF="node166.html">Esquemas de Traducción</A>
+<LI><A NAME="tex2html4460"
+  HREF="node167.html">Definición Dirigida por la Sintáxis</A>
+<LI><A NAME="tex2html4461"
+  HREF="node168.html">Manejo en <TT>jison</TT> de Atributos Heredados</A>
+<LI><A NAME="tex2html4462"
+  HREF="node169.html">Acciones en Medio de una Regla y Atributos Heredados</A>
+<LI><A NAME="tex2html4463"
+  HREF="node170.html">Recuperación de Errores</A>
+<LI><A NAME="tex2html4464"
+  HREF="node171.html">Consejos a seguir al escribir un programa <TT>jison</TT></A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<A NAME="tex2html4415"
+  HREF="node155.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html4409"
+  HREF="node68.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html4403"
+  HREF="node153.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html4411"
+  HREF="node217.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html4413"
+  HREF="node220.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
+  HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="logoLPP.png"
+ ALT="PL"></A><A NAME="tex2html3"
+  HREF="http://campusvirtual.ull.es/1213m2/course/view.php?id=271"><IMG
+  WIDTH="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="moodleLHPlogo.jpeg"
+ ALT="PL moodle"></A><A NAME="tex2html4"
+  HREF="javascriptexamples.pdf"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="gv.jpeg"
+ ALT="ps"></A><A NAME="tex2html5"
+  HREF="https://dl.dropbox.com/u/14539152/PLgrado/PLgradoBOOK/index.html"><IMG
+  WIDTH="60" ALIGN="BOTTOM" BORDER="0"
+ SRC="lupa.gif"
+ ALT="ruby gems"></A><A NAME="tex2html6"
+  HREF="https://developer.mozilla.org/es/docs/JavaScript"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="perlonion.jpeg"
+ ALT="perldoc"></A><A NAME="tex2html7"
+  HREF="http://github.com"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="google-code-project-hosting.jpeg"
+ ALT="google code project hosting"></A><A NAME="tex2html8"
+  HREF="http://jquery.com/"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="perl6.jpg"
+ ALT="blogs"></A><A NAME="tex2html9"
+  HREF="http://www.google.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ggoogle.gif"
+ ALT="google"></A><A NAME="tex2html10"
+  HREF="http://www.ull.es/view/centros/etsii/Grado/es"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="etsii.png"
+ ALT="etsii"></A><A NAME="tex2html11"
+  HREF="http://www.ull.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ull.gif"
+ ALT="ull"></A><A NAME="tex2html12"
+  HREF="http://crondinosaur.blogspot.com/"><IMG
+  WIDTH="32" ALIGN="BOTTOM" BORDER="0"
+ SRC="logopcgull.gif"
+ ALT="pcgull"></A>
+<BR>
+<B> Sig:</B> <A NAME="tex2html4416"
+  HREF="node155.html">Conceptos Básicos para el</A>
+<B>Sup:</B> <A NAME="tex2html4410"
+  HREF="node68.html">SEGUNDA PARTE: APUNTES DE</A>
+<B> Ant:</B> <A NAME="tex2html4404"
+  HREF="node153.html">Optimización de Código</A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+<I>Casiano Rodríguez León <BR>
+2013-04-04</I>
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,289 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>yywrap()</TITLE>
+<META NAME="description" CONTENT="yywrap()">
+<META NAME="keywords" CONTENT="javascriptexamples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="mystyle.css">
+
+<LINK REL="next" HREF="node90.html">
+<LINK REL="previous" HREF="node88.html">
+<LINK REL="up" HREF="node81.html">
+<LINK REL="next" HREF="node90.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation">
+<A NAME="tex2html2863"
+  HREF="node90.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2857"
+  HREF="node81.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2851"
+  HREF="node88.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html2859"
+  HREF="node217.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html2861"
+  HREF="node220.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
+  HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="logoLPP.png"
+ ALT="PL"></A><A NAME="tex2html3"
+  HREF="http://campusvirtual.ull.es/1213m2/course/view.php?id=271"><IMG
+  WIDTH="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="moodleLHPlogo.jpeg"
+ ALT="PL moodle"></A><A NAME="tex2html4"
+  HREF="javascriptexamples.pdf"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="gv.jpeg"
+ ALT="ps"></A><A NAME="tex2html5"
+  HREF="https://dl.dropbox.com/u/14539152/PLgrado/PLgradoBOOK/index.html"><IMG
+  WIDTH="60" ALIGN="BOTTOM" BORDER="0"
+ SRC="lupa.gif"
+ ALT="ruby gems"></A><A NAME="tex2html6"
+  HREF="https://developer.mozilla.org/es/docs/JavaScript"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="perlonion.jpeg"
+ ALT="perldoc"></A><A NAME="tex2html7"
+  HREF="http://github.com"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="google-code-project-hosting.jpeg"
+ ALT="google code project hosting"></A><A NAME="tex2html8"
+  HREF="http://jquery.com/"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="perl6.jpg"
+ ALT="blogs"></A><A NAME="tex2html9"
+  HREF="http://www.google.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ggoogle.gif"
+ ALT="google"></A><A NAME="tex2html10"
+  HREF="http://www.ull.es/view/centros/etsii/Grado/es"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="etsii.png"
+ ALT="etsii"></A><A NAME="tex2html11"
+  HREF="http://www.ull.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ull.gif"
+ ALT="ull"></A><A NAME="tex2html12"
+  HREF="http://crondinosaur.blogspot.com/"><IMG
+  WIDTH="32" ALIGN="BOTTOM" BORDER="0"
+ SRC="logopcgull.gif"
+ ALT="pcgull"></A>
+<BR>
+<B> Sig:</B> <A NAME="tex2html2864"
+  HREF="node90.html">unput()</A>
+<B>Sup:</B> <A NAME="tex2html2858"
+  HREF="node81.html">Expresiones Regulares en Flex</A>
+<B> Ant:</B> <A NAME="tex2html2852"
+  HREF="node88.html">Declaraci&#243;n de yylex()</A>
+<B> Con:</B> 
+<A NAME="tex2html2859"
+  HREF="node217.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
+<B> Ind:</B> 
+<A NAME="tex2html2861"
+  HREF="node220.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
+<BR> <P>
+</DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION05280000000000000000">
+yywrap()</A>
+</H1>
+Cuando el analizador l&#233;xico alcanza el final del fichero, el
+comportamiento en las subsiguientes llamadas a <SPAN  CLASS="textit">yylex</SPAN>
+resulta indefinido.  En el momento en que  <SPAN  CLASS="textit">yylex()</SPAN>
+alcanza el final del fichero llama a la funci&#243;n <SPAN  CLASS="textit">yywrap</SPAN>, la cual retorna un
+valor de 0 o 1 seg&#250;n haya mas entrada o no. Si el valor es 0,
+la funci&#243;n <SPAN  CLASS="textit">yylex</SPAN> asume que la propia <SPAN  CLASS="textit">yywrap</SPAN>
+se ha encargado de abrir el nuevo fichero y asignarselo
+a  <TT>yyin</TT> .  Otra manera de continuar es haciendo uso de
+la funci&#243;n <SPAN  CLASS="textit">yyrestart(FILE *file)</SPAN>. 
+El siguiente ejemplo cuenta el n&#250;mero de l&#305;neas, palabras y
+caracteres en una lista de ficheros proporcionados como entrada.
+
+<P>
+<PRE>
+%{
+unsigned long charCount = 0, wordCount = 0, lineCount = 0;
+%}
+
+word [^ \t\n]+ 
+eol \n 
+
+%%
+{word} { wordCount++; charCount += yyleng; }
+{eol} { charCount++; lineCount++; }
+. charCount++;
+
+%%
+
+char **fileList;
+unsigned nFiles;
+unsigned currentFile = 0;
+unsigned long totalCC = 0;
+unsigned long totalWC = 0;
+unsigned long totalLC = 0;
+
+main ( int argc, char **argv) {
+  FILE *file;
+
+  fileList = argv + 1; nFiles = argc - 1;
+
+  if (nFiles == 0) {
+    fprintf(stderr,"Usage is:\n%s file1 file2 file3 ...\n",argv[0]);
+    exit(1);
+  }
+  file = fopen (fileList[0], "r");
+  if (!file) {
+      fprintf (stderr, "could not open %s\n", argv[1]);
+      exit (1);
+  }
+  currentFile = 1; yyrestart(file);
+  yylex ();
+  printf ("%8lu %8lu %8lu %s\n", lineCount, wordCount,
+    charCount, fileList[currentFile - 1]);
+  if (argc &gt; 2) {
+      totalCC += charCount; totalWC += wordCount; totalLC += lineCount;
+      printf ("%8lu %8lu %8lu total\n", totalLC, totalWC, totalCC);
+  }
+  return 0;
+}
+
+int yywrap () {
+  FILE *file;
+
+  if (currentFile &lt; nFiles) {
+     printf ("%8lu %8lu %8lu %s\n", lineCount, wordCount,
+       charCount, fileList[currentFile - 1]);
+     totalCC += charCount; totalWC += wordCount; totalLC += lineCount;
+     charCount = wordCount = lineCount = 0;
+     fclose (yyin);
+
+     while (fileList[currentFile] != (char *) 0) {
+       file = fopen (fileList[currentFile++], "r");
+       if (file != NULL) { yyrestart(file); break; }
+	  fprintf (stderr, "could not open %s\n", fileList[currentFile - 1]);
+     }
+     return (file ? 0 : 1);
+    }
+    return 1;
+}
+</PRE>
+
+<P>
+La figura muestra el proceso de compilaci&#243;n y la ejecuci&#243;n:
+<PRE>
+$ flex countlwc.l;gcc lex.yy.c; a.out *.l
+      58      179     1067 ape-05.l
+      88      249     1759 countlwc.l
+      11       21      126 magic.l
+       9       17      139 mgrep.l
+       9       16      135 mlg.l
+       5       15      181 ml.l
+       7       12       87 subst.l
+     187      509     3494 total
+</PRE>
+La diferencia esencial entre asignar <SPAN  CLASS="textit">yyin</SPAN> o llamar a la
+funci&#243;n <SPAN  CLASS="textit">yyrestart</SPAN> es que esta &#250;ltima puede ser utilizada para
+conmutar entre ficheros en medio de un an&#225;lisis l&#233;xico. El
+funcionamiento del programa anterior no se modifica si se 
+se intercambian asignaciones a <SPAN  CLASS="textit">yyin</SPAN> (<SPAN  CLASS="textit">yyin = file</SPAN>)
+y llamadas a <SPAN  CLASS="textit">yyrestart(file)</SPAN>.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<A NAME="tex2html2863"
+  HREF="node90.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2857"
+  HREF="node81.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2851"
+  HREF="node88.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html2859"
+  HREF="node217.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html2861"
+  HREF="node220.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
+  HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="logoLPP.png"
+ ALT="PL"></A><A NAME="tex2html3"
+  HREF="http://campusvirtual.ull.es/1213m2/course/view.php?id=271"><IMG
+  WIDTH="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="moodleLHPlogo.jpeg"
+ ALT="PL moodle"></A><A NAME="tex2html4"
+  HREF="javascriptexamples.pdf"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="gv.jpeg"
+ ALT="ps"></A><A NAME="tex2html5"
+  HREF="https://dl.dropbox.com/u/14539152/PLgrado/PLgradoBOOK/index.html"><IMG
+  WIDTH="60" ALIGN="BOTTOM" BORDER="0"
+ SRC="lupa.gif"
+ ALT="ruby gems"></A><A NAME="tex2html6"
+  HREF="https://developer.mozilla.org/es/docs/JavaScript"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="perlonion.jpeg"
+ ALT="perldoc"></A><A NAME="tex2html7"
+  HREF="http://github.com"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="google-code-project-hosting.jpeg"
+ ALT="google code project hosting"></A><A NAME="tex2html8"
+  HREF="http://jquery.com/"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="perl6.jpg"
+ ALT="blogs"></A><A NAME="tex2html9"
+  HREF="http://www.google.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ggoogle.gif"
+ ALT="google"></A><A NAME="tex2html10"
+  HREF="http://www.ull.es/view/centros/etsii/Grado/es"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="etsii.png"
+ ALT="etsii"></A><A NAME="tex2html11"
+  HREF="http://www.ull.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ull.gif"
+ ALT="ull"></A><A NAME="tex2html12"
+  HREF="http://crondinosaur.blogspot.com/"><IMG
+  WIDTH="32" ALIGN="BOTTOM" BORDER="0"
+ SRC="logopcgull.gif"
+ ALT="pcgull"></A>
+<BR>
+<B> Sig:</B> <A NAME="tex2html2864"
+  HREF="node90.html">unput()</A>
+<B>Sup:</B> <A NAME="tex2html2858"
+  HREF="node81.html">Expresiones Regulares en Flex</A>
+<B> Ant:</B> <A NAME="tex2html2852"
+  HREF="node88.html">Declaraci&#243;n de yylex()</A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+<I>Casiano Rodríguez León <BR>
+2013-04-04</I>
+</ADDRESS>
+</BODY>
+</HTML>

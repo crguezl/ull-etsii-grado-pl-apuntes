@@ -1,0 +1,258 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>El operador de ``trailing context'' o ``lookahead'' positivo</TITLE>
+<META NAME="description" CONTENT="El operador de ``trailing context'' o ``lookahead'' positivo">
+<META NAME="keywords" CONTENT="javascriptexamples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="mystyle.css">
+
+<LINK REL="next" HREF="node102.html">
+<LINK REL="previous" HREF="node100.html">
+<LINK REL="up" HREF="node81.html">
+<LINK REL="next" HREF="node102.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation">
+<A NAME="tex2html3032"
+  HREF="node102.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3026"
+  HREF="node81.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html3020"
+  HREF="node100.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html3028"
+  HREF="node217.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html3030"
+  HREF="node220.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
+  HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="logoLPP.png"
+ ALT="PL"></A><A NAME="tex2html3"
+  HREF="http://campusvirtual.ull.es/1213m2/course/view.php?id=271"><IMG
+  WIDTH="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="moodleLHPlogo.jpeg"
+ ALT="PL moodle"></A><A NAME="tex2html4"
+  HREF="javascriptexamples.pdf"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="gv.jpeg"
+ ALT="ps"></A><A NAME="tex2html5"
+  HREF="https://dl.dropbox.com/u/14539152/PLgrado/PLgradoBOOK/index.html"><IMG
+  WIDTH="60" ALIGN="BOTTOM" BORDER="0"
+ SRC="lupa.gif"
+ ALT="ruby gems"></A><A NAME="tex2html6"
+  HREF="https://developer.mozilla.org/es/docs/JavaScript"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="perlonion.jpeg"
+ ALT="perldoc"></A><A NAME="tex2html7"
+  HREF="http://github.com"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="google-code-project-hosting.jpeg"
+ ALT="google code project hosting"></A><A NAME="tex2html8"
+  HREF="http://jquery.com/"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="perl6.jpg"
+ ALT="blogs"></A><A NAME="tex2html9"
+  HREF="http://www.google.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ggoogle.gif"
+ ALT="google"></A><A NAME="tex2html10"
+  HREF="http://www.ull.es/view/centros/etsii/Grado/es"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="etsii.png"
+ ALT="etsii"></A><A NAME="tex2html11"
+  HREF="http://www.ull.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ull.gif"
+ ALT="ull"></A><A NAME="tex2html12"
+  HREF="http://crondinosaur.blogspot.com/"><IMG
+  WIDTH="32" ALIGN="BOTTOM" BORDER="0"
+ SRC="logopcgull.gif"
+ ALT="pcgull"></A>
+<BR>
+<B> Sig:</B> <A NAME="tex2html3033"
+  HREF="node102.html">Manejo de directivas include</A>
+<B>Sup:</B> <A NAME="tex2html3027"
+  HREF="node81.html">Expresiones Regulares en Flex</A>
+<B> Ant:</B> <A NAME="tex2html3021"
+  HREF="node100.html">Leer desde una Cadena:</A>
+<B> Con:</B> 
+<A NAME="tex2html3028"
+  HREF="node217.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
+<B> Ind:</B> 
+<A NAME="tex2html3030"
+  HREF="node220.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
+<BR> <P>
+</DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION052200000000000000000">
+El operador de ``trailing context'' o ``lookahead'' positivo</A>
+</H1>
+En el lenguaje FORTRAN original los ``blancos'' no eran significativos
+y no se distinguía entre mayúsculas y minúsculas.
+Así pues la cadena <code>do i = 1, 10</code> es equivalente a la cadena
+<code>DOI=1,10</code>. Un conocido conflicto ocurre entre una cadena 
+con la estructura <code>do i = 1.10</code> (esto es <code>DOI=1.10</code>) y  
+la cadena anterior. En la primera <code>DO</code> e <code>I</code> son dos
+``tokens'' diferentes, el primero correspondiendo a la palabra reservada que indica un bucle. En la segunda, <code>DOI</code> constituye un único ``token''
+y la sentencia se refiere a una asignación.
+El conflicto puede resolverse utilizando el operador de ``trailing'' <code>r/s</code>. 
+Como se mencionó, el operador de ``trailing''<code>r/s</code> permite reconocer una <code>r</code> pero s&#243;lo si va seguida de una <code>s</code>. El texto casado con <code>s</code> se incluye a la hora de decidir cual es el emparejamiento mas largo, pero se devuelve a la entrada cuando se ejecuta la acci&#243;n. La acci&#243;n s&#243;lo ve el texto asociado con <code>r</code>.  El fichero <code>fortran4.l</code> ilustra una posible solución:
+<PRE>
+ cat fortran4.l
+%array
+%{
+#include &lt;string.h&gt;
+#undef YY_INPUT
+#define YY_INPUT(buf,result,max) (result = my_input(buf,max))
+%}
+number [0-9]+
+integer [+-]?{number}
+float ({integer}\.{number}?|\.{number})(E{integer})?
+label [A-Z0-9]+
+id   [A-Z]{label}*
+%%
+DO/{label}={number}\, { printf("do loop\n"); }
+{id} { printf("Identifier %s\n",yytext); }
+{number} { printf("Num %d\n",atoi(yytext)); }
+{float} { printf("Float %f\n",atof(yytext)); }
+(.|\n)
+%%
+
+int my_input(char *buf, int max)
+{
+  char *q1, *q2, *p = (char *) malloc(max);
+  int i;
+  if ('\0' != fgets(p,max,yyin)) {
+    for(i=0, q1=buf, q2=p;(*q2 != '\0');q2++) {
+      if (*q2 != ' ') { *q1++ = toupper(*q2); i++; };
+    }
+    free(p);
+    return i;
+  }
+  else exit(1);
+}
+</PRE>
+La función 
+
+<P>
+<code>char *fgets(char *s, int size, FILE *stream)</code> 
+
+<P>
+lee a lo mas uno menos que <code>size</code> caracteres desde <code>stream</code> y los almacena en el <SPAN  CLASS="textit">buffer</SPAN>
+apuntado por <code>s</code>. La lectura termina después de un  <code>EOF</code> o un retorno de carro.
+Si se lee un <code>\n</code>, se almacena en el <SPAN  CLASS="textit">buffer</SPAN>. La función pone un carácter nulo <code>\0</code> 
+como último carácter en el <SPAN  CLASS="textit">buffer</SPAN>.
+
+<P>
+A continuación, puedes ver los detalles de una ejecución:
+<PRE>
+$ flex fortran4.l; gcc lex.yy.c -lfl; a.out
+do j = 1 . 10
+Identifier DOJ
+Float 1.100000
+do k = 1, 5
+do loop
+Identifier K
+Num 1
+Num 5
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<A NAME="tex2html3032"
+  HREF="node102.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3026"
+  HREF="node81.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html3020"
+  HREF="node100.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html3028"
+  HREF="node217.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html3030"
+  HREF="node220.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
+  HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="logoLPP.png"
+ ALT="PL"></A><A NAME="tex2html3"
+  HREF="http://campusvirtual.ull.es/1213m2/course/view.php?id=271"><IMG
+  WIDTH="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="moodleLHPlogo.jpeg"
+ ALT="PL moodle"></A><A NAME="tex2html4"
+  HREF="javascriptexamples.pdf"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="gv.jpeg"
+ ALT="ps"></A><A NAME="tex2html5"
+  HREF="https://dl.dropbox.com/u/14539152/PLgrado/PLgradoBOOK/index.html"><IMG
+  WIDTH="60" ALIGN="BOTTOM" BORDER="0"
+ SRC="lupa.gif"
+ ALT="ruby gems"></A><A NAME="tex2html6"
+  HREF="https://developer.mozilla.org/es/docs/JavaScript"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="perlonion.jpeg"
+ ALT="perldoc"></A><A NAME="tex2html7"
+  HREF="http://github.com"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="google-code-project-hosting.jpeg"
+ ALT="google code project hosting"></A><A NAME="tex2html8"
+  HREF="http://jquery.com/"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="perl6.jpg"
+ ALT="blogs"></A><A NAME="tex2html9"
+  HREF="http://www.google.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ggoogle.gif"
+ ALT="google"></A><A NAME="tex2html10"
+  HREF="http://www.ull.es/view/centros/etsii/Grado/es"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="etsii.png"
+ ALT="etsii"></A><A NAME="tex2html11"
+  HREF="http://www.ull.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ull.gif"
+ ALT="ull"></A><A NAME="tex2html12"
+  HREF="http://crondinosaur.blogspot.com/"><IMG
+  WIDTH="32" ALIGN="BOTTOM" BORDER="0"
+ SRC="logopcgull.gif"
+ ALT="pcgull"></A>
+<BR>
+<B> Sig:</B> <A NAME="tex2html3033"
+  HREF="node102.html">Manejo de directivas include</A>
+<B>Sup:</B> <A NAME="tex2html3027"
+  HREF="node81.html">Expresiones Regulares en Flex</A>
+<B> Ant:</B> <A NAME="tex2html3021"
+  HREF="node100.html">Leer desde una Cadena:</A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+<I>Casiano Rodríguez León <BR>
+2013-04-04</I>
+</ADDRESS>
+</BODY>
+</HTML>

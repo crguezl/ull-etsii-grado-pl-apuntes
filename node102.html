@@ -1,0 +1,359 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Manejo de directivas include</TITLE>
+<META NAME="description" CONTENT="Manejo de directivas include">
+<META NAME="keywords" CONTENT="javascriptexamples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="mystyle.css">
+
+<LINK REL="next" HREF="node103.html">
+<LINK REL="previous" HREF="node101.html">
+<LINK REL="up" HREF="node81.html">
+<LINK REL="next" HREF="node103.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation">
+<A NAME="tex2html3046"
+  HREF="node103.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3040"
+  HREF="node81.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html3034"
+  HREF="node101.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html3042"
+  HREF="node217.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html3044"
+  HREF="node220.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
+  HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="logoLPP.png"
+ ALT="PL"></A><A NAME="tex2html3"
+  HREF="http://campusvirtual.ull.es/1213m2/course/view.php?id=271"><IMG
+  WIDTH="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="moodleLHPlogo.jpeg"
+ ALT="PL moodle"></A><A NAME="tex2html4"
+  HREF="javascriptexamples.pdf"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="gv.jpeg"
+ ALT="ps"></A><A NAME="tex2html5"
+  HREF="https://dl.dropbox.com/u/14539152/PLgrado/PLgradoBOOK/index.html"><IMG
+  WIDTH="60" ALIGN="BOTTOM" BORDER="0"
+ SRC="lupa.gif"
+ ALT="ruby gems"></A><A NAME="tex2html6"
+  HREF="https://developer.mozilla.org/es/docs/JavaScript"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="perlonion.jpeg"
+ ALT="perldoc"></A><A NAME="tex2html7"
+  HREF="http://github.com"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="google-code-project-hosting.jpeg"
+ ALT="google code project hosting"></A><A NAME="tex2html8"
+  HREF="http://jquery.com/"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="perl6.jpg"
+ ALT="blogs"></A><A NAME="tex2html9"
+  HREF="http://www.google.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ggoogle.gif"
+ ALT="google"></A><A NAME="tex2html10"
+  HREF="http://www.ull.es/view/centros/etsii/Grado/es"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="etsii.png"
+ ALT="etsii"></A><A NAME="tex2html11"
+  HREF="http://www.ull.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ull.gif"
+ ALT="ull"></A><A NAME="tex2html12"
+  HREF="http://crondinosaur.blogspot.com/"><IMG
+  WIDTH="32" ALIGN="BOTTOM" BORDER="0"
+ SRC="logopcgull.gif"
+ ALT="pcgull"></A>
+<BR>
+<B> Sig:</B> <A NAME="tex2html3047"
+  HREF="node103.html">An&#225;lisis Léxico desde una</A>
+<B>Sup:</B> <A NAME="tex2html3041"
+  HREF="node81.html">Expresiones Regulares en Flex</A>
+<B> Ant:</B> <A NAME="tex2html3035"
+  HREF="node101.html">El operador de ``trailing</A>
+<B> Con:</B> 
+<A NAME="tex2html3042"
+  HREF="node217.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
+<B> Ind:</B> 
+<A NAME="tex2html3044"
+  HREF="node220.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
+<BR> <P>
+</DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION052210000000000000000"></A>
+<A NAME="section:include"></A>
+<BR>
+Manejo de directivas <TT>include</TT>
+</H1>
+El analisis l&#233;xico de algunos lenguajes requiere que, durante la
+ejecuci&#243;n, se realice la lectura desde
+diferentes ficheros de entrada. El ejemplo t&#305;pico es el manejo de las
+directivas <SPAN  CLASS="textit">include file</SPAN> existentes en la mayor&#305;a de los lenguajes de
+programaci&#243;n.
+<BR>¿Donde est&#225; el problema? La dificultad reside en que los
+analizadores generados por <SPAN  CLASS="textit">flex</SPAN>
+proveen almacenamiento intermedio (<SPAN  CLASS="textit">buffers</SPAN>) para aumentar el
+rendimiento. No basta con reescribir nuestro propio <SPAN  CLASS="textit">YY_INPUT</SPAN> de
+manera que tenga en cuenta con que fichero se esta trabajando. 
+El analizador s&#243;lo llama a <SPAN  CLASS="textit">YY_INPUT</SPAN> cuando alcanza el final de su
+<SPAN  CLASS="textit">buffer</SPAN>, lo cual puede ocurrir bastante despu&#233;s de haber
+encontrado la sentencia <SPAN  CLASS="textit">include</SPAN> que requiere el cambio de
+fichero de entrada.
+<PRE>
+$ cat include.l
+%x incl
+%{
+#define yywrap() 1
+#define MAX_INCLUDE_DEPTH 10
+YY_BUFFER_STATE include_stack[MAX_INCLUDE_DEPTH];
+int include_stack_ptr = 0;
+%}
+%%
+include          BEGIN(incl);
+.                ECHO;
+&lt;incl&gt;[ \t]*
+&lt;incl&gt;[^ \t\n]+  { /* got the file name */
+                   if (include_stack_ptr &gt;= MAX_INCLUDE_DEPTH) {
+                     fprintf(stderr,"Includes nested too deeply\n");
+                     exit(1);
+                   }
+                   include_stack[include_stack_ptr++] = YY_CURRENT_BUFFER;
+                   yyin = fopen(yytext,"r");
+                   if (!yyin) {
+                     fprintf(stderr,"File %s not found\n",yytext);
+                     exit(1);
+                   }
+                   yy_switch_to_buffer(yy_create_buffer(yyin, YY_BUF_SIZE));
+                   BEGIN(INITIAL);
+                 }
+&lt;&lt;EOF&gt;&gt; {
+          if ( --include_stack_ptr &lt; 0) {
+            yyterminate();
+          } else {
+            yy_delete_buffer(YY_CURRENT_BUFFER);
+            yy_switch_to_buffer(include_stack[include_stack_ptr]);
+          }
+        }
+%%
+main(int argc, char ** argv) {
+ 
+  yyin = fopen(argv[1],"r");
+  yylex();
+}
+</PRE>
+La funci&#243;n <code>yy_create_buffer(yyin, YY_BUF_SIZE));</code> crea  un <SPAN  CLASS="textit">buffer</SPAN>
+lo suficientemente grande para mantener <code>YY_BUF_SIZE</code> caracteres. Devuelve un 
+<code>YY_BUFFER_STATE</code>, que puede ser pasado a otras rutinas. <code>YY_BUFFER_STATE</code> es un puntero a
+una estructura de datos opaca (<code>struct yy_buffer_state</code>) que contiene la informaci&#243;n para la manipulaci&#243;n
+del <SPAN  CLASS="textit">buffer</SPAN>. Es posible por tanto inicializar un puntero <code>YY_BUFFER_STATE</code>
+usando la expresión <code>((YY_BUFFER_STATE) 0)</code>.
+
+<P>
+La funci&#243;n <code>yy_switch_to_buffer(YY_BUFFER_STATE new_buffer);</code> conmuta la entrada 
+del analizador l&#233;xico. La funci&#243;n <code>void yy_delete_buffer( YY_BUFFER_STATE buffer )</code>
+se usa para recuperar la memoria consumida por un <SPAN  CLASS="textit">buffer</SPAN>.  Tambi&#233;n se pueden limpiar 
+los contenidos actuales de un buffer llamando a:
+<code>void yy_flush_buffer( YY_BUFFER_STATE buffer )</code>
+
+<P>
+La regla especial <code>&lt;&lt;EOF&gt;&gt;</code> indica la acci&#243;n a ejecutar cuando 
+se ha encontrado un final de fichero e <code>yywrap()</code> retorna un valor
+distinto de cero. Cualquiera que sea la acci&#243;n asociada, esta debe terminar 
+con uno de estos cuatro supuestos:
+
+<OL>
+<LI>Asignar <code>yyin</code> a un nuevo fichero de entrada.
+</LI>
+<LI>Ejecutar <code>return</code>.
+</LI>
+<LI>Ejecutar <code>yyterminate()</code>.
+</LI>
+<LI>Cambiar a un nuevo buffer usando <code>yy_switch_to_buffer()</code>.
+
+<P>
+La regla <code>&lt;&lt;EOF&gt;&gt;</code> no se puede mezclar con otros patrones.
+</LI>
+</OL>
+
+<P>
+Este es el resultado de una ejecuci&#243;n del programa:
+<PRE>
+$ cat hello.c
+#include hello2.c
+main() &lt;%
+int a&lt;:1:&gt;; /* a comment */
+  a&lt;:0:&gt; = 4; /* a comment in
+                 two lines */
+  printf("\thell\157\nworld! a(0) is %d\n",a&lt;:0:&gt;);
+%&gt;
+$ cat hello2.c
+#include hello3.c
+/* file hello2.c  */
+$ cat hello3.c
+/*
+third file
+*/
+$ flex include.l ; gcc lex.yy.c ; a.out hello.c
+##/*
+third file
+*/
+ 
+/* file hello2.c  */
+ 
+main() &lt;%
+int a&lt;:1:&gt;; /* a comment */
+  a&lt;:0:&gt; = 4; /* a comment in
+                 two lines */
+  printf("\thell\157\nworld! a(0) is %d\n",a&lt;:0:&gt;);
+%&gt;                                                            
+</PRE>
+Una alternativa a usar el patrón <code>&lt;&lt;EOF&gt;&gt;</code>
+es dejar la responsabilidad de recuperar el <SPAN  CLASS="textit">buffer</SPAN> anterior
+a <code>yywrap()</code>. En tal caso suprimiríamos esta parajea patrón-acción
+y reescribiríamos <code>yywrap()</code>:
+<PRE>
+%x incl
+%{
+#define MAX_INCLUDE_DEPTH 10
+YY_BUFFER_STATE include_stack[MAX_INCLUDE_DEPTH];
+int include_stack_ptr = 0;
+%}
+%%
+include          BEGIN(incl);
+.                ECHO;
+&lt;incl&gt;[ \t]*
+&lt;incl&gt;[^ \t\n]+  { /* got the file name */
+                   if (include_stack_ptr &gt;= MAX_INCLUDE_DEPTH) {
+		     fprintf(stderr,"Includes nested too deeply\n");
+		     exit(1);
+		   }
+		   include_stack[include_stack_ptr++] = YY_CURRENT_BUFFER;
+		   yyin = fopen(yytext,"r");
+		   if (!yyin) {
+		     fprintf(stderr,"File %s not found\n",yytext);
+		     exit(1);
+		   }
+		   yy_switch_to_buffer(yy_create_buffer(yyin, YY_BUF_SIZE));
+		   BEGIN(INITIAL);
+		 }
+%%
+main(int argc, char ** argv) {
+
+  yyin = fopen(argv[1],"r");
+  yylex();
+}
+
+int yywrap() {
+  if ( --include_stack_ptr &lt; 0) { 
+    return 1;
+  } else {
+    yy_delete_buffer(YY_CURRENT_BUFFER);
+    yy_switch_to_buffer(include_stack[include_stack_ptr]);
+    return 0;
+  }
+}
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<A NAME="tex2html3046"
+  HREF="node103.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3040"
+  HREF="node81.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html3034"
+  HREF="node101.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html3042"
+  HREF="node217.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html3044"
+  HREF="node220.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
+  HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="logoLPP.png"
+ ALT="PL"></A><A NAME="tex2html3"
+  HREF="http://campusvirtual.ull.es/1213m2/course/view.php?id=271"><IMG
+  WIDTH="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="moodleLHPlogo.jpeg"
+ ALT="PL moodle"></A><A NAME="tex2html4"
+  HREF="javascriptexamples.pdf"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="gv.jpeg"
+ ALT="ps"></A><A NAME="tex2html5"
+  HREF="https://dl.dropbox.com/u/14539152/PLgrado/PLgradoBOOK/index.html"><IMG
+  WIDTH="60" ALIGN="BOTTOM" BORDER="0"
+ SRC="lupa.gif"
+ ALT="ruby gems"></A><A NAME="tex2html6"
+  HREF="https://developer.mozilla.org/es/docs/JavaScript"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="perlonion.jpeg"
+ ALT="perldoc"></A><A NAME="tex2html7"
+  HREF="http://github.com"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="google-code-project-hosting.jpeg"
+ ALT="google code project hosting"></A><A NAME="tex2html8"
+  HREF="http://jquery.com/"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="perl6.jpg"
+ ALT="blogs"></A><A NAME="tex2html9"
+  HREF="http://www.google.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ggoogle.gif"
+ ALT="google"></A><A NAME="tex2html10"
+  HREF="http://www.ull.es/view/centros/etsii/Grado/es"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="etsii.png"
+ ALT="etsii"></A><A NAME="tex2html11"
+  HREF="http://www.ull.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ull.gif"
+ ALT="ull"></A><A NAME="tex2html12"
+  HREF="http://crondinosaur.blogspot.com/"><IMG
+  WIDTH="32" ALIGN="BOTTOM" BORDER="0"
+ SRC="logopcgull.gif"
+ ALT="pcgull"></A>
+<BR>
+<B> Sig:</B> <A NAME="tex2html3047"
+  HREF="node103.html">An&#225;lisis Léxico desde una</A>
+<B>Sup:</B> <A NAME="tex2html3041"
+  HREF="node81.html">Expresiones Regulares en Flex</A>
+<B> Ant:</B> <A NAME="tex2html3035"
+  HREF="node101.html">El operador de ``trailing</A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+<I>Casiano Rodríguez León <BR>
+2013-04-04</I>
+</ADDRESS>
+</BODY>
+</HTML>

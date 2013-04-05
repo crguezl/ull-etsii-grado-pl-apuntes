@@ -1,0 +1,328 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Optimización de Código</TITLE>
+<META NAME="description" CONTENT="Optimización de Código">
+<META NAME="keywords" CONTENT="javascriptexamples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="mystyle.css">
+
+<LINK REL="previous" HREF="node152.html">
+<LINK REL="up" HREF="node137.html">
+<LINK REL="next" HREF="node154.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation">
+<A NAME="tex2html4400"
+  HREF="node154.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html4394"
+  HREF="node137.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html4390"
+  HREF="node152.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html4396"
+  HREF="node217.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html4398"
+  HREF="node220.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
+  HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="logoLPP.png"
+ ALT="PL"></A><A NAME="tex2html3"
+  HREF="http://campusvirtual.ull.es/1213m2/course/view.php?id=271"><IMG
+  WIDTH="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="moodleLHPlogo.jpeg"
+ ALT="PL moodle"></A><A NAME="tex2html4"
+  HREF="javascriptexamples.pdf"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="gv.jpeg"
+ ALT="ps"></A><A NAME="tex2html5"
+  HREF="https://dl.dropbox.com/u/14539152/PLgrado/PLgradoBOOK/index.html"><IMG
+  WIDTH="60" ALIGN="BOTTOM" BORDER="0"
+ SRC="lupa.gif"
+ ALT="ruby gems"></A><A NAME="tex2html6"
+  HREF="https://developer.mozilla.org/es/docs/JavaScript"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="perlonion.jpeg"
+ ALT="perldoc"></A><A NAME="tex2html7"
+  HREF="http://github.com"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="google-code-project-hosting.jpeg"
+ ALT="google code project hosting"></A><A NAME="tex2html8"
+  HREF="http://jquery.com/"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="perl6.jpg"
+ ALT="blogs"></A><A NAME="tex2html9"
+  HREF="http://www.google.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ggoogle.gif"
+ ALT="google"></A><A NAME="tex2html10"
+  HREF="http://www.ull.es/view/centros/etsii/Grado/es"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="etsii.png"
+ ALT="etsii"></A><A NAME="tex2html11"
+  HREF="http://www.ull.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ull.gif"
+ ALT="ull"></A><A NAME="tex2html12"
+  HREF="http://crondinosaur.blogspot.com/"><IMG
+  WIDTH="32" ALIGN="BOTTOM" BORDER="0"
+ SRC="logopcgull.gif"
+ ALT="pcgull"></A>
+<BR>
+<B> Sig:</B> <A NAME="tex2html4401"
+  HREF="node154.html">Análisis Sintáctico Ascendente en</A>
+<B>Sup:</B> <A NAME="tex2html4395"
+  HREF="node137.html">Análisis Sintáctico Descendente en</A>
+<B> Ant:</B> <A NAME="tex2html4391"
+  HREF="node152.html">Generación de Código: Máquina</A>
+<B> Con:</B> 
+<A NAME="tex2html4396"
+  HREF="node217.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
+<B> Ind:</B> 
+<A NAME="tex2html4398"
+  HREF="node220.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
+<BR> <P>
+</DIV>
+<!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html4402"
+  HREF="node153.html#SECTION056161000000000000000">Práctica: Optimización Peephole</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION056160000000000000000">
+Optimización de Código</A>
+</H1>
+Aunque en esta fase se incluyen toda clase de optimizaciones,
+es aquí donde se hacen las optimizaciones de código dependientes
+del sistema objeto. Normalmente se
+recorre el código generado buscando secuencias 
+de instrucciones que se puedan sustituir por otras cuya 
+ejecución sea mas eficiente.
+El nombre <A NAME="12256"></A><SPAN  CLASS="textbf">Peephole optimization</SPAN> hace alusión a esta especie de
+``ventana
+de visión'' que se desplaza sobre el código.  En nuestro caso,
+supongamos que disponemos de una instrucción <code>INC</code> que permite
+incrementar eficientemente una expresión. Recorremos el código buscando
+por un patrón "sumar 1" y lo reeemplazamos adecuadamente.
+
+<P>
+<PRE>
+package Peephole::Optimization;
+
+sub transform {
+  $target = shift;
+  $target =~ s/PUSH 1\nPLUS/INC/g;
+}
+</PRE>
+
+<P>
+Otro ejemplo de optimización peephole consiste en reemplazar las operaciones
+flotantes de división por una constante por la multiplicación por la inversa
+de la misma (aquí se pueden introducir diferencias en el resultado, debido
+a la inexactitud de las operaciones en punto flotante y a que, si
+se trata de un <A NAME="12258"></A><SPAN  CLASS="textbf">compilador cruzado</SPAN> la aritmética 
+flotante en la máquina en la que se ejecuta el compilador puede ser diferente
+de la de la máquina que ejecutará el código objeto).
+
+<P>
+
+<H2><A NAME="SECTION056161000000000000000"></A>
+   <A NAME="12261"></A>
+  
+<A NAME="practica:peephole"></A>
+<BR>
+Práctica: Optimización Peephole
+</H2>
+
+<OL>
+<LI>Optimice el código generado para la máquina de registros sustituyendo
+las operaciones de multiplicación y división enteras por una constante que sea
+potencia de dos (de la forma <SPAN CLASS="MATH"><IMG
+ WIDTH="23" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img366.png"
+ ALT="$ 2^n$"></SPAN>) por operaciones de desplazamiento.
+Repase el capítulo de expresiones regulares. Es posible que aquí quiera emplear
+una sustitución en la que la cadena de reemplazo
+sea evaluada sobre la marcha. Si es así, repase la sección
+<A HREF="node123.html#section:regeval">31.1.6</A>. La siguiente sesión con el depurador
+pretende ilustrar la idea:
+<PRE>
+$ perl -de 0
+DB&lt;1&gt; $a = "MUL R2, 16"
+DB&lt;2&gt; $a =~ s/MUL R(\d), (\d+)/($2 == 16)?"SHL R$1, 4":$&amp;/e
+DB&lt;3&gt; p $a
+SHL R2, 4
+DB&lt;5&gt; $a = "MUL R2, 7"
+DB&lt;6&gt; $a =~ s/MUL R(\d), (\d+)/($2 == 16)?"SHL R$1, 4":$&amp;/e
+DB&lt;7&gt; p $a
+MUL R2, 7
+DB&lt;8&gt;
+</PRE>
+
+<P>
+</LI>
+<LI>El plegado de constantes realizado durante la optimización de código independiente
+de la máquina (véase la sección
+<A HREF="node148.html#section:optimizacion">33.11</A>)
+es parcial. Si los árboles para el producto se hunden a izquierdas, una expresión
+como <code>a = a * 2 * 3</code> no será plegada, ya que produce
+un árbol de la forma 
+
+<P>
+<DIV ALIGN="CENTER">
+<!-- MATH
+ $t = TIMES(TIMES(a,2),3)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="236" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img367.png"
+ ALT="$ t = TIMES(TIMES(a,2),3)$"></SPAN>
+</DIV>
+
+<P>
+Dado que el algoritmo no
+puede plegar <SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img289.png"
+ ALT="$ t/1$"></SPAN> tampoco plegará <SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img188.png"
+ ALT="$ t$"></SPAN>.  Busque en el código objeto
+secuencias de multiplicaciones 
+por constantes y abrévielas en una. Haga lo mismo para las restantes operaciones.
+
+<P>
+</LI>
+<LI>Dado el siguiente programa:
+<PRE>
+$ cat test14.tutu
+int a,b; a = 2; b = a*a+1
+</PRE>
+El código producido por el traductor para la máquina de registros es:
+<PRE>
+1 LOADC R0, 2
+2 STORE  0, R0 # a
+3 LOADM R0, 0 # a
+4 MULTM R0, 0 # a
+5 PLUSC R0, 1 # 1
+6 STORE  1, R0 # b
+</PRE>
+Se ve que la instrucción de carga <code>LOADM R0, 0</code> de la 
+línea 3 es innecesaria por cuanto
+el contenido de la variable <code>a</code> ya está en el registro <code>R0</code>, 
+ya que fué cargada en el registro en la línea 2.
+Nótese que esta hipótesis no es necesariamente cierta
+si la línea 3 fuera el objetivo de un salto desde 
+otro punto del programa. Esta condición se cumple
+cuando nos movemos dentro de un <A NAME="12262"></A><SPAN  CLASS="textbf">bloque básico</SPAN>: 
+una secuencia de instrucciones que no contiene instrucciones
+de salto ni es el objetivo de instrucciones de salto, con la excepción
+de las instrucciones inicial y final.
+Mejore el código generado 
+intentando detectar patrones
+de este tipo, eliminando la operación de carga correspondiente.
+</LI>
+</OL>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<A NAME="tex2html4400"
+  HREF="node154.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html4394"
+  HREF="node137.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html4390"
+  HREF="node152.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html4396"
+  HREF="node217.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html4398"
+  HREF="node220.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
+  HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="logoLPP.png"
+ ALT="PL"></A><A NAME="tex2html3"
+  HREF="http://campusvirtual.ull.es/1213m2/course/view.php?id=271"><IMG
+  WIDTH="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="moodleLHPlogo.jpeg"
+ ALT="PL moodle"></A><A NAME="tex2html4"
+  HREF="javascriptexamples.pdf"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="gv.jpeg"
+ ALT="ps"></A><A NAME="tex2html5"
+  HREF="https://dl.dropbox.com/u/14539152/PLgrado/PLgradoBOOK/index.html"><IMG
+  WIDTH="60" ALIGN="BOTTOM" BORDER="0"
+ SRC="lupa.gif"
+ ALT="ruby gems"></A><A NAME="tex2html6"
+  HREF="https://developer.mozilla.org/es/docs/JavaScript"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="perlonion.jpeg"
+ ALT="perldoc"></A><A NAME="tex2html7"
+  HREF="http://github.com"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="google-code-project-hosting.jpeg"
+ ALT="google code project hosting"></A><A NAME="tex2html8"
+  HREF="http://jquery.com/"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="perl6.jpg"
+ ALT="blogs"></A><A NAME="tex2html9"
+  HREF="http://www.google.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ggoogle.gif"
+ ALT="google"></A><A NAME="tex2html10"
+  HREF="http://www.ull.es/view/centros/etsii/Grado/es"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="etsii.png"
+ ALT="etsii"></A><A NAME="tex2html11"
+  HREF="http://www.ull.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ull.gif"
+ ALT="ull"></A><A NAME="tex2html12"
+  HREF="http://crondinosaur.blogspot.com/"><IMG
+  WIDTH="32" ALIGN="BOTTOM" BORDER="0"
+ SRC="logopcgull.gif"
+ ALT="pcgull"></A>
+<BR>
+<B> Sig:</B> <A NAME="tex2html4401"
+  HREF="node154.html">Análisis Sintáctico Ascendente en</A>
+<B>Sup:</B> <A NAME="tex2html4395"
+  HREF="node137.html">Análisis Sintáctico Descendente en</A>
+<B> Ant:</B> <A NAME="tex2html4391"
+  HREF="node152.html">Generación de Código: Máquina</A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+<I>Casiano Rodríguez León <BR>
+2013-04-04</I>
+</ADDRESS>
+</BODY>
+</HTML>

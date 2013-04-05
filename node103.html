@@ -1,0 +1,262 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>An&#225;lisis Léxico desde una Cadena: yy_scan_string</TITLE>
+<META NAME="description" CONTENT="An&#225;lisis Léxico desde una Cadena: yy_scan_string">
+<META NAME="keywords" CONTENT="javascriptexamples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="mystyle.css">
+
+<LINK REL="next" HREF="node104.html">
+<LINK REL="previous" HREF="node102.html">
+<LINK REL="up" HREF="node81.html">
+<LINK REL="next" HREF="node104.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation">
+<A NAME="tex2html3060"
+  HREF="node104.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3054"
+  HREF="node81.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html3048"
+  HREF="node102.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html3056"
+  HREF="node217.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html3058"
+  HREF="node220.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
+  HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="logoLPP.png"
+ ALT="PL"></A><A NAME="tex2html3"
+  HREF="http://campusvirtual.ull.es/1213m2/course/view.php?id=271"><IMG
+  WIDTH="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="moodleLHPlogo.jpeg"
+ ALT="PL moodle"></A><A NAME="tex2html4"
+  HREF="javascriptexamples.pdf"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="gv.jpeg"
+ ALT="ps"></A><A NAME="tex2html5"
+  HREF="https://dl.dropbox.com/u/14539152/PLgrado/PLgradoBOOK/index.html"><IMG
+  WIDTH="60" ALIGN="BOTTOM" BORDER="0"
+ SRC="lupa.gif"
+ ALT="ruby gems"></A><A NAME="tex2html6"
+  HREF="https://developer.mozilla.org/es/docs/JavaScript"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="perlonion.jpeg"
+ ALT="perldoc"></A><A NAME="tex2html7"
+  HREF="http://github.com"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="google-code-project-hosting.jpeg"
+ ALT="google code project hosting"></A><A NAME="tex2html8"
+  HREF="http://jquery.com/"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="perl6.jpg"
+ ALT="blogs"></A><A NAME="tex2html9"
+  HREF="http://www.google.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ggoogle.gif"
+ ALT="google"></A><A NAME="tex2html10"
+  HREF="http://www.ull.es/view/centros/etsii/Grado/es"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="etsii.png"
+ ALT="etsii"></A><A NAME="tex2html11"
+  HREF="http://www.ull.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ull.gif"
+ ALT="ull"></A><A NAME="tex2html12"
+  HREF="http://crondinosaur.blogspot.com/"><IMG
+  WIDTH="32" ALIGN="BOTTOM" BORDER="0"
+ SRC="logopcgull.gif"
+ ALT="pcgull"></A>
+<BR>
+<B> Sig:</B> <A NAME="tex2html3061"
+  HREF="node104.html">An&#225;lisis de la L&#305;nea</A>
+<B>Sup:</B> <A NAME="tex2html3055"
+  HREF="node81.html">Expresiones Regulares en Flex</A>
+<B> Ant:</B> <A NAME="tex2html3049"
+  HREF="node102.html">Manejo de directivas include</A>
+<B> Con:</B> 
+<A NAME="tex2html3056"
+  HREF="node217.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
+<B> Ind:</B> 
+<A NAME="tex2html3058"
+  HREF="node220.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
+<BR> <P>
+</DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION052220000000000000000">
+An&#225;lisis Léxico desde una Cadena: <TT>yy_scan_string</TT></A>
+</H1>
+El objetivo de este ejercicio es mostrar como realizar un
+an&#225;lisis l&#233;xico de los argumentos pasados en la l&#305;nea de
+comandos. Para ello <SPAN  CLASS="textit">flex</SPAN> provee la funci&#243;n <code>yy_scan_string(const char * str)</code>.
+Esta rutina crea un nuevo <SPAN  CLASS="textit">buffer</SPAN> de entrada y devuelve el correspondiente
+manejador <code>YY_BUFFER_STATE</code> asociado con la cadena
+<code>str</code>. Esta cadena debe estar terminada por un car&#225;cter <code>\0</code>. 
+Podemos liberar la memoria asociada con
+dicho <SPAN  CLASS="textit">buffer</SPAN> utilizando <code>yy_delete_buffer(BUFFER)</code>.
+La siguiente llamada a <code>yylex()</code> realizar&#225; el an&#225;lisis l&#233;xico
+de la cadena <code>str</code>.
+
+<P>
+<PRE>
+$ cat scan_str.l
+%%
+[0-9]+     printf("num\n");
+[a-zA-Z]+  printf("Id\n");
+%%
+main(int argc, char ** argv) {
+int i;
+ 
+  for(i=1;i&lt;argc;i++) {
+    yy_scan_string(argv[i]);
+    yylex();
+    yy_delete_buffer(YY_CURRENT_BUFFER);
+  }
+}
+ 
+int yywrap() { return 1; }
+$ flex scan_str.l ; gcc lex.yy.c ; a.out Hello World! 1234
+Id
+Id
+!num
+</PRE>
+Alternativamente, la función <code>main()</code> podría haber sido escrita asi:
+<PRE>
+main(int argc, char ** argv) {
+int i;
+YY_BUFFER_STATE p;
+
+  for(i=1;i&lt;argc;i++) {
+    p = yy_scan_string(argv[i]);
+    yylex();
+    yy_delete_buffer(p);
+  }
+}
+</PRE>
+La funci&#243;n <code>yy_scan_bytes(const char * bytes, int len)</code> hace lo mismo que 
+<code>yy_scan_string</code> pero en vez de una cadena terminada en
+el car&#225;cter nulo, se usa la longitud <code>len</code>.
+Ambas funciones <code>yy_scan_string(const char * str)</code> y
+<code>yy_scan_bytes(const char * bytes, int len)</code> hacen una copia
+de la cadena pasada como argumento.
+
+<P>
+Estas dos funciones crean una copia de la cadena original. Es mejor que sea asi, ya que <code>yylex()</code>
+modifica los contenidos del <SPAN  CLASS="textit">buffer</SPAN> de trabajo. Si queremos evitar la copia,
+podemos usar 
+
+<P>
+<code>yy_scan_buffer(char *base, yy_size_t size)</code>,
+
+<P>
+la cual trabaja directamente con el <SPAN  CLASS="textit">buffer</SPAN> que comienza en <code>base</code>, 
+de tamaño <code>size</code> <SPAN  CLASS="textit">bytes</SPAN>, los últimos dos de los cuáles deben
+ser <code>YY_END_OF_BUFFER_CHAR</code> (ASCII  NUL).   
+Estos dos últimos <SPAN  CLASS="textit">bytes</SPAN> no son ``escaneados''. El área de rastreo va
+desde <code>base[0]</code> a <code>base[size-2]</code>, inclusive.
+Si nos olvidamos de hacerlo de este modo y no establecemos los dos <SPAN  CLASS="textit">bytes</SPAN> finales,
+la función <code>yy_scan_buffer()</code> devuelve un puntero nulo
+y no llega a crear el nuevo buffer de entrada.
+El tipo  <code>yy_size_t</code> es un tipo entero.
+Como cabe esperar, <code>size</code> se refiere al tamaño del <SPAN  CLASS="textit">buffer</SPAN>.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<A NAME="tex2html3060"
+  HREF="node104.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3054"
+  HREF="node81.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html3048"
+  HREF="node102.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html3056"
+  HREF="node217.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html3058"
+  HREF="node220.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
+  HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="logoLPP.png"
+ ALT="PL"></A><A NAME="tex2html3"
+  HREF="http://campusvirtual.ull.es/1213m2/course/view.php?id=271"><IMG
+  WIDTH="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="moodleLHPlogo.jpeg"
+ ALT="PL moodle"></A><A NAME="tex2html4"
+  HREF="javascriptexamples.pdf"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="gv.jpeg"
+ ALT="ps"></A><A NAME="tex2html5"
+  HREF="https://dl.dropbox.com/u/14539152/PLgrado/PLgradoBOOK/index.html"><IMG
+  WIDTH="60" ALIGN="BOTTOM" BORDER="0"
+ SRC="lupa.gif"
+ ALT="ruby gems"></A><A NAME="tex2html6"
+  HREF="https://developer.mozilla.org/es/docs/JavaScript"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="perlonion.jpeg"
+ ALT="perldoc"></A><A NAME="tex2html7"
+  HREF="http://github.com"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="google-code-project-hosting.jpeg"
+ ALT="google code project hosting"></A><A NAME="tex2html8"
+  HREF="http://jquery.com/"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="perl6.jpg"
+ ALT="blogs"></A><A NAME="tex2html9"
+  HREF="http://www.google.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ggoogle.gif"
+ ALT="google"></A><A NAME="tex2html10"
+  HREF="http://www.ull.es/view/centros/etsii/Grado/es"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="etsii.png"
+ ALT="etsii"></A><A NAME="tex2html11"
+  HREF="http://www.ull.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ull.gif"
+ ALT="ull"></A><A NAME="tex2html12"
+  HREF="http://crondinosaur.blogspot.com/"><IMG
+  WIDTH="32" ALIGN="BOTTOM" BORDER="0"
+ SRC="logopcgull.gif"
+ ALT="pcgull"></A>
+<BR>
+<B> Sig:</B> <A NAME="tex2html3061"
+  HREF="node104.html">An&#225;lisis de la L&#305;nea</A>
+<B>Sup:</B> <A NAME="tex2html3055"
+  HREF="node81.html">Expresiones Regulares en Flex</A>
+<B> Ant:</B> <A NAME="tex2html3049"
+  HREF="node102.html">Manejo de directivas include</A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+<I>Casiano Rodríguez León <BR>
+2013-04-04</I>
+</ADDRESS>
+</BODY>
+</HTML>
