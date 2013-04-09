@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Conceptos Básicos</TITLE>
-<META NAME="description" CONTENT="Conceptos Básicos">
+<TITLE>Parse::Yapp: Ejemplo de Uso</TITLE>
+<META NAME="description" CONTENT="Parse::Yapp: Ejemplo de Uso">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node176.html">
 <LINK REL="previous" HREF="node174.html">
-<LINK REL="up" HREF="node173.html">
+<LINK REL="up" HREF="node174.html">
 <LINK REL="next" HREF="node176.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4832"
+<A NAME="tex2html4836"
   HREF="node176.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4826"
-  HREF="node173.html">
+<A NAME="tex2html4830"
+  HREF="node174.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4820"
+<A NAME="tex2html4824"
   HREF="node174.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4828"
-  HREF="node218.html">
+<A NAME="tex2html4832"
+  HREF="node219.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4830"
-  HREF="node221.html">
+<A NAME="tex2html4834"
+  HREF="node222.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,564 +88,605 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4833"
-  HREF="node176.html">Construcción de las Tablas</A>
-<B>Sup:</B> <A NAME="tex2html4827"
-  HREF="node173.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4821"
-  HREF="node174.html">Parse::Yapp: Ejemplo de Uso</A>
+<B> Sig:</B> <A NAME="tex2html4837"
+  HREF="node176.html">Conceptos Básicos</A>
+<B>Sup:</B> <A NAME="tex2html4831"
+  HREF="node174.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4825"
+  HREF="node174.html">Análisis Sintáctico Ascendente en</A>
 <B> Con:</B> 
-<A NAME="tex2html4828"
-  HREF="node218.html">
+<A NAME="tex2html4832"
+  HREF="node219.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4830"
-  HREF="node221.html">
+<A NAME="tex2html4834"
+  HREF="node222.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION05820000000000000000"></A>
-<A NAME="section:conceptosbasicos"></A>
+<H1><A NAME="SECTION05810000000000000000"></A>
+<A NAME="section:ejemplodeuso"></A>
 <BR>
-Conceptos Básicos
+<TT>Parse::Yapp</TT>: Ejemplo de Uso
 </H1>
-Los analizadores generador por <code>yapp</code> entran en la categoría de analizadores
-<A NAME="18327"></A><SPAN  CLASS="textbf">LR</SPAN>. Estos analizadores construyen una derivación a derechas inversa 
-(o <A NAME="18329"></A><SPAN  CLASS="textbf">antiderivación</SPAN>).
-De ahí la R en LR (del inglés <A NAME="18331"></A><SPAN  CLASS="textbf">rightmost derivation</SPAN>). El árbol sintáctico 
-es construido de las hojas hacia la raíz, siendo el último paso en la antiderivación
-la construcción de la primera derivación desde el símbolo de arranque.
+El generador de analizadores sintácticos  <TT>Parse::Yapp</TT>  es un
+analizador LALR inspirado en  <TT>yacc</TT> . El módulo
+<code>Parse::Yapp</code> no viene con la distribución de Perl, por lo que es necesario
+bajarlo desde CPAN, en la dirección 
 
 <P>
-Empezaremos entonces considerando las frases que pueden aparecer en una derivación
-a derechas. Tales frases consituyen el lenguaje <SPAN CLASS="MATH"><IMG
- WIDTH="45" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img369.png"
- ALT="$ FSD$"></SPAN>:
+
+<a href="http://search.cpan.org/~fdesar/Parse-Yapp-1.05/lib/Parse/Yapp.pm">http://search.cpan.org/~fdesar/Parse-Yapp-1.05/lib/Parse/Yapp.pm</a>
 
 <P>
-<P>
-<DIV><B>Definición  <SPAN CLASS="arabic">35</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Dada una gramática <!-- MATH
- $G=(\Sigma,V,P,S)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img22.png"
- ALT="$ G =(\Sigma,V,P,S)$"></SPAN> no ambigua, se denota por <SPAN CLASS="MATH"><IMG
- WIDTH="45" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img369.png"
- ALT="$ FSD$"></SPAN> 
-(lenguaje de las formas Sentenciales a Derechas) al lenguaje de 
-las sentencias que aparecen en una derivación a derechas desde el símbolo de arranque.
-</I>
-<P>
-<DIV ALIGN="CENTER"><I><!-- MATH
- $FSD = \left \{ \alpha \in (\Sigma \cup V)* : \exists S \begin{array}{c} *\\\Longrightarrow \\{\scriptstyle RM} \end{array} \alpha \right \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="291" HEIGHT="82" ALIGN="MIDDLE" BORDER="0"
- SRC="img370.png"
- ALT="$ FSD = \left \{ \alpha \in (\Sigma \cup V)* : \exists S \begin{array}{c} * \Longrightarrow  {\scriptstyle RM} \end{array} \alpha \right \}$"></SPAN></I></DIV>
-<P>
-<I>Donde la notacion RM indica una derivación a derechas (<SPAN  CLASS="textbf">rightmost</SPAN>).
-Los elementos de <SPAN CLASS="MATH"><IMG
- WIDTH="45" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img369.png"
- ALT="$ FSD$"></SPAN> se llaman ``formas sentenciales derechas''.</I></DIV><P></P>
+o bien en nuestros servidores locales,
+por ejemplo en el mismo directorio en que se guarda
+la versión HTML de estos apuntes encontrará una copia de 
+<A NAME="tex2html402"
+  HREF="Parse-Yapp-1.05.tar.gz">Parse-Yapp-1.05.tar.gz</A>.
+La versión a la que se refiere este capítulo es la 1.05.
 
 <P>
-Dada una gramática no ambigua <!-- MATH
- $G=(\Sigma,V,P,S)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img22.png"
- ALT="$ G =(\Sigma,V,P,S)$"></SPAN> y una frase <!-- MATH
- $x \in L(G)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="75" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img46.png"
- ALT="$ x \in L(G)$"></SPAN> el proceso
-de antiderivación consiste en encontrar la última derivación a derechas que dió lugar a 
-<SPAN CLASS="MATH"><IMG
- WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img48.png"
- ALT="$ x$"></SPAN>. Esto es, si <!-- MATH
- $x \in L(G)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="75" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img46.png"
- ALT="$ x \in L(G)$"></SPAN> es porque existe una derivación a derechas de la forma
+Para ilustrar su uso veamos
+un ejemplo en el que se genera una sencilla calculadora numérica. 
+Los contenidos del programa  <TT>yapp</TT>  los hemos guardado
+en un fichero denominado <code>Calc.yp</code>
+(el código completo figura en el apéndice 
+en la página <A HREF="#apendice:calcyp"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>)
 
 <P>
-<DIV ALIGN="CENTER">
-<!-- MATH
- $S \stackrel{*}{\Longrightarrow} y A z \Longrightarrow y w z = x$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="187" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
- SRC="img371.png"
- ALT="$ S \stackrel{*}{\Longrightarrow} y A z \Longrightarrow y w z = x$"></SPAN>. 
-
-</DIV>
-
-<P>
-El problema es averiguar que regla <!-- MATH
- $A \rightarrow w$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="58" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img372.png"
- ALT="$ A \rightarrow w$"></SPAN> se aplicó y en que lugar 
-de la cadena <SPAN CLASS="MATH"><IMG
- WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img48.png"
- ALT="$ x$"></SPAN> se aplicó. En general, si queremos antiderivar
-una forma sentencial derecha <!-- MATH
- $\beta \alpha w$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="40" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img373.png"
- ALT="$ \beta \alpha w$"></SPAN> 
-debemos averiguar por que regla <!-- MATH
- $A \rightarrow \alpha$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img27.png"
- ALT="$ A \rightarrow \alpha$"></SPAN>
-seguir y en que lugar de la forma (después de <SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img118.png"
- ALT="$ \beta$"></SPAN> en el ejemplo)
-aplicarla. 
+<PRE>
+ 1  #
+ 2  # Calc.yp
+ 3  # 
+ 4  # Parse::Yapp input grammar example.
+ 5  #
+ 6  # This file is PUBLIC DOMAIN 
+ 7  #
+ 8  #
+</PRE>
+Se pueden poner comentarios tipo Perl o tipo C (<code>/* ... */</code>)
+a lo largo del fichero.
+<PRE>
+ 9  %right  '='
+10  %left   '-' '+'
+11  %left   '*' '/'
+12  %left   NEG
+13  %right  '^'
+14  
+15  %%
+16  input:  #empty
+17       |   input line  { push(@{$_[1]},$_[2]); $_[1] }
+18  ;
+</PRE>
+las declaraciones  <TT>%left</TT>  y  <TT>%right</TT>  expresan la asociatividad
+y precedencia de los terminales, permitiendo decidir que árbol construir 
+en caso de  ambiguedad. 
+<SPAN  CLASS="textbf"> Los terminales declarados en líneas 
+posteriores tienen mas prioridad que los declarados en las líneas anteriores</SPAN>.
+Véase la sección <A HREF="node181.html#section:prioridades">35.7</A> para mas detalles.
 
 <P>
-<DIV ALIGN="CENTER">
-<!-- MATH
- $S \stackrel{*}{\Longrightarrow} \beta A w \Longrightarrow \beta \alpha w$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="164" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
- SRC="img374.png"
- ALT="$ S \stackrel{*}{\Longrightarrow} \beta A w \Longrightarrow \beta \alpha w$"></SPAN>. 
-
-</DIV>
-
-<P>
-La pareja formada por la regla y la posición 
-se denomina mango o manecilla de la forma. Esta denominación viene
-de la visualización gráfica de la regla de producción como una mano
-que nos permite escalar hacia arriba en el árbol. Los ``dedos'' serían los
-símbolos en la parte derecha de la regla de producción.
+Un programa <code>yapp</code> consta de tres partes: la cabeza, el cuerpo
+y la cola. Cada una de las partes va separada de las otras por el
+símbolo <code>%%</code> en una línea aparte. Así, el <code>%%</code> de la línea 15
+separa la cabeza del cuerpo. En la cabecera se colocan el
+código de inicialización, las declaraciones de terminales, las reglas
+de precedencia, etc.  El cuerpo contiene las reglas de la gramática y
+las acciones asociadas. Por último, la cola de un program <code>yapp</code>
+contiene las rutinas de soporte al código que aparece en las acciones 
+asi como, posiblemente, rutinas para el análisis léxico 
+y el tratamiento de errores.
 
 <P>
-<P>
-<DIV><B>Definición  <SPAN CLASS="arabic">35</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
-<I>Dada una gramática <!-- MATH
- $G=(\Sigma,V,P,S)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img22.png"
- ALT="$ G =(\Sigma,V,P,S)$"></SPAN> no ambigua, y dada una forma sentencial derecha 
-<!-- MATH
- $\alpha = \beta \gamma x$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="70" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img375.png"
- ALT="$ \alpha = \beta \gamma x$"></SPAN>, con <!-- MATH
- $x \in \Sigma^*$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="56" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
- SRC="img376.png"
- ALT="$ x \in \Sigma^*$"></SPAN>, el <A NAME="18333"></A><SPAN  CLASS="textbf">mango</SPAN> o <A NAME="18335"></A><SPAN  CLASS="textbf">handle</SPAN>  de 
-<SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img56.png"
- ALT="$ \alpha$"></SPAN> es la última producción/posición  que dió lugar a <SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img56.png"
- ALT="$ \alpha$"></SPAN>:
-</I>
-<P>
-<DIV ALIGN="CENTER"><I><!-- MATH
- $S \begin{array}{c} *\\\Longrightarrow  \\{\scriptstyle RM} \end{array} \beta B x \Longrightarrow \beta \gamma x = \alpha$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="198" HEIGHT="82" ALIGN="MIDDLE" BORDER="0"
- SRC="img377.png"
- ALT="$ S \begin{array}{c} * \Longrightarrow  {\scriptstyle RM} \end{array} \beta B x \Longrightarrow \beta \gamma x = \alpha$"></SPAN></I></DIV>
-<P></DIV><P></P>
-Escribiremos: 
-<!-- MATH
- $handle(\alpha) = (B \rightarrow \gamma, \beta \gamma)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="199" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img378.png"
- ALT="$ handle(\alpha) = (B \rightarrow \gamma, \beta \gamma)$"></SPAN>. La función <SPAN CLASS="MATH"><IMG
- WIDTH="57" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img379.png"
- ALT="$ handle$"></SPAN> tiene dos componentes:
-<!-- MATH
- $handle_1(\alpha) = B \rightarrow \gamma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="164" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img380.png"
- ALT="$ handle_1(\alpha) = B \rightarrow \gamma$"></SPAN> y 
-<!-- MATH
- $handle_2(\alpha) =  \beta \gamma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="134" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img381.png"
- ALT="$ handle_2(\alpha) = \beta \gamma$"></SPAN>
+En <code>Parse::Yapp</code> las acciones son convertidas en subrutinas
+anónimas. Mas bien en métodos anónimos. 
+Así pues el primer argumento de la subrutina se identifica con 
+una referencia al analizador (<code>$_[0]</code>).  Los restantes parámetros
+se corresponden con los <A NAME="18347"></A><SPAN  CLASS="textbf">atributos de los símbolos</SPAN>
+en la parte derecha de la regla de producción (<code>$_[1]</code> ...).
+Por ejemplo, el código en la línea 21 imprime el atributo asociado
+con la variable sintáctica <code>expr</code>, que en este caso es su valor numérico.
 
 <P>
-Si dispusieramos de un procedimiento que fuera capaz de identificar el mango,
-esto es, de detectar la regla y el lugar en el que se posiciona, tendríamos un
-mecanismo para construir un analizador. 
-Lo curioso es que, a menudo es posible encontrar un autómata finito que
-reconoce el lenguaje de los prefijos <!-- MATH
- $\beta \gamma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="26" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img382.png"
- ALT="$ \beta \gamma$"></SPAN> que terminan 
-en el mango. Con mas precisión, del lenguaje:
+La línea 17 indica que el atributo asociado con la variable
+sintáctica <code>input</code> es una referencia
+a una pila y que el atributo asociado con la variable sintáctica
+<code>line</code> debe empujarse
+en la pila. De hecho, el atributo asociado con <code>line</code> es el valor
+de la expresión. Asi pues el atributo retornado por <code>input</code> es
+una referencia a una lista conteniendo los valores de las expresiones
+evaluadas.
 
 <P>
-<P>
-<DIV><B>Definición  <SPAN CLASS="arabic">35</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">3</SPAN></B> &nbsp; 
-<I>El conjunto de <SPAN  CLASS="textbf">prefijos viables</SPAN> de una gramática G se define
-como  el conjunto:
-</I>
-<P>
-<DIV ALIGN="CENTER"><I><!-- MATH
- $PV = \left \{ \delta \in (\Sigma \cup V)* :  \exists S \begin{array}{c} *\\\Longrightarrow \\{\scriptstyle RM} \end{array} \alpha\  y\ \delta\ es\ un\ prefijo\ de\  handle_2(\alpha) \right \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="531" HEIGHT="82" ALIGN="MIDDLE" BORDER="0"
- SRC="img466.png"
- ALT="$ PV = \left \{ \delta \in (\Sigma \cup V)* : \exists S \begin{array}{c} * \Lo...
-... \end{array} \alpha y \delta es un prefijo de handle_2(\alpha) \right \}$"></SPAN></I></DIV></DIV><P></P>
+Para saber mas sobre las estructuras internas de 
+<code>yapp</code> para la representación  de las acciones asociadas con las reglas
+véase la sección <A HREF="node178.html#section:tablas">35.4</A>.
 
 <P>
-Esto es, es el lenguaje de los prefijos viables es el 
-conjunto de frases que son prefijos de 
-<!-- MATH
- $handle_2(\alpha)) =  \beta \gamma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="140" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img384.png"
- ALT="$ handle_2(\alpha)) = \beta \gamma$"></SPAN>, 
-siendo <SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img56.png"
- ALT="$ \alpha$"></SPAN> una forma sentencial derecha (<!-- MATH
- $\alpha \in FSD$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="78" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img385.png"
- ALT="$ \alpha \in FSD$"></SPAN>). Los
-elementos de <SPAN CLASS="MATH"><IMG
- WIDTH="32" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img386.png"
- ALT="$ PV$"></SPAN> se denominan prefijos viables.
+<PRE>
+19  
+20  line:  '\n'       { 0 }
+21      |  exp '\n'   { print "$_[1]\n"; $_[1] }
+22      |  error '\n' { $_[0]-&gt;YYErrok; 0 }
+23  ;
+</PRE>
 
 <P>
-Obsérvese que si se dispone de un autómata que reconoce 
-<SPAN CLASS="MATH"><IMG
- WIDTH="32" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img386.png"
- ALT="$ PV$"></SPAN> entonces se dispone de un mecanismo para investigar el lugar y 
-el aspecto que pueda tener el mango. Si damos como 
-entrada la sentencia <!-- MATH
- $\alpha = \beta \gamma x$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="70" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img375.png"
- ALT="$ \alpha = \beta \gamma x$"></SPAN>
-a dicho autómata, el autómata aceptará la cadena <!-- MATH
- $\beta \gamma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="26" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img382.png"
- ALT="$ \beta \gamma$"></SPAN> pero rechazará
-cualquier extensión del prefijo. Ahora sabemos que el mango 
-será alguna regla de producción de <SPAN CLASS="MATH"><IMG
- WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img21.png"
- ALT="$ G$"></SPAN> cuya parte derecha 
-sea un sufijo de  <!-- MATH
- $\beta \gamma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="26" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img382.png"
- ALT="$ \beta \gamma$"></SPAN>.
+El terminal
+<code>error</code> en la línea 22 esta asociado con la aparición de un error.
+El tratamiento es el mismo que en <code>yacc</code>. Cuando se produce un error
+en el análisis, <code>yapp</code> emite un mensaje de error y
+produce ``mágicamente'' un terminal especial denominado
+<code>error</code>. A partir de ahí permanecerá silencioso,
+consumiendo terminales hasta encontrar uno de los terminales que le
+hemos indicado en las reglas de recuperación de errores,
+en este caso, cuando encuentre un retorno de carro.
+Como se ha dicho, en <code>Parse::Yapp</code> el primer argumento de la acción denota al 
+analizador sintáctico. Así pues el código <code>$_[0]-&gt;YYErrok</code>
+es una llamada al método <code>YYErrok</code> del analizador. Este método
+funciona como la macro <code>yyerrok</code> de <code>yacc</code>, indicando 
+que la presencia del retorno del carro (<code>\n</code>) la podemos considerar
+un signo seguro de que nos hemos recuperado del error. A partir
+de este momento, <code>yapp</code> volverá a emitir mensajes de error.
+Para saber más sobre la recuperación de 
+errores en <code>yapp</code> léase la sección
+<A HREF="node189.html#section:errores">35.15</A>.
 
 <P>
+<PRE>
+24  
+25  exp:        NUM
+</PRE>
+La acción por defecto es retornar <code>$_[1]</code>. 
+Por tanto, en este caso el valor retornado es el asociado a <code>NUM</code>.
+<PRE>
+26          |   VAR           { $_[0]-&gt;YYData-&gt;{VARS}{$_[1]} }
+</PRE>
+El método <code>YYData</code> provee acceso a un hash que contiene los datos 
+que están siendo analizados. En este caso creamos una entrada
+<code>VARS</code> que es una referencia a un hash en el que guardamos las
+variables. Este hash es la tabla de símbolos de la calculadora.
+<PRE>
+27          |   VAR '=' exp   { $_[0]-&gt;YYData-&gt;{VARS}{$_[1]}=$_[3] }
+28          |   exp '+' exp   { $_[1] + $_[3] }
+29          |   exp '-' exp   { $_[1] - $_[3] }
+30          |   exp '*' exp   { $_[1] * $_[3] }
+</PRE>
+Hay numerosas ambiguedades en esta gramática. Por ejemplo,
+
 <P>
-<DIV><A NAME="definition:slrautomata"><B>Definición  <SPAN CLASS="arabic">35</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">4</SPAN></B></A> &nbsp; 
-<I>El siguiente autómata finito no determinista puede ser utilizado para
-reconocer el lenguaje de los prefijos viables PV:
-</I>
+
 <UL>
-<LI><!-- MATH
- $Alfabeto = V \cup \Sigma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="143" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img467.png"
- ALT="$ Alfabeto = V \cup \Sigma$"></SPAN>
-</LI>
-<LI>Los estados del autómata se denominan LR(0) items. Son parejas formadas
-por una regla de producción de la gramática y una posición en la parte derecha 
-de la regla de producción. Por ejemplo, <!-- MATH
- $(E \rightarrow E + E, 2)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="125" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img387.png"
- ALT="$ (E \rightarrow E + E, 2)$"></SPAN> sería un
-LR(0) item para la gramática de las expresiones.
-
-<P>
-Conjunto de Estados:
-
-<P>
+<LI>¿Como debo interpretar la expresión <code>4 - 5 - 2</code>?
+¿Como <code>(4 - 5) - 2</code>? ¿o bien <code>4 - (5 - 2)</code>?
+La respuesta la da la asignación de asociatividad a los operadores
+que hicimos en las líneas 9-13.
+Al declarar como asociativo a izquierdas al terminal <code>-</code> 
+(línea 10) hemos 
+resuelto este tipo de ambiguedad. Lo que estamos haciendo es
+indicarle al analizador que a la hora de elegir entre 
+los árboles abstractos 
 <!-- MATH
- $Q =  \left \{ (A \rightarrow \alpha, n) :  A \rightarrow \alpha \in P,\ n \le |\alpha| \right \}$
+ $-(-(4,5),2)$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="309" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img388.png"
- ALT="$ Q = \left \{ (A \rightarrow \alpha, n) : A \rightarrow \alpha \in P, n \le \vert\alpha\vert \right \}$"></SPAN>
-
-<P>
-La notación <!-- MATH
- $\mid \alpha \mid$
+ WIDTH="101" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img460.png"
+ ALT="$ -(-(4,5),2)$"></SPAN> y <!-- MATH
+ $-(4, -(5,2))$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="35" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img389.png"
- ALT="$ \mid \alpha \mid$"></SPAN> denota la longitud de la cadena <!-- MATH
- $\mid \alpha \mid$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="35" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img389.png"
- ALT="$ \mid \alpha \mid$"></SPAN>.
- En vez de la notación <!-- MATH
- $(A \rightarrow \alpha, n)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="88" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img390.png"
- ALT="$ (A \rightarrow \alpha, n)$"></SPAN> escribiremos: 
- <!-- MATH
- $A \rightarrow \beta _\uparrow \gamma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="72" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img391.png"
- ALT="$ A \rightarrow \beta _\uparrow \gamma$"></SPAN> <SPAN CLASS="MATH"><IMG
- WIDTH="34" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img392.png"
- ALT="$ = \alpha$"></SPAN>, 
- donde la flecha ocupa el lugar indicado por el número <!-- MATH
- $n = \mid \beta \mid$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="64" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img393.png"
- ALT="$ n = \mid \beta \mid$"></SPAN> :
+ WIDTH="101" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img461.png"
+ ALT="$ -(4, -(5,2))$"></SPAN> elija siempre
+el árbol que se hunde a izquierdas.
 </LI>
-<LI>Función de transición:
+<LI>¿Como debo interpretar la expresión <code>4 - 5 * 2</code>?
+¿Como <code>(4 - 5) * 2</code>? ¿o bien <code>4 - (5 * 2)</code>?
+Al declarar que <code>*</code> tiene mayor prioridad que <code>-</code> estamos
+resolviendo esta otra fuente de ambiguedad. Esto es así pues
+<code>*</code> fué declarado en la línea 11 y <code>-</code> en la 10.
+</LI>
+</UL>
 
 <P>
+<PRE>
+31          |   exp '/' exp   {
+32                              $_[3]
+33                              and return($_[1] / $_[3]);
+34                              $_[0]-&gt;YYData-&gt;{ERRMSG}
+35                                =   "Illegal division by zero.\n";
+36                              $_[0]-&gt;YYError;
+37                              undef
+38                            }
+</PRE>
+
+<P>
+En la regla de la división comprobamos que el divisor es 
+distinto de cero. Si es cero inicializamos el atributo 
+<code>ERRMSG</code> en la zona de datos con el mensaje de
+error apropiado. Este mensaje es aprovechado por la subrutina
+de tratamiento de errores (véase la subrutina <code>_Error</code>
+en la zona de la cola). La subrutina <code>_Error</code> es llamada
+automáticamente por <code>yapp</code> cada vez que ocurre un error
+sintáctico. Esto es asi por que en la llamada 
+al analizador se especifican quienes son las diferentes
+rutinas de apoyo:
+
+<P>
+<PRE>
+my $result = $self-&gt;YYParse( yylex =&gt; \&amp;_Lexer, 
+                             yyerror =&gt; \&amp;_Error,
+                             yydebug =&gt; 0x0 );
+</PRE>
+
+<P>
+Por defecto, <SPAN  CLASS="textbf">una regla de producción
+tiene la prioridad del último terminal que aparece
+en su parte derecha</SPAN>.
+Una regla de producción puede ir seguida de una directiva
+<code>%prec</code> la cual le da una prioridad explícita.  
+Esto puede ser de gran ayuda en ciertos casos de 
+ambiguedad.
+
+<P>
+<PRE>
+39          |   '-' exp %prec NEG   { -$_[2] }
+</PRE>
+¿Cual es la ambiguedad que surge con esta regla? 
+Una de las ambiguedad de esta regla 
+esta relacionada con el doble significado
+del menos como operador unario y binario: hay frases
+como <code>-y-z</code> que tiene dos posibles interpretaciones:
+Podemos verla como <code>(-y)-z</code> o bien como <code>-(y-z)</code>.
+Hay dos árboles posibles. El analizador, cuando este analizando
+la entrada <code>-y-z</code> y vea el
+segundo <code>-</code> deberá escoger uno de los dos árboles. 
+¿Cuál?. El conflicto puede verse como una ``lucha'' entre
+la regla <code>exp: '-' exp</code> la cual interpreta la frase como
+<code>(-y)-z</code> y la segunda aparición del terminal <code>-</code> 
+el cuál ``quiere entrar'' para que gane la regla <code>exp: exp '-' exp</code>
+y dar lugar a la interpretación <code>-(y-z)</code>.
+En este caso, las dos reglas 
 <!-- MATH
- $\delta(A \rightarrow \alpha _\uparrow X \beta, X) = A \rightarrow \alpha X _\uparrow \beta\ \forall X \in  V \cup \Sigma$
+ $E \rightarrow - E$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="342" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img394.png"
- ALT="$ \delta(A \rightarrow \alpha _\uparrow X \beta, X) = A \rightarrow \alpha X _\uparrow \beta \forall X \in V \cup \Sigma$"></SPAN> 
+ WIDTH="73" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img462.png"
+ ALT="$ E \rightarrow - E$"></SPAN> y <!-- MATH
+ $E \rightarrow E - E$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="95" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img463.png"
+ ALT="$ E \rightarrow E - E$"></SPAN> tienen, en principio
+la prioridad del terminal <code>-</code>, el cual fué declarado en la
+línea 10.
+La prioridad expresada explícitamente
+para la regla por la declaración <code>%prec NEG</code> de la línea
+39 hace que la regla tenga la prioridad
+del terminal <code>NEG</code> (línea 12) y por tanto mas prioridad
+que el terminal <code>-</code>. Esto hará que <code>yapp</code> finalmente opte
+por la regla <code>exp: '-' exp</code>.
 
 <P>
-<!-- MATH
- $\delta(A \rightarrow \alpha _\uparrow B \beta, \epsilon) = B \rightarrow \gamma  \forall B \in  V$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="259" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img468.png"
- ALT="$ \delta(A \rightarrow \alpha _\uparrow B \beta, \epsilon) = B \rightarrow \gamma \forall B \in V$"></SPAN> 
+La declaración de <code>^</code> como asociativo a derechas y con un nivel
+de prioridad alto resuelve las ambiguedades relacionadas 
+con este operador:
+
+<P>
+<PRE>
+40          |   exp '^' exp         { $_[1] ** $_[3] }
+41          |   '(' exp ')'         { $_[2] }
+42  ;
+</PRE>
+
+<P>
+Después de la parte de la gramática, y separada de la anterior
+por el símbolo <code>%%</code>, sigue la parte en la que se 
+suelen poner las rutinas de apoyo. Hay al menos dos rutinas de apoyo que 
+el analizador sintáctico requiere le sean pasados como argumentos: 
+la de manejo de errores y la de análisis léxico. El método <code>Run</code>
+ilustra como se hace la llamada al método de análisis sintáctico 
+generado, utilizando la técnica de llamada con argumentos con nombre 
+y pasándole las referencias a las dos subrutinas (en Perl,
+es un convenio que si el nombre de una subrutina comienza
+por un guión bajo es que el autor la considera privada):
+<PRE>
+...
+
+sub Run {
+    my($self)=shift;
+    my $result = $self-&gt;YYParse( yylex =&gt; \&amp;_Lexer, 
+                                 yyerror =&gt; \&amp;_Error,
+                                 yydebug =&gt; 0x0 );
+    my @result = @$result;
+    print "@result\n";
+}
+</PRE>
+
+<P>
+La subrutina de manejo de errores <code>_Error</code> imprime 
+el mensaje de error proveído por el usuario, el cual, si existe, fué guardado en
+<code>$_[0]-&gt;YYData-&gt;{ERRMSG}</code>.
+<PRE>
+43  # rutinas de apoyo 
+44  %%
+45  
+46  sub _Error {
+47    exists $_[0]-&gt;YYData-&gt;{ERRMSG}
+48      and do {
+49          print $_[0]-&gt;YYData-&gt;{ERRMSG};
+50          delete $_[0]-&gt;YYData-&gt;{ERRMSG};
+51          return;
+52      };
+53    print "Syntax error.\n";
+54  }
+55
+</PRE>
+A continuación sigue el método que implanta
+el  análisis léxico <code>_Lexer</code>.
+En primer lugar se comprueba la existencia de
+datos en <code>parser-&gt;YYData-&gt;{INPUT}</code>. Si no es el caso, los datos
+se tomarán de la entrada estándar:
+<PRE>
+56  sub _Lexer {
+57    my($parser)=shift;
+58  
+59    defined($parser-&gt;YYData-&gt;{INPUT})
+60    or  $parser-&gt;YYData-&gt;{INPUT} = &lt;STDIN&gt;
+61    or  return('',undef);
+62
+</PRE>
+Cuando el analizador léxico alcanza el final de la entrada
+debe devolver la pareja <code>('',undef)</code>.
+
+<P>
+Eliminamos los blancos iniciales (lo que en inglés se conoce por
+<A NAME="18349"></A><SPAN  CLASS="textbf">trimming</SPAN>):
+<PRE>
+63    $parser-&gt;YYData-&gt;{INPUT}=~s/^[ \t]//;
+64
+</PRE>
+A continuación vamos detectando los números, identificadores
+y los símbolos individuales. El bucle <code>for ($parser-&gt;YYData-&gt;{INPUT})</code>
+se ejecuta mientras la cadena
+en <code>$parser-&gt;YYData-&gt;{INPUT}</code> no sea vacía, lo que ocurrirá cuando todos 
+los terminales hayan sido consumidos.
+
+<P>
+<PRE>
+65    for ($parser-&gt;YYData-&gt;{INPUT}) {
+66      s/^([0-9]+(?:\.[0-9]+)?)//
+67        and return('NUM',$1);
+68      s/^([A-Za-z][A-Za-z0-9_]*)//
+69        and return('VAR',$1);
+70      s/^(.)//s
+71        and return($1,$1);
+72    }
+73  }
+</PRE>
+
+<P>
+<P>
+<DIV><B>Ejercicio  <SPAN CLASS="arabic">35</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<OL>
+<LI>¿Quién es la variable índice en la línea 65? 
 </LI>
-<LI>Estado de arranque: Se añade la ``superregla'' <!-- MATH
- $S' \rightarrow S$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="60" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
- SRC="img396.png"
- ALT="$ S' \rightarrow S$"></SPAN> a la gramática <!-- MATH
- $G = (\Sigma,V,P,S)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img22.png"
- ALT="$ G =(\Sigma,V,P,S)$"></SPAN>. El LR(0) item 
-<!-- MATH
- $S' \rightarrow _\uparrow S$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="67" HEIGHT="35" ALIGN="MIDDLE" BORDER="0"
- SRC="img397.png"
- ALT="$ S' \rightarrow _\uparrow S$"></SPAN> es el estado de arranque.
+<LI>¿Sobre quién ocurre el binding en las líneas 66, 68 y 70? 
 </LI>
-<LI>Todos los estados definidos (salvo el de muerte) son de aceptación.
+<LI>¿Cual es la razón por la que <code>$parser-&gt;YYData-&gt;{INPUT}</code> se 
+ve modificado si no aparece como variable para el binding en las líneas 66, 68 y 70?
 </LI>
-</UL></DIV><P></P>
+</OL></DIV><P></P>
 
 <P>
-Denotaremos por <SPAN CLASS="MATH"><IMG
- WIDTH="52" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img398.png"
- ALT="$ LR(0)$"></SPAN> a este autómata. Sus estados se denominan <!-- MATH
- $LR(0)-items$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="117" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img399.png"
- ALT="$ LR(0)-items$"></SPAN>. La idea es que este
-autómata nos ayuda a reconocer los prefijos viables <SPAN CLASS="MATH"><IMG
- WIDTH="32" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img386.png"
- ALT="$ PV$"></SPAN>.
+Construimos el módulo <code>Calc.pm</code> a partir del fichero <code>Calc.yp</code>
+especificando la gramática, usando un fichero <code>Makefile</code>:
+<PRE>
+&gt; cat Makefile
+Calc.pm: Calc.yp
+        yapp -m Calc Calc.yp
+&gt; make
+yapp -m Calc Calc.yp
+</PRE>
+Esta compilación genera el fichero <code>Calc.pm</code> conteniendo el
+analizador:
+<PRE>
+&gt; ls -ltr
+total 96
+-rw-r-----    1 pl       users        1959 Oct 20  1999 Calc.yp
+-rw-r-----    1 pl       users          39 Nov 16 12:26 Makefile
+-rwxrwx--x    1 pl       users          78 Nov 16 12:30 usecalc.pl
+-rw-rw----    1 pl       users        5254 Nov 16 12:35 Calc.pm
+</PRE>
 
 <P>
-Una vez que se tiene un autómata que reconoce los prefijos viables es posible construir un analizador sintáctico que construye una antiderivación a derechas. La estrategia consiste en ``alimentar'' el autómata con la forma sentencial derecha. El lugar en el que el autómata se detiene, rechazando indica el lugar exacto en el que termina el <SPAN  CLASS="textbf">handle</SPAN> de dicha forma.
+El script <code>yapp</code> es un <SPAN  CLASS="textbf">frontend</SPAN> al módulo <code>Parse::Yapp</code>.
+Admite diversas formas de uso:
 
 <P>
+
+<UL>
+<LI><TT>yapp [options] <SPAN  CLASS="textit">grammar</SPAN>[.yp]</TT>
+
 <P>
-<DIV><A NAME="example:asb"><B>Ejemplo  <SPAN CLASS="arabic">35</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">1</SPAN></B></A> &nbsp; 
-<I>Consideremos la gramática:
-</I>
+El sufijo <TT>.yp</TT> es opcional.
+</LI>
+<LI><TT>yapp <SPAN  CLASS="textit">-V</SPAN></TT>
+
 <P>
-<I>
-<BR>
-<BR>
-</I>
-<DIV ALIGN="CENTER"><TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><I>
-S      <!-- MATH
- $\rightarrow$
+Nos muestra la versión:
+<PRE>
+$ yapp -V
+This is Parse::Yapp version 1.05.
+</PRE>
+
+<P>
+</LI>
+<LI><TT>yapp <SPAN  CLASS="textit">-h</SPAN></TT>
+
+<P>
+Nos muestra la ayuda:
+
+<P>
+<PRE>
+$ yapp -h
+
+Usage:  yapp [options] grammar[.yp]
+  or    yapp -V
+  or    yapp -h
+
+    -m module   Give your parser module the name &lt;module&gt;
+                default is &lt;grammar&gt;
+    -v          Create a file &lt;grammar&gt;.output describing your parser
+    -s          Create a standalone module in which the driver is included
+    -n          Disable source file line numbering embedded in your parser
+    -o outfile  Create the file &lt;outfile&gt; for your parser module
+                Default is &lt;grammar&gt;.pm or, if -m A::Module::Name is
+                specified, Name.pm
+    -t filename Uses the file &lt;filename&gt; as a template for creating the parser
+                module file.  Default is to use internal template defined
+                in Parse::Yapp::Output
+    -b shebang  Adds '#!&lt;shebang&gt;' as the very first line of the output file
+
+    grammar     The grammar file. If no suffix is given, and the file
+                does not exists, .yp is added
+
+    -V          Display current version of Parse::Yapp and gracefully exits
+    -h          Display this help screen
+</PRE>
+
+<P>
+</LI>
+</UL>
+
+<P>
+La opción <SPAN  CLASS="textit">-m module</SPAN> 
+da el nombre  al paquete o espacio de nombres o clase encapsulando el
+analizador. Por defecto toma el nombre de la gramática.  En el ejemplo
+podría haberse omitido.
+
+<P>
+La opción <SPAN  CLASS="textit">-o outfile</SPAN> 
+da el nombre del fichero de salida. Por defecto toma el nombre de la gramática,
+seguido del sufijo <code>.pm</code>. sin embargo, si hemos especificado la opción
+<SPAN  CLASS="textit">-m A::Module::Name</SPAN> el valor por defecto será  <SPAN  CLASS="textbf">Name.pm</SPAN>.
+
+<P>
+Veamos los contenidos del ejecutable <code>usecalc.pl</code> el cuál
+utiliza el módulo generado por <code>yapp</code>:
+<PRE>
+&gt; cat usecalc.pl
+#!/usr/local/bin/perl5.8.0 -w
+
+use Calc;
+
+$parser = new Calc();
+$parser-&gt;Run;
+</PRE>
+Al ejecutar obtenemos:
+<PRE>
+$ ./usecalc3.pl
+2+3
+5
+4*8
+32
+^D
+5 32
+</PRE>
+Pulsamos al final <code>Ctrl-D</code> para generar el final de fichero.
+El analizador devuelve la lista de valores computados la cual es 
+finalmente impresa.
+
+<P>
+¿En que orden ejecuta <code>YYParse</code> las acciones? 
+La respuesta es que el analizador generado por 
+<code>yapp</code> construye una derivación a derechas 
+inversa y ejecuta las acciones asociadas a las reglas de producción
+que se han aplicado. Así, para la frase <code>3+2</code> la antiderivación es:
+
+<P>
+<DIV ALIGN="CENTER">
+</DIV><!-- MATH
+ \begin{math}
+NUM + NUM \stackrel{NUM \leftarrow E}{\Longleftarrow} E + NUM \stackrel{NUM \leftarrow E}{\Longleftarrow} E + E \stackrel{E +E \leftarrow E}{\Longleftarrow} E
+\end{math}
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> a S b</I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-S      <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> <SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img20.png"
- ALT="$ \epsilon$"></SPAN></I></TD>
-</TR>
-</TABLE></DIV><I>
-<BR>
-<BR>
-</I>
-<P>
-<I>El lenguaje generado por esta gramática es <!-- MATH
- $L(G) = \{ a^n b^n\ :\ n \ge 0 \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="188" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img400.png"
- ALT="$ L(G) = \{ a^n b^n : n \ge 0 \}$"></SPAN>
-Es bien sabido que el lenguaje <SPAN CLASS="MATH"><IMG
- WIDTH="44" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img39.png"
- ALT="$ L(G)$"></SPAN> no es regular.
-La figura <A HREF="#fig:nfa">35.1</A> muestra 
-el <A NAME="18337"></A><SPAN  CLASS="textbf">autómata finito no determinista con <SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img20.png"
- ALT="$ \epsilon$"></SPAN>-transiciones</SPAN> 
-(<A NAME="18339"></A><SPAN  CLASS="textbf">NFA</SPAN>)
-que reconoce los prefijos viables de esta gramática, construido
-de acuerdo con el algoritmo <A HREF="#definition:slrautomata">35.2.4</A>.
-</I>
-<P>
-<DIV ALIGN="CENTER"></DIV>
-<DIV ALIGN="CENTER"><A NAME="fig:nfa"></A><A NAME="17420"></A>
-<TABLE>
-<CAPTION ALIGN="BOTTOM"><STRONG>Figura 35.1:</STRONG>
-NFA que reconoce los prefijos viables</CAPTION>
-<TR><TD></TD></TR>
-</TABLE>
+ WIDTH="477" HEIGHT="49" ALIGN="MIDDLE" BORDER="0"
+ SRC="img464.png"
+ ALT="$ NUM + NUM \stackrel{NUM \leftarrow E}{\Longleftarrow} E + NUM \stackrel{NUM \leftarrow E}{\Longleftarrow} E + E \stackrel{E +E \leftarrow E}{\Longleftarrow} E
+$"></SPAN>
+<DIV ALIGN="CENTER">
 </DIV>
-<DIV ALIGN="CENTER"></DIV></DIV><P></P>
 
 <P>
+por tanto las acciones ejecutadas son las asociadas con las correspondientes reglas 
+de producción:
+
+<OL>
+<LI>La acción de la línea 25:
+<PRE>
+25  exp:        NUM { $_[1]; } # acción por defecto
+</PRE>
+Esta instancia de <code>exp</code> tiene ahora como atributo <code>3</code>.
+</LI>
+<LI>De nuevo la acción de la línea 25:
+<PRE>
+25  exp:        NUM { $_[1]; } # acción por defecto
+</PRE>
+Esta nueva instancia de <code>exp</code> tiene como atributo <code>2</code>.
+</LI>
+<LI>La acción asociada con <!-- MATH
+ $E \rightarrow E + E$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="95" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img465.png"
+ ALT="$ E \rightarrow E + E$"></SPAN>, en la línea 28:
+<PRE>
+28          |   exp '+' exp   { $_[1] + $_[3] }
+</PRE>
+La nueva instancia (nodo) <code>exp</code> tiene como atributo <code>5 = 3 + 2</code>. 
+</LI>
+</OL>
+Obsérvese que la antiderivación a derechas da lugar a un
+recorrido ascendente y a izquierdas del árbol:
+
 <P>
-<DIV><B>Ejercicio  <SPAN CLASS="arabic">35</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Simule el comportamiento del autómata sobre la entrada <SPAN CLASS="MATH"><IMG
- WIDTH="38" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img402.png"
- ALT="$ aabb$"></SPAN>. ¿Donde rechaza?
-¿En que estados está el autómata en el momento del rechazo?. ¿Qué etiquetas tienen?
-Haga también las
-trazas del autómata para las entradas <SPAN CLASS="MATH"><IMG
- WIDTH="50" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img403.png"
- ALT="$ aaSbb$"></SPAN> y <SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img404.png"
- ALT="$ aSb$"></SPAN>. ¿Que antiderivación 
-ha construido el autómata con sus sucesivos rechazos? ¿Que terminales
-se puede esperar que hayan en la entrada cuando se produce el rechazo
-del autómata?</I></DIV><P></P>
+<PRE>
+                         E(3)
+                       / | \
+                    (1)E + E(2)
+                      /     \ 
+                    NUM     NUM
+</PRE>
+
+<P>
+Los números entre paréntesis indican el orden de visita de las producciones.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4832"
+<A NAME="tex2html4836"
   HREF="node176.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4826"
-  HREF="node173.html">
+<A NAME="tex2html4830"
+  HREF="node174.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4820"
+<A NAME="tex2html4824"
   HREF="node174.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4828"
-  HREF="node218.html">
+<A NAME="tex2html4832"
+  HREF="node219.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4830"
-  HREF="node221.html">
+<A NAME="tex2html4834"
+  HREF="node222.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -692,12 +733,12 @@ del autómata?</I></DIV><P></P>
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4833"
-  HREF="node176.html">Construcción de las Tablas</A>
-<B>Sup:</B> <A NAME="tex2html4827"
-  HREF="node173.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4821"
-  HREF="node174.html">Parse::Yapp: Ejemplo de Uso</A>
+<B> Sig:</B> <A NAME="tex2html4837"
+  HREF="node176.html">Conceptos Básicos</A>
+<B>Sup:</B> <A NAME="tex2html4831"
+  HREF="node174.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4825"
+  HREF="node174.html">Análisis Sintáctico Ascendente en</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

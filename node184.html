@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Esquemas de Traducción</TITLE>
-<META NAME="description" CONTENT="Esquemas de Traducción">
+<TITLE>Acciones en Medio de una Regla</TITLE>
+<META NAME="description" CONTENT="Acciones en Medio de una Regla">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node185.html">
 <LINK REL="previous" HREF="node183.html">
-<LINK REL="up" HREF="node173.html">
+<LINK REL="up" HREF="node174.html">
 <LINK REL="next" HREF="node185.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4960"
+<A NAME="tex2html4964"
   HREF="node185.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4954"
-  HREF="node173.html">
+<A NAME="tex2html4958"
+  HREF="node174.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4948"
+<A NAME="tex2html4952"
   HREF="node183.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4956"
-  HREF="node218.html">
+<A NAME="tex2html4960"
+  HREF="node219.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4958"
-  HREF="node221.html">
+<A NAME="tex2html4962"
+  HREF="node222.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,131 +88,113 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4961"
-  HREF="node185.html">Definición Dirigida por la</A>
-<B>Sup:</B> <A NAME="tex2html4955"
-  HREF="node173.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4949"
-  HREF="node183.html">Acciones en Medio de</A>
+<B> Sig:</B> <A NAME="tex2html4965"
+  HREF="node185.html">Esquemas de Traducción</A>
+<B>Sup:</B> <A NAME="tex2html4959"
+  HREF="node174.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4953"
+  HREF="node183.html">Construcción del Árbol Sintáctico</A>
 <B> Con:</B> 
-<A NAME="tex2html4956"
-  HREF="node218.html">
+<A NAME="tex2html4960"
+  HREF="node219.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4958"
-  HREF="node221.html">
+<A NAME="tex2html4962"
+  HREF="node222.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION058110000000000000000">
-Esquemas de Traducción</A>
+<H1><A NAME="SECTION058100000000000000000">
+Acciones en Medio de una Regla</A>
 </H1>
-Un <A NAME="18409"></A><SPAN  CLASS="textbf">esquema de traducción</SPAN> es una gramática independiente del
-contexto en la cuál se han asociado atributos a los símbolos de la gramática.
-Un atributo queda caracterizado por un identificador
-o nombre y un tipo o clase. Además se han insertado acciones, esto es,
-código Perl/Python/C, ...en medio de las partes derechas.
-En ese código es posible referenciar los atributos de los
-símbolos de la gramática como variables del lenguaje subyacente.
+A veces necesitamos insertar una acción en medio de una regla.
+Una acción en medio de una regla puede hacer referencia a los atributos de
+los símbolos que la preceden (usando <code>$n</code>), pero no a los que le siguen.
 
 <P>
-Recuerde que el orden en que se evalúan los fragmentos de código
-es el de un recorrido primero-profundo del árbol de análisis sintáctico.
-Mas específicamente, considerando a las acciones como hijos-hoja del nodo,
-el recorrido que realiza un esquema de traducción es:
-
-<P>
-<PRE>
- 1     sub esquema_de_traduccion {
- 2       my $node = shift;
- 3 
- 4       for my $child ($node-&gt;children) { # de izquierda a derecha
- 5         if ($child-&gt;isa('ACTION') {
- 6           $child-&gt;execute;
- 7         }
- 8         else { esquema_de_traduccion($child) }
- 9       }
-10     }
-</PRE>
-
-<P>
-Obsérvese que, como el bucle de la línea 4 recorre a los hijos
-de izquierda a derecha, se debe dar la siguiente
-condición para que un esquema  de traducción funcione:
-
-<P>
-Para cualquier regla de producción aumentada con acciones, de la forma 
+Cuando se  inserta una acción <!-- MATH
+ $\left \{ action_1\right \}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="78" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img472.png"
+ ALT="$ \left \{ action_1\right \}$"></SPAN>
+para su ejecución en medio de una regla <!-- MATH
+ $A \rightarrow \alpha
+\beta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="67" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img115.png"
+ ALT="$ A \rightarrow \alpha \beta $"></SPAN> :
+<DIV ALIGN="CENTER">
+<!-- MATH
+ $A \rightarrow \alpha \left \{ action_1 \right \} \beta \left \{ action_2\right \}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="222" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img473.png"
+ ALT="$ A \rightarrow \alpha \left \{ action_1 \right \} \beta \left \{ action_2\right \}$"></SPAN>
+</DIV>
+<code>yapp</code> crea una variable sintáctica temporal <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img474.png"
+ ALT="$ T$"></SPAN> e introduce una nueva regla:
 
 <P>
 <DIV ALIGN="CENTER">
-<!-- MATH
- $A \rightarrow X_1 \ldots X_j$
+</DIV>
+<OL>
+<LI><!-- MATH
+ $A \rightarrow \alpha T \beta \left \{ action_2\right \}$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="115" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img477.png"
- ALT="$ A \rightarrow X_1 \ldots X_j$"></SPAN><code>{ action($A{b}, $X</code><SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img478.png"
- ALT="$ _1$"></SPAN><code>{c}</code><SPAN CLASS="MATH"><IMG
- WIDTH="25" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img479.png"
- ALT="$ \ldots$"></SPAN><code> X</code><SPAN CLASS="MATH"><IMG
- WIDTH="14" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img480.png"
- ALT="$ _n$"></SPAN><code>{d})}</code><!-- MATH
- $X_{j+1} \ldots X_n$
+ WIDTH="155" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img475.png"
+ ALT="$ A \rightarrow \alpha T \beta \left \{ action_2\right \}$"></SPAN> 
+</LI>
+<LI><!-- MATH
+ $T \rightarrow \epsilon \left \{ action_1 \right \}$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="93" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img481.png"
- ALT="$ X_{j+1} \ldots X_n$"></SPAN>
+ WIDTH="127" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img476.png"
+ ALT="$ T \rightarrow \epsilon \left \{ action_1 \right \}$"></SPAN>
+</LI>
+</OL>
+<DIV ALIGN="CENTER">
 </DIV>
 
 <P>
-debe ocurrir que los atributos evaluados en
-la acción insertada después de <SPAN CLASS="MATH"><IMG
- WIDTH="26" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img454.png"
- ALT="$ X_j$"></SPAN> 
-dependan de atributos y variables que fueron computadas durante
-la visita de los hermanos izquierdos o de sus ancestros.
-En particular no deberían depender de atributos asociados
-con las variables <!-- MATH
- $X_{j+1} \ldots X_n$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="93" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img481.png"
- ALT="$ X_{j+1} \ldots X_n$"></SPAN>. Ello no significa que
-no sea correcto evaluar atributos de <!-- MATH
- $X_{j+1} \ldots X_n$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="93" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img481.png"
- ALT="$ X_{j+1} \ldots X_n$"></SPAN>
-en esa acción.
+Las acciones en mitad de una regla cuentan como un símbolo mas en la parte 
+derecha de la regla. Asi pues, en una acción posterior en la regla,
+se deberán referenciar los  atributos de los símbolos, teniendo en cuenta este hecho.
+
+<P>
+Las acciones en mitad de la regla pueden tener un atributo. 
+Las acciones posteriores
+en la regla se referirán a él como <code>$_[n]</code>, siendo <code>n</code> su número de orden
+en la parte derecha. 
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4960"
+<A NAME="tex2html4964"
   HREF="node185.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4954"
-  HREF="node173.html">
+<A NAME="tex2html4958"
+  HREF="node174.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4948"
+<A NAME="tex2html4952"
   HREF="node183.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4956"
-  HREF="node218.html">
+<A NAME="tex2html4960"
+  HREF="node219.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4958"
-  HREF="node221.html">
+<A NAME="tex2html4962"
+  HREF="node222.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -259,12 +241,12 @@ en esa acción.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4961"
-  HREF="node185.html">Definición Dirigida por la</A>
-<B>Sup:</B> <A NAME="tex2html4955"
-  HREF="node173.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4949"
-  HREF="node183.html">Acciones en Medio de</A>
+<B> Sig:</B> <A NAME="tex2html4965"
+  HREF="node185.html">Esquemas de Traducción</A>
+<B>Sup:</B> <A NAME="tex2html4959"
+  HREF="node174.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4953"
+  HREF="node183.html">Construcción del Árbol Sintáctico</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

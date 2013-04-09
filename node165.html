@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Depuración en jison</TITLE>
-<META NAME="description" CONTENT="Depuración en jison">
+<TITLE>Precedencia y Asociatividad</TITLE>
+<META NAME="description" CONTENT="Precedencia y Asociatividad">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -28,20 +28,20 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4655"
+<A NAME="tex2html4659"
   HREF="node166.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4649"
+<A NAME="tex2html4653"
   HREF="node155.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4643"
+<A NAME="tex2html4647"
   HREF="node164.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4651"
-  HREF="node218.html">
+<A NAME="tex2html4655"
+  HREF="node219.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4653"
-  HREF="node221.html">
+<A NAME="tex2html4657"
+  HREF="node222.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,47 +88,390 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4656"
-  HREF="node166.html">Construcción del Árbol Sintáctico</A>
-<B>Sup:</B> <A NAME="tex2html4650"
+<B> Sig:</B> <A NAME="tex2html4660"
+  HREF="node166.html">Depuración en jison</A>
+<B>Sup:</B> <A NAME="tex2html4654"
   HREF="node155.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4644"
-  HREF="node164.html">Precedencia y Asociatividad</A>
+<B> Ant:</B> <A NAME="tex2html4648"
+  HREF="node164.html">El módulo Generado por</A>
 <B> Con:</B> 
-<A NAME="tex2html4651"
-  HREF="node218.html">
+<A NAME="tex2html4655"
+  HREF="node219.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4653"
-  HREF="node221.html">
+<A NAME="tex2html4657"
+  HREF="node222.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
 <H1><A NAME="SECTION057100000000000000000"></A>
-<A NAME="section:depuracion"></A>
+<A NAME="section:prioridades"></A>
 <BR>
-Depuración en <TT>jison</TT>
+Precedencia y Asociatividad
 </H1>
+Recordemos que si al construir la tabla LALR,
+alguna de las entradas de la tabla resulta multievaluada, decimos
+que existe un conflicto.
+Si una de las acciones es de `reducción'' y la otra es de
+`desplazamiento'', se dice que hay un <A NAME="17018"></A><SPAN  CLASS="textbf">conflicto shift-reduce</SPAN> o
+<A NAME="17020"></A><SPAN  CLASS="textbf">conflicto de desplazamiento-reducción</SPAN>. Si las
+dos reglas indican una acción de reducción, decimos que tenemos un 
+<A NAME="17022"></A><SPAN  CLASS="textbf">conflicto reduce-reduce</SPAN> o de <A NAME="17024"></A><SPAN  CLASS="textbf">reducción-reducción</SPAN>.
+En caso de que no existan indicaciones específicas <SPAN  CLASS="textbf">jison</SPAN> resuelve
+los conflictos que aparecen en la construcción de la tabla utilizando
+las siguientes reglas:
+
+<P>
+
+<OL>
+<LI>Un conflicto <SPAN  CLASS="textbf">reduce-reduce</SPAN> se resuelve eligiendo la producción
+que se listó primero en la especificación de la gramática.
+</LI>
+<LI>Un conflicto <SPAN  CLASS="textbf">shift-reduce</SPAN> se resuelve siempre en favor del <SPAN  CLASS="textbf">shift</SPAN>
+</LI>
+</OL>
+
+<P>
+Las declaraciones de precedencia y asociatividad mediante las
+palabras reservadas  <TT>%left</TT> ,  <TT>%right</TT> ,  <TT>%nonassoc</TT> 
+se utilizan para modificar estos criterios por defecto. 
+La declaración de  <TT>token</TT> s mediante la palabra
+reservada  <TT>%token</TT>  no modifica la precedencia. Si lo hacen las
+declaraciones realizadas usando las palabras  <TT>left</TT> ,  <TT>right</TT> 
+y  <TT>nonassoc</TT> . 
+
+<P>
+
+<OL>
+<LI>Los <SPAN  CLASS="textbf">tokens</SPAN> declarados  en la misma línea
+tienen igual precedencia e igual asociatividad. 
+La precedencia es mayor cuanto mas abajo 
+su posición en
+el texto. Así, en el ejemplo de la calculadora en la sección 
+<A HREF="node175.html#section:ejemplodeuso">35.1</A>, el <SPAN  CLASS="textbf">token</SPAN> <code>*</code> tiene 
+mayor precedencia que <code>+</code> pero la misma que <code>/</code>.
+</LI>
+<LI>La precedencia de una regla <!-- MATH
+ $A \rightarrow \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img27.png"
+ ALT="$ A \rightarrow \alpha$"></SPAN> se
+define como la del terminal mas a la derecha que aparece en
+<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img56.png"
+ ALT="$ \alpha$"></SPAN>. En el ejemplo, la producción 
+
+<P>
+<DIV ALIGN="CENTER">
+<code> expr : expr '+' expr</code> 
+
+</DIV>
+
+<P>
+tiene la precedencia del <SPAN  CLASS="textbf">token</SPAN> <code>+</code>.
+</LI>
+<LI>Para decidir en un conflicto <SPAN  CLASS="textbf">shift-reduce</SPAN> se comparan la precedencia 
+de la regla con la del terminal que va a ser desplazado. Si la de la
+regla es mayor se reduce
+si la del <SPAN  CLASS="textbf">token</SPAN> es mayor, se desplaza.
+</LI>
+<LI>Si en un conflicto <SPAN  CLASS="textbf">shift-reduce</SPAN> ambos la regla y el terminal que
+va a ser desplazado tiene la misma precedencia <SPAN  CLASS="textbf">jison</SPAN> considera la
+asociatividad, si es asociativa a izquierdas, reduce y si es asociativa
+a derechas desplaza. Si no es asociativa, genera un mensaje de error.
+<BR>
+Obsérvese que, en esta situación, la asociatividad de la regla y la del
+<SPAN  CLASS="textbf">token</SPAN> han de ser por fuerza, las mismas.  Ello es así, porque en
+<SPAN  CLASS="textbf">jison</SPAN> los <SPAN  CLASS="textbf">tokens</SPAN> con la misma precedencia se declaran en
+la misma línea y sólo se permite una declaración por línea.
+
+<P>
+</LI>
+<LI><SPAN  CLASS="textbf"> Por tanto es imposible declarar dos <SPAN  CLASS="textbf">tokens</SPAN> con diferente
+asociatividad y la misma precedencia</SPAN>.
+</LI>
+<LI>Es posible modificar la precedencia ``natural'' de una regla, calificándola
+con un <SPAN  CLASS="textbf">token</SPAN> específico.  para ello se escribe a la derecha de
+la regla <code>prec token</code>, donde <code>token</code> es un <SPAN  CLASS="textbf">token</SPAN> con
+la precedencia que deseamos. Vea el uso del <SPAN  CLASS="textbf">token</SPAN> <code>dummy</code>
+en el siguiente ejercicio.
+</LI>
+</OL>
+
+<P>
+Para ilustrar las reglas anteriores usaremos el siguiente 
+programa <code>jison</code>:
+
+<P>
+<PRE>
+$ cat -n Precedencia.yp
+     1  %token NUMBER
+     2  %left '@'
+     3  %right '&amp;'  dummy
+     4  %%
+     5  list
+     6      :
+     7      | list '\n'
+     8      | list e
+     9      ;
+    10
+    11  e : NUMBER
+    12    | e '&amp;' e
+    13    | e '@' e %prec dummy
+    14    ;
+    15
+    16  %%
+</PRE>            
+
+<P>
+El código del programa cliente es el siguiente:
+
+<P>
+<PRE>
+$ cat -n useprecedencia.pl
+cat -n useprecedencia.pl
+     1  #!/usr/bin/perl -w
+     2  use strict;
+     3  use Precedencia;
+     4
+     5  sub Error {
+     6    exists $_[0]-&gt;YYData-&gt;{ERRMSG}
+     7    and do {
+     8      print $_[0]-&gt;YYData-&gt;{ERRMSG};
+     9      delete $_[0]-&gt;YYData-&gt;{ERRMSG};
+    10      return;
+    11    };
+    12    print "Syntax error.\n";
+    13  }
+    14
+    15  sub Lexer {
+    16    my($parser)=shift;
+    17
+    18    defined($parser-&gt;YYData-&gt;{INPUT})
+    19    or  $parser-&gt;YYData-&gt;{INPUT} = &lt;STDIN&gt;
+    20    or  return('',undef);
+    21
+    22    $parser-&gt;YYData-&gt;{INPUT}=~s/^[ \t]//;
+    23
+    24    for ($parser-&gt;YYData-&gt;{INPUT}) {
+    25        s/^([0-9]+(?:\.[0-9]+)?)//
+    26                and return('NUMBER',$1);
+    27        s/^(.)//s
+    28                and return($1,$1);
+    29    }
+    30  }
+    31
+    32  my $debug_level = (@ARGV)? oct(shift @ARGV): 0x1F;
+    33  my $parser = Precedencia-&gt;new();
+    34  $parser-&gt;YYParse( yylex =&gt; \&amp;Lexer, yyerror =&gt; \&amp;Error, yydebug =&gt; $debug_level );
+</PRE>
+
+<P>
+Observe la llamada al analizador en la línea 34. Hemos 
+añadido el parámetro con nombre <A NAME="17034"></A><SPAN  CLASS="textbf">yydebug</SPAN> 
+con argumento <code>yydebug =&gt; $debug_level</code> (véase la
+sección <A HREF="node180.html#section:depuracion">35.6</A> para ver los posibles
+valores de depuración).
+
+<P>
+Compilamos a continuación el módulo usando la opción <code>-v</code> para
+producir información sobre los conflictos y las tablas de salto y 
+de acciones:
+<PRE>
+yapp -v -m Precedencia Precedencia.yp
+$ ls -ltr |tail -2
+-rw-r--r--  1 lhp lhp   1628 2004-12-07 13:21 Precedencia.pm
+-rw-r--r--  1 lhp lhp   1785 2004-12-07 13:21 Precedencia.output
+</PRE>
+
+<P>
+La opción <code>-v</code> genera el fichero <code>Precedencia.output</code>
+el cual contiene información detallada sobre el autómata:
+
+<P>
+<PRE>
+$ cat -n Precedencia.output
+     1  Conflicts:
+     2  ----------
+     3  Conflict in state 8 between rule 6 and token '@' resolved as reduce.
+     4  Conflict in state 8 between rule 6 and token '&amp;' resolved as shift.
+     5  Conflict in state 9 between rule 5 and token '@' resolved as reduce.
+     6  Conflict in state 9 between rule 5 and token '&amp;' resolved as shift.
+     7
+     8  Rules:
+     9  ------
+    10  0:      $start -&gt; list $end
+    11  1:      list -&gt; /* empty */
+    12  2:      list -&gt; list '\n'
+    13  3:      list -&gt; list e
+    14  4:      e -&gt; NUMBER
+    15  5:      e -&gt; e '&amp;' e
+    16  6:      e -&gt; e '@' e
+    17  ...
+</PRE>
+¿Porqué se produce un conflicto en el estado 8 entre la regla
+6 (<code>e -&gt; e '@' e</code>) y el terminal <code>'@'</code>?. Editando el fichero
+<code>Precedencia.output</code> podemos ver los contenidos
+del estado 8:
+<PRE>
+85  State 8:
+86
+87          e -&gt; e . '&amp;' e  (Rule 5)
+88          e -&gt; e . '@' e  (Rule 6)
+89          e -&gt; e '@' e .  (Rule 6)
+90
+91          '&amp;'     shift, and go to state 7
+92
+93          $default        reduce using rule 6 (e)
+</PRE>
+El item de la línea 88 indica que debemos desplazar, el de 
+la línea 89 que debemos reducir por la regla 6. ¿Porqué <code>jison</code>
+resuelve el conflicto optando por reducir?
+¿Que prioridad tiene la regla 6?
+¿Que asociatividad tiene la regla 6?
+La declaración en la línea 13 modifica la precedencia y asociatividad
+de la regla:
+
+<P>
+<PRE>
+    13    | e '@' e %prec dummy
+</PRE>
+
+<P>
+de manera que la regla pasa a tener la precedencia y asociatividad
+de <code>dummy</code>. Recuerde que habíamos declarado <code>dummy</code> como
+asociativo a derechas:
+<PRE>
+     2  %left '@'
+     3  %right '&amp;'  dummy
+</PRE>
+¿Que ocurre? Que <code>dummy</code> tiene mayor prioridad
+que <code>'@'</code> y por tanto la regla tiene mayor prioridad
+que el terminal: por tanto se reduce.
+
+<P>
+¿Que ocurre cuando el terminal en conflicto es <code>'&amp;'</code>?
+En ese caso la regla y el terminal tienen la misma prioridad.
+Se hace uso de la asociatividad a derechas que indica que el conflicto
+debe resolverse desplazando.
+
+<P>
+<P>
+<DIV><B>Ejercicio  <SPAN CLASS="arabic">34</SPAN>.<SPAN CLASS="arabic">10</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Explique la forma en que <code>jison</code> resuelve 
+los conflictos que aparecen en el estado 9.
+Esta es la información sobre el estado 9:
+</I>
+<P><PRE>
+State 9:
+
+	e -&gt; e . '&amp;' e	(Rule 5)
+	e -&gt; e '&amp;' e .	(Rule 5)
+	e -&gt; e . '@' e	(Rule 6)
+	'&amp;'	shift, and go to state 7
+	$default	reduce using rule 5 (e)
+</PRE></DIV><P></P>
+
+<P>
+Veamos un ejemplo de ejecución:
+
+<P>
+<PRE>
+$ ./useprecedencia.pl
+----------------------------------------
+In state 0:
+Stack:[0]
+Don't need token.
+Reduce using rule 1 (list,0): Back to state 0, then go to state 1.
+</PRE>
+Lo primero que ocurre es una reducción por la regla 
+en la que <code>list</code> produce vacío. Si miramos el estado 0
+del autómata vemos que contiene:
+<PRE>
+20 State 0:
+21
+22   $start -&gt; . list $end (Rule 0)
+23
+24   $default  reduce using rule 1 (list)
+25
+26   list  go to state 1
+</PRE>
+A continuación se transita desde 0 con <code>list</code>
+y se consume el primer terminal:
+<PRE>
+----------------------------------------
+In state 1:
+Stack:[0,1]
+2@3@4
+Need token. Got &gt;NUMBER&lt;
+Shift and go to state 5.
+----------------------------------------
+In state 5:
+Stack:[0,1,5]
+Don't need token.
+Reduce using rule 4 (e,1): Back to state 1, then go to state 2.
+----------------------------------------
+</PRE>
+En el estado 5 se reduce por la regla <code>e -&gt; NUMBER</code>.
+Esto hace que se retire el estado 5 de la pila y se
+transite desde el estado 1 viendo el símbolo <code>e</code>:
+<PRE>
+In state 2:
+Stack:[0,1,2]
+Need token. Got &gt;@&lt;
+Shift and go to state 6.
+----------------------------------------
+In state 6:
+Stack:[0,1,2,6]
+Need token. Got &gt;NUMBER&lt;
+Shift and go to state 5.
+----------------------------------------
+In state 5:
+Stack:[0,1,2,6,5]
+Don't need token.
+Reduce using rule 4 (e,1): Back to state 6, then go to state 8.
+----------------------------------------
+In state 8:
+Stack:[0,1,2,6,8]
+Need token. Got &gt;@&lt;
+Reduce using rule 6 (e,3): Back to state 1, then go to state 2.
+----------------------------------------
+...
+Accept.
+</PRE>
+Obsérvese la resolución del conflicto en el estado 8
+
+<P>
+La presencia de conflictos, aunque no siempre, en muchos casos es debida
+a la introducción de ambiguedad en la gramática. Si el conflicto 
+es de desplazamiento-reducción se puede resolver explicitando 
+alguna regla que rompa la ambiguedad. Los conflictos de
+reducción-reducción suelen producirse por un diseño erróneo
+de la gramática. En tales casos, suele ser mas adecuado
+modificar la gramática.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4655"
+<A NAME="tex2html4659"
   HREF="node166.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4649"
+<A NAME="tex2html4653"
   HREF="node155.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4643"
+<A NAME="tex2html4647"
   HREF="node164.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4651"
-  HREF="node218.html">
+<A NAME="tex2html4655"
+  HREF="node219.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4653"
-  HREF="node221.html">
+<A NAME="tex2html4657"
+  HREF="node222.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -175,12 +518,12 @@ Depuración en <TT>jison</TT>
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4656"
-  HREF="node166.html">Construcción del Árbol Sintáctico</A>
-<B>Sup:</B> <A NAME="tex2html4650"
+<B> Sig:</B> <A NAME="tex2html4660"
+  HREF="node166.html">Depuración en jison</A>
+<B>Sup:</B> <A NAME="tex2html4654"
   HREF="node155.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4644"
-  HREF="node164.html">Precedencia y Asociatividad</A>
+<B> Ant:</B> <A NAME="tex2html4648"
+  HREF="node164.html">El módulo Generado por</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

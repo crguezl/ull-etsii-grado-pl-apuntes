@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Manejo en jison de Atributos Heredados</TITLE>
-<META NAME="description" CONTENT="Manejo en jison de Atributos Heredados">
+<TITLE>Definición Dirigida por la Sintáxis</TITLE>
+<META NAME="description" CONTENT="Definición Dirigida por la Sintáxis">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -28,20 +28,20 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4711"
+<A NAME="tex2html4715"
   HREF="node170.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4705"
+<A NAME="tex2html4709"
   HREF="node155.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4699"
+<A NAME="tex2html4703"
   HREF="node168.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4707"
-  HREF="node218.html">
+<A NAME="tex2html4711"
+  HREF="node219.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4709"
-  HREF="node221.html">
+<A NAME="tex2html4713"
+  HREF="node222.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,48 +88,200 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4712"
-  HREF="node170.html">Acciones en Medio de</A>
-<B>Sup:</B> <A NAME="tex2html4706"
+<B> Sig:</B> <A NAME="tex2html4716"
+  HREF="node170.html">Manejo en jison de</A>
+<B>Sup:</B> <A NAME="tex2html4710"
   HREF="node155.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4700"
-  HREF="node168.html">Definición Dirigida por la</A>
+<B> Ant:</B> <A NAME="tex2html4704"
+  HREF="node168.html">Esquemas de Traducción</A>
 <B> Con:</B> 
-<A NAME="tex2html4707"
-  HREF="node218.html">
+<A NAME="tex2html4711"
+  HREF="node219.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4709"
-  HREF="node221.html">
+<A NAME="tex2html4713"
+  HREF="node222.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION057140000000000000000"></A>
-<A NAME="section:heredados"></A>
-<BR>
-Manejo en <TT>jison</TT> de Atributos Heredados
+<H1><A NAME="SECTION057140000000000000000">
+Definición Dirigida por la Sintáxis</A>
 </H1>
-Jison no soporta acciones en medio de una regla.
+Una <A NAME="17038"></A><SPAN  CLASS="textbf">definición dirigida por la sintáxis</SPAN> es un pariente cercano
+de los esquemas de traducción. En una definición dirigida por la
+sintáxis una gramática <!-- MATH
+ $G = (V, \Sigma, P, S)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img448.png"
+ ALT="$ G = (V, \Sigma, P, S)$"></SPAN> se aumenta 
+con nuevas características:
+
+<UL>
+<LI>A cada símbolo <!-- MATH
+ $S \in V \cup \Sigma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="84" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img449.png"
+ ALT="$ S \in V \cup \Sigma$"></SPAN> de la gramática se le asocian
+cero o mas atributos. Un atributo queda caracterizado por un identificador
+o nombre y un tipo o clase. A este nivel son <A NAME="17040"></A><SPAN  CLASS="textbf">atributos formales</SPAN>,
+como los parámetros formales, en el sentido de que su realización 
+se produce cuando el nodo del árbol es creado.
+</LI>
+<LI>A cada regla de producción <!-- MATH
+ $A \rightarrow X_1 X_2 \ldots X_n \in P$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="173" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img450.png"
+ ALT="$ A \rightarrow X_1 X_2 \ldots X_n \in P$"></SPAN>
+se le asocian un conjunto de <A NAME="17042"></A><SPAN  CLASS="textbf">reglas de evaluación de los atributos</SPAN>
+o <A NAME="17044"></A><SPAN  CLASS="textbf">reglas semánticas</SPAN> que indican que el atributo en la parte
+izquierda de la regla semántica depende de los atributos que aparecen en la parte
+derecha de la regla. El atributo que aparece en la parte izquierda de la regla semántica
+puede estar asociado con un símbolo en la parte derecha de la regla de producción.
+</LI>
+<LI>Los atributos de cada símbolo de la gramática <!-- MATH
+ $X \in V \cup \Sigma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="88" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img451.png"
+ ALT="$ X \in V \cup \Sigma$"></SPAN>
+se dividen en dos grupos disjuntos: <A NAME="17046"></A><SPAN  CLASS="textbf">atributos sintetizados</SPAN>
+y <A NAME="17048"></A><SPAN  CLASS="textbf">atributos heredados</SPAN>. Un atributo de <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img452.png"
+ ALT="$ X$"></SPAN> es un <A NAME="17050"></A><SPAN  CLASS="textbf">atributo heredado</SPAN> 
+si depende de atributos de su padre y hermános en el árbol.
+Un <A NAME="17052"></A><SPAN  CLASS="textbf">atributo sintetizado</SPAN> es aquél tal que el valor del atributo depende
+de los valores de los atributos de los hijos, 
+es decir en tal caso <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img452.png"
+ ALT="$ X$"></SPAN> ha de ser una variable sintáctica
+y los atributos en la parte derecha de la regla semántica deben
+ser atributos de símbolos en la parte derecha de la regla de producción 
+asociada.
+</LI>
+<LI>Los atributos predefinidos se denominán <A NAME="17054"></A><SPAN  CLASS="textbf">atributos intrínsecos</SPAN>.
+Ejemplos de atributos intrínsecos son los atributos 
+sintetizados de los terminales, los cuáles se han
+computado durante la fase de análisis léxico. También
+son atributos intrínsecos los atributos heredados del símbolo
+de arranque, los cuales son pasados como parámetros 
+al comienzo de la computación.
+</LI>
+</UL>
+
+<P>
+La diferencia principal con un esquema de traducción está en que
+no se especifica el orden de ejecución de las reglas semánticas.
+Se asume que, bien de forma manual o automática, se resolverán
+las dependencias existentes entre los atributos determinadas
+por la aplicación de las reglas semánticas, de manera
+que serán evaluados primero aquellos atributos que no dependen
+de ningún otro, despues los que dependen de estos, etc. siguiendo
+un esquema de ejecución que viene guiado por las dependencias
+existentes entre los datos.
+
+<P>
+Aunque hay muchas formas de realizar un evaluador de una definición
+dirigida por la sintáxis, conceptualmente, tal evaluador debe:
+
+<P>
+
+<OL>
+<LI>Construir el árbol de análisis sintáctico para la gramática
+y la entrada dadas.
+</LI>
+<LI>Analizar las reglas semánticas para determinar los atributos,
+su clase y las dependencias entre los mismos.
+</LI>
+<LI>Construir el <A NAME="17056"></A><SPAN  CLASS="textbf">grafo de dependencias</SPAN> de los atributos,
+el cual tiene
+un nodo para cada ocurrencia de un atributo en el árbol de análisis
+sintáctico etiquetado con dicho atributo. El grafo tiene una arista entre dos
+nodos si existe una dependencia entre los dos atributos a través de alguna
+regla semántica. 
+</LI>
+<LI>Supuesto que el grafo de dependencias determina un <A NAME="17058"></A><SPAN  CLASS="textbf">orden parcial</SPAN>
+(esto es cumple las propiedades reflexiva, antisimétrica y transitiva) 
+construir un <A NAME="17060"></A><SPAN  CLASS="textbf">orden topológico</SPAN> compatible con el orden parcial.
+</LI>
+<LI>Evaluar las reglas semánticas de acuerdo con el orden topológico.
+</LI>
+</OL>
+
+<P>
+Una definición dirigida por la sintáxis en la que las reglas semánticas
+no tienen efectos laterales se denomina una <A NAME="17062"></A><SPAN  CLASS="textbf">gramática atribuída</SPAN>.
+
+<P>
+Si la definición dirigida por la sintáxis puede ser realizada 
+mediante un esquema de traducción se dice que es <A NAME="17064"></A><SPAN  CLASS="textbf">L-atribuída</SPAN>.
+Para que una definición dirigida por la sintáxis sea L-atribuída
+deben cumplirse que cualquiera que sea la regla de producción
+<!-- MATH
+ $A \rightarrow X_1 \ldots X_n$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="117" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img453.png"
+ ALT="$ A \rightarrow X_1 \ldots X_n$"></SPAN>, los atributos heredados de
+<SPAN CLASS="MATH"><IMG
+ WIDTH="26" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img454.png"
+ ALT="$ X_j$"></SPAN> pueden depender únicamente de:
+
+<OL>
+<LI>Los atributos de los símbolos a la izquierda de <SPAN CLASS="MATH"><IMG
+ WIDTH="26" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img454.png"
+ ALT="$ X_j$"></SPAN>
+</LI>
+<LI>Los atributos heredados de <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.png"
+ ALT="$ A$"></SPAN>
+</LI>
+</OL>
+
+<P>
+Nótese que las restricciones se refieren a los atributos heredados.
+El cálculo de los atributos sintetizados no supone 
+problema para un esquema de traducción. Si la gramática
+es LL(1), resulta fácil realizar una definición 
+L-atribuída en un analizador descendente recursivo predictivo.
+
+<P>
+Si la definición dirigida por la sintáxis sólo utiliza 
+atributos sintetizados se denomina <A NAME="17066"></A><SPAN  CLASS="textbf">S-atribuída</SPAN>. Una
+definición S-atribuída puede ser fácilmente trasladada a un programa
+<code>jison</code>.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4711"
+<A NAME="tex2html4715"
   HREF="node170.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4705"
+<A NAME="tex2html4709"
   HREF="node155.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4699"
+<A NAME="tex2html4703"
   HREF="node168.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4707"
-  HREF="node218.html">
+<A NAME="tex2html4711"
+  HREF="node219.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4709"
-  HREF="node221.html">
+<A NAME="tex2html4713"
+  HREF="node222.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -176,12 +328,12 @@ Jison no soporta acciones en medio de una regla.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4712"
-  HREF="node170.html">Acciones en Medio de</A>
-<B>Sup:</B> <A NAME="tex2html4706"
+<B> Sig:</B> <A NAME="tex2html4716"
+  HREF="node170.html">Manejo en jison de</A>
+<B>Sup:</B> <A NAME="tex2html4710"
   HREF="node155.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4700"
-  HREF="node168.html">Definición Dirigida por la</A>
+<B> Ant:</B> <A NAME="tex2html4704"
+  HREF="node168.html">Esquemas de Traducción</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
