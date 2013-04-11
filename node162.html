@@ -145,7 +145,7 @@ después de una reducción (antiderivación).
        b = yylex();
        break;
      case "reduce A -&gt;alpha" : 
-       eval(Sub{A -&gt; alpha}(top(|alpha|-1).attr, ... , top(0).attr)); 
+       eval(Sem{A -&gt; alpha}(top(|alpha|-1).attr, ... , top(0).attr)); 
        pop(|alpha|); 
        push(goto[top(0)][A]); 
        break;
@@ -154,25 +154,40 @@ después de una reducción (antiderivación).
    }
  }
 </PRE></DIV><P></P>
-Como es habitual, <SPAN CLASS="MATH"><IMG
+
+<UL>
+<LI>Como es habitual, <SPAN CLASS="MATH"><IMG
  WIDTH="24" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
  SRC="img447.png"
  ALT="$ \vert x\vert$"></SPAN> denota la longitud de la cadena <SPAN CLASS="MATH"><IMG
  WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
  SRC="img48.png"
  ALT="$ x$"></SPAN>.
-La función <code>top(k)</code> devuelve el elemento que ocupa la 
+</LI>
+<LI>La función <code>top(k)</code> devuelve el elemento que ocupa la 
 posición <code>k</code> desde el <SPAN  CLASS="textbf">top</SPAN> de la pila (esto es, está a profundidad <code>k</code>).
-La función <code>pop(k)</code> extrae <code>k</code> elementos de la pila.
-La notación <code>state.attr</code> hace referencia al atributo
-asociado con cada estado. Denotamos por <code>Sub {reduce A -&gt; alpha}</code>
-el código de la acción asociada con la regla <!-- MATH
+</LI>
+<LI>La función <code>pop(k)</code> extrae <code>k</code> elementos de la pila.
+</LI>
+<LI>La notación <code>state.attr</code> hace referencia al atributo
+asociado con cada estado, el cual desde el punto de vista del programador
+esta asociado con el correspondiente símbolo de la parte derecha de la regla. 
+Nótese que cada estado que está en la pila es el resultado de una transición con
+un símbolo. El atributo de ese símbolo es guardado en el objeto estado
+cada vez que ocurre una transición.
+
+<P>
+</LI>
+<LI>Denotamos por <code>Sem {reduce A -&gt; alpha}</code>
+el código de la acción semántica asociada con la regla <!-- MATH
  $A \rightarrow \alpha$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
  SRC="img27.png"
  ALT="$ A \rightarrow \alpha$"></SPAN>.
+</LI>
+</UL>
 
 <P>
 Todos los analizadores LR comparten, salvo pequeñas
