@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Análisis Top Down Usando Precedencia de Operadores</TITLE>
-<META NAME="description" CONTENT="Análisis Top Down Usando Precedencia de Operadores">
+<TITLE>Análisis Sintáctico Descendente en Perl</TITLE>
+<META NAME="description" CONTENT="Análisis Sintáctico Descendente en Perl">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,8 +19,9 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="previous" HREF="node110.html">
-<LINK REL="up" HREF="node109.html">
+<LINK REL="next" HREF="node128.html">
+<LINK REL="previous" HREF="node108.html">
+<LINK REL="up" HREF="node69.html">
 <LINK REL="next" HREF="node112.html">
 </HEAD>
 
@@ -31,9 +32,9 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   HREF="node112.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
 <A NAME="tex2html3668"
-  HREF="node109.html">
+  HREF="node69.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3664"
+<A NAME="tex2html3662"
   HREF="node110.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
 <A NAME="tex2html3670"
@@ -88,11 +89,11 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  ALT="pcgull"></A>
 <BR>
 <B> Sig:</B> <A NAME="tex2html3675"
-  HREF="node112.html">Análisis Sintáctico Descendente en</A>
+  HREF="node112.html">Las Bases</A>
 <B>Sup:</B> <A NAME="tex2html3669"
-  HREF="node109.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html3665"
-  HREF="node110.html">Ejemplo Simple de Intérprete:</A>
+  HREF="node69.html">SEGUNDA PARTE: APUNTES DE</A>
+<B> Ant:</B> <A NAME="tex2html3663"
+  HREF="node110.html">Análisis Top Down Usando</A>
 <B> Con:</B> 
 <A NAME="tex2html3670"
   HREF="node193.html">
@@ -104,89 +105,328 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION05600000000000000000">
+Análisis Sintáctico Descendente en Perl</A>
+</H1>
+<A NAME="chapter:introcomp"></A>Este capítulo tiene por objeto darte una visión global de la 
+estructura de un compilador e introducirte en las técnicas básicas
+de la construcción de compiladores usando Perl.
+
+<P>
+Puesto que no todos los alumnos que se incorporan en este capítulo 
+han leído los anteriores y no necesariamente conocen Perl, en la sección
+<A HREF="node112.html#section:lasbases">33.1</A>
+comenzamos haciendo un breve repaso a como construir un módulo en Perl.
+Si quieres tener un conocimiento mas profundo
+lee el capítulo sobre módulos en 
+<A HREF="#chapter:modulos">
+<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
+ HREF="node197.html#CasianoIntroAPerl">10</A>]. 
+
+<P>
+La sección 
+<A HREF="node113.html#section:fases">33.2</A>
+describe las fases en las que -al menos conceptualmente-
+se divide un compilador.
+A continuación la sección 
+<A HREF="node114.html#section:analisislexico">33.3</A>
+presenta la primera de dichas fases, el análisis léxico.
+En la sección 
+<A HREF="node129.html#section:conceptos">34.1</A>
+repasamos conceptos de análisis sintáctico 
+que deberían ser familiares a cualquiera que haya 
+seguido un curso en teoría de autómatas 
+y lenguajes formales.
+Antes de comenzar a traducir es conveniente tener un <SPAN  CLASS="textbf">esquema</SPAN> o estrategia
+de traducción para cada constructo sintáctico. 
+La sección 
+<A HREF="node118.html#section:esquemas">33.7</A>
+introduce el concepto de esquema de traducción.
+La fase de análisis sintáctico consiste en la construcción
+del <SPAN  CLASS="textbf">árbol de análisis</SPAN> a partir de la <SPAN  CLASS="textbf">secuencia de unidades léxicas</SPAN>. 
+Existen diversas estrategias para resolver esta fase.
+En la sección 
+<A HREF="node117.html#section:predictivo">33.6</A>
+introducimos la que posiblemente sea la mas sencilla de todas: el análisis
+descendente predictivo recursivo.
+En la sección
+<A HREF="node119.html#section:recursionizquierda">33.8</A>
+abordamos una estrategia para transformar ciertas
+gramáticas para las que dicho método no funciona.
+
+<P>
+Un analizador sintáctico implícitamente construye 
+el árbol de análisis concreto. En muchas ocasiones
+resulta mas rentable trabajar con una forma simplificada
+(<SPAN  CLASS="textbf">abstracta</SPAN>) del árbol que contiene la misma información 
+que aquél. La sección 
+<A HREF="node120.html#section:aat">33.9</A> trata de la construcción de los 
+árboles de análisis abstractos.
+
+<P>
+<BR> <HR>
 <!--Table of Child-Links-->
 <A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
 <UL CLASS="ChildLinks">
 <LI><A NAME="tex2html3676"
-  HREF="node111.html#SECTION05521000000000000000">Gramática de JavaScript</A>
+  HREF="node112.html">Las Bases</A>
+<UL>
+<LI><A NAME="tex2html3677"
+  HREF="node112.html#SECTION05610010000000000000">Version</A>
+<LI><A NAME="tex2html3678"
+  HREF="node112.html#SECTION05610020000000000000">h2xs</A>
+<LI><A NAME="tex2html3679"
+  HREF="node112.html#SECTION05610030000000000000">Generación del Makefile</A>
+<LI><A NAME="tex2html3680"
+  HREF="node112.html#SECTION05610040000000000000">Documentación</A>
+<LI><A NAME="tex2html3681"
+  HREF="node112.html#SECTION05611000000000000000">Repaso: Las Bases</A>
+<LI><A NAME="tex2html3682"
+  HREF="node112.html#SECTION05612000000000000000">Práctica: Crear y documentar el Módulo <TT>PL::Tutu</TT></A>
 </UL>
+<BR>
+<LI><A NAME="tex2html3683"
+  HREF="node113.html">Las Fases de un Compilador</A>
+<UL>
+<LI><A NAME="tex2html3684"
+  HREF="node113.html#SECTION05620010000000000000">Esquema del Compilador</A>
+<LI><A NAME="tex2html3685"
+  HREF="node113.html#SECTION05620020000000000000">Añadiendo Ejecutables</A>
+<LI><A NAME="tex2html3686"
+  HREF="node113.html#SECTION05620030000000000000">Búsqueda de Librerías en Tiempo de Desarrollo</A>
+<LI><A NAME="tex2html3687"
+  HREF="node113.html#SECTION05620040000000000000">Añadiendo Los Ejecutables al <TT>MANIFEST</TT></A>
+<LI><A NAME="tex2html3688"
+  HREF="node113.html#SECTION05620050000000000000">Indicando al Sistema de Distribución que los Ficheros son Ejecutables</A>
+<LI><A NAME="tex2html3689"
+  HREF="node113.html#SECTION05620060000000000000">Reconstrucci&#243;n de la aplicación</A>
+<LI><A NAME="tex2html3690"
+  HREF="node113.html#SECTION05620070000000000000">Ejecución</A>
+<LI><A NAME="tex2html3691"
+  HREF="node113.html#SECTION05620080000000000000">Construcción de una Distribución</A>
+<LI><A NAME="tex2html3692"
+  HREF="node113.html#SECTION05621000000000000000">Repaso: Fases de un Compilador</A>
+<LI><A NAME="tex2html3693"
+  HREF="node113.html#SECTION05622000000000000000">Práctica: Fases de un Compilador</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html3694"
+  HREF="node114.html">Análisis Léxico</A>
+<UL>
+<LI><A NAME="tex2html3695"
+  HREF="node114.html#SECTION05630010000000000000">El Operador de Binding</A>
+<LI><A NAME="tex2html3696"
+  HREF="node114.html#SECTION05630020000000000000">Casando a partir del Ültimo Emparejamiento</A>
+<LI><A NAME="tex2html3697"
+  HREF="node114.html#SECTION05630030000000000000">La opción <TT>g</TT></A>
+<LI><A NAME="tex2html3698"
+  HREF="node114.html#SECTION05630040000000000000">La opción <TT>c</TT></A>
+<LI><A NAME="tex2html3699"
+  HREF="node114.html#SECTION05630050000000000000">La opción <TT>i</TT></A>
+<LI><A NAME="tex2html3700"
+  HREF="node114.html#SECTION05630060000000000000">Código del Analizador Léxico</A>
+<LI><A NAME="tex2html3701"
+  HREF="node114.html#SECTION05630070000000000000">Relación de corutina con el Analizador Sintáctico</A>
+<LI><A NAME="tex2html3702"
+  HREF="node114.html#SECTION05630080000000000000">Manejo de Errores</A>
+<LI><A NAME="tex2html3703"
+  HREF="node114.html#SECTION05631000000000000000">Ejercicio: La opción <TT>g</TT></A>
+<LI><A NAME="tex2html3704"
+  HREF="node114.html#SECTION05632000000000000000">Ejercicio: Opciones <TT>g</TT> y <TT>c</TT> en Expresiones Regulares</A>
+<LI><A NAME="tex2html3705"
+  HREF="node114.html#SECTION05633000000000000000">Ejercicio: El orden de las expresiones regulares</A>
+<LI><A NAME="tex2html3706"
+  HREF="node114.html#SECTION05634000000000000000">Ejercicio: Regexp para cadenas</A>
+<LI><A NAME="tex2html3707"
+  HREF="node114.html#SECTION05635000000000000000">Ejercicio: El <TT>or</TT> es vago</A>
+<LI><A NAME="tex2html3708"
+  HREF="node114.html#SECTION05636000000000000000">Práctica: Números de Línea, Errores, Cadenas y Comentarios</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html3709"
+  HREF="node115.html">Pruebas para el Analizador Léxico</A>
+<UL>
+<LI><A NAME="tex2html3710"
+  HREF="node115.html#SECTION05640010000000000000">Módulo <TT>PL::Error</TT></A>
+<LI><A NAME="tex2html3711"
+  HREF="node115.html#SECTION05640020000000000000">Módulo <TT>PL::Lexical::Analysis</TT></A>
+<LI><A NAME="tex2html3712"
+  HREF="node115.html#SECTION05640030000000000000">El Programa Cliente</A>
+<LI><A NAME="tex2html3713"
+  HREF="node115.html#SECTION05640040000000000000">Actualización del MANIFEST</A>
+<LI><A NAME="tex2html3714"
+  HREF="node115.html#SECTION05641000000000000000">Comprobando el Analizador Léxico</A>
+<UL>
+<LI><A NAME="tex2html3715"
+  HREF="node115.html#SECTION05641010000000000000">Principios Básicos del Desarrollo de Pruebas</A>
+<LI><A NAME="tex2html3716"
+  HREF="node115.html#SECTION05641020000000000000">La Jerarquía de Una Aplicación</A>
+<LI><A NAME="tex2html3717"
+  HREF="node115.html#SECTION05641030000000000000">Un Ejemplo de Programa de Prueba</A>
+<LI><A NAME="tex2html3718"
+  HREF="node115.html#SECTION05641040000000000000">Ejecución de Las Pruebas</A>
+<LI><A NAME="tex2html3719"
+  HREF="node115.html#SECTION05641100000000000000">Versiones anteriores a la 5.8</A>
+</UL>
+<LI><A NAME="tex2html3720"
+  HREF="node115.html#SECTION05642000000000000000">Práctica: Pruebas en el Análisis Léxico</A>
+<LI><A NAME="tex2html3721"
+  HREF="node115.html#SECTION05643000000000000000">Repaso: Pruebas en el Análisis Léxico</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html3722"
+  HREF="node116.html">Conceptos Básicos para el Análisis Sintáctico</A>
+<UL>
+<LI><A NAME="tex2html3723"
+  HREF="node116.html#SECTION05651000000000000000">Ejercicio</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html3724"
+  HREF="node117.html">Análisis Sintáctico Predictivo Recursivo</A>
+<UL>
+<LI><A NAME="tex2html3725"
+  HREF="node117.html#SECTION05661000000000000000">Introducción</A>
+<LI><A NAME="tex2html3726"
+  HREF="node117.html#SECTION05662000000000000000">Ejercicio: Recorrido del árbol en un ADPR</A>
+<LI><A NAME="tex2html3727"
+  HREF="node117.html#SECTION05663000000000000000">Ejercicio: Factores Comunes</A>
+<LI><A NAME="tex2html3728"
+  HREF="node117.html#SECTION05664000000000000000">Derivaciones a vacío</A>
+<LI><A NAME="tex2html3729"
+  HREF="node117.html#SECTION05665000000000000000">Construcción de los conjuntos de Primeros y Siguientes</A>
+<LI><A NAME="tex2html3730"
+  HREF="node117.html#SECTION05666000000000000000">Ejercicio: Construir los <SPAN CLASS="MATH"><IMG
+ WIDTH="65" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$ FIRST$"></SPAN></A>
+<LI><A NAME="tex2html3731"
+  HREF="node117.html#SECTION05667000000000000000">Ejercicio: Calcular los <SPAN CLASS="MATH"><IMG
+ WIDTH="89" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$ FOLLOW$"></SPAN></A>
+<LI><A NAME="tex2html3732"
+  HREF="node117.html#SECTION05668000000000000000">Práctica: Construcción de los FIRST y los FOLLOW</A>
+<LI><A NAME="tex2html3733"
+  HREF="node117.html#SECTION05669000000000000000">Gramáticas LL(1)</A>
+<LI><A NAME="tex2html3734"
+  HREF="node117.html#SECTION056610000000000000000">Ejercicio: Caracterización de una gramática LL(1) </A>
+<LI><A NAME="tex2html3735"
+  HREF="node117.html#SECTION056611000000000000000">Ejercicio: Ambiguedad y LL(1)</A>
+<LI><A NAME="tex2html3736"
+  HREF="node117.html#SECTION056612000000000000000">Práctica: Un analizador APDR</A>
+<LI><A NAME="tex2html3737"
+  HREF="node117.html#SECTION056613000000000000000">Práctica: Generación Automática de Analizadores Predictivos</A>
+<UL>
+<LI><A NAME="tex2html3738"
+  HREF="node117.html#SECTION056613010000000000000">Objetivo</A>
+<LI><A NAME="tex2html3739"
+  HREF="node117.html#SECTION056613020000000000000">El Módulo <TT>Grammar</TT></A>
+<LI><A NAME="tex2html3740"
+  HREF="node117.html#SECTION056613030000000000000">Descripción del objetivo: La función <TT>gap</TT></A>
+<LI><A NAME="tex2html3741"
+  HREF="node117.html#SECTION056613040000000000000">Descripción del objetivo: La función <TT>parser</TT></A>
+<LI><A NAME="tex2html3742"
+  HREF="node117.html#SECTION056613050000000000000">Cálculo de los First y los Follow con <TT>PL::FirstFollow</TT></A>
+<LI><A NAME="tex2html3743"
+  HREF="node117.html#SECTION056613060000000000000">Uso de Templates</A>
+<LI><A NAME="tex2html3744"
+  HREF="node117.html#SECTION056613070000000000000">Concatenación y Documentos <TT>HERE</TT></A>
+<LI><A NAME="tex2html3745"
+  HREF="node117.html#SECTION056613080000000000000">Descarga de los Módulos Necesarios</A>
+</UL>
+</UL>
+<BR>
+<LI><A NAME="tex2html3746"
+  HREF="node118.html">Esquemas de Traducción</A>
+<LI><A NAME="tex2html3747"
+  HREF="node119.html">Recursión por la Izquierda</A>
+<UL>
+<LI><A NAME="tex2html3748"
+  HREF="node119.html#SECTION05681000000000000000">Eliminación de la Recursión por la Izquierda en la Gramática</A>
+<LI><A NAME="tex2html3749"
+  HREF="node119.html#SECTION05682000000000000000">Eliminación de la Recursión por la Izquierda en un Esquema de Traducción</A>
+<LI><A NAME="tex2html3750"
+  HREF="node119.html#SECTION05683000000000000000">Ejercicio</A>
+<LI><A NAME="tex2html3751"
+  HREF="node119.html#SECTION05684000000000000000">Convirtiendo el Esquema en un Analizador Predictivo</A>
+<LI><A NAME="tex2html3752"
+  HREF="node119.html#SECTION05685000000000000000">Ejercicio</A>
+<LI><A NAME="tex2html3753"
+  HREF="node119.html#SECTION05686000000000000000">Práctica: Eliminación de la Recursividad por la Izquierda</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html3754"
+  HREF="node120.html">Árbol de Análisis Abstracto</A>
+<UL>
+<LI><A NAME="tex2html3755"
+  HREF="node120.html#SECTION05691000000000000000">Lenguajes Árbol y Gramáticas Árbol</A>
+<LI><A NAME="tex2html3756"
+  HREF="node120.html#SECTION05692000000000000000">Realización del AAA para Tutu en Perl</A>
+<LI><A NAME="tex2html3757"
+  HREF="node120.html#SECTION05693000000000000000">AAA: Otros tipos de nodos</A>
+<LI><A NAME="tex2html3758"
+  HREF="node120.html#SECTION05694000000000000000">Declaraciones</A>
+<LI><A NAME="tex2html3759"
+  HREF="node120.html#SECTION05695000000000000000">Práctica: Arbol de Análisis Abstracto</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html3760"
+  HREF="node121.html">Análisis Semántico</A>
+<UL>
+<LI><A NAME="tex2html3761"
+  HREF="node121.html#SECTION056101000000000000000">Práctica: Declaraciones Automáticas</A>
+<LI><A NAME="tex2html3762"
+  HREF="node121.html#SECTION056102000000000000000">Práctica: Análisis Semántico</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html3763"
+  HREF="node122.html">Optimización Independiente de la Máquina</A>
+<UL>
+<LI><A NAME="tex2html3764"
+  HREF="node122.html#SECTION056111000000000000000">Práctica: Plegado de las Constantes</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html3765"
+  HREF="node123.html">Patrones Árbol y Transformaciones Árbol</A>
+<UL>
+<LI><A NAME="tex2html3766"
+  HREF="node123.html#SECTION056121000000000000000">Práctica: Casando y Transformando Árboles</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html3767"
+  HREF="node124.html">Asignación de Direcciones</A>
+<UL>
+<LI><A NAME="tex2html3768"
+  HREF="node124.html#SECTION056131000000000000000">Práctica: Cálculo de las Direcciones</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html3769"
+  HREF="node125.html">Generación de Código: Máquina Pila</A>
+<LI><A NAME="tex2html3770"
+  HREF="node126.html">Generación de Código: Máquina Basada en Registros</A>
+<UL>
+<LI><A NAME="tex2html3771"
+  HREF="node126.html#SECTION056151000000000000000">Práctica: Generación de Código</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html3772"
+  HREF="node127.html">Optimización de Código</A>
+<UL>
+<LI><A NAME="tex2html3773"
+  HREF="node127.html#SECTION056161000000000000000">Práctica: Optimización Peephole</A>
+</UL></UL>
 <!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION05520000000000000000">
-Análisis Top Down Usando Precedencia de Operadores</A>
-</H1>
-
-<OL>
-<LI>Véase el libro [<A
- HREF="node197.html#wilson2008beautiful">9</A>] <A NAME="tex2html337"
-  HREF="http://books.google.es/books?id=gJrmszNHQV4C">Beautiful Code: Leading Programmers Explain How They Think</A>, Capítulo 9.
-</LI>
-<LI><A NAME="tex2html338"
-  HREF="http://javascript.crockford.com/tdop/tdop.html">Top Down Operator Precedence</A>
-por Douglas Crockford
-</LI>
-<LI><A NAME="tex2html339"
-  HREF="http://javascript.crockford.com/tdop/">Top Down Operator Precedence demo</A>
-por Douglas Crockford
-</LI>
-<LI><A NAME="tex2html340"
-  HREF="http://www.jslint.com/lint.html">jslint</A>
-</LI>
-</OL>
-
-<P>
-
-<H2><A NAME="SECTION05521000000000000000">
-Gramática de JavaScript</A>
-</H2>
-
-<OL>
-<LI><A NAME="tex2html341"
-  HREF="http://hepunx.rl.ac.uk/~adye/jsspec11/jsrefspe.htm">Especificación de JavaScript</A>
-1997
-</LI>
-<LI><A NAME="tex2html342"
-  HREF="http://hepunx.rl.ac.uk/~adye/jsspec11/llr.htm">NQLL(1) grammar (Not Quite LL(1)) for JavaScrip</A>
-1997
-</LI>
-<LI><A NAME="tex2html343"
-  HREF="http://hepunx.rl.ac.uk/~adye/jsspec11/jsspec.ps.gz">Postscript con la especificación de JavaScript</A>
-1997
-</LI>
-<LI>Mozilla <A NAME="tex2html344"
-  HREF="https://developer.mozilla.org/en-US/docs/JavaScript/Language_Resources?redirectlocale=en-US&amp;redirectslug=JavaScript_Language_Resources">JavaScript Language Resources</A>
-</LI>
-<LI><A NAME="tex2html345"
-  HREF="http://www-archive.mozilla.org/js/language/grammar14.html">JavaScript 1.4 LR(1) Grammar</A>
-1999.
-</LI>
-<LI><A NAME="tex2html346"
-  HREF="http://www.opensource.apple.com/source/JavaScriptCore/">Apple JavaScript Core Specifications</A>
-<P>
-</LI>
-<LI><A NAME="tex2html347"
-  HREF="http://cjihrig.com/blog/creating-a-javascript-parser/">Creating a JavaScript Parser</A>
-Una implementación de ECAMScript 5.1 usando Jison 
-disponible 
-en GitHub
- en
-<A NAME="tex2html348"
-  HREF="https://github.com/cjihrig/jsparser">https://github.com/cjihrig/jsparser</A>.
-</LI>
-</OL>
-
-<P>
 
 <DIV CLASS="navigation"><HR>
 <A NAME="tex2html3674"
   HREF="node112.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
 <A NAME="tex2html3668"
-  HREF="node109.html">
+  HREF="node69.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3664"
+<A NAME="tex2html3662"
   HREF="node110.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
 <A NAME="tex2html3670"
@@ -241,11 +481,11 @@ en GitHub
  ALT="pcgull"></A>
 <BR>
 <B> Sig:</B> <A NAME="tex2html3675"
-  HREF="node112.html">Análisis Sintáctico Descendente en</A>
+  HREF="node112.html">Las Bases</A>
 <B>Sup:</B> <A NAME="tex2html3669"
-  HREF="node109.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html3665"
-  HREF="node110.html">Ejemplo Simple de Intérprete:</A>
+  HREF="node69.html">SEGUNDA PARTE: APUNTES DE</A>
+<B> Ant:</B> <A NAME="tex2html3663"
+  HREF="node110.html">Análisis Top Down Usando</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

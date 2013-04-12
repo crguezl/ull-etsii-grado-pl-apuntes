@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Árbol de Análisis Abstracto</TITLE>
-<META NAME="description" CONTENT="Árbol de Análisis Abstracto">
+<TITLE>Análisis Semántico</TITLE>
+<META NAME="description" CONTENT="Análisis Semántico">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,26 +21,26 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node122.html">
 <LINK REL="previous" HREF="node120.html">
-<LINK REL="up" HREF="node112.html">
+<LINK REL="up" HREF="node111.html">
 <LINK REL="next" HREF="node122.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3983"
+<A NAME="tex2html3987"
   HREF="node122.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3977"
-  HREF="node112.html">
+<A NAME="tex2html3981"
+  HREF="node111.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3971"
+<A NAME="tex2html3975"
   HREF="node120.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3979"
+<A NAME="tex2html3983"
   HREF="node193.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3981"
+<A NAME="tex2html3985"
   HREF="node196.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -88,18 +88,18 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3984"
-  HREF="node122.html">Análisis Semántico</A>
-<B>Sup:</B> <A NAME="tex2html3978"
-  HREF="node112.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html3972"
-  HREF="node120.html">Recursión por la Izquierda</A>
+<B> Sig:</B> <A NAME="tex2html3988"
+  HREF="node122.html">Optimización Independiente de la</A>
+<B>Sup:</B> <A NAME="tex2html3982"
+  HREF="node111.html">Análisis Sintáctico Descendente en</A>
+<B> Ant:</B> <A NAME="tex2html3976"
+  HREF="node120.html">Árbol de Análisis Abstracto</A>
 <B> Con:</B> 
-<A NAME="tex2html3979"
+<A NAME="tex2html3983"
   HREF="node193.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3981"
+<A NAME="tex2html3985"
   HREF="node196.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
@@ -109,2035 +109,106 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html3985"
-  HREF="node121.html#SECTION05691000000000000000">Lenguajes Árbol y Gramáticas Árbol</A>
-<LI><A NAME="tex2html3986"
-  HREF="node121.html#SECTION05692000000000000000">Realización del AAA para Tutu en Perl</A>
-<LI><A NAME="tex2html3987"
-  HREF="node121.html#SECTION05693000000000000000">AAA: Otros tipos de nodos</A>
-<LI><A NAME="tex2html3988"
-  HREF="node121.html#SECTION05694000000000000000">Declaraciones</A>
 <LI><A NAME="tex2html3989"
-  HREF="node121.html#SECTION05695000000000000000">Práctica: Arbol de Análisis Abstracto</A>
+  HREF="node121.html#SECTION056101000000000000000">Práctica: Declaraciones Automáticas</A>
+<LI><A NAME="tex2html3990"
+  HREF="node121.html#SECTION056102000000000000000">Práctica: Análisis Semántico</A>
 </UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION05690000000000000000"></A>
-<A NAME="section:aat"></A>
-<BR>
-Árbol de Análisis Abstracto
+<H1><A NAME="SECTION056100000000000000000">
+Análisis Semántico</A>
 </H1>
+Hay quien dice que el análisis semántico es la determinación 
+de aquellas propiedades que, siendo dependientes del contexto, pueden ser
+computadas estáticamente en tiempo de compilación para cualquier programa
+correcto. Entre estas propiedades
+están: la comprobación de que las variables son declaradas,
+la compatibilidad de tipos
+en las expresiones, el correcto uso de las llamadas a función asi
+como el ámbito y visibilidad de las variables.
+La fase de análisis semántico puede verse como una fase de ``adornado''
+o ``etiquetado'' del AAA, en la cual los atributos de los nodos
+del AAA son computados.
+
+<P>
+Aunque la veamos como una fase separada del análisis sintáctico, puede
+en numerosas ocasiones llevarse a cabo al mismo tiempo que se construye
+el árbol. Así lo hacemos en este ejemplo: incrustamos la acción semántica
+en la correspondiente rutina de análisis sintáctico. Así, en la rutina <code>term</code>, una vez 
+que hemos obtenido los dos operandos, comprobamos que son de tipo numérico
+llamando (línea 8) a 
 
-<H2><A NAME="SECTION05691000000000000000"></A>
-<A NAME="subsection:lenguajesarbol"></A>
-<BR>
-Lenguajes Árbol y Gramáticas Árbol
-</H2>
-Un <A NAME="12179"></A><SPAN  CLASS="textbf">árbol de análisis abstracto</SPAN>  (denotado <A NAME="12181"></A><SPAN  CLASS="textbf">AAA</SPAN>, en
-inglés <A NAME="12183"></A><SPAN  CLASS="textbf">abstract syntax tree</SPAN> o <A NAME="12185"></A><SPAN  CLASS="textbf">AST</SPAN>) 
-porta la misma información que
-el árbol de análisis sintáctico pero de forma mas condensada, eliminándose
-terminales y producciones que no aportan información.
-
-<P>
-<P>
-<DIV><B>Definición  <SPAN CLASS="arabic">33</SPAN>.<SPAN CLASS="arabic">9</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Un <A NAME="12187"></A><SPAN  CLASS="textbf">alfabeto con función de aridad</SPAN> es un par <!-- MATH
- $(\Sigma, \rho)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="48" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img159.png"
- ALT="$ (\Sigma, \rho)$"></SPAN>
-donde <SPAN CLASS="MATH"><IMG
- WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img23.png"
- ALT="$ \Sigma$"></SPAN> es un conjunto finito y
-<SPAN CLASS="MATH"><IMG
- WIDTH="14" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img160.png"
- ALT="$ \rho$"></SPAN> es una función <!-- MATH
- $\rho: \Sigma \rightarrow \mathds{N}_0$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="90" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img161.png"
- ALT="$ \rho: \Sigma \rightarrow \mathds{N}_0$"></SPAN>, denominada 
-<A NAME="12189"></A><SPAN  CLASS="textbf">función de aridad</SPAN>.
-Denotamos por <!-- MATH
- $\Sigma_k = \{ a \in \Sigma :\ \rho(a) = k \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="194" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img162.png"
- ALT="$ \Sigma_k = \{ a \in \Sigma : \rho(a) = k \}$"></SPAN>.
-</I>
-<P>
-<I>Definimos el <A NAME="12191"></A><SPAN  CLASS="textbf">lenguaje árbol homogéneo</SPAN> <SPAN CLASS="MATH"><IMG
- WIDTH="45" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img163.png"
- ALT="$ B(\Sigma)$"></SPAN> sobre <SPAN CLASS="MATH"><IMG
- WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img23.png"
- ALT="$ \Sigma$"></SPAN> inductivamente:
-</I>
-<UL>
-<LI>Todos los elementos de aridad 0 están en <SPAN CLASS="MATH"><IMG
- WIDTH="45" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img163.png"
- ALT="$ B(\Sigma)$"></SPAN>: <!-- MATH
- $a \in  \Sigma_0$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img164.png"
- ALT="$ a \in \Sigma_0$"></SPAN>
-implica <!-- MATH
- $a \in B(\Sigma)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="76" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img165.png"
- ALT="$ a \in B(\Sigma)$"></SPAN>
-</LI>
-<LI>Si <!-- MATH
- $b_1, \ldots , b_k \in B(\Sigma)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="136" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img166.png"
- ALT="$ b_1, \ldots , b_k \in B(\Sigma)$"></SPAN> y <!-- MATH
- $f \in \Sigma_k$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="57" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img167.png"
- ALT="$ f \in \Sigma_k$"></SPAN> es un elemento
-<SPAN CLASS="MATH"><IMG
- WIDTH="14" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img11.png"
- ALT="$ k$"></SPAN>-ario, entonces <!-- MATH
- $f(b_1, \ldots , b_k) \in B(\Sigma)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="160" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img168.png"
- ALT="$ f(b_1, \ldots , b_k) \in B(\Sigma)$"></SPAN>
-</LI>
-</UL><I>
-Los elementos de <SPAN CLASS="MATH"><IMG
- WIDTH="45" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img163.png"
- ALT="$ B(\Sigma)$"></SPAN> se llaman  <A NAME="12193"></A><SPAN  CLASS="textbf">árboles</SPAN> o <A NAME="12195"></A><SPAN  CLASS="textbf">términos</SPAN>.</I></DIV><P></P>
-
-<P>
-<P>
-<DIV><B>Ejemplo  <SPAN CLASS="arabic">33</SPAN>.<SPAN CLASS="arabic">9</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Sea <!-- MATH
- $\Sigma = \{A, CONS, NIL \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="178" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img169.png"
- ALT="$ \Sigma = \{A, CONS, NIL \}$"></SPAN> con <!-- MATH
- $\rho(A) = \rho(NIL) = 0, \rho(CONS) = 2$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="272" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img170.png"
- ALT="$ \rho(A) = \rho(NIL) = 0, \rho(CONS) = 2$"></SPAN>. 
-Entonces 
-</I>
-<P>
-<I><!-- MATH
- $B(\Sigma) = \{ A, NIL, CONS(A,NIL), CONS(NIL, A), CONS(A, A), CONS(NIL,NIL), \ldots \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="707" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img171.png"
- ALT="$ B(\Sigma) = \{ A, NIL, CONS(A,NIL), CONS(NIL, A), CONS(A, A), CONS(NIL,NIL), \ldots \}$"></SPAN></I></DIV><P></P>
-
-<P>
-<P>
-<DIV><A NAME="example:tutuast"><B>Ejemplo  <SPAN CLASS="arabic">33</SPAN>.<SPAN CLASS="arabic">9</SPAN>.<SPAN CLASS="arabic">2</SPAN></B></A> &nbsp; 
-<I>Una versión simplificada del alfabeto con aridad en el que estan basados
-los árboles construidos por el compilador de Tutu es:
-</I>
-<P><TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><I>
-<!-- MATH
- $\Sigma = \{ID, NUM, LEFTVALUE, STR, PLUS, TIMES, ASSIGN, PRINT \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="594" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img172.png"
- ALT="$ \Sigma = \{ID, NUM, LEFTVALUE, STR, PLUS, TIMES, ASSIGN, PRINT \}$"></SPAN></I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-<!-- MATH
- $\rho(ID) = \rho(NUM) = \rho(LEFTVALUE) = \rho(STR) = 0$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="425" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img173.png"
- ALT="$ \rho(ID) = \rho(NUM) = \rho(LEFTVALUE) = \rho(STR) = 0$"></SPAN></I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-<!-- MATH
- $\rho(PRINT) = 1$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="124" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img174.png"
- ALT="$ \rho(PRINT) = 1$"></SPAN></I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-<!-- MATH
- $\rho(PLUS) = \rho(TIMES) = \rho(ASSIGN) = 2$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="343" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img175.png"
- ALT="$ \rho(PLUS) = \rho(TIMES) = \rho(ASSIGN) = 2$"></SPAN>.
-</I></TD>
-</TR>
-</TABLE>
-<P>
-<I>Observe que los elementos en <SPAN CLASS="MATH"><IMG
- WIDTH="45" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img163.png"
- ALT="$ B(\Sigma)$"></SPAN> no necesariamente son 
-árboles ``correctos''. Por ejemplo, el árbol
-<!-- MATH
- $ASSIGN(NUM, PRINT(ID))$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="251" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img176.png"
- ALT="$ ASSIGN(NUM, PRINT(ID))$"></SPAN>
-es un elemento de <SPAN CLASS="MATH"><IMG
- WIDTH="45" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img163.png"
- ALT="$ B(\Sigma)$"></SPAN>.</I></DIV><P></P>
-
-<P>
-<P>
-<DIV><B>Definición  <SPAN CLASS="arabic">33</SPAN>.<SPAN CLASS="arabic">9</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
-<I>Una <A NAME="12197"></A><SPAN  CLASS="textbf">gramática árbol regular</SPAN> es una cuadrupla <!-- MATH
- $((\Sigma, \rho), N, P, S)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="123" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img177.png"
- ALT="$ ((\Sigma, \rho), N, P, S)$"></SPAN>, 
-donde:
-</I>
-<UL>
-<LI><!-- MATH
- $(\Sigma, \rho)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="48" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img159.png"
- ALT="$ (\Sigma, \rho)$"></SPAN> es un alfabeto con aricidad <!-- MATH
- $\rho: \Sigma \rightarrow \mathds{N}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="83" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img178.png"
- ALT="$ \rho: \Sigma \rightarrow \mathds{N}$"></SPAN>
-</LI>
-<LI><SPAN CLASS="MATH"><IMG
- WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img179.png"
- ALT="$ N$"></SPAN> es un conjunto finito de variables sintácticas o no terminales
-</LI>
-<LI><SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img28.png"
- ALT="$ P$"></SPAN> es un conjunto finito de reglas de producción de la forma
-<!-- MATH
- $X \rightarrow s$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img180.png"
- ALT="$ X \rightarrow s$"></SPAN> con <SPAN CLASS="MATH"><IMG
- WIDTH="58" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img181.png"
- ALT="$ X \in N$"></SPAN> y <!-- MATH
- $s \in B(\Sigma \cup N)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="110" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img182.png"
- ALT="$ s \in B(\Sigma \cup N)$"></SPAN>
-</LI>
-<LI><SPAN CLASS="MATH"><IMG
- WIDTH="54" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img183.png"
- ALT="$ S \in N$"></SPAN> es la variable o símbolo de arranque
-</LI>
-</UL>
-<P></DIV><P></P>
-
-<P>
-<P>
-<DIV><B>Definición  <SPAN CLASS="arabic">33</SPAN>.<SPAN CLASS="arabic">9</SPAN>.<SPAN CLASS="arabic">3</SPAN></B> &nbsp; 
-<I>Dada una gramática <!-- MATH
- $(\Sigma, N, P, S)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="92" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img184.png"
- ALT="$ (\Sigma, N, P, S)$"></SPAN>,
-se dice que un árbol <!-- MATH
- $t \in B(\Sigma \cup N)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="108" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img185.png"
- ALT="$ t \in B(\Sigma \cup N)$"></SPAN> es del tipo <!-- MATH
- $(X_1, \ldots X_k)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="94" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img186.png"
- ALT="$ (X_1, \ldots X_k)$"></SPAN>
-si el <SPAN CLASS="MATH"><IMG
- WIDTH="13" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
- SRC="img187.png"
- ALT="$ j$"></SPAN>-ésimo noterminal, contando desde la izquierda, que aparece en <SPAN CLASS="MATH"><IMG
- WIDTH="11" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img188.png"
- ALT="$ t$"></SPAN>
-es <SPAN CLASS="MATH"><IMG
- WIDTH="63" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img189.png"
- ALT="$ X_j \in N$"></SPAN>. 
-</I>
-<P>
-<I>Si <!-- MATH
- $p = X \rightarrow s$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="88" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img190.png"
- ALT="$ p = X \rightarrow s$"></SPAN> es una producción y <SPAN CLASS="MATH"><IMG
- WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img191.png"
- ALT="$ s$"></SPAN> es de tipo <!-- MATH
- $(X_1, \ldots X_n)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="95" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img192.png"
- ALT="$ (X_1, \ldots X_n)$"></SPAN>,
-diremos que la producción <SPAN CLASS="MATH"><IMG
- WIDTH="14" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img193.png"
- ALT="$ p$"></SPAN> es de tipo <!-- MATH
- $(X_1, \ldots X_n) \rightarrow X$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="138" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img194.png"
- ALT="$ (X_1, \ldots X_n) \rightarrow X$"></SPAN>.</I></DIV><P></P>
-
-<P>
-<P>
-<DIV><B>Definición  <SPAN CLASS="arabic">33</SPAN>.<SPAN CLASS="arabic">9</SPAN>.<SPAN CLASS="arabic">4</SPAN></B> &nbsp; 
-<I>Consideremos un árbol  <!-- MATH
- $t \in B(\Sigma \cup N)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="108" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img185.png"
- ALT="$ t \in B(\Sigma \cup N)$"></SPAN>
-que sea del tipo <!-- MATH
- $(X_1, \ldots X_n)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="95" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img192.png"
- ALT="$ (X_1, \ldots X_n)$"></SPAN>, esto es las variables sintácticas
-en el árbol leídas de izquierda a derecha son <!-- MATH
- $(X_1, \ldots X_n)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="95" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img192.png"
- ALT="$ (X_1, \ldots X_n)$"></SPAN>.
-</I>
-<P>
-<UL>
-<LI>Si <!-- MATH
- $X_i \rightarrow s_i \in P$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="100" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img195.png"
- ALT="$ X_i \rightarrow s_i \in P$"></SPAN> para algún <SPAN CLASS="MATH"><IMG
- WIDTH="11" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img196.png"
- ALT="$ i$"></SPAN>, entonces 
-decimos que el árbol <SPAN CLASS="MATH"><IMG
- WIDTH="11" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img188.png"
- ALT="$ t$"></SPAN> <A NAME="12199"></A><SPAN  CLASS="textbf">deriva en un paso en el árbol</SPAN>
-<SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
- SRC="img197.png"
- ALT="$ t'$"></SPAN> resultante de sustituir el nodo <SPAN CLASS="MATH"><IMG
- WIDTH="25" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img59.png"
- ALT="$ X_i$"></SPAN> por el árbol <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img198.png"
- ALT="$ s_i$"></SPAN> y escribiremos
-<!-- MATH
- $t \Longrightarrow t'$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="60" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
- SRC="img199.png"
- ALT="$ t \Longrightarrow t'$"></SPAN>.  Esto es, <!-- MATH
- $t' = t\{X_i/s_i\}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="105" HEIGHT="35" ALIGN="MIDDLE" BORDER="0"
- SRC="img200.png"
- ALT="$ t' = t\{X_i/s_i\}$"></SPAN>
-</LI>
-<LI>Todo árbol deriva en cero pasos
-en si mismo <!-- MATH
- $t \stackrel{0}{\Longrightarrow} t$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="55" HEIGHT="24" ALIGN="BOTTOM" BORDER="0"
- SRC="img201.png"
- ALT="$ t \stackrel{0}{\Longrightarrow} t$"></SPAN>. 
-</LI>
-<LI>Decimos que un árbol <SPAN CLASS="MATH"><IMG
- WIDTH="11" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img188.png"
- ALT="$ t$"></SPAN> deriva en <SPAN CLASS="MATH"><IMG
- WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img10.png"
- ALT="$ n$"></SPAN> pasos en el árbol <SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
- SRC="img197.png"
- ALT="$ t'$"></SPAN>
-y escribimos <!-- MATH
- $t \stackrel{n}{\Longrightarrow} t'$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="60" HEIGHT="21" ALIGN="BOTTOM" BORDER="0"
- SRC="img202.png"
- ALT="$ t \stackrel{n}{\Longrightarrow} t'$"></SPAN>
-si <SPAN CLASS="MATH"><IMG
- WIDTH="11" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img188.png"
- ALT="$ t$"></SPAN> deriva en un paso en un árbol <SPAN CLASS="MATH"><IMG
- WIDTH="19" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
- SRC="img203.png"
- ALT="$ t''$"></SPAN> el cuál deriva en <SPAN CLASS="MATH"><IMG
- WIDTH="45" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img37.png"
- ALT="$ n-1$"></SPAN> pasos en <SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
- SRC="img197.png"
- ALT="$ t'$"></SPAN>.
-En general, si <SPAN CLASS="MATH"><IMG
- WIDTH="11" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img188.png"
- ALT="$ t$"></SPAN> deriva en un cierto número de pasos en <SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
- SRC="img197.png"
- ALT="$ t'$"></SPAN> escribiremos
-<!-- MATH
- $t \stackrel{*}{\Longrightarrow} t'$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="60" HEIGHT="24" ALIGN="BOTTOM" BORDER="0"
- SRC="img204.png"
- ALT="$ t \stackrel{*}{\Longrightarrow} t'$"></SPAN>.
-</LI>
-</UL></DIV><P></P>
-
-<P>
-<P>
-<DIV><B>Definición  <SPAN CLASS="arabic">33</SPAN>.<SPAN CLASS="arabic">9</SPAN>.<SPAN CLASS="arabic">5</SPAN></B> &nbsp; 
-<I>Se define el <A NAME="12201"></A><SPAN  CLASS="textbf">lenguaje árbol generado por una gramática</SPAN> <!-- MATH
- $G = (\Sigma, N, P, S)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="129" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img205.png"
- ALT="$ G = (\Sigma, N, P, S)$"></SPAN>
-como el lenguaje <!-- MATH
- $L(G) = \{ t \in B(\Sigma): \exists S \stackrel{*}{\Longrightarrow} t \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="232" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
- SRC="img206.png"
- ALT="$ L(G) = \{ t \in B(\Sigma): \exists S \stackrel{*}{\Longrightarrow} t \}$"></SPAN>.</I></DIV><P></P>
-
-<P>
-<P>
-<DIV><A NAME="example:listtreegrammar"><B>Ejemplo  <SPAN CLASS="arabic">33</SPAN>.<SPAN CLASS="arabic">9</SPAN>.<SPAN CLASS="arabic">3</SPAN></B></A> &nbsp; 
-<I>Sea <!-- MATH
- $G = (\Sigma, V, P, S)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img22.png"
- ALT="$ G =(\Sigma,V,P,S)$"></SPAN> con
-<!-- MATH
- $\Sigma = \{A, CONS, NIL \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="178" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img169.png"
- ALT="$ \Sigma = \{A, CONS, NIL \}$"></SPAN> y <!-- MATH
- $\rho(A) = \rho(NIL) = 0, \rho(CONS) = 2$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="272" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img170.png"
- ALT="$ \rho(A) = \rho(NIL) = 0, \rho(CONS) = 2$"></SPAN>
-y sea <!-- MATH
- $V = \{ E, L \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="93" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img207.png"
- ALT="$ V = \{ E, L \}$"></SPAN>. El conjunto de producciones <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img28.png"
- ALT="$ P$"></SPAN> es:
-</I>
-<P>
-<DIV ALIGN="CENTER"><I><!-- MATH
- $P_1 = \{ L \rightarrow NIL, L \rightarrow CONS(E,L),E \rightarrow a \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="347" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img208.png"
- ALT="$ P_1 = \{ L \rightarrow NIL, L \rightarrow CONS(E,L),E \rightarrow a \}$"></SPAN></I></DIV>
-<P>
-<I>La producción <!-- MATH
- $L \rightarrow CONS(E,L)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="146" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img209.png"
- ALT="$ L \rightarrow CONS(E,L)$"></SPAN> es del tipo <!-- MATH
- $(E,L) \rightarrow L$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="91" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img210.png"
- ALT="$ (E,L) \rightarrow L$"></SPAN>. 
-</I>
-<P>
-<I>Informalmente, el lenguaje generado por <SPAN CLASS="MATH"><IMG
- WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img21.png"
- ALT="$ G$"></SPAN> se obtiene realizando sustituciones
-sucesivas (derivando) desde el símbolo de arranque hasta producir un
-árbol cuyos nodos estén etiquetados con elementos de <SPAN CLASS="MATH"><IMG
- WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img23.png"
- ALT="$ \Sigma$"></SPAN>. Debería ser claro
-que, en este ejemplo, <SPAN CLASS="MATH"><IMG
- WIDTH="44" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img39.png"
- ALT="$ L(G)$"></SPAN> es el conjunto de las listas en <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img16.png"
- ALT="$ A$"></SPAN>, incluyendo la lista vacía:
-</I>
-<P>
-<DIV ALIGN="CENTER"><I><!-- MATH
- $L(G) = \{ NIL, CONS(A, NIL), CONS(A, CONS(A,NIL)), \ldots \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="507" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img211.png"
- ALT="$ L(G) = \{ NIL, CONS(A, NIL), CONS(A, CONS(A,NIL)), \ldots \}$"></SPAN></I></DIV>
-<P></DIV><P></P>
-
-<P>
-<P>
-<DIV><B>Ejercicio  <SPAN CLASS="arabic">33</SPAN>.<SPAN CLASS="arabic">9</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Construya una derivación para el árbol <!-- MATH
- $CONS(A, CONS(A,NIL))$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="220" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img212.png"
- ALT="$ CONS(A, CONS(A,NIL))$"></SPAN>.
-¿De que tipo es el árbol <!-- MATH
- $CONS(E, CONS(A, CONS(E,L)))$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="287" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img213.png"
- ALT="$ CONS(E, CONS(A, CONS(E,L)))$"></SPAN>?.</I></DIV><P></P>
-
-<P>
-Cuando hablamos del AAA producido por un analizador sintáctico,
-estamos en realidad hablando de un lenguaje árbol cuya definición 
-precisa debe hacerse a través de una gramática
-árbol regular.
-Mediante las gramáticas árbol regulares disponemos de un mecanismo para
-describir formalmente el lenguaje de los 
-AAA que producirá el analizador sintáctico
-para las sentencias Tutu.
-
-<P>
-<P>
-<DIV><A NAME="example:tututreegrammar"><B>Ejemplo  <SPAN CLASS="arabic">33</SPAN>.<SPAN CLASS="arabic">9</SPAN>.<SPAN CLASS="arabic">4</SPAN></B></A> &nbsp; 
-<I>Sea <!-- MATH
- $G = (\Sigma, V, P, S)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img22.png"
- ALT="$ G =(\Sigma,V,P,S)$"></SPAN> con
-</I>
-<P>
-<DIV ALIGN="CENTER"><TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><I>
-<!-- MATH
- $\Sigma = \{ID, NUM, LEFTVALUE, STR, PLUS, TIMES, ASSIGN, PRINT \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="594" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img172.png"
- ALT="$ \Sigma = \{ID, NUM, LEFTVALUE, STR, PLUS, TIMES, ASSIGN, PRINT \}$"></SPAN></I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-<!-- MATH
- $\rho(ID) = \rho(NUM) = \rho(LEFTVALUE) = \rho(STR) = 0$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="425" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img173.png"
- ALT="$ \rho(ID) = \rho(NUM) = \rho(LEFTVALUE) = \rho(STR) = 0$"></SPAN></I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-<!-- MATH
- $\rho(PRINT) = 1$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="124" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img174.png"
- ALT="$ \rho(PRINT) = 1$"></SPAN></I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-<!-- MATH
- $\rho(PLUS) = \rho(TIMES) = \rho(ASSIGN) = 2$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="343" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img175.png"
- ALT="$ \rho(PLUS) = \rho(TIMES) = \rho(ASSIGN) = 2$"></SPAN></I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-<!-- MATH
- $V = \{ st, expr \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="117" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img214.png"
- ALT="$ V = \{ st, expr \}$"></SPAN></I></TD>
-</TR>
-</TABLE></DIV><I>
-y las producciones:
-</I>
-<P>
-<DIV ALIGN="CENTER"><TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><I>
-<SPAN CLASS="MATH"><IMG
- WIDTH="37" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img215.png"
- ALT="$ P =$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I><SPAN CLASS="MATH"><IMG
- WIDTH="14" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img216.png"
- ALT="$ \{$"></SPAN> </I></TD>
-<TD></TD>
-</TR>
-<TR><TD></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="19" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img217.png"
- ALT="$ st$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I><!-- MATH
- $\rightarrow ASSIGN(LEFTVALUE, expr)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="277" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img218.png"
- ALT="$ \rightarrow ASSIGN(LEFTVALUE, expr)$"></SPAN></I></TD>
-</TR>
-<TR><TD></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="19" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img217.png"
- ALT="$ st$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I><!-- MATH
- $\rightarrow PRINT(expr)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="140" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img219.png"
- ALT="$ \rightarrow PRINT(expr)$"></SPAN></I></TD>
-</TR>
-<TR><TD></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="40" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img122.png"
- ALT="$ expr$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I><!-- MATH
- $\rightarrow PLUS(expr, expr)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="169" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img220.png"
- ALT="$ \rightarrow PLUS(expr, expr)$"></SPAN></I></TD>
-</TR>
-<TR><TD></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="40" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img122.png"
- ALT="$ expr$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I><!-- MATH
- $\rightarrow TIMES(expr, expr)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="184" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img221.png"
- ALT="$ \rightarrow TIMES(expr, expr)$"></SPAN></I></TD>
-</TR>
-<TR><TD></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="40" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img122.png"
- ALT="$ expr$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I><!-- MATH
- $\rightarrow NUM$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="76" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img222.png"
- ALT="$ \rightarrow NUM$"></SPAN></I></TD>
-</TR>
-<TR><TD></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="40" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img122.png"
- ALT="$ expr$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I><!-- MATH
- $\rightarrow ID$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="51" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img223.png"
- ALT="$ \rightarrow ID$"></SPAN></I></TD>
-</TR>
-<TR><TD></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="40" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img122.png"
- ALT="$ expr$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I><!-- MATH
- $\rightarrow STR$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="65" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img224.png"
- ALT="$ \rightarrow STR$"></SPAN></I></TD>
-</TR>
-<TR><TD></TD>
-<TD ALIGN="LEFT"><I><SPAN CLASS="MATH"><IMG
- WIDTH="14" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img225.png"
- ALT="$ \}$"></SPAN> </I></TD>
-<TD></TD>
-</TR>
-</TABLE></DIV>
-<P>
-<I>Entonces el lenguaje <SPAN CLASS="MATH"><IMG
- WIDTH="44" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img39.png"
- ALT="$ L(G)$"></SPAN> contiene árboles
-como el siguiente: 
-</I>
-<P><TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><I>
-<SPAN CLASS="MATH"><IMG
- WIDTH="80" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img226.png"
- ALT="$ ASSIGN$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img227.png"
- ALT="$ ($"></SPAN> </I></TD>
-<TD></TD>
-<TD></TD>
-</TR>
-<TR><TD></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="123" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img228.png"
- ALT="$ LEFTVALUE$"></SPAN>, </I></TD>
-<TD></TD>
-<TD></TD>
-</TR>
-<TR><TD></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="56" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img229.png"
- ALT="$ PLUS$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img227.png"
- ALT="$ ($"></SPAN> </I></TD>
-<TD></TD>
-</TR>
-<TR><TD></TD>
-<TD></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="29" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img230.png"
- ALT="$ ID$"></SPAN>,   </I></TD>
-<TD></TD>
-</TR>
-<TR><TD></TD>
-<TD></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="71" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img231.png"
- ALT="$ TIMES$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img227.png"
- ALT="$ ($"></SPAN></I></TD>
-</TR>
-<TR><TD></TD>
-<TD></TD>
-<TD></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="53" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img121.png"
- ALT="$ NUM$"></SPAN>,</I></TD>
-</TR>
-<TR><TD></TD>
-<TD></TD>
-<TD></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="29" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img230.png"
- ALT="$ ID$"></SPAN></I></TD>
-</TR>
-<TR><TD></TD>
-<TD></TD>
-<TD></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img232.png"
- ALT="$ )$"></SPAN></I></TD>
-</TR>
-<TR><TD></TD>
-<TD></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img232.png"
- ALT="$ )$"></SPAN> </I></TD>
-<TD></TD>
-</TR>
-<TR><TD></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img232.png"
- ALT="$ )$"></SPAN> </I></TD>
-<TD></TD>
-<TD></TD>
-</TR>
-</TABLE>
-<P>
-<I>El cual podría corresponderse con una sentencia como
-<code>a = b + 4 * c</code>.
-</I>
-<P>
-<I>El lenguaje de árboles descrito por esta gramática árbol 
-es el lenguaje de los AAA de las sentencias de Tutu.</I></DIV><P></P>
-
-<P>
-<P>
-<DIV><B>Ejercicio  <SPAN CLASS="arabic">33</SPAN>.<SPAN CLASS="arabic">9</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
-<I>Redefina el concepto de árbol de análisis concreto dado
-en la definición <A HREF="node130.html#definition:arbolconcreto">34.1.7</A> utilizando el
-concepto de gramática árbol. Con mas precisión,
-dada una gramática <!-- MATH
- $G = (\Sigma, V, P, S)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img22.png"
- ALT="$ G =(\Sigma,V,P,S)$"></SPAN> defina una gramática
-árbol <!-- MATH
- $T = (\Omega, N, R, U)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="132" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img233.png"
- ALT="$ T = (\Omega, N, R, U)$"></SPAN> tal que <SPAN CLASS="MATH"><IMG
- WIDTH="43" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img234.png"
- ALT="$ L(T)$"></SPAN> sea el lenguaje 
-de los árboles concretos de <SPAN CLASS="MATH"><IMG
- WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img21.png"
- ALT="$ G$"></SPAN>. Puesto que las partes 
-derechas de las reglas de producción de <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img28.png"
- ALT="$ P$"></SPAN> pueden ser 
-de distinta longitud, existe un problema con
-la aricidad de los elementos de <SPAN CLASS="MATH"><IMG
- WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img235.png"
- ALT="$ \Omega$"></SPAN>. Discuta posibles
-soluciones.</I></DIV><P></P>
-
-<P>
-<P>
-<DIV><B>Ejercicio  <SPAN CLASS="arabic">33</SPAN>.<SPAN CLASS="arabic">9</SPAN>.<SPAN CLASS="arabic">3</SPAN></B> &nbsp; 
-<I>¿Cómo son los árboles sintácticos en las derivaciones árbol?
-Dibuje varios árboles sintácticos para las gramáticas 
-introducidas en los ejemplos 
-<A HREF="#example:listtreegrammar">33.9.3</A>
-y <A HREF="#example:tututreegrammar">33.9.4</A>.
-</I>
-<P>
-<I>Intente dar una definición formal del concepto de árbol de análisis
-sintáctico asociado con una derivación en una gramática árbol</I></DIV><P></P>
-
-<P>
-<P>
-<DIV><A NAME="definition:dewey"><B>Definición  <SPAN CLASS="arabic">33</SPAN>.<SPAN CLASS="arabic">9</SPAN>.<SPAN CLASS="arabic">6</SPAN></B></A> &nbsp; 
-<I>La notación de Dewey es una forma de especificar los subárboles
-de un árbol <!-- MATH
- $t \in B(\Sigma)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="73" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img236.png"
- ALT="$ t \in B(\Sigma)$"></SPAN>. La notación sigue el mismo
-esquema que la numeración de secciones en un texto: 
-es una palabra formada por números separados
-por puntos. Así <I>t/2.1.3 </I>
-denota al tercer hijo del primer hijo del segundo hijo
-del árbol <SPAN CLASS="MATH"><IMG
- WIDTH="11" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img188.png"
- ALT="$ t$"></SPAN>.
-La definición formal sería:
-</I>
-<UL>
-<LI><!-- MATH
- $t/\epsilon = t$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="56" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img237.png"
- ALT="$ t/\epsilon = t$"></SPAN>
-</LI>
-<LI>Si <!-- MATH
- $t = a(t_1, \ldots t_k)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="116" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img238.png"
- ALT="$ t = a(t_1, \ldots t_k)$"></SPAN> y <!-- MATH
- $j \in \{ 1 \ldots k \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="96" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img239.png"
- ALT="$ j \in \{ 1 \ldots k \}$"></SPAN> y <SPAN CLASS="MATH"><IMG
- WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img10.png"
- ALT="$ n$"></SPAN> es una 
-cadena de números y puntos, se define 
-inductivamente el subárbol <SPAN CLASS="MATH"><IMG
- WIDTH="42" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img240.png"
- ALT="$ t/j.n$"></SPAN> como el subárbol <SPAN CLASS="MATH"><IMG
- WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img10.png"
- ALT="$ n$"></SPAN>-ésimo del
-<SPAN CLASS="MATH"><IMG
- WIDTH="13" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
- SRC="img187.png"
- ALT="$ j$"></SPAN>-ésimo subárbol de <SPAN CLASS="MATH"><IMG
- WIDTH="11" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img188.png"
- ALT="$ t$"></SPAN>. Esto es: <!-- MATH
- $t/j.n = t_j/n$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="98" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img241.png"
- ALT="$ t/j.n = t_j/n$"></SPAN>
-</LI>
-</UL></DIV><P></P>
-
-<P>
-<P>
-<DIV><B>Ejercicio  <SPAN CLASS="arabic">33</SPAN>.<SPAN CLASS="arabic">9</SPAN>.<SPAN CLASS="arabic">4</SPAN></B> &nbsp; 
-<I>Sea el árbol:
-</I>
-<P>
-<I>
-<BR>
-<BR>
-</I><TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><I>
-<!-- MATH
- $t = ASSIGN$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="109" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img242.png"
- ALT="$ t = ASSIGN$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img227.png"
- ALT="$ ($"></SPAN> </I></TD>
-<TD></TD>
-<TD></TD>
-</TR>
-<TR><TD></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="123" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img228.png"
- ALT="$ LEFTVALUE$"></SPAN>, </I></TD>
-<TD></TD>
-<TD></TD>
-</TR>
-<TR><TD></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="56" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img229.png"
- ALT="$ PLUS$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img227.png"
- ALT="$ ($"></SPAN> </I></TD>
-<TD></TD>
-</TR>
-<TR><TD></TD>
-<TD></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="29" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img230.png"
- ALT="$ ID$"></SPAN>,   </I></TD>
-<TD></TD>
-</TR>
-<TR><TD></TD>
-<TD></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="71" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img231.png"
- ALT="$ TIMES$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img227.png"
- ALT="$ ($"></SPAN></I></TD>
-</TR>
-<TR><TD></TD>
-<TD></TD>
-<TD></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="53" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img121.png"
- ALT="$ NUM$"></SPAN>,</I></TD>
-</TR>
-<TR><TD></TD>
-<TD></TD>
-<TD></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="29" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img230.png"
- ALT="$ ID$"></SPAN></I></TD>
-</TR>
-<TR><TD></TD>
-<TD></TD>
-<TD></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img232.png"
- ALT="$ )$"></SPAN></I></TD>
-</TR>
-<TR><TD></TD>
-<TD></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img232.png"
- ALT="$ )$"></SPAN> </I></TD>
-<TD></TD>
-</TR>
-<TR><TD></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img232.png"
- ALT="$ )$"></SPAN> </I></TD>
-<TD></TD>
-<TD></TD>
-</TR>
-</TABLE>
-<P>
-<I>
-<BR>
-<BR>
-Calcule los subárboles <!-- MATH
- $t/\epsilon$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="27" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img243.png"
- ALT="$ t/\epsilon$"></SPAN>, <!-- MATH
- $t/2\ldotp2\ldotp1$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="61" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img244.png"
- ALT="$ t/2\ldotp2\ldotp1$"></SPAN>, <!-- MATH
- $t/2\ldotp1$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="45" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img245.png"
- ALT="$ t/2\ldotp1$"></SPAN> y <!-- MATH
- $t/2\ldotp1\ldotp2$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="61" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img246.png"
- ALT="$ t/2\ldotp1\ldotp2$"></SPAN>.</I></DIV><P></P>
-
-<P>
-
-<H2><A NAME="SECTION05692000000000000000">
-Realización del AAA para Tutu en Perl</A>
-</H2>
-En la sección 
-<A HREF="node118.html#subsection:introduccion">33.6.1</A>
-nos limitamos a realizar un recorrido del árbol
-de análisis sintáctico concreto. En esta sección construimos un 
-<A NAME="12203"></A><SPAN  CLASS="textbf">árbol de análisis sintáctico abstracto</SPAN>. Este proceso puede
-verse como <SPAN  CLASS="textbf">la traducción desde el lenguaje de árboles concretos
-hasta el lenguaje de árboles abstractos</SPAN>.
-
-<P>
-<P>
-<DIV><A NAME="definition:tutuast"><B>Definición  <SPAN CLASS="arabic">33</SPAN>.<SPAN CLASS="arabic">9</SPAN>.<SPAN CLASS="arabic">7</SPAN></B></A> &nbsp; 
-<I>La gramática árbol extendida que especifica los árboles AAA
-para el compilador de Tutu es esta:
-</I>
-<P>
-<DIV ALIGN="CENTER"><TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT"><I>
-  1 </I></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="39" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img247.png"
- ALT="$ prog$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I><!-- MATH
- $\rightarrow PROGRAM(decls, sts)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="209" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img248.png"
- ALT="$ \rightarrow PROGRAM(decls, sts)$"></SPAN></I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-  2 </I></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="43" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img249.png"
- ALT="$ decls$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I><!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> list <SPAN CLASS="MATH"><IMG
- WIDTH="35" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img250.png"
- ALT="$ decl$"></SPAN></I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-  3 </I></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="27" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img251.png"
- ALT="$ sts$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I><!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> list <SPAN CLASS="MATH"><IMG
- WIDTH="19" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img217.png"
- ALT="$ st$"></SPAN></I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-  4 </I></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="35" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img250.png"
- ALT="$ decl$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I><!-- MATH
- $\rightarrow INT(idlist)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="119" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img252.png"
- ALT="$ \rightarrow INT(idlist)$"></SPAN></I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-  5 </I></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="35" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img250.png"
- ALT="$ decl$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I><!-- MATH
- $\rightarrow STRING(idlist)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="158" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img253.png"
- ALT="$ \rightarrow STRING(idlist)$"></SPAN></I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-  6 </I></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="46" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img254.png"
- ALT="$ idlist$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I><!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> list <SPAN CLASS="MATH"><IMG
- WIDTH="108" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img255.png"
- ALT="$ SIMPLEID$"></SPAN></I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-  7 </I></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="19" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img217.png"
- ALT="$ st$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I><!-- MATH
- $\rightarrow ASSIGN(LEFTVALUE, expr)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="277" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img218.png"
- ALT="$ \rightarrow ASSIGN(LEFTVALUE, expr)$"></SPAN></I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-  8 </I></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="19" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img217.png"
- ALT="$ st$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I><!-- MATH
- $\rightarrow PRINT(expr)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="140" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img219.png"
- ALT="$ \rightarrow PRINT(expr)$"></SPAN></I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-  9 </I></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="40" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img122.png"
- ALT="$ expr$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I><!-- MATH
- $\rightarrow PLUS(expr, expr)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="169" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img220.png"
- ALT="$ \rightarrow PLUS(expr, expr)$"></SPAN></I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
- 10 </I></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="40" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img122.png"
- ALT="$ expr$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I><!-- MATH
- $\rightarrow TIMES(expr, expr)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="184" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img221.png"
- ALT="$ \rightarrow TIMES(expr, expr)$"></SPAN></I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
- 11 </I></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="40" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img122.png"
- ALT="$ expr$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I><!-- MATH
- $\rightarrow NUM$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="76" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img222.png"
- ALT="$ \rightarrow NUM$"></SPAN></I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
- 12 </I></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="40" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img122.png"
- ALT="$ expr$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I><!-- MATH
- $\rightarrow ID$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="51" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img223.png"
- ALT="$ \rightarrow ID$"></SPAN></I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
- 13 </I></TD>
-<TD ALIGN="LEFT"><I> <SPAN CLASS="MATH"><IMG
- WIDTH="40" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img122.png"
- ALT="$ expr$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I><!-- MATH
- $\rightarrow STR$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="65" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img224.png"
- ALT="$ \rightarrow STR$"></SPAN></I></TD>
-</TR>
-</TABLE></DIV></DIV><P></P>
-
-<P>
-Hemos extendido el concepto de gramática 
-árbol con el concepto de <A NAME="12205"></A><SPAN  CLASS="textbf">lista de no terminales</SPAN>. 
-A la hora de construir las estructuras de datos
-las listas de variables se van a traducir por listas de árboles.
-
-<P>
-Por ejemplo, un árbol abstracto para el programa
-
-<P>
-<PRE>
-int a,b;
-string c, d;
-a = 4;
-p a
-</PRE>
-
-<P>
-Sería de la forma:
-
-<P>
-<PRE>
-PROGRAM(
-         DECLS[INT[ID, ID], STRING[ID, ID]], 
-         STS[ASSIGN(LEFTVALUE, NUM), PRINT(ID)]
-       )
-</PRE>
-
-<P>
-Donde los corchetes indican listas y los paréntesis tuplas.
-
-<P>
-Para llevar a cabo la traducción deberemos 
-tomar decisiones sobre que forma de representación nos conviene.
-Cada nodo del AAA va a ser un objeto y la clase indicará si es un nodo
-suma, producto, una declaración, una asignación, etc. 
-
-<P>
-Cada nodo del árbol AAA va a ser un objeto. 
-De este modo el acceso a los atributos del nodo se hará a través de
-los métodos asociados. Además, el procedimiento de traducción
-al lenguaje objetivo depende del tipo de nodo. Así por ejemplo,
-el método <SPAN  CLASS="textbf">traducción</SPAN>
-es diferente para un nodo de tipo <SPAN CLASS="MATH"><IMG
- WIDTH="56" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img229.png"
- ALT="$ PLUS$"></SPAN> que para otro de tipo <SPAN CLASS="MATH"><IMG
- WIDTH="80" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img226.png"
- ALT="$ ASSIGN$"></SPAN>.
-
-<P>
-Resumamos antes de entrar en detalle, la forma de manejar los
-objetos en Perl:
-
-<P>
-
-<UL>
-<LI>Para crear una <A NAME="12207"></A><SPAN  CLASS="textbf">clase</SPAN> se construye un ``package'':
-<PRE>
-package NUM;
-</PRE>
-</LI>
-<LI>Para crea un <A NAME="12209"></A><SPAN  CLASS="textbf">método</SPAN> se escribe una subrutina:
-<PRE>
-package NUM;
-sub incr { my $self = shift; $self-&gt;{VAL}++ }
-</PRE>
-el primer argumento de un método suele ser la referencia al 
-objeto en cuestión.
-</LI>
-<LI>Para crear un <A NAME="12211"></A><SPAN  CLASS="textbf">objeto</SPAN>, se bendice (``bless'') una referencia.
-Los objetos Perl son datos normales como hashes y arrays que han sido 
-``bendecidos'' en un paquete. Por ejemplo:
-<PRE>
-my $a = bless {VAL =&gt; 4}, 'NUM';
-</PRE>
-crea un objeto referenciado por <code>$a</code> que pertenece a la clase <code>NUM</code>.
-Los métodos del objeto son las subrutinas que aparecen en el <code>package NUM</code>.
-</LI>
-<LI>Para referirse a un método de un objeto se usa la sintáxis ``flecha'':
-<PRE>
-$a-&gt;incr;
-</PRE>
-Cuando se usa la sintáxis flecha, el primer argumento de la rutina es 
-la referencia al objeto, esto es, la llamada anterior es equivalente a
-<code>NUM::incr($a)</code>
-</LI>
-<LI>Constructores: En Perl son rutinas que retornan una referencia a un objeto 
-recién creado e inicializado
-<PRE>
-sub new { my ($class, $value) = @_; return bless {VAL =&gt; $value}, $class; }
-</PRE>
-Normalmente se llaman usando la sintáxis flecha, pero a la izquierda de la
-flecha va el nombre de la clase. Por ejemplo:
-
-<P>
-<code>my $a = NUM-&gt;new(4)</code> 
-
-<P>
-En este caso,
-el primer argumento es el nombre de la clase. La llamada anterior es
-equivalente a 
-
-<P>
-<code>NUM::new('NUM', 4)</code>
-</LI>
-</UL>
-
-<P>
-Volviendo a nuestro problema de crear el AAA, para crear los 
-objetos de las diferentes clases de nodos
-usaremos el módulo  <code>Class::MakeMethods::Emulator::MethodMaker</code>
-(véase la línea 9):
-
-<P>
-<PRE>
- 1 package PL::Syntax::Analysis;
- 2
- 3 use 5.006;
- 4 use strict;
- 5 use warnings;
- 6 use Data::Dumper;
- 7 use IO::File;
- 8 use Class::MakeMethods::Emulator::MethodMaker '-sugar';
- 9
-10 require Exporter;
-11 our @ISA = qw(Exporter);
-12 our @EXPORT = qw( );
-13 our $VERSION = '0.02';
-14
-15 #######################################################
-16
-17 # Grammar:
-18 # P : DD L      | L
-19 # DD: D ';' DD  | D ';'
-20 # D : int I     | string I
-21 # L : S         | S ; L
-22 # S : ID '=' E  | p E  | epsilon
-23 # E : T '+' E   | T
-24 # T : F '*' T   | F
-25 # F : '(' E ')' | id | num | str
-26 # I : id ',' I  | id
-</PRE>
-
-<P>
-Hemos aislado la fase de análisis sintáctica en un módulo
-aparte denominado <code>PL::Syntax::Analysis</code>.
-La dependencia se actualiza en <code>Makefile.PL</code>:
-<PRE>
-PL0506/04sintactico/PL-Tutu$ cat -n Makefile.PL
-  1  use 5.008004;
-  2  use ExtUtils::MakeMaker;
-  3  WriteMakefile(
-  4      NAME              =&gt; 'PL::Tutu',
-  5      VERSION_FROM      =&gt; 'lib/PL/Tutu.pm', # finds $VERSION
-  6      PREREQ_PM         =&gt; {Class::MakeMethods::Emulator::MethodMaker =&gt; 0},1
-  7      EXE_FILES         =&gt; [ 'scripts/tutu.pl', 'scripts/tutu' ],
-  8      ($] &gt;= 5.005 ?     ## Add these new keywords supported since 5.005
-  9        (ABSTRACT_FROM  =&gt; 'lib/PL/Tutu.pm', # retrieve abstract from module
- 10         AUTHOR         =&gt; 'Casiano Rodriguez Leon &lt;casiano@ull.es&gt;') : ()),
- 11  );
-</PRE>
-Se actualiza también MANIFEST:
-<PRE>
-$ cat -n MANIFEST
- 1  Changes
- 2  lib/PL/Error.pm
- 3  lib/PL/Lexical/Analysis.pm
- 4  lib/PL/Syntax/Analysis.pm
- 5  lib/PL/Tutu.pm
- 6  Makefile.PL
- 7  MANIFEST
- 8  MANIFEST.SKIP
- 9  README
-10  scripts/test01.tutu
-11  scripts/tutu
-12  scripts/tutu.pl
-13  t/01Lexical.t
-</PRE>
-
-<P>
-Ahora <code>compile</code> llama a <code>Syntax::Analysis::parser</code> pasándole
-como argumento la lista de terminales <code>@tokens</code>. La función <code>parser</code>
-devuelve el AAA:
-<PRE>
-04sintactico/PL-Tutu/lib/PL$ sed -ne '/sub compile\&gt;/,/^}/p' Tutu.pm | cat -n
-  1  sub compile {
-  2    my ($input) = @_;
-  3    #my %symbol_table = ();
-  4    #my $data = ""; # Contiene todas las cadenas en el programa fuente
-  5    my $target = ""; # target code
-  6    my @tokens = ();
-  7    my $tree = undef; # abstract syntax tree
-  8    #my $global_address = 0;
-  9
- 10
- 11    ########lexical analysis
- 12    @tokens = scanner($input);
- 13    #print "@tokens\n";
- 14
- 15    ########syntax (and semantic) analysis
- 16    $tree = &amp;Syntax::Analysis::parser(@tokens);
- 17    print Dumper($tree);
- 18
- 19    ########machine independent optimizations
- 20    &amp;Machine::Independent::Optimization::Optimize;
- 21
- 22    ########code generation
- 23    &amp;Code::Generation::code_generator;
- 24
- 25    ########peephole optimization
- 26    &amp;Peephole::Optimization::transform($target);
- 27
- 28    return \$target;
- 29  }
-</PRE>
-El módulo <code>Class::MakeMethods::Emulator::MethodMaker</code>
-permite crear constructores y métodos de acceso.
-El módulo no viene con la distribución de Perl, así que, en general, deberá 
-descargarlo desde CPAN e instalarlo.
-Así definimos que existe una clase de nodos <code>TYPE</code>
-que nuestro AAA va a tener:
-
-<P>
-<PRE>
-package TYPE;
-make methods
-  get_set       =&gt; [ 'NAME', 'LENGTH' ],
-  new_hash_init =&gt; 'new';
-</PRE>
-
-<P>
-El uso de los argumentos <code>get_set =&gt; [ 'NAME', 'LENGTH' ]</code>
-hace que se cree un objeto de tipo hash  con claves 
-<code>'NAME'</code> y <code>'LENGTH'</code> así como métodos <code>NAME</code>
-y <code>LENGTH</code> que cuando se llaman con un argumento devuelven
-el valor y cuando se llaman con dos argumentos modifican el
-valor correspondiente. 
-La clave <code>get_set</code> produce métodos de acceso
-y modificación de los atributos del objeto que
-tienen la forma:
-
-<P>
-<PRE>
-sub TYPE::NAME {
-  my ($self, $new) = @_;
-  defined($new) and $self-&gt;{NAME} = $new;
-  return $self-&gt;{NAME};
-}
-</PRE>
-
-<P>
-Asi mismo el uso de <code>new_hash_init =&gt; 'new'</code>
-genera un constructor cuyo nombre
-será <code>'new'</code> y que cuando es llamado inicializará el
-objeto con los argumentos con nombre especificados en la llamada.
-El constructor construído (vaya retruécano) cuando se usa la clave
-<code>new_hash_init</code> tiene el siguiente aspecto:
-
-<P>
-<PRE>
-sub TYPE::new {
-  my ($class, %args) = @_;
-  my $self = {};
-
-  bless $self, $class;
-  foreach my $attribute (keys %args) {
-    $self-&gt;$attribute($args{$attribute});
-  }
-  return $self;
-}
-</PRE>
-
-<P>
-Ahora podemos crear objetos de la clase <code>TYPE</code> haciendo:
-<PRE>
-my $int_type = TYPE-&gt;new(NAME =&gt; 'INTEGER', LENGTH =&gt; 1); 
-my $string_type = TYPE-&gt;new(NAME =&gt; 'STRING', LENGTH =&gt; 2);
-my $err_type = TYPE-&gt;new(NAME =&gt; 'ERROR', LENGTH =&gt; 0);
-</PRE>
-Cada uno de estos objetos es un hash con las correspondientes
-claves para el nombre y el tipo.
-
-<P>
-Otros tipos de nodos del AAA son:
-
-<P>
-<PRE>
-package PROGRAM; # raíz del AAA
-make methods
-  get_set       =&gt; [ 'DECLS', 'STS' ],
-  new_hash_init =&gt; 'new';
-
-package STRING; # tipo
-make methods
-  get_set       =&gt; [ 'TYPE', 'IDLIST' ],
-  new_hash_init =&gt; 'new';
-
-package INT; # tipo
-make methods
-  get_set       =&gt; [ 'TYPE', 'IDLIST' ],
-  new_hash_init =&gt; 'new';
-
-package ASSIGN; #sentencia
-make methods
-  get_set       =&gt; [ 'LEFT', 'RIGHT' ],
-  new_hash_init =&gt; 'new';
-
-package PRINT; #sentencia
-make methods
-  get_set       =&gt; [ 'EXPRESSION' ],
-  new_hash_init =&gt; 'new';
-
-package NUM; # para los números
-make methods
-  get_set       =&gt; [ 'VAL', 'TYPE' ],
-  new_hash_init =&gt; 'new';
-
-package ID; # Nodos identificador. Parte derecha
-make methods
-  get_set       =&gt; [ 'VAL', 'TYPE' ],
-  new_hash_init =&gt; 'new';
-
-package STR; # Clase para las constantes cadena
-make methods
-  get_set       =&gt; [ 'OFFSET', 'LENGTH', 'TYPE' ],
-  new_hash_init =&gt; 'new';
-
-package PLUS; # Nodo suma
-make methods
-  get_set       =&gt; [ 'LEFT', 'RIGHT', 'TYPE' ],
-  new_hash_init =&gt; 'new';
-
-package TIMES;
-make methods
-  get_set       =&gt; [ 'LEFT', 'RIGHT', 'TYPE' ],
-  new_hash_init =&gt; 'new';
-
-package LEFTVALUE; # Identificador en la parte izquierda
-make methods       # de una asignación
-  get_set       =&gt; [ 'VAL', 'TYPE' ],
-  new_hash_init =&gt; 'new';
-</PRE>
-
-<P>
-Hemos extendido el concepto de gramática 
-árbol con el concepto de <A NAME="12213"></A><SPAN  CLASS="textbf">lista de no terminales</SPAN>. 
-A la hora de construir las estructuras de datos
-las listas de variables se van a traducir por listas de árboles.
-Los tipos de nodos (<SPAN CLASS="MATH"><IMG
- WIDTH="80" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img226.png"
- ALT="$ ASSIGN$"></SPAN>, <SPAN CLASS="MATH"><IMG
- WIDTH="69" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img256.png"
- ALT="$ PRINT$"></SPAN>, ...)
-se traducen en nombres de clases. Hemos hecho
-una excepción con <SPAN CLASS="MATH"><IMG
- WIDTH="108" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img255.png"
- ALT="$ SIMPLEID$"></SPAN> el cual es simplemente una 
-variable cadena conteniendo el identificador correspondiente.
-
-<P>
-El siguiente esquema de traducción resume la idea para una gramática 
-simplificada: cada vez que encontremos un nodo en el árbol sintáctico 
-concreto con una operación crearemos un nodo en el AAA cuya clase
-viene definida por el tipo de operación. Para los terminales
-creamos igualmente nodos indicando de que clase de terminal 
-se trata. El atributo nodo lo denotaremos por <code>n</code>:
-
-<P>
-<BR>
-<BR>
-<TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $e   \rightarrow\ e_1 + f$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="93" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img257.png"
- ALT="$ e \rightarrow e_1 + f$"></SPAN></TD>
-<TD ALIGN="LEFT"><code>{ $e{n} = PLUS-&gt;new(LEFT=&gt;$e_1{n}, RIGHT=&gt;$f{n}) }</code></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $f   \rightarrow NUM$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="91" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img258.png"
- ALT="$ f \rightarrow NUM$"></SPAN></TD>
-<TD ALIGN="LEFT"><code>{ $f{n} = NUM-&gt;new(VAL =&gt; $NUM{VAL}) }</code></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $f   \rightarrow ID$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="66" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img259.png"
- ALT="$ f \rightarrow ID$"></SPAN></TD>
-<TD ALIGN="LEFT"><code>{ $f{n} = ID-&gt;new(VAL =&gt; $ID{VAL}) }</code></TD>
-</TR>
-</TABLE>
-<BR>
-<BR>
-
-<P>
-La estructura de cada rutina sigue siendo la misma, 
-sólo que ampliada con las acciones para la construcción de los
-correspondientes nodos. Veamos por ejemplo, como modificamos
-la subrutina factor:
-
-<P>
-<PRE>
-sub factor() {
-  my ($e, $id, $str, $num);
-
-  if ($lookahead eq 'NUM') {
-    $num = $value;
-    match('NUM');
-    return NUM-&gt;new(VAL =&gt; $num, TYPE =&gt; $int_type);
-  }
-  elsif ($lookahead eq 'ID') {
-    $id = $value;
-    match('ID');
-    return ID-&gt;new( VAL =&gt; $id, TYPE =&gt; undef);
-  }
-  elsif ($lookahead eq 'STR') {
-    $str = $value;
-    match('STR');
-    return STR-&gt;new(OFFSET =&gt; undef, LENGTH =&gt; undef, TYPE =&gt; $string_type);
-  }
-  elsif ($lookahead eq '(') {
-    match('(');
-    $e = expression;
-    match(')');
-    return $e;
-  }
-  else {
-    Error::fatal("Se esperaba (, NUM o ID");
-  }
-}
-</PRE>
-
-<P>
-
-<H2><A NAME="SECTION05693000000000000000">
-AAA: Otros tipos de nodos</A>
-</H2>
-Hemos optado por que las rutinas asociadas a variables sintácticas que 
-describen listas de subcategorías devuelvan 
-las correspondientes listas de nodos. Teníamos tres variables tipo lista.
-Las reglas para las listas eran:
-
 <P>
-<BR>
-<BR>
 <DIV ALIGN="CENTER">
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT">Gramática de los Árboles de Tutu</TD>
-<TD ALIGN="LEFT">Gramática del lenguaje Tutu</TD>
-</TR>
-<TR><TD ALIGN="LEFT"><SPAN CLASS="MATH"><IMG
- WIDTH="43" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img249.png"
- ALT="$ decls$"></SPAN> <!-- MATH
- $\rightarrow list\ decl$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="89" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img260.png"
- ALT="$ \rightarrow list decl$"></SPAN></TD>
-<TD ALIGN="LEFT">declarations <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> declaration  ';'  declarations    <SPAN CLASS="MATH"><IMG
- WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img50.png"
- ALT="$ \vert$"></SPAN> declaration ';'</TD>
-</TR>
-<TR><TD ALIGN="LEFT"><SPAN CLASS="MATH"><IMG
- WIDTH="27" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img251.png"
- ALT="$ sts$"></SPAN> <!-- MATH
- $\rightarrow list\ st$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="73" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img261.png"
- ALT="$ \rightarrow list st$"></SPAN></TD>
-<TD ALIGN="LEFT">statements   <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> statement  ';'  statements        <SPAN CLASS="MATH"><IMG
- WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img50.png"
- ALT="$ \vert$"></SPAN> statement</TD>
-</TR>
-<TR><TD ALIGN="LEFT"><SPAN CLASS="MATH"><IMG
- WIDTH="46" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img254.png"
- ALT="$ idlist$"></SPAN> <!-- MATH
- $\rightarrow list\ SIMPLEID$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="162" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img262.png"
- ALT="$ \rightarrow list SIMPLEID$"></SPAN></TD>
-<TD ALIGN="LEFT">idlist       <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> ID ',' idlist <SPAN CLASS="MATH"><IMG
- WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img50.png"
- ALT="$ \vert$"></SPAN> ID</TD>
-</TR>
-</TABLE>
+<code>Semantic::Analysis::check_type_numeric_operator</code>:
+
 </DIV>
 
 <P>
-En este caso las subrutinas asociadas no devuelven
-objetos sino listas de objetos. 
-Esto da lugar a una compactación del AAA.
-Veánse los códigos de <code>statements</code> y <code>idlist</code>:
+Observe como aparece un nuevo atributo <code>TYPE</code> decorando el nodo
+creado (línea 9):
+
+<P>
 <PRE>
-sub statements() {
-  my @s;
+ 1 sub term() {
+ 2   my ($t, $t2);
+ 3 
+ 4   $t = factor;
+ 5   if ($lookahead eq '*') {
+ 6     match('*');
+ 7     $t2 = term;
+ 8     my $type = Semantic::Analysis::check_type_numeric_operator($t, $t2, '*');
+ 9     $t = TIMES-&gt;new( LEFT =&gt; $t, RIGHT =&gt; $t2, TYPE =&gt; $type);
+10   }
+11   return $t;
+12 }
+</PRE>
 
-  @s = (statement());
-  if ($lookahead eq ';') {
-    match(';');
-    push @s, statements();
-  }
-  return @s;
-}
+<P>
+En el manejo de errores de tipo, un tipo especial <code>$err_type</code>
+es usado para indicar un error de tipo:
 
-sub idlist() {
-  my @id;
+<P>
+<PRE>
+  sub check_type_numeric_operator {
+    my ($op1, $op2, $operator) = @_;
 
-  if ($lookahead eq 'ID') {
-    @id = ($value); # no es un objeto 
-    match('ID');
-    if ($lookahead eq ',') {
-      match(',');
-      push @id, idlist();
+    my $type = numeric_compatibility($op1, $op2, $operator);
+    if ($type == $err_type) {
+      Error::fatal("Operandos incompatibles para el operador $operator") 
+    }
+    else {
+      return $type;
     }
   }
-  else {
-    Error::fatal('Se esperaba un identificador');
-    @id = ('ERROR');
+</PRE>
+La subrutina <code>numeric_compatibility</code> comprueba que los
+dos operandos son de tipo numérico y devuelve el correspondiente
+tipo. Si ha ocurrido un error de tipo, intenta encontrar 
+un tipo conveniente para el operando:
+
+<P>
+<PRE>
+  sub numeric_compatibility {
+    my ($op1, $op2, $operator) = @_;
+
+    if (($op1-&gt;TYPE == $op2-&gt;TYPE) and is_numeric($op1-&gt;TYPE)) {
+      return $op1-&gt;TYPE; # correct
+    }
+    ... # código de recuperación de errores de tipo
   }
-  return @id;
-}
+
+  sub is_numeric {
+    my $type = shift;
+
+    return ($type == $int_type); # añadir long, float, double, etc.
+  }
 </PRE>
 
 <P>
-
-<H2><A NAME="SECTION05694000000000000000">
-Declaraciones</A>
-</H2>
- Los nodos del tipo declaration no existen propiamente, son nodos 
-de la clase <SPAN CLASS="MATH"><IMG
- WIDTH="42" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img263.png"
- ALT="$ INT$"></SPAN> o de la clase <SPAN CLASS="MATH"><IMG
- WIDTH="81" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img264.png"
- ALT="$ STRING$"></SPAN>. 
-La parte de la gramática árbol de la que hablamos es:
-
-<P>
-<DIV ALIGN="CENTER">
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT">2</TD>
-<TD ALIGN="LEFT"><SPAN CLASS="MATH"><IMG
- WIDTH="43" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img249.png"
- ALT="$ decls$"></SPAN></TD>
-<TD ALIGN="LEFT"><!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> list <SPAN CLASS="MATH"><IMG
- WIDTH="35" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img250.png"
- ALT="$ decl$"></SPAN></TD>
-</TR>
-<TR><TD ALIGN="LEFT">4</TD>
-<TD ALIGN="LEFT"><SPAN CLASS="MATH"><IMG
- WIDTH="35" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img250.png"
- ALT="$ decl$"></SPAN></TD>
-<TD ALIGN="LEFT"><!-- MATH
- $\rightarrow INT(idlist)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="119" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img252.png"
- ALT="$ \rightarrow INT(idlist)$"></SPAN></TD>
-</TR>
-<TR><TD ALIGN="LEFT">5</TD>
-<TD ALIGN="LEFT"><SPAN CLASS="MATH"><IMG
- WIDTH="35" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img250.png"
- ALT="$ decl$"></SPAN></TD>
-<TD ALIGN="LEFT"><!-- MATH
- $\rightarrow STRING(idlist)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="158" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img253.png"
- ALT="$ \rightarrow STRING(idlist)$"></SPAN></TD>
-</TR>
-<TR><TD ALIGN="LEFT">6</TD>
-<TD ALIGN="LEFT"><SPAN CLASS="MATH"><IMG
- WIDTH="46" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img254.png"
- ALT="$ idlist$"></SPAN></TD>
-<TD ALIGN="LEFT"><!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> list <SPAN CLASS="MATH"><IMG
- WIDTH="108" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img255.png"
- ALT="$ SIMPLEID$"></SPAN></TD>
-</TR>
-</TABLE>
-</DIV>
-
-<P>
-Los nodos declaration son un hash con una clave <code>TYPE</code> la cual
-apunta a la estructura de datos/objeto
-describiendo el tipo. La otra clave del hash <code>IDLIST</code> apunta  a una 
-lista de identificadores. Los elementos de esta lista son simples
-identificadores (identificados en la gramática árbol anterior 
-como <SPAN CLASS="MATH"><IMG
- WIDTH="108" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img255.png"
- ALT="$ SIMPLEID$"></SPAN> y no como objetos <SPAN CLASS="MATH"><IMG
- WIDTH="29" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img230.png"
- ALT="$ ID$"></SPAN>).
-La parte de la gramática implicada en las declaraciones es:
-
-<P>
-<BR>
-<BR>
-<TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT">declaration  <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> INT  idlist   <SPAN CLASS="MATH"><IMG
- WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img50.png"
- ALT="$ \vert$"></SPAN> STRING   idlist</TD>
-</TR>
-<TR><TD ALIGN="LEFT">idlist       <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> ID ',' idlist <SPAN CLASS="MATH"><IMG
- WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img50.png"
- ALT="$ \vert$"></SPAN> ID</TD>
-</TR>
-</TABLE>
-<BR>
-<BR>
-
-<P>
-Así pues, el código construye un nodo de la clase 
-<code>INT</code> o <code>STRING</code> según sea el caso.
+Es parte del análisis semántico la declaración de tipos:
 
 <P>
 <PRE>
@@ -2148,6 +219,8 @@ sub declaration() {
     $class = $lookahead;
     $t = &amp;type();
     @il = &amp;idlist();
+    &amp;Semantic::Analysis::set_types($t, @il);
+    &amp;Address::Assignment::compute_address($t, @il);
     return $class-&gt;new(TYPE =&gt; $t, IDLIST =&gt; \@il);
   }
   else {
@@ -2155,27 +228,90 @@ sub declaration() {
   }
 }
 </PRE>
-Observe la llamada <code>$class-&gt;new(TYPE =&gt; $t, IDLIST =&gt; \@il)</code>
-en la cual la clase se usa a través de una referencia simbólica.
+Para ello se utiliza una tabla de símbolos que es un hash <code>%symbol_table</code>
+indexado en los identificadores del programa:
+
+<P>
+<PRE>
+sub set_types {
+  my $type = shift;
+  my @vars = @_;
+
+  foreach my $var (@vars) {
+    if (!exists($symbol_table{$id})) { $symbol_table{$var}-&gt;{TYPE} = $type; }
+    else { Error::error("$id declarado dos veces en el mismo ámbito"); }
+  }
+}
+</PRE>
+
+<P>
+Cada vez que aparece una variable en el código, bien en un factor o en 
+una asignación, comprobamos que ha sido declarada:
+
+<P>
+<PRE>
+sub factor() {
+  my ($e, $id, $str, $num);
+
+  if ($lookahead eq 'NUM') { ... }
+  elsif ($lookahead eq 'ID') {
+    $id = $value;
+    match('ID');
+    my $type = Semantic::Analysis::check_declared($id);
+    return ID-&gt;new( VAL =&gt; $id, TYPE =&gt; $type);
+  }
+  elsif ($lookahead eq 'STR') { ... }
+  elsif ($lookahead eq '(') { ... }
+  else { Error::fatal("Se esperaba (, NUM o ID"); }
+}
+</PRE>
+
+<P>
+La función <code>check_declared</code> devuelve el atributo
+<code>TYPE</code> de la correspondiente entrada en la tabla de 
+símbolos.
+
+<P>
+<PRE>
+sub check_declared {
+  my $id = shift;
+
+  if (!exists($symbol_table{$id})) {
+    Error::error("$id no ha sido declarado!");
+    # auto-declaración de la variable a err_type
+    Semantic::Analysis::set_types($err_type, ($id));
+  }
+  return $symbol_table{$id}-&gt;{TYPE};
+}
+</PRE>
 
 <P>
 
-<H2><A NAME="SECTION05695000000000000000"></A>
-   <A NAME="12216"></A>
-  
-<A NAME="practica:AAA"></A>
+<H2><A NAME="SECTION056101000000000000000"></A>
+   <A NAME="12215"></A>
 <BR>
-Práctica: Arbol de Análisis Abstracto
+Práctica: Declaraciones Automáticas
 </H2>
-Complete la fase de análisis sintáctico para la gramática  de Tutu extendida 
-con sentencias de bloque (vea las reglas 1,2,3 y 11)
-construyendo el AAA según el lenguaje árbol especificado  
-por una gramática árbol que extienda la dada en la definición 
-<A HREF="#definition:tutuast">33.9.7</A>.
-Genere pruebas, usando <code>make test</code> 
-para comprobar el correcto funcionamiento de su analizador sobre las mismas.
-Utilize el módulo <code>Data::Dumper</code> para volcar las estructuras de datos
-resultantes.
+
+<P>
+Modifique la subrutina <code>check_declared</code> para que cuando
+una variable no haya sido declarada se declare ``sobre la marcha''. 
+¿Puede utilizar 
+información dependiente del contexto para decidir cual es la mejor forma
+de declararla?
+
+<P>
+
+<H2><A NAME="SECTION056102000000000000000"></A>
+   <A NAME="12217"></A>
+  
+<A NAME="practica:analisis_semantico"></A>
+<BR>
+Práctica: Análisis Semántico
+</H2>
+Extienda el código de la práctica 
+<A HREF="node120.html#practica:AAA">33.9.5</A>
+para comprobar la compatibilidad de tipos.
 
 <P>
 <BR>
@@ -2289,7 +425,7 @@ resultantes.
 <SPAN CLASS="MATH"><IMG
  WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
  SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> ID = e   </SMALL></TD>
+ ALT="$ \rightarrow$"></SPAN> ID '=' e   </SMALL></TD>
 </TR>
 <TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
 
@@ -2459,23 +595,60 @@ resultantes.
 </TABLE></DIV>
 <BR>
 <BR>
+En cuanto a las sentencias de bloque,
+se pretende que el ámbito y visibilidad de las variables sea como en el lenguaje
+C, esto es, las declaraciones mas internas con el mismo identificador
+ocultan las mas externas. Así:
+
+<P>
+<PRE>
+int a;
+a = 4;
+{
+  int a;
+  a = 5;
+  p a
+}; /* el ; es necesario */
+p a
+</PRE>
+
+<P>
+Imprimiría 5 y 4. Para traducir esta sentencia es necesario 
+<SPAN  CLASS="textbf">usar una lista/pila de referencias a tablas de símbolos. Cada 
+sentencia compuesta o bloque tendrá
+su propia tabla de símbolos</SPAN>. Los identificadores se búscan
+en la lista de referencias a tablas de símbolos, primero 
+en la última tabla de símbolos insertada y sino se encuentra
+se busca en la penúltima insertada, etc.
+
+<P>
+Guarde como un atributo del identificador (<SPAN CLASS="MATH"><IMG
+ WIDTH="115" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img265.png"
+ ALT="$ SYMTABLE$"></SPAN>) 
+la referencia a la tabla de símbolos
+a la que pertenece. Guarde como un atributo del nodo bloque (<SPAN CLASS="MATH"><IMG
+ WIDTH="74" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img266.png"
+ ALT="$ BLOCK$"></SPAN>) 
+la referencia a la tabla de símbolos asociada.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3983"
+<A NAME="tex2html3987"
   HREF="node122.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3977"
-  HREF="node112.html">
+<A NAME="tex2html3981"
+  HREF="node111.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3971"
+<A NAME="tex2html3975"
   HREF="node120.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3979"
+<A NAME="tex2html3983"
   HREF="node193.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3981"
+<A NAME="tex2html3985"
   HREF="node196.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -2523,12 +696,12 @@ resultantes.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3984"
-  HREF="node122.html">Análisis Semántico</A>
-<B>Sup:</B> <A NAME="tex2html3978"
-  HREF="node112.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html3972"
-  HREF="node120.html">Recursión por la Izquierda</A>
+<B> Sig:</B> <A NAME="tex2html3988"
+  HREF="node122.html">Optimización Independiente de la</A>
+<B>Sup:</B> <A NAME="tex2html3982"
+  HREF="node111.html">Análisis Sintáctico Descendente en</A>
+<B> Ant:</B> <A NAME="tex2html3976"
+  HREF="node120.html">Árbol de Análisis Abstracto</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
