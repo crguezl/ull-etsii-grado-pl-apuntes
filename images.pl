@@ -148,13 +148,6 @@ $cached_env_img{$key} = q|<IMG
  SRC="|."$dir".q|img33.png"
  ALT="$ \alpha \gamma \beta$">|; 
 
-$key = q/%latex2htmlidmarker38702S=program;MSF=1.6;LFS=11;AAT/;
-$cached_env_img{$key} = q|<IMG
- WIDTH="107" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="|."$dir".q|img368.png"
- ALT="% latex2html id marker 38702
-$ S = program$">|; 
-
 $key = q/PLUS(x,y);MSF=1.6;LFS=11;AAT/;
 $cached_env_img{$key} = q|<IMG
  WIDTH="96" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
@@ -1235,7 +1228,7 @@ $cached_env_img{$key} = q|<IMG
  WIDTH="278" HEIGHT="62" ALIGN="MIDDLE" BORDER="0"
  SRC="|."$dir".q|img423.png"
  ALT="$\displaystyle \hat{\delta}(q, x) = \left \{ \begin{array}{ll} \delta(\hat{\delt...
-...,y),a) &amp; \mbox{si $x = ya$} \ q &amp; \mbox{si $x = \epsilon$} \end{array} \right.$">|; 
+...,y),a) &amp; \mbox{si $x = ya$}  q &amp; \mbox{si $x = \epsilon$} \end{array} \right.$">|; 
 
 $key = q/displaystyleFIRST(alpha)=FIRST(alpha)cupFIRST^*(X_i);;MSF=1.6;LFS=11;AAT/;
 $cached_env_img{$key} = q|<IMG
@@ -1635,8 +1628,8 @@ $key = q/existsS{array}{c}*Longrightarrow{scriptstyleRM}{array}betaAbx{array}{c}
 $cached_env_img{$key} = q|<IMG
  WIDTH="228" HEIGHT="82" ALIGN="MIDDLE" BORDER="0"
  SRC="|."$dir".q|img433.png"
- ALT="$ \exists S \begin{array}{c} *\ \Longrightarrow \ {\scriptstyle RM} \end{array...
-...*\ \Longrightarrow \ {\scriptstyle RM} \end{array}
+ ALT="$ \exists S \begin{array}{c} * \Longrightarrow  {\scriptstyle RM} \end{array...
+...* \Longrightarrow  {\scriptstyle RM} \end{array}
 \beta \alpha b x = \gamma$">|; 
 
 $key = q/rightarrowPLUS(expr,expr);MSF=1.6;LFS=11;AAT/;
@@ -1860,7 +1853,7 @@ $key = q/PV=left{deltain(SigmacupV)*:existsS{array}{c}*Longrightarrow{scriptstyl
 $cached_env_img{$key} = q|<IMG
  WIDTH="531" HEIGHT="82" ALIGN="MIDDLE" BORDER="0"
  SRC="|."$dir".q|img466.png"
- ALT="$ PV = \left \{ \delta \in (\Sigma \cup V)* : \exists S \begin{array}{c} *\ \Lo...
+ ALT="$ PV = \left \{ \delta \in (\Sigma \cup V)* : \exists S \begin{array}{c} * \Lo...
 ... \end{array} \alpha y \delta es un prefijo de handle_2(\alpha) \right \}$">|; 
 
 $key = q/ainFIRST(gamma);MSF=1.6;LFS=11;AAT/;
@@ -2047,7 +2040,7 @@ $key = q/PV=left{deltain(SigmacupV)*:existsS{array}{c}*Longrightarrow{scriptstyl
 $cached_env_img{$key} = q|<IMG
  WIDTH="629" HEIGHT="82" ALIGN="MIDDLE" BORDER="0"
  SRC="|."$dir".q|img383.png"
- ALT="$ PV = \left \{ \delta \in (\Sigma \cup V)* : \exists S \begin{array}{c} *\ \Lo...
+ ALT="$ PV = \left \{ \delta \in (\Sigma \cup V)* : \exists S \begin{array}{c} * \Lo...
 ...mbox{ y }\delta es un prefijo de handle_2(\alpha) = \beta \gamma \right \}$">|; 
 
 $key = q/gamma_n;MSF=1.6;LFS=11;AAT/;
@@ -2162,7 +2155,7 @@ $key = q/S{array}{c}*Longrightarrow{scriptstyleRM}{array}betaBxLongrightarrowbet
 $cached_env_img{$key} = q|<IMG
  WIDTH="198" HEIGHT="82" ALIGN="MIDDLE" BORDER="0"
  SRC="|."$dir".q|img377.png"
- ALT="$ S \begin{array}{c} *\ \Longrightarrow \ {\scriptstyle RM} \end{array} \beta B x \Longrightarrow \beta \gamma x = \alpha$">|; 
+ ALT="$ S \begin{array}{c} * \Longrightarrow  {\scriptstyle RM} \end{array} \beta B x \Longrightarrow \beta \gamma x = \alpha$">|; 
 
 $key = q/Arightarrowalpha_uparrowabetainI_i;MSF=1.6;LFS=11;AAT/;
 $cached_env_img{$key} = q|<IMG
@@ -2391,6 +2384,13 @@ $cached_env_img{$key} = q|<IMG
  WIDTH="35" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
  SRC="|."$dir".q|img389.png"
  ALT="$ \mid \alpha \mid$">|; 
+
+$key = q/%latex2htmlidmarker38750S=program;MSF=1.6;LFS=11;AAT/;
+$cached_env_img{$key} = q|<IMG
+ WIDTH="107" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="|."$dir".q|img368.png"
+ ALT="% latex2html id marker 38750
+$ S = program$">|; 
 
 $key = q/[;MSF=1.6;LFS=11;AAT/;
 $cached_env_img{$key} = q|<IMG
@@ -2844,7 +2844,7 @@ $key = q/FSD=left{alphain(SigmacupV)*:existsS{array}{c}*Longrightarrow{scriptsty
 $cached_env_img{$key} = q|<IMG
  WIDTH="291" HEIGHT="82" ALIGN="MIDDLE" BORDER="0"
  SRC="|."$dir".q|img370.png"
- ALT="$ FSD = \left \{ \alpha \in (\Sigma \cup V)* : \exists S \begin{array}{c} *\ \Longrightarrow \ {\scriptstyle RM} \end{array} \alpha \right \}$">|; 
+ ALT="$ FSD = \left \{ \alpha \in (\Sigma \cup V)* : \exists S \begin{array}{c} * \Longrightarrow  {\scriptstyle RM} \end{array} \alpha \right \}$">|; 
 
 $key = q/PRINT;MSF=1.6;LFS=11;AAT/;
 $cached_env_img{$key} = q|<IMG
