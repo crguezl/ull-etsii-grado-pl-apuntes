@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>La orden N</TITLE>
-<META NAME="description" CONTENT="La orden N">
+<TITLE>Suprimir: El Comando D</TITLE>
+<META NAME="description" CONTENT="Suprimir: El Comando D">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node95.html">
 <LINK REL="previous" HREF="node93.html">
-<LINK REL="up" HREF="node85.html">
+<LINK REL="up" HREF="node84.html">
 <LINK REL="next" HREF="node95.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html2983"
+<A NAME="tex2html2984"
   HREF="node95.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2977"
-  HREF="node85.html">
+<A NAME="tex2html2978"
+  HREF="node84.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2971"
+<A NAME="tex2html2972"
   HREF="node93.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2979"
-  HREF="node194.html">
+<A NAME="tex2html2980"
+  HREF="node193.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2981"
-  HREF="node197.html">
+<A NAME="tex2html2982"
+  HREF="node196.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,194 +88,104 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2984"
-  HREF="node95.html">Suprimir: El Comando D</A>
-<B>Sup:</B> <A NAME="tex2html2978"
-  HREF="node85.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html2972"
-  HREF="node93.html">Del espacio de Patrones</A>
+<B> Sig:</B> <A NAME="tex2html2985"
+  HREF="node95.html">Búsqueda entre líneas</A>
+<B>Sup:</B> <A NAME="tex2html2979"
+  HREF="node84.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html2973"
+  HREF="node93.html">La orden N</A>
 <B> Con:</B> 
-<A NAME="tex2html2979"
-  HREF="node194.html">
+<A NAME="tex2html2980"
+  HREF="node193.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html2981"
-  HREF="node197.html">
+<A NAME="tex2html2982"
+  HREF="node196.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION05390000000000000000">
-La orden <I>N</I></A>
+<H1><A NAME="SECTION053100000000000000000">
+Suprimir: El Comando <I>D</I></A>
 </H1>
-<I>N</I> añade la siguiente línea de entrada al espacio de
-patrones. Las dos líneas se separan mediante un retorno de
-carro. Después de su ejecución, el comando <I>N</I> pasa el control a los
-subsiguientes comandos en el <I>script</I>.
-<BR>
-El siguiente ejemplo propuesto en [<A
- HREF="node198.html#sedawk">6</A>] muestra una
-búsqueda y sustitución multilínea. Se trata de sustituir la
-cadena ``Owner and Operator Guide'' por ``Installation Guide'', cualquiera que sea su posición en una línea o entre ellas.
-Los autores de [<A
- HREF="node198.html#sedawk">6</A>] y [<A
- HREF="node198.html#power">7</A>] proponen la siguiente
-solución:
+El comando <I>D</I> suprime la primera parte (hasta el retorno de
+carro empotrado) en un espacio de patrones multilínea y bifurca al
+primer comando en el <I>script</I>. El retorno de carro empotrado puede
+describirse mediante la secuencia de escape el espacio de patrones quede vacío como consecuencia de la supresión,
+se lee una nueva línea.
+
+<P>
+El siguiente ejemplo compacta una secuencia de líneas vacías en una sóla línea vacía.
 <PRE>
-$ cat multiline2.sed
-#Assume the pattern is in no more than two lines
-s/Owner and Operator Guide/Installation Guide/g
-/Owner/{
-  N
-  s/ *\n/ /g
-  s/Owner  *and  *Operator  *Guide/Installation Guide/g
-}
+1 &gt; cat N.sed
+2 /^$/{
+3 N
+4 /^\n$/D
+5 }
 </PRE>
-Veamos primero los contenidos del fichero de prueba:
-<PRE>
-$ cat multiline.test
-Dear Owner: Consult
-Section 3.1 in the Owner and
-Operator Guide for a description of the tape drives available for the Owner
-of your system.
- 
-Consult Section 3.1 in the Owner and Operator
-Guide for a description of the tape drives
-available on your system.
- 
-Look in the Owner and Operator Guide, we mean the Owner
-and Operator Guide shipped with your system.
- 
-Two manuals are provided including the Owner and
-Operator Guide and the User Guide.
- 
-The Owner and Operator Guide is shipped with your system.
- 
-Look in the Owner
-and Operator Guide shipped with your system.
- 
-The Owner
-and
-Operator
-Guide is shipped with your system.
-</PRE>
-La ejecución del <I>script</I> da la siguiente salida:
-<PRE>
-$ sed -f multiline2.sed multiline.test
-Dear Owner: Consult Section 3.1 in the Owner and
-Operator Guide for a description of the tape drives available for the Owner
-of your system.
- 
-Consult Section 3.1 in the Installation Guide for a description of the tape
-drives
-available on your system.
- 
-Look in the Installation Guide, we mean the Installation Guide shipped with
-your system.
- 
-Two manuals are provided including the Installation Guide and the User Guide.
- 
-The Installation Guide is shipped with your system.
- 
-Look in the Installation Guide shipped with your system.
- 
-The Owner and
-Operator
-Guide is shipped with your system.
-</PRE>
-Uno de los problemas, que aparece en el primer párrafo del
-ejemplo de prueba, es que la segunda línea leída debe ser
-"reciclada"
-para su uso en la siguiente búsqueda. El segundo fallo, 
-que aparece en el último párrafo, es consecuencia de la
-limitación del <I>script</I> para trabajar con  patrones partidos
-en más de dos líneas.
-<BR>
-Consideremos esta otra solución:
-<PRE>
-$ cat multiline.sed
-s/Owner and Operator Guide/Installation Guide/g
-/Owner/{
-:label
-  N
-  s/\n/ /g
-  s/Owner  *and  *Operator  *Guide/Installation Guide/g
-  /Owner *$/b label
-  /Owner  *and *$/b label
-  /Owner  *and  *Operator *$/b label
-  }
-</PRE>
-Este otro <I>script</I> hace que <TT>sed</TT> permanezca en un bucle mientras
-la línea adjuntada en segundo lugar contenga un prefijo estricto 
-de la cadena buscada. 
+Si la línea  es vacía se lee la línea siguiente. Si esta también es vacía el espacio de patrones contiene
+(sin que se lea una nueva línea).
+Por tanto nada ha sido impreso, no se ejecuta el comnado final <code>p</code> que actúa por defecto.
+Como el espacio de trabajo contiene con el patrón especificado en línea 2
+y se lee la siguiente línea. Si esta nueva línea es no vacía, no se ejecutará la orden
+vacía y la nueva línea no vacía.
+
+<P>
+Al ejecutar este ``<I>script</I>'' sobre un fichero conteniendo una secuencia de líneas en blanco:
 
 <P>
 <PRE>
-$sed -f multiline.sed multiline.test
-Dear Owner: Consult Section 3.1 in the Installation Guide for \
-a description of the tape drives available for the Owner  of \
-your system.
+&gt; cat N.test
+one empty
  
-Consult Section 3.1 in the Installation Guide for a description of the tape drives
-available on your system.
+two empty lines
  
-Look in the Installation Guide, we mean the Installation Guide \
-shipped with your system.
  
-Two manuals are provided including the Installation Guide and the User Guide.
+three empty lines
  
-The Installation Guide is shipped with your system.
  
-Look in the Installation Guide shipped with your system.
  
-The Installation Guide is shipped with your system.
+end of file
 </PRE>
-Un problema que aparece con esta aproximación es la presencia
-de líneas muy largas. Las líneas permanecen en el espacio de trabajo
-mientras terminen en un prefijo de la cadena buscada. Para
-que la salida quepa en la hoja he
-tenido que partir las líneas del fichero de salida, lo que he indicado con los
-símbolos <!-- MATH
- $\backslash$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="14" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img9.png"
- ALT="$ \backslash$"></SPAN>. Considere esta modificación:
+Se obtiene el resultado:
 <PRE>
-#!/bin/sed -f
-s/Owner and Operator Guide/Installation Guide/g
-/Owner/{
-:label
-  N
-  s/Owner\([ \n]*\)and\([ \n]*\)Operator\([ \n]*\)Guide/Installation\1\2Guide\3/g
-  /Owner *$/b label
-  /Owner  *and *$/b label
-  /Owner  *and  *Operator *$/b label
-  }
+&gt; sed -f N.sed N.test
+one empty
+ 
+two empty lines
+ 
+three empty lines
+ 
+end of file
 </PRE>
-Es indudable la ventaja de disponer de esta
-capacidad de búsqueda multilínea no puede realizarse con 
-otras utilidades como <I>ex</I> o <I>vi</I>.
+Un buen ejercicio es intentar predecir la conducta de esta otra solución alternativa,
+en la que la supresión <SPAN  CLASS="textit">D</SPAN>  es sustituida por la <SPAN  CLASS="textit">d</SPAN>:
+<PRE>
+/^$/{
+N
+/^\n$/d
+}
+</PRE>
+¿Qué ocurrirá? ¿Es correcta esta segunda solución? 
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html2983"
+<A NAME="tex2html2984"
   HREF="node95.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2977"
-  HREF="node85.html">
+<A NAME="tex2html2978"
+  HREF="node84.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2971"
+<A NAME="tex2html2972"
   HREF="node93.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2979"
-  HREF="node194.html">
+<A NAME="tex2html2980"
+  HREF="node193.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2981"
-  HREF="node197.html">
+<A NAME="tex2html2982"
+  HREF="node196.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -322,12 +232,12 @@ otras utilidades como <I>ex</I> o <I>vi</I>.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2984"
-  HREF="node95.html">Suprimir: El Comando D</A>
-<B>Sup:</B> <A NAME="tex2html2978"
-  HREF="node85.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html2972"
-  HREF="node93.html">Del espacio de Patrones</A>
+<B> Sig:</B> <A NAME="tex2html2985"
+  HREF="node95.html">Búsqueda entre líneas</A>
+<B>Sup:</B> <A NAME="tex2html2979"
+  HREF="node84.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html2973"
+  HREF="node93.html">La orden N</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

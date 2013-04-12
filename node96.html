@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Búsqueda entre líneas</TITLE>
-<META NAME="description" CONTENT="Búsqueda entre líneas">
+<TITLE>Seleccionando Items en un Registro Multilínea</TITLE>
+<META NAME="description" CONTENT="Seleccionando Items en un Registro Multilínea">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node97.html">
 <LINK REL="previous" HREF="node95.html">
-<LINK REL="up" HREF="node85.html">
+<LINK REL="up" HREF="node84.html">
 <LINK REL="next" HREF="node97.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3011"
+<A NAME="tex2html3010"
   HREF="node97.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3005"
-  HREF="node85.html">
+<A NAME="tex2html3004"
+  HREF="node84.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2999"
+<A NAME="tex2html3000"
   HREF="node95.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3007"
-  HREF="node194.html">
+<A NAME="tex2html3006"
+  HREF="node193.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3009"
-  HREF="node197.html">
+<A NAME="tex2html3008"
+  HREF="node196.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,132 +87,91 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3012"
-  HREF="node97.html">Seleccionando Items en un</A>
-<B>Sup:</B> <A NAME="tex2html3006"
-  HREF="node85.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html3000"
-  HREF="node95.html">Suprimir: El Comando D</A>
+<B> Sig:</B> <A NAME="tex2html3011"
+  HREF="node97.html">Expresiones Regulares en Perl</A>
+<B>Sup:</B> <A NAME="tex2html3005"
+  HREF="node84.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html3001"
+  HREF="node95.html">Búsqueda entre líneas</A>
 <B> Con:</B> 
-<A NAME="tex2html3007"
-  HREF="node194.html">
+<A NAME="tex2html3006"
+  HREF="node193.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3009"
-  HREF="node197.html">
+<A NAME="tex2html3008"
+  HREF="node196.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION053110000000000000000">
-Búsqueda entre líneas</A>
+<H1><A NAME="SECTION053120000000000000000">
+Seleccionando Items en un Registro Multilínea</A>
 </H1>
-Este otro caso, tambien esta tomado de [<A
- HREF="node198.html#sedawk">6</A>] y [<A
- HREF="node198.html#power">7</A>].
-Se trata de extender la capacidad de búsqueda de <SPAN  CLASS="textit">grep</SPAN>, de modo que el 
-patrón pueda ser encontrado incluso si se encuentra diseminado
-entre a lo mas dos líneas. El <I>script</I> presentado es una ligera variante
-del que aparece en [<A
- HREF="node198.html#sedawk">6</A>] y escribe la(s) líneas que
-casan precedidas del número de la segunda línea.
-<PRE>
-$ cat phrase
-#! /bin/sh
-# phrase -- search for words across two lines.
-# Prints the line number
-# $1 = search string; remaining args = filenames
-search=$1
-shift
-for file
-do
-sed -n '
-  /'"$search"'/b final
-  N
-  h
-  s/.*\n//
-  /'"$search"'/b final
-  g
-  s/ *\n//
-  /'"$search"'/{
-    g
-    b final
-  }
-  g
-  D
-:final
-  =
-  p
-' $file
-done
-</PRE>
-Así, con el ejemplo ``multiline.test'' usado anteriormente
-obtenemos la siguiente salida:
-<PRE>
-$ phrase "Owner and Operator Guide" multiline.test
-3
-Section 3.1 in the Owner and
-Operator Guide for a description of the tape drives available for the Owner
-7
-Consult Section 3.1 in the Owner and Operator
-Guide for a description of the tape drives
-10
-Look in the Owner and Operator Guide, we mean the Owner
-14
-Two manuals are provided including the Owner and
-Operator Guide and the User Guide.
-16
-The Owner and Operator Guide is shipped with your system.
-19
-Look in the Owner
-and Operator Guide shipped with your system.
-</PRE>
-Primero se busca el patrón <code>/'"$search"'/</code> en la línea actual.
-Observe el habilidoso uso de las comillas simples y dobles para permitir
-la sustitución de la variable. La primera comilla simple cierra
-la comilla simple al final de la línea 10. Las comillas dobles
-hacen que la <SPAN  CLASS="textit">shell</SPAN> sustituya permite continuar el texto sin sustituciones.
+El ejercicio resuelto aqui consiste en listar los alumnos que han seleccionado un determinado grupo de prácticas.
+Suponemos la organización del fichero de entrada descrita en la sección  <A HREF="node92.html#section:alumnos">30.9</A>. 
+El <SPAN  CLASS="textit">script</SPAN> recibe como primer argumento el nombre del fichero conteniendo la carpeta de correo (asociada con la asignatura y como segundo argumento el grupo. Un primer <SPAN  CLASS="textit">script</SPAN> que no es descrito
+aqui, denominado <code>makefichas.sed</code> produce como salida el archivo con la estructura
+descrita en la sección <A HREF="node92.html#section:alumnos">30.9</A>. El segundo guión, denominado <code>grupo.sh</code> y que es
+el que nos ocupa, produce como salida los alumnos que pertenecen a ese grupo ed prácticas.
 
 <P>
-Si se encuentra el patrón de búsqueda, imprimimos el número de línea (comando <TT>=</TT>) y la línea.
-Si no, leemos la siguiente línea, formando un patrón multilínea. 
-Salvamos las dos líneas en el <I>hold space</I>.
-Entonces intentamos buscar el patrón <code>/'"$search"'/</code> en
-la línea que acaba de incorporarse. Es por eso que eliminamos 
-del espacio de patrones la primera línea con la orden 
-<code>s/ *\n//</code>. Si se encuentra, imprimimos y se repite el ciclo.
-Si no, recuperamos las dos líneas del <I>hold space</I> 
-sustituimos el retorno de carro por un blanco y realizamos 
-una nueva busqueda.
-Si tiene éxito, se obtienen las dos líneas y se imprimen.
-En caso contrario, esto es, si el patrón no se ha encontrado en ninguna
-de las dos líneas, es necesario preservar la última para el siguiente
-ciclo. Por eso, se obtienen una vez mas las líneas del <I>hold space</I>
-y se suprime con <SPAN  CLASS="textit">D</SPAN> la primera de ellas. Dado que <SPAN  CLASS="textit">D</SPAN> 
-devuelve el control al comienzo del <I>script</I>, la segunda línea no es eliminada. 
-De todos modos,  el <I>script</I> no es capaz de captar cuando un prefijo del patrón 
-aparece  al final de esta segunda línea, como muestra el
-ejemplo de prueba. En el primer párrafo el patrón se encuentra
-dos veces y sólo es encontrado una.
+Estos son los contenidos del <SPAN  CLASS="textit">script</SPAN> <code>grupo</code>:
+<PRE>
+~/bin/makefichas.sed -n ~/mail/$1 | grupo.sh $2 | sort -u
+</PRE>
+Los contenidos del fichero <PRE>
+ 1  #!/bin/bash
+ 2  search=$1
+ 3  sed -n '
+ 4  /^NAME:/ {
+ 5    s/^NAME://
+ 6    h
+ 7    n
+ 8    s/^SURNAME://
+ 9    G
+10    s/\n/,/
+11    y/ÁÉÍÓÚáéíóúabcdefghijklmnñopqrstuvxyz/AEIOUAEIOUABCDEFGHIJKLMNÑOPQRSTUVXYZ/
+12   h
+13 }
+14 /^LABGROUP:/ {
+15   y/ÁÉÍÓÚáéíóúabcdefghijklmnñopqrstuvxyz/AEIOUAEIOUABCDEFGHIJKLMNÑOPQRSTUVXYZ/
+16   s/'"$search"'/&amp;/
+17   t print
+18   b 
+19 :print
+20   g
+21   p
+22 }
+23 '
+</PRE>
+De nuevo hacemos uso de las comillas simples y dobles
+en este ejemplo.
+Obsérvese como se proteje el guión <code>sed</code> entre las líneas 3 y 16. 
+En la línea 16 el cierre de la comilla simple y el uso de la doble comilla 
+permite la actuación de la interpretación de la <code>shell</code>, sustituyendo 
+<code>$search</code> que coincide con el
+parámetro pasado en la llamada como <code>$2</code>. La siguiente comilla 
+simple en esa línea permite la protección del resto
+del guión.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3011"
+<A NAME="tex2html3010"
   HREF="node97.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3005"
-  HREF="node85.html">
+<A NAME="tex2html3004"
+  HREF="node84.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2999"
+<A NAME="tex2html3000"
   HREF="node95.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3007"
-  HREF="node194.html">
+<A NAME="tex2html3006"
+  HREF="node193.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3009"
-  HREF="node197.html">
+<A NAME="tex2html3008"
+  HREF="node196.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -260,12 +218,12 @@ dos veces y sólo es encontrado una.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3012"
-  HREF="node97.html">Seleccionando Items en un</A>
-<B>Sup:</B> <A NAME="tex2html3006"
-  HREF="node85.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html3000"
-  HREF="node95.html">Suprimir: El Comando D</A>
+<B> Sig:</B> <A NAME="tex2html3011"
+  HREF="node97.html">Expresiones Regulares en Perl</A>
+<B>Sup:</B> <A NAME="tex2html3005"
+  HREF="node84.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html3001"
+  HREF="node95.html">Búsqueda entre líneas</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

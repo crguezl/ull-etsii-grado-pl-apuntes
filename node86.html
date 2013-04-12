@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Transferencia de Control</TITLE>
-<META NAME="description" CONTENT="Transferencia de Control">
+<TITLE>Inserción de Texto</TITLE>
+<META NAME="description" CONTENT="Inserción de Texto">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node87.html">
 <LINK REL="previous" HREF="node85.html">
-<LINK REL="up" HREF="node85.html">
+<LINK REL="up" HREF="node84.html">
 <LINK REL="next" HREF="node87.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html2871"
+<A NAME="tex2html2872"
   HREF="node87.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2865"
-  HREF="node85.html">
+<A NAME="tex2html2866"
+  HREF="node84.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2859"
+<A NAME="tex2html2860"
   HREF="node85.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2867"
-  HREF="node194.html">
+<A NAME="tex2html2868"
+  HREF="node193.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2869"
-  HREF="node197.html">
+<A NAME="tex2html2870"
+  HREF="node196.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,73 +88,113 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2872"
-  HREF="node87.html">Inserción de Texto</A>
-<B>Sup:</B> <A NAME="tex2html2866"
-  HREF="node85.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html2860"
-  HREF="node85.html">Expresiones Regulares en sed</A>
+<B> Sig:</B> <A NAME="tex2html2873"
+  HREF="node87.html">Trasferencia de Control Condicional</A>
+<B>Sup:</B> <A NAME="tex2html2867"
+  HREF="node84.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html2861"
+  HREF="node85.html">Transferencia de Control</A>
 <B> Con:</B> 
-<A NAME="tex2html2867"
-  HREF="node194.html">
+<A NAME="tex2html2868"
+  HREF="node193.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html2869"
-  HREF="node197.html">
+<A NAME="tex2html2870"
+  HREF="node196.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION05310000000000000000">
-Transferencia de Control</A>
+<H1><A NAME="SECTION05320000000000000000">
+Inserción de Texto</A>
 </H1>
-La orden <SPAN  CLASS="textit">b</SPAN> tiene la sintáxis:
-<BR><I>[address1][,address2]b[label]</I>
+El uso de llaves {, } permite  ejecutar los comandos en la lista entre llaves
+a las líneas seleccionadas. La llave que cierra debe estar en su propia línea aparte.
+Las llaves nos permiten, como se ve en el ejemplo, anidar selecciones
+y expresar condiciones del tipo ``si esta entre estos dos patrones y además 
+está entre estos otros dos ...''.
 <BR>
-Transfiere el control a la etiqueta especificada. Si no se especifica
-la etiqueta, el control se transfiere al final del <I>script</I>, por lo que
-no se aplica ningún otro comando a la línea actual. Los dos siguientes
-ejemplos utilizan <I>b</I>:
+<P>
+Los comandos <I>a</I> e <I>i</I> tienen una sintaxis parecida:
+<BR><TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="CENTER"><I>
+	[address]a<!-- MATH
+ $\backslash$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.png"
+ ALT="$ \backslash$"></SPAN> </I></TD>
+<TD ALIGN="CENTER"><I> [address]i<!-- MATH
+ $\backslash$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.png"
+ ALT="$ \backslash$"></SPAN></I></TD>
+</TR>
+<TR><TD ALIGN="CENTER"><I>  
+        text                   </I></TD>
+<TD ALIGN="CENTER"><I> text</I></TD>
+</TR>
+</TABLE><I>
+<BR></I>
+<I>a</I> añade (<I>i</I> inserta) el texto en cada línea que
+casa con la dirección especificada.
+El <I>text</I> no queda disponible en el ``<I>pattern space</I>'',
+de manera que los subsiguientes comandos no le afectan. El
+siguiente ejemplo convierte un fichero <I>ascii</I> a <I>html</I>:
 <PRE>
-$ cat b.sed
-s/fish/cow/
-b
-s/cow/horse/
-$ sed -f b.sed b.test
-cow
-cow
-</PRE>
-Utilizando <I>b</I> con una etiqueta:
-<PRE>
-$ cat blabel.sed
-s/fish/cow/
-b another
-s/cow/horse/
-:another
-s/cow/cat/
-$ sed -f blabel.sed b.test
-cat
-cat
+$ cat aandi.sed
+1{
+i\
+&lt;html&gt;\
+&lt;head&gt;\
+&lt;title&gt;
+p
+i\
+&lt;/title&gt;\
+&lt;/head&gt;\
+&lt;body bgcolor=white&gt;
+}
+$a\
+&lt;/pre&gt;\
+&lt;/body&gt;\
+&lt;/html&gt;
+$ cat aandi.test
+hello.world!
+$ sed -f aandi.sed aandi.test
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;
+hello.world!
+&lt;/title&gt;
+&lt;/head&gt;
+&lt;body bgcolor=white&gt;
+hello.world!
+&lt;/pre&gt;
+&lt;/body&gt;
+&lt;/html&gt;
 </PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html2871"
+<A NAME="tex2html2872"
   HREF="node87.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2865"
-  HREF="node85.html">
+<A NAME="tex2html2866"
+  HREF="node84.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2859"
+<A NAME="tex2html2860"
   HREF="node85.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2867"
-  HREF="node194.html">
+<A NAME="tex2html2868"
+  HREF="node193.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2869"
-  HREF="node197.html">
+<A NAME="tex2html2870"
+  HREF="node196.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -201,12 +241,12 @@ cat
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2872"
-  HREF="node87.html">Inserción de Texto</A>
-<B>Sup:</B> <A NAME="tex2html2866"
-  HREF="node85.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html2860"
-  HREF="node85.html">Expresiones Regulares en sed</A>
+<B> Sig:</B> <A NAME="tex2html2873"
+  HREF="node87.html">Trasferencia de Control Condicional</A>
+<B>Sup:</B> <A NAME="tex2html2867"
+  HREF="node84.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html2861"
+  HREF="node85.html">Transferencia de Control</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
