@@ -406,10 +406,6 @@ $key = q/subsection:callyapply/;
 $external_labels{$key} = "$URL/" . q|node25.html|; 
 $noresave{$key} = "$nosave";
 
-$key = q/item:ccomments/;
-$external_labels{$key} = "$URL/" . q|node216.html|; 
-$noresave{$key} = "$nosave";
-
 $key = q/cite_learningnode/;
 $external_labels{$key} = "$URL/" . q|node200.html|; 
 $noresave{$key} = "$nosave";
@@ -502,12 +498,12 @@ $key = q/example:tututreegrammar/;
 $external_labels{$key} = "$URL/" . q|node120.html|; 
 $noresave{$key} = "$nosave";
 
-$key = q/section:consejosjison/;
-$external_labels{$key} = "$URL/" . q|node146.html|; 
-$noresave{$key} = "$nosave";
-
 $key = q/section:fases/;
 $external_labels{$key} = "$URL/" . q|node113.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/section:consejosjison/;
+$external_labels{$key} = "$URL/" . q|node146.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/cite_perltesting/;
@@ -538,16 +534,16 @@ $key = q/subsection:cuantificadoresposesivos/;
 $external_labels{$key} = "$URL/" . q|node98.html|; 
 $noresave{$key} = "$nosave";
 
-$key = q/practica:casandoytransformando/;
-$external_labels{$key} = "$URL/" . q|node123.html|; 
-$noresave{$key} = "$nosave";
-
 $key = q/table:tablaslalr/;
 $external_labels{$key} = "$URL/" . q|node150.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/equation:deltahat/;
 $external_labels{$key} = "$URL/" . q|node150.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/practica:casandoytransformando/;
+$external_labels{$key} = "$URL/" . q|node123.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/subsection:nfa2dfa/;

@@ -406,10 +406,6 @@ $key = q/subsection:callyapply/;
 $ref_files{$key} = "$dir".q|node25.html|; 
 $noresave{$key} = "$nosave";
 
-$key = q/item:ccomments/;
-$ref_files{$key} = "$dir".q|node216.html|; 
-$noresave{$key} = "$nosave";
-
 $key = q/cite_learningnode/;
 $ref_files{$key} = "$dir".q|node200.html|; 
 $noresave{$key} = "$nosave";
@@ -502,12 +498,12 @@ $key = q/example:tututreegrammar/;
 $ref_files{$key} = "$dir".q|node120.html|; 
 $noresave{$key} = "$nosave";
 
-$key = q/section:consejosjison/;
-$ref_files{$key} = "$dir".q|node146.html|; 
-$noresave{$key} = "$nosave";
-
 $key = q/section:fases/;
 $ref_files{$key} = "$dir".q|node113.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/section:consejosjison/;
+$ref_files{$key} = "$dir".q|node146.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/cite_perltesting/;
@@ -538,16 +534,16 @@ $key = q/subsection:cuantificadoresposesivos/;
 $ref_files{$key} = "$dir".q|node98.html|; 
 $noresave{$key} = "$nosave";
 
-$key = q/practica:casandoytransformando/;
-$ref_files{$key} = "$dir".q|node123.html|; 
-$noresave{$key} = "$nosave";
-
 $key = q/table:tablaslalr/;
 $ref_files{$key} = "$dir".q|node150.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/equation:deltahat/;
 $ref_files{$key} = "$dir".q|node150.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/practica:casandoytransformando/;
+$ref_files{$key} = "$dir".q|node123.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/subsection:nfa2dfa/;
