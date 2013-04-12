@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Véase También</TITLE>
-<META NAME="description" CONTENT="Véase También">
+<TITLE>Análisis Semántico</TITLE>
+<META NAME="description" CONTENT="Análisis Semántico">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -20,28 +20,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
 <LINK REL="next" HREF="node188.html">
-<LINK REL="previous" HREF="node186.html">
-<LINK REL="up" HREF="node186.html">
+<LINK REL="previous" HREF="node185.html">
+<LINK REL="up" HREF="node69.html">
 <LINK REL="next" HREF="node188.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5076"
+<A NAME="tex2html5063"
   HREF="node188.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5070"
-  HREF="node186.html">
+<A NAME="tex2html5057"
+  HREF="node69.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5064"
+<A NAME="tex2html5051"
   HREF="node186.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5072"
-  HREF="node197.html">
+<A NAME="tex2html5059"
+  HREF="node195.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5074"
-  HREF="node200.html">
+<A NAME="tex2html5061"
+  HREF="node198.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,150 +88,45 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5077"
-  HREF="node188.html">Véase También</A>
-<B>Sup:</B> <A NAME="tex2html5071"
-  HREF="node186.html">Análisis Bottom Up en</A>
-<B> Ant:</B> <A NAME="tex2html5065"
-  HREF="node186.html">Análisis Bottom Up en</A>
+<B> Sig:</B> <A NAME="tex2html5064"
+  HREF="node188.html">Generación de Código</A>
+<B>Sup:</B> <A NAME="tex2html5058"
+  HREF="node69.html">SEGUNDA PARTE: APUNTES DE</A>
+<B> Ant:</B> <A NAME="tex2html5052"
+  HREF="node186.html">Véase También</A>
 <B> Con:</B> 
-<A NAME="tex2html5072"
-  HREF="node197.html">
+<A NAME="tex2html5059"
+  HREF="node195.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5074"
-  HREF="node200.html">
+<A NAME="tex2html5061"
+  HREF="node198.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION051110000000000000000">
-Véase También</A>
+<H1><A NAME="SECTION051100000000000000000">
+Análisis Semántico</A>
 </H1>
 
 <P>
 
-<UL>
-<LI><A NAME="tex2html415"
-  HREF="https://github.com/tenderlove/racc">Racc en GitHub</A>
-</LI>
-<LI><A NAME="tex2html416"
-  HREF="http://i.loveruby.net/en/projects/racc/doc/">Racc User's Manual</A>
-</LI>
-<LI><A NAME="tex2html417"
-  HREF="http://martinfowler.com/bliki/HelloRacc.html">Martin Fowler Hello Racc</A>
-</LI>
-<LI><A NAME="tex2html418"
-  HREF="https://github.com/tenderlove/rexical">Rexical en GitHub</A>
-</LI>
-</UL>
-
-<P>
-<PRE>
-[~/Dropbox/src/PL/rexical/sample(master)]$ cat -n Rakefile 
-     1  task :default =&gt; %W{racc rex} do
-     2    sh "ruby calc3.tab.rb"
-     3  end
-     4  
-     5  task :racc do
-     6    sh "racc calc3.racc"
-     7  end
-     8  
-     9  task :rex do
-    10    sh "rex calc3.rex"
-    11  end
-</PRE>
-
-<P>
-<PRE>
-[~/Dropbox/src/PL/rexical/sample(master)]$ cat -n calc3.rex
-     1  #
-     2  # calc3.rex
-     3  # lexical scanner definition for rex
-     4  #
-     5  
-     6  class Calculator3
-     7  macro
-     8    BLANK         \s+
-     9    DIGIT         \d+
-    10  rule
-    11    {BLANK}
-    12    {DIGIT}       { [:NUMBER, text.to_i] }
-    13    .|\n          { [text, text] }
-    14  inner
-    15  end
-</PRE>
-
-<P>
-<PRE>
-[~/Dropbox/src/PL/rexical/sample(master)]$ cat -n calc3.racc 
-     1  #
-     2  # A simple calculator, version 3.
-     3  #
-     4  
-     5  class Calculator3
-     6    prechigh
-     7      nonassoc UMINUS
-     8      left '*' '/'
-     9      left '+' '-'
-    10    preclow
-    11    options no_result_var
-    12  rule
-    13    target  : exp
-    14            | /* none */ { 0 }
-    15  
-    16    exp     : exp '+' exp { val[0] + val[2] }
-    17            | exp '-' exp { val[0] - val[2] }
-    18            | exp '*' exp { val[0] * val[2] }
-    19            | exp '/' exp { val[0] / val[2] }
-    20            | '(' exp ')' { val[1] }
-    21            | '-' NUMBER  =UMINUS { -(val[1]) }
-    22            | NUMBER
-    23  end
-    24  
-    25  ---- header ----
-    26  #
-    27  # generated by racc
-    28  #
-    29  require 'calc3.rex'
-    30  
-    31  ---- inner ----
-    32  
-    33  ---- footer ----
-    34  
-    35  puts 'sample calc'
-    36  puts '"q" to quit.'
-    37  calc = Calculator3.new
-    38  while true
-    39    print '&gt;&gt;&gt; '; $stdout.flush
-    40    str = $stdin.gets.strip
-    41    break if /q/i === str
-    42    begin
-    43      p calc.scan_str(str)
-    44    rescue ParseError
-    45      puts 'parse error'
-    46    end
-    47  end
-</PRE>
-
-<P>
-
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5076"
+<A NAME="tex2html5063"
   HREF="node188.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5070"
-  HREF="node186.html">
+<A NAME="tex2html5057"
+  HREF="node69.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5064"
+<A NAME="tex2html5051"
   HREF="node186.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5072"
-  HREF="node197.html">
+<A NAME="tex2html5059"
+  HREF="node195.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5074"
-  HREF="node200.html">
+<A NAME="tex2html5061"
+  HREF="node198.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -278,12 +173,12 @@ Véase También</A>
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5077"
-  HREF="node188.html">Véase También</A>
-<B>Sup:</B> <A NAME="tex2html5071"
-  HREF="node186.html">Análisis Bottom Up en</A>
-<B> Ant:</B> <A NAME="tex2html5065"
-  HREF="node186.html">Análisis Bottom Up en</A>
+<B> Sig:</B> <A NAME="tex2html5064"
+  HREF="node188.html">Generación de Código</A>
+<B>Sup:</B> <A NAME="tex2html5058"
+  HREF="node69.html">SEGUNDA PARTE: APUNTES DE</A>
+<B> Ant:</B> <A NAME="tex2html5052"
+  HREF="node186.html">Véase También</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
