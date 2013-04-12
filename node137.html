@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Análisis Top Down Usando Precedencia de Operadores</TITLE>
-<META NAME="description" CONTENT="Análisis Top Down Usando Precedencia de Operadores">
+<TITLE>Algoritmo de Análisis LR</TITLE>
+<META NAME="description" CONTENT="Algoritmo de Análisis LR">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,28 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
+<LINK REL="next" HREF="node138.html">
 <LINK REL="previous" HREF="node136.html">
-<LINK REL="up" HREF="node135.html">
+<LINK REL="up" HREF="node130.html">
 <LINK REL="next" HREF="node138.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4009"
+<A NAME="tex2html4285"
   HREF="node138.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4003"
-  HREF="node135.html">
+<A NAME="tex2html4279"
+  HREF="node130.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3999"
+<A NAME="tex2html4273"
   HREF="node136.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4005"
-  HREF="node219.html">
+<A NAME="tex2html4281"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4007"
-  HREF="node222.html">
+<A NAME="tex2html4283"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -87,113 +88,134 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4010"
-  HREF="node138.html">Análisis Sintáctico Descendente en</A>
-<B>Sup:</B> <A NAME="tex2html4004"
-  HREF="node135.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html4000"
-  HREF="node136.html">Ejemplo Simple de Intérprete:</A>
+<B> Sig:</B> <A NAME="tex2html4286"
+  HREF="node138.html">Práctica: Traducción de Infijo</A>
+<B>Sup:</B> <A NAME="tex2html4280"
+  HREF="node130.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4274"
+  HREF="node136.html">Práctica: Calculadora con Funciones</A>
 <B> Con:</B> 
-<A NAME="tex2html4005"
-  HREF="node219.html">
+<A NAME="tex2html4281"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4007"
-  HREF="node222.html">
+<A NAME="tex2html4283"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><A NAME="tex2html4011"
-  HREF="node137.html#SECTION05521000000000000000">Gramática de JavaScript</A>
-</UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION05520000000000000000">
-Análisis Top Down Usando Precedencia de Operadores</A>
+<H1><A NAME="SECTION05770000000000000000"></A>
+<A NAME="section:algoritmoLR"></A>
+<BR>
+Algoritmo de Análisis LR
 </H1>
+Asi  pues la tabla de transiciones del autómata nos genera dos tablas:
+la tabla de acciones y la de saltos.
+El  algoritmo  de análisis sintáctico <SPAN  CLASS="textbf">LR</SPAN> en el  que 
+se basa <SPAN  CLASS="textbf">jison</SPAN> utiliza una pila y dos tablas 
+para analizar la entrada. Como se ha visto, la tabla  de acciones contiene cuatro tipo de acciones: 
 
 <OL>
-<LI>Véase el libro [<A
- HREF="node223.html#wilson2008beautiful">9</A>] <A NAME="tex2html337"
-  HREF="http://books.google.es/books?id=gJrmszNHQV4C">Beautiful Code: Leading Programmers Explain How They Think</A>, Capítulo 9.
+<LI>Desplazar (<SPAN  CLASS="textbf">shift</SPAN>)
 </LI>
-<LI><A NAME="tex2html338"
-  HREF="http://javascript.crockford.com/tdop/tdop.html">Top Down Operator Precedence</A>
-por Douglas Crockford
+<LI>Reducir (<SPAN  CLASS="textbf">reduce</SPAN>)
 </LI>
-<LI><A NAME="tex2html339"
-  HREF="http://javascript.crockford.com/tdop/">Top Down Operator Precedence demo</A>
-por Douglas Crockford
+<LI>Aceptar
 </LI>
-<LI><A NAME="tex2html340"
-  HREF="http://www.jslint.com/lint.html">jslint</A>
+<LI>Error
 </LI>
 </OL>
+El algoritmo utiliza una pila en la que se guardan los estados
+del autómata. De este modo se evita tener que ``comenzar'' 
+el procesado de la forma sentencial derecha resultante
+después de una reducción (antiderivación).
+<P>
+<DIV><A NAME="alg:parser"><B>Algoritmo  <SPAN CLASS="arabic">34</SPAN>.<SPAN CLASS="arabic">7</SPAN>.<SPAN CLASS="arabic">1</SPAN></B></A> &nbsp; 
+<I>Análizador LR
+</I><PRE>
+ push(s0);
+ b = yylex();
+ for( ; ; ;) {
+   s = top(0); a = b;
+   switch (action[s][a]) {
+     case "shift t" : 
+       t.attr = a.attr;
+       push(t); 
+       b = yylex();
+       break;
+     case "reduce A -&gt;alpha" : 
+       eval(Sem{A -&gt; alpha}(top(|alpha|-1).attr, ... , top(0).attr)); 
+       pop(|alpha|); 
+       push(goto[top(0)][A]); 
+       break;
+     case "accept" : return (1); 
+     default : yyerror("syntax error");
+   }
+ }
+</PRE></DIV><P></P>
+
+<UL>
+<LI>Como es habitual, <SPAN CLASS="MATH"><IMG
+ WIDTH="24" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img447.png"
+ ALT="$ \vert x\vert$"></SPAN> denota la longitud de la cadena <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img48.png"
+ ALT="$ x$"></SPAN>.
+</LI>
+<LI>La función <code>top(k)</code> devuelve el elemento que ocupa la 
+posición <code>k</code> desde el <SPAN  CLASS="textbf">top</SPAN> de la pila (esto es, está a profundidad <code>k</code>).
+</LI>
+<LI>La función <code>pop(k)</code> extrae <code>k</code> elementos de la pila.
+</LI>
+<LI>La notación <code>state.attr</code> hace referencia al atributo
+asociado con cada estado, el cual desde el punto de vista del programador
+esta asociado con el correspondiente símbolo de la parte derecha de la regla. 
+Nótese que cada estado que está en la pila es el resultado de una transición con
+un símbolo. El atributo de ese símbolo es guardado en el objeto estado
+cada vez que ocurre una transición.
 
 <P>
+</LI>
+<LI>Denotamos por <code>Sem {reduce A -&gt; alpha}</code>
+el código de la acción semántica asociada con la regla <!-- MATH
+ $A \rightarrow \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img27.png"
+ ALT="$ A \rightarrow \alpha$"></SPAN>.
+</LI>
+</UL>
 
-<H2><A NAME="SECTION05521000000000000000">
-Gramática de JavaScript</A>
-</H2>
-
-<OL>
-<LI><A NAME="tex2html341"
-  HREF="http://hepunx.rl.ac.uk/~adye/jsspec11/jsrefspe.htm">Especificación de JavaScript</A>
-1997
-</LI>
-<LI><A NAME="tex2html342"
-  HREF="http://hepunx.rl.ac.uk/~adye/jsspec11/llr.htm">NQLL(1) grammar (Not Quite LL(1)) for JavaScrip</A>
-1997
-</LI>
-<LI><A NAME="tex2html343"
-  HREF="http://hepunx.rl.ac.uk/~adye/jsspec11/jsspec.ps.gz">Postscript con la especificación de JavaScript</A>
-1997
-</LI>
-<LI>Mozilla <A NAME="tex2html344"
-  HREF="https://developer.mozilla.org/en-US/docs/JavaScript/Language_Resources?redirectlocale=en-US&amp;redirectslug=JavaScript_Language_Resources">JavaScript Language Resources</A>
-</LI>
-<LI><A NAME="tex2html345"
-  HREF="http://www-archive.mozilla.org/js/language/grammar14.html">JavaScript 1.4 LR(1) Grammar</A>
-1999.
-</LI>
-<LI><A NAME="tex2html346"
-  HREF="http://www.opensource.apple.com/source/JavaScriptCore/">Apple JavaScript Core Specifications</A>
 <P>
-</LI>
-<LI><A NAME="tex2html347"
-  HREF="http://cjihrig.com/blog/creating-a-javascript-parser/">Creating a JavaScript Parser</A>
-Una implementación de ECAMScript 5.1 usando Jison 
-disponible 
-en GitHub
- en
-<A NAME="tex2html348"
-  HREF="https://github.com/cjihrig/jsparser">https://github.com/cjihrig/jsparser</A>.
-</LI>
-</OL>
+Todos los analizadores LR comparten, salvo pequeñas
+exepciones, el mismo algoritmo
+de análisis. Lo que más los diferencia es la forma en 
+la que construyen las tablas.
+En <code>jison</code>
+la construcción de las tablas de <SPAN  CLASS="textbf">acciones</SPAN> y <SPAN  CLASS="textbf">gotos</SPAN>
+se realiza  por defecto mediante el algoritmo <SPAN  CLASS="textbf">LALR</SPAN>.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4009"
+<A NAME="tex2html4285"
   HREF="node138.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4003"
-  HREF="node135.html">
+<A NAME="tex2html4279"
+  HREF="node130.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3999"
+<A NAME="tex2html4273"
   HREF="node136.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4005"
-  HREF="node219.html">
+<A NAME="tex2html4281"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4007"
-  HREF="node222.html">
+<A NAME="tex2html4283"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -240,17 +262,17 @@ en GitHub
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4010"
-  HREF="node138.html">Análisis Sintáctico Descendente en</A>
-<B>Sup:</B> <A NAME="tex2html4004"
-  HREF="node135.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html4000"
-  HREF="node136.html">Ejemplo Simple de Intérprete:</A>
+<B> Sig:</B> <A NAME="tex2html4286"
+  HREF="node138.html">Práctica: Traducción de Infijo</A>
+<B>Sup:</B> <A NAME="tex2html4280"
+  HREF="node130.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4274"
+  HREF="node136.html">Práctica: Calculadora con Funciones</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-04-11</I>
+2013-04-12</I>
 </ADDRESS>
 </BODY>
 </HTML>

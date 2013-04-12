@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Ejemplo Simple en Jison</TITLE>
-<META NAME="description" CONTENT="Ejemplo Simple en Jison">
+<TITLE>Generación interactiva de analizadores Yapp</TITLE>
+<META NAME="description" CONTENT="Generación interactiva de analizadores Yapp">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node158.html">
 <LINK REL="previous" HREF="node156.html">
-<LINK REL="up" HREF="node155.html">
+<LINK REL="up" HREF="node149.html">
 <LINK REL="next" HREF="node158.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4518"
+<A NAME="tex2html4615"
   HREF="node158.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4512"
-  HREF="node155.html">
+<A NAME="tex2html4609"
+  HREF="node149.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4506"
+<A NAME="tex2html4603"
   HREF="node156.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4514"
-  HREF="node219.html">
+<A NAME="tex2html4611"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4516"
-  HREF="node222.html">
+<A NAME="tex2html4613"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,356 +88,122 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4519"
-  HREF="node158.html">Ejemplo en Jison: Calculadora</A>
-<B>Sup:</B> <A NAME="tex2html4513"
-  HREF="node155.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4507"
-  HREF="node156.html">Conceptos Básicos para el</A>
+<B> Sig:</B> <A NAME="tex2html4616"
+  HREF="node158.html">Construcción del Árbol Sintáctico</A>
+<B>Sup:</B> <A NAME="tex2html4610"
+  HREF="node149.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4604"
+  HREF="node156.html">Precedencia y Asociatividad</A>
 <B> Con:</B> 
-<A NAME="tex2html4514"
-  HREF="node219.html">
+<A NAME="tex2html4611"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4516"
-  HREF="node222.html">
+<A NAME="tex2html4613"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html4520"
-  HREF="node157.html#SECTION05720010000000000000">Gramática</A>
-<LI><A NAME="tex2html4521"
-  HREF="node157.html#SECTION05720020000000000000">basic2_lex.jison</A>
-<LI><A NAME="tex2html4522"
-  HREF="node157.html#SECTION05720030000000000000">index.html</A>
-<LI><A NAME="tex2html4523"
-  HREF="node157.html#SECTION05720040000000000000">Rakefile</A>
-<LI><A NAME="tex2html4524"
-  HREF="node157.html#SECTION05720050000000000000">Véase También</A>
-<LI><A NAME="tex2html4525"
-  HREF="node157.html#SECTION05720060000000000000">global.css</A>
-</UL>
-</UL>
-<BR>
-<LI><A NAME="tex2html4526"
-  HREF="node157.html#SECTION05721000000000000000">Véase También</A>
-<LI><A NAME="tex2html4527"
-  HREF="node157.html#SECTION05722000000000000000">Práctica: Secuencia de Asignaciones Simples</A>
-</UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION05720000000000000000">
-Ejemplo Simple en Jison</A>
+<H1><A NAME="SECTION05880000000000000000">
+Generación interactiva de analizadores <TT>Yapp</TT></A>
 </H1>
-
-<P>
-
-<H4><A NAME="SECTION05720010000000000000">
-Gramática</A>
-</H4>
-  
-
-<P>
+En el siguiente código, la subrutina <TT>create_yapp_package</TT> 
+nos muestra como crear un analizador <TT>Yapp</TT> en tiempo de ejecución.
+Las dos líneas:
 <PRE>
-%%
-
-S   : A
-    ;
-A   : /* empty */  
-    | A x 
-    ;
+  my $p = new Parse::Yapp(input =&gt; $grammar);
+  $p = $p-&gt;Output(classname =&gt; $name);
 </PRE>
-
-<P>
-
-<H4><A NAME="SECTION05720020000000000000">
-basic2_lex.jison</A>
-</H4>
-  
-
+crean una cadena en <code>$p</code> conteniendo el código de 
+la clase que implanta el analizador. Todo el truco está en hacer
 <PRE>
-[~/jison/examples/basic2_lex(develop)]$ cat basic2_lex.jison 
-/* description: Basic grammar that contains a nullable A nonterminal. */
-
-%lex
-%%
-
-\s+               {/* skip whitespace */}
-[a-zA-Z_]\w*      {return 'x';}
-
-/lex
-
-%%
-
-S   : A
-           { return $1+" identifiers"; }
-    ;
-A   : /* empty */  
-           { 
-              console.log("starting"); 
-              $$ = 0; 
-           }
-    | A x  { 
-              $$ = $1 + 1;  
-              console.log($$)
-           }
-    ;
+  eval $p;
 </PRE>
-
-<P>
-
-<H4><A NAME="SECTION05720030000000000000">
-index.html</A>
-</H4>
-  
-
+para tener el paquete a mano:
 <PRE>
-$ cat basic2_lex.html
-&lt;!DOCTYPE HTML&gt;
-&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;meta charset="utf-8"&gt;
-    &lt;title&gt;Jison&lt;/title&gt;
-    &lt;link rel="stylesheet" href="global.css" type="text/css" media="screen" charset="utf-8" /&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;h1&gt;basic2_lex demo&lt;/h1&gt;
-    &lt;div id="content"&gt;
-      &lt;script src="jquery/jquery.js"&gt;&lt;/script&gt; 
-      &lt;script src="basic2_lex.js"&gt;&lt;/script&gt;
-      &lt;script src="main.js"&gt;&lt;/script&gt;
-      &lt;p&gt;
-        &lt;input type="text" value="x x x x" /&gt; &lt;button&gt;parse&lt;/button&gt; 
-        &lt;span id="output"&gt;&lt;/span&gt; &lt;!-- Output goes here! --&gt;
-      &lt;/p&gt;
-    &lt;/div&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-</PRE>
+$ cat left.pl
+#!/usr/local/bin/perl5.8.0 -w
+#use strict;
+use Parse::Yapp;
 
-<P>
+sub lex{
+    my($parser)=shift;
 
-<H4><A NAME="SECTION05720040000000000000">
-Rakefile</A>
-</H4>
-  
-
-<P>
-<PRE>
-$ cat Rakefile 
-# install package:
-#     sudo npm install beautifier
-# 
-#   more about beautifier:
-#       https://github.com/rickeyski/node-beautifier
-
-dec "compile the grammar basic2_lex_ugly.jison"
-task :default =&gt; %w{basic2_lex_ugly.js} do
-  sh "mv basic2_lex.js basic2_lex_ugly.js"
-  sh "jsbeautify basic2_lex_ugly.js &gt; basic2_lex.js"
-  sh "rm -f basic2_lex_ugly.js"
-end
-
-file "basic2_lex_ugly.js" =&gt; %w{basic2_lex.jison} do
-  sh "jison basic2_lex.jison -o basic2_lex.js"
-end
-</PRE>
-
-<P>
-
-<OL>
-<LI><A NAME="tex2html374"
-  HREF="https://github.com/rickeyski/node-beautifier">node-beautifier</A>
-</LI>
-</OL>
-
-<P>
-
-<H4><A NAME="SECTION05720050000000000000">
-Véase También</A>
-</H4>
-  
-
-<OL>
-<LI><A NAME="tex2html375"
-  HREF="http://zaach.github.com/jison/">JISON</A>
-</LI>
-<LI><A NAME="tex2html376"
-  HREF="http://zaach.github.com/jison/try/usf/">Try Jison Examples</A>
-</LI>
-<LI><A NAME="tex2html377"
-  HREF="http://www-archive.mozilla.org/js/language/grammar14.html">JavaScript 1.4 LR(1) Grammar</A>
-1999.
-</LI>
-<LI><A NAME="tex2html378"
-  HREF="http://cjihrig.com/blog/creating-a-javascript-parser/">Creating a JavaScript Parser</A>
-Una implementación de ECMAScript 5.1 usando Jison 
-disponible 
-en GitHub
- en
-<A NAME="tex2html379"
-  HREF="https://github.com/cjihrig/jsparser">https://github.com/cjihrig/jsparser</A>.
-Puede probarse en:
-<A NAME="tex2html380"
-  HREF="http://www.cjihrig.com/development/jsparser/">http://www.cjihrig.com/development/jsparser/</A>
-</LI>
-<LI><A NAME="tex2html381"
-  HREF="http://www.rolilink.com/presentations/Jison/Charla.html">Bison on JavaScript</A>
-por Rolando Perez
-</LI>
-<LI><A NAME="tex2html382"
-  HREF="http://hansineffect.github.com/Slogo/">Slogo</A>
-a language written using Jison
-</LI>
-<LI><A NAME="tex2html383"
-  HREF="https://github.com/jashkenas/coffee-script/wiki/List-of-languages-that-compile-to-JS">List of languages that compile to JS</A>
-</LI>
-<LI><A NAME="tex2html384"
-  HREF="http://blog.kalleberg.org/post/1256702765/prototype-of-a-scannerless-generalized-left-to-right">Prototype of a Scannerless, Generalized Left-to-right Rightmost (SGLR) derivation parser for JavaScript</A>
-</LI>
-</OL>
-<H4><A NAME="SECTION05720060000000000000">
-global.css</A>
-</H4>
-  
-
-<P>
-<PRE>
-[~/jison/examples/basic2_lex(develop)]$ cat global.css 
-html *
-{
-   font-size: large; 
-   /* The !important ensures that nothing can override what you've set in this style (unless it is also important). */
-   font-family: Arial;
+    return('',undef) unless $parser-&gt;YYData-&gt;{INPUT};
+    for ($parser-&gt;YYData-&gt;{INPUT}) {
+        s/^\s*//;
+        s/^(.)//;
+        my $ret = $1;
+        return($ret, $ret);
+    }
 }
 
-.thumb {
-    height: 75px;
-    border: 1px solid #000;
-    margin: 10px 5px 0 0;
-  }
+sub yapp {
+  my $grammar = shift
+     or die "Must specify a grammar as first argument";
+  my $name = shift
+     or die "Must specify the name of the class as second argument";
 
-h1            { text-align: center; font-size: x-large; }
-th, td        { vertical-align: top; text-align: left; }   
-/* #finaltable  * { color: white; background-color: black; }   */
+  my $p = new Parse::Yapp(input =&gt; $grammar) or die "Bad grammar.";
+  $p = $p-&gt;Output(classname =&gt; $name) or die "Can't generate parser.";
 
-/* #finaltable table { border-collapse:collapse; } */
-/* #finaltable table, td { border:1px solid white; } */
-#finaltable:hover td { background-color: blue; } 
-tr:nth-child(odd)    { background-color:#eee; }
-tr:nth-child(even)    { background-color:#00FF66; }
-input        { text-align: right;  border: none;       }     /* Align input to the right  */
-textarea     { border: outset; border-color: white;       }                        
-table        { border: inset; border-color: white; }
-.hidden      { display: none; }
-.unhidden    { display: block; }
-table.center { margin-left:auto; margin-right:auto; }
-#result      { border-color: red; }
-tr.error       { background-color: red; }
-pre.output   { background-color: white; }
-span.repeated { background-color: red }
-span.header { background-color: blue }
-span.comments { background-color: orange }
-span.blanks { background-color: green }
-span.nameEqualValue { background-color: cyan }
-span.error { background-color: red }
-
-body
-{
- background-color:#b0c4de;  /* blue */
+  eval $p;
+  $@ and die "Error while compiling your parser: $@\n";
 }
+
+######## main #########
+my $grammar = q {
+%left '*'
+%%
+S:  A
+;
+
+A:  A '*' A  { "($_[1] $_[2] $_[3])" }
+ |  B
+;
+
+B:  'a' | 'b' | 'c' | 'd'
+;
+
+%%
+};
+
+&amp;yapp($grammar, "Example");
+my $p = new Example(yylex =&gt; \&amp;lex, yyerror =&gt; sub {});
+
+print "Expresion: ";
+$p-&gt;YYData-&gt;{INPUT} = &lt;&gt;;
+$p-&gt;YYData-&gt;{INPUT} =~ s/\s*$//;
+
+my $out=$p-&gt;YYParse;
+print "out = $out\n";
 </PRE>
-
-<P>
-
-<H2><A NAME="SECTION05721000000000000000">
-Véase También</A>
-</H2>
-
-<OL>
-<LI><A NAME="tex2html385"
-  HREF="http://zaach.github.com/jison/">JISON</A>
-</LI>
-<LI><A NAME="tex2html386"
-  HREF="http://zaach.github.com/jison/try/usf/">Try Jison Examples</A>
-</LI>
-<LI><A NAME="tex2html387"
-  HREF="http://www-archive.mozilla.org/js/language/grammar14.html">JavaScript 1.4 LR(1) Grammar</A>
-1999.
-</LI>
-<LI><A NAME="tex2html388"
-  HREF="http://cjihrig.com/blog/creating-a-javascript-parser/">Creating a JavaScript Parser</A>
-Una implementación de ECAMScript 5.1 usando Jison 
-disponible 
-en GitHub
- en
-<A NAME="tex2html389"
-  HREF="https://github.com/cjihrig/jsparser">https://github.com/cjihrig/jsparser</A>.
-Puede probarse en:
-<A NAME="tex2html390"
-  HREF="http://www.cjihrig.com/development/jsparser/">http://www.cjihrig.com/development/jsparser/</A>
-</LI>
-<LI><A NAME="tex2html391"
-  HREF="http://hansineffect.github.com/Slogo/">Slogo</A>
-a language written using Jison
-</LI>
-<LI><A NAME="tex2html392"
-  HREF="https://github.com/jashkenas/coffee-script/wiki/List-of-languages-that-compile-to-JS">List of languages that compile to JS</A>
-</LI>
-<LI><A NAME="tex2html393"
-  HREF="http://blog.kalleberg.org/post/1256702765/prototype-of-a-scannerless-generalized-left-to-right">Prototype of a Scannerless, Generalized Left-to-right Rightmost (SGLR) derivation parser for JavaScript</A>
-</LI>
-</OL>
-
-<P>
-
-<H2><A NAME="SECTION05722000000000000000"></A>
-   <A NAME="15864"></A>
-<BR>
-Práctica: Secuencia de Asignaciones Simples
-</H2>
-  
-Modifique este ejemplo para que el lenguaje acepte una secuencia
-de sentencias de asignación de la forma <code>ID = NUM</code> separadas
-por puntos y comas, por ejemplo <code>a = 4; b = 4.56; c = -8.57e34</code>.
-El analizador retorna un hash/objeto 
-cuyas claves son los identificadores y cuyos valores 
-son los números.
-Clone el repositorio en
-<A NAME="tex2html394"
-  HREF="https://github.com/crguezl/jison-basic2">https://github.com/crguezl/jison-basic2</A>.
-
-<P>
-Modifique los analizadores léxico y sintáctico de forma conveniente.
-
-<P>
-Añada acciones semánticas para que el analizador devuelva una tabla de símbolos con los identificadores y sus valores.
+Sigue un ejemplo de ejecución:
+<PRE>
+$ ./left.pl
+Expresion: a*b*c*d
+out = (((a * b) * c) * d)
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4518"
+<A NAME="tex2html4615"
   HREF="node158.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4512"
-  HREF="node155.html">
+<A NAME="tex2html4609"
+  HREF="node149.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4506"
+<A NAME="tex2html4603"
   HREF="node156.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4514"
-  HREF="node219.html">
+<A NAME="tex2html4611"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4516"
-  HREF="node222.html">
+<A NAME="tex2html4613"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -484,17 +250,17 @@ Añada acciones semánticas para que el analizador devuelva una tabla de símbol
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4519"
-  HREF="node158.html">Ejemplo en Jison: Calculadora</A>
-<B>Sup:</B> <A NAME="tex2html4513"
-  HREF="node155.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4507"
-  HREF="node156.html">Conceptos Básicos para el</A>
+<B> Sig:</B> <A NAME="tex2html4616"
+  HREF="node158.html">Construcción del Árbol Sintáctico</A>
+<B>Sup:</B> <A NAME="tex2html4610"
+  HREF="node149.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4604"
+  HREF="node156.html">Precedencia y Asociatividad</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-04-11</I>
+2013-04-12</I>
 </ADDRESS>
 </BODY>
 </HTML>

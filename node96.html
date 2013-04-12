@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Estados</TITLE>
-<META NAME="description" CONTENT="Estados">
+<TITLE>Búsqueda entre líneas</TITLE>
+<META NAME="description" CONTENT="Búsqueda entre líneas">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node97.html">
 <LINK REL="previous" HREF="node95.html">
-<LINK REL="up" HREF="node82.html">
+<LINK REL="up" HREF="node85.html">
 <LINK REL="next" HREF="node97.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html2972"
+<A NAME="tex2html3011"
   HREF="node97.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2966"
-  HREF="node82.html">
+<A NAME="tex2html3005"
+  HREF="node85.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2960"
+<A NAME="tex2html2999"
   HREF="node95.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2968"
-  HREF="node219.html">
+<A NAME="tex2html3007"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2970"
-  HREF="node222.html">
+<A NAME="tex2html3009"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,178 +88,132 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2973"
-  HREF="node97.html">La pila de estados</A>
-<B>Sup:</B> <A NAME="tex2html2967"
-  HREF="node82.html">Expresiones Regulares en Flex</A>
-<B> Ant:</B> <A NAME="tex2html2961"
-  HREF="node95.html">yyless()</A>
+<B> Sig:</B> <A NAME="tex2html3012"
+  HREF="node97.html">Seleccionando Items en un</A>
+<B>Sup:</B> <A NAME="tex2html3006"
+  HREF="node85.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html3000"
+  HREF="node95.html">Suprimir: El Comando D</A>
 <B> Con:</B> 
-<A NAME="tex2html2968"
-  HREF="node219.html">
+<A NAME="tex2html3007"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html2970"
-  HREF="node222.html">
+<A NAME="tex2html3009"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION052140000000000000000">
-Estados</A>
+<H1><A NAME="SECTION053110000000000000000">
+Búsqueda entre líneas</A>
 </H1>
-Las expresiones regulares pueden ser prefijadas mediante <SPAN  CLASS="textit">estados</SPAN>.
-Los estados o condiciones de arranque, se denotan mediante un
-identificador entre &#225;ngulos y se declaran
-en la parte de las definiciones. Las declaraciones se hacen mediante 
-<code>%s</code> para los estados ``inclusivos'' o bien <code>%x</code> para los estados ``exclusivos'',
-seguidos de los nombres de los estados. No pueden haber caracteres en blanco antes de la declaración.
-Un <SPAN  CLASS="textit">estado</SPAN> se activa mediante la 
-acci&#243;n BEGIN <SPAN  CLASS="textit">estado</SPAN>. A partir de ese momento, las reglas que esten
-prefijadas con el estado pasan a estar activas. En el caso de que el estado
-sea inclusivo, las reglas no prefijadas tambi&#233;n permanecen activas.
-Los estados exclusivos son especialmente útiles para especificar ``sub analizadores''
-que analizan porciones de la entrada cuya estructura ``sintáctica'' es diferente
-de la del resto de la entrada.
+Este otro caso, tambien esta tomado de [<A
+ HREF="node198.html#sedawk">6</A>] y [<A
+ HREF="node198.html#power">7</A>].
+Se trata de extender la capacidad de búsqueda de <SPAN  CLASS="textit">grep</SPAN>, de modo que el 
+patrón pueda ser encontrado incluso si se encuentra diseminado
+entre a lo mas dos líneas. El <I>script</I> presentado es una ligera variante
+del que aparece en [<A
+ HREF="node198.html#sedawk">6</A>] y escribe la(s) líneas que
+casan precedidas del número de la segunda línea.
+<PRE>
+$ cat phrase
+#! /bin/sh
+# phrase -- search for words across two lines.
+# Prints the line number
+# $1 = search string; remaining args = filenames
+search=$1
+shift
+for file
+do
+sed -n '
+  /'"$search"'/b final
+  N
+  h
+  s/.*\n//
+  /'"$search"'/b final
+  g
+  s/ *\n//
+  /'"$search"'/{
+    g
+    b final
+  }
+  g
+  D
+:final
+  =
+  p
+' $file
+done
+</PRE>
+Así, con el ejemplo ``multiline.test'' usado anteriormente
+obtenemos la siguiente salida:
+<PRE>
+$ phrase "Owner and Operator Guide" multiline.test
+3
+Section 3.1 in the Owner and
+Operator Guide for a description of the tape drives available for the Owner
+7
+Consult Section 3.1 in the Owner and Operator
+Guide for a description of the tape drives
+10
+Look in the Owner and Operator Guide, we mean the Owner
+14
+Two manuals are provided including the Owner and
+Operator Guide and the User Guide.
+16
+The Owner and Operator Guide is shipped with your system.
+19
+Look in the Owner
+and Operator Guide shipped with your system.
+</PRE>
+Primero se busca el patrón <code>/'"$search"'/</code> en la línea actual.
+Observe el habilidoso uso de las comillas simples y dobles para permitir
+la sustitución de la variable. La primera comilla simple cierra
+la comilla simple al final de la línea 10. Las comillas dobles
+hacen que la <SPAN  CLASS="textit">shell</SPAN> sustituya permite continuar el texto sin sustituciones.
 
 <P>
-El ejemplo ``absorbe'' los comentarios, conservando el numero de
-l&#305;neas del fichero en la variable <code>linenum</code>
-
-<P>
-<PRE>
-$ cat comments.l
-%option noyywrap
-%{
-  int linenum = 0;
-%}
-%x comment
-%%
- 
-"/*" BEGIN(comment); printf("comment=%d, YY_START = %d, YYSTATE = %d",comment,YY_START,YYSTATE);
-&lt;comment&gt;[^*\n]* /* eat anything that is not a star * /
-&lt;comment&gt;"*"+[^*/\n]* /* eat up starts not followed by / */
-&lt;comment&gt;\n ++linenum; /* update number of lines */
-&lt;comment&gt;"*"+"/" BEGIN(0);
- 
-\n ECHO; linenum++;
-.  ECHO;
-%%
-main() {
-  yylex();
-  printf("\n%d lines\n",linenum);
-}
-</PRE>
-La opción <code>noyywrap</code> hace que <code>yylex()</code> no llame a la función <code>yywrap()</code>
-al final del fichero y que asuma que no hay mas entrada por procesar.
-
-<P>
-Los estados se traducen por enteros, pudiendo ser manipulados como tales.
-La macro <code>INITIAL</code> puede utilizarse para referirse al estado 0.
-Las macros <code>YY_START</code> y <code>YYSTATE</code> contienen el valor del estado actual.
-<PRE>
-$ flex comments.l ; gcc lex.yy.c ; a.out &lt; hello.c
-main() &lt;%
-int a&lt;:1:&gt;; comment=1, YY_START = 1, YYSTATE = 1
-  a&lt;:0:&gt; = 4; comment=1, YY_START = 1, YYSTATE = 1
-  printf("hello world! a(0) is %d\n",a&lt;:0:&gt;);
-%&gt;
- 
-6 lines     
-$ cat hello.c
-main() &lt;%
-int a&lt;:1:&gt;; /* a comment */
-  a&lt;:0:&gt; = 4; /* a comment in
-                 two lines */
-  printf("hello world! a(0) is %d\n",a&lt;:0:&gt;);
-%&gt;                                  
-</PRE>
-En <SPAN  CLASS="textit">flex</SPAN> es posible asociar un &#225;mbito con los estados o 
-condiciones iniciales. Basta con colocar entre llaves las 
-parejas <SPAN  CLASS="textit">patr&#243;n acci&#243;n</SPAN> gobernadas por ese estado.
-El siguiente ejemplo procesa las cadenas <SPAN  CLASS="textit">C</SPAN>:
-<PRE>
-$ cat ststring.l
-%option main
-%x str
-%{
-#define MAX_STR_CONST 256
- 
-  char string_buffer[MAX_STR_CONST];
-  char *string_buf_ptr;
-%}
- 
-%%
-\"  string_buf_ptr  = string_buffer; BEGIN(str);
-&lt;str&gt;{
-\"             {BEGIN (INITIAL); *string_buf_ptr = '\0'; printf("%s",string_buffer); }
-\n             { printf("Error: non terminated string\n"); exit(1); }
-\\[0-7]{1,3}   { int result; /* octal escape sequence */
-                        (void) sscanf(yytext+1,"%o",&amp;result);
-                         if (result &gt; 0xff) {printf("Error: constant out of bounds\n"); exit(2); }
-                         *string_buf_ptr++ = result;
-                    }
-\\[0-9]+       { printf("Error: bad escape sequence\n"); exit(2); }
-\\n            {*string_buf_ptr++ = '\n';}
-\\t            {*string_buf_ptr++ = '\t';}
-\\b            {*string_buf_ptr++ = '\b';}
-\\r            {*string_buf_ptr++ = '\r';}
-\\f            {*string_buf_ptr++ = '\f';}
-\\(.|\n)       {*string_buf_ptr++ = yytext[1];}
-[^\\\n\"]+     {char *yptr = yytext; while(*yptr) *string_buf_ptr++ = *yptr++; }
-}
-(.|\n)
-%%                            
-$ flex ststring.l ; gcc lex.yy.c ; a.out &lt; hello.c
-        hello
-world! a(0) is %d
-$ cat hello.c
-main() &lt;%
-int a&lt;:1:&gt;; /* a comment */
-  a&lt;:0:&gt; = 4; /* a comment in
-                 two lines */
-  printf("\thell\157\nworld! a(0) is %d\n",a&lt;:0:&gt;);
-%&gt;                                   
-</PRE>
-Obsérve la conducta del programa ante las siguientes entradas:
-
-<UL>
-<LI>Entrada:
-<PRE>
-"hello \
-dolly"
-</PRE>
-¿Cuál será la salida? ¿Que patrón del programa anterior es el que casa aqui?
-</LI>
-<LI>Entrada:
-<code>"hello\ndolly"</code>.
-¿Cuál será la salida? ¿Que patrón del programa anterior es el que casa aqui?
-</LI>
-<LI><PRE>|
-"hello
-</PRE>
-Donde hay un retorno del carro después de <code>hello</code>.
-¿Cuál será la salida? </LI>
-</UL>
+Si se encuentra el patrón de búsqueda, imprimimos el número de línea (comando <TT>=</TT>) y la línea.
+Si no, leemos la siguiente línea, formando un patrón multilínea. 
+Salvamos las dos líneas en el <I>hold space</I>.
+Entonces intentamos buscar el patrón <code>/'"$search"'/</code> en
+la línea que acaba de incorporarse. Es por eso que eliminamos 
+del espacio de patrones la primera línea con la orden 
+<code>s/ *\n//</code>. Si se encuentra, imprimimos y se repite el ciclo.
+Si no, recuperamos las dos líneas del <I>hold space</I> 
+sustituimos el retorno de carro por un blanco y realizamos 
+una nueva busqueda.
+Si tiene éxito, se obtienen las dos líneas y se imprimen.
+En caso contrario, esto es, si el patrón no se ha encontrado en ninguna
+de las dos líneas, es necesario preservar la última para el siguiente
+ciclo. Por eso, se obtienen una vez mas las líneas del <I>hold space</I>
+y se suprime con <SPAN  CLASS="textit">D</SPAN> la primera de ellas. Dado que <SPAN  CLASS="textit">D</SPAN> 
+devuelve el control al comienzo del <I>script</I>, la segunda línea no es eliminada. 
+De todos modos,  el <I>script</I> no es capaz de captar cuando un prefijo del patrón 
+aparece  al final de esta segunda línea, como muestra el
+ejemplo de prueba. En el primer párrafo el patrón se encuentra
+dos veces y sólo es encontrado una.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html2972"
+<A NAME="tex2html3011"
   HREF="node97.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2966"
-  HREF="node82.html">
+<A NAME="tex2html3005"
+  HREF="node85.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2960"
+<A NAME="tex2html2999"
   HREF="node95.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2968"
-  HREF="node219.html">
+<A NAME="tex2html3007"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2970"
-  HREF="node222.html">
+<A NAME="tex2html3009"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -306,17 +260,17 @@ Donde hay un retorno del carro después de <code>hello</code>.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2973"
-  HREF="node97.html">La pila de estados</A>
-<B>Sup:</B> <A NAME="tex2html2967"
-  HREF="node82.html">Expresiones Regulares en Flex</A>
-<B> Ant:</B> <A NAME="tex2html2961"
-  HREF="node95.html">yyless()</A>
+<B> Sig:</B> <A NAME="tex2html3012"
+  HREF="node97.html">Seleccionando Items en un</A>
+<B>Sup:</B> <A NAME="tex2html3006"
+  HREF="node85.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html3000"
+  HREF="node95.html">Suprimir: El Comando D</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-04-11</I>
+2013-04-12</I>
 </ADDRESS>
 </BODY>
 </HTML>

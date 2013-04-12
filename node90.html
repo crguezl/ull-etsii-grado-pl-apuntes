@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>yywrap()</TITLE>
-<META NAME="description" CONTENT="yywrap()">
+<TITLE>Siguiente Línea: La orden n</TITLE>
+<META NAME="description" CONTENT="Siguiente Línea: La orden n">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node91.html">
 <LINK REL="previous" HREF="node89.html">
-<LINK REL="up" HREF="node82.html">
+<LINK REL="up" HREF="node85.html">
 <LINK REL="next" HREF="node91.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html2888"
+<A NAME="tex2html2927"
   HREF="node91.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2882"
-  HREF="node82.html">
+<A NAME="tex2html2921"
+  HREF="node85.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2876"
+<A NAME="tex2html2915"
   HREF="node89.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2884"
-  HREF="node219.html">
+<A NAME="tex2html2923"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2886"
-  HREF="node222.html">
+<A NAME="tex2html2925"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,145 +88,115 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2889"
-  HREF="node91.html">unput()</A>
-<B>Sup:</B> <A NAME="tex2html2883"
-  HREF="node82.html">Expresiones Regulares en Flex</A>
-<B> Ant:</B> <A NAME="tex2html2877"
-  HREF="node89.html">Declaraci&#243;n de yylex()</A>
+<B> Sig:</B> <A NAME="tex2html2928"
+  HREF="node91.html">Manipulando tablas numéricas</A>
+<B>Sup:</B> <A NAME="tex2html2922"
+  HREF="node85.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html2916"
+  HREF="node89.html">Rangos</A>
 <B> Con:</B> 
-<A NAME="tex2html2884"
-  HREF="node219.html">
+<A NAME="tex2html2923"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html2886"
-  HREF="node222.html">
+<A NAME="tex2html2925"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION05280000000000000000">
-yywrap()</A>
+<H1><A NAME="SECTION05350000000000000000">
+Siguiente Línea: La orden <I>n</I></A>
 </H1>
-Cuando el analizador l&#233;xico alcanza el final del fichero, el
-comportamiento en las subsiguientes llamadas a <SPAN  CLASS="textit">yylex</SPAN>
-resulta indefinido.  En el momento en que  <SPAN  CLASS="textit">yylex()</SPAN>
-alcanza el final del fichero llama a la funci&#243;n <SPAN  CLASS="textit">yywrap</SPAN>, la cual retorna un
-valor de 0 o 1 seg&#250;n haya mas entrada o no. Si el valor es 0,
-la funci&#243;n <SPAN  CLASS="textit">yylex</SPAN> asume que la propia <SPAN  CLASS="textit">yywrap</SPAN>
-se ha encargado de abrir el nuevo fichero y asignarselo
-a  <TT>yyin</TT> .  Otra manera de continuar es haciendo uso de
-la funci&#243;n <SPAN  CLASS="textit">yyrestart(FILE *file)</SPAN>. 
-El siguiente ejemplo cuenta el n&#250;mero de l&#305;neas, palabras y
-caracteres en una lista de ficheros proporcionados como entrada.
+Mediante la orden <I>n</I> podemos reemplazar el espacio de
+patrones actual por la siguiente línea. Si no se ha utilizado
+la opción <code>-n</code> en la ejecución de <code>sed</code>, el contenido del espacio
+de patrones se imprimirá antes de ser eliminada. El control
+pasa al comando siguiendo al comando <I>n</I> y no al primer
+comando del <I>script</I>. Se trata, por tanto, de una orden que
+altera la conducta habitual de <code>sed</code>: Lo común es que, cuando se lee una nueva
+línea, se ejecute el primer comando del guión.
 
 <P>
+El siguiente ejemplo extrae los comentarios de un programa <I>C</I>.
+Se asume que, aunque los comentarios se pueden extender sobre
+varias líneas, no existe mas de un comentario por línea.
 <PRE>
-%{
-unsigned long charCount = 0, wordCount = 0, lineCount = 0;
-%}
-
-word [^ \t\n]+ 
-eol \n 
-
-%%
-{word} { wordCount++; charCount += yyleng; }
-{eol} { charCount++; lineCount++; }
-. charCount++;
-
-%%
-
-char **fileList;
-unsigned nFiles;
-unsigned currentFile = 0;
-unsigned long totalCC = 0;
-unsigned long totalWC = 0;
-unsigned long totalLC = 0;
-
-main ( int argc, char **argv) {
-  FILE *file;
-
-  fileList = argv + 1; nFiles = argc - 1;
-
-  if (nFiles == 0) {
-    fprintf(stderr,"Usage is:\n%s file1 file2 file3 ...\n",argv[0]);
-    exit(1);
-  }
-  file = fopen (fileList[0], "r");
-  if (!file) {
-      fprintf (stderr, "could not open %s\n", argv[1]);
-      exit (1);
-  }
-  currentFile = 1; yyrestart(file);
-  yylex ();
-  printf ("%8lu %8lu %8lu %s\n", lineCount, wordCount,
-    charCount, fileList[currentFile - 1]);
-  if (argc &gt; 2) {
-      totalCC += charCount; totalWC += wordCount; totalLC += lineCount;
-      printf ("%8lu %8lu %8lu total\n", totalLC, totalWC, totalCC);
-  }
-  return 0;
+$ cat n.sed
+# run it with: sed -n -f n.sed n.test
+# write commented lines in a C program
+#If current line matches /* ...
+/\/\*/{
+# Comienzo de comentario, aseguremonos que la línea no casa con un cierre
+# de comentario.
+:loop
+/\*\//!{
+p
+n
+b loop
 }
-
-int yywrap () {
-  FILE *file;
-
-  if (currentFile &lt; nFiles) {
-     printf ("%8lu %8lu %8lu %s\n", lineCount, wordCount,
-       charCount, fileList[currentFile - 1]);
-     totalCC += charCount; totalWC += wordCount; totalLC += lineCount;
-     charCount = wordCount = lineCount = 0;
-     fclose (yyin);
-
-     while (fileList[currentFile] != (char *) 0) {
-       file = fopen (fileList[currentFile++], "r");
-       if (file != NULL) { yyrestart(file); break; }
-	  fprintf (stderr, "could not open %s\n", fileList[currentFile - 1]);
-     }
-     return (file ? 0 : 1);
-    }
-    return 1;
+p
 }
 </PRE>
-
-<P>
-La figura muestra el proceso de compilaci&#243;n y la ejecuci&#243;n:
+Supongamos el siguiente programa de prueba:
 <PRE>
-$ flex countlwc.l;gcc lex.yy.c; a.out *.l
-      58      179     1067 ape-05.l
-      88      249     1759 countlwc.l
-      11       21      126 magic.l
-       9       17      139 mgrep.l
-       9       16      135 mlg.l
-       5       15      181 ml.l
-       7       12       87 subst.l
-     187      509     3494 total
+$ cat n.test
+#include &lt;stdio.h&gt;
+ 
+fact(int n) { /* recursive function */
+if(n == 0) return 1;
+else(return n*fact(n-1));
+}
+ 
+void toto(id) { /* This function */ /* is
+                   still empty */
+}
+ 
+main() {
+  toto();
+  printf("Hello world! factorial of 4 = %d\n",fact(4)); /* the
+         comment takes two lines */
+  toto();
+  /* and here is
+     a comment
+     extended on 3 lines
+  */
+}
 </PRE>
-La diferencia esencial entre asignar <SPAN  CLASS="textit">yyin</SPAN> o llamar a la
-funci&#243;n <SPAN  CLASS="textit">yyrestart</SPAN> es que esta &#250;ltima puede ser utilizada para
-conmutar entre ficheros en medio de un an&#225;lisis l&#233;xico. El
-funcionamiento del programa anterior no se modifica si se 
-se intercambian asignaciones a <SPAN  CLASS="textit">yyin</SPAN> (<SPAN  CLASS="textit">yyin = file</SPAN>)
-y llamadas a <SPAN  CLASS="textit">yyrestart(file)</SPAN>.
+La salida al ejecutar el programa es la siguiente:
+<PRE>
+$ sed -n -f n.sed n.test
+fact(int n) { /* recursive function */
+void toto(id) { /* This function */ /* is
+  printf("Hello world! factorial of 4 = %d\n",fact(4)); /* the
+         comment takes two lines */
+  /* and here is
+     a comment
+     extended on 3 lines
+  */
+</PRE>
+Observe la desaparición de la línea `` still empty */'' 
+debido a la existencia de dos comentarios, uno de ellos inacabado 
+en la línea anterior. 
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html2888"
+<A NAME="tex2html2927"
   HREF="node91.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2882"
-  HREF="node82.html">
+<A NAME="tex2html2921"
+  HREF="node85.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2876"
+<A NAME="tex2html2915"
   HREF="node89.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2884"
-  HREF="node219.html">
+<A NAME="tex2html2923"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2886"
-  HREF="node222.html">
+<A NAME="tex2html2925"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -273,17 +243,17 @@ y llamadas a <SPAN  CLASS="textit">yyrestart(file)</SPAN>.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2889"
-  HREF="node91.html">unput()</A>
-<B>Sup:</B> <A NAME="tex2html2883"
-  HREF="node82.html">Expresiones Regulares en Flex</A>
-<B> Ant:</B> <A NAME="tex2html2877"
-  HREF="node89.html">Declaraci&#243;n de yylex()</A>
+<B> Sig:</B> <A NAME="tex2html2928"
+  HREF="node91.html">Manipulando tablas numéricas</A>
+<B>Sup:</B> <A NAME="tex2html2922"
+  HREF="node85.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html2916"
+  HREF="node89.html">Rangos</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-04-11</I>
+2013-04-12</I>
 </ADDRESS>
 </BODY>
 </HTML>

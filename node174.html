@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Análisis Sintáctico Ascendente en Perl</TITLE>
-<META NAME="description" CONTENT="Análisis Sintáctico Ascendente en Perl">
+<TITLE>Práctica: Generación Automática de Árboles</TITLE>
+<META NAME="description" CONTENT="Práctica: Generación Automática de Árboles">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node205.html">
-<LINK REL="previous" HREF="node155.html">
-<LINK REL="up" HREF="node69.html">
+<LINK REL="next" HREF="node175.html">
+<LINK REL="previous" HREF="node173.html">
+<LINK REL="up" HREF="node149.html">
 <LINK REL="next" HREF="node175.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4784"
+<A NAME="tex2html4859"
   HREF="node175.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4778"
-  HREF="node69.html">
+<A NAME="tex2html4853"
+  HREF="node149.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4772"
+<A NAME="tex2html4847"
   HREF="node173.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4780"
-  HREF="node219.html">
+<A NAME="tex2html4855"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4782"
-  HREF="node222.html">
+<A NAME="tex2html4857"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,137 +88,56 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4785"
-  HREF="node175.html">Parse::Yapp: Ejemplo de Uso</A>
-<B>Sup:</B> <A NAME="tex2html4779"
-  HREF="node69.html">SEGUNDA PARTE: APUNTES DE</A>
-<B> Ant:</B> <A NAME="tex2html4773"
-  HREF="node173.html">Consejos a seguir al</A>
+<B> Sig:</B> <A NAME="tex2html4860"
+  HREF="node175.html">Recuperacion de Errores: Visión</A>
+<B>Sup:</B> <A NAME="tex2html4854"
+  HREF="node149.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4848"
+  HREF="node173.html">Práctica: Nuevos Métodos</A>
 <B> Con:</B> 
-<A NAME="tex2html4780"
-  HREF="node219.html">
+<A NAME="tex2html4855"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4782"
-  HREF="node222.html">
+<A NAME="tex2html4857"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION05800000000000000000">
-Análisis Sintáctico Ascendente en Perl</A>
+<H1><A NAME="SECTION058250000000000000000"></A>
+   <A NAME="18543"></A>
+<BR>
+Práctica: Generación Automática de Árboles
 </H1>
-<BR> <HR>
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
+  
+Partiendo de la práctica anterior, introduzca una directiva
+<code>%autotree</code> que de lugar a la construcción del árbol de análisis
+concreto. La acción de construcción del árbol:
+<PRE>
+{ my $n = $#_;  bless [@_[1..$n]], $_[0]-&gt;YYLhs }
+</PRE>
+se ejecutará para cualquier regla que no tenga una acción
+explícita asociada.
 
-<UL CLASS="ChildLinks">
-<LI><A NAME="tex2html4786"
-  HREF="node175.html"><TT>Parse::Yapp</TT>: Ejemplo de Uso</A>
-<LI><A NAME="tex2html4787"
-  HREF="node176.html">Conceptos Básicos</A>
-<LI><A NAME="tex2html4788"
-  HREF="node177.html">Construcción de las Tablas para el Análisis SLR</A>
-<UL>
-<LI><A NAME="tex2html4789"
-  HREF="node177.html#SECTION05831000000000000000">Los conjuntos de Primeros y Siguientes</A>
-<LI><A NAME="tex2html4790"
-  HREF="node177.html#SECTION05832000000000000000">Construcción de las Tablas</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html4791"
-  HREF="node178.html">El módulo Generado por <TT>yapp</TT></A>
-<LI><A NAME="tex2html4792"
-  HREF="node179.html">Algoritmo de Análisis LR</A>
-<LI><A NAME="tex2html4793"
-  HREF="node180.html">Depuración en <TT>yapp</TT></A>
-<LI><A NAME="tex2html4794"
-  HREF="node181.html">Precedencia y Asociatividad</A>
-<LI><A NAME="tex2html4795"
-  HREF="node182.html">Generación interactiva de analizadores <TT>Yapp</TT></A>
-<LI><A NAME="tex2html4796"
-  HREF="node183.html">Construcción del Árbol Sintáctico</A>
-<LI><A NAME="tex2html4797"
-  HREF="node184.html">Acciones en Medio de una Regla</A>
-<LI><A NAME="tex2html4798"
-  HREF="node185.html">Esquemas de Traducción</A>
-<LI><A NAME="tex2html4799"
-  HREF="node186.html">Definición Dirigida por la Sintáxis</A>
-<LI><A NAME="tex2html4800"
-  HREF="node187.html">Manejo en <TT>yapp</TT> de Atributos Heredados</A>
-<LI><A NAME="tex2html4801"
-  HREF="node188.html">Acciones en Medio de una Regla y Atributos Heredados</A>
-<LI><A NAME="tex2html4802"
-  HREF="node189.html">Recuperación de Errores</A>
-<LI><A NAME="tex2html4803"
-  HREF="node190.html">Recuperación de Errores en Listas</A>
-<LI><A NAME="tex2html4804"
-  HREF="node191.html">Consejos a seguir al escribir un programa <TT>yapp</TT></A>
-<LI><A NAME="tex2html4805"
-  HREF="node192.html">Práctica: Un C simplificado</A>
-<LI><A NAME="tex2html4806"
-  HREF="node193.html">La Gramática de <TT>yapp</TT> / <TT>yacc</TT></A>
-<UL>
-<LI><A NAME="tex2html4807"
-  HREF="node193.html#SECTION058191000000000000000">La Cabecera</A>
-<LI><A NAME="tex2html4808"
-  HREF="node193.html#SECTION058192000000000000000">La Cabecera: Diferencias entre <TT>yacc</TT> y <TT>yapp</TT></A>
-<LI><A NAME="tex2html4809"
-  HREF="node193.html#SECTION058193000000000000000">El Cuerpo</A>
-<LI><A NAME="tex2html4810"
-  HREF="node193.html#SECTION058194000000000000000">La Cola: Diferencias entre <TT>yacc</TT> y <TT>yapp</TT></A>
-<LI><A NAME="tex2html4811"
-  HREF="node193.html#SECTION058195000000000000000">El Análisis Léxico en <TT>yacc</TT>: <TT>flex</TT></A>
-<LI><A NAME="tex2html4812"
-  HREF="node193.html#SECTION058196000000000000000">Práctica: Uso de <TT>Yacc</TT> y <TT>Lex</TT></A>
-</UL>
-<BR>
-<LI><A NAME="tex2html4813"
-  HREF="node194.html">El Analizador Ascendente  <TT>Parse::Yapp</TT></A>
-<LI><A NAME="tex2html4814"
-  HREF="node195.html">La Estructura de Datos Generada por <TT>YappParse.yp</TT></A>
-<LI><A NAME="tex2html4815"
-  HREF="node196.html">Práctica:  El Análisis de las Acciones</A>
-<LI><A NAME="tex2html4816"
-  HREF="node197.html">Práctica:  Autoacciones</A>
-<LI><A NAME="tex2html4817"
-  HREF="node198.html">Práctica: Nuevos Métodos</A>
-<LI><A NAME="tex2html4818"
-  HREF="node199.html">Práctica: Generación Automática de Árboles</A>
-<LI><A NAME="tex2html4819"
-  HREF="node200.html">Recuperacion de Errores: Visión Detallada</A>
-<LI><A NAME="tex2html4820"
-  HREF="node201.html">Descripción Eyapp del Lenguaje  SimpleC</A>
-<LI><A NAME="tex2html4821"
-  HREF="node202.html">Diseño de Analizadores con <TT>Parse::Eyapp</TT></A>
-<LI><A NAME="tex2html4822"
-  HREF="node203.html">Práctica: Construcción del AST para el Lenguaje Simple C</A>
-<UL>
-<LI><A NAME="tex2html4823"
-  HREF="node203.html#SECTION058290010000000000000">Analizador Léxico</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html4824"
-  HREF="node204.html">El Generador de Analizadores <TT>byacc</TT></A>
-</UL>
-<!--End of Table of Child-Links-->
+<P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4784"
+<A NAME="tex2html4859"
   HREF="node175.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4778"
-  HREF="node69.html">
+<A NAME="tex2html4853"
+  HREF="node149.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4772"
+<A NAME="tex2html4847"
   HREF="node173.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4780"
-  HREF="node219.html">
+<A NAME="tex2html4855"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4782"
-  HREF="node222.html">
+<A NAME="tex2html4857"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -265,17 +184,17 @@ Análisis Sintáctico Ascendente en Perl</A>
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4785"
-  HREF="node175.html">Parse::Yapp: Ejemplo de Uso</A>
-<B>Sup:</B> <A NAME="tex2html4779"
-  HREF="node69.html">SEGUNDA PARTE: APUNTES DE</A>
-<B> Ant:</B> <A NAME="tex2html4773"
-  HREF="node173.html">Consejos a seguir al</A>
+<B> Sig:</B> <A NAME="tex2html4860"
+  HREF="node175.html">Recuperacion de Errores: Visión</A>
+<B>Sup:</B> <A NAME="tex2html4854"
+  HREF="node149.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4848"
+  HREF="node173.html">Práctica: Nuevos Métodos</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-04-11</I>
+2013-04-12</I>
 </ADDRESS>
 </BODY>
 </HTML>

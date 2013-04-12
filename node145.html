@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Esquemas de Traducción</TITLE>
-<META NAME="description" CONTENT="Esquemas de Traducción">
+<TITLE>Manejo en jison de Atributos Heredados</TITLE>
+<META NAME="description" CONTENT="Manejo en jison de Atributos Heredados">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node146.html">
 <LINK REL="previous" HREF="node144.html">
-<LINK REL="up" HREF="node138.html">
+<LINK REL="up" HREF="node130.html">
 <LINK REL="next" HREF="node146.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4284"
+<A NAME="tex2html4408"
   HREF="node146.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4278"
-  HREF="node138.html">
+<A NAME="tex2html4402"
+  HREF="node130.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4272"
+<A NAME="tex2html4396"
   HREF="node144.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4280"
-  HREF="node219.html">
+<A NAME="tex2html4404"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4282"
-  HREF="node222.html">
+<A NAME="tex2html4406"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,254 +88,48 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4285"
-  HREF="node146.html">Recursión por la Izquierda</A>
-<B>Sup:</B> <A NAME="tex2html4279"
-  HREF="node138.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html4273"
-  HREF="node144.html">Análisis Sintáctico Predictivo Recursivo</A>
+<B> Sig:</B> <A NAME="tex2html4409"
+  HREF="node146.html">Acciones en Medio de</A>
+<B>Sup:</B> <A NAME="tex2html4403"
+  HREF="node130.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4397"
+  HREF="node144.html">Definición Dirigida por la</A>
 <B> Con:</B> 
-<A NAME="tex2html4280"
-  HREF="node219.html">
+<A NAME="tex2html4404"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4282"
-  HREF="node222.html">
+<A NAME="tex2html4406"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION05670000000000000000"></A>
-<A NAME="section:esquemas"></A>
+<H1><A NAME="SECTION057150000000000000000"></A>
+<A NAME="section:heredados"></A>
 <BR>
-Esquemas de Traducción
+Manejo en <TT>jison</TT> de Atributos Heredados
 </H1>
-<P>
-<DIV><B>Definición  <SPAN CLASS="arabic">33</SPAN>.<SPAN CLASS="arabic">7</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Un <A NAME="12158"></A><SPAN  CLASS="textbf">esquema de traducción</SPAN> es una gramática independiente del contexto
-en la cual se han insertado fragmentos de código en las partes derechas
-de sus reglas de producción. Los fragmentos de código asi insertados 
-se denominan <A NAME="12160"></A><SPAN  CLASS="textbf">acciones semánticas</SPAN>. Dichos fragmentos actúan, calculan
-y modifican los atributos asociados con los nodos del árbol sintáctico. 
-El orden en que se evalúan los fragmentos
-es el de un recorrido primero-profundo del árbol de análisis sintáctico.</I></DIV><P></P>
-Obsérvese que, en general, para poder aplicar un esquema de traducción hay 
-que construir el árbol sintáctico y después aplicar las acciones empotradas
-en las reglas en el orden de recorrido primero-profundo. Por supuesto, si 
-la gramática es ambigua una frase podría tener dos árboles y la ejecución de las
-acciones para ellos podría dar lugar a diferentes resultados. Si se quiere
-evitar la multiplicidad de resultados (interpretaciones semánticas)
-es necesario precisar de que árbol sintáctico concreto se esta hablando.
+Jison no soporta acciones en medio de una regla.
 
 <P>
-Por ejemplo, si en la regla <!-- MATH
- $A \rightarrow \alpha \beta$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="67" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img115.png"
- ALT="$ A \rightarrow \alpha \beta $"></SPAN>
-insertamos un fragmento de código:
-
-<P>
-<DIV ALIGN="CENTER">
-<!-- MATH
- $A \rightarrow \alpha \{ action \} \beta$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="132" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img116.png"
- ALT="$ A \rightarrow \alpha \{ action \} \beta $"></SPAN>
-</DIV>
-
-<P>
-La acción <!-- MATH
- $\{ action \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="70" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img117.png"
- ALT="$ \{ action \}$"></SPAN> se ejecutará después de todas las acciones
-asociadas con el recorrido del subárbol de <SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img56.png"
- ALT="$ \alpha$"></SPAN> y antes que todas
-las acciones asociadas con el recorrido del subárbol <SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img118.png"
- ALT="$ \beta$"></SPAN>.
-
-<P>
-El siguiente esquema de traducción recibe como entrada una expresión en infijo
-y produce como salida su traducción a postfijo para expresiones aritmeticas con sólo 
-restas de números:
-
-<P>
-<BR>
-<BR>
-<TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $expr   \rightarrow expr_1  -  NUM$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="179" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img119.png"
- ALT="$ expr \rightarrow expr_1 - NUM$"></SPAN></TD>
-<TD ALIGN="LEFT"><code>{ $expr{TRA} = $expr[1]{TRA}." ".$NUM{VAL}." - "}</code></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $expr   \rightarrow NUM$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="116" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img120.png"
- ALT="$ expr \rightarrow NUM$"></SPAN></TD>
-<TD ALIGN="LEFT"><code>{ $expr{TRA} = $NUM{VAL} }</code></TD>
-</TR>
-</TABLE>
-<BR>
-<BR>
-
-<P>
-Las apariciones de variables sintácticas en una regla de producción se indexan
-como se ve en el ejemplo, para distinguir de que nodo del árbol de análisis estamos
-hablando. Cuando hablemos del atributo de un nodo utilizaremos una indexación tipo
-<SPAN  CLASS="textbf">hash</SPAN>. Aquí <code>VAL</code> es un atributo de los nodos de tipo <SPAN CLASS="MATH"><IMG
- WIDTH="53" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img121.png"
- ALT="$ NUM$"></SPAN> denotando
-su valor numérico y para accederlo escribiremos <code>$NUM{VAL}</code>.
-Análogamente <code>$expr{TRA}</code> denota el atributo ``traducción'' de
-los nodos de tipo <SPAN CLASS="MATH"><IMG
- WIDTH="40" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img122.png"
- ALT="$ expr$"></SPAN>.
-
-<P>
-<P>
-<DIV><B>Ejercicio  <SPAN CLASS="arabic">33</SPAN>.<SPAN CLASS="arabic">7</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Muestre la secuencia de acciones a la
-que da lugar el esquema de traducción anterior 
-para la frase 7 -5 -4.</I></DIV><P></P>
-
-<P>
-En este ejemplo, el cómputo del atributo <code>$expr{TRA}</code> depende de los atributos
-en los nodos hijos, o lo que es lo mismo, depende de los atributos de los símbolos
-en la parte derecha de la regla de producción. Esto ocurre a menudo y motiva la siguiente
-definición:
-
-<P>
-<P>
-<DIV><B>Definición  <SPAN CLASS="arabic">33</SPAN>.<SPAN CLASS="arabic">7</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
-<I>Un atributo tal que su valor en un nodo
-puede ser computado en términos de los atributos de los hijos del nodo se dice
-que es un <A NAME="12162"></A><SPAN  CLASS="textbf">atributo sintetizado</SPAN>.</I></DIV><P></P>
-
-<P>
-<P>
-<DIV><A NAME="example:typesandts"><B>Ejemplo  <SPAN CLASS="arabic">33</SPAN>.<SPAN CLASS="arabic">7</SPAN>.<SPAN CLASS="arabic">1</SPAN></B></A> &nbsp; 
-<I>Un ejemplo de atributo heredado es el tipo de las variables en las declaraciones:
-</I>
-<P>
-<I>
-<BR>
-<BR>
-</I><TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><I>
-<!-- MATH
- $decl   \rightarrow type$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="95" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img123.png"
- ALT="$ decl \rightarrow type$"></SPAN> <code>{ $list{T} = $type{T} }</code> <SPAN CLASS="MATH"><IMG
- WIDTH="31" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img124.png"
- ALT="$ list$"></SPAN></I></TD>
-<TD></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-<!-- MATH
- $type   \rightarrow INT$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="102" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img125.png"
- ALT="$ type \rightarrow INT$"></SPAN> <code>{ $type{T} = $int }</code></I></TD>
-<TD></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-<!-- MATH
- $type   \rightarrow STRING$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="141" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img126.png"
- ALT="$ type \rightarrow STRING$"></SPAN> <code>{ $type{T} = $string }</code></I></TD>
-<TD></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-<!-- MATH
- $list   \rightarrow ID$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="82" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img127.png"
- ALT="$ list \rightarrow ID$"></SPAN> , <code>{ $ID{T} = $list{T}; $list_1{T} = $list{T} }</code> <SPAN CLASS="MATH"><IMG
- WIDTH="38" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img128.png"
- ALT="$ list_1$"></SPAN></I></TD>
-<TD></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-<!-- MATH
- $list   \rightarrow ID$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="82" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img127.png"
- ALT="$ list \rightarrow ID$"></SPAN> <code>{ $ID{T} = $list{T} }</code>
-</I></TD>
-<TD></TD>
-</TR>
-</TABLE><I>
-<BR>
-<BR></I></DIV><P></P>
-
-<P>
-<P>
-<DIV><B>Definición  <SPAN CLASS="arabic">33</SPAN>.<SPAN CLASS="arabic">7</SPAN>.<SPAN CLASS="arabic">3</SPAN></B> &nbsp; 
-<I>Un <A NAME="12164"></A><SPAN  CLASS="textbf">atributo heredado</SPAN> es aquel cuyo valor se computa a partir de los
-valores de sus hermanos y de su padre.</I></DIV><P></P>
-
-<P>
-<P>
-<DIV><B>Ejercicio  <SPAN CLASS="arabic">33</SPAN>.<SPAN CLASS="arabic">7</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
-<I>Escriba un esquema de traducción que convierta expresiones en infijo con los 
-operadores <code>+-*/()</code> y números en expresiones en postfijo. Explique el significado
-de los atributos elegidos.</I></DIV><P></P>
-
-<P>
-
-<DIV CLASS="alltt" ALIGN="LEFT">
-</DIV>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4284"
+<A NAME="tex2html4408"
   HREF="node146.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4278"
-  HREF="node138.html">
+<A NAME="tex2html4402"
+  HREF="node130.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4272"
+<A NAME="tex2html4396"
   HREF="node144.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4280"
-  HREF="node219.html">
+<A NAME="tex2html4404"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4282"
-  HREF="node222.html">
+<A NAME="tex2html4406"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -382,17 +176,17 @@ de los atributos elegidos.</I></DIV><P></P>
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4285"
-  HREF="node146.html">Recursión por la Izquierda</A>
-<B>Sup:</B> <A NAME="tex2html4279"
-  HREF="node138.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html4273"
-  HREF="node144.html">Análisis Sintáctico Predictivo Recursivo</A>
+<B> Sig:</B> <A NAME="tex2html4409"
+  HREF="node146.html">Acciones en Medio de</A>
+<B>Sup:</B> <A NAME="tex2html4403"
+  HREF="node130.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4397"
+  HREF="node144.html">Definición Dirigida por la</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-04-11</I>
+2013-04-12</I>
 </ADDRESS>
 </BODY>
 </HTML>

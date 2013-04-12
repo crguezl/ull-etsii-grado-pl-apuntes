@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Pack y Unpack</TITLE>
-<META NAME="description" CONTENT="Pack y Unpack">
+<TITLE>Análisis Sintáctico Ascendente en JavaScript</TITLE>
+<META NAME="description" CONTENT="Análisis Sintáctico Ascendente en JavaScript">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node131.html">
-<LINK REL="previous" HREF="node129.html">
-<LINK REL="up" HREF="node123.html">
+<LINK REL="next" HREF="node149.html">
+<LINK REL="previous" HREF="node113.html">
+<LINK REL="up" HREF="node69.html">
 <LINK REL="next" HREF="node131.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3840"
+<A NAME="tex2html4118"
   HREF="node131.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3834"
-  HREF="node123.html">
+<A NAME="tex2html4112"
+  HREF="node69.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3828"
+<A NAME="tex2html4106"
   HREF="node129.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3836"
-  HREF="node219.html">
+<A NAME="tex2html4114"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3838"
-  HREF="node222.html">
+<A NAME="tex2html4116"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,120 +88,163 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3841"
-  HREF="node131.html">Práctica: Un lenguaje para</A>
-<B>Sup:</B> <A NAME="tex2html3835"
-  HREF="node123.html">Expresiones Regulares en Perl</A>
-<B> Ant:</B> <A NAME="tex2html3829"
-  HREF="node129.html">tr y split</A>
+<B> Sig:</B> <A NAME="tex2html4119"
+  HREF="node131.html">Conceptos Básicos para el</A>
+<B>Sup:</B> <A NAME="tex2html4113"
+  HREF="node69.html">SEGUNDA PARTE: APUNTES DE</A>
+<B> Ant:</B> <A NAME="tex2html4107"
+  HREF="node129.html">Optimización de Código</A>
 <B> Con:</B> 
-<A NAME="tex2html3836"
-  HREF="node219.html">
+<A NAME="tex2html4114"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3838"
-  HREF="node222.html">
+<A NAME="tex2html4116"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION05470000000000000000"></A>
-<A NAME="section:pack"></A>
-<BR>
-<TT>Pack</TT> y <TT>Unpack</TT>
+<H1><A NAME="SECTION05700000000000000000">
+Análisis Sintáctico Ascendente en JavaScript</A>
 </H1>
-El operador <code>pack</code> trabaja de forma parecida a <code>sprintf</code>.
-Su primer argumento es una cadena, seguida de una lista de valores
-a formatear y devuelve una cadena:
-<PRE>
-pack("CCC", 65, 66, 67, 68) # empaquetamos A B C D
-</PRE>
-el inverso es el operador <code>unpack</code>
-<PRE>
-unpack("CCC", "ABCD")
-</PRE>
-La cadena de formato es una lista de especificadores que indican el
-tipo del dato que se va a empaquetar/desempaquetar. Cada especificador
-puede opcionalmente seguirse de un contador de repetición
-que indica el número de elementos a formatear. Si se pone un
-asterisco (<code>*</code>) se indica que la especificación
-se aplica a todos los elementos restantes de la lista.
+<BR> <HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<P>
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT">Formato</TD>
-<TD ALIGN="LEFT">Descripción</TD>
-<TD ALIGN="LEFT">&nbsp;</TD>
-</TR>
-<TR><TD ALIGN="LEFT">A</TD>
-<TD ALIGN="LEFT">Una cadena completada con blancos</TD>
-<TD ALIGN="LEFT">&nbsp;</TD>
-</TR>
-<TR><TD ALIGN="LEFT">a</TD>
-<TD ALIGN="LEFT">Una cadena completada con ceros</TD>
-<TD ALIGN="LEFT">&nbsp;</TD>
-</TR>
-<TR><TD ALIGN="LEFT">B</TD>
-<TD ALIGN="LEFT">Una cadena binaria en orden descendente</TD>
-<TD ALIGN="LEFT">&nbsp;</TD>
-</TR>
-<TR><TD ALIGN="LEFT">b</TD>
-<TD ALIGN="LEFT">Una cadena binaria en orden ascendente</TD>
-<TD ALIGN="LEFT">&nbsp;</TD>
-</TR>
-<TR><TD ALIGN="LEFT">H</TD>
-<TD ALIGN="LEFT">Una cadena hexadecimal, los nibble altos primero</TD>
-<TD ALIGN="LEFT">&nbsp;</TD>
-</TR>
-<TR><TD ALIGN="LEFT">h</TD>
-<TD ALIGN="LEFT">Una cadena hexadecimal, los nibble bajos primero</TD>
-<TD ALIGN="LEFT">&nbsp;</TD>
-</TR>
-</TABLE>
-
-<P>
-Ejemplo de uso del formato <code>A</code>:
-<PRE>
-DB&lt;1&gt; $a = pack "A2A3", "Pea","rl"
-DB&lt;2&gt; p $a
-Perl
-DB&lt;3&gt; @b = unpack "A2A3", "Perl"
-DB&lt;4&gt; p "@b"
-Pe rl
-</PRE>
-La variable <code>@b</code> tiene ahora dos cadenas. Una es <code>Pe</code> la otra es <code>rl</code>.
-Veamos un ejemplo con el formato <code>B</code>:
-<PRE>
-p ord('A')
-65
-DB&lt;22&gt; $x = pack "B8", "01000001"
-DB&lt;23&gt; p $x
-A
-DB&lt;24&gt; @y = unpack "B8", "A"
-DB&lt;25&gt; p "@y"
-01000001
-DB&lt;26&gt; $x = pack "b8", "10000010"
-DB&lt;27&gt; p $x
-</PRE>
-
-<P>
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html4120"
+  HREF="node131.html">Conceptos Básicos para el Análisis Sintáctico</A>
+<UL>
+<LI><A NAME="tex2html4121"
+  HREF="node131.html#SECTION05711000000000000000">Ejercicio</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html4122"
+  HREF="node132.html">Ejemplo Simple en Jison</A>
+<UL>
+<LI><A NAME="tex2html4123"
+  HREF="node132.html#SECTION05720010000000000000">Gramática</A>
+<LI><A NAME="tex2html4124"
+  HREF="node132.html#SECTION05720020000000000000">basic2_lex.jison</A>
+<LI><A NAME="tex2html4125"
+  HREF="node132.html#SECTION05720030000000000000">index.html</A>
+<LI><A NAME="tex2html4126"
+  HREF="node132.html#SECTION05720040000000000000">Rakefile</A>
+<LI><A NAME="tex2html4127"
+  HREF="node132.html#SECTION05720050000000000000">Véase También</A>
+<LI><A NAME="tex2html4128"
+  HREF="node132.html#SECTION05720060000000000000">global.css</A>
+<LI><A NAME="tex2html4129"
+  HREF="node132.html#SECTION05721000000000000000">Véase También</A>
+<LI><A NAME="tex2html4130"
+  HREF="node132.html#SECTION05722000000000000000">Práctica: Secuencia de Asignaciones Simples</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html4131"
+  HREF="node133.html">Ejemplo en Jison: Calculadora Simple</A>
+<UL>
+<LI><A NAME="tex2html4132"
+  HREF="node133.html#SECTION05730010000000000000">calculator.jison</A>
+<LI><A NAME="tex2html4133"
+  HREF="node133.html#SECTION05730020000000000000">main.js</A>
+<LI><A NAME="tex2html4134"
+  HREF="node133.html#SECTION05730030000000000000">calculator.html</A>
+<LI><A NAME="tex2html4135"
+  HREF="node133.html#SECTION05730040000000000000">Rakefile</A>
+<LI><A NAME="tex2html4136"
+  HREF="node133.html#SECTION05730050000000000000">global.css</A>
+<LI><A NAME="tex2html4137"
+  HREF="node133.html#SECTION05730060000000000000">test/assert.html</A>
+<LI><A NAME="tex2html4138"
+  HREF="node133.html#SECTION05730070000000000000">test/test.css</A>
+<LI><A NAME="tex2html4139"
+  HREF="node133.html#SECTION05730080000000000000">test/test.html</A>
+<LI><A NAME="tex2html4140"
+  HREF="node133.html#SECTION05731000000000000000">Práctica: Calculadora con Listas de Expresiones y Variables</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html4141"
+  HREF="node134.html">Conceptos Básicos del Análisis LR</A>
+<LI><A NAME="tex2html4142"
+  HREF="node135.html">Construcción de las Tablas para el Análisis SLR</A>
+<UL>
+<LI><A NAME="tex2html4143"
+  HREF="node135.html#SECTION05751000000000000000">Los conjuntos de Primeros y Siguientes</A>
+<LI><A NAME="tex2html4144"
+  HREF="node135.html#SECTION05752000000000000000">Construcción de las Tablas</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html4145"
+  HREF="node136.html">Práctica: Calculadora  con Funciones</A>
+<LI><A NAME="tex2html4146"
+  HREF="node137.html">Algoritmo de Análisis LR</A>
+<LI><A NAME="tex2html4147"
+  HREF="node138.html">Práctica: Traducción de Infijo a Postfijo</A>
+<LI><A NAME="tex2html4148"
+  HREF="node139.html">El módulo Generado por <TT>jison</TT></A>
+<UL>
+<LI><A NAME="tex2html4149"
+  HREF="node139.html#SECTION05791000000000000000">Version</A>
+<LI><A NAME="tex2html4150"
+  HREF="node139.html#SECTION05792000000000000000">Gramática Inicial</A>
+<LI><A NAME="tex2html4151"
+  HREF="node139.html#SECTION05793000000000000000">Tablas</A>
+<LI><A NAME="tex2html4152"
+  HREF="node139.html#SECTION05794000000000000000">Acciones Semánticas</A>
+<LI><A NAME="tex2html4153"
+  HREF="node139.html#SECTION05795000000000000000">Tabla de Acciones y GOTOs</A>
+<LI><A NAME="tex2html4154"
+  HREF="node139.html#SECTION05796000000000000000">defaultActions</A>
+<LI><A NAME="tex2html4155"
+  HREF="node139.html#SECTION05797000000000000000">Reducciones</A>
+<LI><A NAME="tex2html4156"
+  HREF="node139.html#SECTION05798000000000000000">Desplazamientos/Shifts</A>
+<LI><A NAME="tex2html4157"
+  HREF="node139.html#SECTION05799000000000000000">Manejo de Errores</A>
+<LI><A NAME="tex2html4158"
+  HREF="node139.html#SECTION057910000000000000000">Analizador Léxico</A>
+<LI><A NAME="tex2html4159"
+  HREF="node139.html#SECTION057911000000000000000">Exportación</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html4160"
+  HREF="node140.html">Precedencia y Asociatividad</A>
+<LI><A NAME="tex2html4161"
+  HREF="node141.html">Depuración en <TT>jison</TT></A>
+<LI><A NAME="tex2html4162"
+  HREF="node142.html">Construcción del Árbol Sintáctico</A>
+<LI><A NAME="tex2html4163"
+  HREF="node143.html">Esquemas de Traducción</A>
+<LI><A NAME="tex2html4164"
+  HREF="node144.html">Definición Dirigida por la Sintáxis</A>
+<LI><A NAME="tex2html4165"
+  HREF="node145.html">Manejo en <TT>jison</TT> de Atributos Heredados</A>
+<LI><A NAME="tex2html4166"
+  HREF="node146.html">Acciones en Medio de una Regla y Atributos Heredados</A>
+<LI><A NAME="tex2html4167"
+  HREF="node147.html">Recuperación de Errores</A>
+<LI><A NAME="tex2html4168"
+  HREF="node148.html">Consejos a seguir al escribir un programa <TT>jison</TT></A>
+</UL>
+<!--End of Table of Child-Links-->
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3840"
+<A NAME="tex2html4118"
   HREF="node131.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3834"
-  HREF="node123.html">
+<A NAME="tex2html4112"
+  HREF="node69.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3828"
+<A NAME="tex2html4106"
   HREF="node129.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3836"
-  HREF="node219.html">
+<A NAME="tex2html4114"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3838"
-  HREF="node222.html">
+<A NAME="tex2html4116"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -248,17 +291,17 @@ DB&lt;27&gt; p $x
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3841"
-  HREF="node131.html">Práctica: Un lenguaje para</A>
-<B>Sup:</B> <A NAME="tex2html3835"
-  HREF="node123.html">Expresiones Regulares en Perl</A>
-<B> Ant:</B> <A NAME="tex2html3829"
-  HREF="node129.html">tr y split</A>
+<B> Sig:</B> <A NAME="tex2html4119"
+  HREF="node131.html">Conceptos Básicos para el</A>
+<B>Sup:</B> <A NAME="tex2html4113"
+  HREF="node69.html">SEGUNDA PARTE: APUNTES DE</A>
+<B> Ant:</B> <A NAME="tex2html4107"
+  HREF="node129.html">Optimización de Código</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-04-11</I>
+2013-04-12</I>
 </ADDRESS>
 </BODY>
 </HTML>

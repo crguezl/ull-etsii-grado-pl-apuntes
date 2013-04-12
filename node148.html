@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Análisis Semántico</TITLE>
-<META NAME="description" CONTENT="Análisis Semántico">
+<TITLE>Consejos a seguir al escribir un programa jison</TITLE>
+<META NAME="description" CONTENT="Consejos a seguir al escribir un programa jison">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node149.html">
 <LINK REL="previous" HREF="node147.html">
-<LINK REL="up" HREF="node138.html">
+<LINK REL="up" HREF="node130.html">
 <LINK REL="next" HREF="node149.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4337"
+<A NAME="tex2html4448"
   HREF="node149.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4331"
-  HREF="node138.html">
+<A NAME="tex2html4442"
+  HREF="node130.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4325"
+<A NAME="tex2html4438"
   HREF="node147.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4333"
-  HREF="node219.html">
+<A NAME="tex2html4444"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4335"
-  HREF="node222.html">
+<A NAME="tex2html4446"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,568 +87,192 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4338"
-  HREF="node149.html">Optimización Independiente de la</A>
-<B>Sup:</B> <A NAME="tex2html4332"
-  HREF="node138.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html4326"
-  HREF="node147.html">Árbol de Análisis Abstracto</A>
+<B> Sig:</B> <A NAME="tex2html4449"
+  HREF="node149.html">Análisis Sintáctico Ascendente en</A>
+<B>Sup:</B> <A NAME="tex2html4443"
+  HREF="node130.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4439"
+  HREF="node147.html">Recuperación de Errores</A>
 <B> Con:</B> 
-<A NAME="tex2html4333"
-  HREF="node219.html">
+<A NAME="tex2html4444"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4335"
-  HREF="node222.html">
+<A NAME="tex2html4446"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><A NAME="tex2html4339"
-  HREF="node148.html#SECTION056101000000000000000">Práctica: Declaraciones Automáticas</A>
-<LI><A NAME="tex2html4340"
-  HREF="node148.html#SECTION056102000000000000000">Práctica: Análisis Semántico</A>
-</UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION056100000000000000000">
-Análisis Semántico</A>
+<H1><A NAME="SECTION057180000000000000000"></A>
+<A NAME="section:consejosjison"></A>
+<BR>
+Consejos a seguir al escribir un programa <TT>jison</TT>
 </H1>
-Hay quien dice que el análisis semántico es la determinación 
-de aquellas propiedades que, siendo dependientes del contexto, pueden ser
-computadas estáticamente en tiempo de compilación para cualquier programa
-correcto. Entre estas propiedades
-están: la comprobación de que las variables son declaradas,
-la compatibilidad de tipos
-en las expresiones, el correcto uso de las llamadas a función asi
-como el ámbito y visibilidad de las variables.
-La fase de análisis semántico puede verse como una fase de ``adornado''
-o ``etiquetado'' del AAA, en la cual los atributos de los nodos
-del AAA son computados.
+Cuando escriba un programa <code>jison</code> asegurese
+de seguir los siguientes consejos:
 
 <P>
-Aunque la veamos como una fase separada del análisis sintáctico, puede
-en numerosas ocasiones llevarse a cabo al mismo tiempo que se construye
-el árbol. Así lo hacemos en este ejemplo: incrustamos la acción semántica
-en la correspondiente rutina de análisis sintáctico. Así, en la rutina <code>term</code>, una vez 
-que hemos obtenido los dos operandos, comprobamos que son de tipo numérico
-llamando (línea 8) a 
+
+<OL>
+<LI>Coloque el punto y coma de separación de reglas en una línea aparte.
+Un punto y coma ``pegado'' al final de una regla puede confundirse
+con un terminal de la regla.
 
 <P>
-<DIV ALIGN="CENTER">
-<code>Semantic::Analysis::check_type_numeric_operator</code>:
-
-</DIV>
-
-<P>
-Observe como aparece un nuevo atributo <code>TYPE</code> decorando el nodo
-creado (línea 9):
-
-<P>
-<PRE>
- 1 sub term() {
- 2   my ($t, $t2);
- 3 
- 4   $t = factor;
- 5   if ($lookahead eq '*') {
- 6     match('*');
- 7     $t2 = term;
- 8     my $type = Semantic::Analysis::check_type_numeric_operator($t, $t2, '*');
- 9     $t = TIMES-&gt;new( LEFT =&gt; $t, RIGHT =&gt; $t2, TYPE =&gt; $type);
-10   }
-11   return $t;
-12 }
-</PRE>
-
-<P>
-En el manejo de errores de tipo, un tipo especial <code>$err_type</code>
-es usado para indicar un error de tipo:
-
-<P>
-<PRE>
-  sub check_type_numeric_operator {
-    my ($op1, $op2, $operator) = @_;
-
-    my $type = numeric_compatibility($op1, $op2, $operator);
-    if ($type == $err_type) {
-      Error::fatal("Operandos incompatibles para el operador $operator") 
-    }
-    else {
-      return $type;
-    }
-  }
-</PRE>
-La subrutina <code>numeric_compatibility</code> comprueba que los
-dos operandos son de tipo numérico y devuelve el correspondiente
-tipo. Si ha ocurrido un error de tipo, intenta encontrar 
-un tipo conveniente para el operando:
+</LI>
+<LI>Si hay una regla que produce vacío, coloquela en primer lugar y acompáñela de 
+un comentario resaltando ese hecho.
+</LI>
+<LI>Nunca escriba dos reglas de producción en la misma línea.
+</LI>
+<LI>Sangre convenientemente todas las partes derechas de las reglas
+de producción de una variable, de modo que queden
+alineadas.
+</LI>
+<LI>Ponga nombres representativos a sus variables sintácticas. No llame 
+<code>Z</code> a una variable que representa el concepto ``lista de parámetros'',
+llámela <code>ListaDeParametros</code>.
+</LI>
+<LI>Es conveniente que declare los terminales simbólicos, esto es, aquellos que 
+llevan un identificador asociado. Si no llevan prioridad asociada o no 
+es necesaria, use una declaración <code>%token</code>. De esta manera
+el lector de su programa se dará cuenta rápidamente que dichos identificadores
+no se corresponden con variables sintácticas. Por la misma razón,
+si se trata de terminales
+asociados con caracteres o cadenas no es tan necesario que los declare, 
+a menos que, 
+como en el ejemplo de la calculadora para <code>'+'</code> y <code>'*'</code>,
+sea necesario asociarles una
+precedencia.
+</LI>
+<LI>Es importante que use la opción <code>-v</code> para producir
+el fichero <code>.output</code> conteniendo información detallada sobre
+los conflictos y el autómata. Cuando haya un conflicto shift-reduce
+no resuelto busque en el fichero el estado implicado y 
+vea que LR(0) items <!-- MATH
+ $A \rightarrow \alpha_\uparrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="64" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img430.png"
+ ALT="$ A \rightarrow \alpha_\uparrow$"></SPAN>
+y <!-- MATH
+ $B \rightarrow \beta_\uparrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="73" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img455.png"
+ ALT="$ B \rightarrow \beta_\uparrow \gamma$"></SPAN> entran en conflicto.
 
 <P>
-<PRE>
-  sub numeric_compatibility {
-    my ($op1, $op2, $operator) = @_;
-
-    if (($op1-&gt;TYPE == $op2-&gt;TYPE) and is_numeric($op1-&gt;TYPE)) {
-      return $op1-&gt;TYPE; # correct
-    }
-    ... # código de recuperación de errores de tipo
-  }
-
-  sub is_numeric {
-    my $type = shift;
-
-    return ($type == $int_type); # añadir long, float, double, etc.
-  }
-</PRE>
-
-<P>
-Es parte del análisis semántico la declaración de tipos:
-
-<P>
-<PRE>
-sub declaration() {
-  my ($t, $class, @il);
-
-  if (($lookahead eq 'INT') or ($lookahead eq 'STRING')) {
-    $class = $lookahead;
-    $t = &amp;type();
-    @il = &amp;idlist();
-    &amp;Semantic::Analysis::set_types($t, @il);
-    &amp;Address::Assignment::compute_address($t, @il);
-    return $class-&gt;new(TYPE =&gt; $t, IDLIST =&gt; \@il);
-  }
-  else {
-    Error::fatal('Se esperaba un tipo');
-  }
-}
-</PRE>
-Para ello se utiliza una tabla de símbolos que es un hash <code>%symbol_table</code>
-indexado en los identificadores del programa:
+</LI>
+<LI><A NAME="item:conflictos"></A>Si según el informe de <code>jison</code>
+el conflicto se produce ante un terminal <SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img55.png"
+ ALT="$ a$"></SPAN>,
+es porque <!-- MATH
+ $a \in FOLLOW(A)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="146" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img456.png"
+ ALT="$ a \in FOLLOW(A)$"></SPAN> y
+<!-- MATH
+ $a \in FIRST(\gamma)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="119" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img457.png"
+ ALT="$ a \in FIRST(\gamma)$"></SPAN>. Busque las causas por las que esto ocurre 
+y modifique su gramática con vistas a eliminar la presencia
+del terminal <SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img55.png"
+ ALT="$ a$"></SPAN> en uno de los dos conjuntos implicados
+o bien establezca reglas de prioridad entre los terminales
+implicados que resuelvan el conflicto.
 
 <P>
-<PRE>
-sub set_types {
-  my $type = shift;
-  my @vars = @_;
-
-  foreach my $var (@vars) {
-    if (!exists($symbol_table{$id})) { $symbol_table{$var}-&gt;{TYPE} = $type; }
-    else { Error::error("$id declarado dos veces en el mismo ámbito"); }
-  }
-}
-</PRE>
+</LI>
+<LI>Nótese que cuando existe un conflicto de desplazamiento 
+reducción entre <!-- MATH
+ $A \rightarrow \alpha_\uparrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="64" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img430.png"
+ ALT="$ A \rightarrow \alpha_\uparrow$"></SPAN> 
+y  <!-- MATH
+ $B \rightarrow \beta_\uparrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="73" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img455.png"
+ ALT="$ B \rightarrow \beta_\uparrow \gamma$"></SPAN>, el programa
+<code>jison</code> contabiliza un error por cada terminal 
+<!-- MATH
+ $a \in FOLLOW(A) \cap FIRST(\gamma)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="249" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img458.png"
+ ALT="$ a \in FOLLOW(A) \cap FIRST(\gamma)$"></SPAN>. Por esta razón,
+si hay 16 elementos en <!-- MATH
+ $FOLLOW(A) \cap FIRST(\gamma)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="218" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img459.png"
+ ALT="$ FOLLOW(A) \cap FIRST(\gamma)$"></SPAN>,
+el analizador <code>jison</code> informará de la existencia
+de 16 conflictos <SPAN  CLASS="textbf">shift-reduce</SPAN>,
+cuando en realidad se trata de uno sólo. No desespere, 
+los conflictos ``auténticos'' suelen
+ser menos de los que <code>jison</code> anuncia.
 
 <P>
-Cada vez que aparece una variable en el código, bien en un factor o en 
-una asignación, comprobamos que ha sido declarada:
-
-<P>
-<PRE>
-sub factor() {
-  my ($e, $id, $str, $num);
-
-  if ($lookahead eq 'NUM') { ... }
-  elsif ($lookahead eq 'ID') {
-    $id = $value;
-    match('ID');
-    my $type = Semantic::Analysis::check_declared($id);
-    return ID-&gt;new( VAL =&gt; $id, TYPE =&gt; $type);
-  }
-  elsif ($lookahead eq 'STR') { ... }
-  elsif ($lookahead eq '(') { ... }
-  else { Error::fatal("Se esperaba (, NUM o ID"); }
-}
-</PRE>
-
-<P>
-La función <code>check_declared</code> devuelve el atributo
-<code>TYPE</code> de la correspondiente entrada en la tabla de 
-símbolos.
+</LI>
+<LI>Si necesita declarar variables globales, inicializaciones, etc.
+que afectan la conducta global del analizador, escriba el código 
+correspondiente en la cabecera del analizador, protegido
+por los delimitadores <code>%{</code> y <code>%}</code>. Estos delimitadores
+deberán aparecer en una línea aparte. Por ejemplo:
 
 <P>
 <PRE>
-sub check_declared {
-  my $id = shift;
+%{
+our contador = 0;
+%}
 
-  if (!exists($symbol_table{$id})) {
-    Error::error("$id no ha sido declarado!");
-    # auto-declaración de la variable a err_type
-    Semantic::Analysis::set_types($err_type, ($id));
-  }
-  return $symbol_table{$id}-&gt;{TYPE};
-}
+%token NUM
+...
+%%
 </PRE>
 
 <P>
-
-<H2><A NAME="SECTION056101000000000000000"></A>
-   <A NAME="12213"></A>
-<BR>
-Práctica: Declaraciones Automáticas
-</H2>
-
-<P>
-Modifique la subrutina <code>check_declared</code> para que cuando
-una variable no haya sido declarada se declare ``sobre la marcha''. 
-¿Puede utilizar 
-información dependiente del contexto para decidir cual es la mejor forma
-de declararla?
-
-<P>
-
-<H2><A NAME="SECTION056102000000000000000"></A>
-   <A NAME="12215"></A>
-  
-<A NAME="practica:analisis_semantico"></A>
-<BR>
-Práctica: Análisis Semántico
-</H2>
-Extienda el código de la práctica 
-<A HREF="node147.html#practica:AAA">33.9.5</A>
-para comprobar la compatibilidad de tipos.
-
-<P>
-<BR>
-<BR>
-
-<DIV ALIGN="CENTER"><TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL">
-1 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  p  <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> b     </SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-2 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  b  <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> ds  ss     </SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-3 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  b  <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> ss         </SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-4 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  ds <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> d  ';'  ds  </SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-5 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  ds <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> d ';'      </SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-6 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  d  <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> INT  il     </SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-7 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  d  <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> STRING  il </SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-8 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  ss <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> s  ';'  ss  </SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-9 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  ss <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> s          </SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-10 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  s  <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> ID '=' e   </SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-11 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  s  <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> '{' b '}'   </SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-12 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  s  <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> P  e       </SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-13 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  s <!-- MATH
- $\rightarrow \epsilon$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="34" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img158.png"
- ALT="$ \rightarrow \epsilon$"></SPAN> </SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-14 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  e <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> e1 '+' t    </SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-15 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  e <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> e1 '-' t    </SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-16 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  e <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> t           </SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-17 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  t <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> t1 '*' f    </SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-18 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  t <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> t '/' f     </SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-19 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  t <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> f           </SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-20 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  f <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> '(' e ')'   </SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-21 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  f <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> ID         </SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-22 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  f <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> NUM        </SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-23 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  f <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> STR        </SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-24 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  il <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> ID ',' il  </SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-25 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  il <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> ID         </SMALL></TD>
-</TR>
-</TABLE></DIV>
-<BR>
-<BR>
-En cuanto a las sentencias de bloque,
-se pretende que el ámbito y visibilidad de las variables sea como en el lenguaje
-C, esto es, las declaraciones mas internas con el mismo identificador
-ocultan las mas externas. Así:
-
-<P>
-<PRE>
-int a;
-a = 4;
-{
-  int a;
-  a = 5;
-  p a
-}; /* el ; es necesario */
-p a
-</PRE>
-
-<P>
-Imprimiría 5 y 4. Para traducir esta sentencia es necesario 
-<SPAN  CLASS="textbf">usar una lista/pila de referencias a tablas de símbolos. Cada 
-sentencia compuesta o bloque tendrá
-su propia tabla de símbolos</SPAN>. Los identificadores se búscan
-en la lista de referencias a tablas de símbolos, primero 
-en la última tabla de símbolos insertada y sino se encuentra
-se busca en la penúltima insertada, etc.
-
-<P>
-Guarde como un atributo del identificador (<SPAN CLASS="MATH"><IMG
- WIDTH="115" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img265.png"
- ALT="$ SYMTABLE$"></SPAN>) 
-la referencia a la tabla de símbolos
-a la que pertenece. Guarde como un atributo del nodo bloque (<SPAN CLASS="MATH"><IMG
- WIDTH="74" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img266.png"
- ALT="$ BLOCK$"></SPAN>) 
-la referencia a la tabla de símbolos asociada.
+</LI>
+</OL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4337"
+<A NAME="tex2html4448"
   HREF="node149.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4331"
-  HREF="node138.html">
+<A NAME="tex2html4442"
+  HREF="node130.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4325"
+<A NAME="tex2html4438"
   HREF="node147.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4333"
-  HREF="node219.html">
+<A NAME="tex2html4444"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4335"
-  HREF="node222.html">
+<A NAME="tex2html4446"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -696,17 +319,17 @@ la referencia a la tabla de símbolos asociada.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4338"
-  HREF="node149.html">Optimización Independiente de la</A>
-<B>Sup:</B> <A NAME="tex2html4332"
-  HREF="node138.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html4326"
-  HREF="node147.html">Árbol de Análisis Abstracto</A>
+<B> Sig:</B> <A NAME="tex2html4449"
+  HREF="node149.html">Análisis Sintáctico Ascendente en</A>
+<B>Sup:</B> <A NAME="tex2html4443"
+  HREF="node130.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4439"
+  HREF="node147.html">Recuperación de Errores</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-04-11</I>
+2013-04-12</I>
 </ADDRESS>
 </BODY>
 </HTML>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Declaraciones pointer y array</TITLE>
-<META NAME="description" CONTENT="Declaraciones pointer y array">
+<TITLE>Práctica: Un lenguaje para Componer Invitaciones</TITLE>
+<META NAME="description" CONTENT="Práctica: Un lenguaje para Componer Invitaciones">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node107.html">
 <LINK REL="previous" HREF="node105.html">
-<LINK REL="up" HREF="node82.html">
+<LINK REL="up" HREF="node98.html">
 <LINK REL="next" HREF="node107.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3113"
+<A NAME="tex2html3532"
   HREF="node107.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3107"
-  HREF="node82.html">
+<A NAME="tex2html3526"
+  HREF="node98.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3101"
+<A NAME="tex2html3520"
   HREF="node105.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3109"
-  HREF="node219.html">
+<A NAME="tex2html3528"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3111"
-  HREF="node222.html">
+<A NAME="tex2html3530"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,83 +88,137 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3114"
-  HREF="node107.html">Las Macros YY_USER_ACTION, yy_act</A>
-<B>Sup:</B> <A NAME="tex2html3108"
-  HREF="node82.html">Expresiones Regulares en Flex</A>
-<B> Ant:</B> <A NAME="tex2html3102"
-  HREF="node105.html">An&#225;lisis de la L&#305;nea</A>
+<B> Sig:</B> <A NAME="tex2html3533"
+  HREF="node107.html">Analisis Sintáctico con Expresiones</A>
+<B>Sup:</B> <A NAME="tex2html3527"
+  HREF="node98.html">Expresiones Regulares en Perl</A>
+<B> Ant:</B> <A NAME="tex2html3521"
+  HREF="node105.html">Pack y Unpack</A>
 <B> Con:</B> 
-<A NAME="tex2html3109"
-  HREF="node219.html">
+<A NAME="tex2html3528"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3111"
-  HREF="node222.html">
+<A NAME="tex2html3530"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION052240000000000000000">
-Declaraciones pointer y array</A>
+<H1><A NAME="SECTION05480000000000000000"></A>
+   <A NAME="8471"></A>
+  
+<A NAME="practica:invitaciones"></A>
+<BR>
+Práctica: Un lenguaje para Componer Invitaciones
 </H1>
-Como se coment&#243;, las opciones <code>%pointer</code> y <code>%array</code>
-controlan la definici&#243;n que
-<SPAN  CLASS="textit">flex</SPAN> hace de <SPAN  CLASS="textit">yytext</SPAN>. en el caso en que eligamos la opci&#243;n 
-<code>%array</code> la variable <code>YYLMAX</code> controla el tama&#241;o del
-<SPAN  CLASS="textit">array</SPAN>. Supongamos que en el fichero <SPAN  CLASS="textit">trivial.l</SPAN> del ejemplo
-anterior introducimos las siguientes modificaciones:
+
+<P>
+En el capítulo 6 (sección 6.4.2.2) del libro 
+<A NAME="tex2html281"
+  HREF="http://books.google.es/books?id=B93uJGLZhAoC&amp;lpg=PP1&amp;ots=-JFhDfZPwN&amp;dq=The%20LaTEX%20web%20companion&amp;hl=en&amp;pg=PP1#v=onepage&amp;q=&amp;f=false">The LaTex Web Companion</A>
+se define un lenguaje para componer textos para enviar invitaciones.
+
+<P>
+Para escribir una invitación en ese lenguaje escribiríamos algo así:
+
+<P>
 <PRE>
-$ cat trivial.l
-%array
-%{
-#undef YYLMAX
-#define YYLMAX 4
-#include "tokens.h"
-%}
-digit [0-9]
-id [a-zA-Z][a-zA-Z0-9]+
-blanks [ \t\n]+
-operator [+*/-]
-%%
-{digit}+ {return INTTOKEN; }
-{digit}+"."{digit}+ {return FLOATTOKEN; }
-{id} {return IDTOKEN;}
-{operator} {return OPERATORTOKEN;}
-{blanks} {return BLANKTOKEN;}
-. {return (int) yytext[0];}
-%%
-int yywrap() {
-  return 1;
-  }
+pl@nereida:~/Lpl0910/Practicas/161009/src$ cat -n invitation.xml
+ 1  &lt;?xml version="1.0"?&gt;
+ 2  &lt;!DOCTYPE invitation SYSTEM "invitation.dtd"&gt;
+ 3  &lt;invitation&gt;
+ 4  &lt;!-- ++++ The header part of the document ++++ --&gt;
+ 5  &lt;front&gt;
+ 6  &lt;to&gt;Anna, Bernard, Didier, Johanna&lt;/to&gt;
+ 7  &lt;date&gt;Next Friday Evening at 8 pm&lt;/date&gt;
+ 8  &lt;where&gt;The Web Cafe&lt;/where&gt;
+ 9  &lt;why&gt;My first XML baby&lt;/why&gt;
+10  &lt;/front&gt;
+11  &lt;!-- +++++ The main part of the document +++++ --&gt;
+12  &lt;body&gt;
+13  &lt;par&gt;
+14  I would like to invite you all to celebrate
+15  the birth of &lt;emph&gt;Invitation&lt;/emph&gt;, my
+16  first XML document child.
+17  &lt;/par&gt;
+18  &lt;par&gt;
+19  Please do your best to come and join me next Friday
+20  evening. And, do not forget to bring your friends.
+21  &lt;/par&gt;
+22  &lt;par&gt;
+23  I &lt;emph&gt;really&lt;/emph&gt; look forward to see you soon!
+24  &lt;/par&gt;
+25  &lt;/body&gt;
+26  &lt;!-- +++ The closing part of the document ++++ --&gt;
+27  &lt;back&gt;
+28  &lt;signature&gt;Michel&lt;/signature&gt;
+29  &lt;/back&gt;
+30  &lt;/invitation&gt;
 </PRE>
-En tal caso, la definici&#243;n excesivamente peque&#241;a de YYLMAX provoca
-un error en tiempo de ejecuci&#243;n:
+
+<P>
+La sintáxis del lenguaje queda reflejada en la siguiente 
+<A NAME="8472"></A><SPAN  CLASS="textbf">Document Type Definition</SPAN> (<A NAME="8474"></A><SPAN  CLASS="textbf">DTD</SPAN>) que aparece en la sección 6.4.3
+del libro de Goosens:
+
+<P>
 <PRE>
-$ fl -V -f tokens.h
-version 1.0
-File name is: tokens.h
-token too large, exceeds YYLMAX
+pl@nereida:~/Lpl0910/Practicas/161009/src$ cat -n invitation.dtd
+ 1  &lt;!-- invitation DTD   --&gt;
+ 2  &lt;!-- May 26th 1998 mg --&gt;
+ 3  &lt;!ELEMENT invitation (front, body, back) &gt;
+ 4  &lt;!ELEMENT front      (to, date, where, why?) &gt;
+ 5  &lt;!ELEMENT date       (#PCDATA) &gt;
+ 6  &lt;!ELEMENT to         (#PCDATA) &gt;
+ 7  &lt;!ELEMENT where      (#PCDATA) &gt;
+ 8  &lt;!ELEMENT why        (#PCDATA) &gt;
+ 9  &lt;!ELEMENT body       (par+) &gt;
+10  &lt;!ELEMENT par        (#PCDATA|emph)* &gt;
+11  &lt;!ELEMENT emph       (#PCDATA) &gt;
+12  &lt;!ELEMENT back       (signature) &gt;
+13  &lt;!ELEMENT signature  (#PCDATA) &gt;
 </PRE>
+
+<P>
+El  objetivo de esta práctica es escribir un programa Perl
+que usando las extensiones para expresiones regulares presentes 
+en la versión 5.10 reconozca el lenguaje anterior.
+
+<P>
+Véase también:
+
+<P>
+
+<UL>
+<LI><A NAME="tex2html282"
+  HREF="http://books.google.es/books?id=B93uJGLZhAoC&amp;lpg=PP1&amp;ots=-JFhDfZPwN&amp;dq=The%20LaTEX%20web%20companion&amp;hl=en&amp;pg=PP1#v=onepage&amp;q=&amp;f=false">The LaTex Web Companion</A>
+</LI>
+<LI><A NAME="tex2html283"
+  HREF="http://www.ctan.org/tex-archive/info/examples/lwc/">Examples from The LaTeX Web Companion</A>
+(véanse los subdirectorios
+correspondietnes a los capítulos 6 y 7)
+</LI>
+</UL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3113"
+<A NAME="tex2html3532"
   HREF="node107.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3107"
-  HREF="node82.html">
+<A NAME="tex2html3526"
+  HREF="node98.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3101"
+<A NAME="tex2html3520"
   HREF="node105.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3109"
-  HREF="node219.html">
+<A NAME="tex2html3528"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3111"
-  HREF="node222.html">
+<A NAME="tex2html3530"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -211,17 +265,17 @@ token too large, exceeds YYLMAX
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3114"
-  HREF="node107.html">Las Macros YY_USER_ACTION, yy_act</A>
-<B>Sup:</B> <A NAME="tex2html3108"
-  HREF="node82.html">Expresiones Regulares en Flex</A>
-<B> Ant:</B> <A NAME="tex2html3102"
-  HREF="node105.html">An&#225;lisis de la L&#305;nea</A>
+<B> Sig:</B> <A NAME="tex2html3533"
+  HREF="node107.html">Analisis Sintáctico con Expresiones</A>
+<B>Sup:</B> <A NAME="tex2html3527"
+  HREF="node98.html">Expresiones Regulares en Perl</A>
+<B> Ant:</B> <A NAME="tex2html3521"
+  HREF="node105.html">Pack y Unpack</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-04-11</I>
+2013-04-12</I>
 </ADDRESS>
 </BODY>
 </HTML>

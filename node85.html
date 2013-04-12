@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Espacios en blanco dentro de la expresión regular</TITLE>
-<META NAME="description" CONTENT="Espacios en blanco dentro de la expresión regular">
+<TITLE>Expresiones Regulares en sed</TITLE>
+<META NAME="description" CONTENT="Expresiones Regulares en sed">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node86.html">
-<LINK REL="previous" HREF="node84.html">
-<LINK REL="up" HREF="node82.html">
+<LINK REL="next" HREF="node98.html">
+<LINK REL="previous" HREF="node81.html">
+<LINK REL="up" HREF="node69.html">
 <LINK REL="next" HREF="node86.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html2818"
+<A NAME="tex2html2845"
   HREF="node86.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2812"
-  HREF="node82.html">
+<A NAME="tex2html2839"
+  HREF="node69.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2806"
+<A NAME="tex2html2833"
   HREF="node84.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2814"
-  HREF="node219.html">
+<A NAME="tex2html2841"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2816"
-  HREF="node222.html">
+<A NAME="tex2html2843"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,73 +88,115 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2819"
-  HREF="node86.html">Ejemplo Simple</A>
-<B>Sup:</B> <A NAME="tex2html2813"
-  HREF="node82.html">Expresiones Regulares en Flex</A>
-<B> Ant:</B> <A NAME="tex2html2807"
-  HREF="node84.html">Versi&#243;n Utilizada</A>
+<B> Sig:</B> <A NAME="tex2html2846"
+  HREF="node86.html">Transferencia de Control</A>
+<B>Sup:</B> <A NAME="tex2html2840"
+  HREF="node69.html">SEGUNDA PARTE: APUNTES DE</A>
+<B> Ant:</B> <A NAME="tex2html2834"
+  HREF="node84.html">unput()</A>
 <B> Con:</B> 
-<A NAME="tex2html2814"
-  HREF="node219.html">
+<A NAME="tex2html2841"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html2816"
-  HREF="node222.html">
+<A NAME="tex2html2843"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION05230000000000000000"></A>
-<A NAME="section:blancos"></A>
-<BR>
-Espacios en blanco dentro de la expresión regular
-</H1>
-La expresión regular va desde el comienzo de la línea hasta el primer espacio en blanco 
-no escapado. Todos los espacios en blanco que formen parte de la 
-expresión regular 
-deben ser escapados o protegidos entre comillas. Así, el siguiente
-programa produce un error en tiempo de compilación C:
+<H1><A NAME="SECTION05300000000000000000">
+Expresiones Regulares en sed</A>
+</H1>·
+El editor <code>sed</code> es un editor no interactivo que actúa
+ejecutando los comandos (similares a los de <code>ex</code>) que
+figuran en el guión <code>sed</code> (<A NAME="3332"></A><SPAN  CLASS="textit">script sed</SPAN>) 
+sobre los ficheros de entrada y escribiendo el resultado en la salida estandar.
+Normalmente se llama en una de estas dos formas:
 <PRE>
-&gt; cat spaces.l
-%%
-one two { printf("spaces\n"; }
-%%
-nereida:~/public_html/regexpr/lex/src&gt; flex spaces.l
-nereida:~/public_html/regexpr/lex/src&gt; gcc lex.yy.c
-spaces.l: In function `yylex':
-spaces.l:2: `two' undeclared (first use in this function)
-spaces.l:2: (Each undeclared identifier is reported only once
-spaces.l:2: for each function it appears in.)
-spaces.l:2: parse error before `{'
-spaces.l:4: case label not within a switch statement
-lex.yy.c:632: case label not within a switch statement
-lex.yy.c:635: case label not within a switch statement
-lex.yy.c:757: default label not within a switch statement
-lex.yy.c: At top level:
-lex.yy.c:762: parse error before `}'
+sed [opciones] 'comando' fichero(s)
+sed [opciones] -f guion fichero(s)
 </PRE>
-Deberíamos escapar el blanco entre <code>one</code> y <code>two</code> o bien
-proteger la cadena poniéndola entre comillas: <code>"one two"</code>.
+Si no se especifican ficheros de entrada, <code>sed</code> lee su entrada 
+desde la entrada estandar.
 
 <P>
+Todos los comandos en el guión son ejecutados sobre todas las líneas de la
+entrada, salvo que las condiciones en el ámbito del comando indiquen lo contrario.
+
+<P>
+<PRE>
+nereida:~/sed&gt; cat b.without.sed
+#example of succesive replacements
+s/fish/cow/
+s/cow/horse/
+nereida:~/sed&gt; cat b.test
+fish
+cow
+nereida:~/sed&gt; sed -f b.without.sed b.test
+horse
+horse
+</PRE>
+como se ve en el ejemplo, si un comando cambia la entrada, los siguientes 
+comandos se aplican a la línea modificada (denominada <A NAME="3334"></A><SPAN  CLASS="textit">pattern space</SPAN>).
+
+<P>
+Los comandos <code>sed</code> tienen el formato:
+
+<P>
+<PRE>
+[direccion1][,direccion2][!]comando[argumentos]
+</PRE>
+
+<P>
+<BR> <HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html2847"
+  HREF="node86.html">Transferencia de Control</A>
+<LI><A NAME="tex2html2848"
+  HREF="node87.html">Inserción de Texto</A>
+<LI><A NAME="tex2html2849"
+  HREF="node88.html">Trasferencia de Control Condicional</A>
+<LI><A NAME="tex2html2850"
+  HREF="node89.html">Rangos</A>
+<LI><A NAME="tex2html2851"
+  HREF="node90.html">Siguiente Línea: La orden <I>n</I></A>
+<LI><A NAME="tex2html2852"
+  HREF="node91.html">Manipulando tablas numéricas</A>
+<LI><A NAME="tex2html2853"
+  HREF="node92.html">Traducción entre Tablas</A>
+<LI><A NAME="tex2html2854"
+  HREF="node93.html">Del espacio de Patrones al de Mantenimiento</A>
+<LI><A NAME="tex2html2855"
+  HREF="node94.html">La orden <I>N</I></A>
+<LI><A NAME="tex2html2856"
+  HREF="node95.html">Suprimir: El Comando <I>D</I></A>
+<LI><A NAME="tex2html2857"
+  HREF="node96.html">Búsqueda entre líneas</A>
+<LI><A NAME="tex2html2858"
+  HREF="node97.html">Seleccionando Items en un Registro Multilínea</A>
+</UL>
+<!--End of Table of Child-Links-->
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html2818"
+<A NAME="tex2html2845"
   HREF="node86.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2812"
-  HREF="node82.html">
+<A NAME="tex2html2839"
+  HREF="node69.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2806"
+<A NAME="tex2html2833"
   HREF="node84.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2814"
-  HREF="node219.html">
+<A NAME="tex2html2841"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2816"
-  HREF="node222.html">
+<A NAME="tex2html2843"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -201,17 +243,17 @@ proteger la cadena poniéndola entre comillas: <code>"one two"</code>.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2819"
-  HREF="node86.html">Ejemplo Simple</A>
-<B>Sup:</B> <A NAME="tex2html2813"
-  HREF="node82.html">Expresiones Regulares en Flex</A>
-<B> Ant:</B> <A NAME="tex2html2807"
-  HREF="node84.html">Versi&#243;n Utilizada</A>
+<B> Sig:</B> <A NAME="tex2html2846"
+  HREF="node86.html">Transferencia de Control</A>
+<B>Sup:</B> <A NAME="tex2html2840"
+  HREF="node69.html">SEGUNDA PARTE: APUNTES DE</A>
+<B> Ant:</B> <A NAME="tex2html2834"
+  HREF="node84.html">unput()</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-04-11</I>
+2013-04-12</I>
 </ADDRESS>
 </BODY>
 </HTML>

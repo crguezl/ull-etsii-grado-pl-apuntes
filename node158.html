@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Ejemplo en Jison: Calculadora Simple</TITLE>
-<META NAME="description" CONTENT="Ejemplo en Jison: Calculadora Simple">
+<TITLE>Construcción del Árbol Sintáctico</TITLE>
+<META NAME="description" CONTENT="Construcción del Árbol Sintáctico">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node159.html">
 <LINK REL="previous" HREF="node157.html">
-<LINK REL="up" HREF="node155.html">
+<LINK REL="up" HREF="node149.html">
 <LINK REL="next" HREF="node159.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4540"
+<A NAME="tex2html4629"
   HREF="node159.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4534"
-  HREF="node155.html">
+<A NAME="tex2html4623"
+  HREF="node149.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4528"
+<A NAME="tex2html4617"
   HREF="node157.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4536"
-  HREF="node219.html">
+<A NAME="tex2html4625"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4538"
-  HREF="node222.html">
+<A NAME="tex2html4627"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,425 +88,156 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4541"
-  HREF="node159.html">Conceptos Básicos del Análisis</A>
-<B>Sup:</B> <A NAME="tex2html4535"
-  HREF="node155.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4529"
-  HREF="node157.html">Ejemplo Simple en Jison</A>
+<B> Sig:</B> <A NAME="tex2html4630"
+  HREF="node159.html">Acciones en Medio de</A>
+<B>Sup:</B> <A NAME="tex2html4624"
+  HREF="node149.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4618"
+  HREF="node157.html">Generación interactiva de analizadores</A>
 <B> Con:</B> 
-<A NAME="tex2html4536"
-  HREF="node219.html">
+<A NAME="tex2html4625"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4538"
-  HREF="node222.html">
+<A NAME="tex2html4627"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html4542"
-  HREF="node158.html#SECTION05730010000000000000">calculator.jison</A>
-<LI><A NAME="tex2html4543"
-  HREF="node158.html#SECTION05730020000000000000">main.js</A>
-<LI><A NAME="tex2html4544"
-  HREF="node158.html#SECTION05730030000000000000">calculator.html</A>
-<LI><A NAME="tex2html4545"
-  HREF="node158.html#SECTION05730040000000000000">Rakefile</A>
-<LI><A NAME="tex2html4546"
-  HREF="node158.html#SECTION05730050000000000000">global.css</A>
-<LI><A NAME="tex2html4547"
-  HREF="node158.html#SECTION05730060000000000000">test/assert.html</A>
-<LI><A NAME="tex2html4548"
-  HREF="node158.html#SECTION05730070000000000000">test/test.css</A>
-<LI><A NAME="tex2html4549"
-  HREF="node158.html#SECTION05730080000000000000">test/test.html</A>
-</UL>
-</UL>
-<BR>
-<LI><A NAME="tex2html4550"
-  HREF="node158.html#SECTION05731000000000000000">Práctica: Calculadora con Listas de Expresiones y Variables</A>
-</UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION05730000000000000000"></A>
-<A NAME="section:calculadora"></A>
-<BR>
-Ejemplo en Jison: Calculadora Simple
+<H1><A NAME="SECTION05890000000000000000">
+Construcción del Árbol Sintáctico</A>
 </H1>
-
-<P>
-
-<OL>
-<LI>Enlace al fork  <A NAME="tex2html395"
-  HREF="https://github.com/crguezl/jison/tree/develop/examples/html_calc_example">del proyecto jison de crguezl</A>
-(GitHub)
-</LI>
-</OL>
-<H4><A NAME="SECTION05730010000000000000">
-calculator.jison</A>
-</H4>
-  
-
+El siguiente ejemplo usa <code>yapp</code> 
+para construir el árbol sintáctico de una expresión en infijo:
 <PRE>
-[~/jison/examples/html_calc_example(develop)]$ cat calculator.jison 
-
-/* description: Parses end executes mathematical expressions. */
-
-/* lexical grammar */
-%lex
-%%
-
-\s+                   /* skip whitespace */
-[0-9]+("."[0-9]+)?\b  return 'NUMBER'
-"*"                   return '*'
-"/"                   return '/'
-"-"                   return '-'
-"+"                   return '+'
-"^"                   return '^'
-"!"                   return '!'
-"%"                   return '%'
-"("                   return '('
-")"                   return ')'
-"PI"                  return 'PI'
-"E"                   return 'E'
-&lt;&lt;EOF&gt;&gt;               return 'EOF'
-.                     return 'INVALID'
-
-/lex
-
-/* operator associations and precedence */
-
-%left '+' '-'
-%left '*' '/'
-%left '^'
-%right '!'
-%right '%'
-%left UMINUS
-
-%start expressions
-
-%% /* language grammar */
-
-expressions
-    : e EOF
-        { typeof console !== 'undefined' ? console.log($1) : print($1);
-          return $1; }
-    ;
-
-e
-    : e '+' e
-        {$$ = $1+$3;}
-    | e '-' e
-        {$$ = $1-$3;}
-    | e '*' e
-        {$$ = $1*$3;}
-    | e '/' e
-        {$$ = $1/$3;}
-    | e '^' e
-        {$$ = Math.pow($1, $3);}
-    | e '!'
-        {{
-          $$ = (function fact (n) { return n==0 ? 1 : fact(n-1) * n })($1);
-        }}
-    | e '%'
-        {$$ = $1/100;}
-    | '-' e %prec UMINUS
-        {$$ = -$2;}
-    | '(' e ')'
-        {$$ = $2;}
-    | NUMBER
-        {$$ = Number(yytext);}
-    | E
-        {$$ = Math.E;}
-    | PI
-        {$$ = Math.PI;}
-    ;
+$ cat -n Infixtree_bless.yp
+ 1  #
+ 2  # Infixtree.yp
+ 3  #
+ 4
+ 5  %{
+ 6  use Data::Dumper;
+ 7  %}
+ 8  %right  '='
+ 9  %left   '-' '+'
+10  %left   '*' '/'
+11  %left   NEG
+12
+13  %%
+14  input:  #empty
+15          |   input line
+16  ;
+17
+18  line:     '\n'         { $_[1] }
+19          | exp '\n'     { print Dumper($_[1]); }
+20          | error '\n'   { $_[0]-&gt;YYErrok }
+21  ;
+22
+23  exp:        NUM
+24          |   VAR                 { $_[1] }
+25          |   VAR '=' exp         { bless [$_[1], $_[3]], 'ASSIGN' }
+26          |   exp '+' exp         { bless [$_[1], $_[3] ], 'PLUS'}
+27          |   exp '-' exp         { bless [$_[1], $_[3] ], 'MINUS'}
+28          |   exp '*' exp         { bless [$_[1], $_[3]], 'TIMES' }
+29          |   exp '/' exp         { bless [$_[1], $_[3]], 'DIVIDE' }
+30          |   '-' exp %prec NEG   { bless [$_[2]], 'NEG' }
+31          |   '(' exp ')'         { $_[2] }
+32  ;
+33
+34  %%
+35
+36  sub _Error {
+37          exists $_[0]-&gt;YYData-&gt;{ERRMSG}
+38      and do {
+39          print $_[0]-&gt;YYData-&gt;{ERRMSG};
+40          delete $_[0]-&gt;YYData-&gt;{ERRMSG};
+41          return;
+42      };
+43      print "Syntax error.\n";
+44  }
+45
+46  sub _Lexer {
+47      my($parser)=shift;
+48
+49          defined($parser-&gt;YYData-&gt;{INPUT})
+50      or  $parser-&gt;YYData-&gt;{INPUT} = &lt;STDIN&gt;
+51      or  return('',undef);
+52
+53      $parser-&gt;YYData-&gt;{INPUT}=~s/^[ \t]//;
+54
+55      for ($parser-&gt;YYData-&gt;{INPUT}) {
+56          s/^([0-9]+(?:\.[0-9]+)?)//
+57                  and return('NUM',$1);
+58          s/^([A-Za-z][A-Za-z0-9_]*)//
+59                  and return('VAR',$1);
+60          s/^(.)//s
+61                  and return($1,$1);
+62      }
+63  }
+64
+65  sub Run {
+66      my($self)=shift;
+67      $self-&gt;YYParse( yylex =&gt; \&amp;_Lexer, yyerror =&gt; \&amp;_Error );
+68  }
 </PRE>
-
-<P>
-
-<H4><A NAME="SECTION05730020000000000000">
-main.js</A>
-</H4>
-  
-
+Para compilar hacemos:
 <PRE>
-[~/jison/examples/html_calc_example(develop)]$ cat main.js
-$(document).ready(function () {
-  $("button").click(function () {
-    try {
-      var result = calculator.parse($("input").val())
-      $("span").html(result);
-    } catch (e) {
-      $("span").html(String(e));
-    }
-  });
-});
+$ yapp -m Infixtree Infixtree_bless.yp
 </PRE>
-
-<P>
-
-<H4><A NAME="SECTION05730030000000000000">
-calculator.html</A>
-</H4>
-  
-
+El guión que usa el analizador anterior es similar al que vimos en la 
+sección <A HREF="node150.html#section:ejemplodeuso">35.1</A>:
 <PRE>
-[~/jison/examples/html_calc_example(develop)]$ cat calculator.html 
-&lt;!DOCTYPE HTML&gt;
-&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;meta charset="utf-8"&gt;
-    &lt;title&gt;Calc&lt;/title&gt;
-    &lt;link rel="stylesheet" href="global.css" type="text/css" media="screen" charset="utf-8" /&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;h1&gt;Calculator demo&lt;/h1&gt;
-    &lt;div id="content"&gt;
-      &lt;script src="jquery/jquery.js"&gt;&lt;/script&gt; 
-      &lt;script src="calculator.js"&gt;&lt;/script&gt;
-      &lt;script src="main.js"&gt;&lt;/script&gt;
-      &lt;p&gt;
-        &lt;input type="text" value="PI*4^2 + 5" /&gt; &lt;button&gt;equals&lt;/button&gt; 
-        &lt;span&gt;&lt;/span&gt; &lt;!-- Output goes here! --&gt;
-      &lt;/p&gt;
-    &lt;/div&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
+$ cat -n ./useinfixtree.pl
+     1  #!/usr/bin/perl -w
+     2
+     3  use Infixtree;
+     4
+     5  $parser = new Infixtree();
+     6  $parser-&gt;Run;
 </PRE>
-
-<P>
-
-<H4><A NAME="SECTION05730040000000000000">
-Rakefile</A>
-</H4>
-  
-
+Veamos un ejemplo de ejecución:
 <PRE>
-[~/jisoncalc(clase)]$ cat Rakefile 
-task :default =&gt; %w{calcugly.js} do
-  sh "jsbeautify calcugly.js &gt; calculator.js"
-  sh "rm -f calcugly.js"
-end
-
-file "calcugly.js" =&gt; %w{calculator.jison} do
-  sh "jison calculator.jison calculator.l -o calculator.js; mv calculator.js calcugly.js"
-end
-
-task :testf do
-  sh "open -a firefox test/test.html"
-end
-
-task :tests do
-  sh "open -a safari test/test.html"
-end
+$ ./useinfixtree.pl
+a = 2+3
+$VAR1 = bless( [
+                 'a',
+                 bless( [
+                          '2',
+                          '3'
+                        ], 'PLUS' )
+               ], 'ASSIGN' );
+b = a*4+a
+$VAR1 = bless( [
+                 'b',
+                 bless( [
+                          bless( [
+                                   'a',
+                                   '4'
+                                 ], 'TIMES' ),
+                          'a'
+                        ], 'PLUS' )
+               ], 'ASSIGN' );
 </PRE>
-
-<P>
-
-<H4><A NAME="SECTION05730050000000000000">
-global.css</A>
-</H4>
-  
-
-<P>
-<PRE>
-[~/jison/examples/html_calc_example(develop)]$ cat global.css
-html *
-{
-   font-size: large; 
-   /* The !important ensures that nothing can override what you've set in this style (unless it is also important). */
-   font-family: Arial;
-}
-
-.thumb {
-    height: 75px;
-    border: 1px solid #000;
-    margin: 10px 5px 0 0;
-  }
-
-h1            { text-align: center; font-size: x-large; }
-th, td        { vertical-align: top; text-align: left; }   
-/* #finaltable  * { color: white; background-color: black; }   */
-
-/* #finaltable table { border-collapse:collapse; } */
-/* #finaltable table, td { border:1px solid white; } */
-#finaltable:hover td { background-color: blue; } 
-tr:nth-child(odd)    { background-color:#eee; }
-tr:nth-child(even)    { background-color:#00FF66; }
-input        { text-align: right;  border: none;       }     /* Align input to the right  */
-textarea     { border: outset; border-color: white;       }                        
-table        { border: inset; border-color: white; }
-.hidden      { display: none; }
-.unhidden    { display: block; }
-table.center { margin-left:auto; margin-right:auto; }
-#result      { border-color: red; }
-tr.error       { background-color: red; }
-pre.output   { background-color: white; }
-span.repeated { background-color: red }
-span.header { background-color: blue }
-span.comments { background-color: orange }
-span.blanks { background-color: green }
-span.nameEqualValue { background-color: cyan }
-span.error { background-color: red }
-
-body
-{
- background-color:#b0c4de;  /* blue */
-}
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION05730060000000000000">
-test/assert.html</A>
-</H4>
-  
-
-<PRE>
-$ cat test/assert.js 
-var output = document.getElementById('output');
-
-function assert( outcome, description) {
-  var li = document.createElement('li');
-  li.className = outcome ? 'pass' : 'fail';
-  li.appendChild(document.createTextNode(description));
-  
-  output.appendChild(li);
-};
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION05730070000000000000">
-test/test.css</A>
-</H4>
-  
-
-<P>
-<PRE>
-~/jisoncalc(clase)]$ cat test/test.css 
-.pass:before {
-  content: 'PASS: ';
-  color:  blue;
-  font-weight: bold;
-}
-
-.fail:before {
-  content: 'FAIL: ';
-  color: red;
-  font-weight: bold;
-  
-}
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION05730080000000000000">
-test/test.html</A>
-</H4>
-  
-
-<P>
-<PRE>
-[~/jisoncalc(clase)]$ cat test/test.html
-&lt;!DOCTYPE HTML&gt;
-&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;title&gt;Testing Our Simple Calculator&lt;/title&gt;
-    &lt;link rel="stylesheet" href="test.css" /&gt;
-    &lt;script type="text/javascript" src="../calculator.js"&gt;&lt;/script&gt;
-
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;h1&gt;Testing Our Simple Calculator
-    &lt;/h1&gt;
-    
-    &lt;ul id="output"&gt;&lt;/ul&gt;
-    &lt;script type="text/javascript" src="______.js"&gt;&lt;/script&gt;
-    
-    &lt;script type="text/javascript"&gt;
-      var r = __________.parse("a = 4*8");
-      assert(_______________, "a is 4*8");
-      assert(_____________, "32 == 4*8");
-      r = calculator.parse("a = 4;\nb=a+1;\nc=b*2");
-      assert(____________, "4 is the first computed result ");
-      assert(______________, "a is 4");
-      assert(______________, "b is 5");
-      assert(______________, "c is 10");
-    &lt;/script&gt;
-      See the NetTuts+ tutorial at &lt;a href="http://net.tutsplus.com/tutorials/javascript-ajax/quick-tip-quick-and-easy-javascript-testing-with-assert/"&gt;Quick and Easy JavaScript Testing&lt;/a&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-</PRE>
-
-<P>
-
-<H2><A NAME="SECTION05731000000000000000"></A>
-   <A NAME="15898"></A>
-  
-<A NAME="subsectionpractica:calculadora"></A>
-<BR>
-Práctica: Calculadora con Listas de Expresiones y Variables
-</H2>
-Modifique la calculadora vista en la sección anterior 
-<A HREF="#section:calculadora">34.3</A>
-para que el lenguaje cumpla los siguientes requisitos:
-
-<UL>
-<LI>Extienda el lenguaje de la calculadora para que admita expresiones
-de asignación <code>a = 2*3</code>
-</LI>
-<LI>Extienda el lenguaje de la calculadora para que admita listas de
-sentencias <code>a = 2; b = a +1</code>
-</LI>
-<LI>El analizador devuelve la lista de expresiones
-evaluadas y la tabla de símbolos (con las parejas variable-valor).
-</LI>
-<LI>Emita un mensaje de error específico si se intentan modificar las constantes 
-<code>PI</code> y <code>e</code>.
-</LI>
-<LI>Emita un mensaje de error específico si se intenta una división por cero
-</LI>
-<LI>Emita un mensaje de error específico si se intenta acceder para lectura a una variable 
-no inicializada <code>a = c</code>
-</LI>
-<LI>El lenguaje debería admitir expresiones vacías, estos es secuencias consecutivas de puntos y comas sin producir error (<code>a = 4;;; b = 5</code>)
-</LI>
-<LI>Introduzca pruebas unitarias como las descritas en 
-la sección <A HREF="node57.html#section:tstingfacil">25.1</A> (<I><A NAME="tex2html396"
-  HREF="http://net.tutsplus.com/tutorials/javascript-ajax/quick-tip-quick-and-easy-javascript-testing-with-assert/">Quick Tip: Quick and Easy JavaScript Testing with “Assert”</A></I>)
-
-<P>
-</LI>
-</UL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4540"
+<A NAME="tex2html4629"
   HREF="node159.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4534"
-  HREF="node155.html">
+<A NAME="tex2html4623"
+  HREF="node149.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4528"
+<A NAME="tex2html4617"
   HREF="node157.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4536"
-  HREF="node219.html">
+<A NAME="tex2html4625"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4538"
-  HREF="node222.html">
+<A NAME="tex2html4627"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -553,17 +284,17 @@ la sección <A HREF="node57.html#section:tstingfacil">25.1</A> (<I><A NAME="tex2
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4541"
-  HREF="node159.html">Conceptos Básicos del Análisis</A>
-<B>Sup:</B> <A NAME="tex2html4535"
-  HREF="node155.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4529"
-  HREF="node157.html">Ejemplo Simple en Jison</A>
+<B> Sig:</B> <A NAME="tex2html4630"
+  HREF="node159.html">Acciones en Medio de</A>
+<B>Sup:</B> <A NAME="tex2html4624"
+  HREF="node149.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4618"
+  HREF="node157.html">Generación interactiva de analizadores</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-04-11</I>
+2013-04-12</I>
 </ADDRESS>
 </BODY>
 </HTML>

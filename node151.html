@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Asignación de Direcciones</TITLE>
-<META NAME="description" CONTENT="Asignación de Direcciones">
+<TITLE>Conceptos Básicos</TITLE>
+<META NAME="description" CONTENT="Conceptos Básicos">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node152.html">
 <LINK REL="previous" HREF="node150.html">
-<LINK REL="up" HREF="node138.html">
+<LINK REL="up" HREF="node149.html">
 <LINK REL="next" HREF="node152.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4383"
+<A NAME="tex2html4529"
   HREF="node152.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4377"
-  HREF="node138.html">
+<A NAME="tex2html4523"
+  HREF="node149.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4371"
+<A NAME="tex2html4517"
   HREF="node150.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4379"
-  HREF="node219.html">
+<A NAME="tex2html4525"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4381"
-  HREF="node222.html">
+<A NAME="tex2html4527"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,339 +88,564 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4384"
-  HREF="node152.html">Generación de Código: Máquina</A>
-<B>Sup:</B> <A NAME="tex2html4378"
-  HREF="node138.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html4372"
-  HREF="node150.html">Patrones Árbol y Transformaciones</A>
+<B> Sig:</B> <A NAME="tex2html4530"
+  HREF="node152.html">Construcción de las Tablas</A>
+<B>Sup:</B> <A NAME="tex2html4524"
+  HREF="node149.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4518"
+  HREF="node150.html">Parse::Yapp: Ejemplo de Uso</A>
 <B> Con:</B> 
-<A NAME="tex2html4379"
-  HREF="node219.html">
+<A NAME="tex2html4525"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4381"
-  HREF="node222.html">
+<A NAME="tex2html4527"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><A NAME="tex2html4385"
-  HREF="node151.html#SECTION056131000000000000000">Práctica: Cálculo de las Direcciones</A>
-</UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION056130000000000000000">
-Asignación de Direcciones</A>
-</H1>
-Esta suele ser considerada  la primera de las fases de síntesis.
-Las anteriores lo eran de análisis. La fase de análisis
-es una transformación <!-- MATH
- $texto\ fuente \rightarrow arbol$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="169" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img336.png"
- ALT="$ texto fuente \rightarrow arbol$"></SPAN>, mientras
-que la fase síntesis es una transformación inversa
-<!-- MATH
- $arbol \rightarrow texto\ objeto$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="163" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img337.png"
- ALT="$ arbol \rightarrow texto objeto$"></SPAN> que produce una ``linealización''
-del árbol. En general, se ubican en la fase de síntesis todas
-las tareas que dependan del lenguaje objeto.
-
-<P>
-La asignación de direcciones depende de la máquina objetivo en cuanto
-conlleva consideraciones sobre la longitud de palabra, las unidades
-de memoria direccionables, la compactación de objetos pequeños (por ejemplo,
-valores lógicos), el alineamiento a fronteras de palabra, etc.
-
-<P>
-En nuestro caso debemos distinguir entre las cadenas y las variables enteras.
-
-<P>
-Las constantes literales (como <code>"hola"</code>) se almacenan 
-concatenadas en orden de aparición textual.
-Una variable de tipo cadena ocupa dos palabras, una dando su dirección 
-y otra dando su longitud.
-
-<P>
-<PRE>
-sub factor() {
-  my ($e, $id, $str, $num);
-
-  if ($lookahead eq 'NUM') { ... }
-  elsif ($lookahead eq 'ID') { ... }
-  elsif ($lookahead eq 'STR') {
-    $str = $value;
-    my ($offset, $length) = Address::Assignment::str($str);
-    match('STR');
-    return STR-&gt;new(OFFSET =&gt; $offset, LENGTH =&gt; $length, TYPE =&gt; $string_type);
-  }
-  elsif ($lookahead eq '(') { ... }
-  else { Error::fatal("Se esperaba (, NUM o ID"); }
-}
-</PRE>
-
-<P>
-El código de la subrutina <code>Address::Assignment::str</code> es:
-<PRE>
-  sub str {
-    my $str = shift;
-    my $len = length($str);
-    my $offset = length($data);
-    $data .= $str;
-    return ($offset, $len);
-  }
-</PRE>
-Una posible mejora es la que se describe en 
-el punto
-<A HREF="#item:norepetidas">2</A>
-de la práctica
-<A HREF="#practica:calculodelasdirecciones">33.13.1</A>.
-
-<P>
-Hemos supuesto que las variables enteras y las referencias ocupan una palabra.
-Cada vez que una variable es declarada, se le computa su dirección relativa:
-
-<P>
-<PRE>
-# declaration -&gt; type idlist
-# type        -&gt; INT | STRING
-sub declaration() {
-  my ($t, $decl, @il);
-
-  if (($lookahead eq 'INT') or ($lookahead eq 'STRING')) {
-    $t = &amp;type(); @il = &amp;idlist();
-    &amp;Semantic::Analysis::set_types($t, @il);
-    &amp;Address::Assignment::compute_address($t, @il);
-    $decl = [$t, \@il];
-    return bless $decl, 'DECL';
-  }
-  else { Error::fatal('Se esperaba un tipo'); }
-}
-</PRE>
-
-<P>
-Se usa una variable <code>$global_address</code> para llevar la cuenta de la última 
-dirección utilizada y se introduce un atributo <code>ADDRESS</code> en 
-la tabla de símbolos:
-
-<P>
-<PRE>
-  sub compute_address {
-    my $type = shift;
-    my @id_list = @_;
-
-    for my $i (@id_list) {
-      $symbol_table{$i}-&gt;{ADDRESS} = $global_address;
-      $global_address += $type-&gt;LENGTH;
-    }
-  }
-</PRE>
-
-<P>
-Por último situamos todas las cadenas después de las variables
-del programa fuente:
-
-<P>
-<PRE>
-  ... 
-  ##### En compile, despues de haber calculado las direcciones
-  Tree::Transform::match_and_transform_list(
-    NODES =&gt; $tree-&gt;{STS},
-    PATTERN =&gt; sub { 
-      $_[0]-&gt;isa('STR')
-    },
-    ACTION =&gt; sub { $_[0]-&gt;{OFFSET} += $global_address; }
-  );
-</PRE>
-
-<P>
-Esta aproximación es bastante simplista en cuanto que usa una palabra
-por carácter. 
-El punto
-<A HREF="#item:compacta">3</A>
-de la práctica
-<A HREF="#practica:calculodelasdirecciones">33.13.1</A> propone una mejora.
-
-<P>
-
-<H2><A NAME="SECTION056131000000000000000"></A>
-   <A NAME="12257"></A>
-  
-<A NAME="practica:calculodelasdirecciones"></A>
+<H1><A NAME="SECTION05820000000000000000"></A>
+<A NAME="section:conceptosbasicos"></A>
 <BR>
-Práctica: Cálculo de las Direcciones
-</H2>
-Modifique el cálculo de las direcciones para la gramática de Tutu
-extendida con sentencias compuestas que fué presentada en 
-la sección 
-<A HREF="node148.html#practica:analisis_semantico">33.10.2</A>.
+Conceptos Básicos
+</H1>
+Los analizadores generador por <code>yapp</code> entran en la categoría de analizadores
+<A NAME="18365"></A><SPAN  CLASS="textbf">LR</SPAN>. Estos analizadores construyen una derivación a derechas inversa 
+(o <A NAME="18367"></A><SPAN  CLASS="textbf">antiderivación</SPAN>).
+De ahí la R en LR (del inglés <A NAME="18369"></A><SPAN  CLASS="textbf">rightmost derivation</SPAN>). El árbol sintáctico 
+es construido de las hojas hacia la raíz, siendo el último paso en la antiderivación
+la construcción de la primera derivación desde el símbolo de arranque.
 
 <P>
-
-<OL>
-<LI>Resuelva el problema de calcular las direcciones de las variables
-declaradas en los bloques. La memoria ocupada por dichas variables
-se libera al terminar el bloque. Por tanto la variable <code>$global_address</code>
-disminuye al final de cada bloque.
-</LI>
-<LI><A NAME="item:norepetidas"></A>En el código de la subrutina <code>Address::Assignment::str</code> 
+Empezaremos entonces considerando las frases que pueden aparecer en una derivación
+a derechas. Tales frases consituyen el lenguaje <SPAN CLASS="MATH"><IMG
+ WIDTH="45" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img369.png"
+ ALT="$ FSD$"></SPAN>:
 
 <P>
-<PRE>
-  sub str {
-    my $str = shift;
-    my $len = length($str);
-    my $offset = length($data);
-    $data .= $str;
-    return ($offset, $len);
-  }
-</PRE>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">35</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Dada una gramática <!-- MATH
+ $G=(\Sigma,V,P,S)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img22.png"
+ ALT="$ G =(\Sigma,V,P,S)$"></SPAN> no ambigua, se denota por <SPAN CLASS="MATH"><IMG
+ WIDTH="45" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img369.png"
+ ALT="$ FSD$"></SPAN> 
+(lenguaje de las formas Sentenciales a Derechas) al lenguaje de 
+las sentencias que aparecen en una derivación a derechas desde el símbolo de arranque.
+</I>
+<P>
+<DIV ALIGN="CENTER"><I><!-- MATH
+ $FSD = \left \{ \alpha \in (\Sigma \cup V)* : \exists S \begin{array}{c} *\\\Longrightarrow \\{\scriptstyle RM} \end{array} \alpha \right \}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="291" HEIGHT="82" ALIGN="MIDDLE" BORDER="0"
+ SRC="img370.png"
+ ALT="$ FSD = \left \{ \alpha \in (\Sigma \cup V)* : \exists S \begin{array}{c} * \Longrightarrow  {\scriptstyle RM} \end{array} \alpha \right \}$"></SPAN></I></DIV>
+<P>
+<I>Donde la notacion RM indica una derivación a derechas (<SPAN  CLASS="textbf">rightmost</SPAN>).
+Los elementos de <SPAN CLASS="MATH"><IMG
+ WIDTH="45" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img369.png"
+ ALT="$ FSD$"></SPAN> se llaman ``formas sentenciales derechas''.</I></DIV><P></P>
 
 <P>
-no se comprueba si la cadena <code>$str</code> ya está en <code>$data</code>. 
-Es natural que si ya está no la insertemos de nuevo. Introduzca esa 
-mejora. Para ello use la función <code>pos</code>,
-la cual devuelve el desplazamiento en <code>$data</code> donde
-quedó la última búsqueda <code>$data =~ m/regexp/g</code>.
- El siguiente ejemplo con
-el depurador le muestra como trabaja. Escriba <code>perldoc -f pos</code>
-para obtener mas información sobre la función <code>pos</code>.
-Vea un ejemplo de uso:
-
-<P>
-<PRE>
-DB&lt;1&gt; $str = "world"
-#              012345678901234567890123456789012
-DB&lt;2&gt; $data = "hello worldjust another statement"
-DB&lt;3&gt; $res = $data =~ m{$str}g
-DB&lt;4&gt; x pos($data) # la siguiente busqueda comienza en la 11
-0  11
-DB&lt;5&gt; $s = "hello"
-DB&lt;6&gt; $res = $data =~ m{$s}g
-DB&lt;7&gt; x pos($data) # No hay "hello" despues de world en $data
-0  undef
-DB&lt;8&gt; $res = $data =~ m{$str}g # Repetimos ...
-DB&lt;9&gt; x pos($data)
-0  11
-DB&lt;10&gt; pos($data) = 0  # Podemos reiniciar pos!
-DB&lt;11&gt; $res = $data =~ m{$s}g
-DB&lt;12&gt; x pos($data) # Ahora si se encuentra "hello"
-0  5
-</PRE>
-
-<P>
-</LI>
-<LI><A NAME="item:compacta"></A>Empaquete las cadenas asumiendo que cada carácter ocupa un octeto o byte.
-Una posible solución al problema de alineamiento que se produce es
-rellenar con ceros los bytes que faltan hasta completar la última palabra
-ocupada por la cadena. Por ejemplo, si la longitud de palabra de la 
-máquina objeto es de 4 
-bytes, la palabra <SPAN  CLASS="textbf">procesador</SPAN> se cargaría asi:
+Dada una gramática no ambigua <!-- MATH
+ $G=(\Sigma,V,P,S)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img22.png"
+ ALT="$ G =(\Sigma,V,P,S)$"></SPAN> y una frase <!-- MATH
+ $x \in L(G)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="75" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img46.png"
+ ALT="$ x \in L(G)$"></SPAN> el proceso
+de antiderivación consiste en encontrar la última derivación a derechas que dió lugar a 
+<SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img48.png"
+ ALT="$ x$"></SPAN>. Esto es, si <!-- MATH
+ $x \in L(G)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="75" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img46.png"
+ ALT="$ x \in L(G)$"></SPAN> es porque existe una derivación a derechas de la forma
 
 <P>
 <DIV ALIGN="CENTER">
-</DIV><PRE>
-   0    |    1    |    2      
-0 1 2 3 | 4 5 6 7 | 8 9 10  11
-p r o c | e s a d | o r \0  \0
-</PRE>
-<DIV ALIGN="CENTER">
+<!-- MATH
+ $S \stackrel{*}{\Longrightarrow} y A z \Longrightarrow y w z = x$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="187" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
+ SRC="img371.png"
+ ALT="$ S \stackrel{*}{\Longrightarrow} y A z \Longrightarrow y w z = x$"></SPAN>. 
+
 </DIV>
 
 <P>
-Existen dos posibles formas de hacer esta empaquetado.
-Por ejemplo, si tenemos las cadenas
-<code>lucas</code> y <code>pedro</code> las podemos introducir en 
-la cadena <code>$data</code> asi:
+El problema es averiguar que regla <!-- MATH
+ $A \rightarrow w$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="58" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img372.png"
+ ALT="$ A \rightarrow w$"></SPAN> se aplicó y en que lugar 
+de la cadena <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img48.png"
+ ALT="$ x$"></SPAN> se aplicó. En general, si queremos antiderivar
+una forma sentencial derecha <!-- MATH
+ $\beta \alpha w$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="40" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img373.png"
+ ALT="$ \beta \alpha w$"></SPAN> 
+debemos averiguar por que regla <!-- MATH
+ $A \rightarrow \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img27.png"
+ ALT="$ A \rightarrow \alpha$"></SPAN>
+seguir y en que lugar de la forma (después de <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img118.png"
+ ALT="$ \beta$"></SPAN> en el ejemplo)
+aplicarla. 
 
 <P>
 <DIV ALIGN="CENTER">
-</DIV><PRE>
-   0    |     1      |    2      |    3
-0 1 2 3 | 4  5  6  7 | 8 9 10 11 | 12 13 14 15
-l u c a | s \0 \0 \0 | p e  d  r |  o \0 \0 \0
-</PRE>
-<DIV ALIGN="CENTER">
+<!-- MATH
+ $S \stackrel{*}{\Longrightarrow} \beta A w \Longrightarrow \beta \alpha w$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="164" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
+ SRC="img374.png"
+ ALT="$ S \stackrel{*}{\Longrightarrow} \beta A w \Longrightarrow \beta \alpha w$"></SPAN>. 
+
 </DIV>
 
 <P>
-o bien:
+La pareja formada por la regla y la posición 
+se denomina mango o manecilla de la forma. Esta denominación viene
+de la visualización gráfica de la regla de producción como una mano
+que nos permite escalar hacia arriba en el árbol. Los ``dedos'' serían los
+símbolos en la parte derecha de la regla de producción.
 
 <P>
-<DIV ALIGN="CENTER">
-</DIV><PRE>
-   0    |    1    |    2     
-0 1 2 3 | 4 5 6 7 | 8 9 10 11
-l u c a | s p e d | r o \0 \0
-</PRE>
-<DIV ALIGN="CENTER">
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">35</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
+<I>Dada una gramática <!-- MATH
+ $G=(\Sigma,V,P,S)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img22.png"
+ ALT="$ G =(\Sigma,V,P,S)$"></SPAN> no ambigua, y dada una forma sentencial derecha 
+<!-- MATH
+ $\alpha = \beta \gamma x$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="70" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img375.png"
+ ALT="$ \alpha = \beta \gamma x$"></SPAN>, con <!-- MATH
+ $x \in \Sigma^*$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="56" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img376.png"
+ ALT="$ x \in \Sigma^*$"></SPAN>, el <A NAME="18371"></A><SPAN  CLASS="textbf">mango</SPAN> o <A NAME="18373"></A><SPAN  CLASS="textbf">handle</SPAN>  de 
+<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img56.png"
+ ALT="$ \alpha$"></SPAN> es la última producción/posición  que dió lugar a <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img56.png"
+ ALT="$ \alpha$"></SPAN>:
+</I>
+<P>
+<DIV ALIGN="CENTER"><I><!-- MATH
+ $S \begin{array}{c} *\\\Longrightarrow  \\{\scriptstyle RM} \end{array} \beta B x \Longrightarrow \beta \gamma x = \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="198" HEIGHT="82" ALIGN="MIDDLE" BORDER="0"
+ SRC="img377.png"
+ ALT="$ S \begin{array}{c} * \Longrightarrow  {\scriptstyle RM} \end{array} \beta B x \Longrightarrow \beta \gamma x = \alpha$"></SPAN></I></DIV>
+<P></DIV><P></P>
+Escribiremos: 
+<!-- MATH
+ $handle(\alpha) = (B \rightarrow \gamma, \beta \gamma)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="199" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img378.png"
+ ALT="$ handle(\alpha) = (B \rightarrow \gamma, \beta \gamma)$"></SPAN>. La función <SPAN CLASS="MATH"><IMG
+ WIDTH="57" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img379.png"
+ ALT="$ handle$"></SPAN> tiene dos componentes:
+<!-- MATH
+ $handle_1(\alpha) = B \rightarrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="164" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img380.png"
+ ALT="$ handle_1(\alpha) = B \rightarrow \gamma$"></SPAN> y 
+<!-- MATH
+ $handle_2(\alpha) =  \beta \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="134" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img381.png"
+ ALT="$ handle_2(\alpha) = \beta \gamma$"></SPAN>
+
+<P>
+Si dispusieramos de un procedimiento que fuera capaz de identificar el mango,
+esto es, de detectar la regla y el lugar en el que se posiciona, tendríamos un
+mecanismo para construir un analizador. 
+Lo curioso es que, a menudo es posible encontrar un autómata finito que
+reconoce el lenguaje de los prefijos <!-- MATH
+ $\beta \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="26" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img382.png"
+ ALT="$ \beta \gamma$"></SPAN> que terminan 
+en el mango. Con mas precisión, del lenguaje:
+
+<P>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">35</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">3</SPAN></B> &nbsp; 
+<I>El conjunto de <SPAN  CLASS="textbf">prefijos viables</SPAN> de una gramática G se define
+como  el conjunto:
+</I>
+<P>
+<DIV ALIGN="CENTER"><I><!-- MATH
+ $PV = \left \{ \delta \in (\Sigma \cup V)* :  \exists S \begin{array}{c} *\\\Longrightarrow \\{\scriptstyle RM} \end{array} \alpha\  y\ \delta\ es\ un\ prefijo\ de\  handle_2(\alpha) \right \}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="531" HEIGHT="82" ALIGN="MIDDLE" BORDER="0"
+ SRC="img466.png"
+ ALT="$ PV = \left \{ \delta \in (\Sigma \cup V)* : \exists S \begin{array}{c} * \Lo...
+... \end{array} \alpha y \delta es un prefijo de handle_2(\alpha) \right \}$"></SPAN></I></DIV></DIV><P></P>
+
+<P>
+Esto es, es el lenguaje de los prefijos viables es el 
+conjunto de frases que son prefijos de 
+<!-- MATH
+ $handle_2(\alpha)) =  \beta \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="140" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img384.png"
+ ALT="$ handle_2(\alpha)) = \beta \gamma$"></SPAN>, 
+siendo <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img56.png"
+ ALT="$ \alpha$"></SPAN> una forma sentencial derecha (<!-- MATH
+ $\alpha \in FSD$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="78" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img385.png"
+ ALT="$ \alpha \in FSD$"></SPAN>). Los
+elementos de <SPAN CLASS="MATH"><IMG
+ WIDTH="32" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img386.png"
+ ALT="$ PV$"></SPAN> se denominan prefijos viables.
+
+<P>
+Obsérvese que si se dispone de un autómata que reconoce 
+<SPAN CLASS="MATH"><IMG
+ WIDTH="32" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img386.png"
+ ALT="$ PV$"></SPAN> entonces se dispone de un mecanismo para investigar el lugar y 
+el aspecto que pueda tener el mango. Si damos como 
+entrada la sentencia <!-- MATH
+ $\alpha = \beta \gamma x$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="70" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img375.png"
+ ALT="$ \alpha = \beta \gamma x$"></SPAN>
+a dicho autómata, el autómata aceptará la cadena <!-- MATH
+ $\beta \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="26" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img382.png"
+ ALT="$ \beta \gamma$"></SPAN> pero rechazará
+cualquier extensión del prefijo. Ahora sabemos que el mango 
+será alguna regla de producción de <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img21.png"
+ ALT="$ G$"></SPAN> cuya parte derecha 
+sea un sufijo de  <!-- MATH
+ $\beta \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="26" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img382.png"
+ ALT="$ \beta \gamma$"></SPAN>.
+
+<P>
+<P>
+<DIV><A NAME="definition:slrautomata"><B>Definición  <SPAN CLASS="arabic">35</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">4</SPAN></B></A> &nbsp; 
+<I>El siguiente autómata finito no determinista puede ser utilizado para
+reconocer el lenguaje de los prefijos viables PV:
+</I>
+<UL>
+<LI><!-- MATH
+ $Alfabeto = V \cup \Sigma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="143" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img467.png"
+ ALT="$ Alfabeto = V \cup \Sigma$"></SPAN>
+</LI>
+<LI>Los estados del autómata se denominan LR(0) items. Son parejas formadas
+por una regla de producción de la gramática y una posición en la parte derecha 
+de la regla de producción. Por ejemplo, <!-- MATH
+ $(E \rightarrow E + E, 2)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="125" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img387.png"
+ ALT="$ (E \rightarrow E + E, 2)$"></SPAN> sería un
+LR(0) item para la gramática de las expresiones.
+
+<P>
+Conjunto de Estados:
+
+<P>
+<!-- MATH
+ $Q =  \left \{ (A \rightarrow \alpha, n) :  A \rightarrow \alpha \in P,\ n \le |\alpha| \right \}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="309" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img388.png"
+ ALT="$ Q = \left \{ (A \rightarrow \alpha, n) : A \rightarrow \alpha \in P, n \le \vert\alpha\vert \right \}$"></SPAN>
+
+<P>
+La notación <!-- MATH
+ $\mid \alpha \mid$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="35" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img389.png"
+ ALT="$ \mid \alpha \mid$"></SPAN> denota la longitud de la cadena <!-- MATH
+ $\mid \alpha \mid$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="35" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img389.png"
+ ALT="$ \mid \alpha \mid$"></SPAN>.
+ En vez de la notación <!-- MATH
+ $(A \rightarrow \alpha, n)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="88" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img390.png"
+ ALT="$ (A \rightarrow \alpha, n)$"></SPAN> escribiremos: 
+ <!-- MATH
+ $A \rightarrow \beta _\uparrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="72" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img391.png"
+ ALT="$ A \rightarrow \beta _\uparrow \gamma$"></SPAN> <SPAN CLASS="MATH"><IMG
+ WIDTH="34" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img392.png"
+ ALT="$ = \alpha$"></SPAN>, 
+ donde la flecha ocupa el lugar indicado por el número <!-- MATH
+ $n = \mid \beta \mid$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="64" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img393.png"
+ ALT="$ n = \mid \beta \mid$"></SPAN> :
+</LI>
+<LI>Función de transición:
+
+<P>
+<!-- MATH
+ $\delta(A \rightarrow \alpha _\uparrow X \beta, X) = A \rightarrow \alpha X _\uparrow \beta\ \forall X \in  V \cup \Sigma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="342" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img394.png"
+ ALT="$ \delta(A \rightarrow \alpha _\uparrow X \beta, X) = A \rightarrow \alpha X _\uparrow \beta \forall X \in V \cup \Sigma$"></SPAN> 
+
+<P>
+<!-- MATH
+ $\delta(A \rightarrow \alpha _\uparrow B \beta, \epsilon) = B \rightarrow \gamma  \forall B \in  V$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="259" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img468.png"
+ ALT="$ \delta(A \rightarrow \alpha _\uparrow B \beta, \epsilon) = B \rightarrow \gamma \forall B \in V$"></SPAN> 
+</LI>
+<LI>Estado de arranque: Se añade la ``superregla'' <!-- MATH
+ $S' \rightarrow S$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="60" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img396.png"
+ ALT="$ S' \rightarrow S$"></SPAN> a la gramática <!-- MATH
+ $G = (\Sigma,V,P,S)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img22.png"
+ ALT="$ G =(\Sigma,V,P,S)$"></SPAN>. El LR(0) item 
+<!-- MATH
+ $S' \rightarrow _\uparrow S$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="67" HEIGHT="35" ALIGN="MIDDLE" BORDER="0"
+ SRC="img397.png"
+ ALT="$ S' \rightarrow _\uparrow S$"></SPAN> es el estado de arranque.
+</LI>
+<LI>Todos los estados definidos (salvo el de muerte) son de aceptación.
+</LI>
+</UL></DIV><P></P>
+
+<P>
+Denotaremos por <SPAN CLASS="MATH"><IMG
+ WIDTH="52" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img398.png"
+ ALT="$ LR(0)$"></SPAN> a este autómata. Sus estados se denominan <!-- MATH
+ $LR(0)-items$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="117" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img399.png"
+ ALT="$ LR(0)-items$"></SPAN>. La idea es que este
+autómata nos ayuda a reconocer los prefijos viables <SPAN CLASS="MATH"><IMG
+ WIDTH="32" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img386.png"
+ ALT="$ PV$"></SPAN>.
+
+<P>
+Una vez que se tiene un autómata que reconoce los prefijos viables es posible construir un analizador sintáctico que construye una antiderivación a derechas. La estrategia consiste en ``alimentar'' el autómata con la forma sentencial derecha. El lugar en el que el autómata se detiene, rechazando indica el lugar exacto en el que termina el <SPAN  CLASS="textbf">handle</SPAN> de dicha forma.
+
+<P>
+<P>
+<DIV><A NAME="example:asb"><B>Ejemplo  <SPAN CLASS="arabic">35</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">1</SPAN></B></A> &nbsp; 
+<I>Consideremos la gramática:
+</I>
+<P>
+<I>
+<BR>
+<BR>
+</I>
+<DIV ALIGN="CENTER"><TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><I>
+S      <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img49.png"
+ ALT="$ \rightarrow$"></SPAN> a S b</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I> 
+S      <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img49.png"
+ ALT="$ \rightarrow$"></SPAN> <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img20.png"
+ ALT="$ \epsilon$"></SPAN></I></TD>
+</TR>
+</TABLE></DIV><I>
+<BR>
+<BR>
+</I>
+<P>
+<I>El lenguaje generado por esta gramática es <!-- MATH
+ $L(G) = \{ a^n b^n\ :\ n \ge 0 \}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="188" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img400.png"
+ ALT="$ L(G) = \{ a^n b^n : n \ge 0 \}$"></SPAN>
+Es bien sabido que el lenguaje <SPAN CLASS="MATH"><IMG
+ WIDTH="44" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img39.png"
+ ALT="$ L(G)$"></SPAN> no es regular.
+La figura <A HREF="#fig:nfa">35.1</A> muestra 
+el <A NAME="18375"></A><SPAN  CLASS="textbf">autómata finito no determinista con <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img20.png"
+ ALT="$ \epsilon$"></SPAN>-transiciones</SPAN> 
+(<A NAME="18377"></A><SPAN  CLASS="textbf">NFA</SPAN>)
+que reconoce los prefijos viables de esta gramática, construido
+de acuerdo con el algoritmo <A HREF="#definition:slrautomata">35.2.4</A>.
+</I>
+<P>
+<DIV ALIGN="CENTER"></DIV>
+<DIV ALIGN="CENTER"><A NAME="fig:nfa"></A><A NAME="17458"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figura 35.1:</STRONG>
+NFA que reconoce los prefijos viables</CAPTION>
+<TR><TD></TD></TR>
+</TABLE>
 </DIV>
+<DIV ALIGN="CENTER"></DIV></DIV><P></P>
 
 <P>
-La segunda forma aunque compacta más tiene la desventaja de hacer luego mas 
-lento el código para el 
-direccionamiento de las cadenas, ya que no empiezan en frontera de palabra. 
-Utilice el primer modo.
-
 <P>
-Observe que este empaquetado introduce un efecto en lo que 
-se considera un éxito en la búsqueda de una cadena 
-<code>$str</code> en <code>$data</code>. ¿Que ocurre si <code>$str</code>
-aparece en <code>$data</code> como subcadena de una cadena
-previamente empaquetada ocupando una posición que no es frontera de palabra?
-
-<P>
-Cuando rellene con <code>\0</code> la cadena use el operador <code>x</code> (letra equis)
-para multiplicar número por cadena:
-
-<P>
-<PRE>
-DB&lt;1&gt; $x = "hola"x4
-DB&lt;2&gt; p $x
-holaholaholahola
-</PRE>
-
-<P>
-esto le evitará escribir un bucle.
-</LI>
-<LI>Mantega atributos distintos en el nodo <code>STR</code>
-para el desplazamiento y longitud 
-de <code>$str</code> en <code>$data</code> (en caracteres)
-y su dirección y tamaño final en memoria (en palabras).
-
-<P>
-</LI>
-</OL>
+<DIV><B>Ejercicio  <SPAN CLASS="arabic">35</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Simule el comportamiento del autómata sobre la entrada <SPAN CLASS="MATH"><IMG
+ WIDTH="38" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img402.png"
+ ALT="$ aabb$"></SPAN>. ¿Donde rechaza?
+¿En que estados está el autómata en el momento del rechazo?. ¿Qué etiquetas tienen?
+Haga también las
+trazas del autómata para las entradas <SPAN CLASS="MATH"><IMG
+ WIDTH="50" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img403.png"
+ ALT="$ aaSbb$"></SPAN> y <SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img404.png"
+ ALT="$ aSb$"></SPAN>. ¿Que antiderivación 
+ha construido el autómata con sus sucesivos rechazos? ¿Que terminales
+se puede esperar que hayan en la entrada cuando se produce el rechazo
+del autómata?</I></DIV><P></P>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4383"
+<A NAME="tex2html4529"
   HREF="node152.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4377"
-  HREF="node138.html">
+<A NAME="tex2html4523"
+  HREF="node149.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4371"
+<A NAME="tex2html4517"
   HREF="node150.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4379"
-  HREF="node219.html">
+<A NAME="tex2html4525"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4381"
-  HREF="node222.html">
+<A NAME="tex2html4527"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -467,17 +692,17 @@ y su dirección y tamaño final en memoria (en palabras).
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4384"
-  HREF="node152.html">Generación de Código: Máquina</A>
-<B>Sup:</B> <A NAME="tex2html4378"
-  HREF="node138.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html4372"
-  HREF="node150.html">Patrones Árbol y Transformaciones</A>
+<B> Sig:</B> <A NAME="tex2html4530"
+  HREF="node152.html">Construcción de las Tablas</A>
+<B>Sup:</B> <A NAME="tex2html4524"
+  HREF="node149.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4518"
+  HREF="node150.html">Parse::Yapp: Ejemplo de Uso</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-04-11</I>
+2013-04-12</I>
 </ADDRESS>
 </BODY>
 </HTML>

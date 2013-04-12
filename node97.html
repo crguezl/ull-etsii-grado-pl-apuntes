@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>La pila de estados</TITLE>
-<META NAME="description" CONTENT="La pila de estados">
+<TITLE>Seleccionando Items en un Registro Multilínea</TITLE>
+<META NAME="description" CONTENT="Seleccionando Items en un Registro Multilínea">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node98.html">
 <LINK REL="previous" HREF="node96.html">
-<LINK REL="up" HREF="node82.html">
+<LINK REL="up" HREF="node85.html">
 <LINK REL="next" HREF="node98.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html2986"
+<A NAME="tex2html3023"
   HREF="node98.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2980"
-  HREF="node82.html">
+<A NAME="tex2html3017"
+  HREF="node85.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2974"
+<A NAME="tex2html3013"
   HREF="node96.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2982"
-  HREF="node219.html">
+<A NAME="tex2html3019"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2984"
-  HREF="node222.html">
+<A NAME="tex2html3021"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,125 +87,91 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2987"
-  HREF="node98.html">Final de Fichero</A>
-<B>Sup:</B> <A NAME="tex2html2981"
-  HREF="node82.html">Expresiones Regulares en Flex</A>
-<B> Ant:</B> <A NAME="tex2html2975"
-  HREF="node96.html">Estados</A>
+<B> Sig:</B> <A NAME="tex2html3024"
+  HREF="node98.html">Expresiones Regulares en Perl</A>
+<B>Sup:</B> <A NAME="tex2html3018"
+  HREF="node85.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html3014"
+  HREF="node96.html">Búsqueda entre líneas</A>
 <B> Con:</B> 
-<A NAME="tex2html2982"
-  HREF="node219.html">
+<A NAME="tex2html3019"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html2984"
-  HREF="node222.html">
+<A NAME="tex2html3021"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><A NAME="tex2html2988"
-  HREF="node97.html#SECTION052151000000000000000">Ejemplo</A>
-</UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION052150000000000000000">
-La pila de estados</A>
+<H1><A NAME="SECTION053120000000000000000">
+Seleccionando Items en un Registro Multilínea</A>
 </H1>
-Mediante el uso de la opción
+El ejercicio resuelto aqui consiste en listar los alumnos que han seleccionado un determinado grupo de prácticas.
+Suponemos la organización del fichero de entrada descrita en la sección  <A HREF="node93.html#section:alumnos">30.9</A>. 
+El <SPAN  CLASS="textit">script</SPAN> recibe como primer argumento el nombre del fichero conteniendo la carpeta de correo (asociada con la asignatura y como segundo argumento el grupo. Un primer <SPAN  CLASS="textit">script</SPAN> que no es descrito
+aqui, denominado <code>makefichas.sed</code> produce como salida el archivo con la estructura
+descrita en la sección <A HREF="node93.html#section:alumnos">30.9</A>. El segundo guión, denominado <code>grupo.sh</code> y que es
+el que nos ocupa, produce como salida los alumnos que pertenecen a ese grupo ed prácticas.
 
 <P>
-<code>%option stack</code>
-
-<P>
-tendremos acceso a una pila de estados y a tres rutinas para  manipularla:
-<BR>
-<UL>
-<LI><code>void yy_push_state(int new_state)</code>
-<BR>
-Empuja el estado actual y bifurca a <code>new_state</code>.
-<BR></LI>
-<LI><code>void yy_pop_state()</code>
-<BR>
-Saca el estado en el <SPAN  CLASS="textit">top</SPAN> de la pila y bifurca a el mismo.
-<BR></LI>
-<LI><code>int yy_top_state()</code>
-<BR>
-Nos devuelve el estado en el <SPAN  CLASS="textit">top</SPAN> de la pila, sin alterar
-los contenidos de la misma.
-</LI>
-</UL>
-
-<P>
-
-<H2><A NAME="SECTION052151000000000000000">
-Ejemplo</A>
-</H2>
-El siguiente programa <code>flex</code> utiliza las funciones de la pila
-de estados para reconocer el lenguaje (no regular) 
-<!-- MATH
- $\{a^n b^n\ /\ n \in N\}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="125" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img8.png"
- ALT="$ \{a^n b^n / n \in N\}$"></SPAN>
-
-<P>
+Estos son los contenidos del <SPAN  CLASS="textit">script</SPAN> <code>grupo</code>:
 <PRE>
-%option main
-%option noyywrap
-%option stack
-%{
-#include &lt;stdio.h&gt;
-#include  &lt;stdlib.h&gt;
-%}
-%x estado_a
-%%
-^a { yy_push_state(estado_a);}
-&lt;estado_a&gt;{
-a      { yy_push_state(estado_a); }
-b      { yy_pop_state();  }
-b[^b\n]+    {   printf ("Error\n"); 
-        while (YYSTATE != INITIAL)
-          yy_pop_state();
-        while (input() != '\n') ;
-      }
-(.|\n)  {  printf ("Error\n"); 
-        while (YYSTATE != INITIAL)
-          yy_pop_state();
-        while (input() != '\n') ;
-      }
-}
-.      {  printf ("Error\n");
-        while (input() != '\n') ;
-      }
-\n      { printf("Aceptar\n");}
-%%
+~/bin/makefichas.sed -n ~/mail/$1 | grupo.sh $2 | sort -u
 </PRE>
+Los contenidos del fichero <PRE>
+ 1  #!/bin/bash
+ 2  search=$1
+ 3  sed -n '
+ 4  /^NAME:/ {
+ 5    s/^NAME://
+ 6    h
+ 7    n
+ 8    s/^SURNAME://
+ 9    G
+10    s/\n/,/
+11    y/ÁÉÍÓÚáéíóúabcdefghijklmnñopqrstuvxyz/AEIOUAEIOUABCDEFGHIJKLMNÑOPQRSTUVXYZ/
+12   h
+13 }
+14 /^LABGROUP:/ {
+15   y/ÁÉÍÓÚáéíóúabcdefghijklmnñopqrstuvxyz/AEIOUAEIOUABCDEFGHIJKLMNÑOPQRSTUVXYZ/
+16   s/'"$search"'/&amp;/
+17   t print
+18   b 
+19 :print
+20   g
+21   p
+22 }
+23 '
+</PRE>
+De nuevo hacemos uso de las comillas simples y dobles
+en este ejemplo.
+Obsérvese como se proteje el guión <code>sed</code> entre las líneas 3 y 16. 
+En la línea 16 el cierre de la comilla simple y el uso de la doble comilla 
+permite la actuación de la interpretación de la <code>shell</code>, sustituyendo 
+<code>$search</code> que coincide con el
+parámetro pasado en la llamada como <code>$2</code>. La siguiente comilla 
+simple en esa línea permite la protección del resto
+del guión.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html2986"
+<A NAME="tex2html3023"
   HREF="node98.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2980"
-  HREF="node82.html">
+<A NAME="tex2html3017"
+  HREF="node85.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2974"
+<A NAME="tex2html3013"
   HREF="node96.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2982"
-  HREF="node219.html">
+<A NAME="tex2html3019"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2984"
-  HREF="node222.html">
+<A NAME="tex2html3021"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -253,17 +218,17 @@ b[^b\n]+    {   printf ("Error\n");
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2987"
-  HREF="node98.html">Final de Fichero</A>
-<B>Sup:</B> <A NAME="tex2html2981"
-  HREF="node82.html">Expresiones Regulares en Flex</A>
-<B> Ant:</B> <A NAME="tex2html2975"
-  HREF="node96.html">Estados</A>
+<B> Sig:</B> <A NAME="tex2html3024"
+  HREF="node98.html">Expresiones Regulares en Perl</A>
+<B>Sup:</B> <A NAME="tex2html3018"
+  HREF="node85.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html3014"
+  HREF="node96.html">Búsqueda entre líneas</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-04-11</I>
+2013-04-12</I>
 </ADDRESS>
 </BODY>
 </HTML>

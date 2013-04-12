@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>An&#225;lisis de la L&#305;nea de Comandos y 2 Analizadores</TITLE>
-<META NAME="description" CONTENT="An&#225;lisis de la L&#305;nea de Comandos y 2 Analizadores">
+<TITLE>Pack y Unpack</TITLE>
+<META NAME="description" CONTENT="Pack y Unpack">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node106.html">
 <LINK REL="previous" HREF="node104.html">
-<LINK REL="up" HREF="node82.html">
+<LINK REL="up" HREF="node98.html">
 <LINK REL="next" HREF="node106.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3099"
+<A NAME="tex2html3518"
   HREF="node106.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3093"
-  HREF="node82.html">
+<A NAME="tex2html3512"
+  HREF="node98.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3087"
+<A NAME="tex2html3506"
   HREF="node104.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3095"
-  HREF="node219.html">
+<A NAME="tex2html3514"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3097"
-  HREF="node222.html">
+<A NAME="tex2html3516"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,289 +88,120 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3100"
-  HREF="node106.html">Declaraciones pointer y array</A>
-<B>Sup:</B> <A NAME="tex2html3094"
-  HREF="node82.html">Expresiones Regulares en Flex</A>
-<B> Ant:</B> <A NAME="tex2html3088"
-  HREF="node104.html">An&#225;lisis Léxico desde una</A>
+<B> Sig:</B> <A NAME="tex2html3519"
+  HREF="node106.html">Práctica: Un lenguaje para</A>
+<B>Sup:</B> <A NAME="tex2html3513"
+  HREF="node98.html">Expresiones Regulares en Perl</A>
+<B> Ant:</B> <A NAME="tex2html3507"
+  HREF="node104.html">tr y split</A>
 <B> Con:</B> 
-<A NAME="tex2html3095"
-  HREF="node219.html">
+<A NAME="tex2html3514"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3097"
-  HREF="node222.html">
+<A NAME="tex2html3516"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION052230000000000000000">
-An&#225;lisis de la L&#305;nea de Comandos y 2 Analizadores</A>
+<H1><A NAME="SECTION05470000000000000000"></A>
+<A NAME="section:pack"></A>
+<BR>
+<TT>Pack</TT> y <TT>Unpack</TT>
 </H1>
-El objetivo de este ejercicio es mostrar como realizar un
-an&#225;lisis l&#233;xico de los argumentos pasados en la l&#305;nea de
-comandos.  Para ello dise&#241;aremos una librer&#305;a que proporcionar&#225; un 
-funci&#243;n <code>yylexarg(argc,argv)</code> que hace el an&#225;lisis
-de la l&#305;nea de acuerdo con la especificaci&#243;n
-<SPAN  CLASS="textit">flex</SPAN> correspondiente. En el ejemplo, esta descripci&#243;n del analizador l&#233;xico
-es proporcionada en el fichero <SPAN  CLASS="textit">fl.l</SPAN>.  Para complicar un poco mas
-las cosas, supondremos que queremos hacer el an&#225;lisis l&#233;xico
-de un fichero (especificado en la l&#305;nea de comandos) seg&#250;n 
-se especifica en un segundo analizador l&#233;xico <SPAN  CLASS="textit">trivial.l</SPAN>.
-El siguiente ejemplo de ejecuci&#243;n muestra la conducta del programa:
+El operador <code>pack</code> trabaja de forma parecida a <code>sprintf</code>.
+Su primer argumento es una cadena, seguida de una lista de valores
+a formatear y devuelve una cadena:
 <PRE>
-$ fl -v -V -f tokens.h
-verbose mode is on
-version 1.0
-File name is: tokens.h
-Analyzing tokens.h
-#-id-blanks-id-blanks-int-blanks-#-id-blanks-id-blanks-int-blanks-#-id-blanks-id-blanks
--int-blanks-#-id-blanks-id-blanks-int-blanks-#-id-blanks-id-blanks-int-blanks-
+pack("CCC", 65, 66, 67, 68) # empaquetamos A B C D
 </PRE>
-Los contenidos del fichero <SPAN  CLASS="textit">Makefile</SPAN> definen las dependencias 
-y la estructura de la aplicaci&#243;n:
+el inverso es el operador <code>unpack</code>
 <PRE>
-$ cat Makefile
-LIBS=-lflarg
-CC=gcc -g
-LIBPATH=-L. -L~/lib
-INCLUDES=-I. -I~/include
- 
-fl: main.c lex.arg.c lex.yy.c libflarg.a tokens.h
-        $(CC) $(LIBPATH) $(INCLUDES) main.c lex.arg.c lex.yy.c $(LIBS) -o fl
-lex.arg.c: fl.l
-        flex -Parg fl.l
-lex.yy.c: trivial.l tokens.h
-        flex trivial.l
-libflarg.a: flarg.o
-        ar r libflarg.a flarg.o
-flarg.o: flarg.c
-        $(CC) -c flarg.c
-clean:                                 
-$ make clean;make
-rm lex.arg.c lex.yy.c *.o  fl
-flex -Parg fl.l
-flex trivial.l
-gcc -g -c flarg.c
-ar r libflarg.a flarg.o
-gcc -g -L. -L~/lib -I. -I~/include main.c lex.arg.c lex.yy.c -lflarg -o fl
+unpack("CCC", "ABCD")
 </PRE>
-Observa el uso de la opci&#243;n <code>-Parg</code> en la traducci&#243;n del fichero 
-<SPAN  CLASS="textit">fl.l</SPAN>. As&#305; no solo el fichero generado por <SPAN  CLASS="textit">flex</SPAN>, sino todas las variables
-y rutinas accesibles estar&#225;n prefijadas por <SPAN  CLASS="textit">arg</SPAN> en vez de <SPAN  CLASS="textit">yy</SPAN>. 
-La librer&#305;a la denominamos <SPAN  CLASS="textit">libflarg.a</SPAN>. (<SPAN  CLASS="textit">flarg</SPAN> 
-por <SPAN ID="txt2769">fl</SPAN>ex <SPAN ID="txt2770">arg</SPAN>uments). 
-El correspondiente fichero cabecera ser&#225; <SPAN  CLASS="textit">flarg.h</SPAN>.
-Los fuentes de las rutinas que compondr&#225;n la 
-librer&#305;a se mantendr&#225;n en el fichero <SPAN  CLASS="textit">flarg.c</SPAN>.
+La cadena de formato es una lista de especificadores que indican el
+tipo del dato que se va a empaquetar/desempaquetar. Cada especificador
+puede opcionalmente seguirse de un contador de repetición
+que indica el número de elementos a formatear. Si se pone un
+asterisco (<code>*</code>) se indica que la especificación
+se aplica a todos los elementos restantes de la lista.
 
 <P>
-Lo que haremos ser&#225; redefinir <code>YY_INPUT(buf, result, max)</code> para que
-lea su entrada desde la l&#305;nea de argumentos.
-<PRE>
-$ cat flarg.h
-int yyarglex(int argc, char **argv);
-int YY_input_from_argv(char *buf, int max);
-int argwrap(void);
- 
-#undef YY_INPUT
-#define YY_INPUT(buf,result,max) (result = YY_input_from_argv(buf,max))
-</PRE>
-La funci&#243;n <code>int YY_input_from_argv(char *buf, int max)</code> utiliza los punteros
-<code>char **YY_targv</code> y <code>char **YY_arglim</code> para moverse a trav&#233;s
-de la familia de argumentos. Mientras que el primero es utilizado para el
-recorrido, el segundo marca el l&#305;mite final. Su inicializaci&#243;n ocurre en
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">Formato</TD>
+<TD ALIGN="LEFT">Descripción</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">A</TD>
+<TD ALIGN="LEFT">Una cadena completada con blancos</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">a</TD>
+<TD ALIGN="LEFT">Una cadena completada con ceros</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">B</TD>
+<TD ALIGN="LEFT">Una cadena binaria en orden descendente</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">b</TD>
+<TD ALIGN="LEFT">Una cadena binaria en orden ascendente</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">H</TD>
+<TD ALIGN="LEFT">Una cadena hexadecimal, los nibble altos primero</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">h</TD>
+<TD ALIGN="LEFT">Una cadena hexadecimal, los nibble bajos primero</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+</TABLE>
 
 <P>
-<DIV ALIGN="CENTER">
-<code>yyarglex(int argc, char **argv)</code>
-
-</DIV>
-con las asignaciones:
+Ejemplo de uso del formato <code>A</code>:
 <PRE>
-  YY_targv = argv+1;
-  YY_arglim = argv+argc;
+DB&lt;1&gt; $a = pack "A2A3", "Pea","rl"
+DB&lt;2&gt; p $a
+Perl
+DB&lt;3&gt; @b = unpack "A2A3", "Perl"
+DB&lt;4&gt; p "@b"
+Pe rl
 </PRE>
-
-<P>
-despues, de lo cual, se llama al analizador l&#233;xico generado, <SPAN  CLASS="textit">arglex</SPAN> .
-
-<P>
+La variable <code>@b</code> tiene ahora dos cadenas. Una es <code>Pe</code> la otra es <code>rl</code>.
+Veamos un ejemplo con el formato <code>B</code>:
 <PRE>
-$ cat flarg.c
-char **YY_targv;
-char **YY_arglim;
- 
-int YY_input_from_argv(char *buf, int max)
-{
-  static unsigned offset = 0;
- 
-  int len, copylen;
- 
-    if (YY_targv &gt;= YY_arglim) return 0;        /* EOF */
-    len = strlen(*YY_targv)-offset;     /* amount of current arg */
-    if(len &gt;= max) {copylen = max-1; offset += copylen; }
-    else copylen = len;
-    if(len &gt; 0) memcpy(buf, YY_targv[0]+offset, copylen);
-    if(YY_targv[0][offset+copylen] == '\0') {   /* end of arg */
-      buf[copylen] = ' '; copylen++; offset = 0; YY_targv++;
-    }
-    return copylen;
-}
- 
-int yyarglex(int argc, char **argv) {
-  YY_targv = argv+1;
-  YY_arglim = argv+argc;
-  return arglex();
-}
- 
-int argwrap(void) {
-  return 1;
-}
-</PRE>
-El fichero <SPAN  CLASS="textit">fl.l</SPAN> contiene el analizador l&#233;xico de la l&#305;nea de comandos:
-<PRE>
-$ cat fl.l
-%{
-unsigned verbose;
-unsigned thereisfile;
-char *progName;
-char fileName[256];
-#include "flarg.h"
-#include "tokens.h"
-%}
- 
-%%
--h      |
-"-?"    |
--help   { printf("usage is: %s [-help | -h | -? ] [-verbose | -v]"
-         " [-Version | -V]"
-         " [-f filename]\n", progName);
-        }
- 
--v      |
--verbose { printf("verbose mode is on\n"); verbose = 1; }
- 
--V      |
--version { printf("version 1.0\n"); }
- 
--f[[:blank:]]+[^ \t\n]+ {
-              strcpy(fileName,argtext+3);
-              printf("File name is: %s\n",fileName);
-              thereisfile = 1;
-            }
-.
- 
-\n
-</PRE>
-Observe el uso de la clase <code>[:blank:]</code> para reconocer
-los blancos. Las clases son las mismas que las introducidas
-en <SPAN  CLASS="textit">gawk</SPAN>.
-
-<P>
-El an&#225;lisis l&#233;xico del fichero que se lee despu&#233;s de procesar la
-l&#305;nea de comandos es descrito en <SPAN  CLASS="textit">trivial.l</SPAN>.
-Partiendo de <SPAN  CLASS="textit">trivial.l</SPAN>, la ejecuci&#243;n del <SPAN  CLASS="textit">Makefile</SPAN>
-da lugar a la construcci&#243;n por parte de <SPAN  CLASS="textit">flex</SPAN> del fichero 
-<SPAN  CLASS="textit">lex.yy.c</SPAN> conteniendo la rutina <SPAN  CLASS="textit">yylex</SPAN>.
-<PRE>
-$ cat trivial.l
-%{
-#include "tokens.h"
-%}
-digit [0-9]
-id [a-zA-Z][a-zA-Z0-9]+
-blanks [ \t\n]+
-operator [+*/-]
-%%
-{digit}+ {return INTTOKEN; }
-{digit}+"."{digit}+ {return FLOATTOKEN; }
-{id} {return IDTOKEN;}
-{operator} {return OPERATORTOKEN;}
-{blanks} {return BLANKTOKEN;}
-. {return (int) yytext[0];}
-%%
-int yywrap() {
-  return 1;
-}
-</PRE>
-El fichero <SPAN  CLASS="textit">tokens.h</SPAN> contiene la definici&#243;n de los <SPAN  CLASS="textit">tokens</SPAN>
-y es compartido con <SPAN  CLASS="textit">main.c</SPAN>. 
-<PRE>
-$ cat tokens.h
-#define INTTOKEN  256
-#define FLOATTOKEN 257
-#define IDTOKEN 258
-#define OPERATORTOKEN 259
-#define BLANKTOKEN 260
-</PRE>
-Nos queda por presentar el fichero <SPAN  CLASS="textit">main.c</SPAN>:
-<PRE>
-$ cat main.c
-#include &lt;stdio.h&gt;
-#include "flarg.h"
-#include "tokens.h"
-extern unsigned verbose;
-extern unsigned thereisfile;
-extern char *progName;
-extern char fileName[256];
-extern FILE * yyin;
- 
-main(int argc, char **argv) {
-  unsigned lookahead;
-  FILE * file;
- 
-  progName = *argv;
-  yyarglex(argc,argv);
-  if (thereisfile) {
-    if (verbose) printf("Analyzing %s\n",fileName);
-    file = (fopen(fileName,"r"));
-    if (file == NULL) exit(1);
-    yyin = file;
-    while (lookahead = yylex()) {
-      switch (lookahead) {
-        case INTTOKEN:
-            printf("int-");
-            break;
-          case FLOATTOKEN:
-            printf("float-");
-            break;
-          case IDTOKEN:
-            printf("id-");
-            break;
-          case OPERATORTOKEN:
-            printf("operator-");
-            break;
-          case BLANKTOKEN:
-            printf("blanks-");
-            break;
-          default: printf("%c-",lookahead);
-       }
-    } /* while */
-    printf("\n");
-  } /* if */
-}
+p ord('A')
+65
+DB&lt;22&gt; $x = pack "B8", "01000001"
+DB&lt;23&gt; p $x
+A
+DB&lt;24&gt; @y = unpack "B8", "A"
+DB&lt;25&gt; p "@y"
+01000001
+DB&lt;26&gt; $x = pack "b8", "10000010"
+DB&lt;27&gt; p $x
 </PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3099"
+<A NAME="tex2html3518"
   HREF="node106.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3093"
-  HREF="node82.html">
+<A NAME="tex2html3512"
+  HREF="node98.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3087"
+<A NAME="tex2html3506"
   HREF="node104.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3095"
-  HREF="node219.html">
+<A NAME="tex2html3514"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3097"
-  HREF="node222.html">
+<A NAME="tex2html3516"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -417,17 +248,17 @@ main(int argc, char **argv) {
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3100"
-  HREF="node106.html">Declaraciones pointer y array</A>
-<B>Sup:</B> <A NAME="tex2html3094"
-  HREF="node82.html">Expresiones Regulares en Flex</A>
-<B> Ant:</B> <A NAME="tex2html3088"
-  HREF="node104.html">An&#225;lisis Léxico desde una</A>
+<B> Sig:</B> <A NAME="tex2html3519"
+  HREF="node106.html">Práctica: Un lenguaje para</A>
+<B>Sup:</B> <A NAME="tex2html3513"
+  HREF="node98.html">Expresiones Regulares en Perl</A>
+<B> Ant:</B> <A NAME="tex2html3507"
+  HREF="node104.html">tr y split</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-04-11</I>
+2013-04-12</I>
 </ADDRESS>
 </BODY>
 </HTML>

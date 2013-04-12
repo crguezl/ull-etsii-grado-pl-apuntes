@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Generación de Código: Máquina Basada en Registros</TITLE>
-<META NAME="description" CONTENT="Generación de Código: Máquina Basada en Registros">
+<TITLE>El módulo Generado por yapp</TITLE>
+<META NAME="description" CONTENT="El módulo Generado por yapp">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node154.html">
 <LINK REL="previous" HREF="node152.html">
-<LINK REL="up" HREF="node138.html">
+<LINK REL="up" HREF="node149.html">
 <LINK REL="next" HREF="node154.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4412"
+<A NAME="tex2html4559"
   HREF="node154.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4406"
-  HREF="node138.html">
+<A NAME="tex2html4553"
+  HREF="node149.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4400"
+<A NAME="tex2html4547"
   HREF="node152.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4408"
-  HREF="node219.html">
+<A NAME="tex2html4555"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4410"
-  HREF="node222.html">
+<A NAME="tex2html4557"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,839 +88,215 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4413"
-  HREF="node154.html">Optimización de Código</A>
-<B>Sup:</B> <A NAME="tex2html4407"
-  HREF="node138.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html4401"
-  HREF="node152.html">Generación de Código: Máquina</A>
+<B> Sig:</B> <A NAME="tex2html4560"
+  HREF="node154.html">Algoritmo de Análisis LR</A>
+<B>Sup:</B> <A NAME="tex2html4554"
+  HREF="node149.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4548"
+  HREF="node152.html">Construcción de las Tablas</A>
 <B> Con:</B> 
-<A NAME="tex2html4408"
-  HREF="node219.html">
+<A NAME="tex2html4555"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4410"
-  HREF="node222.html">
+<A NAME="tex2html4557"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><A NAME="tex2html4414"
-  HREF="node153.html#SECTION056151000000000000000">Práctica: Generación de Código</A>
-</UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION056150000000000000000">
-Generación de Código: Máquina Basada en Registros</A>
+<H1><A NAME="SECTION05840000000000000000"></A>
+<A NAME="section:tablas"></A>
+<BR>
+El módulo Generado por <TT>yapp</TT>
 </H1>
-La máquina orientada a pila para la que generamos código en la sección
-<A HREF="node152.html#section:pila">33.14</A>
-es un ejemplo de la clase de máquinas que es usada por la mayoría 
-de los lenguajes interpretados: Perl, Python; java, etc.
-
-<P>
-En esta sección introduciremos una máquina basada en registros.
-Suponemos que la máquina tiene <SPAN CLASS="MATH"><IMG
- WIDTH="14" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img11.png"
- ALT="$ k$"></SPAN> registros <!-- MATH
- $R_0 \ldots R_{k-1}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="90" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img338.png"
- ALT="$ R_0 \ldots R_{k-1}$"></SPAN>.
-Las instrucciones toman dos argumentos, dejando el resultado en
-el primer argumento. Son las siguientes:
-
-<P>
-<BR>
-<BR>
-<TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><code>LOADM Ri, [a]</code></TD>
-<TD ALIGN="LEFT"><SPAN CLASS="MATH"><IMG
- WIDTH="72" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img339.png"
- ALT="$ R_i = M_a$"></SPAN></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><code>LOADC Ri, c</code></TD>
-<TD ALIGN="LEFT"><SPAN CLASS="MATH"><IMG
- WIDTH="54" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img340.png"
- ALT="$ R_i = c$"></SPAN></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><code>STORE [a], Ri</code></TD>
-<TD ALIGN="LEFT"><SPAN CLASS="MATH"><IMG
- WIDTH="72" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img341.png"
- ALT="$ M_a = R_i$"></SPAN></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><code>ADDR Ri, Rj</code></TD>
-<TD ALIGN="LEFT"><!-- MATH
- $R_i += R_j$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="80" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img342.png"
- ALT="$ R_i += R_j$"></SPAN></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><code>ADDM Ri, [a]</code></TD>
-<TD ALIGN="LEFT"><!-- MATH
- $R_i += M_a$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="85" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img343.png"
- ALT="$ R_i += M_a$"></SPAN></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><code>ADDC Ri, c</code></TD>
-<TD ALIGN="LEFT"><SPAN CLASS="MATH"><IMG
- WIDTH="68" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img344.png"
- ALT="$ R_i += c$"></SPAN></TD>
-</TR>
-<TR><TD ALIGN="LEFT">...</TD>
-<TD ALIGN="LEFT">...</TD>
-</TR>
-</TABLE>
-
-<P>
-El problema es generar el código con el menor número 
-de instrucciones posible, teniendo 
-en cuenta la limitación existente de registros.
-
-<P>
-Supongamos que queremos traducir un subárbol
-<!-- MATH
- $OP(t_1, t_2)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="81" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img345.png"
- ALT="$ OP(t_1, t_2)$"></SPAN> y que la traducción del subárbol <SPAN CLASS="MATH"><IMG
- WIDTH="19" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img346.png"
- ALT="$ t_1$"></SPAN> requiere <SPAN CLASS="MATH"><IMG
- WIDTH="20" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img148.png"
- ALT="$ r_1$"></SPAN> registros
-y que la traducción de <SPAN CLASS="MATH"><IMG
- WIDTH="19" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img347.png"
- ALT="$ t_2$"></SPAN> requiere <SPAN CLASS="MATH"><IMG
- WIDTH="20" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img348.png"
- ALT="$ r_2$"></SPAN> registros, con <!-- MATH
- $r_1 < r_2 \le k$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="92" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img349.png"
- ALT="$ r_1 &lt; r_2 \le k$"></SPAN>.
-Si realizamos primero la evaluación de <SPAN CLASS="MATH"><IMG
- WIDTH="19" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img346.png"
- ALT="$ t_1$"></SPAN>, debemos dejar el 
-resultado en un registro que no podrá ser utilizado en la evaluación de 
-<SPAN CLASS="MATH"><IMG
- WIDTH="19" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img347.png"
- ALT="$ t_2$"></SPAN>. Si <SPAN CLASS="MATH"><IMG
- WIDTH="53" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img350.png"
- ALT="$ r_2 = k$"></SPAN>, la evaluación de <SPAN CLASS="MATH"><IMG
- WIDTH="19" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img347.png"
- ALT="$ t_2$"></SPAN> podría dar lugar 
-a la necesidad de recurrir a almacenamiento temporal.
-Esta situación no se da si evaluamos primero <SPAN CLASS="MATH"><IMG
- WIDTH="19" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img347.png"
- ALT="$ t_2$"></SPAN>.
-En tal caso, dado que hay un registro en el que se guarda el resultado de
-<SPAN CLASS="MATH"><IMG
- WIDTH="19" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img347.png"
- ALT="$ t_2$"></SPAN>, quedan libres al menos <SPAN CLASS="MATH"><IMG
- WIDTH="50" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img351.png"
- ALT="$ r_2 - 1$"></SPAN> registros. 
-Como <!-- MATH
- $r_2 - 1 \ge r_1$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="89" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img352.png"
- ALT="$ r_2 - 1 \ge r_1$"></SPAN> se sigue que tenemos suficientes registros
-para traducir <SPAN CLASS="MATH"><IMG
- WIDTH="19" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img346.png"
- ALT="$ t_1$"></SPAN>.
-Como regla general es mejor evaluar primero el subárbol
-que mayores requerimientos de registros tiene.
-
-<P>
-La siguiente cuestión es como calcular los requerimientos en registros
-de una expresión dada. No consideraremos en esta fase límites en el número de 
-registros disponibles. Obsérvese que si los requerimientos para los subárboles
-son distintos, <!-- MATH
- $r_1 \neq r_2$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="59" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img353.png"
- ALT="$ r_1 \neq r_2$"></SPAN> la traducción puede realizarse usando 
-el máximo de ambos <!-- MATH
- $\max\{r_1, r_2\}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="93" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img354.png"
- ALT="$ \max\{r_1, r_2\}$"></SPAN> siguiendo la estrategia 
-de traducir primero el que mayores requerimentos tenga. 
-Si son iguales entonces se necesitan <SPAN CLASS="MATH"><IMG
- WIDTH="50" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img355.png"
- ALT="$ r_1 + 1$"></SPAN>
-registros ya que es necesario un registro para guardar el resultado de
-la primera traducción. 
-
-<P>
-Nótese que, como el juego de instrucciones
-para un operando  puede tener como segundo argumento una dirección de memoria,
-los ``segundos operandos'' no necesitan registro. Por ejemplo, 
-el árbol  <SPAN CLASS="MATH"><IMG
- WIDTH="94" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img356.png"
- ALT="$ PLUS(a,b)$"></SPAN> se traduce por 
+La ejecución de la orden <code>yapp -m Calc Calc.yp</code> produce 
+como salida el módulo <code>Calc.pm</code> el cual contiene las tablas LALR(1)
+para la gramática descrita en <code>Calc.yp</code>. Estas tablas son las que
+dirigen al analizador LR. 
+Puede ver el código completo del módulo en el apéndice
+que se encuentra en la página <A HREF="#apendice:calcpm"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>.
+La  estructura del módulo <code>Calc.pm</code> es como sigue:
 
 <P>
 <PRE>
-LOADM R0, a
-PLUSM R0, b
-</PRE>
-
-<P>
-Asi <SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img357.png"
- ALT="$ b$"></SPAN> no requiere registro, mientras que <SPAN CLASS="MATH"><IMG
- WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img55.png"
- ALT="$ a$"></SPAN> si lo requiere. Por tanto, las 
-hojas izquierdas requieren de registro mientras que las hojas derechas no.
-
-<P>
-Si <SPAN CLASS="MATH"><IMG
- WIDTH="11" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img188.png"
- ALT="$ t$"></SPAN> es un nodo de la forma
-<!-- MATH
- $OP(t_1, t_2)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="81" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img345.png"
- ALT="$ OP(t_1, t_2)$"></SPAN> el número de registros <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img358.png"
- ALT="$ r_t$"></SPAN> requeridos por <SPAN CLASS="MATH"><IMG
- WIDTH="11" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img188.png"
- ALT="$ t$"></SPAN> viene dado por 
-la fórmula:
-
-<P>
-<BR>
-<BR>
-<DIV ALIGN="CENTER">
-<!-- MATH
- $r_t =  \left \{ \begin{array}{ll}
-               \max\{r_1, r_2\} & \mbox{si $r_1 \neq r_2$}\\
-               r_1 + 1 & \mbox{si $r_1 = r_2$} 
-           \end{array}
-        \right .$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="248" HEIGHT="62" ALIGN="MIDDLE" BORDER="0"
- SRC="img359.png"
- ALT="$ r_t = \left \{ \begin{array}{ll}
-\max\{r_1, r_2\} &amp; \mbox{si $r_1 \neq r_2$}\\
-r_1 + 1 &amp; \mbox{si $r_1 = r_2$}
-\end{array} \right .$"></SPAN>
-</DIV>
-<BR>
-<BR>
-
-<P>
-Dotaremos a cada nodo del AST de un método <code>required_registers</code>
-que computa la demanda en registros de dicho nodo. 
-Lo que haremos es introducir en la clase <code>Operation</code> de la cual heredan
-las operaciones binarias el correspondiente método <code>required_registers</code>:
-
-<P>
-<PRE>
-package Operation;
-our @ISA = ("Binary");
-
-sub required_registers {
-  my $self = shift;
-
-  my $rl = $self-&gt;LEFT-&gt;required_registers('LEFT');
-  my $rr = $self-&gt;RIGHT-&gt;required_registers('RIGHT');
-  $self-&gt;{REQ_REG} = ($rl == $rr)? $rl+1: Aux::max($rl, $rr);
-  return $self-&gt;REQ_REG;
-}
-</PRE>
-
-<P>
-El segundo argumento que recibe <code>required_registers</code> es 
-su posición (izquierda o derecha) entre los hijos de su padre.
-dicha información no es usada en los nodos binarios. 
-Su necesidad queda clara cuando se considera el cómputo
-del número de registros requeridos por las hojas.
-
-<P>
-El cómputo en las hojas corre a cargo del correspondiente método
-en la clase <code>Value</code>. Los nodos de tipo número (clase <code>NUM</code>), cadena 
-(clase <code>STR</code>) y variable (clase <code>ID</code>)
-heredan de la clase <code>Value</code>.
-
-<P>
-<PRE>
-package Value;
-our @ISA = ("Leaf");
-
-sub required_registers {
-  my $self = shift;
-  my $position = shift;
-
-  $self-&gt;{REQ_REG} = ($position eq 'LEFT') ? 1 : 0;
-  return $self-&gt;REQ_REG;
-}
-</PRE>
-
-<P>
-El atributo <code>REQ_REG</code> se computa para cada una de las sentencias 
-del programa:
-
-<P>
-<PRE>
-package STATEMENTS;
-
-sub required_registers {
-  my $self = shift;
-  my @sts = @{$self};
-
-  for (@sts) {
-    $_-&gt;required_registers;
-  }
-}
-</PRE>
-
-<P>
-Por supuesto los nodos <code>ASSIGN</code> y <code>PRINT</code>
-poseen sus propios métodos <code>required_registers</code>.
-
-<P>
-Una vez computados los requerimientos en registros de cada
-nódo, la generación de código para un nodo gestiona la
-asignación de registros usando una cola en la que se guardan 
-los registros disponibles. Se
-siguen básicamente dos reglas para la traducción de un
-nodo  <code>Operation</code>:
-
-<P>
-
-<OL>
-<LI>Realizar primero la traducción del hijo con mayores
-requerimientos y luego el otro
-</LI>
-<LI>El resultado queda siempre en el registro que ocupa 
-<SPAN ID="txt11670">la primera posición</SPAN> en la cola
-</LI>
-</OL>
-
-<P>
-Hay cuatro casos a considerar: el primero 
-es que el operando derecho sea una hoja.
-La generación de código para este caso es:
-
-<P>
-<PRE>
-package Operation;
-our @ISA = ("Binary");
-...
-
-sub gen_code {
-  my $self = shift;
-
-  if ($self-&gt;RIGHT-&gt;isa('Leaf')) {
-    my $right = $self-&gt;RIGHT;
-    my $a = $right-&gt;VAL;
-    my $rightoperand = $right-&gt;gen_operand; # valor o dirección 
-    my $key = $right-&gt;key;                  # M, C, etc.
-    $self-&gt;LEFT-&gt;gen_code;
-    Aux::emit($self-&gt;nemonic."$key $RSTACK[0], $rightoperand # $a\n");
-  }
-  ...
-}
-</PRE>
-La generación del nemónico se basa en tres métodos:
-
-<P>
-
-<UL>
-<LI>El método <code>nemonic</code> devuelve el nemónico asociado con el nodo.
-Por ejemplo, para la clase <code>TIMES</code> el código es:
-<PRE>
-sub  nemonic {
-  return "MULT";
-}
-</PRE>
-</LI>
-<LI>El método <code>key</code> devuelve el sufijo que hay que añadir 
-para completar el nemónico, en términos de como sea el
-operando: <code>C</code> para los números, <code>M</code> para los 
-identificadores, etc.
-</LI>
-<LI>El método <code>gen_operand</code> genera el operando. Así para las clases
-número e identificador su código es:
-
-<P>
-<BR>
-<BR>
-<BR>
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=142><PRE>
-package NUM;
-...
-sub gen_operand {
-  my $self = shift;
-
-  return $self-&gt;VAL;
-}
-</PRE></TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=283><PRE>
-package ID;
-...
-sub gen_operand {
-  my $self = shift;
-
-  return $symbol_table{$self-&gt;VAL}-&gt;{ADDRESS},
-}
-</PRE></TD>
-</TR>
-</TABLE>
-<BR>
-<BR>
-<BR>
-
-<P>
-</LI>
-</UL>
-
-<P>
-El resto del código distingue  tres casos,
-según sean <SPAN CLASS="MATH"><IMG
- WIDTH="20" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img148.png"
- ALT="$ r_1$"></SPAN>, <SPAN CLASS="MATH"><IMG
- WIDTH="20" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img348.png"
- ALT="$ r_2$"></SPAN> y el número de registros
-disponibles. 
-Los dos primeros casos desglosan
-la posibilidad de que uno de los dos subárboles
-pueda realizarse con el número de registros
-disponible (<!-- MATH
- $\min \{r_1, r_2 \} < k$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="123" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img360.png"
- ALT="$ \min \{r_1, r_2 \} &lt; k$"></SPAN>).
-El tercer caso corresponde a que 
-se necesiten temporales: <!-- MATH
- $\min \{r_1, r_2 \} \ge k$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="123" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img361.png"
- ALT="$ \min \{r_1, r_2 \} \ge k$"></SPAN>.
-
-<P>
-<PRE>
- 1   ...
- 2   if ($self-&gt;RIGHT-&gt;isa('Leaf')) { ...  }
- 3   else { # Hijo derecho no es una hoja
- 4     my ($t1, $t2) = ($self-&gt;LEFT, $self-&gt;RIGHT);
- 5     my ($r1, $r2) = ($t1-&gt;REQ_REG, $t2-&gt;REQ_REG);
+ 1 package Calc;
+ 2 use vars qw ( @ISA );
+ 3 use strict;
+ 4 @ISA= qw ( Parse::Yapp::Driver );
+ 5 use Parse::Yapp::Driver;
  6 
- 7     if ($r1 &lt; Aux::min($r2, $NUM_REG)) {
- 8       $t2-&gt;gen_code;
- 9       my $R = shift @RSTACK;
-10       $t1-&gt;gen_code;
-11       Aux::emit($self-&gt;nemonic."R $RSTACK[0], $R\n");
-12       push @RSTACK, $R;
-13     }
-14     ...
-15   }
+ 7 sub new {
+ 8    my($class)=shift;
+ 9    ref($class) and $class=ref($class);
+10 
+11     my($self)=$class-&gt;SUPER::new( 
+12        yyversion =&gt; '1.05',
+13        yystates =&gt; [ 
+..          ...
+32        ], # estados
+33        yyrules  =&gt; [
+..       	# ... mas reglas
+70        ], # final de las reglas
+71        @_); # argumentos pasados
+72   bless($self,$class);
+73 }
 </PRE>
-En este caso debemos realizar primero la traducción
-del hijo derecho. Salvando su resultado en <code>$R</code>. 
-El registro es retirado de la cola y traducimos el 
-lado izquierdo. El resultado ha quedado en el primer
-registro de la cola. Emitimos la operación, añadiendo
-el sufijo <code>R</code>, ya que se trata de una operación entre registros
-y posteriormente devolvemos el registro a la cola.
 
 <P>
-<P>
-<DIV><B>Ejercicio  <SPAN CLASS="arabic">33</SPAN>.<SPAN CLASS="arabic">15</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Responda a las siguientes preguntas:
-</I>
-<P>
-<OL>
-<LI>Si en el código anterior sustituimos la línea 12
+La clase <code>Calc</code> hereda de <code>Parse::Yapp::Driver</code>, pero el objeto creado
+será bendecido en la clase <code>Calc</code> (Línea 4, véanse también 
+la figura <A HREF="node169.html#fig:yappinheritance">35.3</A> 
+y la línea 72 del fuente). 
+Por tanto, el constructor llamado en la línea 11 es el de <code>Parse::Yapp::Driver</code>.
+Se utiliza la estrategia de llamada con parámetros con nombre. 
+El valor para la clave <code>yystates</code> es una referencia anónima 
+al array de estados y el valor para la clave <code>yyrules</code> 
+es una referencia anónima a las reglas.
+<PRE>
+10 
+11     my($self)=$class-&gt;SUPER::new( 
+12        yyversion =&gt; '1.05',
+13        yystates =&gt; [
+14         {#State 0
+15           DEFAULT =&gt; -1, GOTOS =&gt; { 'input' =&gt; 1 }
+16         },
+17         {#State 1
+18           ACTIONS =&gt; {
+19             'NUM' =&gt; 6, '' =&gt; 4, "-" =&gt; 2, "(" =&gt; 7,
+20             'VAR' =&gt; 8, "\n" =&gt; 5, 'error' =&gt; 9
+21           },
+22           GOTOS =&gt; { 'exp' =&gt; 3, 'line' =&gt; 10 }
+23         },
+24         # ...  mas estados
+25         {#State 27
+26           ACTIONS =&gt; {
+27             "-" =&gt; 12, "+" =&gt; 13, "/" =&gt; 15, "^" =&gt; 16,
+28             "*" =&gt; 17
+29           },
+30           DEFAULT =&gt; -8
+31         }
+32        ], # estados
+</PRE>
+Se ve que un estado se pasa como un hash anónimo indexado en las acciones
+y los saltos. 
 
 <P>
-<DIV ALIGN="CENTER">
-<code>push @RSTACK, $R</code>
-
-</DIV>
-
-<P>
-por 
+Para consultar los números asociados con las reglas de producción
+vea el apéndice en la página <A HREF="#apendice:calcouput"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>
+conteniendo el fichero <code>Calc.output</code>.
 
 <P>
-<DIV ALIGN="CENTER">
-<code>unshift @RSTACK, $R</code> 
-
-</DIV>
+A continuación vienen las reglas:
+<PRE>
+33        yyrules  =&gt; [
+34        [#Rule 0
+35              '$start', 2, undef ],
+36        [#Rule 1
+37              'input', 0, undef ],
+38        [#Rule 2
+39              'input', 2, sub
+40 #line 17 "Calc.yp"
+41              { push(@{$_[1]},$_[2]); $_[1] }
+42        ],
+43        [#Rule 3
+44              'line', 1, sub
+45 #line 20 "Calc.yp"
+46              { $_[1] }
+47        ],
+48        [#Rule 4
+49              'line', 2, sub
+50 #line 21 "Calc.yp"
+51              { print "$_[1]\n" }
+52        ],
+53   # ... mas reglas
+54     [#Rule 11
+55             'exp', 3, sub
+56 #line 30 "Calc.yp"
+57 { $_[1] * $_[3] }
+58    ],
+59   [#Rule 12
+60             'exp', 3, sub
+61 #line 31 "Calc.yp"
+62   {
+63     $_[3] and return($_[1] / $_[3]);
+64     $_[0]-&gt;YYData-&gt;{ERRMSG} =   "Illegal division by zero.\n";
+65     $_[0]-&gt;YYError;
+66     undef
+67   }
+68     ],
+69   # ... mas reglas
+70   ], # final de las reglas
+</PRE>
+Las reglas son arrays anónimos conteniendo el nombre de la regla o
+variable sintáctica (<code>exp</code>), el número de símbolos en la parte
+derecha y la subrutina anónima con el código asociado.
 
 <P>
-¿Seguiría funcionando el código?
+Vemos como la acción es convertida en una subrutina anónima. 
+Los argumentos de dicha subrutina son los atributos semánticos
+asociados con los símbolos en la parte derecha de la regla de 
+producción. El valor retornado por la acción/subrutina
+es el valor asociado con la reducción.
 
 <P>
-</LI>
-<LI>¿Podemos asegurar en este subcaso que el código generado para <code>$t2</code>
-(línea 8) se ha realizado integramente en los registros?
-</LI>
-</OL></DIV><P></P>
-
-<P>
-Los otros dos casos tienen similar tratamiento:
+Para hacer que 
+el compilador Perl diagnostique los errores relativos al fuente 
+<code>Calc.yp</code> se usa una directiva <code>#line</code>.
 
 <P>
 <PRE>
-  if ($self-&gt;RIGHT-&gt;isa('Leaf')) { ...  }
-  else { ...
-    if ($r1 &lt; Aux::min($r2, $NUM_REG)) { ... }
-    elsif (($r1 &gt;= $r2) and ($r2 &lt; $NUM_REG)) {
-      $t1-&gt;gen_code;
-      my $R = shift @RSTACK;
-      $t2-&gt;gen_code;
-      Aux::emit($self-&gt;nemonic."R $R, $RSTACK[0]\n");
-      unshift @RSTACK, $R;
-    }
-    elsif (($r1 &gt;= $NUM_REG) and ($r2 &gt;= $NUM_REG)) {
-      $t2-&gt;gen_code;
-      Aux::emit("STORE $T, $RSTACK[0]\n");
-      $T++;
-      $t1-&gt;gen_code;
-      $T--;
-      Aux::emit($self-&gt;nemonic."M $RSTACK[0], $T\n");
-    }
-  }
-}
+71   @_);
+72   bless($self,$class);
+73 }
+74
 </PRE>
 
 <P>
-Antes de comenzar a generar el código,
-la variable <code>$T</code> debe ser inicializada a un valor apropiado, 
-de manera que se usen direcciones no ocupadas por los datos.
-Por ejemplo:
-
-<P>
+la bendición con dos argumentos hace que el objeto pertenezca a la
+clase <code>Calc</code>. A continuación siguen las subrutinas de soporte:
 <PRE>
-local $T =  $final_global_address+length($data);
+75 #line 44 "Calc.yp" 
+76 
+77 
+78 sub _Error {
+79   # ...
+80 }
+81 
+82 sub _Lexer {
+83   my($parser)=shift;
+84   # ...
+85 }
+86 
+87 sub Run {
+88     my($self)=shift;
+89     $self-&gt;YYParse( yylex =&gt; \&amp;_Lexer, yyerror =&gt; \&amp;_Error );
+90 }
+91 
+92 my($calc)=new Calc;
+93 $calc-&gt;Run;
+94 
+95 1;
 </PRE>
-
-<P>
-El método <code>gen_code</code> sólo debería ser llamado sobre una hoja
-si se trata de una hoja izquierda (en cuyo caso el número de
-registros requeridos es uno):
-<PRE>
-package Value;
-our @ISA = ("Leaf");
-...
-
-sub gen_code {
-  my $self = shift;
-  my $a = $self-&gt;VAL;
-
-  if ($self-&gt;REQ_REG == 1) {
-    if (ref($self) eq "NUM") { Aux::emit("LOADC $RSTACK[0], $a\n"); }
-    else { 
-      my $address = $symbol_table{$a}-&gt;{ADDRESS};
-      Aux::emit("LOADM $RSTACK[0], $address # $a\n");
-    }
-  }
-  else {
-    croak("gen_code visita hoja izquierda con REQ_REG = ".$self-&gt;REQ_REG);
-  }
-}
-</PRE>
-
-<P>
-La pila de registros es inicializada al número de registros disponibles:
-
-<P>
-<PRE>
-use constant LAST_REG =&gt; 1;
-our @RSTACK = map "R$_", 0..LAST_REG; # Registros disponibles
-</PRE>
-
-<P>
-<P>
-<DIV><B>Ejercicio  <SPAN CLASS="arabic">33</SPAN>.<SPAN CLASS="arabic">15</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
-<I>Responda a las siguientes preguntas:
-</I>
-<P>
-<UL>
-<LI>¿Cuáles son los requerimientos de registros para un nodo de la clase <SPAN CLASS="MATH"><IMG
- WIDTH="80" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img226.png"
- ALT="$ ASSIGN$"></SPAN>?
-</LI>
-<LI>¿Cuáles son los requerimientos de registros para un nodo de la clase <SPAN CLASS="MATH"><IMG
- WIDTH="69" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img256.png"
- ALT="$ PRINT$"></SPAN>?
-</LI>
-<LI>¿Se puede lograr la funcionalidad proveída por el método 
-<code>required_registers</code>
-<BR>
-usando <code>match_and_transform</code>? 
-
-<P>
-¿Sería necesario introducir modificaciones
-en <code>match_and_transform</code>? Si es así, ¿Cuáles?.
-</LI>
-</UL></DIV><P></P>
-
-<P>
-
-<H2><A NAME="SECTION056151000000000000000"></A>
-   <A NAME="12259"></A>
-  
-<A NAME="practica:generaciondecodigo"></A>
-<BR>
-Práctica: Generación de Código
-</H2>
-
-<OL>
-<LI>Complete la generación de código para la máquina basada en registros.
-Recuerde que debe escribir el método <code>required_registers</code>
-para las diferentes clases <code>Value</code>, <code>Operation</code>,
-<code>ASSIGN</code>, <code>PRINT</code>, <code>STATEMENTS</code>, etc. 
-Asi mismo deberá escribir el método <code>gen_code</code> para las diversas
-clases: <code>Value</code>, <code>Operation</code>, <code>ASSIGN</code>, <code>PRINT</code>,
-<code>STATEMENTS</code>, etc.
-Recuerde que los temporales usados durante la generación de código
-deben ubicarse en una zona que no esté en uso.
-
-<P>
-</LI>
-<LI>En la sección anterior no se consideraba la generación 
-de código para las cadenas. Amplíe y/o modifique el
-juego de instrucciones como considere conveniente.
-El siguiente ejemplo de traducción sugiere
-como puede ser la generación de código para las cadenas:
-<DIV ALIGN="CENTER">
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>Fuente</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=312>Objeto</TD>
-</TR>
-<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85><PRE>
-string a,b;
-a = "hola";
-b = a;
-p b
-</PRE></TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=312><PRE>
-1 LSTRG  R0, 4, 4 
-2 STORES  0, R0 # a
-3 LOADS  R0, 0 # a
-4 STORES  2, R0 # b
-5 LOADS  R0, 2 # b
-6 PRNTS  R0
-</PRE></TD>
-</TR>
-</TABLE>
-</DIV>
-
-<P>
-Asuma que los registros pueden contener dos direcciones de memoria
-(línea 1). La instrucción <code>LSTRG R0, a, b</code> carga las constantes
-(direcciones)
-<code>a</code> y <code>b</code> en el registro.
-La constante <code>"hola"</code> ocupa en  la posición final
-en la que se colocan los contenidos de <code>$data</code> un desplazamiento
-de 4 y ocupa 4 palabras. 
-Las instrucción <code>LOADS R, a</code> carga las dos palabras en las direcciones
-<code>a</code> y <code>a+1</code> en el registro <code>R</code>. 
-La instrucción <code>STORES a, R</code> se encarga de que las dos palabras
-en la dirección <code>a</code> queden referenciando 
-una cadena igual a la apuntada por el registro <code>R</code>.
-La instrucción <code>PRNTS</code> imprime la cadena apuntada
-por el registro.  En una situación mas realista instrucciones como
-<code>STORES a, R</code> y <code>PRNTS</code> probablemente serían llamadas
-a funciones/servicios del sistema o de la librería para soporte
-en tiempo de ejecución asociada al lenguaje.
-
-<P>
-</LI>
-<LI>Se puede mejorar el código generado
-si hacemos uso de las propiedades algebraicas de los 
-operadores.
-Por ejemplo, cuando se tiene un operador conmutativo que ha sido asociado 
-a derechas, como ocurre en este programa fuente:
-<PRE>
-$ cat test18.tutu
-int a,b,c;
-
-a = a + (b + c)
-</PRE>
-
-<P>
-El código producido por el compilador es:
-
-<P>
-<PRE>
-LOADM R0, 0 # a
-LOADM R1, 1 # b
-PLUSM R1, 2 # c
-PLUSR R0, R1
-STORE  0, R0 # a
-</PRE>
-
-<P>
-En este caso, la expresión <code>a + (b + c)</code>  corresponde a un árbol 
-que casa con el patrón árbol
-
-<P>
-<DIV ALIGN="CENTER">
-<!-- MATH
- $PLUS(ID, t)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="107" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img362.png"
- ALT="$ PLUS(ID, t)$"></SPAN> and <!-- MATH
- $\{ r_t \ge 1 \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="68" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img363.png"
- ALT="$ \{ r_t \ge 1 \}$"></SPAN>
-</DIV>
-
-<P>
-Donde <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img358.png"
- ALT="$ r_t$"></SPAN> es el número de registros requeridos por <SPAN CLASS="MATH"><IMG
- WIDTH="11" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img188.png"
- ALT="$ t$"></SPAN>.
-En tales casos es posible sacar ventaja
-de la conmutatividad de la suma y transformar el
-árbol
-
-<P>
-<DIV ALIGN="CENTER">
-<!-- MATH
- $PLUS(ID, t)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="107" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img362.png"
- ALT="$ PLUS(ID, t)$"></SPAN> and <!-- MATH
- $\{ r_t \ge 1 \} \Longrightarrow PLUS(t, ID)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="208" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img364.png"
- ALT="$ \{ r_t \ge 1 \} \Longrightarrow PLUS(t, ID)$"></SPAN>
-</DIV>
-
-<P>
-Observe que mientras el primer árbol requiere <!-- MATH
- $\max \{2, r_t \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="85" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img365.png"
- ALT="$ \max \{2, r_t \}$"></SPAN>
-registros, el segundo requiere <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img358.png"
- ALT="$ r_t$"></SPAN> registros, que en general es menor.
-Esta transformación invierte la traducción:
-
-<P>
-<PRE>
-traduce(t)
-ADDM $RSTACK[0], dirección de ID
-</PRE>
-
-<P>
-que daría lugar a:
-
-<P>
-<PRE>
-LOADM R0, 1 # b
-PLUSM R0, 2 # c
-PLUSM R0, 0 # a
-STORE  0, R0 # a
-</PRE>
-
-<P>
-la cual usa una instrucción y un registro menos.
-
-<P>
-Usando <code>match_and_transform</code> modifique el generador 
-de código para que, después de la fase de cálculo del número
-de registros requeridos, aplique esta 
-transformación sobre los nodos conmutativos cuyo hijo izquierdo
-sea un identificador y su hijo derecho requiera al menos un registro.
-</LI>
-</OL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4412"
+<A NAME="tex2html4559"
   HREF="node154.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4406"
-  HREF="node138.html">
+<A NAME="tex2html4553"
+  HREF="node149.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4400"
+<A NAME="tex2html4547"
   HREF="node152.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4408"
-  HREF="node219.html">
+<A NAME="tex2html4555"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4410"
-  HREF="node222.html">
+<A NAME="tex2html4557"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -967,17 +343,17 @@ sea un identificador y su hijo derecho requiera al menos un registro.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4413"
-  HREF="node154.html">Optimización de Código</A>
-<B>Sup:</B> <A NAME="tex2html4407"
-  HREF="node138.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html4401"
-  HREF="node152.html">Generación de Código: Máquina</A>
+<B> Sig:</B> <A NAME="tex2html4560"
+  HREF="node154.html">Algoritmo de Análisis LR</A>
+<B>Sup:</B> <A NAME="tex2html4554"
+  HREF="node149.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4548"
+  HREF="node152.html">Construcción de las Tablas</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-04-11</I>
+2013-04-12</I>
 </ADDRESS>
 </BODY>
 </HTML>

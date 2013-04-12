@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>An&#225;lisis Léxico desde una Cadena: yy_scan_string</TITLE>
-<META NAME="description" CONTENT="An&#225;lisis Léxico desde una Cadena: yy_scan_string">
+<TITLE>tr y split</TITLE>
+<META NAME="description" CONTENT="tr y split">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node105.html">
 <LINK REL="previous" HREF="node103.html">
-<LINK REL="up" HREF="node82.html">
+<LINK REL="up" HREF="node98.html">
 <LINK REL="next" HREF="node105.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3085"
+<A NAME="tex2html3504"
   HREF="node105.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3079"
-  HREF="node82.html">
+<A NAME="tex2html3498"
+  HREF="node98.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3073"
+<A NAME="tex2html3492"
   HREF="node103.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3081"
-  HREF="node219.html">
+<A NAME="tex2html3500"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3083"
-  HREF="node222.html">
+<A NAME="tex2html3502"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,118 +88,213 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3086"
-  HREF="node105.html">An&#225;lisis de la L&#305;nea</A>
-<B>Sup:</B> <A NAME="tex2html3080"
-  HREF="node82.html">Expresiones Regulares en Flex</A>
-<B> Ant:</B> <A NAME="tex2html3074"
-  HREF="node103.html">Manejo de directivas include</A>
+<B> Sig:</B> <A NAME="tex2html3505"
+  HREF="node105.html">Pack y Unpack</A>
+<B>Sup:</B> <A NAME="tex2html3499"
+  HREF="node98.html">Expresiones Regulares en Perl</A>
+<B> Ant:</B> <A NAME="tex2html3493"
+  HREF="node103.html">Casos de Estudio</A>
 <B> Con:</B> 
-<A NAME="tex2html3081"
-  HREF="node219.html">
+<A NAME="tex2html3500"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3083"
-  HREF="node222.html">
+<A NAME="tex2html3502"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION052220000000000000000">
-An&#225;lisis Léxico desde una Cadena: <TT>yy_scan_string</TT></A>
+<H1><A NAME="SECTION05460000000000000000"></A>
+<A NAME="section:tr"></A>
+<BR>
+tr y split
 </H1>
-El objetivo de este ejercicio es mostrar como realizar un
-an&#225;lisis l&#233;xico de los argumentos pasados en la l&#305;nea de
-comandos. Para ello <SPAN  CLASS="textit">flex</SPAN> provee la funci&#243;n <code>yy_scan_string(const char * str)</code>.
-Esta rutina crea un nuevo <SPAN  CLASS="textit">buffer</SPAN> de entrada y devuelve el correspondiente
-manejador <code>YY_BUFFER_STATE</code> asociado con la cadena
-<code>str</code>. Esta cadena debe estar terminada por un car&#225;cter <code>\0</code>. 
-Podemos liberar la memoria asociada con
-dicho <SPAN  CLASS="textit">buffer</SPAN> utilizando <code>yy_delete_buffer(BUFFER)</code>.
-La siguiente llamada a <code>yylex()</code> realizar&#225; el an&#225;lisis l&#233;xico
-de la cadena <code>str</code>.
+El operador de traducción permite la conversión de unos caracteres por otros. 
+Tiene la sintáxis:
+
+<P>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><code>tr/SEARCHLIST/REPLACEMENTLIST/cds</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>y/SEARCHLIST/REPLACEMENTLIST/cds</code></TD>
+</TR>
+</TABLE>
+
+<P>
+El operador permite el reemplazo carácter a carácter, por ejemplo:
+<PRE>
+$ perl -de 0
+  DB&lt;1&gt; $a = 'fiboncacci'
+  DB&lt;2&gt; $a =~ tr/aeiou/AEIOU/
+  DB&lt;3&gt; print $a
+fIbOncAccI
+  DB&lt;4&gt; $a =~ y/fbnc/FBNC/
+  DB&lt;5&gt; print $a
+FIBONCACCI
+</PRE>
+El operador devuelve el número de carácteres reeemplazados
+o suprimidos. 
+<PRE>
+$cnt = $sky =~ tr/*/*/; # count the stars in $sky
+</PRE>
+
+<P>
+Si se especifica el modificador <code>/d</code>, cualquier carácter en  <code>SEARCHLIST</code>
+que no figure en <code>REPLACEMENTLIST</code> es eliminado.
+<PRE>
+  DB&lt;6&gt; print $a
+FIBONCACCI
+  DB&lt;7&gt; $a =~ y/OA//d
+  DB&lt;8&gt; print $a
+FIBNCCCI
+</PRE>
+
+<P>
+Si se especifica el modificador <code>/s</code>, las secuencias de carácteres
+consecutivos que serían traducidas al mismo carácter son comprimidas a una sola:
 
 <P>
 <PRE>
-$ cat scan_str.l
-%%
-[0-9]+     printf("num\n");
-[a-zA-Z]+  printf("Id\n");
-%%
-main(int argc, char ** argv) {
-int i;
- 
-  for(i=1;i&lt;argc;i++) {
-    yy_scan_string(argv[i]);
-    yylex();
-    yy_delete_buffer(YY_CURRENT_BUFFER);
-  }
-}
- 
-int yywrap() { return 1; }
-$ flex scan_str.l ; gcc lex.yy.c ; a.out Hello World! 1234
-Id
-Id
-!num
+  DB&lt;1&gt; $b = 'aaghhh!'
+  DB&lt;2&gt; $b =~ tr/ah//s
+  DB&lt;3&gt; p $b
+agh!
 </PRE>
-Alternativamente, la función <code>main()</code> podría haber sido escrita asi:
+
+<P>
+Observa que si la cadena <code>REPLACEMENTLIST</code> es vacía,
+no se introduce ninguna modificación.
+
+<P>
+Si se especifica el modificador <code>/c</code>, se complementa <code>SEARCHLIST</code>;
+esto es, se buscan los caracteres que no están en <code>SEARCHLIST</code>.
+
+<P>
 <PRE>
-main(int argc, char ** argv) {
-int i;
-YY_BUFFER_STATE p;
-
-  for(i=1;i&lt;argc;i++) {
-    p = yy_scan_string(argv[i]);
-    yylex();
-    yy_delete_buffer(p);
-  }
-}
+tr/a-zA-Z/ /cs; # change non-alphas to single space
 </PRE>
-La funci&#243;n <code>yy_scan_bytes(const char * bytes, int len)</code> hace lo mismo que 
-<code>yy_scan_string</code> pero en vez de una cadena terminada en
-el car&#225;cter nulo, se usa la longitud <code>len</code>.
-Ambas funciones <code>yy_scan_string(const char * str)</code> y
-<code>yy_scan_bytes(const char * bytes, int len)</code> hacen una copia
-de la cadena pasada como argumento.
 
 <P>
-Estas dos funciones crean una copia de la cadena original. Es mejor que sea asi, ya que <code>yylex()</code>
-modifica los contenidos del <SPAN  CLASS="textit">buffer</SPAN> de trabajo. Si queremos evitar la copia,
-podemos usar 
+Cuando se dan múltiples traducciones para un mismo carácter, solo la primera es utilizada:
 
 <P>
-<code>yy_scan_buffer(char *base, yy_size_t size)</code>,
+<PRE>
+tr/AAA/XYZ/
+</PRE>
 
 <P>
-la cual trabaja directamente con el <SPAN  CLASS="textit">buffer</SPAN> que comienza en <code>base</code>, 
-de tamaño <code>size</code> <SPAN  CLASS="textit">bytes</SPAN>, los últimos dos de los cuáles deben
-ser <code>YY_END_OF_BUFFER_CHAR</code> (ASCII  NUL).   
-Estos dos últimos <SPAN  CLASS="textit">bytes</SPAN> no son ``escaneados''. El área de rastreo va
-desde <code>base[0]</code> a <code>base[size-2]</code>, inclusive.
-Si nos olvidamos de hacerlo de este modo y no establecemos los dos <SPAN  CLASS="textit">bytes</SPAN> finales,
-la función <code>yy_scan_buffer()</code> devuelve un puntero nulo
-y no llega a crear el nuevo buffer de entrada.
-El tipo  <code>yy_size_t</code> es un tipo entero.
-Como cabe esperar, <code>size</code> se refiere al tamaño del <SPAN  CLASS="textit">buffer</SPAN>.
+traducirá <code>A</code> por <code>X</code>.
+
+<P>
+El siguiente <SPAN  CLASS="textbf">script</SPAN> busca una expresión regular en el fichero de <code>passwords</code>
+e imprime los <SPAN  CLASS="textbf">login</SPAN> de los usuarios que casan con dicha cadena.
+Para evitar posibles confusiones con las vocales acentuadas
+se usa el operador <code>tr</code>.
+
+<P>
+<PRE>
+   1 #!/usr/bin/perl -w
+   2 $search = shift(@ARGV) or die("you must provide a regexpr\n");
+   3 $search =~ y/ÁÉÍÓÚáéíóú/AEIOUaeiou/;
+   4 open(FILE,"/etc/passwd");
+   5 while ($line = &lt;FILE&gt;) {
+   6   $line =~ y/ÁÉÍÓÚáéíóú/AEIOUaeiou/;
+   7   if ($line =~ /$search/io) {
+   8     @fields = split(":",$line);
+   9     $login = $fields[0];
+  10     if ($line !~ /^#/) {
+  11       print "$login\n";
+  12     }
+  13     else {
+  14       print "#$login\n";
+  15     }
+  16   }
+  17 }
+  18
+</PRE>
+
+<P>
+Ejecución (suponemos que el nombre del fichero anterior es <code>split.pl</code>):
+<PRE>
+&gt; split.pl Rodriguez
+##direccion
+call
+casiano
+alu5
+alu6
+##doctorado
+paco
+falmeida
+##ihiu07
+</PRE>
+
+<P>
+Para familiarizarte con este operador, codifica y prueba el siguiente
+código:
+
+<P>
+<PRE>
+   1 #!/usr/bin/perl -w
+   2 $searchlist = shift @ARGV;
+   3 $replacelist = shift @ARGV;
+   4 $option = "";
+   5 $option = shift @ARGV if @ARGV;
+   6 
+   7 while (&lt;&gt;) {
+   8   $num = eval "tr/$searchlist/$replacelist/$option";
+   9   die $@ if $@;
+  10   print "$num: $_";
+  11 }
+</PRE>
+
+<P>
+Perl construye la tabla de traducción en ``tiempo de compilación''. Por ello
+ni <code>SEARCHLIST</code> ni <code>REPLACEMENTLIST</code> son susceptibles de 
+ser interpolados. Esto significa que si queremos usar variables tenemos
+que recurrir a la función <code>eval</code>.
+
+<P>
+La expresión pasada como parámetro a <code>eval</code> en la línea 8 es analizada y ejecutada como si 
+se tratara de un pequeño programa Perl. Cualquier asignación a variables permanece
+después del <code>eval</code>, asi como cualquier definición de subrutina. 
+El código dentro de <code>eval</code> se trata como si fuera un bloque, de manera
+que cualesquiera variables locales (declaradas con <code>my</code>) desaparecen
+al final del bloque.
+
+<P>
+La variable <code>$@</code> contiene el mensaje de error asociado con la
+última ejecución del comando <code>eval</code>. Si es nula es que el último comando
+se ejecuto correctamente.
+Aqui tienes un ejemplo de llamada:
+
+<P>
+<PRE>
+&gt; tr.pl 'a-z' 'A-Z' s
+jose hernandez
+13: JOSE HERNANDEZ
+joosee hernnandez
+16: JOSE HERNANDEZ
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3085"
+<A NAME="tex2html3504"
   HREF="node105.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3079"
-  HREF="node82.html">
+<A NAME="tex2html3498"
+  HREF="node98.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3073"
+<A NAME="tex2html3492"
   HREF="node103.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3081"
-  HREF="node219.html">
+<A NAME="tex2html3500"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3083"
-  HREF="node222.html">
+<A NAME="tex2html3502"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -246,17 +341,17 @@ Como cabe esperar, <code>size</code> se refiere al tamaño del <SPAN  CLASS="tex
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3086"
-  HREF="node105.html">An&#225;lisis de la L&#305;nea</A>
-<B>Sup:</B> <A NAME="tex2html3080"
-  HREF="node82.html">Expresiones Regulares en Flex</A>
-<B> Ant:</B> <A NAME="tex2html3074"
-  HREF="node103.html">Manejo de directivas include</A>
+<B> Sig:</B> <A NAME="tex2html3505"
+  HREF="node105.html">Pack y Unpack</A>
+<B>Sup:</B> <A NAME="tex2html3499"
+  HREF="node98.html">Expresiones Regulares en Perl</A>
+<B> Ant:</B> <A NAME="tex2html3493"
+  HREF="node103.html">Casos de Estudio</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-04-11</I>
+2013-04-12</I>
 </ADDRESS>
 </BODY>
 </HTML>

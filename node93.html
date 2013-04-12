@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>REJECT</TITLE>
-<META NAME="description" CONTENT="REJECT">
+<TITLE>Del espacio de Patrones al de Mantenimiento</TITLE>
+<META NAME="description" CONTENT="Del espacio de Patrones al de Mantenimiento">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node94.html">
 <LINK REL="previous" HREF="node92.html">
-<LINK REL="up" HREF="node82.html">
+<LINK REL="up" HREF="node85.html">
 <LINK REL="next" HREF="node94.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html2930"
+<A NAME="tex2html2969"
   HREF="node94.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2924"
-  HREF="node82.html">
+<A NAME="tex2html2963"
+  HREF="node85.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2918"
+<A NAME="tex2html2957"
   HREF="node92.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2926"
-  HREF="node219.html">
+<A NAME="tex2html2965"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2928"
-  HREF="node222.html">
+<A NAME="tex2html2967"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,66 +88,215 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2931"
-  HREF="node94.html">yymore()</A>
-<B>Sup:</B> <A NAME="tex2html2925"
-  HREF="node82.html">Expresiones Regulares en Flex</A>
-<B> Ant:</B> <A NAME="tex2html2919"
-  HREF="node92.html">input()</A>
+<B> Sig:</B> <A NAME="tex2html2970"
+  HREF="node94.html">La orden N</A>
+<B>Sup:</B> <A NAME="tex2html2964"
+  HREF="node85.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html2958"
+  HREF="node92.html">Traducción entre Tablas</A>
 <B> Con:</B> 
-<A NAME="tex2html2926"
-  HREF="node219.html">
+<A NAME="tex2html2965"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html2928"
-  HREF="node222.html">
+<A NAME="tex2html2967"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION052110000000000000000">
-REJECT</A>
+<H1><A NAME="SECTION05380000000000000000">
+Del espacio de Patrones al de Mantenimiento</A>
 </H1>
-La directiva  <code>REJECT</code> le indica al analizador que proceda con la 
-siguiente regla que casa con un prefijo de la entrada. Como es habitual en
-<SPAN  CLASS="textit">flex</SPAN>, se elige la siguiente regla que casa  con la cadena mas
-larga. Consideremos el siguiente ejemplo:
+En <code>sed</code> se dispone, como en muchos otros editores
+de una zona de memoria a la que se puede enviar texto ``cortado''
+o `copiado'' y desde la cual se puede recuperar el texto para 
+insertarlo en la zona de trabajo  (<I>pattern space</I>).
+en la jerga <code>sed</code> dicho espacio se conoce como <SPAN  CLASS="textit">hold space</SPAN>.
+El contenido del espacio de patrones (<I>pattern space</I>) puede moverse al espacio 
+de mantenimiento (<SPAN  CLASS="textit">hold space</SPAN>) y recíprocamente:
+
+<P>
+<BR>
+<BR>
+<BR>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT"><SPAN  CLASS="textit">Hold</SPAN></TD>
+<TD ALIGN="CENTER">h ó H</TD>
+<TD ALIGN="LEFT">Copia o añade (append) los contenidos del <I>pattern space</I> al <I>hold space</I>.</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><SPAN  CLASS="textit">Get</SPAN></TD>
+<TD ALIGN="CENTER">g ó G</TD>
+<TD ALIGN="LEFT">Copia o añade los contenidos del <I>hold space</I> al <I>pattern space</I>.</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><SPAN  CLASS="textit">Exchange</SPAN></TD>
+<TD ALIGN="CENTER">x</TD>
+<TD ALIGN="LEFT">Intercambia los contenidos del <I>hold space</I> y el <I>pattern space</I></TD>
+</TR>
+</TABLE>
+<BR>
+<BR>
+<BR>
+
+<P>
+Los comandos en minúsculas sobrescriben mientras que los que van en mayúsculas añaden.
+Asi <I>h</I> copia los contenidos del <I>pattern space</I> en el <I>hold space</I>, borrando los
+contenidos previos que estuvieran en el <I>hold space</I>. Las orden <I>G</I> añade (paste)
+los contenidos del <I>hold space</I> al espacio de patrones actual (por el final).  
+Las dos cadenas se enlazan a través de un retorno de carro.
+
+<P>
+<B>Ejemplo</B>
+Este guión intenta mediante una heurística poner la definiciones de 
+funciones C al final del fichero, suponiendo que una definición de función
+comienza en la columna 1 y que se caracterizan mediante uno o dos identificadores 
+seguidos de un paréntesis:
 <PRE>
-$ cat reject.l
-%%
-a    |
-ab   |
-abc  |
-abcd ECHO; REJECT; printf("Never seen\n");
-.|\n
+$ cat G.sed
+/\&lt;if\&gt;/s/.*/&amp;/
+t
+/\&lt;else\&gt;/s/.*/&amp;/
+t
+#... lo mismo para las otras palabras clave
+/^[a-zA-Z][a-zA-Z]*([A-Z]*/H
+t
+/^[a-zA-Z][a-zA-Z]*  *[a-zA-Z][a-zA-Z]*(/H
+${
+G
+}
 </PRE>
-La salida es:
+Ejemplo de uso:
 <PRE>
-$ gcc lex.yy.c -lfl;a.out
-abcd
-abcdabcaba
+$ cat p.test
+#include &lt;stdio.h&gt;
+ 
+fact(int n) { /* recursive function */
+if(n == 0) return 1;
+else(return n*fact(n-1));
+}
+ 
+void toto(id) {
+}
+ 
+main() {
+  toto();
+  printf("Hello world! factorial of 4 = %d\n",fact(4)); /* the
+         comment takes two lines */
+}
 </PRE>
-Observe que <code>REJECT</code> supone un cambio en el flujo de control:
-El c&#243;digo que figura despu&#233;s de <code>REJECT</code> no es ejecutado.
+Al ejecutar nuestro <I>script</I> obtenemos la salida:
+<PRE>
+$ sed -f G.sed p.test
+#include &lt;stdio.h&gt;
+ 
+fact(int n) { /* recursive function */
+if(n == 0) return 1;
+else(return n*fact(n-1));
+}
+ 
+void toto(id) {
+}
+ 
+main() {
+  toto();
+  printf("Hello world! factorial of 4 = %d\n",fact(4)); /* the
+         comment takes two lines */
+}
+ 
+fact(int n) { /* recursive function */
+void toto(id) {
+main() {
+</PRE>
+
+<P>
+<B>Ejemplo</B>
+El siguiente guión invierte los contenidos de un fichero:
+<PRE>
+&gt; cat reverse.sed
+$!{
+:loop
+h
+n
+G
+$!b loop
+}
+${
+p
+}
+</PRE>
+He aqui el resultado de una ejecución:
+
+<P>
+<PRE>
+&gt; cat reverse.test
+one
+two
+three
+&gt; sed -n -f reverse.sed reverse.test
+three
+two
+one
+</PRE>
+
+<P>
+<B>Ejemplo</B>
+
+<P>
+Supuesto un fichero de entrada con formato:
+<A NAME="section:alumnos"></A>...
+<PRE>
+NAME: xxx
+SURNAME: xxx
+TITLE: SISTEMAS
+OtherTitle: 
+BIRTHDAY: xxx
+BIRTHMONTH: xxx
+BIRTHYEAR: xxx
+ADDRESSFAMILY: xxx
+ADDRESSACTUAL: xxx
+POSTALCODE: xxx
+EMAIL: XXXXXXX@csi.ull.es
+TELEPHONE: xxx
+FAX: xxx
+LABGROUP: xxx
+COMMENTS:
+</PRE>
+...
+
+<P>
+Se pretenden extraer los apellidos y el nombre, concatenados con una coma. He aqui una posible solución:
+<PRE>
+#!/bin/sed -f
+/^NAME:/ {
+  s/^NAME://
+  h
+  n
+  s/^SURNAME://
+  G
+  s/\n/,/
+  y/áéíóúabcdefghijklmnñopqrstuvwxyz/ÁÉÍÓÚABCDEFGHIJKLMNÑOPQRSTUVWXYZ/
+  p
+}
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html2930"
+<A NAME="tex2html2969"
   HREF="node94.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2924"
-  HREF="node82.html">
+<A NAME="tex2html2963"
+  HREF="node85.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2918"
+<A NAME="tex2html2957"
   HREF="node92.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2926"
-  HREF="node219.html">
+<A NAME="tex2html2965"
+  HREF="node194.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2928"
-  HREF="node222.html">
+<A NAME="tex2html2967"
+  HREF="node197.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -194,17 +343,17 @@ El c&#243;digo que figura despu&#233;s de <code>REJECT</code> no es ejecutado.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2931"
-  HREF="node94.html">yymore()</A>
-<B>Sup:</B> <A NAME="tex2html2925"
-  HREF="node82.html">Expresiones Regulares en Flex</A>
-<B> Ant:</B> <A NAME="tex2html2919"
-  HREF="node92.html">input()</A>
+<B> Sig:</B> <A NAME="tex2html2970"
+  HREF="node94.html">La orden N</A>
+<B>Sup:</B> <A NAME="tex2html2964"
+  HREF="node85.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html2958"
+  HREF="node92.html">Traducción entre Tablas</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-04-11</I>
+2013-04-12</I>
 </ADDRESS>
 </BODY>
 </HTML>
