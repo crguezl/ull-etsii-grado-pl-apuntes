@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Práctica: Traducción de Infijo a Postfijo</TITLE>
-<META NAME="description" CONTENT="Práctica: Traducción de Infijo a Postfijo">
+<TITLE>Algoritmo de Análisis LR</TITLE>
+<META NAME="description" CONTENT="Algoritmo de Análisis LR">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -28,20 +28,20 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4300"
+<A NAME="tex2html4304"
   HREF="node137.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4294"
+<A NAME="tex2html4298"
   HREF="node128.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4288"
+<A NAME="tex2html4292"
   HREF="node135.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4296"
-  HREF="node197.html">
+<A NAME="tex2html4300"
+  HREF="node198.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4298"
-  HREF="node200.html">
+<A NAME="tex2html4302"
+  HREF="node201.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,169 +88,134 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4301"
-  HREF="node137.html">El módulo Generado por</A>
-<B>Sup:</B> <A NAME="tex2html4295"
+<B> Sig:</B> <A NAME="tex2html4305"
+  HREF="node137.html">Práctica: Traducción de Infijo</A>
+<B>Sup:</B> <A NAME="tex2html4299"
   HREF="node128.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4289"
-  HREF="node135.html">Algoritmo de Análisis LR</A>
+<B> Ant:</B> <A NAME="tex2html4293"
+  HREF="node135.html">Práctica: Calculadora con Análisis</A>
 <B> Con:</B> 
-<A NAME="tex2html4296"
-  HREF="node197.html">
+<A NAME="tex2html4300"
+  HREF="node198.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4298"
-  HREF="node200.html">
+<A NAME="tex2html4302"
+  HREF="node201.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
 <H1><A NAME="SECTION05780000000000000000"></A>
-   <A NAME="15975"></A>
-  
-<A NAME="section:calculadoraampliada"></A>
+<A NAME="section:algoritmoLR"></A>
 <BR>
-Práctica: Traducción de Infijo a Postfijo
+Algoritmo de Análisis LR
 </H1>
-Modifique el programa Jison realizado en la práctica 
-<A HREF="node131.html#subsectionpractica:calculadora">34.3.1</A>
-para traducir de infijo a postfijo. 
-Añada los operadores de comparación e igualdad.
-Por ejemplo
+Asi  pues la tabla de transiciones del autómata nos genera dos tablas:
+la tabla de acciones y la de saltos.
+El  algoritmo  de análisis sintáctico <SPAN  CLASS="textbf">LR</SPAN> en el  que 
+se basa <SPAN  CLASS="textbf">jison</SPAN> utiliza una pila y dos tablas 
+para analizar la entrada. Como se ha visto, la tabla  de acciones contiene cuatro tipo de acciones: 
+
+<OL>
+<LI>Desplazar (<SPAN  CLASS="textbf">shift</SPAN>)
+</LI>
+<LI>Reducir (<SPAN  CLASS="textbf">reduce</SPAN>)
+</LI>
+<LI>Aceptar
+</LI>
+<LI>Error
+</LI>
+</OL>
+El algoritmo utiliza una pila en la que se guardan los estados
+del autómata. De este modo se evita tener que ``comenzar'' 
+el procesado de la forma sentencial derecha resultante
+después de una reducción (antiderivación).
+<P>
+<DIV><A NAME="alg:parser"><B>Algoritmo  <SPAN CLASS="arabic">34</SPAN>.<SPAN CLASS="arabic">8</SPAN>.<SPAN CLASS="arabic">1</SPAN></B></A> &nbsp; 
+<I>Análizador LR
+</I><PRE>
+ push(s0);
+ b = yylex();
+ for( ; ; ;) {
+   s = top(0); a = b;
+   switch (action[s][a]) {
+     case "shift t" : 
+       t.attr = a.attr;
+       push(t); 
+       b = yylex();
+       break;
+     case "reduce A -&gt;alpha" : 
+       eval(Sem{A -&gt; alpha}(top(|alpha|-1).attr, ... , top(0).attr)); 
+       pop(|alpha|); 
+       push(goto[top(0)][A]); 
+       break;
+     case "accept" : return (1); 
+     default : yyerror("syntax error");
+   }
+ }
+</PRE></DIV><P></P>
+
+<UL>
+<LI>Como es habitual, <SPAN CLASS="MATH"><IMG
+ WIDTH="24" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img447.png"
+ ALT="$ \vert x\vert$"></SPAN> denota la longitud de la cadena <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img48.png"
+ ALT="$ x$"></SPAN>.
+</LI>
+<LI>La función <code>top(k)</code> devuelve el elemento que ocupa la 
+posición <code>k</code> desde el <SPAN  CLASS="textbf">top</SPAN> de la pila (esto es, está a profundidad <code>k</code>).
+</LI>
+<LI>La función <code>pop(k)</code> extrae <code>k</code> elementos de la pila.
+</LI>
+<LI>La notación <code>state.attr</code> hace referencia al atributo
+asociado con cada estado, el cual desde el punto de vista del programador
+esta asociado con el correspondiente símbolo de la parte derecha de la regla. 
+Nótese que cada estado que está en la pila es el resultado de una transición con
+un símbolo. El atributo de ese símbolo es guardado en el objeto estado
+cada vez que ocurre una transición.
 
 <P>
-<DIV ALIGN="CENTER">
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170>Infijo</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170>Postfijo</TD>
-</TR>
-<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><code>a = 3+2*4</code></TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><code> 3 2 4 * + &amp;a = </code></TD>
-</TR>
-<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><code>b = a == 11</code></TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><code> a 11 == &amp;b = </code></TD>
-</TR>
-</TABLE>
-</DIV>
-En estas traducciones la notación 
-<code>&amp;a</code> indica la dirección de la variable <code>a</code>
-y <code>a</code> indica el valor almacenado en la variable <code>a</code>.
+</LI>
+<LI>Denotamos por <code>Sem {reduce A -&gt; alpha}</code>
+el código de la acción semántica asociada con la regla <!-- MATH
+ $A \rightarrow \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img27.png"
+ ALT="$ A \rightarrow \alpha$"></SPAN>.
+</LI>
+</UL>
 
 <P>
-Añada sentencias 
-<code>if</code> ...
-<code>then</code> e <code>if</code> ... <code>then</code> ... <code>else</code>
-
-<P>
-Para realizar la traducción de estas sentencias
-añada 
-instrucciones <code>jmp label</code> y <code>jmpz label</code> (por <I>jump if zero</I>)
-y etiquetas:
-
-<P>
-<DIV ALIGN="CENTER">
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>Infijo</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170>Postfijo</TD>
-</TR>
-<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227><PRE>
-a = (2+5)*3;
-if a == 0 then b = 5 else b = 3;
-c = b + 1;
-</PRE></TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><PRE>
-        2
-        5
-        +
-        3
-        *
-        &amp;a
-        =
-        a
-        0
-        ==
-        jmpz else1
-        5
-        &amp;b
-        =
-        jmp endif0
-:else1
-        3
-        &amp;b
-        =
-:endif0
-        b
-        1
-        +
-        &amp;c
-        =
-</PRE></TD>
-</TR>
-</TABLE>
-</DIV>
-Introduzca pruebas unitarias como las descritas en 
-la sección <A HREF="node57.html#section:tstingfacil">25.1</A> (<I><A NAME="tex2html401"
-  HREF="http://net.tutsplus.com/tutorials/javascript-ajax/quick-tip-quick-and-easy-javascript-testing-with-assert/">Quick Tip: Quick and Easy JavaScript Testing with “Assert”</A></I>)
-
-<P>
-<PRE>
-[~/srcPLgrado/jisoninfix2postfix(master)]$ cat test/test.html 
-&lt;!DOCTYPE HTML&gt;
-&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;title&gt;Testing Our Simple Translator&lt;/title&gt;
-    &lt;link rel="stylesheet" href="test.css" /&gt;
-    &lt;script type="text/javascript" src="../calculator.js"&gt;&lt;/script&gt;
-
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;h1&gt;Testing Our Simple Translator
-    &lt;/h1&gt;
-    
-    &lt;ul id="output"&gt;&lt;/ul&gt;
-    &lt;script type="text/javascript" src="assert.js"&gt;&lt;/script&gt;
-    
-    &lt;script type="text/javascript"&gt;
-
-      var r = calculator.parse("a = 4*8");
-      assert( /4\s*8\s*[*]\s*a\s*=\s*/.exec(r), "a is 4*8");
-      
-      r = calculator.parse("a=4;b=a+1");
-      r = r.replace(/\s+/g,'');
-      var expected = "4a=a1+b=";
-      assert( r == expected, "a = 4;\nb=a+1 translated");
-
-
-      var r = calculator.parse("if a &gt; 0 then b = 1 else b = 2");
-      r = r.replace(/\s+/g,'');
-      expected = "a 0 &gt; jmpz else1 1 b = jmp endif0 :else1 2 b = :endif0".
-                 replace(/\s+/g,'');
-      assert( r == expected, "'if a &gt; 0 then b = 1 else b = 2' translated");
-    &lt;/script&gt;
-      See the NetTuts+ tutorial at &lt;a href="http://net.tutsplus.com/tutorials/javascript-ajax/quick-tip-quick-and-easy-javascript-testing-with-assert/"&gt;Quick and Easy JavaScript Testing&lt;/a&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-</PRE>
+Todos los analizadores LR comparten, salvo pequeñas
+exepciones, el mismo algoritmo
+de análisis. Lo que más los diferencia es la forma en 
+la que construyen las tablas.
+En <code>jison</code>
+la construcción de las tablas de <SPAN  CLASS="textbf">acciones</SPAN> y <SPAN  CLASS="textbf">gotos</SPAN>
+se realiza  por defecto mediante el algoritmo <SPAN  CLASS="textbf">LALR</SPAN>.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4300"
+<A NAME="tex2html4304"
   HREF="node137.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4294"
+<A NAME="tex2html4298"
   HREF="node128.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4288"
+<A NAME="tex2html4292"
   HREF="node135.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4296"
-  HREF="node197.html">
+<A NAME="tex2html4300"
+  HREF="node198.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4298"
-  HREF="node200.html">
+<A NAME="tex2html4302"
+  HREF="node201.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -297,12 +262,12 @@ la sección <A HREF="node57.html#section:tstingfacil">25.1</A> (<I><A NAME="tex2
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4301"
-  HREF="node137.html">El módulo Generado por</A>
-<B>Sup:</B> <A NAME="tex2html4295"
+<B> Sig:</B> <A NAME="tex2html4305"
+  HREF="node137.html">Práctica: Traducción de Infijo</A>
+<B>Sup:</B> <A NAME="tex2html4299"
   HREF="node128.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4289"
-  HREF="node135.html">Algoritmo de Análisis LR</A>
+<B> Ant:</B> <A NAME="tex2html4293"
+  HREF="node135.html">Práctica: Calculadora con Análisis</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

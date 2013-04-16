@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Manejo en yapp de Atributos Heredados</TITLE>
-<META NAME="description" CONTENT="Manejo en yapp de Atributos Heredados">
+<TITLE>Definición Dirigida por la Sintáxis</TITLE>
+<META NAME="description" CONTENT="Definición Dirigida por la Sintáxis">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node161.html">
 <LINK REL="previous" HREF="node159.html">
-<LINK REL="up" HREF="node147.html">
+<LINK REL="up" HREF="node148.html">
 <LINK REL="next" HREF="node161.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4686"
+<A NAME="tex2html4690"
   HREF="node161.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4680"
-  HREF="node147.html">
+<A NAME="tex2html4684"
+  HREF="node148.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4674"
+<A NAME="tex2html4678"
   HREF="node159.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4682"
-  HREF="node197.html">
+<A NAME="tex2html4686"
+  HREF="node198.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4684"
-  HREF="node200.html">
+<A NAME="tex2html4688"
+  HREF="node201.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,597 +88,200 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4687"
-  HREF="node161.html">Acciones en Medio de</A>
-<B>Sup:</B> <A NAME="tex2html4681"
-  HREF="node147.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4675"
-  HREF="node159.html">Definición Dirigida por la</A>
+<B> Sig:</B> <A NAME="tex2html4691"
+  HREF="node161.html">Manejo en yapp de</A>
+<B>Sup:</B> <A NAME="tex2html4685"
+  HREF="node148.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4679"
+  HREF="node159.html">Esquemas de Traducción</A>
 <B> Con:</B> 
-<A NAME="tex2html4682"
-  HREF="node197.html">
+<A NAME="tex2html4686"
+  HREF="node198.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4684"
-  HREF="node200.html">
+<A NAME="tex2html4688"
+  HREF="node201.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION058130000000000000000"></A>
-<A NAME="section:heredados"></A>
-<BR>
-Manejo en <TT>yapp</TT> de Atributos Heredados
+<H1><A NAME="SECTION058120000000000000000">
+Definición Dirigida por la Sintáxis</A>
 </H1>
-Supongamos  que <code>yapp</code> esta inmerso 
-en la construcción de la antiderivación a derechas y que la forma sentencial
-derecha en ese momento es:
+Una <A NAME="18463"></A><SPAN  CLASS="textbf">definición dirigida por la sintáxis</SPAN> es un pariente cercano
+de los esquemas de traducción. En una definición dirigida por la
+sintáxis una gramática <!-- MATH
+ $G = (V, \Sigma, P, S)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img448.png"
+ ALT="$ G = (V, \Sigma, P, S)$"></SPAN> se aumenta 
+con nuevas características:
+
+<UL>
+<LI>A cada símbolo <!-- MATH
+ $S \in V \cup \Sigma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="84" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img449.png"
+ ALT="$ S \in V \cup \Sigma$"></SPAN> de la gramática se le asocian
+cero o mas atributos. Un atributo queda caracterizado por un identificador
+o nombre y un tipo o clase. A este nivel son <A NAME="18465"></A><SPAN  CLASS="textbf">atributos formales</SPAN>,
+como los parámetros formales, en el sentido de que su realización 
+se produce cuando el nodo del árbol es creado.
+</LI>
+<LI>A cada regla de producción <!-- MATH
+ $A \rightarrow X_1 X_2 \ldots X_n \in P$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="173" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img450.png"
+ ALT="$ A \rightarrow X_1 X_2 \ldots X_n \in P$"></SPAN>
+se le asocian un conjunto de <A NAME="18467"></A><SPAN  CLASS="textbf">reglas de evaluación de los atributos</SPAN>
+o <A NAME="18469"></A><SPAN  CLASS="textbf">reglas semánticas</SPAN> que indican que el atributo en la parte
+izquierda de la regla semántica depende de los atributos que aparecen en la parte
+derecha de la regla. El atributo que aparece en la parte izquierda de la regla semántica
+puede estar asociado con un símbolo en la parte derecha de la regla de producción.
+</LI>
+<LI>Los atributos de cada símbolo de la gramática <!-- MATH
+ $X \in V \cup \Sigma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="88" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img451.png"
+ ALT="$ X \in V \cup \Sigma$"></SPAN>
+se dividen en dos grupos disjuntos: <A NAME="18471"></A><SPAN  CLASS="textbf">atributos sintetizados</SPAN>
+y <A NAME="18473"></A><SPAN  CLASS="textbf">atributos heredados</SPAN>. Un atributo de <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img452.png"
+ ALT="$ X$"></SPAN> es un <A NAME="18475"></A><SPAN  CLASS="textbf">atributo heredado</SPAN> 
+si depende de atributos de su padre y hermános en el árbol.
+Un <A NAME="18477"></A><SPAN  CLASS="textbf">atributo sintetizado</SPAN> es aquél tal que el valor del atributo depende
+de los valores de los atributos de los hijos, 
+es decir en tal caso <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img452.png"
+ ALT="$ X$"></SPAN> ha de ser una variable sintáctica
+y los atributos en la parte derecha de la regla semántica deben
+ser atributos de símbolos en la parte derecha de la regla de producción 
+asociada.
+</LI>
+<LI>Los atributos predefinidos se denominán <A NAME="18479"></A><SPAN  CLASS="textbf">atributos intrínsecos</SPAN>.
+Ejemplos de atributos intrínsecos son los atributos 
+sintetizados de los terminales, los cuáles se han
+computado durante la fase de análisis léxico. También
+son atributos intrínsecos los atributos heredados del símbolo
+de arranque, los cuales son pasados como parámetros 
+al comienzo de la computación.
+</LI>
+</UL>
 
 <P>
-<DIV ALIGN="CENTER">
+La diferencia principal con un esquema de traducción está en que
+no se especifica el orden de ejecución de las reglas semánticas.
+Se asume que, bien de forma manual o automática, se resolverán
+las dependencias existentes entre los atributos determinadas
+por la aplicación de las reglas semánticas, de manera
+que serán evaluados primero aquellos atributos que no dependen
+de ningún otro, despues los que dependen de estos, etc. siguiendo
+un esquema de ejecución que viene guiado por las dependencias
+existentes entre los datos.
+
+<P>
+Aunque hay muchas formas de realizar un evaluador de una definición
+dirigida por la sintáxis, conceptualmente, tal evaluador debe:
+
+<P>
+
+<OL>
+<LI>Construir el árbol de análisis sintáctico para la gramática
+y la entrada dadas.
+</LI>
+<LI>Analizar las reglas semánticas para determinar los atributos,
+su clase y las dependencias entre los mismos.
+</LI>
+<LI>Construir el <A NAME="18481"></A><SPAN  CLASS="textbf">grafo de dependencias</SPAN> de los atributos,
+el cual tiene
+un nodo para cada ocurrencia de un atributo en el árbol de análisis
+sintáctico etiquetado con dicho atributo. El grafo tiene una arista entre dos
+nodos si existe una dependencia entre los dos atributos a través de alguna
+regla semántica. 
+</LI>
+<LI>Supuesto que el grafo de dependencias determina un <A NAME="18483"></A><SPAN  CLASS="textbf">orden parcial</SPAN>
+(esto es cumple las propiedades reflexiva, antisimétrica y transitiva) 
+construir un <A NAME="18485"></A><SPAN  CLASS="textbf">orden topológico</SPAN> compatible con el orden parcial.
+</LI>
+<LI>Evaluar las reglas semánticas de acuerdo con el orden topológico.
+</LI>
+</OL>
+
+<P>
+Una definición dirigida por la sintáxis en la que las reglas semánticas
+no tienen efectos laterales se denomina una <A NAME="18487"></A><SPAN  CLASS="textbf">gramática atribuída</SPAN>.
+
+<P>
+Si la definición dirigida por la sintáxis puede ser realizada 
+mediante un esquema de traducción se dice que es <A NAME="18489"></A><SPAN  CLASS="textbf">L-atribuída</SPAN>.
+Para que una definición dirigida por la sintáxis sea L-atribuída
+deben cumplirse que cualquiera que sea la regla de producción
 <!-- MATH
- $X_m \ldots X_1 X_0 Y_1 \ldots  Y_n a_1 \ldots a_0$
+ $A \rightarrow X_1 \ldots X_n$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="225" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img482.png"
- ALT="$ X_m \ldots X_1 X_0 Y_1 \ldots Y_n a_1 \ldots a_0$"></SPAN>
-</DIV>
+ WIDTH="117" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img453.png"
+ ALT="$ A \rightarrow X_1 \ldots X_n$"></SPAN>, los atributos heredados de
+<SPAN CLASS="MATH"><IMG
+ WIDTH="26" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img454.png"
+ ALT="$ X_j$"></SPAN> pueden depender únicamente de:
+
+<OL>
+<LI>Los atributos de los símbolos a la izquierda de <SPAN CLASS="MATH"><IMG
+ WIDTH="26" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img454.png"
+ ALT="$ X_j$"></SPAN>
+</LI>
+<LI>Los atributos heredados de <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.png"
+ ALT="$ A$"></SPAN>
+</LI>
+</OL>
 
 <P>
-y que el mango es <!-- MATH
- $B \rightarrow Y_1 \ldots  Y_n$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="109" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img483.png"
- ALT="$ B \rightarrow Y_1 \ldots Y_n$"></SPAN> y en la entrada quedan por 
-procesar <!-- MATH
- $a_1 \ldots a_0$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="65" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img484.png"
- ALT="$ a_1 \ldots a_0$"></SPAN>.
+Nótese que las restricciones se refieren a los atributos heredados.
+El cálculo de los atributos sintetizados no supone 
+problema para un esquema de traducción. Si la gramática
+es LL(1), resulta fácil realizar una definición 
+L-atribuída en un analizador descendente recursivo predictivo.
 
 <P>
-Es posible acceder en <code>yapp</code> a los valores de los atributos de los estados en la pila
-del analizador que se encuentran ``por debajo'' o si se quiere
-``a la izquierda'' de los estados asociados
-con la regla por la que se reduce. Para ello se usa una llamada al método
-<A NAME="18480"></A><SPAN  CLASS="textbf"><TT>YYSemval</TT></SPAN>. La llamada es de la forma 
-<code>$_[0]-&gt;YYSemval( index )</code>, donde <code>index</code> es un entero.
-Cuando se usan los valores <code>1</code> ...<code>n</code> devuelve lo mismo
-que <code>$_[1]</code>, ...<code>$_[n]</code>. Esto es 
-<code>$_[1]</code> es el atributo asociado con <SPAN CLASS="MATH"><IMG
- WIDTH="23" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img485.png"
- ALT="$ Y_1$"></SPAN> y <code>$_[n]</code> es el atributo
-asociado con <SPAN CLASS="MATH"><IMG
- WIDTH="24" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img486.png"
- ALT="$ Y_n$"></SPAN>.  Cuando se usa con el valor
-0 devolverá el valor del atributo asociado con el símbolo que esta a la izquierda 
-del mango actual, esto es el atributo asociado con <SPAN CLASS="MATH"><IMG
- WIDTH="27" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img487.png"
- ALT="$ X_0$"></SPAN>, 
-si se llama con -1 el que está dos unidades a la izquierda de la variable actual, 
-esto es, el asociado con <SPAN CLASS="MATH"><IMG
- WIDTH="27" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img488.png"
- ALT="$ X_1$"></SPAN> etc. Así <code>$_[-m]</code> denota el atributo
-de <SPAN CLASS="MATH"><IMG
- WIDTH="32" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img489.png"
- ALT="$ X_m$"></SPAN>.
-
-<P>
-Esta forma de acceder a los atributos es especialmente útil cuando se 
-trabaja con <A NAME="18484"></A><SPAN  CLASS="textbf">atributos heredados</SPAN>. Esto es, cuando un atributo
-de un nodo del árbol sintáctico se computa en términos
-de valores de atributos de su padre y/o sus hermanos.
-Ejemplos de atributos heredados son la clase y tipo en la declaración
-de variables. Supongamos que tenemos el siguiente 
-<A NAME="18486"></A><SPAN  CLASS="textbf">esquema de traducción</SPAN> para calcular la clase (C) y tipo (T) en 
-las declaraciones (D) de listas (L) de identificadores:
-
-<P>
-<BR>
-<BR>
-<DIV ALIGN="CENTER">
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT">D <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT">C T <code>{ $L{c} = $C{c}; $L{t} = $T{t} }</code> L</TD>
-</TR>
-<TR><TD ALIGN="LEFT">C <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT">global   <code>{ $C{c} = "global" }</code></TD>
-</TR>
-<TR><TD ALIGN="LEFT">C <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT">local    <code>{ $C{c} = "local" }</code></TD>
-</TR>
-<TR><TD ALIGN="LEFT">T <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT">integer  <code>{ $T{t} = "integer" }</code></TD>
-</TR>
-<TR><TD ALIGN="LEFT">T <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT">float    <code>{ $T{t} = "float" }</code></TD>
-</TR>
-<TR><TD ALIGN="LEFT">L <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT"><code>{ $L</code><SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img478.png"
- ALT="$ _1$"></SPAN><code>{t} = $L{t}; $L</code><SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img478.png"
- ALT="$ _1$"></SPAN><code>{c} = $L{c}; }</code> L<SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img478.png"
- ALT="$ _1$"></SPAN> ','</TD>
-</TR>
-<TR><TD ALIGN="LEFT">&nbsp;</TD>
-<TD ALIGN="LEFT">id <code>{ set_class($id{v}, $L{c}); set_type($id{v}, $L{t}); }</code></TD>
-</TR>
-<TR><TD ALIGN="LEFT">L <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT">id   <code>{ set_class($id{v}, $L{c}); set_type($id{v}, $L{t}); }</code></TD>
-</TR>
-</TABLE>
-</DIV>
-<BR>
-<BR>
-
-<P>
-Los atributos <code>c</code> y <code>t</code> denotan respectivamente
-la clase y el tipo. 
-
-<P>
-<P>
-<DIV><B>Ejercicio  <SPAN CLASS="arabic">35</SPAN>.<SPAN CLASS="arabic">13</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Evalúe el esquema de traducción para la entrada
-<code>global float x,y</code>. Represente el árbol de análisis, las
-acciones incrustadas y determine el orden de ejecución.
-</I>
-<P>
-<I>Olvide por un momento la notación usada en las acciones y 
-suponga que se tratara de acciones <code>yapp</code>. ¿En que orden
-construye <code>yapp</code> el árbol y en que orden ejecutará las
-acciones?</I></DIV><P></P>
-
-<P>
-A la hora de transformar este esquema de traducción en un programa
-<code>yapp</code> es importante darse cuenta que en cualquier derivación a derechas
-desde D, cuando se reduce por una de las reglas 
-
-<P>
-<DIV ALIGN="CENTER">
-L <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> id <SPAN CLASS="MATH"><IMG
- WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img50.png"
- ALT="$ \vert$"></SPAN> L<SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img478.png"
- ALT="$ _1$"></SPAN> ',' id
-
-</DIV>
-
-<P>
-el símbolo a la izquierda de L es T y el que esta a la izquierda de T es C.
-Considere, por ejemplo la derivación a derechas:
-
-<P>
-<DIV ALIGN="CENTER">
-D <!-- MATH
- $\Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img490.png"
- ALT="$ \Longrightarrow$"></SPAN> C T L <!-- MATH
- $\Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img490.png"
- ALT="$ \Longrightarrow$"></SPAN> C T L, id <!-- MATH
- $\Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img490.png"
- ALT="$ \Longrightarrow$"></SPAN> C T L, id, id
-<!-- MATH
- $\Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img490.png"
- ALT="$ \Longrightarrow$"></SPAN> C T id, id, id <!-- MATH
- $\Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img490.png"
- ALT="$ \Longrightarrow$"></SPAN> 
-<BR><!-- MATH
- $\Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img490.png"
- ALT="$ \Longrightarrow$"></SPAN> C float id, id, id <!-- MATH
- $\Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img490.png"
- ALT="$ \Longrightarrow$"></SPAN> local float id, id, id
-
-</DIV>
-
-<P>
-Observe que el orden de recorrido de <code>yapp</code> es:
-<DIV ALIGN="CENTER">
-local float id, id, id <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img491.png"
- ALT="$ \Longleftarrow$"></SPAN> C float id, id <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img491.png"
- ALT="$ \Longleftarrow$"></SPAN>
-C T id, id, id <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img491.png"
- ALT="$ \Longleftarrow$"></SPAN>
-<BR><!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img491.png"
- ALT="$ \Longleftarrow$"></SPAN> C T L, id, id <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img491.png"
- ALT="$ \Longleftarrow$"></SPAN> C T L, id <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img491.png"
- ALT="$ \Longleftarrow$"></SPAN> C T L <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img491.png"
- ALT="$ \Longleftarrow$"></SPAN> D
-
-</DIV>
-
-<P>
-en la antiderivación, cuando el mango es una de las dos reglas 
-para listas de identificadores, L <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> id y L <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ \rightarrow$"></SPAN> L, id 
-es decir durante las tres ultimas antiderivaciones:
-
-<P>
-<DIV ALIGN="CENTER">
-C T L, id, id <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img491.png"
- ALT="$ \Longleftarrow$"></SPAN> C T L, id <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img491.png"
- ALT="$ \Longleftarrow$"></SPAN> C T L <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img491.png"
- ALT="$ \Longleftarrow$"></SPAN> D
-
-</DIV>
-
-<P>
-las variables a la izquierda del mango son
-T y C. Esto ocurre siempre. 
-Estas observaciones nos conducen al siguiente
-programa <code>yapp</code>: 
-
-<P>
-<PRE>
-$ cat -n Inherited.yp
- 1  %token FLOAT INTEGER
- 2  %token GLOBAL
- 3  %token LOCAL
- 4  %token NAME
- 5
- 6  %%
- 7  declarationlist
- 8    : # vacio
- 9    | declaration ';' declarationlist
-10    ;
-11
-12  declaration
-13    : class type namelist { ; }
-14    ;
-15
-16  class
-17    : GLOBAL
-18    | LOCAL
-19    ;
-20
-21  type
-22    : FLOAT
-23    | INTEGER
-24    ;
-25
-26  namelist
-27    : NAME
-28       { printf("%s de clase %s, tipo %s\n",
-29               $_[1], $_[0]-&gt;YYSemval(-1),$_[0]-&gt;YYSemval(0)); }
-30    | namelist ',' NAME
-31        { printf("%s de clase %s, tipo %s\n",
-32                 $_[3], $_[0]-&gt;YYSemval(-1),$_[0]-&gt;YYSemval(0)); }
-33    ;
-34  %%
-</PRE>
-
-<P>
-A continuación escribimos el programa que usa 
-el módulo generado por <code>yapp</code>:
-
-<P>
-<PRE>
-$ cat -n useinherited.pl
- 1  #!/usr/bin/perl -w
- 2  use strict;
- 3  use Inherited;
- 4
- 5  sub Error {
- 6    exists $_[0]-&gt;YYData-&gt;{ERRMSG}
- 7    and do {
- 8      print $_[0]-&gt;YYData-&gt;{ERRMSG};
- 9      delete $_[0]-&gt;YYData-&gt;{ERRMSG};
-10      return;
-11    };
-12    print "Error sintáctico\n";
-13  }
-14
-15  { # hagamos una clausura con la entrada
-16    my $input;
-17    local $/ = undef;
-18    print "Entrada (En Unix, presione CTRL-D para terminar):\n";
-19    $input = &lt;stdin&gt;;
-20
-21    sub scanner {
-22
-23      { # Con el redo del final hacemos un bucle "infinito"
-24        if ($input =~ m|\G\s*INTEGER\b|igc) {
-25          return ('INTEGER', 'INTEGER');
-26        }
-27        elsif ($input =~ m|\G\s*FLOAT\b|igc) {
-28          return ('FLOAT', 'FLOAT');
-29        }
-30        elsif ($input =~ m|\G\s*LOCAL\b|igc) {
-31          return ('LOCAL', 'LOCAL');
-32        }
-33        elsif ($input =~ m|\G\s*GLOBAL\b|igc) {
-34          return ('GLOBAL', 'GLOBAL');
-35        }
-36        elsif ($input =~ m|\G\s*([a-z_]\w*)\b|igc) {
-37          return ('NAME', $1);
-38        }
-39        elsif ($input =~ m/\G\s*([,;])/gc) {
-40          return ($1, $1);
-41        }
-42        elsif ($input =~ m/\G\s*(.)/gc) {
-43          die "Caracter invalido: $1\n";
-44        }
-45        else {
-46          return ('', undef); # end of file
-47        }
-48        redo;
-49      }
-50    }
-51  }
-52
-53  my $debug_level = (@ARGV)? oct(shift @ARGV): 0x1F;
-54  my $parser = Inherited-&gt;new();
-55  $parser-&gt;YYParse( yylex =&gt; \&amp;scanner, yyerror =&gt; \&amp;Error, yydebug =&gt; $debug_level );
-</PRE>
-En las líneas de la 15 a la 51 esta nuestro analizador léxico.
-La entrada se lee en una variable local cuyo valor permanece
-entre llamadas: hemos creado una clausura con la variable
-<code>$input</code> (véase la sección <A HREF="#section:clausura">
-<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
- HREF="node201.html#CasianoIntroAPerl">10</A>] para mas detalles
-sobre el uso de clausuras en Perl). Aunque la variable <code>$input</code>
-queda inaccesible desde fuera de la clausura, persiste entre llamadas
-como consecuencia de que la subrutina <code>scanner</code> la utiliza.
-
-<P>
-A continuación sigue un ejemplo de ejecución:
-
-<P>
-<PRE>
-$ ./useinherited.pl 0
-Entrada (En Unix, presione CTRL-D para terminar):
-global integer x, y, z;
-local float a,b;
-x de clase GLOBAL, tipo INTEGER
-y de clase GLOBAL, tipo INTEGER
-z de clase GLOBAL, tipo INTEGER
-a de clase LOCAL, tipo FLOAT
-b de clase LOCAL, tipo FLOAT
-</PRE>
-
-<P>
-<P>
-<DIV><B>Ejercicio  <SPAN CLASS="arabic">35</SPAN>.<SPAN CLASS="arabic">13</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
-<I>El siguiente programa <code>yapp</code> calcula 
-un árbol de análisis abstracto para la gramática
-del ejemplo anterior:
-</I><PRE>
-%token FLOAT INTEGER 
-%token GLOBAL 
-%token LOCAL 
-%token NAME
-
-%%
-declarationlist 
-  : /* vacio */                     { bless [], 'declarationlist' } 
-  | declaration ';' declarationlist { push @{$_[3]}, $_[1]; $_[3] }
-  ;
-
-declaration
-  : class type namelist 
-      { 
-        bless {class =&gt; $_[1], type =&gt; $_[2], namelist =&gt; $_[3]}, 'declaration'; 
-      }
-  ;
-
-class
-  : GLOBAL  { bless { GLOBAL =&gt; 0}, 'class' } 
-  | LOCAL   { bless { LOCAL =&gt; 1}, 'class' }
-  ;
-
-type
-  : FLOAT   { bless { FLOAT =&gt; 2}, 'type' } 
-  | INTEGER { bless { INTEGER =&gt; 3}, 'type' }
-  ;
-
-namelist
-  : NAME  
-     { bless [ $_[1]], 'namelist' }
-  | namelist ',' NAME 
-      { push @{$_[1]}, $_[3]; $_[1] }
-  ;
-%%
-</PRE><I>
-sigue un ejemplo de ejecución:
-</I><PRE>
-$ ./useinherited3.pl
-Entrada (En Unix, presione CTRL-D para terminar):
-global float x,y;
-$VAR1 = bless( [
-  bless( {
-    'namelist' =&gt; bless( [ 'x', 'y' ], 'namelist' ),
-    'type' =&gt; bless( { 'FLOAT' =&gt; 2 }, 'type' ),
-    'class' =&gt; bless( { 'GLOBAL' =&gt; 0 }, 'class' )
-  }, 'declaration' )
-], 'declarationlist' );
-</PRE>
-<P>
-<I>Extienda el programa del ejemplo para que la gramática 
-incluya las acciones del esquema de traducción.
-Las acciones se tratarán como un terminal <code>CODE</code>
-y serán devueltas por el analizador léxico. Su atributo
-asociado es el texto del código. El programa 
-<code>yapp</code> deberá devolver el árbol abstracto
-extendido con las acciones-terminales.
-La parte mas difícil de este problema consiste en ``reconocer''
-el código Perl incrustado. La estrategia seguir consiste
-en contar el número de llaves que se abren y se cierran.
-Cuando el contador alcanza cero es que hemos llegado
-al final del código Perl incrustado. Esta estrategia
-tiene una serie de problemas. ¿Sabría decir cuáles?
-(sugerencia: repase la sección <A HREF="node166.html#subsection:elcuerpo">35.19.3</A> 
-o vea como <code>yapp</code> resuelve el problema).</I></DIV><P></P>
+Si la definición dirigida por la sintáxis sólo utiliza 
+atributos sintetizados se denomina <A NAME="18491"></A><SPAN  CLASS="textbf">S-atribuída</SPAN>. Una
+definición S-atribuída puede ser fácilmente trasladada a un programa
+<code>yapp</code>.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4686"
+<A NAME="tex2html4690"
   HREF="node161.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4680"
-  HREF="node147.html">
+<A NAME="tex2html4684"
+  HREF="node148.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4674"
+<A NAME="tex2html4678"
   HREF="node159.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4682"
-  HREF="node197.html">
+<A NAME="tex2html4686"
+  HREF="node198.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4684"
-  HREF="node200.html">
+<A NAME="tex2html4688"
+  HREF="node201.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -725,12 +328,12 @@ o vea como <code>yapp</code> resuelve el problema).</I></DIV><P></P>
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4687"
-  HREF="node161.html">Acciones en Medio de</A>
-<B>Sup:</B> <A NAME="tex2html4681"
-  HREF="node147.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4675"
-  HREF="node159.html">Definición Dirigida por la</A>
+<B> Sig:</B> <A NAME="tex2html4691"
+  HREF="node161.html">Manejo en yapp de</A>
+<B>Sup:</B> <A NAME="tex2html4685"
+  HREF="node148.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4679"
+  HREF="node159.html">Esquemas de Traducción</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
