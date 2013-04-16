@@ -122,16 +122,16 @@ $key = q/section:dolar1/;
 $external_labels{$key} = "$URL/" . q|node97.html|; 
 $noresave{$key} = "$nosave";
 
-$key = q/prog:calc1/;
-$external_labels{$key} = "$URL/" . q|node179.html|; 
-$noresave{$key} = "$nosave";
-
 $key = q/subsection:cabecerayaccyapp/;
 $external_labels{$key} = "$URL/" . q|node166.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/section:abreviadas/;
 $external_labels{$key} = "$URL/" . q|node97.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/prog:calc1/;
+$external_labels{$key} = "$URL/" . q|node179.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/subsection:flex/;
@@ -412,6 +412,10 @@ $noresave{$key} = "$nosave";
 
 $key = q/subsection:callyapply/;
 $external_labels{$key} = "$URL/" . q|node25.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/subsection:first/;
+$external_labels{$key} = "$URL/" . q|node133.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/cite_learningnode/;
@@ -1045,6 +1049,10 @@ $key = q/subsection:callyapply/;
 $external_latex_labels{$key} = q|8.7.3|; 
 $noresave{$key} = "$nosave";
 
+$key = q/subsection:first/;
+$external_latex_labels{$key} = q|34.5.1|; 
+$noresave{$key} = "$nosave";
+
 $key = q/practica:firstandfollow/;
 $external_latex_labels{$key} = q|33.6.8|; 
 $noresave{$key} = "$nosave";
@@ -1157,15 +1165,15 @@ $key = q/ejer:arbol/;
 $external_latex_labels{$key} = q|2|; 
 $noresave{$key} = "$nosave";
 
+$key = q/table:tablaslalr/;
+$external_latex_labels{$key} = q|35.1|; 
+$noresave{$key} = "$nosave";
+
 $key = q/practica:casandoytransformando/;
 $external_latex_labels{$key} = q|33.12.1|; 
 $noresave{$key} = "$nosave";
 
 $key = q/equation:deltahat/;
-$external_latex_labels{$key} = q|35.1|; 
-$noresave{$key} = "$nosave";
-
-$key = q/table:tablaslalr/;
 $external_latex_labels{$key} = q|35.1|; 
 $noresave{$key} = "$nosave";
 

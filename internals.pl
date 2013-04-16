@@ -122,16 +122,16 @@ $key = q/section:dolar1/;
 $ref_files{$key} = "$dir".q|node97.html|; 
 $noresave{$key} = "$nosave";
 
-$key = q/prog:calc1/;
-$ref_files{$key} = "$dir".q|node179.html|; 
-$noresave{$key} = "$nosave";
-
 $key = q/subsection:cabecerayaccyapp/;
 $ref_files{$key} = "$dir".q|node166.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/section:abreviadas/;
 $ref_files{$key} = "$dir".q|node97.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/prog:calc1/;
+$ref_files{$key} = "$dir".q|node179.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/subsection:flex/;
@@ -412,6 +412,10 @@ $noresave{$key} = "$nosave";
 
 $key = q/subsection:callyapply/;
 $ref_files{$key} = "$dir".q|node25.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/subsection:first/;
+$ref_files{$key} = "$dir".q|node133.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/cite_learningnode/;
