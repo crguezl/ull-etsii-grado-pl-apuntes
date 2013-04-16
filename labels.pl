@@ -122,16 +122,16 @@ $key = q/section:dolar1/;
 $external_labels{$key} = "$URL/" . q|node97.html|; 
 $noresave{$key} = "$nosave";
 
-$key = q/section:abreviadas/;
-$external_labels{$key} = "$URL/" . q|node97.html|; 
-$noresave{$key} = "$nosave";
-
 $key = q/prog:calc1/;
 $external_labels{$key} = "$URL/" . q|node179.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/subsection:cabecerayaccyapp/;
 $external_labels{$key} = "$URL/" . q|node166.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/section:abreviadas/;
+$external_labels{$key} = "$URL/" . q|node97.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/subsection:flex/;
