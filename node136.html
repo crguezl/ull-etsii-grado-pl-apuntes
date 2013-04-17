@@ -115,79 +115,6 @@ Práctica: Calculadora con Análisis de Ámbito
 Extienda la práctica anterior para que haga un análisis completo del ámbito de las variables.
 
 <P>
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><PRE>
-var c = 4, d = 1, e;
-def f(x) { 
-  var y = 1;
-  x + y 
-}
-def g(a, b) { 
-  var d, e;
-  def f(u, v) { a + u + v + d }
-  a * f(b, 2) + d + c 
-}
-c = 3;
-f(1+c);
-g(3, 4)
-</PRE></TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><PRE>
-        # global:       var c,d,e
-        # f: args x
-        # f:    var y
-:f
-        1
-        &amp;y, 0
-        =
-        $x, 0
-        y, 0
-        +
-        return
-        # g: args a,b
-        # g:    var d,e
-        # g.f: args u,v
-:g.f
-        $a, 1
-        $u, 0
-        +
-        $v, 0
-        +
-        d, 1
-        +
-        return
-:g
-        $a, 0
-        $b, 0
-        2
-        call :g.f
-        *
-        d, 0
-        +
-        c, 1
-        +
-        return
-:main:
-        4
-        &amp;c, 0
-        =
-        1
-        &amp;d, 0
-        =
-        3
-        &amp;c, 0
-        =
-        1
-        c, 0
-        +
-        call :f
-        3
-        4
-        call :g
-</PRE></TD>
-</TR>
-</TABLE>
-
-<P>
 
 <UL>
 <LI>Añada declaraciones de variable con <code>var x, y = 1, z</code>.
@@ -264,6 +191,81 @@ Asi <code>$a, 1</code> significa acceder al parámetro <code>a</code> que está 
 en el ámbito/stack frame actual
 </LI>
 <LI>Los parámetros se siguen prefijando de <code>$</code> como en la práctica anterior
+</LI>
+<LI>Sigue un ejemplo de traducción:
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><PRE>
+var c = 4, d = 1, e;
+def f(x) { 
+  var y = 1;
+  x + y 
+}
+def g(a, b) { 
+  var d, e;
+  def f(u, v) { a + u + v + d }
+  a * f(b, 2) + d + c 
+}
+c = 3;
+f(1+c);
+g(3, 4)
+</PRE></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><PRE>
+        # global:       var c,d,e
+        # f: args x
+        # f:    var y
+:f
+        1
+        &amp;y, 0
+        =
+        $x, 0
+        y, 0
+        +
+        return
+        # g: args a,b
+        # g:    var d,e
+        # g.f: args u,v
+:g.f
+        $a, 1
+        $u, 0
+        +
+        $v, 0
+        +
+        d, 1
+        +
+        return
+:g
+        $a, 0
+        $b, 0
+        2
+        call :g.f
+        *
+        d, 0
+        +
+        c, 1
+        +
+        return
+:main:
+        4
+        &amp;c, 0
+        =
+        1
+        &amp;d, 0
+        =
+        3
+        &amp;c, 0
+        =
+        1
+        c, 0
+        +
+        call :f
+        3
+        4
+        call :g
+</PRE></TD>
+</TR>
+</TABLE>
+
+<P>
 </LI>
 </UL>
 
