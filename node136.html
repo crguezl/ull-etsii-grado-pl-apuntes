@@ -107,7 +107,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <!--End of Navigation Panel-->
 
 <H1><A NAME="SECTION05780000000000000000"></A>
-   <A NAME="16009"></A>
+   <A NAME="16024"></A>
 <BR>
 Práctica: Calculadora con Análisis de Ámbito
 </H1>
@@ -205,6 +205,7 @@ declarada en la rutina que anida la actual se recorre la lista de frames via BP 
 <img src="stackframes.png" />
 </center>
 </LI>
+<LI><OL>
 <LI>Esto es lo que dice la Wikipedia sobre la implementación de <A NAME="tex2html402"
   HREF="http://en.wikipedia.org/wiki/call_stack">llamadas</A>
 a subrutinas anidadas:
@@ -212,14 +213,88 @@ a subrutinas anidadas:
 <I>Programming languages that support nested subroutines also have a field
 in the call frame that points to the stack frame of the latest activation
 of the procedure that most closely encapsulates the callee, i.e. the
-immediate scope of the callee. This is called an <A NAME="16012"></A><SPAN  CLASS="textbf">access link</SPAN> or 
-<A NAME="16014"></A><SPAN  CLASS="textbf">static link</SPAN> (as it keeps track of static nesting during dynamic and recursive
+immediate scope of the callee. This is called an <A NAME="16027"></A><SPAN  CLASS="textbf">access link</SPAN> or 
+<A NAME="16029"></A><SPAN  CLASS="textbf">static link</SPAN> (as it keeps track of static nesting during dynamic and recursive
 calls) and provides the routine (as well as any other routines it may
 invoke) access to the local data of its encapsulating routines at every
 nesting level. 
 </I>
 
 </BLOCKQUOTE>
+</LI>
+<LI>Esto es lo que dice sobre las 
+ventajas de tener una pila y de almacenar la dirección de retorno y las variables locales:
+<BLOCKQUOTE>
+When a subroutine is called, the location (address) of the instruction at
+which it can later resume needs to be saved somewhere. Using a stack to
+save the return address has important advantages over alternatives. One
+is that each task has its own stack, and thus the subroutine can be
+<A NAME="16031"></A><SPAN  CLASS="textbf">reentrant</SPAN>, that is, can be active simultaneously for different tasks doing
+different things. Another benefit is that <A NAME="16033"></A><SPAN  CLASS="textbf">recursion</SPAN> is automatically
+supported. When a function calls itself recursively, a return address
+needs to be stored for each activation of the function so that it can
+later be used to return from the function activation. This capability
+is automatic with a stack.
+
+</BLOCKQUOTE>
+
+<P>
+</LI>
+<LI>Almacenamiento local:
+<BLOCKQUOTE>
+A subroutine frequently needs memory space for storing the values of
+local variables, the variables that are known only within the active
+subroutine and do not retain values after it returns. It is often
+convenient to allocate space for this use by simply moving the top of
+the stack by enough to provide the space. This is very fast compared to
+heap allocation. Note that each separate activation of a subroutine gets
+its own separate space in the stack for locals.
+
+</BLOCKQUOTE>
+
+<P>
+</LI>
+<LI>Parámetros:
+<BLOCKQUOTE>
+Subroutines often require that values for parameters be supplied to
+them by the code which calls them, and it is not uncommon that space for
+these parameters may be laid out in the call stack. 
+</BLOCKQUOTE>
+<P>
+<BLOCKQUOTE>The call stack works well as a
+place for these parameters, especially since each call to a subroutine,
+which will have differing values for parameters, will be given separate
+space on the call stack for those values.
+
+</BLOCKQUOTE>
+
+<P>
+</LI>
+<LI>Pila de Evaluación
+
+<P>
+<BLOCKQUOTE>
+Operands for arithmetic or logical operations are most often placed into
+registers and operated on there. However, in some situations the operands
+may be stacked up to an arbitrary depth, which means something more than
+registers must be used (this is the case of register spilling). The stack
+of such operands, rather like that in an RPN calculator, is called an
+evaluation stack, and may occupy space in the call stack.
+
+</BLOCKQUOTE>
+
+<P>
+</LI>
+<LI>Puntero a la instancia actual
+<BLOCKQUOTE>
+Some object-oriented languages (e.g., C++), store the <code>this</code> pointer along
+with function arguments in the call stack when invoking methods. The
+ <TT>this pointer</TT>  points to the object instance associated with the method
+to be invoked.
+
+</BLOCKQUOTE>
+</LI>
+</OL>
 
 <P>
 </LI>

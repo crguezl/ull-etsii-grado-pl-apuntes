@@ -250,6 +250,13 @@ $cached_env_img{$key} = q|<IMG
  SRC="|."$dir".q|img337.png"
  ALT="$ arbol \rightarrow texto objeto$">|; 
 
+$key = q/%latex2htmlidmarker39290S=program;MSF=1.6;LFS=11;AAT/;
+$cached_env_img{$key} = q|<IMG
+ WIDTH="107" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="|."$dir".q|img368.png"
+ ALT="% latex2html id marker 39290
+$ S = program$">|; 
+
 $key = q/S;MSF=1.6;LFS=11;AAT/;
 $cached_env_img{$key} = q|<IMG
  WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
@@ -3105,13 +3112,6 @@ $cached_env_img{$key} = q|<IMG
  WIDTH="340" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
  SRC="|."$dir".q|img90.png"
  ALT="$\displaystyle   FIRST(X) = FIRST(X) \cup FIRST^*(Y_i);$">|; 
-
-$key = q/%latex2htmlidmarker39256S=program;MSF=1.6;LFS=11;AAT/;
-$cached_env_img{$key} = q|<IMG
- WIDTH="107" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="|."$dir".q|img368.png"
- ALT="% latex2html id marker 39256
-$ S = program$">|; 
 
 $key = q/I_i;MSF=1.6;LFS=11;AAT/;
 $cached_env_img{$key} = q|<IMG
