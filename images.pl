@@ -3111,17 +3111,17 @@ $cached_env_img{$key} = q|<IMG
  SRC="|."$dir".q|img364.png"
  ALT="$ \{ r_t \ge 1 \} \Longrightarrow PLUS(t, ID)$">|; 
 
-$key = q/displaystyleFIRST(X)=FIRST(X)cupFIRST^*(Y_i);;MSF=1.6;LFS=11;AAT/;
-$cached_env_img{$key} = q|<IMG
- WIDTH="340" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="|."$dir".q|img90.png"
- ALT="$\displaystyle   FIRST(X) = FIRST(X) \cup FIRST^*(Y_i);$">|; 
-
 $key = q/decl;MSF=1.6;LFS=11;AAT/;
 $cached_env_img{$key} = q|<IMG
  WIDTH="35" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
  SRC="|."$dir".q|img250.png"
  ALT="$ decl$">|; 
+
+$key = q/displaystyleFIRST(X)=FIRST(X)cupFIRST^*(Y_i);;MSF=1.6;LFS=11;AAT/;
+$cached_env_img{$key} = q|<IMG
+ WIDTH="340" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="|."$dir".q|img90.png"
+ ALT="$\displaystyle   FIRST(X) = FIRST(X) \cup FIRST^*(Y_i);$">|; 
 
 $key = q/I_i;MSF=1.6;LFS=11;AAT/;
 $cached_env_img{$key} = q|<IMG
