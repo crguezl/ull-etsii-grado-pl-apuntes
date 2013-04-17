@@ -107,7 +107,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <!--End of Navigation Panel-->
 
 <H1><A NAME="SECTION05780000000000000000"></A>
-   <A NAME="15991"></A>
+   <A NAME="16000"></A>
 <BR>
 Práctica: Calculadora con Análisis de Ámbito
 </H1>
@@ -205,6 +205,44 @@ def g(a, b) {
 </PRE>
 </LI>
 <LI>Una declaración de variable en un ámbito anidado tapa a una declaración con el mismo nombre en el ámbito exterior.
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><PRE>
+var c = 4, d = 1, e;
+def g(a, b) { 
+  var d, e; # esta "d" tapa la d anterior
+  def f(u, v) { a + u + v + d }
+  a * f(b, 2) + d + c 
+}
+</PRE></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><PRE>
+        # global:       var c,d,e
+:g.f
+        $a, 1
+        $u, 0
+        +
+        $v, 0
+        +
+        d, 1
+        +
+        return
+:g
+        $a, 0
+        $b, 0
+        2
+        call :g.f
+        *
+        d, 0     # acceder a la d en el ámbito actual
+        +
+        c, 1
+        +
+        return
+</PRE></TD>
+</TR>
+</TABLE>
+
+<P>
 </LI>
 <LI>Los nombres de funciones se traducen por una secuencia anidada de nombres que indican su ámbito. Así la función <code>f</code> anidada en <code>g</code> es traducida a la función con nombre <code>g.f</code>
 </LI>
