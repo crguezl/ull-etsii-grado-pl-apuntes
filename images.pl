@@ -2950,13 +2950,6 @@ $cached_env_img{$key} = q|<IMG
  SRC="|."$dir".q|img411.png"
  ALT="$\displaystyle si (\epsilon \in FIRST(X_n) and i &gt; n) FIRST(\alpha) = FIRST(X) \cup \{ \epsilon \}$">|; 
 
-$key = q/%latex2htmlidmarker39293S=program;MSF=1.6;LFS=11;AAT/;
-$cached_env_img{$key} = q|<IMG
- WIDTH="107" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="|."$dir".q|img368.png"
- ALT="% latex2html id marker 39293
-$ S = program$">|; 
-
 $key = q/a_1ldotsa_0;MSF=1.6;LFS=11;AAT/;
 $cached_env_img{$key} = q|<IMG
  WIDTH="65" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
@@ -3022,6 +3015,13 @@ $cached_env_img{$key} = q|<IMG
  WIDTH="51" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
  SRC="|."$dir".q|img223.png"
  ALT="$ \rightarrow ID$">|; 
+
+$key = q/%latex2htmlidmarker39296S=program;MSF=1.6;LFS=11;AAT/;
+$cached_env_img{$key} = q|<IMG
+ WIDTH="107" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="|."$dir".q|img368.png"
+ ALT="% latex2html id marker 39296
+$ S = program$">|; 
 
 $key = q/gamma_nstackrel{*}{Longrightarrow}epsilon;MSF=1.6;LFS=11;AAT/;
 $cached_env_img{$key} = q|<IMG
