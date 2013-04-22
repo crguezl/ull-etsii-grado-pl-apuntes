@@ -521,7 +521,7 @@ $cached_env_img{$key} = q|<IMG
 $key = q/SinVcupSigma;MSF=1.6;LFS=11;AAT/;
 $cached_env_img{$key} = q|<IMG
  WIDTH="84" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="|."$dir".q|img455.png"
+ SRC="|."$dir".q|img457.png"
  ALT="$ S \in V \cup \Sigma$">|; 
 
 $key = q/{figure}{centerline{epsfig{file=chapter_bottomupslashdfa.eps,width=12cm}}{{{{figure};LFS=11;FSF=1.6;AAT/;
@@ -1266,6 +1266,13 @@ $cached_env_img{$key} = q|<IMG
  SRC="|."$dir".q|img358.png"
  ALT="$ r_t$">|; 
 
+$key = q/%latex2htmlidmarker39382S=program;MSF=1.6;LFS=11;AAT/;
+$cached_env_img{$key} = q|<IMG
+ WIDTH="107" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="|."$dir".q|img368.png"
+ ALT="% latex2html id marker 39382
+$ S = program$">|; 
+
 $key = q/tauinB(VcupSigma);MSF=1.6;LFS=11;AAT/;
 $cached_env_img{$key} = q|<IMG
  WIDTH="109" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
@@ -1527,13 +1534,6 @@ $cached_env_img{$key} = q|<IMG
  WIDTH="125" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
  SRC="|."$dir".q|img94.png"
  ALT="$ \epsilon \in FIRST(Y_k)$">|; 
-
-$key = q/%latex2htmlidmarker36420S=program;MSF=1.6;LFS=11;AAT/;
-$cached_env_img{$key} = q|<IMG
- WIDTH="107" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="|."$dir".q|img368.png"
- ALT="% latex2html id marker 36420
-$ S = program$">|; 
 
 $key = q/t=CONS(CONS(A,NIL),NIL);MSF=1.6;LFS=11;AAT/;
 $cached_env_img{$key} = q|<IMG
@@ -1853,7 +1853,7 @@ $cached_env_img{$key} = q|<IMG
 $key = q/X;MSF=1.6;LFS=11;AAT/;
 $cached_env_img{$key} = q|<IMG
  WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="|."$dir".q|img458.png"
+ SRC="|."$dir".q|img455.png"
  ALT="$ X$">|; 
 
 $key = q/PV=left{deltain(SigmacupV)*:existsS{array}{c}*Longrightarrow{scriptstyleRM}{array}alphaydeltaesunprefijodehandle_2(alpha)right};MSF=1.6;LFS=11;AAT/;
@@ -2534,7 +2534,7 @@ $cached_env_img{$key} = q|<IMG
 $key = q/ArightarrowX_1X_2ldotsX_ninP;MSF=1.6;LFS=11;AAT/;
 $cached_env_img{$key} = q|<IMG
  WIDTH="173" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="|."$dir".q|img456.png"
+ SRC="|."$dir".q|img458.png"
  ALT="$ A \rightarrow X_1 X_2 \ldots X_n \in P$">|; 
 
 $key = q/listrightarrowlistexpr;MSF=1.6;LFS=11;AAT/;
@@ -2750,7 +2750,7 @@ $cached_env_img{$key} = q|<IMG
 $key = q/XinVcupSigma;MSF=1.6;LFS=11;AAT/;
 $cached_env_img{$key} = q|<IMG
  WIDTH="88" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="|."$dir".q|img457.png"
+ SRC="|."$dir".q|img454.png"
  ALT="$ X \in V \cup \Sigma$">|; 
 
 $key = q/overline{A}={qinQslashexistsq'inQ:hat{delta}(q,epsilon)=q};MSF=1.6;LFS=11;AAT/;
@@ -3074,7 +3074,7 @@ $cached_env_img{$key} = q|<IMG
 $key = q/G=(V,Sigma,P,S);MSF=1.6;LFS=11;AAT/;
 $cached_env_img{$key} = q|<IMG
  WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="|."$dir".q|img454.png"
+ SRC="|."$dir".q|img456.png"
  ALT="$ G = (V, \Sigma, P, S)$">|; 
 
 $key = q/R;MSF=1.6;LFS=11;AAT/;
