@@ -111,14 +111,48 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BR>
 Manejo en <TT>jison</TT> de Atributos Heredados
 </H1>
-Jison no soporta acciones en medio de una regla.
+
+<P>
+Supongamos  que <code>jison</code> esta inmerso 
+en la construcción de la antiderivación a derechas y que la forma sentencial
+derecha en ese momento es:
+
+<P>
+<DIV ALIGN="CENTER">
+<!-- MATH
+ $X_m \ldots X_1 X_0 Y_1 \ldots  Y_n a_1 \ldots a_0$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="225" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img460.png"
+ ALT="$ X_m \ldots X_1 X_0 Y_1 \ldots Y_n a_1 \ldots a_0$"></SPAN>
+</DIV>
+
+<P>
+y que el mango es <!-- MATH
+ $B \rightarrow Y_1 \ldots  Y_n$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="109" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img461.png"
+ ALT="$ B \rightarrow Y_1 \ldots Y_n$"></SPAN> y en la entrada quedan por 
+procesar <!-- MATH
+ $a_1 \ldots a_0$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="65" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img462.png"
+ ALT="$ a_1 \ldots a_0$"></SPAN>.
+
+<P>
+No es posible acceder en <code>jison</code> a los valores de los atributos de los estados en la pila
+del analizador que se encuentran ``por debajo'' o si se quiere
+``a la izquierda'' de los estados asociados
+con la regla por la que se reduce. 
 
 <P>
 <PRE>
 [~/jison/jison-inherited(grammar)]$ cat inherited.jison 
-%{
-  var stack = '$$';
-%}
 %lex
 %%
 \s+                           {}
@@ -144,12 +178,12 @@ T
 L 
   : L ',' id    { 
                   console.log("L -&gt; L ',' id ("+yytext+")");
-                  var s =  eval(stack);
+                  var s =  eval('$$');
                   console.log(s);
                 }
   | id          {
                   console.log("L -&gt; id ("+yytext+")");
-                  var s =  eval(stack);
+                  var s =  eval('$$');
                   console.log(s);
                 }
   ;
@@ -167,6 +201,421 @@ L -&gt; L ',' id (b)
 [ null, 'global', 'integer', 'a', ',', 'b' ]
 L -&gt; L ',' id (c)
 [ null, 'global', 'integer', 'a', ',', 'c' ]
+</PRE>
+
+<P>
+Esta forma de acceder a los atributos es especialmente útil cuando se 
+trabaja con <A NAME="17245"></A><SPAN  CLASS="textbf">atributos heredados</SPAN>. Esto es, cuando un atributo
+de un nodo del árbol sintáctico se computa en términos
+de valores de atributos de su padre y/o sus hermanos.
+Ejemplos de atributos heredados son la clase y tipo en la declaración
+de variables. Supongamos que tenemos el siguiente 
+<A NAME="17247"></A><SPAN  CLASS="textbf">esquema de traducción</SPAN> para calcular la clase (C) y tipo (T) en 
+las declaraciones (D) de listas (L) de identificadores:
+
+<P>
+<BR>
+<BR>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">D <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img49.png"
+ ALT="$ \rightarrow$"></SPAN></TD>
+<TD ALIGN="LEFT">C T <code>{ $L{c} = $C{c}; $L{t} = $T{t} }</code> L</TD>
+</TR>
+<TR><TD ALIGN="LEFT">C <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img49.png"
+ ALT="$ \rightarrow$"></SPAN></TD>
+<TD ALIGN="LEFT">global   <code>{ $C{c} = "global" }</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT">C <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img49.png"
+ ALT="$ \rightarrow$"></SPAN></TD>
+<TD ALIGN="LEFT">local    <code>{ $C{c} = "local" }</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT">T <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img49.png"
+ ALT="$ \rightarrow$"></SPAN></TD>
+<TD ALIGN="LEFT">integer  <code>{ $T{t} = "integer" }</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT">T <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img49.png"
+ ALT="$ \rightarrow$"></SPAN></TD>
+<TD ALIGN="LEFT">float    <code>{ $T{t} = "float" }</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT">L <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img49.png"
+ ALT="$ \rightarrow$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ $L</code><SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img449.png"
+ ALT="$ _1$"></SPAN><code>{t} = $L{t}; $L</code><SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img449.png"
+ ALT="$ _1$"></SPAN><code>{c} = $L{c}; }</code> L<SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img449.png"
+ ALT="$ _1$"></SPAN> ','</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">id <code>{ set_class($id{v}, $L{c}); set_type($id{v}, $L{t}); }</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT">L <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img49.png"
+ ALT="$ \rightarrow$"></SPAN></TD>
+<TD ALIGN="LEFT">id   <code>{ set_class($id{v}, $L{c}); set_type($id{v}, $L{t}); }</code></TD>
+</TR>
+</TABLE>
+</DIV>
+<BR>
+<BR>
+
+<P>
+Los atributos <code>c</code> y <code>t</code> denotan respectivamente
+la clase y el tipo. 
+
+<P>
+<P>
+<DIV><B>Ejercicio  <SPAN CLASS="arabic">34</SPAN>.<SPAN CLASS="arabic">14</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Evalúe el esquema de traducción para la entrada
+<code>global float x,y</code>. Represente el árbol de análisis, las
+acciones incrustadas y determine el orden de ejecución.
+</I>
+<P>
+<I>Olvide por un momento la notación usada en las acciones y 
+suponga que se tratara de acciones <code>yapp</code>. ¿En que orden
+construye <code>yapp</code> el árbol y en que orden ejecutará las
+acciones?</I></DIV><P></P>
+
+<P>
+A la hora de transformar este esquema de traducción en un programa
+<code>yapp</code> es importante darse cuenta que en cualquier derivación a derechas
+desde D, cuando se reduce por una de las reglas 
+
+<P>
+<DIV ALIGN="CENTER">
+L <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img49.png"
+ ALT="$ \rightarrow$"></SPAN> id <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \vert$"></SPAN> L<SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img449.png"
+ ALT="$ _1$"></SPAN> ',' id
+
+</DIV>
+
+<P>
+el símbolo a la izquierda de L es T y el que esta a la izquierda de T es C.
+Considere, por ejemplo la derivación a derechas:
+
+<P>
+<DIV ALIGN="CENTER">
+D <!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img463.png"
+ ALT="$ \Longrightarrow$"></SPAN> C T L <!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img463.png"
+ ALT="$ \Longrightarrow$"></SPAN> C T L, id <!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img463.png"
+ ALT="$ \Longrightarrow$"></SPAN> C T L, id, id
+<!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img463.png"
+ ALT="$ \Longrightarrow$"></SPAN> C T id, id, id <!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img463.png"
+ ALT="$ \Longrightarrow$"></SPAN> 
+<BR><!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img463.png"
+ ALT="$ \Longrightarrow$"></SPAN> C float id, id, id <!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img463.png"
+ ALT="$ \Longrightarrow$"></SPAN> local float id, id, id
+
+</DIV>
+
+<P>
+Observe que el orden de recorrido de <code>yapp</code> es:
+<DIV ALIGN="CENTER">
+local float id, id, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img464.png"
+ ALT="$ \Longleftarrow$"></SPAN> C float id, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img464.png"
+ ALT="$ \Longleftarrow$"></SPAN>
+C T id, id, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img464.png"
+ ALT="$ \Longleftarrow$"></SPAN>
+<BR><!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img464.png"
+ ALT="$ \Longleftarrow$"></SPAN> C T L, id, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img464.png"
+ ALT="$ \Longleftarrow$"></SPAN> C T L, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img464.png"
+ ALT="$ \Longleftarrow$"></SPAN> C T L <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img464.png"
+ ALT="$ \Longleftarrow$"></SPAN> D
+
+</DIV>
+
+<P>
+en la antiderivación, cuando el mango es una de las dos reglas 
+para listas de identificadores, L <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img49.png"
+ ALT="$ \rightarrow$"></SPAN> id y L <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img49.png"
+ ALT="$ \rightarrow$"></SPAN> L, id 
+es decir durante las tres ultimas antiderivaciones:
+
+<P>
+<DIV ALIGN="CENTER">
+C T L, id, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img464.png"
+ ALT="$ \Longleftarrow$"></SPAN> C T L, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img464.png"
+ ALT="$ \Longleftarrow$"></SPAN> C T L <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img464.png"
+ ALT="$ \Longleftarrow$"></SPAN> D
+
+</DIV>
+
+<P>
+las variables a la izquierda del mango son
+T y C. Esto ocurre siempre. 
+Estas observaciones nos conducen al siguiente
+programa <code>yapp</code>: 
+
+<P>
+<PRE>
+$ cat -n Inherited.yp
+ 1  %token FLOAT INTEGER
+ 2  %token GLOBAL
+ 3  %token LOCAL
+ 4  %token NAME
+ 5
+ 6  %%
+ 7  declarationlist
+ 8    : # vacio
+ 9    | declaration ';' declarationlist
+10    ;
+11
+12  declaration
+13    : class type namelist { ; }
+14    ;
+15
+16  class
+17    : GLOBAL
+18    | LOCAL
+19    ;
+20
+21  type
+22    : FLOAT
+23    | INTEGER
+24    ;
+25
+26  namelist
+27    : NAME
+28       { printf("%s de clase %s, tipo %s\n",
+29               $_[1], $_[0]-&gt;YYSemval(-1),$_[0]-&gt;YYSemval(0)); }
+30    | namelist ',' NAME
+31        { printf("%s de clase %s, tipo %s\n",
+32                 $_[3], $_[0]-&gt;YYSemval(-1),$_[0]-&gt;YYSemval(0)); }
+33    ;
+34  %%
+</PRE>
+
+<P>
+A continuación escribimos el programa que usa 
+el módulo generado por <code>yapp</code>:
+
+<P>
+<PRE>
+$ cat -n useinherited.pl
+ 1  #!/usr/bin/perl -w
+ 2  use strict;
+ 3  use Inherited;
+ 4
+ 5  sub Error {
+ 6    exists $_[0]-&gt;YYData-&gt;{ERRMSG}
+ 7    and do {
+ 8      print $_[0]-&gt;YYData-&gt;{ERRMSG};
+ 9      delete $_[0]-&gt;YYData-&gt;{ERRMSG};
+10      return;
+11    };
+12    print "Error sintáctico\n";
+13  }
+14
+15  { # hagamos una clausura con la entrada
+16    my $input;
+17    local $/ = undef;
+18    print "Entrada (En Unix, presione CTRL-D para terminar):\n";
+19    $input = &lt;stdin&gt;;
+20
+21    sub scanner {
+22
+23      { # Con el redo del final hacemos un bucle "infinito"
+24        if ($input =~ m|\G\s*INTEGER\b|igc) {
+25          return ('INTEGER', 'INTEGER');
+26        }
+27        elsif ($input =~ m|\G\s*FLOAT\b|igc) {
+28          return ('FLOAT', 'FLOAT');
+29        }
+30        elsif ($input =~ m|\G\s*LOCAL\b|igc) {
+31          return ('LOCAL', 'LOCAL');
+32        }
+33        elsif ($input =~ m|\G\s*GLOBAL\b|igc) {
+34          return ('GLOBAL', 'GLOBAL');
+35        }
+36        elsif ($input =~ m|\G\s*([a-z_]\w*)\b|igc) {
+37          return ('NAME', $1);
+38        }
+39        elsif ($input =~ m/\G\s*([,;])/gc) {
+40          return ($1, $1);
+41        }
+42        elsif ($input =~ m/\G\s*(.)/gc) {
+43          die "Caracter invalido: $1\n";
+44        }
+45        else {
+46          return ('', undef); # end of file
+47        }
+48        redo;
+49      }
+50    }
+51  }
+52
+53  my $debug_level = (@ARGV)? oct(shift @ARGV): 0x1F;
+54  my $parser = Inherited-&gt;new();
+55  $parser-&gt;YYParse( yylex =&gt; \&amp;scanner, yyerror =&gt; \&amp;Error, yydebug =&gt; $debug_level );
+</PRE>
+En las líneas de la 15 a la 51 esta nuestro analizador léxico.
+La entrada se lee en una variable local cuyo valor permanece
+entre llamadas: hemos creado una clausura con la variable
+<code>$input</code> (véase la sección <A HREF="#section:clausura">
+<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
+ HREF="node202.html#CasianoIntroAPerl">10</A>] para mas detalles
+sobre el uso de clausuras en Perl). Aunque la variable <code>$input</code>
+queda inaccesible desde fuera de la clausura, persiste entre llamadas
+como consecuencia de que la subrutina <code>scanner</code> la utiliza.
+
+<P>
+A continuación sigue un ejemplo de ejecución:
+
+<P>
+<PRE>
+$ ./useinherited.pl 0
+Entrada (En Unix, presione CTRL-D para terminar):
+global integer x, y, z;
+local float a,b;
+x de clase GLOBAL, tipo INTEGER
+y de clase GLOBAL, tipo INTEGER
+z de clase GLOBAL, tipo INTEGER
+a de clase LOCAL, tipo FLOAT
+b de clase LOCAL, tipo FLOAT
 </PRE>
 
 <P>
