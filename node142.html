@@ -114,7 +114,60 @@ Manejo en <TT>jison</TT> de Atributos Heredados
 Jison no soporta acciones en medio de una regla.
 
 <P>
+<PRE>
+[~/jison/jison-inherited(grammar)]$ cat inherited.jison 
+%{
+  var stack = '$$';
+%}
+%lex
+%%
+\s+                           {}
+(global|local|integer|float)  { return yytext; }
+[a-zA-Z_]\w*                  { return 'id'; }
+.                             { return yytext; }
+/lex
+%%
+D 
+  : C T L 
+  ;
 
+C
+  : global
+  | local
+  ; 
+  
+T
+  : integer
+  | float
+;
+
+L 
+  : L ',' id    { 
+                  console.log("L -&gt; L ',' id ("+yytext+")");
+                  var s =  eval(stack);
+                  console.log(s);
+                }
+  | id          {
+                  console.log("L -&gt; id ("+yytext+")");
+                  var s =  eval(stack);
+                  console.log(s);
+                }
+  ;
+%%
+</PRE>
+
+<P>
+<PRE>
+[~/jison/jison-inherited(grammar)]$ cat input.txt 
+global integer a, b, c
+[~/jison/jison-inherited(grammar)]$ node inherited.js input.txt 
+L -&gt; id (a)
+[ null, 'global', 'integer', 'a' ]
+L -&gt; L ',' id (b)
+[ null, 'global', 'integer', 'a', ',', 'b' ]
+L -&gt; L ',' id (c)
+[ null, 'global', 'integer', 'a', ',', 'c' ]
+</PRE>
 <DIV CLASS="navigation"><HR>
 <A NAME="tex2html4400"
   HREF="node143.html">
