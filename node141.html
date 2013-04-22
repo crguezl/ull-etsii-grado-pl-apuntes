@@ -210,7 +210,7 @@ L -&gt; L ',' id (c)
 
 <P>
 Esta forma de acceder a los atributos es especialmente útil cuando se 
-trabaja con <A NAME="17194"></A><SPAN  CLASS="textbf">atributos heredados</SPAN>. Esto es, cuando un atributo
+trabaja con <A NAME="17198"></A><SPAN  CLASS="textbf">atributos heredados</SPAN>. Esto es, cuando un atributo
 de un nodo del árbol sintáctico se computa en términos
 de valores de atributos de su padre y/o sus hermanos.
 Ejemplos de atributos heredados son la clase y tipo en la declaración
@@ -452,6 +452,25 @@ L -&gt; L ',' id (c)
 c is of type integer
 a is of class global
 </PRE>
+
+<P>
+En este caso, existen varias alternativas simples
+a esta solución:
+
+<UL>
+<LI>Montar la lista de identificadores  en un array y ponerles el tipo y la clase de "golpe"
+ en la regla de producción superior <code>D : C T L ;</code>
+</LI>
+<LI>usar variables visibles (globales o atributos del objeto parser, por ejemplo) 
+como <code>current_type</code>, <code>current_class</code>
+<PRE>
+C
+  : global { current_class = 'global'; }
+  | local  { current_class = 'local'; }
+</PRE>
+y depués accederlas en las reglas de <code>L</code>
+</LI>
+</UL>
 
 <P>
 
