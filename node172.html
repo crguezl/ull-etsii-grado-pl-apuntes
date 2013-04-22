@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Práctica: Nuevos Métodos</TITLE>
-<META NAME="description" CONTENT="Práctica: Nuevos Métodos">
+<TITLE>Práctica: Generación Automática de Árboles</TITLE>
+<META NAME="description" CONTENT="Práctica: Generación Automática de Árboles">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node173.html">
 <LINK REL="previous" HREF="node171.html">
-<LINK REL="up" HREF="node148.html">
+<LINK REL="up" HREF="node147.html">
 <LINK REL="next" HREF="node173.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4865"
+<A NAME="tex2html4861"
   HREF="node173.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4859"
-  HREF="node148.html">
+<A NAME="tex2html4855"
+  HREF="node147.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4853"
+<A NAME="tex2html4849"
   HREF="node171.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4861"
-  HREF="node198.html">
+<A NAME="tex2html4857"
+  HREF="node197.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4863"
-  HREF="node201.html">
+<A NAME="tex2html4859"
+  HREF="node200.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,108 +88,56 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4866"
-  HREF="node173.html">Práctica: Generación Automática de</A>
-<B>Sup:</B> <A NAME="tex2html4860"
-  HREF="node148.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4854"
-  HREF="node171.html">Práctica: Autoacciones</A>
+<B> Sig:</B> <A NAME="tex2html4862"
+  HREF="node173.html">Recuperacion de Errores: Visión</A>
+<B>Sup:</B> <A NAME="tex2html4856"
+  HREF="node147.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4850"
+  HREF="node171.html">Práctica: Nuevos Métodos</A>
 <B> Con:</B> 
-<A NAME="tex2html4861"
-  HREF="node198.html">
+<A NAME="tex2html4857"
+  HREF="node197.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4863"
-  HREF="node201.html">
+<A NAME="tex2html4859"
+  HREF="node200.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION058240000000000000000"></A>
-   <A NAME="18872"></A>
+<H1><A NAME="SECTION058250000000000000000"></A>
+   <A NAME="18811"></A>
 <BR>
-Práctica: Nuevos Métodos
+Práctica: Generación Automática de Árboles
 </H1>
   
-Continuemos extendiendo <code>Yapp</code>.
-
-<UL>
-<LI>Introduzca en el módulo <code>Driver.pm</code> de <code>Yapp</code>
-un método <code>YYLhs</code> que devuelva el identificador
-de la variable sintáctica en el lado izquierdo de la regla 
-de producción por la que se está reduciendo. 
-</LI>
-<LI>Para tener disponible el lado izquierdo
-deberá modificar la conducta del analizador LALR 
-(subrutina <code>_Parse</code>) para que guarde como un atributo
-el identificador de dicho noterminal.
-</LI>
-<LI>¿Que identificador se devuelve asociado con las acciones
-intermedias?
-</LI>
-</UL>
-
-<P>
-Sigue un ejemplo de como programar haciendo uso de esta y la 
-anterior extensión:
+Partiendo de la práctica anterior, introduzca una directiva
+<code>%autotree</code> que de lugar a la construcción del árbol de análisis
+concreto. La acción de construcción del árbol:
 <PRE>
-%right  '='
-%left   '-' '+'
-%left   '*' '/'
-%left   NEG
-%autoaction { my $n = $#_;  bless [@_[1..$n]], $_[0]-&gt;YYLhs }
-%%
-input:                 
-        |   input line 
-;
-line:     '\n'       { } 
-        | exp '\n'   { [ $_[1] ] } 
-        | error '\n' { }
-;
-exp:        NUM         |   VAR         |   VAR '=' exp         
-        |   exp '+' exp |   exp '-' exp |   exp '*' exp |   exp '/' exp      
-        |   '-' exp %prec NEG 
-        |   '(' exp ')' { [ $_[2] ] }     
-;
-%%
-...
+{ my $n = $#_;  bless [@_[1..$n]], $_[0]-&gt;YYLhs }
 </PRE>
-Veamos la ejecución correspondiente al ejemplo anterior:
-<PRE>
-$ ./uselhs2.pl
-2+3*4
-$VAR1 = bless( 
-[
-  bless( [], 'input' ),
-  [
-    bless( [
-      bless( [ '2' ], 'exp' ),
-      '+',
-      bless( [
-        bless( [ '3' ], 'exp' ), '*', bless( [ '4' ], 'exp' ) ], 'exp' )
-    ], 'exp' )
-  ]
-], 'input' );
-</PRE>
+se ejecutará para cualquier regla que no tenga una acción
+explícita asociada.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4865"
+<A NAME="tex2html4861"
   HREF="node173.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4859"
-  HREF="node148.html">
+<A NAME="tex2html4855"
+  HREF="node147.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4853"
+<A NAME="tex2html4849"
   HREF="node171.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4861"
-  HREF="node198.html">
+<A NAME="tex2html4857"
+  HREF="node197.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4863"
-  HREF="node201.html">
+<A NAME="tex2html4859"
+  HREF="node200.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -236,12 +184,12 @@ $VAR1 = bless(
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4866"
-  HREF="node173.html">Práctica: Generación Automática de</A>
-<B>Sup:</B> <A NAME="tex2html4860"
-  HREF="node148.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4854"
-  HREF="node171.html">Práctica: Autoacciones</A>
+<B> Sig:</B> <A NAME="tex2html4862"
+  HREF="node173.html">Recuperacion de Errores: Visión</A>
+<B>Sup:</B> <A NAME="tex2html4856"
+  HREF="node147.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4850"
+  HREF="node171.html">Práctica: Nuevos Métodos</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
