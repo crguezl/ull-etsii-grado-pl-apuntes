@@ -160,13 +160,6 @@ $cached_env_img{$key} = q|<IMG
  SRC="|."$dir".q|img465.png"
  ALT="$ B \rightarrow \beta_\uparrow \gamma$">|; 
 
-$key = q/%latex2htmlidmarker39453S=program;MSF=1.6;LFS=11;AAT/;
-$cached_env_img{$key} = q|<IMG
- WIDTH="107" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="|."$dir".q|img368.png"
- ALT="% latex2html id marker 39453
-$ S = program$">|; 
-
 $key = q/X_m;MSF=1.6;LFS=11;AAT/;
 $cached_env_img{$key} = q|<IMG
  WIDTH="32" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
@@ -1813,6 +1806,13 @@ $cached_env_img{$key} = q|<IMG
  WIDTH="25" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
  SRC="|."$dir".q|img502.png"
  ALT="$ E_2$">|; 
+
+$key = q/%latex2htmlidmarker39455S=program;MSF=1.6;LFS=11;AAT/;
+$cached_env_img{$key} = q|<IMG
+ WIDTH="107" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="|."$dir".q|img368.png"
+ ALT="% latex2html id marker 39455
+$ S = program$">|; 
 
 $key = q/FOLLOW(A)=left{binSigma:existsSstackrel{*}{Longrightarrow}alphaAbbetaright}cupE(A);MSF=1.6;LFS=11;AAT/;
 $cached_env_img{$key} = q|<IMG
