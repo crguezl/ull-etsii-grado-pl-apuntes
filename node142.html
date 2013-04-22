@@ -109,11 +109,11 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <H1><A NAME="SECTION057140000000000000000">
 Esquemas de Traducción</A>
 </H1>
-Un <A NAME="17146"></A><SPAN  CLASS="textbf">esquema de traducción</SPAN> es una gramática independiente del
+Un <A NAME="17161"></A><SPAN  CLASS="textbf">esquema de traducción</SPAN> es una gramática independiente del
 contexto en la cuál se han asociado atributos a los símbolos de la gramática.
 Un atributo queda caracterizado por un identificador
 o nombre y un tipo o clase. Además se han insertado acciones, esto es,
-código Perl/Python/C, ...en medio de las partes derechas.
+código JavaScript/Perl/Python/C, ...en medio de las partes derechas.
 En ese código es posible referenciar los atributos de los
 símbolos de la gramática como variables del lenguaje subyacente.
 
@@ -122,6 +122,86 @@ Recuerde que el orden en que se evalúan los fragmentos de código
 es el de un recorrido primero-profundo del árbol de análisis sintáctico.
 Mas específicamente, considerando a las acciones como hijos-hoja del nodo,
 el recorrido que realiza un esquema de traducción es:
+
+<P>
+<PRE>
+ 1     function esquema_de_traduccion(node) {
+ 2 
+ 3       for(c in node.children) { # de izquierda a derecha
+ 4         child = node.children[i];
+ 5         if (child.instanceof('SemanticAction') { # si es una acción semántica
+ 6           child.execute;
+ 7         }
+ 8         else { esquema_de_traduccion(child) }
+ 9       }
+10     }
+</PRE>
+
+<P>
+Obsérvese que, como el bucle recorre a los hijos
+de izquierda a derecha, se debe dar la siguiente
+condición para que un esquema  de traducción funcione:
+
+<P>
+Para cualquier regla de producción aumentada con acciones, de la forma 
+
+<P>
+<DIV ALIGN="CENTER">
+<!-- MATH
+ $A \rightarrow X_1 \ldots X_j$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="115" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img448.png"
+ ALT="$ A \rightarrow X_1 \ldots X_j$"></SPAN><code>{ action($A{b}, $X</code><SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img449.png"
+ ALT="$ _1$"></SPAN><code>{c}</code><SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img450.png"
+ ALT="$ \ldots$"></SPAN><code> X</code><SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img451.png"
+ ALT="$ _n$"></SPAN><code>{d})}</code><!-- MATH
+ $X_{j+1} \ldots X_n$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="93" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img452.png"
+ ALT="$ X_{j+1} \ldots X_n$"></SPAN>
+</DIV>
+
+<P>
+debe ocurrir que los atributos evaluados en
+la acción insertada después de <SPAN CLASS="MATH"><IMG
+ WIDTH="26" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img453.png"
+ ALT="$ X_j$"></SPAN> 
+dependan de atributos y variables que fueron computadas durante
+la visita de los hermanos izquierdos o de sus ancestros.
+En particular no deberían depender de atributos asociados
+con las variables <!-- MATH
+ $X_{j+1} \ldots X_n$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="93" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img452.png"
+ ALT="$ X_{j+1} \ldots X_n$"></SPAN>. Ello no significa que
+no sea correcto evaluar atributos de <!-- MATH
+ $X_{j+1} \ldots X_n$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="93" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img452.png"
+ ALT="$ X_{j+1} \ldots X_n$"></SPAN>
+en esa acción.
+
+<P>
+Por ejemplo, el siguiente esquema no statisface el requisito:
+
+<center>
+<img src="wrongtranslationscheme.png" />
+</center>
 
 <P>
 
@@ -196,7 +276,7 @@ el recorrido que realiza un esquema de traducción es:
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-04-17</I>
+2013-04-22</I>
 </ADDRESS>
 </BODY>
 </HTML>
