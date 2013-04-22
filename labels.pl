@@ -122,16 +122,16 @@ $key = q/section:dolar1/;
 $external_labels{$key} = "$URL/" . q|node97.html|; 
 $noresave{$key} = "$nosave";
 
-$key = q/prog:calc1/;
-$external_labels{$key} = "$URL/" . q|node180.html|; 
-$noresave{$key} = "$nosave";
-
 $key = q/subsection:cabecerayaccyapp/;
 $external_labels{$key} = "$URL/" . q|node167.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/section:abreviadas/;
 $external_labels{$key} = "$URL/" . q|node97.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/prog:calc1/;
+$external_labels{$key} = "$URL/" . q|node180.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/subsection:flex/;
@@ -1106,7 +1106,7 @@ $external_latex_labels{$key} = q|33.7.1|;
 $noresave{$key} = "$nosave";
 
 $key = q/fig:wrongts/;
-$external_latex_labels{$key} = q|34.14|; 
+$external_latex_labels{$key} = q|34.12|; 
 $noresave{$key} = "$nosave";
 
 $key = q/prog:prec/;
