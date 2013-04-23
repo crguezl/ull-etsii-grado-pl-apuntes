@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Práctica: Establecimiento de la relación uso-declaración</TITLE>
-<META NAME="description" CONTENT="Práctica: Establecimiento de la relación uso-declaración">
+<TITLE>Práctica: Establecimiento de la Relación Uso-Declaración Usando Expresiones Regulares Árbol</TITLE>
+<META NAME="description" CONTENT="Práctica: Establecimiento de la Relación Uso-Declaración Usando Expresiones Regulares Árbol">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node199.html">
 <LINK REL="previous" HREF="node197.html">
-<LINK REL="up" HREF="node189.html">
+<LINK REL="up" HREF="node188.html">
 <LINK REL="next" HREF="node199.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5405"
+<A NAME="tex2html5402"
   HREF="node199.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5399"
-  HREF="node189.html">
+<A NAME="tex2html5396"
+  HREF="node188.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5393"
+<A NAME="tex2html5390"
   HREF="node197.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5401"
-  HREF="node210.html">
+<A NAME="tex2html5398"
+  HREF="node209.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5403"
-  HREF="node213.html">
+<A NAME="tex2html5400"
+  HREF="node212.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,43 +88,36 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5406"
-  HREF="node199.html">Práctica: Establecimiento de la</A>
-<B>Sup:</B> <A NAME="tex2html5400"
-  HREF="node189.html">Análisis de Ámbito en</A>
-<B> Ant:</B> <A NAME="tex2html5394"
-  HREF="node197.html">Usando el Método str</A>
+<B> Sig:</B> <A NAME="tex2html5403"
+  HREF="node199.html">Práctica: Estructuras y Análisis</A>
+<B>Sup:</B> <A NAME="tex2html5397"
+  HREF="node188.html">Análisis de Ámbito en</A>
+<B> Ant:</B> <A NAME="tex2html5391"
+  HREF="node197.html">Práctica: Establecimiento de la</A>
 <B> Con:</B> 
-<A NAME="tex2html5401"
-  HREF="node210.html">
+<A NAME="tex2html5398"
+  HREF="node209.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5403"
-  HREF="node213.html">
+<A NAME="tex2html5400"
+  HREF="node212.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION051290000000000000000"></A>
-   <A NAME="22105"></A>
+<H1><A NAME="SECTION0511100000000000000000"></A>
+   <A NAME="22106"></A>
   
-<A NAME="practica:identificaciondelosnombres"></A><A NAME="practica:otrosambitos"></A>
+<A NAME="practica:identificaciondelosnombrestreereg"></A>
 <BR>
-Práctica: Establecimiento de la relación uso-declaración
+Práctica: Establecimiento de la Relación Uso-Declaración Usando Expresiones Regulares Árbol
 </H1>
-En la segunda parte del análisis de ámbito se resuelve el problema de la identificación de los
-nombres estableciendo la relación entre el uso de un nombre y la declaración
-que se le aplica (dada por los atributos <code>scope</code> y <code>type</code>):
-
-<P>
-Añada las siguientes comprobaciones dependientes del contexto al compilador
-de Simple C:
+En la práctica anterior resolvió los problemas de ámbito usando <A NAME="tex2html426"
+  HREF="http://search.cpan.org/perldoc?Parse::Eyapp::Scope"><TT>Parse::Eyapp::Scope</TT></A>.
+En esta se pide resolverlos usando expresions regulares árbol:
 
 <UL>
-<LI>Resuelva el problema del ámbito de los identificadores: asocie cada uso de un identificador
-con la declaración que se le aplica.
-</LI>
 <LI>Asocie cada nodo <code>RETURN</code> con el nodo de la subrutina que lo engloba.
 Añádale un atributo al nodo <code>RETURN</code> que indique el tipo que la rutina debe retornar.
 </LI>
@@ -136,47 +129,6 @@ que referencia al nodo del bucle que lo engloba.
 </LI>
 <LI>Añada etiquetas de salto y la sentencia <code>goto</code> al lenguaje Simple C.
 Toda etiqueta va asociada con una sentencia.
-      La sintáxis de statement debe ser extendida para incluir sentencias etiquetadas:
-
-<P>
-<PRE>
-      statement:
-          expression ';' { $_[1] }
-        | ';'
-        | %name BREAK
-          $BREAK ';'
-            { ...  }
-        | %name CONTINUE
-           $CONTINUE ';'
-            { ... }
-        | 'goto' ID ';'
-        | ID ':' statement
-            { ... }
-      ;
-</PRE>
-
-<P>
-Las siguientes indicaciones tienen por objeto ayudarle en el análisis de ámbito de etiquetas:
-
-<UL>
-<LI>Sólo se permiten saltos dentro de la misma subrutina.
-</LI>
-<LI>Será necesario crear un manejador de ámbito de etiquetas mediante <code>Parse::Eyapp::Scope-&gt;new</code>
-</LI>
-<LI>Al comienzo de cada función comienza un ámbito de etiquetas.
-</LI>
-<LI>Cada vez que se encuentra una sentencia etiquetada la etiqueta 
-                ID es guardada en una tabla de símbolos de etiquetas.
-</LI>
-<LI>El valor asociado con la entrada para la etiqueta es una referencia a un hash. La clave mas importante en ese hash es la referencia a la sentencia que etiqueta.
-</LI>
-<LI>Cada aparición de un goto es una instancia de ámbito.
-</LI>
-<LI>La llamada a <code>end_scope</code> (al terminar el análisis de la función) deberá decorar automáticamente el nodo GOTO con la referencia a la sentencia asociada con la etiqueta
-</LI>
-<LI>La tabla de etiquetas es un atributo del nodo asociado con la función.
-</LI>
-</UL>
 
 <P>
 </LI>
@@ -185,20 +137,20 @@ Las siguientes indicaciones tienen por objeto ayudarle en el análisis de ámbit
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5405"
+<A NAME="tex2html5402"
   HREF="node199.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5399"
-  HREF="node189.html">
+<A NAME="tex2html5396"
+  HREF="node188.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5393"
+<A NAME="tex2html5390"
   HREF="node197.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5401"
-  HREF="node210.html">
+<A NAME="tex2html5398"
+  HREF="node209.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5403"
-  HREF="node213.html">
+<A NAME="tex2html5400"
+  HREF="node212.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -245,12 +197,12 @@ Las siguientes indicaciones tienen por objeto ayudarle en el análisis de ámbit
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5406"
-  HREF="node199.html">Práctica: Establecimiento de la</A>
-<B>Sup:</B> <A NAME="tex2html5400"
-  HREF="node189.html">Análisis de Ámbito en</A>
-<B> Ant:</B> <A NAME="tex2html5394"
-  HREF="node197.html">Usando el Método str</A>
+<B> Sig:</B> <A NAME="tex2html5403"
+  HREF="node199.html">Práctica: Estructuras y Análisis</A>
+<B>Sup:</B> <A NAME="tex2html5397"
+  HREF="node188.html">Análisis de Ámbito en</A>
+<B> Ant:</B> <A NAME="tex2html5391"
+  HREF="node197.html">Práctica: Establecimiento de la</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
