@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Análisis Sintáctico Ascendente en C con yacc y bison</TITLE>
-<META NAME="description" CONTENT="Análisis Sintáctico Ascendente en C con yacc y bison">
+<TITLE>Introducción a yacc</TITLE>
+<META NAME="description" CONTENT="Introducción a yacc">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node186.html">
-<LINK REL="previous" HREF="node148.html">
-<LINK REL="up" HREF="node69.html">
+<LINK REL="next" HREF="node180.html">
+<LINK REL="previous" HREF="node178.html">
+<LINK REL="up" HREF="node178.html">
 <LINK REL="next" HREF="node180.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4962"
+<A NAME="tex2html4968"
   HREF="node180.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4956"
-  HREF="node69.html">
+<A NAME="tex2html4962"
+  HREF="node178.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4950"
+<A NAME="tex2html4956"
   HREF="node178.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4958"
-  HREF="node198.html">
+<A NAME="tex2html4964"
+  HREF="node197.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4960"
-  HREF="node201.html">
+<A NAME="tex2html4966"
+  HREF="node200.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,75 +88,321 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4963"
-  HREF="node180.html">Introducción a yacc</A>
-<B>Sup:</B> <A NAME="tex2html4957"
-  HREF="node69.html">SEGUNDA PARTE: APUNTES DE</A>
-<B> Ant:</B> <A NAME="tex2html4951"
-  HREF="node178.html">El Generador de Analizadores</A>
+<B> Sig:</B> <A NAME="tex2html4969"
+  HREF="node180.html">Precedencia y Asociatividad</A>
+<B>Sup:</B> <A NAME="tex2html4963"
+  HREF="node178.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4957"
+  HREF="node178.html">Análisis Sintáctico Ascendente en</A>
 <B> Con:</B> 
-<A NAME="tex2html4958"
-  HREF="node198.html">
+<A NAME="tex2html4964"
+  HREF="node197.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4960"
-  HREF="node201.html">
+<A NAME="tex2html4966"
+  HREF="node200.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-
-<H1><A NAME="SECTION05900000000000000000">
-Análisis Sintáctico Ascendente en C con <TT>yacc</TT> y <TT>bison</TT></A>
-</H1>
-<BR> <HR>
 <!--Table of Child-Links-->
 <A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html4964"
-  HREF="node180.html">Introducción a <TT>yacc</TT></A>
-<UL>
-<LI><A NAME="tex2html4965"
-  HREF="node180.html#SECTION05910010000000000000">Ejemplo: La Calculadora en <TT>yacc</TT></A>
-<LI><A NAME="tex2html4966"
-  HREF="node180.html#SECTION05910020000000000000">El Analizador Léxico</A>
-<LI><A NAME="tex2html4967"
-  HREF="node180.html#SECTION05910030000000000000">Compilación</A>
-<LI><A NAME="tex2html4968"
-  HREF="node180.html#SECTION05910040000000000000">Makefile</A>
-<LI><A NAME="tex2html4969"
-  HREF="node180.html#SECTION05910050000000000000">Ejecución</A>
-</UL>
-<BR>
+<LI><UL>
+<LI><UL>
 <LI><A NAME="tex2html4970"
-  HREF="node181.html">Precedencia y Asociatividad</A>
+  HREF="node179.html#SECTION05910010000000000000">Ejemplo: La Calculadora en <TT>yacc</TT></A>
 <LI><A NAME="tex2html4971"
-  HREF="node182.html">Uso de union y type</A>
+  HREF="node179.html#SECTION05910020000000000000">El Analizador Léxico</A>
 <LI><A NAME="tex2html4972"
-  HREF="node183.html">Acciones en medio de una regla</A>
+  HREF="node179.html#SECTION05910030000000000000">Compilación</A>
 <LI><A NAME="tex2html4973"
-  HREF="node184.html">Recuperación de Errores</A>
+  HREF="node179.html#SECTION05910040000000000000">Makefile</A>
 <LI><A NAME="tex2html4974"
-  HREF="node185.html">Recuperación de Errores en Listas</A>
-</UL>
+  HREF="node179.html#SECTION05910050000000000000">Ejecución</A>
+</UL></UL></UL>
 <!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION05910000000000000000"></A>
+<A NAME="section:introyacc"></A>
+<BR>
+Introducción a <TT>yacc</TT>
+</H1>
+Los fuentes de esta sección pueden encontrarse en
+<A NAME="tex2html414"
+  HREF="https://github.com/crguezl/yacc-examples">https://github.com/crguezl/yacc-examples</A>.
+
+<P>
+Veamos un ejemplo sencillo de analizador sintáctico escrito en  <TT>yacc</TT> .
+La gramática se especifica entre las dos líneas de <code>%%</code>. 
+Por defecto, el símbolo de arranque es el primero que aparece, en este caso
+<code>list</code>. En <code>bison</code> es posible hacer que otro variable lo sea
+utilizando la declaración <code>%start</code>:
+
+<P>
+
+<H4><A NAME="SECTION05910010000000000000">
+Ejemplo: La Calculadora en <TT>yacc</TT></A>
+</H4>
+  
+
+<P>
+<P>
+<DIV><B>Programa  <SPAN CLASS="arabic">36</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Calculadora elemental. Análizador sintáctico.
+<A NAME="prog:calc1"></A></I><PRE>
+nereida:~/src/precedencia/hoc1&gt; cat -n hoc1.y
+ 1  %{
+ 2  /* File: /home/pl/src/precedencia/hoc1/hoc1.y */
+ 3  #define YYSTYPE double
+ 4  #include &lt;stdio.h&gt;
+ 5  %}
+ 6  %token NUMBER
+ 7  %left '+' '-'
+ 8  %left '*' '/'
+ 9  %%
+10  list
+11      :
+12      | list '\n'
+13      | list expr   { printf("%.8g\n",$2);}
+14      ;
+15
+16  expr
+17      : NUMBER { $$ = $1;}
+18      | expr '+' expr {$$ = $1 + $3;}
+19      | expr '-' expr {$$ = $1 - $3;}
+20      | expr '*' expr {$$ = $1 * $3;}
+21      | expr '/' expr {$$ = $1 / $3;}
+22      ;
+23
+24  %%
+25
+26  extern FILE * yyin;
+27
+28  main(int argc, char **argv) {
+29    if (argc &gt; 1) yyin = fopen(argv[1],"r");
+30    yydebug = 1;
+31    yyparse();
+32  }
+33
+34  yyerror(char *s) {
+35    printf("%s\n",s);
+36  }
+</PRE></DIV><P></P>
+La macro  <TT>YYSTYPE</TT>  (línea 3) contiene el tipo del valor semántico.
+Si no se declara se asume <code>int</code>.
+
+<P>
+El fichero  <TT>yyin</TT>  (líneas 26 y 29) es definido en el 
+fichero conteniendo el analizador léxico 
+ <TT>lex.yy.c</TT> . Refiere al fichero de entrada conteniendo
+el texto a analizar.
+
+<P>
+Al poner la variable  <TT>yydebug</TT>  a 1 activamos el modo depuración.
+Para que la depuración se haga efectiva es necesario definir además
+la macro  <TT>YYDEBUG</TT> .
+
+<P>
+El analizador sintáctico proveido por <code>yacc</code> se llama  <TT>yyparse</TT>  
+(línea 31). Por defecto su declaración es <code>int yyparse ()</code>
+
+<P>
+
+<H4><A NAME="SECTION05910020000000000000">
+El Analizador Léxico</A>
+</H4>
+  
+
+<P>
+<P>
+<DIV><A NAME="program:hoc1l"><B>Programa  <SPAN CLASS="arabic">36</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">2</SPAN></B></A> &nbsp; 
+<I>Calculadora elemental.  Analizador léxico:
+</I><PRE>
+nereida:~/src/precedencia/hoc1&gt; cat -n hoc1.l
+ 1  %{
+ 2  #include "y.tab.h"
+ 3  extern YYSTYPE yylval;
+ 4  %}
+ 5  number [0-9]+(\.[0-9]+)?([eE][+-]?[0-9]+)?
+ 6  %%
+ 7  {number} { yylval = atof(yytext); return NUMBER; }
+ 8  .|\n     { return yytext[0];}
+ 9  %%
+10  int yywrap() { return 1; }
+</PRE></DIV><P></P>
+
+<P>
+
+<H4><A NAME="SECTION05910030000000000000">
+Compilación</A>
+</H4>
+  
+
+<P>
+Al compilar el program <code>yacc</code> con la opción <code>-d</code>
+se produce además del fichero  <TT>y.tab.c</TT>  conteniendo el
+analizador sintáctico un fichero adicional de cabecera  <TT>y.tab.h</TT> 
+conteniendo
+las definiciones de los terminales:
+<PRE>
+nereida:~/src/precedencia/hoc1&gt; yacc -d -v hoc1.y
+nereida:~/src/precedencia/hoc1&gt; ls -lt | head -4
+total 200
+-rw-rw----  1 pl users    2857 2007-01-18 10:26 y.output
+-rw-rw----  1 pl users   35936 2007-01-18 10:26 y.tab.c
+-rw-rw----  1 pl users    1638 2007-01-18 10:26 y.tab.h
+nereida:~/src/precedencia/hoc1&gt; sed -ne '27,48p' y.tab.h | cat -n
+ 1  #ifndef YYTOKENTYPE
+ 2  # define YYTOKENTYPE
+ 3     /* Put the tokens into the symbol table, so that GDB and other debuggers
+ 4        know about them.  */
+ 5     enum yytokentype {
+ 6       NUMBER = 258
+ 7     };
+ 8  #endif
+ 9  /* Tokens.  */
+10  #define NUMBER 258
+..  .........................................................
+15  #if ! defined (YYSTYPE) &amp;&amp; ! defined (YYSTYPE_IS_DECLARED)
+16  typedef int YYSTYPE;
+17  # define yystype YYSTYPE /* obsolescent; will be withdrawn */
+18  # define YYSTYPE_IS_DECLARED 1
+19  # define YYSTYPE_IS_TRIVIAL 1
+20  #endif
+21
+22  extern YYSTYPE yylval;
+</PRE>
+La variable  <TT>yylval</TT>  (líneas 3 y 7 del listado <A HREF="#program:hoc1l">36.1.2</A>) 
+es declarada por el
+analizador sintáctico y usada por el analizador 
+léxico. El analizador léxico deja en la misma el valor semántico
+asociado con el token actual.
+
+<P>
+
+<H4><A NAME="SECTION05910040000000000000">
+Makefile</A>
+</H4>
+  
+
+<P>
+Para compilar todo el proyecto usaremos el siguiente
+fichero Makefile:
+<P>
+<DIV><B>Programa  <SPAN CLASS="arabic">36</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">3</SPAN></B> &nbsp; 
+<I>Calculadora elemental.  Makefile:
+</I><PRE>
+&gt; cat Makefile
+hoc1: y.tab.c lex.yy.c
+        gcc -DYYDEBUG=1 -g -o hoc1 y.tab.c lex.yy.c
+y.tab.c y.tab.h: hoc1.y
+        yacc -d -v hoc1.y
+lex.yy.c: hoc1.l y.tab.h
+        flex -l hoc1.l
+clean:
+        - rm -f y.tab.c lex.yy.c *.o core hoc1
+</PRE></DIV><P></P>
+
+<P>
+
+<H4><A NAME="SECTION05910050000000000000">
+Ejecución</A>
+</H4>
+  
+
+<P>
+<P>
+<DIV><B>Ejecución  <SPAN CLASS="arabic">36</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Para saber que esta haciendo el analizador, insertamos una
+asignación: <code>yydebug = 1;</code> justo antes de la llamada a
+<code>yyparse()</code> y ejecutamos el programa resultante:
+</I><PRE>
+$ hoc1
+yydebug: state 0, reducing by rule 1 (list :)
+yydebug: after reduction, shifting from state 0 to state 1
+2.5+3.5+1
+</PRE><I>
+Introducimos la expresión <code>2.5+3.5+1</code>. Antes que incluso ocurra la entrada, el algoritmo LR reduce por la regla <!-- MATH
+ $List \rightarrow \epsilon$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="71" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img503.png"
+ ALT="$ List \rightarrow \epsilon$"></SPAN>.
+</I><PRE>
+yydebug: state 1, reading 257 (NUMBER)
+yydebug: state 1, shifting to state 2
+yydebug: state 2, reducing by rule 4 (expr : NUMBER)
+yydebug: after reduction, shifting from state 1 to state 4
+yydebug: state 4, reading 43 ('+')
+yydebug: state 4, shifting to state 5
+yydebug: state 5, reading 257 (NUMBER)
+yydebug: state 5, shifting to state 2
+yydebug: state 2, reducing by rule 4 (expr : NUMBER)
+yydebug: after reduction, shifting from state 5 to state 6
+yydebug: state 6, reducing by rule 5 (expr : expr '+' expr)
+</PRE><I>
+Observe como la declaración de la asociatividad a izquierdas <code>%left '+'</code> se traduce en la reducción por la regla 5.
+</I>
+<P><PRE>
+yydebug: after reduction, shifting from state 1 to state 4
+yydebug: state 4, reading 43 ('+')
+yydebug: state 4, shifting to state 5
+yydebug: state 5, reading 257 (NUMBER)
+yydebug: state 5, shifting to state 2
+yydebug: state 2, reducing by rule 4 (expr : NUMBER)
+yydebug: after reduction, shifting from state 5 to state 6
+yydebug: state 6, reducing by rule 5 (expr : expr '+' expr)
+yydebug: after reduction, shifting from state 1 to state 4
+yydebug: state 4, reading 10 ('\n')
+yydebug: state 4, reducing by rule 3 (list : list expr)
+7
+</PRE><I>
+La reducción por la regla <!-- MATH
+ $list \rightarrow list\ expr$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="125" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img504.png"
+ ALT="$ list \rightarrow list expr$"></SPAN> produce la ejecución
+del <code>printf("%.8g\n",$2);</code> asociado con la regla y la salida
+del valor <code>7</code> que constituye el atributo de <SPAN CLASS="MATH"><IMG
+ WIDTH="40" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img122.png"
+ ALT="$ expr$"></SPAN>.
+</I><PRE>    
+yydebug: after reduction, shifting from state 0 to state 1
+yydebug: state 1, shifting to state 3
+yydebug: state 3, reducing by rule 2 (list : list '\n')
+yydebug: after reduction, shifting from state 0 to state 1
+yydebug: state 1, reading 0 (end-of-file)
+$
+</PRE><I>
+En Unix la combinación de teclas CTRL-D nos permite
+generar el final de fichero.
+</I>
+<P></DIV><P></P>
+
+<P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4962"
+<A NAME="tex2html4968"
   HREF="node180.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4956"
-  HREF="node69.html">
+<A NAME="tex2html4962"
+  HREF="node178.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4950"
+<A NAME="tex2html4956"
   HREF="node178.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4958"
-  HREF="node198.html">
+<A NAME="tex2html4964"
+  HREF="node197.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4960"
-  HREF="node201.html">
+<A NAME="tex2html4966"
+  HREF="node200.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -203,17 +449,17 @@ Análisis Sintáctico Ascendente en C con <TT>yacc</TT> y <TT>bison</TT></A>
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4963"
-  HREF="node180.html">Introducción a yacc</A>
-<B>Sup:</B> <A NAME="tex2html4957"
-  HREF="node69.html">SEGUNDA PARTE: APUNTES DE</A>
-<B> Ant:</B> <A NAME="tex2html4951"
-  HREF="node178.html">El Generador de Analizadores</A>
+<B> Sig:</B> <A NAME="tex2html4969"
+  HREF="node180.html">Precedencia y Asociatividad</A>
+<B>Sup:</B> <A NAME="tex2html4963"
+  HREF="node178.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4957"
+  HREF="node178.html">Análisis Sintáctico Ascendente en</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-04-17</I>
+2013-04-23</I>
 </ADDRESS>
 </BODY>
 </HTML>

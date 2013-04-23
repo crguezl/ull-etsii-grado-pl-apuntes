@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Práctica: Generación Automática de Árboles</TITLE>
-<META NAME="description" CONTENT="Práctica: Generación Automática de Árboles">
+<TITLE>Recuperacion de Errores: Visión Detallada</TITLE>
+<META NAME="description" CONTENT="Recuperacion de Errores: Visión Detallada">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node174.html">
 <LINK REL="previous" HREF="node172.html">
-<LINK REL="up" HREF="node148.html">
+<LINK REL="up" HREF="node147.html">
 <LINK REL="next" HREF="node174.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4879"
+<A NAME="tex2html4874"
   HREF="node174.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4873"
-  HREF="node148.html">
+<A NAME="tex2html4868"
+  HREF="node147.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4867"
+<A NAME="tex2html4862"
   HREF="node172.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4875"
-  HREF="node198.html">
+<A NAME="tex2html4870"
+  HREF="node197.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4877"
-  HREF="node201.html">
+<A NAME="tex2html4872"
+  HREF="node200.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,56 +88,195 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4880"
-  HREF="node174.html">Recuperacion de Errores: Visión</A>
-<B>Sup:</B> <A NAME="tex2html4874"
-  HREF="node148.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4868"
-  HREF="node172.html">Práctica: Nuevos Métodos</A>
+<B> Sig:</B> <A NAME="tex2html4875"
+  HREF="node174.html">Descripción Eyapp del Lenguaje</A>
+<B>Sup:</B> <A NAME="tex2html4869"
+  HREF="node147.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4863"
+  HREF="node172.html">Práctica: Generación Automática de</A>
 <B> Con:</B> 
-<A NAME="tex2html4875"
-  HREF="node198.html">
+<A NAME="tex2html4870"
+  HREF="node197.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4877"
-  HREF="node201.html">
+<A NAME="tex2html4872"
+  HREF="node200.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION058250000000000000000"></A>
-   <A NAME="18639"></A>
-<BR>
-Práctica: Generación Automática de Árboles
+<H1><A NAME="SECTION058260000000000000000">
+Recuperacion de Errores: Visión Detallada</A>
 </H1>
-  
-Partiendo de la práctica anterior, introduzca una directiva
-<code>%autotree</code> que de lugar a la construcción del árbol de análisis
-concreto. La acción de construcción del árbol:
+La subrutina <code>_Parse</code> contiene el algoritmo de
+análisis LR genérico. En esta sección 
+nos concentraremos en la forma en la que se ha implantado en
+<code>yapp</code> la recuperación de errores.
 <PRE>
-{ my $n = $#_;  bless [@_[1..$n]], $_[0]-&gt;YYLhs }
+ 1 sub _Parse {
+ 2   my($self)=shift;
+ 3   ... 
+ 4   $$errstatus=0; $$nberror=0;
 </PRE>
-se ejecutará para cualquier regla que no tenga una acción
-explícita asociada.
+ La variable <code>$$errstatus</code> nos indica la situación con respecto a la recuperación
+ de errores. La variable <code>$$nberror</code> contiene el número total de errores.
+ <PRE>
+ 5   ($$token,$$value)=(undef,undef);
+ 6   @$stack=( [ 0, undef ] ); $$check='';
+ 7   while(1) {
+ 8     my($actions,$act,$stateno);
+ 9     $stateno=$$stack[-1][0];
+10     $actions=$$states[$stateno];
+11 
+12     if  (exists($$actions{ACTIONS})) { 
+13       defined($$token) or  do { ($$token,$$value)=&amp;$lex($self); };
+14       ...
+15     }
+16     else { $act=$$actions{DEFAULT}; }
+</PRE>
+Si <code>$act</code> no esta definida es que ha ocurrido un 
+error. En tal caso no se entra a estudiar
+si la acción es de desplazamiento o reducción.
+<PRE>
+17     defined($act) and do { 
+18       $act &gt; 0 and do { #shift
+19           $$errstatus and  do { --$$errstatus; };
+20           ...
+21           next;
+22       };
+23       #reduce
+24       ....
+25       $$check eq 'ERROR' or  do {
+26         push(@$stack, [ $$states[$$stack[-1][0]]{GOTOS}{$lhs}, $semval ]);
+27         $$check='';
+28         next;
+29       };
+30       $$check='';
+31     };
+</PRE>
+Si <code>$$errstatus</code> es cero es que estamos
+ante un nuevo error:
+<PRE>
+32     #Error
+33     $$errstatus or   do {
+34       $$errstatus = 1;
+35       &amp;$error($self);
+36       $$errstatus # if 0, then YYErrok has been called
+37       or  next;   # so continue parsing
+38       ++$$nberror;
+39     };
+</PRE>
+Como el error es ``nuevo'' se llama a la subrutina de 
+tratamiento de errores <code>&amp;$error</code>. Obsérvese que no
+se volverá a llamar a la rutina de manejo de errores
+hasta que <code>$$errstatus</code> vuelva a alcanzar 
+el valor cero. Puesto que <code>&amp;$error</code> ha sido
+escrita por el usuario, es posible que este haya llamado
+al método <code>YYErrok</code>. Si ese es el caso, es que el
+programador prefiere que el análisis continúe como
+si la recuperación de errores se hubiera completado.
+
+<P>
+Ahora se pone <code>$$errstatus</code> a 3:
+<PRE>
+47     $$errstatus=3;
+</PRE>
+Cada vez que se logre un desplazamiento con éxito <code>$$errstatus</code>
+será decrementado (línea 19).
+
+<P>
+A continuación se retiran estados de la pila hasta
+que se encuentre alguno que pueda transitar ante el 
+terminale especial <code>error</code>:
+<PRE>
+48     while(@$stack
+49         and (not exists($$states[$$stack[-1][0]]{ACTIONS})
+50         or  not exists($$states[$$stack[-1][0]]{ACTIONS}{error})
+51         or  $$states[$$stack[-1][0]]{ACTIONS}{error} &lt;= 0)) {
+52       pop(@$stack);
+53     }
+54     @$stack or do {
+55       return(undef);
+56     };
+</PRE>
+Si la pila quedó vacía se devuelve <code>undef</code>. En caso contrario
+es que el programador escribió alguna regla para la
+recuperación de errores. En ese caso, se transita al estado
+correspondiente:
+<PRE>
+57     #shift the error token
+58     push(@$stack, [ $$states[$$stack[-1][0]]{ACTIONS}{error}, undef ]);
+59   }
+60   #never reached
+61   croak("Error in driver logic. Please, report it as a BUG");
+62 }#_Parse
+</PRE>
+Un poco antes tenemos el siguiente código:
+<PRE>
+41     $$errstatus == 3  #The next token is not valid: discard it
+42     and  do {
+43       $$token eq ''  # End of input: no hope
+44       and  do { return(undef); }; 
+45       $$token=$$value=undef;
+46     };
+</PRE>
+Si hemos alcanzado el final de la entrada en una situación de error
+se abandona devolviendo <code>undef</code>.
+<P>
+<DIV><B>Ejercicio  <SPAN CLASS="arabic">35</SPAN>.<SPAN CLASS="arabic">26</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Explique la razón para el comentario de la línea
+41. Si <code>$$errstatus</code> es 3, el último
+terminal no ha producido un desplazamiento correcto. ¿Porqué?</I></DIV><P></P>
+A continuación aparecen los códigos de los métodos implicados en 
+la recuperación de errores:
+<PRE>
+sub YYErrok {
+  my($self)=shift;
+
+  ${$$self{ERRST}}=0;
+    undef;
+}
+</PRE>
+El método <code>YYErrok</code> cambia el valor referenciado por <code>$errstatus</code>.
+De esta forma se le da al programador <code>yapp</code> la oportunidad de anunciar
+que es muy probable que la fase de recuperación de errores se haya completado.
+
+<P>
+Los dos siguientes métodos devuelven el número de errores hasta el momento
+(<code>YYNberr</code>)
+y si nos encontramos o no en fase de recuperación de errores (<code>YYRecovering</code>):
+<PRE>
+sub YYNberr {
+  my($self)=shift;
+
+  ${$$self{NBERR}};
+}
+
+sub YYRecovering {
+  my($self)=shift;
+
+  ${$$self{ERRST}} != 0;
+}
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4879"
+<A NAME="tex2html4874"
   HREF="node174.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4873"
-  HREF="node148.html">
+<A NAME="tex2html4868"
+  HREF="node147.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4867"
+<A NAME="tex2html4862"
   HREF="node172.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4875"
-  HREF="node198.html">
+<A NAME="tex2html4870"
+  HREF="node197.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4877"
-  HREF="node201.html">
+<A NAME="tex2html4872"
+  HREF="node200.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -184,17 +323,17 @@ explícita asociada.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4880"
-  HREF="node174.html">Recuperacion de Errores: Visión</A>
-<B>Sup:</B> <A NAME="tex2html4874"
-  HREF="node148.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4868"
-  HREF="node172.html">Práctica: Nuevos Métodos</A>
+<B> Sig:</B> <A NAME="tex2html4875"
+  HREF="node174.html">Descripción Eyapp del Lenguaje</A>
+<B>Sup:</B> <A NAME="tex2html4869"
+  HREF="node147.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4863"
+  HREF="node172.html">Práctica: Generación Automática de</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-04-17</I>
+2013-04-23</I>
 </ADDRESS>
 </BODY>
 </HTML>

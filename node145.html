@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Acciones en Medio de una Regla y Atributos Heredados</TITLE>
-<META NAME="description" CONTENT="Acciones en Medio de una Regla y Atributos Heredados">
+<TITLE>Recuperación de Errores</TITLE>
+<META NAME="description" CONTENT="Recuperación de Errores">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -28,20 +28,20 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4442"
+<A NAME="tex2html4437"
   HREF="node146.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4436"
+<A NAME="tex2html4431"
   HREF="node128.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4430"
+<A NAME="tex2html4425"
   HREF="node144.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4438"
-  HREF="node198.html">
+<A NAME="tex2html4433"
+  HREF="node197.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4440"
-  HREF="node201.html">
+<A NAME="tex2html4435"
+  HREF="node200.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,48 +88,88 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4443"
-  HREF="node146.html">Recuperación de Errores</A>
-<B>Sup:</B> <A NAME="tex2html4437"
+<B> Sig:</B> <A NAME="tex2html4438"
+  HREF="node146.html">Consejos a seguir al</A>
+<B>Sup:</B> <A NAME="tex2html4432"
   HREF="node128.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4431"
-  HREF="node144.html">Manejo en jison de</A>
+<B> Ant:</B> <A NAME="tex2html4426"
+  HREF="node144.html">Construcción del Árbol Sintáctico</A>
 <B> Con:</B> 
-<A NAME="tex2html4438"
-  HREF="node198.html">
+<A NAME="tex2html4433"
+  HREF="node197.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4440"
-  HREF="node201.html">
+<A NAME="tex2html4435"
+  HREF="node200.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
 <H1><A NAME="SECTION057170000000000000000"></A>
-<A NAME="section:mediaregla"></A>
+<A NAME="section:errores"></A>
 <BR>
-Acciones en Medio de una Regla y Atributos Heredados
+Recuperación de Errores
 </H1>
-Jison no soporta acciones en medio de una regla.
+
+<P>
+<PRE>
+[~/srcPLgrado/jison/jison-aSb(error)]$ cat aSb.jison 
+%lex
+%%
+\s+             {}
+[ab]            { return yytext; }
+.               { return "INVALID"; }
+/lex
+%%
+S: /* empty */  { $$ = ''; console.log("empty"); }
+   | 'a' S 'b'  { $$ = $1 + $2 + $3; console.log("S -&gt; aSb"); }
+   | 'a' S error
+;
+%%
+</PRE>
+
+<P>
+<PRE>
+        parse: function parse(input) {
+              var self = this,
+                  stack = [0],
+                  vstack = [null], // semantic value stack
+                  lstack = [], // location stack
+                  ...
+                  recovering = 0,
+                  TERROR = 2,
+                  EOF = 1;
+            while (true) {
+                  // retreive state number from top of stack
+                  state = stack[stack.length - 1];
+  
+                  ...
+  
+                  // handle parse error
+&gt;&gt;                _handle_error: if (typeof action === 'undefined' || !action.length || !  ...action[0]) {
+  
+                      var errStr = '';
+                      if (!recovering) {
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4442"
+<A NAME="tex2html4437"
   HREF="node146.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4436"
+<A NAME="tex2html4431"
   HREF="node128.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4430"
+<A NAME="tex2html4425"
   HREF="node144.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4438"
-  HREF="node198.html">
+<A NAME="tex2html4433"
+  HREF="node197.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4440"
-  HREF="node201.html">
+<A NAME="tex2html4435"
+  HREF="node200.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -176,17 +216,17 @@ Jison no soporta acciones en medio de una regla.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4443"
-  HREF="node146.html">Recuperación de Errores</A>
-<B>Sup:</B> <A NAME="tex2html4437"
+<B> Sig:</B> <A NAME="tex2html4438"
+  HREF="node146.html">Consejos a seguir al</A>
+<B>Sup:</B> <A NAME="tex2html4432"
   HREF="node128.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4431"
-  HREF="node144.html">Manejo en jison de</A>
+<B> Ant:</B> <A NAME="tex2html4426"
+  HREF="node144.html">Construcción del Árbol Sintáctico</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-04-17</I>
+2013-04-23</I>
 </ADDRESS>
 </BODY>
 </HTML>
