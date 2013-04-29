@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Recuperación de Errores</TITLE>
-<META NAME="description" CONTENT="Recuperación de Errores">
+<TITLE>Acciones en Medio de una Regla y Atributos Heredados</TITLE>
+<META NAME="description" CONTENT="Acciones en Medio de una Regla y Atributos Heredados">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node163.html">
 <LINK REL="previous" HREF="node161.html">
-<LINK REL="up" HREF="node147.html">
+<LINK REL="up" HREF="node148.html">
 <LINK REL="next" HREF="node163.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4764"
+<A NAME="tex2html4769"
   HREF="node163.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4758"
-  HREF="node147.html">
+<A NAME="tex2html4763"
+  HREF="node148.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4752"
+<A NAME="tex2html4757"
   HREF="node161.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4760"
-  HREF="node209.html">
+<A NAME="tex2html4765"
+  HREF="node210.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4762"
-  HREF="node212.html">
+<A NAME="tex2html4767"
+  HREF="node213.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,235 +88,282 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4765"
-  HREF="node163.html">Recuperación de Errores en</A>
-<B>Sup:</B> <A NAME="tex2html4759"
-  HREF="node147.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4753"
-  HREF="node161.html">Acciones en Medio de</A>
+<B> Sig:</B> <A NAME="tex2html4770"
+  HREF="node163.html">Recuperación de Errores</A>
+<B>Sup:</B> <A NAME="tex2html4764"
+  HREF="node148.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4758"
+  HREF="node161.html">Manejo en yapp de</A>
 <B> Con:</B> 
-<A NAME="tex2html4760"
-  HREF="node209.html">
+<A NAME="tex2html4765"
+  HREF="node210.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4762"
-  HREF="node212.html">
+<A NAME="tex2html4767"
+  HREF="node213.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION058150000000000000000"></A>
-<A NAME="section:errores"></A>
+<H1><A NAME="SECTION058140000000000000000"></A>
+<A NAME="section:mediaregla"></A>
 <BR>
-Recuperación de Errores
+Acciones en Medio de una Regla y Atributos Heredados
 </H1>
-Las entradas de un traductor pueden contener errores. 
-El lenguaje <code>yapp</code> proporciona un <SPAN  CLASS="textbf">token</SPAN> especial,
-<code>error</code>, que puede ser utilizado en el programa fuente
-para extender el traductor con ``producciones de error'' 
-que lo doten de cierta capacidad para 
-recuperase de  una entrada errónea y poder continuar 
-analizando el resto de la entrada.
+La estrategia utilizada en la sección <A HREF="node161.html#section:heredados">35.13</A> funciona
+si podemos predecir la posición del atributo en la pila del analizador.
+En el ejemplo anterior los atributos clase y tipo estaban siempre,
+cualquiera que fuera la derivación a derechas, 
+en las posiciones 0 y -1. Esto no siempre es asi. Consideremos
+la siguiente <A NAME="18713"></A><SPAN  CLASS="textbf">definición dirigida por la sintáxis</SPAN>:
 
 <P>
-Consideremos lo que ocurre al ejecutar nuestra calculadora
-<code>yapp</code> con una entrada errónea. Recordemos 
-la gramática:
-
-<P>
-<PRE>
- 9  %right  '='
-10  %left   '-' '+'
-11  %left   '*' '/'
-12  %left   NEG
-13  %right  '^'
-14
-15  %%
-16  input:  # empty
-17          |   input line  { push(@{$_[1]},$_[2]); $_[1] }
-18  ;
-19
-20  line:       '\n'       { $_[1] }
-21          |   exp '\n'   { print "$_[1]\n" }
-22          |   error '\n' { $_[0]-&gt;YYErrok }
-23  ;
-</PRE>
-
-<P>
-La regla <code>line </code><!-- MATH
+<BR>
+<BR>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">S <!-- MATH
  $\rightarrow$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
  SRC="img50.png"
- ALT="$ \rightarrow$"></SPAN> <code>error '\n'</code> es una producción de
-error. La idea general de uso es que, a traves de la misma, el programador 
-le indica a <code>yapp</code> que, cuando se produce un error
-dentro de una expresión, descarte todos los <SPAN  CLASS="textbf">tokens</SPAN> hasta llegar al
-retorno del carro y prosiga con el análisis. 
-Además, mediante la llamada al método <code>YYErrok</code> el programador
-anuncia que, si se alcanza este punto, la recuperación puede considerarse 
-``completa''  y que <code>yapp</code> puede emitir a partir de ese momento 
-mensajes de error
-con la seguridad de que no son consecuencia de un comportamiento inestable
-provocado por el primer error.
+ ALT="$ \rightarrow$"></SPAN> a A C</TD>
+<TD ALIGN="LEFT"><code>$C{i} = $A{s}</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT">S <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> b A B C</TD>
+<TD ALIGN="LEFT"><code>$C{i} = $A{s}</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT">C <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> c</TD>
+<TD ALIGN="LEFT"><code>$C{s} = $C{i}</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT">A <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> a</TD>
+<TD ALIGN="LEFT"><code>$A{s} = "a"</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT">B <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> b</TD>
+<TD ALIGN="LEFT"><code>$B{s} = "b"</code></TD>
+</TR>
+</TABLE>
+</DIV>
+<BR>
+<BR>
 
 <P>
-El resto de la gramática de la calculadora era como sigue:
+<P>
+<DIV><B>Ejercicio  <SPAN CLASS="arabic">35</SPAN>.<SPAN CLASS="arabic">14</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Determine un orden correcto de evaluación de la anterior
+definición dirigida por la sintáxis para la entrada <code>b a b c</code>.</I></DIV><P></P>
+
+<P>
+C hereda el atributo sintetizado de A. El problema es que, en la pila
+del analizador el atributo <code>$A{s}</code> puede estar en la posición 0 
+o -1 dependiendo de si la regla por la que se derivó fué
+S <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> a A C o bien S <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> b A B C. La solución
+a este tipo de problemas consiste en insertar acciones 
+intermedias de copia del atributo de manera que se garantize que el atributo
+de interés está siempre a una distancia fija. Esto es, se inserta
+una variable sintáctica intermedia auxiliar M la cual deriva a vacío
+y que tiene como acción asociada una regla de copia:
+
+<P>
+<BR>
+<BR>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">S <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> a A C</TD>
+<TD ALIGN="LEFT"><code>$C{i} = $A{s}</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT">S <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> b A B M C</TD>
+<TD ALIGN="LEFT"><code>$M{i} = $A{s}; $C{i} = $M{s}</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT">C <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> c</TD>
+<TD ALIGN="LEFT"><code>$C{s} = $C{i}</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT">A <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> a</TD>
+<TD ALIGN="LEFT"><code>$A{s} = "a"</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT">B <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> b</TD>
+<TD ALIGN="LEFT"><code>$B{s} = "b"</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT">M <!-- MATH
+ $\rightarrow \epsilon$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="34" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img159.png"
+ ALT="$ \rightarrow \epsilon$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>$M{s} = $M{i}</code></TD>
+</TR>
+</TABLE>
+</DIV>
+<BR>
+<BR>
+
+<P>
+El nuevo esquema de traducción puede ser implantado mediante
+un programa <code>yapp</code>:
 
 <P>
 <PRE>
-24
-25  exp:        NUM
-26          |   VAR                 { $_[0]-&gt;YYData-&gt;{VARS}{$_[1]} }
-27          |   VAR '=' exp         { $_[0]-&gt;YYData-&gt;{VARS}{$_[1]}=$_[3] }
-28          |   exp '+' exp         { $_[1] + $_[3] }
-29          |   exp '-' exp         { $_[1] - $_[3] }
-30          |   exp '*' exp         { $_[1] * $_[3] }
-31          |   exp '/' exp         {
-32                                    $_[3]
-33                                    and return($_[1] / $_[3]);
-34                                    $_[0]-&gt;YYData-&gt;{ERRMSG}
-35                                      =   "Illegal division by zero.\n";
-36                                    $_[0]-&gt;YYError;
-37                                    undef
-38                                  }
-39          |   '-' exp %prec NEG   { -$_[2] }
-40          |   exp '^' exp         { $_[1] ** $_[3] }
-41          |   '(' exp ')'         { $_[2] }
-42  ;
+$ cat -n Inherited2.yp
+     1  %%
+     2  S : 'a' A C
+     3    | 'b' A B  { $_[2]; } C
+     4    ;
+     5
+     6  C : 'c' { print "Valor: ",$_[0]-&gt;YYSemval(0),"\n"; $_[0]-&gt;YYSemval(0) }
+     7    ;
+     8
+     9  A : 'a' { 'a' }
+    10    ;
+    11
+    12  B : 'b' { 'b' }
+    13    ;
+    14
+    15  %%
 </PRE>
-en la ejecución activamos el flag <code>yydebug</code> a <code>0x10</code> para 
-obtener información sobre el tratamiento de errores:
+
+<P>
+La ejecución muestra como se ha propagado el valor del atributo:
 <PRE>
-$self-&gt;YYParse( yylex =&gt; \&amp;_Lexer, yyerror =&gt; \&amp;_Error, yydebug =&gt; 0x10 );
-</PRE>
-Pasemos a darle una primera entrada errónea:
-
-<P>
-<PRE>
-$ ./usecalc.pl
-3-+2
-Syntax error.
-**Entering Error recovery.
-**Pop state 12.
-**Pop state 3.
-**Shift $error token and go to state 9.
-**Dicard invalid token &gt;+&lt;.
-**Pop state 9.
-**Shift $error token and go to state 9.
-**Dicard invalid token &gt;NUM&lt;.
-**Pop state 9.
-**Shift $error token and go to state 9.
-**End of Error recovery.
+$ ./useinherited2.pl '0x04'
+Entrada (En Unix, presione CTRL-D para terminar):
+b a b c
+Shift 2.  Shift 6.
+Reduce using rule 5 (A,1): Back to state 2, then state 5.
+Shift 8.
+Reduce 6 (B,1): Back to state 5, then state 9.
+Reduce 2 (@1-3,0): Back to state 9, then state 12.
 </PRE>
 
 <P>
-El esquema general del algoritmo de recuperación de errores usado 
-por la versión actual de <code>yapp</code> es el siguiente:
-
-<P>
-
-<OL>
-<LI>Cuando se encuentra ante una acción de error, el analizador genera un 
-<SPAN  CLASS="textbf">token</SPAN> <code>error</code>.
-
-<P>
-</LI>
-<LI>A continuación pasa a retirar estados de la pila hasta que descubre un
-estado capaz de transitar ante el <SPAN  CLASS="textbf">token</SPAN> <code>error</code>. 
-En el ejemplo anterior el analizador estaba en el estado 12 y lo retira
-de la pila. Los contenidos del estado 12 son:
-<PRE>
-	exp -&gt; exp '-' . exp	(Rule 10)
-	'('	shift 7 '-'	shift 2 NUM	shift 6 VAR	shift 8
-	exp	go to state 21
-</PRE>
-Obviamente no esperabamos ver un <code>'+'</code> aqui. El siguiente
-estado en la cima de la pila es el 3, el cual tampoco
-tiene ninguna transición ante el terminal <code>error</code>:
+En este momento se esta ejecutando la acción intermedia.
+Lo podemos comprobar revisando el fichero <code>Inherited2.output</code>
+que fué generado usando la opción <code>-v</code> al llamar a <code>yapp</code>.
+La regla 2 por la que se reduce es la asociada con la acción 
+intermedia:
 
 <P>
 <PRE>
-	line -&gt; exp . '\n'	(Rule 4)
-	exp -&gt; exp . '+' exp	(Rule 9)
-	exp -&gt; exp . '-' exp	(Rule 10)
-	exp -&gt; exp . '*' exp	(Rule 11)
-	exp -&gt; exp . '/' exp	(Rule 12)
-	exp -&gt; exp . '^' exp	(Rule 14)
-
-	'*'	shift 17 '+'	shift 13 '-'	shift 12 '/'	shift 15
-	'\n'	shift 14 '^'	shift 16
+$ cat -n Inherited2.output
+     1  Rules:
+     2  ------
+     3  0:      $start -&gt; S $end
+     4  1:      S -&gt; 'a' A C
+     5  2:      @1-3 -&gt; /* empty */
+     6  3:      S -&gt; 'b' A B @1-3 C
+     7  4:      C -&gt; 'c'
+     8  5:      A -&gt; 'a'
+     9  6:      B -&gt; 'b'
+        ...
 </PRE>
-El pop sobre el estado 3 deja expuesto en la superficie al estado
-1, el cuál ``sabe'' como manejar el error:
+
+<P>
+Obsérvese la notación usada por <code>yapp</code> para la 
+<A NAME="18715"></A><SPAN  CLASS="textbf">acción en medio de la regla</SPAN>: <code>@1-3</code>.
+Continuamos con la antiderivación:
+
+<P>
 <PRE>
-	$start -&gt; input . $end	(Rule 0)
-	input -&gt; input . line	(Rule 2)
-
-	$end	shift 4 '('	shift 7 '-'	shift 2 '\n'	shift 5
-	NUM	shift 6 VAR	shift 8
-	error	shift 9
-
-	exp	go to state 3
-	line	go to state 10
+Shift 10.
+Reduce 4 (C,1): 
+Valor: a
+Back to state 12, then 13.
+Reduce using rule 3 (S,5): Back to state 0, then state 1.
+Shift 4.
+Accept.
 </PRE>
 
 <P>
-</LI>
-<LI>En este punto transita al estado correspondiente a desplazar el 
-<SPAN  CLASS="textbf">token</SPAN> <code>error</code>. 
-
-<P>
-En consecuencia, con lo dicho, en el ejemplo se va al estado 9:
-<PRE>
-	line -&gt; error . '\n'	(Rule 5)
-	'\n'	shift, and go to state 20
-</PRE>
-
-<P>
-</LI>
-<LI>Entonces el algoritmo de recuperación va
-leyendo <SPAN  CLASS="textbf">tokens</SPAN> y descartandolos hasta encontrar
-uno que sea aceptable. En este caso hemos especificado
-que el terminal que nos da cierta confianza de recuperación
-es el retorno de carro:
-<PRE>
-**Dicard invalid token &gt;+&lt;.
-**Pop state 9.
-**Shift $error token and go to state 9.
-**Dicard invalid token &gt;NUM&lt;.
-**Pop state 9.
-**Shift $error token and go to state 9.
-**End of Error recovery.
-</PRE>
-
-<P>
-</LI>
-<LI>Sólo se envían nuevos mensajes de error una vez asimilados (desplazados)
-algunos símbolos terminales. De este modos se intenta evitar la aparición
-masiva de mensajes de error.
-</LI>
-</OL>
+El método puede ser generalizado a casos en los
+que el atributo de interés este a diferentes distancias en
+diferentes reglas sin mas que introducir las correspondientes
+acciones intermedias de copia.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4764"
+<A NAME="tex2html4769"
   HREF="node163.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4758"
-  HREF="node147.html">
+<A NAME="tex2html4763"
+  HREF="node148.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4752"
+<A NAME="tex2html4757"
   HREF="node161.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4760"
-  HREF="node209.html">
+<A NAME="tex2html4765"
+  HREF="node210.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4762"
-  HREF="node212.html">
+<A NAME="tex2html4767"
+  HREF="node213.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -363,17 +410,17 @@ masiva de mensajes de error.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4765"
-  HREF="node163.html">Recuperación de Errores en</A>
-<B>Sup:</B> <A NAME="tex2html4759"
-  HREF="node147.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4753"
-  HREF="node161.html">Acciones en Medio de</A>
+<B> Sig:</B> <A NAME="tex2html4770"
+  HREF="node163.html">Recuperación de Errores</A>
+<B>Sup:</B> <A NAME="tex2html4764"
+  HREF="node148.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4758"
+  HREF="node161.html">Manejo en yapp de</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-04-24</I>
+2013-04-29</I>
 </ADDRESS>
 </BODY>
 </HTML>
