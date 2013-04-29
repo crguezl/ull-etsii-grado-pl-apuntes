@@ -28,19 +28,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4475"
+<A NAME="tex2html4479"
   HREF="node144.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4469"
+<A NAME="tex2html4473"
   HREF="node128.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4463"
+<A NAME="tex2html4467"
   HREF="node142.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4471"
+<A NAME="tex2html4475"
   HREF="node210.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4473"
+<A NAME="tex2html4477"
   HREF="node213.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -88,18 +88,18 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4476"
+<B> Sig:</B> <A NAME="tex2html4480"
   HREF="node144.html">Recuperación de Errores</A>
-<B>Sup:</B> <A NAME="tex2html4470"
+<B>Sup:</B> <A NAME="tex2html4474"
   HREF="node128.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4464"
+<B> Ant:</B> <A NAME="tex2html4468"
   HREF="node142.html">Definición Dirigida por la</A>
 <B> Con:</B> 
-<A NAME="tex2html4471"
+<A NAME="tex2html4475"
   HREF="node210.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4473"
+<A NAME="tex2html4477"
   HREF="node213.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
@@ -109,12 +109,14 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html4477"
+<LI><A NAME="tex2html4481"
   HREF="node143.html#SECTION057151000000000000000">Un mal diseño</A>
-<LI><A NAME="tex2html4478"
+<LI><A NAME="tex2html4482"
   HREF="node143.html#SECTION057152000000000000000">Gramática no LR(1)</A>
-<LI><A NAME="tex2html4479"
+<LI><A NAME="tex2html4483"
   HREF="node143.html#SECTION057153000000000000000">Un Lenguaje Intrínsecamente Ambiguo</A>
+<LI><A NAME="tex2html4484"
+  HREF="node143.html#SECTION057154000000000000000">Conflicto reduce-reduce</A>
 </UL>
 <!--End of Table of Child-Links-->
 <HR>
@@ -214,20 +216,77 @@ o bien el número de <code>b</code>s es igual al número de <code>c</code>s.
 </LI>
 </UL></DIV><P></P>
 
+<P>
+
+<H2><A NAME="SECTION057154000000000000000">
+Conflicto reduce-reduce</A>
+</H2>
+La siguiente gramática presenta conflictos reduce-reduce:
+<P>
+<DIV><B>Ejercicio  <SPAN CLASS="arabic">34</SPAN>.<SPAN CLASS="arabic">15</SPAN>.<SPAN CLASS="arabic">3</SPAN></B> &nbsp; <PRE>
+[~/srcPLgrado/jison/jison-reducereduceconflict]$ cat reducereduceconflictPPCR2.y
+%token ID
+
+%%
+
+def:    param_spec return_spec ','
+        ;
+param_spec:
+             type
+        |    name_list ':' type
+        ;
+return_spec:
+             type
+        |    name ':' type
+        ;
+type:        
+             ID
+        ;
+name:        
+             ID 
+        ;
+name_list:
+             name
+        |    name ',' name_list
+        ;
+%%
+</PRE><I>
+Este es el diagnóstico de Jison:
+</I><PRE>
+~/srcPLgrado/jison/jison-reducereduceconflict]$ jison reducereduceconflictPPCR2.y
+Conflict in grammar: multiple actions possible when lookahead token is ID in state 5
+- reduce by rule: name -&gt; ID
+- reduce by rule: type -&gt; ID
+Conflict in grammar: multiple actions possible when lookahead token is : in state 5
+- reduce by rule: name -&gt; ID
+- reduce by rule: type -&gt; ID
+Conflict in grammar: multiple actions possible when lookahead token is , in state 5
+- reduce by rule: name -&gt; ID
+- reduce by rule: type -&gt; ID
+
+States with conflicts:
+State 5
+  type -&gt; ID . #lookaheads= ID : ,
+  name -&gt; ID . #lookaheads= ID : ,
+</PRE><I>
+Encuentre una gramática equivalente a la anterior sin conflictos.</I></DIV><P></P>
+
+<P>
+
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4475"
+<A NAME="tex2html4479"
   HREF="node144.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4469"
+<A NAME="tex2html4473"
   HREF="node128.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4463"
+<A NAME="tex2html4467"
   HREF="node142.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4471"
+<A NAME="tex2html4475"
   HREF="node210.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4473"
+<A NAME="tex2html4477"
   HREF="node213.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -275,11 +334,11 @@ o bien el número de <code>b</code>s es igual al número de <code>c</code>s.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4476"
+<B> Sig:</B> <A NAME="tex2html4480"
   HREF="node144.html">Recuperación de Errores</A>
-<B>Sup:</B> <A NAME="tex2html4470"
+<B>Sup:</B> <A NAME="tex2html4474"
   HREF="node128.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4464"
+<B> Ant:</B> <A NAME="tex2html4468"
   HREF="node142.html">Definición Dirigida por la</A>
 </DIV>
 <!--End of Navigation Panel-->
