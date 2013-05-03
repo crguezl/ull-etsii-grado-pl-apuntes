@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Optimización Independiente de la Máquina</TITLE>
-<META NAME="description" CONTENT="Optimización Independiente de la Máquina">
+<TITLE>Análisis Semántico</TITLE>
+<META NAME="description" CONTENT="Análisis Semántico">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node123.html">
 <LINK REL="previous" HREF="node121.html">
-<LINK REL="up" HREF="node111.html">
+<LINK REL="up" HREF="node112.html">
 <LINK REL="next" HREF="node123.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4102"
+<A NAME="tex2html4103"
   HREF="node123.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4096"
-  HREF="node111.html">
+<A NAME="tex2html4097"
+  HREF="node112.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4090"
+<A NAME="tex2html4091"
   HREF="node121.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4098"
-  HREF="node210.html">
+<A NAME="tex2html4099"
+  HREF="node211.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4100"
-  HREF="node213.html">
+<A NAME="tex2html4101"
+  HREF="node214.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,19 +88,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4103"
-  HREF="node123.html">Patrones Árbol y Transformaciones</A>
-<B>Sup:</B> <A NAME="tex2html4097"
-  HREF="node111.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html4091"
-  HREF="node121.html">Análisis Semántico</A>
+<B> Sig:</B> <A NAME="tex2html4104"
+  HREF="node123.html">Optimización Independiente de la</A>
+<B>Sup:</B> <A NAME="tex2html4098"
+  HREF="node112.html">Análisis Sintáctico Descendente en</A>
+<B> Ant:</B> <A NAME="tex2html4092"
+  HREF="node121.html">Árbol de Análisis Abstracto</A>
 <B> Con:</B> 
-<A NAME="tex2html4098"
-  HREF="node210.html">
+<A NAME="tex2html4099"
+  HREF="node211.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4100"
-  HREF="node213.html">
+<A NAME="tex2html4101"
+  HREF="node214.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
@@ -109,276 +109,547 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html4104"
-  HREF="node122.html#SECTION056111000000000000000">Práctica: Plegado de las Constantes</A>
+<LI><A NAME="tex2html4105"
+  HREF="node122.html#SECTION057101000000000000000">Práctica: Declaraciones Automáticas</A>
+<LI><A NAME="tex2html4106"
+  HREF="node122.html#SECTION057102000000000000000">Práctica: Análisis Semántico</A>
 </UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION056110000000000000000"></A>
-<A NAME="section:optimizacion"></A>
-<BR>
-Optimización Independiente de la Máquina
+<H1><A NAME="SECTION057100000000000000000">
+Análisis Semántico</A>
 </H1>
-En esta fase se hace un análisis del árbol, sometiéndolo a transformaciones 
-que aumenten la eficiencia del código final producido. 
+Hay quien dice que el análisis semántico es la determinación 
+de aquellas propiedades que, siendo dependientes del contexto, pueden ser
+computadas estáticamente en tiempo de compilación para cualquier programa
+correcto. Entre estas propiedades
+están: la comprobación de que las variables son declaradas,
+la compatibilidad de tipos
+en las expresiones, el correcto uso de las llamadas a función asi
+como el ámbito y visibilidad de las variables.
+La fase de análisis semántico puede verse como una fase de ``adornado''
+o ``etiquetado'' del AAA, en la cual los atributos de los nodos
+del AAA son computados.
 
 <P>
-Ejemplos de tareas que se pueden llevar a cabo en esta fase son: 
-
-<UL>
-<LI>Extracción del interior de un bucle de cálculos que son invariantes del bucle
-</LI>
-<LI>Plegado de constantes: computar las expresiones constantes en tiempo de compilación,
-no de ejecución
-</LI>
-<LI>Propagación de las constantes: si se sabe que una variable  en un punto del programa
-tiene un valor constante <code>a = 4</code>, se puede sustituir su uso por el de la constante
-</LI>
-<LI>Eliminación de computaciones redundantes, cuando la misma expresión aparece repetidas
-veces con los mismos valores de las variables
-</LI>
-<LI>La eliminación de código ``muerto'': código que se sabe que nunca podrá ser ejecutado
-</LI>
-</UL>
-
-<P>
-En nuestro primer ejemplo, reduciremos esta fase a realizar una tarea de plegado
-de las constantes. Primero lo haremos mediante la rutina
+Aunque la veamos como una fase separada del análisis sintáctico, puede
+en numerosas ocasiones llevarse a cabo al mismo tiempo que se construye
+el árbol. Así lo hacemos en este ejemplo: incrustamos la acción semántica
+en la correspondiente rutina de análisis sintáctico. Así, en la rutina <code>term</code>, una vez 
+que hemos obtenido los dos operandos, comprobamos que son de tipo numérico
+llamando (línea 8) a 
 
 <P>
 <DIV ALIGN="CENTER">
-</DIV><PRE>
-&amp;Machine::Independent::Optimization::fold
-</PRE>
-<DIV ALIGN="CENTER">
+<code>Semantic::Analysis::check_type_numeric_operator</code>:
+
 </DIV>
 
 <P>
-En esta fase transformamos los AAA: si tenemos un árbol de la forma 
-OPERATION(left, right), esto es, su raíz es una operación,
-primero plegamos los subárboles left y right, y si se han
-transformado en constantes numéricas, entonces plegamos el nodo
-que pasa a ser numérico:
+Observe como aparece un nuevo atributo <code>TYPE</code> decorando el nodo
+creado (línea 9):
 
 <P>
 <PRE>
- 1 sub operator_fold { # Obsérvese el uso del aliasing
- 2 
- 3   if ($_[0]-&gt;LEFT-&gt;is_operation) {
- 4     $_[0]-&gt;{LEFT}-&gt;fold; 
- 5   }
- 6   if ($_[0]-&gt;RIGHT-&gt;is_operation) {
- 7     $_[0]-&gt;{RIGHT}-&gt;fold;
- 8   }
- 9   if (ref($_[0]-&gt;LEFT) eq "NUM" and ref($_[0]-&gt;RIGHT) eq "NUM") {
-10     $_[0] = reduce_children($_[0]);
-11   }
+ 1 sub term() {
+ 2   my ($t, $t2);
+ 3 
+ 4   $t = factor;
+ 5   if ($lookahead eq '*') {
+ 6     match('*');
+ 7     $t2 = term;
+ 8     my $type = Semantic::Analysis::check_type_numeric_operator($t, $t2, '*');
+ 9     $t = TIMES-&gt;new( LEFT =&gt; $t, RIGHT =&gt; $t2, TYPE =&gt; $type);
+10   }
+11   return $t;
 12 }
-13 
-14 sub PLUS::fold {
-15  operator_fold(@_);
-16 }
-17 
-18 sub TIMES::fold {
-19  operator_fold(@_);
-20 }
 </PRE>
 
 <P>
-El plegado de las operaciones binarias se ha delegado
-en la subrutina <code>operator_fold</code>. En las líneas 3 y 6 se comprueba
-que se trata de un nodo de tipo operación. Si es así se procede
-a su plegado. Una vez plegados los dos subárboles hijo comprobamos
-en la línea 9 que los hijos actuales son de la clase <code>NUM</code>.
-Si es el caso, en la línea 10 cambiamos el nodo por el resultado de operar
-los dos hijos. Los nodos han sido
-extendidos con un método <code>is_operation</code> que determina si 
-se trata de un nodo operación binaria o no. Para ello 
-se han introducido nuevas clases de nodos: la clase <code>Node</code>
-está en la raíz de la jerarquía de herencia, las clases <code>Leaf</code>
-y <code>Binary</code> se usan para representar los nodos hoja y binarios
-y heredan de la anterior.
-Una clase informa a Perl que desea heredar de otra clase añadiendo 
-el nombre de esa clase a la variable <code>@ISA</code> de su paquete.
-La herencia en Perl determina la forma de búsqueda de un método. Si el objeto
-no se puede encontrar en la clase, recursivamente y en orden primero-profundo
-se busca en las clases de las cuales esta hereda, esto es en las clases
-especificadas en el vector <code>@ISA</code>.
+En el manejo de errores de tipo, un tipo especial <code>$err_type</code>
+es usado para indicar un error de tipo:
 
 <P>
 <PRE>
-package Node;
+  sub check_type_numeric_operator {
+    my ($op1, $op2, $operator) = @_;
 
-sub is_operation {
-  my $node = shift;
-
-  return ref($node) =~ /^(TIMES)|(PLUS)$/;
-}
-
-package Leaf; # hoja del AAA
-our @ISA = ("Node");
-sub children {
-  return ();
-}
-
-package Binary;
-our @ISA = ("Node");
-sub children {
-  my $self = shift;
-
-  return (LEFT =&gt; $self-&gt;{LEFT}, RIGHT =&gt; $self-&gt;{RIGHT});
-}
+    my $type = numeric_compatibility($op1, $op2, $operator);
+    if ($type == $err_type) {
+      Error::fatal("Operandos incompatibles para el operador $operator") 
+    }
+    else {
+      return $type;
+    }
+  }
 </PRE>
-Así pues, los objetos de la clase <code>Leaf</code> tienen acceso 
-al método <code>is_operation</code>.
+La subrutina <code>numeric_compatibility</code> comprueba que los
+dos operandos son de tipo numérico y devuelve el correspondiente
+tipo. Si ha ocurrido un error de tipo, intenta encontrar 
+un tipo conveniente para el operando:
 
 <P>
-Ahora hacemos que las clases <code>PLUS</code> y <code>TIMES</code> 
-hereden de la clase <code>BINARY</code>:
 <PRE>
-package PLUS;
-our @ISA = ("Binary");
+  sub numeric_compatibility {
+    my ($op1, $op2, $operator) = @_;
 
-sub operator {
-  my $self = shift;
+    if (($op1-&gt;TYPE == $op2-&gt;TYPE) and is_numeric($op1-&gt;TYPE)) {
+      return $op1-&gt;TYPE; # correct
+    }
+    ... # código de recuperación de errores de tipo
+  }
 
-  $_[0]+$_[1];
-}
+  sub is_numeric {
+    my $type = shift;
 
-....
-
-package TIMES;
-our @ISA = ("Binary");
-
-sub operator {
-  my $self = shift;
-
-  $_[0]*$_[1];
-}
-
-....
+    return ($type == $int_type); # añadir long, float, double, etc.
+  }
 </PRE>
 
 <P>
-Obsérvese que en las líneas 4 y 7 del código del plegado
-de nodos de operación se ha accedido directamente 
-al dato en vez de usar el método para modificar el atributo, 
-saltándonos lo que la buena programación
-orientada a objetos indica. La forma en la que esta escrito
-hace que, por ejemplo, <code>$_[0]-&gt;{LEFT}</code> sea modificado. 
-Recuérdese que en Perl
-<SPAN  CLASS="textbf">los argumentos son alias de los parámetros</SPAN>.
-
-<P>
-La subrutina <code>reduce_children</code> es la encargada 
-de crear el nuevo nodo con el resultado de operar los
-hijos izquierdo y derecho:
+Es parte del análisis semántico la declaración de tipos:
 
 <P>
 <PRE>
-1 sub reduce_children {
-2   my ($node) = @_;
-3 
-4   my $value = $node-&gt;operator($node-&gt;LEFT-&gt;VAL, $node-&gt;RIGHT-&gt;VAL);
-5   NUM-&gt;new(VAL =&gt; $value, TYPE =&gt; $PL::Tutu::int_type);
-6 }
-</PRE>
+sub declaration() {
+  my ($t, $class, @il);
 
-<P>
-En la línea 4 se usa el método <code>operator</code> asociado 
-con un nodo operación. 
-
-<P>
-Plegar una sentencia de impresión es plegar la expresión
-a imprimir:
-<PRE>
-sub PRINT::fold {
-  $_[0]-&gt;{EXPRESSION}-&gt;fold;
+  if (($lookahead eq 'INT') or ($lookahead eq 'STRING')) {
+    $class = $lookahead;
+    $t = &amp;type();
+    @il = &amp;idlist();
+    &amp;Semantic::Analysis::set_types($t, @il);
+    &amp;Address::Assignment::compute_address($t, @il);
+    return $class-&gt;new(TYPE =&gt; $t, IDLIST =&gt; \@il);
+  }
+  else {
+    Error::fatal('Se esperaba un tipo');
+  }
 }
 </PRE>
-Plegar una sentencia de asignación es plegar
-la parte derecha de la asignación:
-<PRE>
-sub ASSIGN::fold {
-  $_[0]-&gt;{RIGHT}-&gt;fold;
-}
-</PRE>
-de nuevo, hemos accedido a los campos en vez de usar los métodos.
-
-<P>
-Las restantes operaciones de plegado son triviales:
-<PRE>
-sub ID::fold { }
-
-sub NUM::fold { }
-
-sub STR::fold { }
-</PRE>
-Por último, para plegar todas las expresiones
-recorremos la lista de sentencias del programa
-y las plegamos una a una.
+Para ello se utiliza una tabla de símbolos que es un hash <code>%symbol_table</code>
+indexado en los identificadores del programa:
 
 <P>
 <PRE>
-sub fold {
-  my @statements = @{$tree-&gt;{STS}};
-  for my $s (@statements) {
-    $s-&gt;fold;
+sub set_types {
+  my $type = shift;
+  my @vars = @_;
+
+  foreach my $var (@vars) {
+    if (!exists($symbol_table{$id})) { $symbol_table{$var}-&gt;{TYPE} = $type; }
+    else { Error::error("$id declarado dos veces en el mismo ámbito"); }
   }
 }
 </PRE>
 
 <P>
-
-<H2><A NAME="SECTION056111000000000000000"></A>
-   <A NAME="12227"></A>
-<BR>
-Práctica: Plegado de las Constantes
-</H2>
-  
-Complete su proyecto de compilador de Tutu 
-con la fase de plegado de las constantes siguiendo 
-la metodología explicada 
-en los párrafos previos. Mejore la jerarquía de 
-clases con una clase abstracta <code>Operation</code> que represente a los nodos
-que se corresponden con operaciones binarias. Defina el método
-abstracto <code>operation</code> en dicha clase. 
-Un <A NAME="12228"></A><SPAN  CLASS="textbf">método abstracto</SPAN> es uno que, mas que proveer un servicio 
-representa un servicio o categoría.
-La idea es que al definir un clase base abstracta se indica un conjunto de métodos
-que deberían estar definidos en todas las clases que heredan de la clase base abstracta.
-Es como una declaración de interfaz que indica la necesidad de definir su funcionalidad
-en las clases descendientes, pero que no se define en la clase base.
-Un método abstracto debe producir una excepción con el mensaje de error adecuado
-si no se ha redefinido en la clase desendiente. 
+Cada vez que aparece una variable en el código, bien en un factor o en 
+una asignación, comprobamos que ha sido declarada:
 
 <P>
-Para ello use la clave 
-<code>abstract</code> del módulo <code>Class::MethodMaker</code>. Consulte 
-la documentación del módulo <code>Class::MethodMaker</code>. Consulte 
-<A HREF="#subsection:abstractos">
-<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
- HREF="node214.html#CasianoIntroAPerl">10</A>]
-para saber más sobre clases abstractas.
+<PRE>
+sub factor() {
+  my ($e, $id, $str, $num);
+
+  if ($lookahead eq 'NUM') { ... }
+  elsif ($lookahead eq 'ID') {
+    $id = $value;
+    match('ID');
+    my $type = Semantic::Analysis::check_declared($id);
+    return ID-&gt;new( VAL =&gt; $id, TYPE =&gt; $type);
+  }
+  elsif ($lookahead eq 'STR') { ... }
+  elsif ($lookahead eq '(') { ... }
+  else { Error::fatal("Se esperaba (, NUM o ID"); }
+}
+</PRE>
+
+<P>
+La función <code>check_declared</code> devuelve el atributo
+<code>TYPE</code> de la correspondiente entrada en la tabla de 
+símbolos.
+
+<P>
+<PRE>
+sub check_declared {
+  my $id = shift;
+
+  if (!exists($symbol_table{$id})) {
+    Error::error("$id no ha sido declarado!");
+    # auto-declaración de la variable a err_type
+    Semantic::Analysis::set_types($err_type, ($id));
+  }
+  return $symbol_table{$id}-&gt;{TYPE};
+}
+</PRE>
+
+<P>
+
+<H2><A NAME="SECTION057101000000000000000"></A>
+   <A NAME="12242"></A>
+<BR>
+Práctica: Declaraciones Automáticas
+</H2>
+
+<P>
+Modifique la subrutina <code>check_declared</code> para que cuando
+una variable no haya sido declarada se declare ``sobre la marcha''. 
+¿Puede utilizar 
+información dependiente del contexto para decidir cual es la mejor forma
+de declararla?
+
+<P>
+
+<H2><A NAME="SECTION057102000000000000000"></A>
+   <A NAME="12244"></A>
+  
+<A NAME="practica:analisis_semantico"></A>
+<BR>
+Práctica: Análisis Semántico
+</H2>
+Extienda el código de la práctica 
+<A HREF="node121.html#practica:AAA">34.9.5</A>
+para comprobar la compatibilidad de tipos.
+
+<P>
+<BR>
+<BR>
+
+<DIV ALIGN="CENTER"><TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL">
+1 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  p  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> b     </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+2 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  b  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> ds  ss     </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+3 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  b  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> ss         </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+4 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  ds <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> d  ';'  ds  </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+5 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  ds <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> d ';'      </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+6 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  d  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> INT  il     </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+7 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  d  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> STRING  il </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+8 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  ss <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> s  ';'  ss  </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+9 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  ss <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> s          </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+10 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  s  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> ID '=' e   </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+11 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  s  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> '{' b '}'   </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+12 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  s  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> P  e       </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+13 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  s <!-- MATH
+ $\rightarrow \epsilon$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="34" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img159.png"
+ ALT="$ \rightarrow \epsilon$"></SPAN> </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+14 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  e <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> e1 '+' t    </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+15 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  e <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> e1 '-' t    </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+16 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  e <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> t           </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+17 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  t <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> t1 '*' f    </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+18 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  t <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> t '/' f     </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+19 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  t <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> f           </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+20 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  f <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> '(' e ')'   </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+21 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  f <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> ID         </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+22 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  f <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> NUM        </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+23 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  f <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> STR        </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+24 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  il <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> ID ',' il  </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+25 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  il <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> ID         </SMALL></TD>
+</TR>
+</TABLE></DIV>
+<BR>
+<BR>
+En cuanto a las sentencias de bloque,
+se pretende que el ámbito y visibilidad de las variables sea como en el lenguaje
+C, esto es, las declaraciones mas internas con el mismo identificador
+ocultan las mas externas. Así:
+
+<P>
+<PRE>
+int a;
+a = 4;
+{
+  int a;
+  a = 5;
+  p a
+}; /* el ; es necesario */
+p a
+</PRE>
+
+<P>
+Imprimiría 5 y 4. Para traducir esta sentencia es necesario 
+<SPAN  CLASS="textbf">usar una lista/pila de referencias a tablas de símbolos. Cada 
+sentencia compuesta o bloque tendrá
+su propia tabla de símbolos</SPAN>. Los identificadores se búscan
+en la lista de referencias a tablas de símbolos, primero 
+en la última tabla de símbolos insertada y sino se encuentra
+se busca en la penúltima insertada, etc.
+
+<P>
+Guarde como un atributo del identificador (<SPAN CLASS="MATH"><IMG
+ WIDTH="115" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img266.png"
+ ALT="$ SYMTABLE$"></SPAN>) 
+la referencia a la tabla de símbolos
+a la que pertenece. Guarde como un atributo del nodo bloque (<SPAN CLASS="MATH"><IMG
+ WIDTH="74" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img267.png"
+ ALT="$ BLOCK$"></SPAN>) 
+la referencia a la tabla de símbolos asociada.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4102"
+<A NAME="tex2html4103"
   HREF="node123.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4096"
-  HREF="node111.html">
+<A NAME="tex2html4097"
+  HREF="node112.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4090"
+<A NAME="tex2html4091"
   HREF="node121.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4098"
-  HREF="node210.html">
+<A NAME="tex2html4099"
+  HREF="node211.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4100"
-  HREF="node213.html">
+<A NAME="tex2html4101"
+  HREF="node214.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -425,17 +696,17 @@ para saber más sobre clases abstractas.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4103"
-  HREF="node123.html">Patrones Árbol y Transformaciones</A>
-<B>Sup:</B> <A NAME="tex2html4097"
-  HREF="node111.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html4091"
-  HREF="node121.html">Análisis Semántico</A>
+<B> Sig:</B> <A NAME="tex2html4104"
+  HREF="node123.html">Optimización Independiente de la</A>
+<B>Sup:</B> <A NAME="tex2html4098"
+  HREF="node112.html">Análisis Sintáctico Descendente en</A>
+<B> Ant:</B> <A NAME="tex2html4092"
+  HREF="node121.html">Árbol de Análisis Abstracto</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-05-02</I>
+2013-05-03</I>
 </ADDRESS>
 </BODY>
 </HTML>

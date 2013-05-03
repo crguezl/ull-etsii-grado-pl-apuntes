@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Práctica: Análisis de Ámbito del Lenguaje Simple C</TITLE>
-<META NAME="description" CONTENT="Práctica: Análisis de Ámbito del Lenguaje Simple C">
+<TITLE>Práctica: Construcción del AST para el Lenguaje Simple C</TITLE>
+<META NAME="description" CONTENT="Práctica: Construcción del AST para el Lenguaje Simple C">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node194.html">
 <LINK REL="previous" HREF="node192.html">
-<LINK REL="up" HREF="node189.html">
+<LINK REL="up" HREF="node190.html">
 <LINK REL="next" HREF="node194.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5331"
+<A NAME="tex2html5334"
   HREF="node194.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5325"
-  HREF="node189.html">
+<A NAME="tex2html5328"
+  HREF="node190.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5319"
+<A NAME="tex2html5322"
   HREF="node192.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5327"
-  HREF="node210.html">
+<A NAME="tex2html5330"
+  HREF="node211.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5329"
-  HREF="node213.html">
+<A NAME="tex2html5332"
+  HREF="node214.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,771 +88,52 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5332"
-  HREF="node194.html">La Dificultad de Elaboración</A>
-<B>Sup:</B> <A NAME="tex2html5326"
-  HREF="node189.html">Análisis de Ámbito en</A>
-<B> Ant:</B> <A NAME="tex2html5320"
-  HREF="node192.html">Práctica: Construcción del AST</A>
+<B> Sig:</B> <A NAME="tex2html5335"
+  HREF="node194.html">Práctica: Análisis de Ámbito</A>
+<B>Sup:</B> <A NAME="tex2html5329"
+  HREF="node190.html">Análisis de Ámbito en</A>
+<B> Ant:</B> <A NAME="tex2html5323"
+  HREF="node192.html">Descripción Eyapp del Lenguaje</A>
 <B> Con:</B> 
-<A NAME="tex2html5327"
-  HREF="node210.html">
+<A NAME="tex2html5330"
+  HREF="node211.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5329"
-  HREF="node213.html">
+<A NAME="tex2html5332"
+  HREF="node214.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html5333"
-  HREF="node193.html#SECTION051140010000000000000">La tabla de Símbolos</A>
-<LI><A NAME="tex2html5334"
-  HREF="node193.html#SECTION051140020000000000000">¿Que es una declaración?</A>
-<LI><A NAME="tex2html5335"
-  HREF="node193.html#SECTION051140030000000000000">El código asociado con <TT>declaration</TT></A>
-<LI><A NAME="tex2html5336"
-  HREF="node193.html#SECTION051140040000000000000">Tratamiento de los Bloques</A>
-<LI><A NAME="tex2html5337"
-  HREF="node193.html#SECTION051140050000000000000">Tratamiento de las Funciones</A>
-<LI><A NAME="tex2html5338"
-  HREF="node193.html#SECTION051140060000000000000">El Tratamiento del Programa Principal</A>
-<LI><A NAME="tex2html5339"
-  HREF="node193.html#SECTION051140070000000000000">Ejemplo de Salida:  Control de declaraciones duplicadas</A>
-<LI><A NAME="tex2html5340"
-  HREF="node193.html#SECTION051140080000000000000">Un ejemplo de Volcado de un AST</A>
-<LI><A NAME="tex2html5341"
-  HREF="node193.html#SECTION051140090000000000000">Métodos de soporte para el Volcado del Arbol</A>
-</UL></UL></UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION051140000000000000000"></A>
-   <A NAME="22036"></A>
+<H1><A NAME="SECTION051230000000000000000"></A>
+   <A NAME="22053"></A>
   
-<A NAME="practica:ambitoytipossamplec"></A>
+<A NAME="practica:esquemadetradsimple"></A>
 <BR>
-Práctica: Análisis de Ámbito del Lenguaje Simple C
+Práctica: Construcción del AST para el Lenguaje Simple C
 </H1>
-Haga una primera parte del análisis de ámbito del lenguaje Simple C 
-presentado
-en la práctica
-<A HREF="node192.html#practica:esquemadetradsimple">38.3</A>.
-
-<P>
-En esta primera parte
-se construyen las declaraciones y las tablas de símbolos de cada bloque. 
-Sin embargo no queda establecida la asignación desde una instancia de un
-objeto a su declaración.
-
-<P>
-
-<H4><A NAME="SECTION051140010000000000000">
-La tabla de Símbolos</A>
-</H4>
-Comenzaremos describiendo las estructuras de datos que van a conformar la tabla de símbolos
-de nuestro compilador:
-
-<P>
-
-<OL>
-<LI>Dote de los siguientes atributos a los nodos de tipo "bloque", 
-esto es a aquellos nodos que definen ámbito. Por ejemplo, los nodos asociados
-con la variable sintáctica <code>block</code> son de tipo "bloque":
-<PRE>
-block:
-    %name BLOCK
-    '{' declaration %name DECLARATIONS * statement %name STATEMENTS * '}'
-</PRE>
-
-<P>
-
-<OL>
-<LI>Atributo <code>symboltable</code>: referencia a la tabla de símbolos asociada con el bloque
-  La tabla de símbolos asociada al bloque es un simple hash.
-</LI>
-<LI>Atributo <code>fatherblock</code>: referencia al nodo <code>BLOCK</code> que inmediatamente anida a este.
-  Los nodos de tipo bloque quedan enlazados según el árbol de anidamiento de bloques
-</LI>
-<LI>Los bloques con declaraciones vacías pueden ser simplificados en el árbol de bloques
-  
-</LI>
-</OL>
-
-<P>
-</LI>
-<LI>Los nodos <code>FUNCTION</code> asociados con las
-funciones son nodos de tipo bloque y
-serán tratados de manera similar a los nodos  <code>BLOCK</code>, esto es, 
-tendrán su tabla de símbolos asociada en la cual se guardarán los parámetros 
-de la función. Este bloque es el bloque padre del bloque formado por
-el cuerpo de la función. Posteriormente se pueden fusionar estos dos bloques
-siempre que se conserve la información necesaria sobre los parámetros.
-
-<P>
-<PRE>
-funcDef:
-    %name FUNCTION
-    ID '('  param &lt;%name PARAMS * ','&gt; ')' 
-      block
-</PRE>
-
-<P>
-</LI>
-<LI>Los identificadores de funciones van en la tabla de símbolos global, asociada con el nodo
-<code>PROGRAM</code>:
-
-<P>
-<PRE>
-pl@nereida:~/Lbook/code/Simple-SymbolTables/lib/Simple$ sed -ne '/^program:/,/^;/p' SymbolTables.eyp | cat -n
- 1  program:
- 2        { reset_file_scope_vars(); }
- 3      definition&lt;%name PROGRAM +&gt;.program
- 4        {
- 5          $program-&gt;{symboltable} = { %st };  # creates a copy of the s.t.
- 6          for (keys %type) {
- 7            $type{$_} = Parse::Eyapp::Node-&gt;hnew($_);
- 8          }
- 9          $program-&gt;{depth} = 0;
-10          $program-&gt;{line}  = 1;
-11          $program-&gt;{types} = { %type };
-12          $program-&gt;{lines} = $tokenend;
-13
-14          reset_file_scope_vars();
-15          $program;
-16        }
-17  ;
-</PRE>
-
-<P>
-Observe que en C una función puede ser usada antes de que aparezca su definición.
-
-<P>
-</LI>
-<LI>Las instancias de los objetos y en particular los nodos <code>VAR</code> deben tener atributos
-  que determinen que declaración se les aplica y en que ámbito viven. Sin embargo estos
-  atributos no serán trabajados en esta práctica:
-  
-<OL>
-<LI>Atributo <code>entry</code>: Su entrada en la tabla de símbolos a la que pertenece
-</LI>
-<LI>Atributo <code>scope</code>: Una referencia al nodo <code>BLOCK</code> en el que fué declarada la variable
-  
-</LI>
-</OL>
-
-<P>
-</LI>
-<LI>La tabla de símbolos es un árbol de tablas. Cada tabla esta relacionada con un bloque.
-Cada tabla tiene una entrada para cada identificador que fué declarado
-en su bloque.  En dicha entrada figuran los atributos del identificador: entre estos 
-últimos la línea en la que fue declarado y su tipo.
-
-<P>
-</LI>
-</OL>
-
-<P>
-
-<H4><A NAME="SECTION051140020000000000000">
-¿Que es una declaración?</A>
-</H4>
-
-<P>
-Para facilitar el análisis de ámbito y la comprobación de tipos
-debemos modificar la fase de construcción del AST para
-producir declaraciones que permitan comprobar con facilidad
-la <A NAME="22037"></A><SPAN  CLASS="textbf">equivalencia de tipos</SPAN>
-
-<P>
-La equivalencia de tipos se realiza habitualmente mediante 
-<A NAME="22039"></A><SPAN  CLASS="textbf">expresiones de tipo</SPAN>. En nuestro caso vamos a
-elegir una representación dual mediante cadenas y árboles 
-de las expresiones de tipo. Las cadenas serán términos
-árbol. Como primera aproximación, entenderemos
-que dos tipos son equivalentes si las cadenas que representan
-sus expresiones de tipo son iguales. 
-
-<P>
-<PRE>
-pl@nereida:~/Lbook/code/Simple-SymbolTables/lib/Simple$ sed -ne '1,/%}/p' SymbolTables.eyp | cat -n
-  1  /*
-  2  File: SymbolTables.eyp
-  3  Scope Analysis: Only symbol table construction
-  4  */
-  5  %{
-  6  use strict;
-  7  use Data::Dumper;
-  8  use List::MoreUtils qw(firstval lastval);
-  9  use Simple::Trans;
- 10
- 11  my %reserved = (
- ..    ..... =&gt; "....."
- 20  );
- 21
- 22  my %lexeme = (
- ..    '..' =&gt; ".."
- 53  );
- 54
- 55  our ($blocks);
- 56
- 57  sub is_duplicated {
- ..    .........
- 65  }
- 66
- 67  sub build_type {
- ..    .............
- 82  }
- 83
- 84  my ($tokenbegin, $tokenend);
- 85  my %type;
- 86  my $depth;
- 87
- 88  my %st; # Global symbol table
- 89
- 90  sub build_function_scope {
-...    ................
-114  }
-115
-116  sub reset_file_scope_vars {
-117    %st = (); # reset symbol table
-118    ($tokenbegin, $tokenend) = (1, 1);
-119    %type = ( INT  =&gt; 1,
-120              CHAR =&gt; 1,
-121              VOID =&gt; 1,
-122            );
-123    $depth = 0;
-124  }
-125
-126  %}
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION051140030000000000000">
-El código asociado con <TT>declaration</TT></A>
-</H4>
-Veamos como modificamos la construcción del AST durante las declaraciones:
-
-<P>
-<PRE>
-pl@nereida:~/Lbook/code/Simple-SymbolTables/lib/Simple$ sed -ne '/^declaration:/,/^;/p' SymbolTables.eyp | cat -n
- 1  declaration:
- 2      %name DECLARATION
- 3      $basictype $declList ';'
- 4        {
- 5           my %st; # Symbol table local to this declaration
- 6           my $bt = $basictype-&gt;type;
- 7           my @decs = $declList-&gt;children();
- 8           while (my ($id, $arrspec) = splice(@decs, 0, 2)) {
- 9             my $name = $id-&gt;{attr}[0];
-10             my $type = build_type($bt, $arrspec);
-11             $type{$type} = 1; # has too much $type for me!
-12
-13             # control duplicated declarations
-14             die "Duplicated declaration of $name at line $id-&gt;{attr}[1]\n" if exists($st{$name});
-15             $st{$name}-&gt;{type} = $type;
-16             $st{$name}-&gt;{line} = $id-&gt;{attr}[1];
-17           }
-18           return \%st;
-19        }
-20  ;
-</PRE>
-El código de la función <code>build_type</code> es como sigue:
-
-<P>
-<PRE>
-pl@nereida:~/Lbook/code/Simple-SymbolTables/lib/Simple$ sed -ne '/^sub build_type/,82p' SymbolTables.eyp | cat -n
- 1  sub build_type {
- 2    my $bt = shift;
- 3    my @arrayspec = shift()-&gt;children();
- 4
- 5    my $type = '';
- 6    for my $s (@arrayspec) {
- 7      $type .= "A_$s-&gt;{attr}[0](";
- 8    }
- 9    if ($type) {
-10      $type = "$type$bt".(")"x@arrayspec);
-11    }
-12    else {
-13      $type = $bt;
-14    }
-15    return $type;
-16  }
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION051140040000000000000">
-Tratamiento de los Bloques</A>
-</H4>
-La variable sintáctica <code>bloque</code>
-genera el lenguaje de las definiciones seguidas de sentencias:
-
-<P>
-<DIV ALIGN="CENTER">
-<TABLE CELLPADDING=3>
-<TR><TD ALIGN="CENTER">'{' { datadefinition } { statement } '}'</TD>
-</TR>
-</TABLE>
-</DIV>
-
-<P>
-El lenguaje de los bloques es modificado en consonancia:
-
-<P>
-<PRE>
-pl@nereida:~/Lbook/code/Simple-SymbolTables/lib/Simple$ sed -ne '/^block:/,/^;/p' SymbolTables.eyp | cat -n
-  1  block:
-  2      '{'.bracket declaration&lt;%name DECLARATIONS *&gt;.decs statement&lt;%name STATEMENTS *&gt;.sts '}'
-  3         {
-  4           my %st;
-  5
-  6           for my $lst ($decs-&gt;children) {
-  7
-  8               # control duplicated declarations
-  9             my $message;
- 10             die $message if $message = is_duplicated(\%st, $lst);
- 11
- 12             %st = (%st, %$lst);
- 13           }
- 14           $sts-&gt;{symboltable} = \%st;
- 15           $sts-&gt;{line} = $bracket-&gt;[1];
- 16           $sts-&gt;type("BLOCK") if %st;
- 17           return $sts;
- 18         }
- 19
- 20  ;
-</PRE>
-
-<P>
-El código de la función <code>is_duplicated</code> es como sigue:
-<A NAME="code:isduplicated"></A>
-<P>
-<PRE>
-sub is_duplicated {
-  my ($st1, $st2) = @_;
-
-  my $id;
-
-    defined($id=firstval{exists $st1-&gt;{$_}} keys %$st2)
-  and return "Error. Variable $id at line $st2-&gt;{$id}-&gt;{line} declared twice.\n";
-  return 0;
-}
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION051140050000000000000">
-Tratamiento de las Funciones</A>
-</H4>
-
-<P>
-El código para las funciones es similar.
-Unimos la tabla de símbolos
-de los parámetros a la del bloque para posteriormente reconvertir el
-bloque en un nodo <code>FUNCTION</code>:
-
-<P>
-<PRE>
-pl@nereida:~/Lbook/code/Simple-SymbolTables/lib/Simple$ sed -ne '/^funcDef:/,/^;/p' SymbolTables.eyp | cat -n
-  1  funcDef:
-  2      $ID '('  $params  ')'
-  3        $block
-  4      {
-  5         my $st = $block-&gt;{symboltable};
-  6         my @decs = $params-&gt;children();
-  7         $block-&gt;{parameters} = [];
-  8         while (my ($bt, $id, $arrspec) = splice(@decs, 0, 3)) {
-  9             my $bt = ref($bt); # The string 'INT', 'CHAR', etc.
- 10             my $name = $id-&gt;{attr}[0];
- 11             my $type = build_type($bt, $arrspec);
- 12             $type{$type} = 1; # has too much $type for me!
- 13
- 14             # control duplicated declarations
- 15             #die "Duplicated declaration of $name at line $id-&gt;{attr}[1]\n" if exists($st-&gt;{$name});
- 16             die "Duplicated declaration of $name at line $st-&gt;{$name}{line}\n" if exists($st-&gt;{$name});
- 17             $st-&gt;{$name}-&gt;{type} = $type;
- 18             $st-&gt;{$name}-&gt;{param} = 1;
- 19             $st-&gt;{$name}-&gt;{line} = $id-&gt;{attr}[1];
- 20             push @{$block-&gt;{parameters}}, $name;
- 21         }
- 22         $block-&gt;{function_name} = $ID;
- 23         $block-&gt;type("FUNCTION");
- 24         return $block;
- 25      }
- 26  ;
-</PRE>
-
-<P>
-En la línea 8  se procesan las declaraciones de parámetros. 
-La lista de parámetros estaba definida por:
-<PRE>
-params: 
-    ( basictype ID arraySpec)&lt;%name PARAMS * ','&gt;
-      { $_[1] }
-</PRE>
-
-<P>
-En una segunda fase, a la altura de <code>definition</code> 
-se construye la entrada para la función en la tabla de símbolos global:
-
-<P>
-<PRE>
-pl@nereida:~/Lbook/code/Simple-SymbolTables/lib/Simple$ sed -ne '/^definition:/,/^;/p' SymbolTables.eyp | cat -n
- 1  definition:
- 2      $funcDef
- 3        {
- 4          build_function_scope($funcDef, 'INT');
- 5        }
- 6    | %name FUNCTION
- 7      $basictype $funcDef
- 8        {
- 9          build_function_scope($funcDef, $basictype-&gt;type);
-10        }
-11    | declaration
-12       {
-13         #control duplicated declarations
-14         my $message;
-15         die $message if $message = is_duplicated(\%st, $_[1]);
-16         %st = (%st,  %{$_[1]}); # improve this code
-17         return undef; # will not be inserted in the AST
-18       }
-19  ;
-</PRE>
-El código de la función <code>build_function_scope</code> es como sigue:
-
-<P>
-<PRE>
-pl@nereida:~/Lbook/code/Simple-SymbolTables/lib/Simple$ sed -ne '/sub build_func/,114p' SymbolTables.eyp | cat -n
- 1  sub build_function_scope {
- 2    my ($funcDef, $returntype) = @_;
- 3
- 4    my $function_name = $funcDef-&gt;{function_name}[0];
- 5    my @parameters = @{$funcDef-&gt;{parameters}};
- 6    my $lst = $funcDef-&gt;{symboltable};
- 7    my $numargs = scalar(@parameters);
- 8
- 9    #compute type
-10    my $partype = "";
-11    my @types = map { $lst-&gt;{$_}{type} } @parameters;
-12    $partype .= join ",", @types if @types;
-13    my $type = "F(X_$numargs($partype),$returntype)";
-14
-15    #insert it in the hash of types
-16    $type{$type} = 1;
-17
-18    #insert it in the global symbol table
-19    die "Duplicated declaration of $function_name at line $funcDef--&gt;{attr}[1]\n"
-20      if exists($st{$function_name});
-21    $st{$function_name}-&gt;{type} = $type;
-22    $st{$function_name}-&gt;{line} = $funcDef-&gt;{function_name}[1]; # redundant
-23
-24    return $funcDef;
-25  }
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION051140060000000000000">
-El Tratamiento del Programa Principal</A>
-</H4>
-Sigue el código (incompleto) asociado con la variable sintáctica de
-arranque:
-
-<P>
-<PRE>
-pl@nereida:~/Lbook/code/Simple-SymbolTables/lib/Simple$ sed -ne '/^program:/,/^;/p' SymbolTables.eyp | cat -n
- 1  program:
- 2        { reset_file_scope_vars(); }
- 3      definition&lt;%name PROGRAM +&gt;.program
- 4        {
- 5          $program-&gt;{symboltable} = { %st };  # creates a copy of the s.t.
- 6          for (keys %type) {
- 7            $type{$_} = Parse::Eyapp::Node-&gt;hnew($_);
- 8          }
- 9          $program-&gt;{depth} = 0;
-10          $program-&gt;{line}  = 1;
-11          $program-&gt;{types} = { %type };
-12          $program-&gt;{lines} = $tokenend;
-13
-14          reset_file_scope_vars();
-15          $program;
-16        }
-17  ;
-</PRE>
-Las árboles asociados con las expresiones de tipo son calculados 
-en las líneas 6-8.
-
-<P>
-
-<H4><A NAME="SECTION051140070000000000000">
-Ejemplo de Salida:  Control de declaraciones duplicadas</A>
-</H4>
-  
-
-<P>
-A estas alturas del análisis de ámbito podemos controlar
-la aparición de declaraciones duplicadas:
-para el programa de entrada:
-<PRE>
-pl@nereida:~/Lbook/code/Simple-SymbolTables/script$ usesymboltables.pl declaredtwice.c 2
-int a, b[1][2];
-char d, e[1][2];
-char f(int a, char b[10]) {
-  int c[1][2];
-  char b[10], e[9]; /* b is declared twice */
-
-  return b[0];
-}
-
-Duplicated declaration of b at line 5
-</PRE>
-Sin embargo no podemos conocer los objetos no declarados (variables, funciones)
-hasta que hayamos finalizado el análisis de ámbito.
-
-<P>
-
-<H4><A NAME="SECTION051140080000000000000">
-Un ejemplo de Volcado de un AST</A>
-</H4>
-  
-
-<P>
-Sigue un ejemplo de salida para un programa sin errores de ámbito:
-
-<P>
-<PRE>
-pl@nereida:~/Lbook/code/Simple-SymbolTables/script$ usesymboltables.pl prueba10.c 2
-int a,b;
-f(int a, int b) {
-  b = a+1;
-}
-
-int main() {
-  a = 4;
-  {
-    int d;
-    d = f(a);
-  }
-}
-
-PROGRAM^{0}(
-  FUNCTION[f]^{1}(
-    ASSIGN(
-      VAR[No declarado!](
-        TERMINAL[b:3]
-      ),
-      PLUS(
-        VAR[No declarado!](
-          TERMINAL[a:3]
-        ),
-        INUM(
-          TERMINAL[1:3]
-        )
-      ) # PLUS
-    ) # ASSIGN
-  ) # FUNCTION,
-  FUNCTION[main]^{2}(
-    ASSIGN(
-      VAR[No declarado!](
-        TERMINAL[a:7]
-      ),
-      INUM(
-        TERMINAL[4:7]
-      )
-    ) # ASSIGN,
-    BLOCK[8]^{3}(
-      ASSIGN(
-        VAR[No declarado!](
-          TERMINAL[d:10]
-        ),
-        FUNCTIONCALL[No declarado!](
-          TERMINAL[f:10],
-          ARGLIST(
-            VAR[No declarado!](
-              TERMINAL[a:10]
-            )
-          ) # ARGLIST
-        ) # FUNCTIONCALL
-      ) # ASSIGN
-    ) # BLOCK
-  ) # FUNCTION
-) # PROGRAM
----------------------------
-0)
-Types:
-$VAR1 = {
-  'CHAR' =&gt; bless( {
-    'children' =&gt; []
-  }, 'CHAR' ),
-  'VOID' =&gt; bless( {
-    'children' =&gt; []
-  }, 'VOID' ),
-  'INT' =&gt; bless( {
-    'children' =&gt; []
-  }, 'INT' ),
-  'F(X_0(),INT)' =&gt; bless( {
-    'children' =&gt; [
-      bless( {
-        'children' =&gt; []
-      }, 'X_0' ),
-      $VAR1-&gt;{'INT'}
-    ]
-  }, 'F' ),
-  'F(X_2(INT,INT),INT)' =&gt; bless( {
-    'children' =&gt; [
-      bless( {
-        'children' =&gt; [
-          $VAR1-&gt;{'INT'},
-          $VAR1-&gt;{'INT'}
-        ]
-      }, 'X_2' ),
-      $VAR1-&gt;{'INT'}
-    ]
-  }, 'F' )
-};
-Symbol Table of the Main Program:
-$VAR1 = {
-  'a' =&gt; {
-    'type' =&gt; 'INT',
-    'line' =&gt; 1
-  },
-  'b' =&gt; {
-    'type' =&gt; 'INT',
-    'line' =&gt; 1
-  },
-  'f' =&gt; {
-    'type' =&gt; 'F(X_2(INT,INT),INT)',
-    'line' =&gt; 2
-  },
-  'main' =&gt; {
-    'type' =&gt; 'F(X_0(),INT)',
-    'line' =&gt; 6
-  }
-};
-
----------------------------
-1)
-Symbol Table of f
-$VAR1 = {
-  'a' =&gt; {
-    'type' =&gt; 'INT',
-    'param' =&gt; 1,
-    'line' =&gt; 2
-  },
-  'b' =&gt; {
-    'type' =&gt; 'INT',
-    'param' =&gt; 1,
-    'line' =&gt; 2
-  }
-};
-
----------------------------
-2)
-Symbol Table of main
-$VAR1 = {};
-
----------------------------
-3)
-Symbol Table of block at line 8
-$VAR1 = {
-  'd' =&gt; {
-    'type' =&gt; 'INT',
-    'line' =&gt; 9
-  }
-};
-
-pl@nereida:~/Lbook/code/Simple-SymbolTables/script$
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION051140090000000000000">
-Métodos de soporte para el Volcado del Arbol</A>
-</H4>
-  
-
-<P>
-Se han utilizado las siguientes funciones de soporte para producir el volcado:
-
-<P>
-<PRE>
-pl@nereida:~/Lbook/code/Simple-SymbolTables/lib/Simple$ sed -ne '683,$p' SymbolTables.eyp
-############## Debugging and Display
-sub show_trees {
- my ($t) = @_;
-
- print Dumper $t if $debug &gt; 1;
- $Parse::Eyapp::Node::INDENT = 2;
- $Data::Dumper::Indent = 1;
- print $t-&gt;str."\n";
-}
-
-$Parse::Eyapp::Node::INDENT = 1;
-sub TERMINAL::info {
-  my @a = join ':', @{$_[0]-&gt;{attr}};
-  return "@a"
-}
-
-sub PROGRAM::footnote {
-  return "Types:\n"
-         .Dumper($_[0]-&gt;{types}).
-         "Symbol Table of the Main Program:\n"
-         .Dumper($_[0]-&gt;{symboltable})
-}
-
-sub FUNCTION::info {
-  return $_[0]-&gt;{function_name}[0]
-}
-
-sub FUNCTION::footnote {
-  my $text = '';
-  $text .= "Symbol Table of $_[0]-&gt;{function_name}[0]\n" if $_[0]-&gt;type eq 'FUNCTION';
-  $text .= "Symbol Table of block at line $_[0]-&gt;{line}\n" if $_[0]-&gt;type eq 'BLOCK';
-  $text .= Dumper($_[0]-&gt;{symboltable});
-  return $text;
-}
-
-sub BLOCK::info {
-  my $info = "$_[0]-&gt;{line}";
-  return $info;
-}
-
-*BLOCK::footnote = \&amp;FUNCTION::footnote;
-
-sub VAR::info {
-  return $_[0]-&gt;{type} if defined $_[0]-&gt;{type};
-  return "No declarado!";
-}
-
-*FUNCTIONCALL::info = *VARARRAY::info = \&amp;VAR::info;
-pl@nereida:~/Lbook/code/Simple-SymbolTables/lib/Simple$
-</PRE>
+Reproduzca el analizador sintáctico para el lenguaje SimpleC introducido en la
+sección 
+<A HREF="node192.html#section:simplec">39.2</A>.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5331"
+<A NAME="tex2html5334"
   HREF="node194.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5325"
-  HREF="node189.html">
+<A NAME="tex2html5328"
+  HREF="node190.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5319"
+<A NAME="tex2html5322"
   HREF="node192.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5327"
-  HREF="node210.html">
+<A NAME="tex2html5330"
+  HREF="node211.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5329"
-  HREF="node213.html">
+<A NAME="tex2html5332"
+  HREF="node214.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -899,17 +180,17 @@ pl@nereida:~/Lbook/code/Simple-SymbolTables/lib/Simple$
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5332"
-  HREF="node194.html">La Dificultad de Elaboración</A>
-<B>Sup:</B> <A NAME="tex2html5326"
-  HREF="node189.html">Análisis de Ámbito en</A>
-<B> Ant:</B> <A NAME="tex2html5320"
-  HREF="node192.html">Práctica: Construcción del AST</A>
+<B> Sig:</B> <A NAME="tex2html5335"
+  HREF="node194.html">Práctica: Análisis de Ámbito</A>
+<B>Sup:</B> <A NAME="tex2html5329"
+  HREF="node190.html">Análisis de Ámbito en</A>
+<B> Ant:</B> <A NAME="tex2html5323"
+  HREF="node192.html">Descripción Eyapp del Lenguaje</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-05-02</I>
+2013-05-03</I>
 </ADDRESS>
 </BODY>
 </HTML>

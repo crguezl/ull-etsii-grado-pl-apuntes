@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Diseño de Analizadores con Parse::Eyapp</TITLE>
-<META NAME="description" CONTENT="Diseño de Analizadores con Parse::Eyapp">
+<TITLE>Descripción Eyapp del Lenguaje SimpleC</TITLE>
+<META NAME="description" CONTENT="Descripción Eyapp del Lenguaje SimpleC">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node177.html">
 <LINK REL="previous" HREF="node175.html">
-<LINK REL="up" HREF="node148.html">
+<LINK REL="up" HREF="node149.html">
 <LINK REL="next" HREF="node177.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4995"
+<A NAME="tex2html4998"
   HREF="node177.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4989"
-  HREF="node148.html">
+<A NAME="tex2html4992"
+  HREF="node149.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4983"
+<A NAME="tex2html4986"
   HREF="node175.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4991"
-  HREF="node210.html">
+<A NAME="tex2html4994"
+  HREF="node211.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4993"
-  HREF="node213.html">
+<A NAME="tex2html4996"
+  HREF="node214.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,328 +88,125 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4996"
-  HREF="node177.html">Práctica: Construcción del AST</A>
-<B>Sup:</B> <A NAME="tex2html4990"
-  HREF="node148.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4984"
-  HREF="node175.html">Descripción Eyapp del Lenguaje</A>
+<B> Sig:</B> <A NAME="tex2html4999"
+  HREF="node177.html">Diseño de Analizadores con</A>
+<B>Sup:</B> <A NAME="tex2html4993"
+  HREF="node149.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4987"
+  HREF="node175.html">Recuperacion de Errores: Visión</A>
 <B> Con:</B> 
-<A NAME="tex2html4991"
-  HREF="node210.html">
+<A NAME="tex2html4994"
+  HREF="node211.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4993"
-  HREF="node213.html">
+<A NAME="tex2html4996"
+  HREF="node214.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION058280000000000000000"></A>
-<A NAME="section:consejoseyapp"></A>
+<H1><A NAME="SECTION059270000000000000000"></A>
+<A NAME="section:simplec"></A>
 <BR>
-Diseño de Analizadores con <TT>Parse::Eyapp</TT>
+Descripción Eyapp del Lenguaje  SimpleC
 </H1>
-A la hora de construir un analizador sintáctico tenga en cuenta 
-las siguientes normas de buena programación:
-
-<P>
-
-<OL>
-<LI>Comienze trabajando en el cuerpo de la gramática.
-</LI>
-<LI>Olvídese al principio del 
-analizador léxico. Su primer objetivo es tener una gramática limpia
-de conflictos y que reconozca el lenguaje dado. 
-</LI>
-<LI>Sustituya las repeticiones
-BNF por listas usando los operadores <code>eyapp</code> <code>+</code>, <code>*</code> y sus variantes con separadores. 
-Si una variable describe una lista de <code>cosas</code> pongale un adjetivo adecuado como
-<code>cosaslist</code>. 
-<SPAN ID="txt18504">Ponga nombres significativos a las variables y terminales</SPAN>. 
-No los llame <code>d1</code>, <code>d2</code>, etc.
-</LI>
-<LI>Si tiene un elemento opcional en la BNF, por ejemplo, en la regla: 
-
-<P>
-functiondefinition <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img50.png"
- ALT="$ \rightarrow$"></SPAN> <SPAN CLASS="MATH"><IMG
- WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img493.png"
- ALT="$ [$"></SPAN> basictype <SPAN CLASS="MATH"><IMG
- WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img494.png"
- ALT="$ ]$"></SPAN> functionheader functionbody
-
-<P>
-use el operador <code>?</code>.
-</LI>
-<LI>Cada par de reglas que introduzca vuelva a recompilar con <code>eyapp</code> la gramática
-para ver si se introducido ambiguedad. Cuando estoy editando la gramática
-suelo escribir a menudo la orden 
-
-<P>
-<code>:!eyapp %</code> 
-
-<P>
-para recompilar:
-
-<P>
-<BR>
-<BR>
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=411><PRE>
-     15
-     16 declaratorlist: declarator +
-     17 ;
-     18 functiondefinition: 
-     19    basictype functionheader functionbody
-     20  | functionheader functionbody
-     21 ;
-     22
-     23 %%
-~
-~
-~
-~
-~
-~
-~
-~
-~
-~
-:!eyapp %
-</PRE></TD>
-</TR>
-</TABLE>
-<BR>
-<BR>
-
-<P>
-Esto llama a <code>eyapp</code> con el fichero bajo edición. Si hay errores o conflictos (esto es,
-hemos introducido ambiguedad) los detectarémos enseguida.
-Procure detectar la aparición de un conflicto lo antes posible.
-Observe el sangrado del ejemplo. Es el que le recomiendo.
-</LI>
-<LI>Cuando esté en el proceso de construcción de la gramática y aún le queden
-por rellenar variables sintácticas, declárelas como terminales mediante
-<code>%token</code>. De esta manera
-evitará las quejas de <code>eyapp</code>.
-
-<P>
-</LI>
-<LI><B>Resolución de Ambiguedades y Conflictos</B>
-
-<P>
-Las operaciones de asignación tienen la prioridad mas baja,
-seguidas  de las lógicas, los test de igualdad,
-los de comparación, a continuación las aditivas, multiplicativas y por 
-último las operaciones de tipo <code>unary</code> y <code>primary</code>.
-Exprese la asociatividad natural y la
-prioridad especificada usando
-los mecanismos que <code>eyapp</code> provee al efecto: <code>%left</code>, <code>%right</code>,
-<code>%nonassoc</code> y <code>%prec</code>.
-
-<P>
-</LI>
-<LI>La gramática de SimpleC es ambigua, ya que para una sentencia como 
-
-<P>
-<DIV ALIGN="CENTER">
-if <SPAN CLASS="MATH"><IMG
- WIDTH="25" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img502.png"
- ALT="$ E_1$"></SPAN> then if <SPAN CLASS="MATH"><IMG
- WIDTH="25" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img503.png"
- ALT="$ E_2$"></SPAN> then <SPAN CLASS="MATH"><IMG
- WIDTH="23" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img276.png"
- ALT="$ S_1$"></SPAN> else <SPAN CLASS="MATH"><IMG
- WIDTH="23" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img277.png"
- ALT="$ S_2$"></SPAN>
-</DIV>
-
-<P>
-existen dos árboles posibles: uno que asocia el ``else'' con el primer ``if'' y otra
-que lo asocia con el segundo. Los dos árboles corresponden a las
-dos posibles parentizaciones:
-
-<P>
-<DIV ALIGN="CENTER">
-if <SPAN CLASS="MATH"><IMG
- WIDTH="25" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img502.png"
- ALT="$ E_1$"></SPAN> then (if <SPAN CLASS="MATH"><IMG
- WIDTH="25" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img503.png"
- ALT="$ E_2$"></SPAN> then <SPAN CLASS="MATH"><IMG
- WIDTH="23" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img276.png"
- ALT="$ S_1$"></SPAN> else <SPAN CLASS="MATH"><IMG
- WIDTH="23" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img277.png"
- ALT="$ S_2$"></SPAN>)
-
-</DIV>
-
-<P>
-Esta es la regla de prioridad usada en la mayor parte de los lenguajes:
-un ``else'' casa con el ``if'' mas cercano. La otra posible parentización
-es:
-
-<P>
-<DIV ALIGN="CENTER">
-if <SPAN CLASS="MATH"><IMG
- WIDTH="25" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img502.png"
- ALT="$ E_1$"></SPAN> then (if <SPAN CLASS="MATH"><IMG
- WIDTH="25" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img503.png"
- ALT="$ E_2$"></SPAN> then <SPAN CLASS="MATH"><IMG
- WIDTH="23" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img276.png"
- ALT="$ S_1$"></SPAN>) else <SPAN CLASS="MATH"><IMG
- WIDTH="23" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img277.png"
- ALT="$ S_2$"></SPAN>
-</DIV>
-
-<P>
-<SPAN  CLASS="textbf">La conducta por defecto de <TT>eyapp</TT> es parentizar a derechas</SPAN>.
-El generador  <TT>eyapp</TT>  nos informará del conflicto pero si no se le indica 
-como resolverlo parentizará a derechas.
-Resuelva este conflicto.
-
-<P>
-</LI>
-<LI><I>¿Que clase de árbol debe producir el analizador?</I>
-La respuesta es que sea lo mas abstracto posible.
-Debe 
-
-<UL>
-<LI>Contener toda la información necesaria para el manejo eficiente
-de las fases subsiguientes: Análisis de ámbito, Comprobación de tipos,
-Optimización independiente de la máquina, etc.
-</LI>
-<LI>Ser uniforme
-</LI>
-<LI>Legible (human-friendly)
-</LI>
-<LI>No contener nodos que no portan información. 
-</LI>
-</UL>
-
-<P>
-El siguiente ejemplo muestra una versión aceptable de árbol abstracto.
-Cuando se le proporciona el programa de entrada:
+En este capítulo usaremos  <TT>Parse::Eyapp</TT>  para desarrollar
+un compilador para el siguiente lenguaje, al que denominaremos  <TT>Simple C</TT> :
 
 <P>
 <PRE>
-nereida:~/doc/casiano/PLBOOK/PLBOOK/code&gt; cat -n prueba5.c
-     1  int f(int a)
-     2  {
-     3    if (a&gt;0)
-     4      a = f(a-1);
-     5  }
+program: definition+
+
+definition: funcDef | basictype funcDef | declaration
+
+basictype: INT | CHAR
+
+funcDef: ID '('  params  ')' block
+
+params: ( basictype ID arraySpec)&lt;* ','&gt;
+
+block: '{' declaration* statement* '}'
+
+declaration: basictype declList ';'
+
+declList: (ID arraySpec) &lt;+ ','&gt;
+
+arraySpec: ( '[' INUM ']')*
+
+statement:
+    expression ';'
+  | ';'
+  | BREAK ';'
+  | CONTINUE ';'
+  | RETURN ';'
+  | RETURN expression ';'
+  | block
+  | ifPrefix statement %prec '+'
+  | ifPrefix statement 'ELSE' statement
+  | loopPrefix statement
+
+ifPrefix: IF '(' expression ')'
+
+loopPrefix: WHILE '(' expression ')'
+
+expression: binary &lt;+ ','&gt;
+
+Variable: ID ('[' binary ']') *
+
+Primary:
+    INUM
+  | CHARCONSTANT
+  | Variable
+  | '(' expression ')'
+  | function_call
+
+function_call:  ID  '(' binary &lt;* ','&gt; ')'
+
+Unary: '++' Variable | '--' Variable | Primary
+
+binary:
+    Unary
+  | binary '+' binary
+  | binary '-' binary
+  | binary '*' binary
+  | binary '/' binary
+  | binary '%' binary
+  | binary '&lt;' binary
+  | binary '&gt;' binary
+  | binary '&gt;=' binary
+  | binary '&lt;=' binary
+  | binary '==' binary
+  | binary '!=' binary
+  | binary '&amp;' binary
+  | binary '**' binary
+  | binary '|' binary
+  | Variable '=' binary
+  | Variable '+=' binary
+  | Variable '-=' binary
+  | Variable '*=' binary
+  | Variable '/=' binary
+  | Variable '%=' binary
+  | etc. etc.
 </PRE>
-
-<P>
-El siguiente árbol ha sido producido por un analizador usando la directiva 
-<code>%tree</code> y añadiendo las correspondientes acciones de <code>bypass</code>.
-Puede considerarse un ejemplo aceptable de AST:
-
-<P>
-<PRE>
-nereida:~/doc/casiano/PLBOOK/PLBOOK/code&gt; eyapp Simple2 ;\
-                                  usesimple2.pl prueba5.c
-PROGRAM(
-  TYPEDFUNC(
-    INT(TERMINAL[INT:1]),
-    FUNCTION(
-      TERMINAL[f:1],
-      PARAMS(
-        PARAM(
-          INT(TERMINAL[INT:1]),
-          TERMINAL[a:1],
-          ARRAYSPEC
-        )
-      ),
-      BLOCK(
-        DECLARATIONS,
-        STATEMENTS(
-          IF(
-            GT(
-              VAR(TERMINAL[a:3]),
-              INUM(TERMINAL[0:3])
-            ),
-            ASSIGN(
-              VAR(TERMINAL[a:4]),
-              FUNCTIONCALL(
-                TERMINAL[f:4],
-                ARGLIST(
-                  MINUS(
-                    VAR(TERMINAL[a:4]),
-                    INUM(TERMINAL[1:4])
-                  )
-                ) # ARGLIST
-              ) # FUNCTIONCALL
-            ) # ASSIGN
-          ) # IF
-        ) # STATEMENTS
-      ) # BLOCK
-    ) # FUNCTION
-  ) # TYPEDFUNC
-) # PROGRAM
-</PRE>
-
-<P>
-Es deseable  darle una estructura uniforme al árbol. Por ejemplo, como consecuencia 
-de que la gramática admite funciones con declaración implícita del tipo
-retornado cuando este es entero
-
-<P>
-<PRE>
- 1  definition:
- 2      funcDef { $_[1]-&gt;type("INTFUNC"); $_[1] }
- 3    | %name TYPEDFUNC
- 4      basictype funcDef
- 5    | declaration { $_[1] }
- 6  ;
-</PRE>
-</LI>
-</OL>
-
-<P>
-se producen dos tipos de árboles. Es conveniente
-convertir las definiciones de función con declaración 
-implícita en el mismo árbol que se obtiene con 
-declaración explícita. 
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4995"
+<A NAME="tex2html4998"
   HREF="node177.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4989"
-  HREF="node148.html">
+<A NAME="tex2html4992"
+  HREF="node149.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4983"
+<A NAME="tex2html4986"
   HREF="node175.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4991"
-  HREF="node210.html">
+<A NAME="tex2html4994"
+  HREF="node211.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4993"
-  HREF="node213.html">
+<A NAME="tex2html4996"
+  HREF="node214.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -456,17 +253,17 @@ declaración explícita.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4996"
-  HREF="node177.html">Práctica: Construcción del AST</A>
-<B>Sup:</B> <A NAME="tex2html4990"
-  HREF="node148.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4984"
-  HREF="node175.html">Descripción Eyapp del Lenguaje</A>
+<B> Sig:</B> <A NAME="tex2html4999"
+  HREF="node177.html">Diseño de Analizadores con</A>
+<B>Sup:</B> <A NAME="tex2html4993"
+  HREF="node149.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4987"
+  HREF="node175.html">Recuperacion de Errores: Visión</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-05-02</I>
+2013-05-03</I>
 </ADDRESS>
 </BODY>
 </HTML>
