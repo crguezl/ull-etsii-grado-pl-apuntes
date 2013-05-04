@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Análisis Sintáctico Ascendente en JavaScript</TITLE>
-<META NAME="description" CONTENT="Análisis Sintáctico Ascendente en JavaScript">
+<TITLE>Generación de Código: Máquina Pila</TITLE>
+<META NAME="description" CONTENT="Generación de Código: Máquina Pila">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node149.html">
-<LINK REL="previous" HREF="node112.html">
-<LINK REL="up" HREF="node69.html">
+<LINK REL="next" HREF="node130.html">
+<LINK REL="previous" HREF="node128.html">
+<LINK REL="up" HREF="node115.html">
 <LINK REL="next" HREF="node130.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4212"
+<A NAME="tex2html4222"
   HREF="node130.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4206"
-  HREF="node69.html">
+<A NAME="tex2html4216"
+  HREF="node115.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4200"
+<A NAME="tex2html4210"
   HREF="node128.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4208"
-  HREF="node211.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4210"
+<A NAME="tex2html4218"
   HREF="node214.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html4220"
+  HREF="node217.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,176 +88,270 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4213"
-  HREF="node130.html">Conceptos Básicos para el</A>
-<B>Sup:</B> <A NAME="tex2html4207"
-  HREF="node69.html">SEGUNDA PARTE: APUNTES DE</A>
-<B> Ant:</B> <A NAME="tex2html4201"
-  HREF="node128.html">Optimización de Código</A>
+<B> Sig:</B> <A NAME="tex2html4223"
+  HREF="node130.html">Generación de Código: Máquina</A>
+<B>Sup:</B> <A NAME="tex2html4217"
+  HREF="node115.html">Análisis Sintáctico Descendente en</A>
+<B> Ant:</B> <A NAME="tex2html4211"
+  HREF="node128.html">Asignación de Direcciones</A>
 <B> Con:</B> 
-<A NAME="tex2html4208"
-  HREF="node211.html">
+<A NAME="tex2html4218"
+  HREF="node214.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4210"
-  HREF="node214.html">
+<A NAME="tex2html4220"
+  HREF="node217.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION05800000000000000000">
-Análisis Sintáctico Ascendente en JavaScript</A>
+<H1><A NAME="SECTION057140000000000000000"></A>
+<A NAME="section:pila"></A>
+<BR>
+Generación de Código: Máquina Pila
 </H1>
-<BR> <HR>
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
+El generador de código emite el código para el lenguaje objeto, utilizando
+las direcciones calculadas en la fase anterior. Hemos simplificado esta fase
+considerando una máquina orientada a pila: una memoria de pila en la que se
+computan las expresiones, un segmento de datos en el que se guardan las variables
+y un segmento para guardar las cadenas.
+La estrategia utilizada es similar a la que vimos en el plegado de las constantes.
+Definimos un método para la traducción de cada clase de nodo del AAA.
+Entonces, para traducir el programa basta con llamar al correspondiente método:
 
-<UL CLASS="ChildLinks">
-<LI><A NAME="tex2html4214"
-  HREF="node130.html">Conceptos Básicos para el Análisis Sintáctico</A>
-<UL>
-<LI><A NAME="tex2html4215"
-  HREF="node130.html#SECTION05811000000000000000">Ejercicio</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html4216"
-  HREF="node131.html">Ejemplo Simple en Jison</A>
-<UL>
-<LI><A NAME="tex2html4217"
-  HREF="node131.html#SECTION05820010000000000000">Gramática</A>
-<LI><A NAME="tex2html4218"
-  HREF="node131.html#SECTION05820020000000000000">basic2_lex.jison</A>
-<LI><A NAME="tex2html4219"
-  HREF="node131.html#SECTION05820030000000000000">index.html</A>
-<LI><A NAME="tex2html4220"
-  HREF="node131.html#SECTION05820040000000000000">Rakefile</A>
-<LI><A NAME="tex2html4221"
-  HREF="node131.html#SECTION05820050000000000000">Véase También</A>
-<LI><A NAME="tex2html4222"
-  HREF="node131.html#SECTION05820060000000000000">global.css</A>
-<LI><A NAME="tex2html4223"
-  HREF="node131.html#SECTION05821000000000000000">Véase También</A>
-<LI><A NAME="tex2html4224"
-  HREF="node131.html#SECTION05822000000000000000">Práctica: Secuencia de Asignaciones Simples</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html4225"
-  HREF="node132.html">Ejemplo en Jison: Calculadora Simple</A>
-<UL>
-<LI><A NAME="tex2html4226"
-  HREF="node132.html#SECTION05830010000000000000">calculator.jison</A>
-<LI><A NAME="tex2html4227"
-  HREF="node132.html#SECTION05830020000000000000">main.js</A>
-<LI><A NAME="tex2html4228"
-  HREF="node132.html#SECTION05830030000000000000">calculator.html</A>
-<LI><A NAME="tex2html4229"
-  HREF="node132.html#SECTION05830040000000000000">Rakefile</A>
-<LI><A NAME="tex2html4230"
-  HREF="node132.html#SECTION05830050000000000000">global.css</A>
-<LI><A NAME="tex2html4231"
-  HREF="node132.html#SECTION05830060000000000000">test/assert.html</A>
-<LI><A NAME="tex2html4232"
-  HREF="node132.html#SECTION05830070000000000000">test/test.css</A>
-<LI><A NAME="tex2html4233"
-  HREF="node132.html#SECTION05830080000000000000">test/test.html</A>
-<LI><A NAME="tex2html4234"
-  HREF="node132.html#SECTION05831000000000000000">Práctica: Calculadora con Listas de Expresiones y Variables</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html4235"
-  HREF="node133.html">Conceptos Básicos del Análisis LR</A>
-<LI><A NAME="tex2html4236"
-  HREF="node134.html">Construcción de las Tablas para el Análisis SLR</A>
-<UL>
-<LI><A NAME="tex2html4237"
-  HREF="node134.html#SECTION05851000000000000000">Los conjuntos de Primeros y Siguientes</A>
-<LI><A NAME="tex2html4238"
-  HREF="node134.html#SECTION05852000000000000000">Construcción de las Tablas</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html4239"
-  HREF="node135.html">Práctica: Traducción de Infijo a Postfijo</A>
-<LI><A NAME="tex2html4240"
-  HREF="node136.html">Práctica: Calculadora  con Funciones</A>
-<LI><A NAME="tex2html4241"
-  HREF="node137.html">Práctica: Calculadora con Análisis de Ámbito</A>
-<LI><A NAME="tex2html4242"
-  HREF="node138.html">Algoritmo de Análisis LR</A>
-<LI><A NAME="tex2html4243"
-  HREF="node139.html">El módulo Generado por <TT>jison</TT></A>
-<UL>
-<LI><A NAME="tex2html4244"
-  HREF="node139.html#SECTION058101000000000000000">Version</A>
-<LI><A NAME="tex2html4245"
-  HREF="node139.html#SECTION058102000000000000000">Gramática Inicial</A>
-<LI><A NAME="tex2html4246"
-  HREF="node139.html#SECTION058103000000000000000">Tablas</A>
-<LI><A NAME="tex2html4247"
-  HREF="node139.html#SECTION058104000000000000000">Acciones Semánticas</A>
-<LI><A NAME="tex2html4248"
-  HREF="node139.html#SECTION058105000000000000000">Tabla de Acciones y GOTOs</A>
-<LI><A NAME="tex2html4249"
-  HREF="node139.html#SECTION058106000000000000000">defaultActions</A>
-<LI><A NAME="tex2html4250"
-  HREF="node139.html#SECTION058107000000000000000">Reducciones</A>
-<LI><A NAME="tex2html4251"
-  HREF="node139.html#SECTION058108000000000000000">Desplazamientos/Shifts</A>
-<LI><A NAME="tex2html4252"
-  HREF="node139.html#SECTION058109000000000000000">Manejo de Errores</A>
-<LI><A NAME="tex2html4253"
-  HREF="node139.html#SECTION0581010000000000000000">Analizador Léxico</A>
-<LI><A NAME="tex2html4254"
-  HREF="node139.html#SECTION0581011000000000000000">Exportación</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html4255"
-  HREF="node140.html">Precedencia y Asociatividad</A>
-<LI><A NAME="tex2html4256"
-  HREF="node141.html">Esquemas de Traducción</A>
-<LI><A NAME="tex2html4257"
-  HREF="node142.html">Manejo en <TT>jison</TT> de Atributos Heredados</A>
-<LI><A NAME="tex2html4258"
-  HREF="node143.html">Definición Dirigida por la Sintáxis</A>
-<LI><A NAME="tex2html4259"
-  HREF="node144.html">Ejercicios: Casos de Estudio</A>
-<UL>
-<LI><A NAME="tex2html4260"
-  HREF="node144.html#SECTION058151000000000000000">Un mal diseño</A>
-<LI><A NAME="tex2html4261"
-  HREF="node144.html#SECTION058152000000000000000">Gramática no LR(1)</A>
-<LI><A NAME="tex2html4262"
-  HREF="node144.html#SECTION058153000000000000000">Un Lenguaje Intrínsecamente Ambiguo</A>
-<LI><A NAME="tex2html4263"
-  HREF="node144.html#SECTION058154000000000000000">Conflicto reduce-reduce</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html4264"
-  HREF="node145.html">Recuperación de Errores</A>
-<LI><A NAME="tex2html4265"
-  HREF="node146.html">Depuración en <TT>jison</TT></A>
-<LI><A NAME="tex2html4266"
-  HREF="node147.html">Construcción del Árbol Sintáctico</A>
-<LI><A NAME="tex2html4267"
-  HREF="node148.html">Consejos a seguir al escribir un programa <TT>jison</TT></A>
-</UL>
-<!--End of Table of Child-Links-->
+<P>
+<PRE>
+  $tree = Syntax::Analysis::parser;
+  ... # otras fases
+  ########code generation
+  local $target = ""; # target code
+  $tree-&gt;translate;
+  ...
+</PRE>
+
+<P>
+en la cadena <code>$target</code> dejamos el código emitido.
+Cada método visita los hijos, traduciéndolos y añadiendo 
+el código que fuera necesario para la traducción del nodo.
+
+<P>
+<PRE>
+sub PROGRAM::translate {
+  my $tree = shift;
+
+  $target .= "DATA ". $data."\n" if $data;
+  $tree-&gt;STS-&gt;translate;
+}
+</PRE>
+
+<P>
+Traducir la lista de sentencias es concatenar la traducción
+de cada una de las sentencias en la lista:
+
+<P>
+<PRE>
+sub STATEMENTS::translate {
+  my $statements = shift;
+  my @statements = @{$statements};
+
+  for my $s (@statements) {
+    $s-&gt;translate;
+  }
+}
+</PRE>
+
+<P>
+Si suponemos que disponemos en el ensamblador de nuestra máquina
+objeto de instrucciones <code>PRINT_INT</code>  y <code>PRINT_STR</code>
+que imprimen el contenido 
+de la expresión que esta en la cima de la pila, la traducción será:
+
+<P>
+<PRE>
+sub PRINT::translate {
+  my $self = shift;
+
+  $self-&gt;EXPRESSION-&gt;translate;
+  if ($self-&gt;EXPRESSION-&gt;TYPE == $int_type) { emit "PRINT_INT\n"; }
+  else {emit "PRINT_STR\n"; }
+}
+</PRE>
+Asi, si la sentencia era <code>P c</code>, donde <code>c</code> es del tipo cadena, 
+se debería eventualmente llamar al método de traducción del identificador:
+
+<P>
+<PRE>
+sub ID::translate {
+  my $self = shift;
+
+  my $id = $self-&gt;VAL;
+  my $type =  Semantic::Analysis::get_type($id);
+  if ($type == $int_type) {
+    emit "LOAD ".$symbol_table{$id}-&gt;{ADDRESS}."\n";
+  }
+  else {
+    emit "LOAD_STRING ".$symbol_table{$id}-&gt;{ADDRESS}."\n";
+  }
+}
+</PRE>
+la función <code>emit</code> simplemente concatena el código 
+producido a la salida:
+
+<P>
+<PRE>
+sub emit { $target .= shift; }
+</PRE>
+
+<P>
+Para la traducción de una sentencia de asignación
+supondremos de la existencia de isntrucciones <code>STORE_INT</code>
+y <code>STORE_STRING</code>. La instrucción <code>STORE_STRING</code> asume 
+que en la cima de la pila están la dirección y la cadena a almacenar.
+
+<P>
+<PRE>
+sub ASSIGN::translate {
+  my $self = shift;
+
+  $self-&gt;RIGHT-&gt;translate;
+  my $id = $self-&gt;LEFT;
+  $id-&gt;translate;
+  my $type =  Semantic::Analysis::get_type($id-&gt;VAL);
+
+  if ($type == $int_type) {
+    emit "STORE_INT\n";
+  }
+  else {
+    emit "STORE_STRING\n";
+  }
+}
+</PRE>
+Si se está traduciendo una sentencia como <code>a = "hola"</code>,
+se acabará llamando al método 
+de traducción asociado con la clase <code>STR</code>
+el cual actúa empujando la dirección y la longitud de la cadena en
+la pila:
+<PRE>
+sub STR::translate {
+  my $self = shift;
+
+  emit "PUSHSTR ".$self-&gt;OFFSET." ".$self-&gt;LENGTH."\n";
+}
+</PRE>
+Así la traducción de este fuente:
+
+<P>
+<PRE>
+$ cat test06.tutu
+string a;
+a = "hola";
+p a
+</PRE>
+
+<P>
+es:
+
+<P>
+<PRE>
+$ ./main.pl test06.tutu test06.ok
+$ cat test06.ok
+DATA 2, hola
+PUSHSTR 2 4
+PUSHADDR 0
+STORE_STRING
+LOAD_STRING 0
+PRINT_STR
+</PRE>
+
+<P>
+El resto de los métodos de traducción es similar:
+<PRE>
+sub LEFTVALUE::translate {
+  my $id = shift -&gt;VAL;
+
+  emit "PUSHADDR ".$symbol_table{$id}-&gt;{ADDRESS}."\n";
+}
+
+sub NUM::translate {
+  my $self = shift;
+
+  emit "PUSH ".$self-&gt;VAL."\n";
+}
+
+sub PLUS::translate {
+  my $self = shift;
+
+  $self-&gt;LEFT-&gt;translate;
+  $self-&gt;RIGHT-&gt;translate;
+  emit "PLUS\n";
+}
+
+sub TIMES::translate {
+  my $self = shift;
+
+  $self-&gt;LEFT-&gt;translate;
+  $self-&gt;RIGHT-&gt;translate;
+  emit "MULT\n";
+}
+</PRE>
+
+<P>
+Veamos un ejemplo. Dado el código fuente:
+<PRE>
+$ cat test02.tutu
+int a,b; string c; 
+a = 2+3; b = 3*4; c = "hola"; p c; 
+c = "mundo"; p c; p 9+2; p a+1; p b+1
+</PRE>
+el código generado es:
+<PRE>
+$ ./main.pl test02.tutu test02.ok
+$ cat test02.ok
+DATA 4, holamundo
+PUSH 5
+PUSHADDR 0
+STORE_INT
+PUSH 12
+PUSHADDR 1
+STORE_INT
+PUSHSTR 4 4
+PUSHADDR 2
+STORE_STRING
+LOAD_STRING 2
+PRINT_STR
+PUSHSTR 8 5
+PUSHADDR 2
+STORE_STRING
+LOAD_STRING 2
+PRINT_STR
+PUSH 11
+PRINT_INT
+LOAD 0
+INC
+PRINT_INT
+LOAD 1
+INC
+PRINT_INT
+</PRE>
+
+<P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4212"
+<A NAME="tex2html4222"
   HREF="node130.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4206"
-  HREF="node69.html">
+<A NAME="tex2html4216"
+  HREF="node115.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4200"
+<A NAME="tex2html4210"
   HREF="node128.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4208"
-  HREF="node211.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4210"
+<A NAME="tex2html4218"
   HREF="node214.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html4220"
+  HREF="node217.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -304,12 +398,12 @@ Análisis Sintáctico Ascendente en JavaScript</A>
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4213"
-  HREF="node130.html">Conceptos Básicos para el</A>
-<B>Sup:</B> <A NAME="tex2html4207"
-  HREF="node69.html">SEGUNDA PARTE: APUNTES DE</A>
-<B> Ant:</B> <A NAME="tex2html4201"
-  HREF="node128.html">Optimización de Código</A>
+<B> Sig:</B> <A NAME="tex2html4223"
+  HREF="node130.html">Generación de Código: Máquina</A>
+<B>Sup:</B> <A NAME="tex2html4217"
+  HREF="node115.html">Análisis Sintáctico Descendente en</A>
+<B> Ant:</B> <A NAME="tex2html4211"
+  HREF="node128.html">Asignación de Direcciones</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

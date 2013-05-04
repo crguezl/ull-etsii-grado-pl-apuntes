@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Precedencia y Asociatividad</TITLE>
-<META NAME="description" CONTENT="Precedencia y Asociatividad">
+<TITLE>Práctica: Calculadora con Análisis de Ámbito</TITLE>
+<META NAME="description" CONTENT="Práctica: Calculadora con Análisis de Ámbito">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node141.html">
 <LINK REL="previous" HREF="node139.html">
-<LINK REL="up" HREF="node129.html">
+<LINK REL="up" HREF="node132.html">
 <LINK REL="next" HREF="node141.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4451"
+<A NAME="tex2html4450"
   HREF="node141.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4445"
-  HREF="node129.html">
+<A NAME="tex2html4444"
+  HREF="node132.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4439"
+<A NAME="tex2html4438"
   HREF="node139.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4447"
-  HREF="node211.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4449"
+<A NAME="tex2html4446"
   HREF="node214.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html4448"
+  HREF="node217.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,369 +88,346 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4452"
-  HREF="node141.html">Esquemas de Traducción</A>
-<B>Sup:</B> <A NAME="tex2html4446"
-  HREF="node129.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4440"
-  HREF="node139.html">El módulo Generado por</A>
+<B> Sig:</B> <A NAME="tex2html4451"
+  HREF="node141.html">Algoritmo de Análisis LR</A>
+<B>Sup:</B> <A NAME="tex2html4445"
+  HREF="node132.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4439"
+  HREF="node139.html">Práctica: Calculadora con Funciones</A>
 <B> Con:</B> 
-<A NAME="tex2html4447"
-  HREF="node211.html">
+<A NAME="tex2html4446"
+  HREF="node214.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4449"
-  HREF="node214.html">
+<A NAME="tex2html4448"
+  HREF="node217.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION058110000000000000000"></A>
-<A NAME="section:prioridades"></A>
+<H1><A NAME="SECTION05880000000000000000"></A>
+   <A NAME="16074"></A>
+  
+<A NAME="practica:ambitocalc"></A>
 <BR>
-Precedencia y Asociatividad
+Práctica: Calculadora con Análisis de Ámbito
 </H1>
-Recordemos que si al construir la tabla LALR,
-alguna de las entradas de la tabla resulta multievaluada, decimos
-que existe un conflicto.
-Si una de las acciones es de `reducción'' y la otra es de
-`desplazamiento'', se dice que hay un <A NAME="17205"></A><SPAN  CLASS="textbf">conflicto shift-reduce</SPAN> o
-<A NAME="17207"></A><SPAN  CLASS="textbf">conflicto de desplazamiento-reducción</SPAN>. Si las
-dos reglas indican una acción de reducción, decimos que tenemos un 
-<A NAME="17209"></A><SPAN  CLASS="textbf">conflicto reduce-reduce</SPAN> o de <A NAME="17211"></A><SPAN  CLASS="textbf">reducción-reducción</SPAN>.
-En caso de que no existan indicaciones específicas <SPAN  CLASS="textbf">jison</SPAN> resuelve
-los conflictos que aparecen en la construcción de la tabla utilizando
-las siguientes reglas:
+Extienda la práctica anterior para que haga un análisis completo del ámbito de las variables.
 
 <P>
 
-<OL>
-<LI>Un conflicto <SPAN  CLASS="textbf">reduce-reduce</SPAN> se resuelve eligiendo la producción
-que se listó primero en la especificación de la gramática.
+<UL>
+<LI>Añada declaraciones de variable con <code>var x, y = 1, z</code>.
+Las variables podrán opcionalmente ser inicializadas.
+Se considerará un error usar una variable no declarada.
 </LI>
-<LI>Un conflicto <SPAN  CLASS="textbf">shift-reduce</SPAN> se resuelve siempre en favor del <SPAN  CLASS="textbf">shift</SPAN>
+<LI>Modifique la gramática para que permita el anidamiento de funciones: funciones dentro de funciones.
+<PRE>
+var c = 4, d = 1, e;
+def g(a, b) { 
+  var d, e;
+  def f(u, v) { a + u + v + d }
+  a * f(b, 2) + d + c 
+}
+</PRE>
+</LI>
+<LI>Una declaración de variable en un ámbito anidado tapa a una declaración con el mismo nombre en el ámbito exterior.
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><PRE>
+var c = 4, d = 1, e;
+def g(a, b) { 
+  var d, e; # esta "d" tapa la d anterior
+  def f(u, v) { a + u + v + d }
+  a * f(b, 2) + d + c 
+}
+</PRE></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><PRE>
+        # global:       var c,d,e
+:g.f
+        $a, 1
+        $u, 0
+        +
+        $v, 0
+        +
+        d, 1
+        +
+        return
+:g
+        $a, 0
+        $b, 0
+        2
+        call :g.f
+        *
+        d, 0     # acceder a la d en el ámbito actual
+        +
+        c, 1
+        +
+        return
+</PRE></TD>
+</TR>
+</TABLE>
+
+<P>
+</LI>
+<LI>Los nombres de funciones se traducen por una secuencia anidada de nombres
+que indican su ámbito. 
+Así la función <code>f</code> anidada en <code>g</code>
+es traducida a la función con nombre <code>g.f</code>.
+Una función <code>h</code> anidada en una función <code>f</code> anidada en <code>g</code>
+es traducida a la función con nombre <code>g.f.h</code>
+
+<P>
+</LI>
+<LI>Las variables ademas de su nombre (dirección/offset) reciben un entero adicional
+0,1,2, ...que indica su nivel de anidamiento. El número de stack frames que hay que recorrer para llegar a la variable
+<PRE>
+        $a, 1
+        $u, 0
+        +
+        $v, 0
+        +
+        d, 1
+        +
+</PRE>
+Asi <code>$a, 1</code> significa acceder al parámetro <code>a</code> que está a distancia 
+<code>1</code> del stack frame/ámbito actual y <code>$v, 0</code> es el parámetro <code>v</code>
+en el ámbito/stack frame actual
+</LI>
+<LI>El frame pointer o base pointer BP indica el nivel de anidamiento esático (en 
+el fuente) de la rutina. Así cuando se va a buscar una variable local
+declarada en la rutina que anida la actual se recorre la lista de frames via BP o frame pointer tantas veces como el nivel de anidamiento indique.
+
+<P>
+
+<center>
+<img src="stackframes.png" />
+</center>
+</LI>
+<LI><OL>
+<LI>Esto es lo que dice la Wikipedia sobre la implementación de <A NAME="tex2html408"
+  HREF="http://en.wikipedia.org/wiki/call_stack">llamadas</A>
+a subrutinas anidadas:
+<BLOCKQUOTE>
+<I>Programming languages that support nested subroutines also have a field
+in the call frame that points to the stack frame of the latest activation
+of the procedure that most closely encapsulates the callee, i.e. the
+immediate scope of the callee. This is called an <A NAME="16077"></A><SPAN  CLASS="textbf">access link</SPAN> or 
+<A NAME="16079"></A><SPAN  CLASS="textbf">static link</SPAN> (as it keeps track of static nesting during dynamic and recursive
+calls) and provides the routine (as well as any other routines it may
+invoke) access to the local data of its encapsulating routines at every
+nesting level. 
+</I>
+
+</BLOCKQUOTE>
+</LI>
+<LI>Esto es lo que dice sobre las 
+ventajas de tener una pila y de almacenar la dirección de retorno y las variables locales:
+<BLOCKQUOTE>
+When a subroutine is called, the location (address) of the instruction at
+which it can later resume needs to be saved somewhere. Using a stack to
+save the return address has important advantages over alternatives. One
+is that each task has its own stack, and thus the subroutine can be
+<A NAME="16081"></A><SPAN  CLASS="textbf">reentrant</SPAN>, that is, can be active simultaneously for different tasks doing
+different things. Another benefit is that <A NAME="16083"></A><SPAN  CLASS="textbf">recursion</SPAN> is automatically
+supported. When a function calls itself recursively, a return address
+needs to be stored for each activation of the function so that it can
+later be used to return from the function activation. This capability
+is automatic with a stack.
+
+</BLOCKQUOTE>
+
+<P>
+</LI>
+<LI>Almacenamiento local:
+<BLOCKQUOTE>
+A subroutine frequently needs memory space for storing the values of
+local variables, the variables that are known only within the active
+subroutine and do not retain values after it returns. It is often
+convenient to allocate space for this use by simply moving the top of
+the stack by enough to provide the space. This is very fast compared to
+heap allocation. Note that each separate activation of a subroutine gets
+its own separate space in the stack for locals.
+
+</BLOCKQUOTE>
+
+<P>
+</LI>
+<LI>Parámetros:
+<BLOCKQUOTE>
+Subroutines often require that values for parameters be supplied to
+them by the code which calls them, and it is not uncommon that space for
+these parameters may be laid out in the call stack. 
+</BLOCKQUOTE>
+<P>
+<BLOCKQUOTE>The call stack works well as a
+place for these parameters, especially since each call to a subroutine,
+which will have differing values for parameters, will be given separate
+space on the call stack for those values.
+
+</BLOCKQUOTE>
+
+<P>
+</LI>
+<LI>Pila de Evaluación
+
+<P>
+<BLOCKQUOTE>
+Operands for arithmetic or logical operations are most often placed into
+registers and operated on there. However, in some situations the operands
+may be stacked up to an arbitrary depth, which means something more than
+registers must be used (this is the case of <A NAME="16085"></A><SPAN  CLASS="textbf">register spilling</SPAN>). The stack
+of such operands, rather like that in an RPN calculator, is called an
+<A NAME="16087"></A><SPAN  CLASS="textbf">evaluation stack</SPAN>, and may occupy space in the call stack.
+
+</BLOCKQUOTE>
+
+<P>
+</LI>
+<LI>Puntero a la instancia actual
+<BLOCKQUOTE>
+Some object-oriented languages (e.g., C++), store the <code>this</code> pointer along
+with function arguments in the call stack when invoking methods. The
+ <TT>this pointer</TT>  points to the object instance associated with the method
+to be invoked.
+
+</BLOCKQUOTE>
 </LI>
 </OL>
 
 <P>
-Las declaraciones de precedencia y asociatividad mediante las
-palabras reservadas  <TT>%left</TT> ,  <TT>%right</TT> ,  <TT>%nonassoc</TT> 
-se utilizan para modificar estos criterios por defecto. 
-La declaración de  <TT>token</TT> s mediante la palabra
-reservada  <TT>%token</TT>  no modifica la precedencia. Si lo hacen las
-declaraciones realizadas usando las palabras  <TT>left</TT> ,  <TT>right</TT> 
-y  <TT>nonassoc</TT> . 
-
-<P>
-
-<OL>
-<LI>Los <SPAN  CLASS="textbf">tokens</SPAN> declarados  en la misma línea
-tienen igual precedencia e igual asociatividad. 
-La precedencia es mayor cuanto mas abajo 
-su posición en
-el texto. Así, en el ejemplo de la calculadora en la sección 
-<A HREF="node150.html#section:ejemplodeuso">36.1</A>, el <SPAN  CLASS="textbf">token</SPAN> <code>*</code> tiene 
-mayor precedencia que <code>+</code> pero la misma que <code>/</code>.
 </LI>
-<LI>La precedencia de una regla <!-- MATH
- $A \rightarrow \alpha$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img28.png"
- ALT="$ A \rightarrow \alpha$"></SPAN> se
-define como la del terminal mas a la derecha que aparece en
-<SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img57.png"
- ALT="$ \alpha$"></SPAN>. En el ejemplo, la producción 
-
-<P>
-<DIV ALIGN="CENTER">
-<code> expr : expr '+' expr</code> 
-
-</DIV>
-
-<P>
-tiene la precedencia del <SPAN  CLASS="textbf">token</SPAN> <code>+</code>.
+<LI>Los parámetros se siguen prefijando de <code>$</code> como en la práctica anterior
 </LI>
-<LI>Para decidir en un conflicto <SPAN  CLASS="textbf">shift-reduce</SPAN> se comparan la precedencia 
-de la regla con la del terminal que va a ser desplazado. Si la de la
-regla es mayor se reduce
-si la del <SPAN  CLASS="textbf">token</SPAN> es mayor, se desplaza.
-</LI>
-<LI>Si en un conflicto <SPAN  CLASS="textbf">shift-reduce</SPAN> ambos la regla y el terminal que
-va a ser desplazado tiene la misma precedencia <SPAN  CLASS="textbf">jison</SPAN> considera la
-asociatividad, si es asociativa a izquierdas, reduce y si es asociativa
-a derechas desplaza. Si no es asociativa, genera un mensaje de error.
-<BR>
-Obsérvese que, en esta situación, la asociatividad de la regla y la del
-<SPAN  CLASS="textbf">token</SPAN> han de ser por fuerza, las mismas.  Ello es así, porque en
-<SPAN  CLASS="textbf">jison</SPAN> los <SPAN  CLASS="textbf">tokens</SPAN> con la misma precedencia se declaran en
-la misma línea y sólo se permite una declaración por línea.
+<LI>Sigue un ejemplo de traducción:
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><PRE>
+var c = 4, d = 1, e;
+def f(x) { 
+  var y = 1;
+  x + y 
+}
+def g(a, b) { 
+  var d, e;
+  def f(u, v) { a + u + v + d }
+  a * f(b, 2) + d + c 
+}
+c = 3;
+f(1+c);
+g(3, 4)
+</PRE></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><PRE>
+        # global:       var c,d,e
+        # f: args x
+        # f:    var y
+:f
+        1
+        &amp;y, 0
+        =
+        $x, 0
+        y, 0
+        +
+        return
+        # g: args a,b
+        # g:    var d,e
+        # g.f: args u,v
+:g.f
+        $a, 1
+        $u, 0
+        +
+        $v, 0
+        +
+        d, 1
+        +
+        return
+:g
+        $a, 0
+        $b, 0
+        2
+        call :g.f
+        *
+        d, 0
+        +
+        c, 1
+        +
+        return
+:main:
+        4
+        &amp;c, 0
+        =
+        1
+        &amp;d, 0
+        =
+        3
+        &amp;c, 0
+        =
+        1
+        c, 0
+        +
+        call :f
+        3
+        4
+        call :g
+</PRE></TD>
+</TR>
+</TABLE>
 
 <P>
 </LI>
-<LI><SPAN  CLASS="textbf"> Por tanto es imposible declarar dos <SPAN  CLASS="textbf">tokens</SPAN> con diferente
-asociatividad y la misma precedencia</SPAN>.
+<LI>Puede comenzar haciedno un fork del proyecto 
+<A NAME="tex2html409"
+  HREF="https://github.com/crguezl/ull-etsii-grado-pl-infix2postfix">ull-etsii-grado-pl-infix2postfix</A>
+en GitHub. Esta incompleto. Rellene las acciones semánticas que faltan;
+la mayoría relacionadas con el análisis de ámbito
 </LI>
-<LI>Es posible modificar la precedencia ``natural'' de una regla, calificándola
-con un <SPAN  CLASS="textbf">token</SPAN> específico.  para ello se escribe a la derecha de
-la regla <code>prec token</code>, donde <code>token</code> es un <SPAN  CLASS="textbf">token</SPAN> con
-la precedencia que deseamos. Vea el uso del <SPAN  CLASS="textbf">token</SPAN> <code>dummy</code>
-en el siguiente ejercicio.
+<LI>Veanse:
+  
+<UL>
+<LI>Véase COMP 3290 Compiler Construction
+  Fall 2008
+  <A NAME="tex2html410"
+  HREF="http://www.cs.umanitoba.ca/~comp3290/Notes/05symboltable.pdf">Notes/Symbol Tables</A>
 </LI>
-</OL>
-
-<P>
-Para ilustrar las reglas anteriores usaremos el siguiente 
-programa <code>jison</code>:
-
-<P>
-<PRE>
-[~/jison/jison-prec(ast)]$ cat -n precedencia.jison 
- 1  %token NUMBER
- 2  %left '@'
- 3  %right '&amp;'  dummy
- 4  %%
- 5  s 
- 6      : list      { console.log($list); }
- 7      ;
- 8  
- 9  list
-10      :
-11                  {
-12                    $$ = [];
-13                  }
-14      | list '\n'
-15                  {
-16                    $$ = $1;
-17                  }
-18      | list e
-19                  {
-20                    $$ = $1;
-21                    $$.push($e);
-22                  }
-23      ;
-24  
-25  e : NUMBER
-26                  {
-27                    $$ = "NUMBER ("+yytext+")";
-28                  }
-29    | e '&amp;' e
-30                  {
-31                    $$ = [ "&amp;", $e1, $e2];
-32                  }
-33    | e '@' e %prec dummy
-34                  {
-35                    $$ = ["@", $e1, $e2];
-36                  }
-37    ;
-38  
-39  %%
-</PRE>            
-Obsérvese la siguiente ejecución:
-
-<P>
-<PRE>
-[~/jison/jison-prec(ast)]$ cat input.txt 
-2@3@4
-2&amp;3&amp;4
-[~/jison/jison-prec(ast)]$ node precedencia.js input.txt 
-[ [ '@', [ '@', 'NUMBER (2)', 'NUMBER (3)' ], 'NUMBER (4)' ],
-  [ '&amp;', 'NUMBER (2)', [ '&amp;', 'NUMBER (3)', 'NUMBER (4)' ] ] ]
-</PRE>
-
-<P>
-Compilamos a continuación con <code>bison</code> usando la opción <code>-v</code> para
-producir información sobre los conflictos y las tablas de salto y 
-de acciones:
-<PRE>
-[~/jison/jison-prec(ast)]$ bison -v precedencia.jison 
-precedencia.jison:6.31: warning: stray `$'
-precedencia.jison:21.27: warning: stray `$'
-precedencia.jison:31.31: warning: stray `$'
-precedencia.jison:31.36: warning: stray `$'
-precedencia.jison:35.30: warning: stray `$'
-precedencia.jison:35.35: warning: stray `$'
-</PRE>
-
-<P>
-La opción <code>-v</code> genera el fichero <code>Precedencia.output</code>
-el cual contiene información detallada sobre el autómata:
-
-<P>
-<PRE>
-[~/jison/jison-prec(ast)]$ cat precedencia.output 
-Grammar
-
-    0 $accept: s $end
-
-    1 s: list
-
-    2 list: /* empty */
-    3     | list '\n'
-    4     | list e
-
-    5 e: NUMBER
-    6  | e '&amp;' e
-    7  | e '@' e
-
-
-Terminals, with rules where they appear
-
-$end (0) 0
-'\n' (10) 3
-'&amp;' (38) 6
-'@' (64) 7
-error (256)
-NUMBER (258) 5
-dummy (259)
-
-
-Nonterminals, with rules where they appear
-
-$accept (8)
-    on left: 0
-s (9)
-    on left: 1, on right: 0
-list (10)
-    on left: 2 3 4, on right: 1 3 4
-e (11)
-    on left: 5 6 7, on right: 4 6 7
-
-
-state 0
-
-    0 $accept: . s $end
-
-    $default  reduce using rule 2 (list)
-
-    s     go to state 1
-    list  go to state 2
-
-
-state 1
-
-    0 $accept: s . $end
-
-    $end  shift, and go to state 3
-
-
-state 2
-
-    1 s: list .
-    3 list: list . '\n'
-    4     | list . e
-
-    NUMBER  shift, and go to state 4
-    '\n'    shift, and go to state 5
-
-    $default  reduce using rule 1 (s)
-
-    e  go to state 6
-
-
-state 3
-
-    0 $accept: s $end .
-
-    $default  accept
-
-
-state 4
-
-    5 e: NUMBER .
-
-    $default  reduce using rule 5 (e)
-
-
-state 5
-
-    3 list: list '\n' .
-
-    $default  reduce using rule 3 (list)
-
-
-state 6
-
-    4 list: list e .
-    6 e: e . '&amp;' e
-    7  | e . '@' e
-
-    '@'  shift, and go to state 7
-    '&amp;'  shift, and go to state 8
-
-    $default  reduce using rule 4 (list)
-
-
-state 7
-
-    7 e: e '@' . e
-
-    NUMBER  shift, and go to state 4
-
-    e  go to state 9
-
-
-state 8
-
-    6 e: e '&amp;' . e
-
-    NUMBER  shift, and go to state 4
-
-    e  go to state 10
-
-
-state 9
-
-    6 e: e . '&amp;' e
-    7  | e . '@' e
-    7  | e '@' e .
-
-    '&amp;'  shift, and go to state 8
-
-    $default  reduce using rule 7 (e)
-
-
-state 10
-
-    6 e: e . '&amp;' e
-    6  | e '&amp;' e .
-    7  | e . '@' e
-
-    '&amp;'  shift, and go to state 8
-
-    $default  reduce using rule 6 (e)
-</PRE>
-
-<P>
-La presencia de conflictos, aunque no siempre, en muchos casos es debida
-a la introducción de ambiguedad en la gramática. Si el conflicto 
-es de desplazamiento-reducción se puede resolver explicitando 
-alguna regla que rompa la ambiguedad. Los conflictos de
-reducción-reducción suelen producirse por un diseño erróneo
-de la gramática. En tales casos, suele ser mas adecuado
-modificar la gramática.
+<LI>El capítulo 
+  <A NAME="tex2html411"
+  HREF="http://books.google.es/books?id=Pq7pHwG1_OkC">Symbol Table
+  Structure</A>
+del libro de
+  Muchnick Advanced Compiler Design Implementation [<A
+ HREF="node218.html#Muchnick:1998:ACD:286076">12</A>]
+</LI>
+<LI>El capítulo 
+  <A NAME="tex2html412"
+  HREF="http://www.cs.umanitoba.ca/~comp3290/Docs/basics_letter_12pt.pdf">Symbol Table
+  Structure</A>
+del libro de
+  Basics of Compiler Design de Torben Ægidius Mogensen [<A
+ HREF="node218.html#mogensen2011introduction">13</A>]
+  
+</LI>
+</UL>
+</LI>
+</UL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4451"
+<A NAME="tex2html4450"
   HREF="node141.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4445"
-  HREF="node129.html">
+<A NAME="tex2html4444"
+  HREF="node132.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4439"
+<A NAME="tex2html4438"
   HREF="node139.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4447"
-  HREF="node211.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4449"
+<A NAME="tex2html4446"
   HREF="node214.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html4448"
+  HREF="node217.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -497,12 +474,12 @@ modificar la gramática.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4452"
-  HREF="node141.html">Esquemas de Traducción</A>
-<B>Sup:</B> <A NAME="tex2html4446"
-  HREF="node129.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4440"
-  HREF="node139.html">El módulo Generado por</A>
+<B> Sig:</B> <A NAME="tex2html4451"
+  HREF="node141.html">Algoritmo de Análisis LR</A>
+<B>Sup:</B> <A NAME="tex2html4445"
+  HREF="node132.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4439"
+  HREF="node139.html">Práctica: Calculadora con Funciones</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Práctica: Generación Automática de Árboles</TITLE>
-<META NAME="description" CONTENT="Práctica: Generación Automática de Árboles">
+<TITLE>Práctica: El Análisis de las Acciones</TITLE>
+<META NAME="description" CONTENT="Práctica: El Análisis de las Acciones">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node175.html">
 <LINK REL="previous" HREF="node173.html">
-<LINK REL="up" HREF="node149.html">
+<LINK REL="up" HREF="node152.html">
 <LINK REL="next" HREF="node175.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4976"
+<A NAME="tex2html4986"
   HREF="node175.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4970"
-  HREF="node149.html">
+<A NAME="tex2html4980"
+  HREF="node152.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4964"
+<A NAME="tex2html4974"
   HREF="node173.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4972"
-  HREF="node211.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4974"
+<A NAME="tex2html4982"
   HREF="node214.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html4984"
+  HREF="node217.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,56 +88,71 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4977"
-  HREF="node175.html">Recuperacion de Errores: Visión</A>
-<B>Sup:</B> <A NAME="tex2html4971"
-  HREF="node149.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4965"
-  HREF="node173.html">Práctica: Nuevos Métodos</A>
+<B> Sig:</B> <A NAME="tex2html4987"
+  HREF="node175.html">Práctica: Autoacciones</A>
+<B>Sup:</B> <A NAME="tex2html4981"
+  HREF="node152.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4975"
+  HREF="node173.html">La Estructura de Datos</A>
 <B> Con:</B> 
-<A NAME="tex2html4972"
-  HREF="node211.html">
+<A NAME="tex2html4982"
+  HREF="node214.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4974"
-  HREF="node214.html">
+<A NAME="tex2html4984"
+  HREF="node217.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION059250000000000000000"></A>
-   <A NAME="18874"></A>
+<H1><A NAME="SECTION059220000000000000000"></A>
+   <A NAME="18886"></A>
 <BR>
-Práctica: Generación Automática de Árboles
+Práctica:  El Análisis de las Acciones
 </H1>
   
-Partiendo de la práctica anterior, introduzca una directiva
-<code>%autotree</code> que de lugar a la construcción del árbol de análisis
-concreto. La acción de construcción del árbol:
-<PRE>
-{ my $n = $#_;  bless [@_[1..$n]], $_[0]-&gt;YYLhs }
-</PRE>
-se ejecutará para cualquier regla que no tenga una acción
-explícita asociada.
+Modifique el código de <code>YappParse.yp</code> para que el análisis
+léxico de las secciones de código (<code>HEADCODE</code>, <code>CODE</code> y <code>TAILCODE</code>)
+se haga a través de las correspondientes rutinas proveida como parámetros 
+para el análisis por el usuario. La idea es ofrecer un primer paso
+que facilite la generación de analizadores en diferentes 
+lenguajes <code>Perl</code>, <code>C</code>, etc.
+
+<P>
+Estudie el módulo <code>Text::Balanced</code>. Basándose en 
+las funciones 
+
+<P>
+<code>extract_codeblock</code> y <code>extract_quotelike</code>
+
+<P>
+del módulo <code>Text::Balanced</code>, resuelva el problema del reconocimiento
+de código Perl dentro del analizador léxico de <code>Parse::Yapp</code>,
+evitando forzar al usuario en la escritura de ``llaves fantasma''.
+Compare el rendimiento de esta solución con la que provee <code>Yapp</code>.
+Para analizar el <A NAME="18887"></A><SPAN  CLASS="textbf">rendimiento</SPAN> use el módulo <A NAME="18891"></A><TT>Benchmark</TT>.
+
+<P>
+¿Cu&#225;les son sus conclusiones? ¿Qué es mejor?
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4976"
+<A NAME="tex2html4986"
   HREF="node175.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4970"
-  HREF="node149.html">
+<A NAME="tex2html4980"
+  HREF="node152.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4964"
+<A NAME="tex2html4974"
   HREF="node173.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4972"
-  HREF="node211.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4974"
+<A NAME="tex2html4982"
   HREF="node214.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html4984"
+  HREF="node217.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -184,12 +199,12 @@ explícita asociada.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4977"
-  HREF="node175.html">Recuperacion de Errores: Visión</A>
-<B>Sup:</B> <A NAME="tex2html4971"
-  HREF="node149.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4965"
-  HREF="node173.html">Práctica: Nuevos Métodos</A>
+<B> Sig:</B> <A NAME="tex2html4987"
+  HREF="node175.html">Práctica: Autoacciones</A>
+<B>Sup:</B> <A NAME="tex2html4981"
+  HREF="node152.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4975"
+  HREF="node173.html">La Estructura de Datos</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

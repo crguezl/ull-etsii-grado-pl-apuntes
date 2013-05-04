@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Recuperación de Errores</TITLE>
-<META NAME="description" CONTENT="Recuperación de Errores">
+<TITLE>Manejo en jison de Atributos Heredados</TITLE>
+<META NAME="description" CONTENT="Manejo en jison de Atributos Heredados">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node146.html">
 <LINK REL="previous" HREF="node144.html">
-<LINK REL="up" HREF="node129.html">
+<LINK REL="up" HREF="node132.html">
 <LINK REL="next" HREF="node146.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4525"
+<A NAME="tex2html4531"
   HREF="node146.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4519"
-  HREF="node129.html">
+<A NAME="tex2html4525"
+  HREF="node132.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4513"
+<A NAME="tex2html4519"
   HREF="node144.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4521"
-  HREF="node211.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4523"
+<A NAME="tex2html4527"
   HREF="node214.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html4529"
+  HREF="node217.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,101 +88,411 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4526"
-  HREF="node146.html">Depuración en jison</A>
-<B>Sup:</B> <A NAME="tex2html4520"
-  HREF="node129.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4514"
-  HREF="node144.html">Ejercicios: Casos de Estudio</A>
+<B> Sig:</B> <A NAME="tex2html4532"
+  HREF="node146.html">Definición Dirigida por la</A>
+<B>Sup:</B> <A NAME="tex2html4526"
+  HREF="node132.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4520"
+  HREF="node144.html">Esquemas de Traducción</A>
 <B> Con:</B> 
-<A NAME="tex2html4521"
-  HREF="node211.html">
+<A NAME="tex2html4527"
+  HREF="node214.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4523"
-  HREF="node214.html">
+<A NAME="tex2html4529"
+  HREF="node217.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION058160000000000000000"></A>
-<A NAME="section:errores"></A>
+<H1><A NAME="SECTION058130000000000000000"></A>
+<A NAME="section:heredados"></A>
 <BR>
-Recuperación de Errores
+Manejo en <TT>jison</TT> de Atributos Heredados
 </H1>
 
 <P>
-La recuperación de errores no parece estar implementada en Jison.
-véase 
+Supongamos  que <code>jison</code> esta inmerso 
+en la construcción de la antiderivación a derechas y que la forma sentencial
+derecha en ese momento es:
 
-<UL>
-<LI>la sección 
-<A NAME="tex2html415"
-  HREF="http://zaach.github.io/jison/docs/">Error Recovery</A>
-de la documentación
-</LI>
-<LI><A NAME="tex2html416"
-  HREF="https://github.com/zaach/jison/pull/147">Pullreq 5 - parser built-in grammar error recovery was completely broken</A>
-</LI>
-</UL>
+<P>
+<DIV ALIGN="CENTER">
+<!-- MATH
+ $X_m \ldots X_1 X_0 Y_1 \ldots  Y_n a_1 \ldots a_0$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="225" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img457.png"
+ ALT="$ X_m \ldots X_1 X_0 Y_1 \ldots Y_n a_1 \ldots a_0$"></SPAN>
+</DIV>
+
+<P>
+y que el mango es <!-- MATH
+ $B \rightarrow Y_1 \ldots  Y_n$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="109" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img458.png"
+ ALT="$ B \rightarrow Y_1 \ldots Y_n$"></SPAN> y en la entrada quedan por 
+procesar <!-- MATH
+ $a_1 \ldots a_0$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="65" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img459.png"
+ ALT="$ a_1 \ldots a_0$"></SPAN>.
+
+<P>
+No es posible acceder en <code>jison</code> a los valores de los atributos de los estados en la pila
+del analizador que se encuentran ``por debajo'' o si se quiere
+``a la izquierda'' de los estados asociados
+con la regla por la que se reduce. 
+
+<P>
+Vamos a usar un pequeño hack para acceder a los atributos asociados con símbolos vistos 
+en el pasado "remoto":
 <PRE>
-[~/srcPLgrado/jison/jison-aSb(error)]$ cat aSb.jison 
+[~/jison/jison-inherited(grammar)]$ cat inherited.jison 
 %lex
 %%
-\s+             {}
-[ab]            { return yytext; }
-.               { return "INVALID"; }
+\s+                           {}
+(global|local|integer|float)  { return yytext; }
+[a-zA-Z_]\w*                  { return 'id'; }
+.                             { return yytext; }
 /lex
 %%
-S: /* empty */  { $$ = ''; console.log("empty"); }
-   | 'a' S 'b'  { $$ = $1 + $2 + $3; console.log("S -&gt; aSb"); }
-   | 'a' S error
+D 
+  : C T L 
+  ;
+
+C
+  : global
+  | local
+  ; 
+  
+T
+  : integer
+  | float
 ;
+
+L 
+  : L ',' id    { 
+                  console.log("L -&gt; L ',' id ("+yytext+")");
+                  var s =  eval('$$');
+                  console.log(s);
+                }
+  | id          {
+                  console.log("L -&gt; id ("+yytext+")");
+                  var s =  eval('$$');
+                  console.log(s);
+                }
+  ;
 %%
 </PRE>
 
 <P>
+Veamos un ejemplo de ejecución:
+
+<P>
 <PRE>
-        parse: function parse(input) {
-              var self = this,
-                  stack = [0],
-                  vstack = [null], // semantic value stack
-                  lstack = [], // location stack
-                  ...
-                  recovering = 0,
-                  TERROR = 2,
-                  EOF = 1;
-            while (true) {
-                  // retreive state number from top of stack
-                  state = stack[stack.length - 1];
-  
-                  ...
-  
-                  // handle parse error
-&gt;&gt;                _handle_error: if (typeof action === 'undefined' || !action.length || !  ...action[0]) {
-  
-                      var errStr = '';
-                      if (!recovering) {
+[~/jison/jison-inherited(grammar)]$ cat input.txt 
+global integer a, b, c
+[~/jison/jison-inherited(grammar)]$ node inherited.js input.txt 
+L -&gt; id (a)
+[ null, 'global', 'integer', 'a' ]
+L -&gt; L ',' id (b)
+[ null, 'global', 'integer', 'a', ',', 'b' ]
+L -&gt; L ',' id (c)
+[ null, 'global', 'integer', 'a', ',', 'c' ]
 </PRE>
+
+<P>
+Esta forma de acceder a los atributos es especialmente útil cuando se 
+trabaja con <A NAME="17256"></A><SPAN  CLASS="textbf">atributos heredados</SPAN>. Esto es, cuando un atributo
+de un nodo del árbol sintáctico se computa en términos
+de valores de atributos de su padre y/o sus hermanos.
+Ejemplos de atributos heredados son la clase y tipo en la declaración
+de variables. 
+
+<P>
+Es importante darse cuenta que en cualquier derivación a derechas
+desde<code>D</code>, cuando se reduce por una de las reglas 
+
+<P>
+<DIV ALIGN="CENTER">
+L <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> id <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img51.png"
+ ALT="$ \vert$"></SPAN> L<SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img450.png"
+ ALT="$ _1$"></SPAN> ',' id
+
+</DIV>
+
+<P>
+el símbolo a la izquierda de L es T y el que esta a la izquierda de T es C.
+Considere, por ejemplo la derivación a derechas:
+
+<P>
+<DIV ALIGN="CENTER">
+D <!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img460.png"
+ ALT="$ \Longrightarrow$"></SPAN> C T L <!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img460.png"
+ ALT="$ \Longrightarrow$"></SPAN> C T L, id <!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img460.png"
+ ALT="$ \Longrightarrow$"></SPAN> C T L, id, id
+<!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img460.png"
+ ALT="$ \Longrightarrow$"></SPAN> C T id, id, id <!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img460.png"
+ ALT="$ \Longrightarrow$"></SPAN> 
+<BR><!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img460.png"
+ ALT="$ \Longrightarrow$"></SPAN> C float id, id, id <!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img460.png"
+ ALT="$ \Longrightarrow$"></SPAN> local float id, id, id
+
+</DIV>
+
+<P>
+Observe que el orden de recorrido de <code>jison</code> es:
+<DIV ALIGN="CENTER">
+local float id, id, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img461.png"
+ ALT="$ \Longleftarrow$"></SPAN> C float id, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img461.png"
+ ALT="$ \Longleftarrow$"></SPAN>
+C T id, id, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img461.png"
+ ALT="$ \Longleftarrow$"></SPAN>
+<BR><!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img461.png"
+ ALT="$ \Longleftarrow$"></SPAN> C T L, id, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img461.png"
+ ALT="$ \Longleftarrow$"></SPAN> C T L, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img461.png"
+ ALT="$ \Longleftarrow$"></SPAN> C T L <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img461.png"
+ ALT="$ \Longleftarrow$"></SPAN> D
+
+</DIV>
+
+<P>
+en la antiderivación, cuando el mango es una de las dos reglas 
+para listas de identificadores, L <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> id y L <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> L, id 
+es decir durante las tres ultimas antiderivaciones:
+
+<P>
+<DIV ALIGN="CENTER">
+C T L, id, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img461.png"
+ ALT="$ \Longleftarrow$"></SPAN> C T L, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img461.png"
+ ALT="$ \Longleftarrow$"></SPAN> C T L <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img461.png"
+ ALT="$ \Longleftarrow$"></SPAN> D
+
+</DIV>
+
+<P>
+las variables a la izquierda del mango son
+T y C. Esto ocurre siempre. 
+Estas observaciones nos conducen al siguiente
+programa <code>jison</code>: 
+
+<P>
+<PRE>
+[~/jison/jison-inherited(deepstack)]$ cat inherited.jison 
+%lex
+%%
+\s+                           {}
+(global|local|integer|float)  { return yytext; }
+[a-zA-Z_]\w*                  { return 'id'; }
+.                             { return yytext; }
+/lex
+%%
+D 
+  : C T L 
+  ;
+
+C
+  : global
+  | local
+  ; 
+  
+T
+  : integer
+  | float
+  ;
+
+L 
+  : L ',' id    { 
+                  var s =  eval('$$');
+                  var b0 = s.length - 3;
+
+                  console.log("L -&gt; L ',' id ("+yytext+")");
+                  console.log($id + ' is of type ' + s[b0-1]);
+                  console.log(s[b0] + ' is of class ' + s[b0-2]);
+                }
+  | id          {
+                  var s =  eval('$$');
+                  var b0 = s.length - 1;
+
+                  console.log("L -&gt; id ("+yytext+")");
+                  console.log($id + ' is of type ' + s[b0-1]);
+                  console.log(s[b0] + ' is of class ' + s[b0-2]);
+                }
+  ;
+%%
+</PRE>
+
+<P>
+A continuación sigue un ejemplo de ejecución:
+
+<P>
+<PRE>
+[~/jison/jison-inherited(deepstack)]$ node inherited.js input.txt 
+L -&gt; id (a)
+a is of type integer
+a is of class global
+L -&gt; L ',' id (b)
+b is of type integer
+a is of class global
+L -&gt; L ',' id (c)
+c is of type integer
+a is of class global
+</PRE>
+
+<P>
+En este caso, existen varias alternativas simples
+a esta solución:
+
+<UL>
+<LI>Montar la lista de identificadores  en un array y ponerles el tipo y la clase de "golpe"
+ en la regla de producción superior <code>D : C T L ;</code>
+</LI>
+<LI>usar variables visibles (globales o atributos del objeto parser, por ejemplo) 
+como <code>current_type</code>, <code>current_class</code>
+<PRE>
+C
+  : global { current_class = 'global'; }
+  | local  { current_class = 'local'; }
+</PRE>
+y depués accederlas en las reglas de <code>L</code>
+</LI>
+<LI>La que posiblemente sea la mejor estrategia general: construir 
+el árbol de análisis sintáctico. Posteriormente podemos recorrer
+el árbol como queramos y tantas veces como queramos.
+</LI>
+</UL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4525"
+<A NAME="tex2html4531"
   HREF="node146.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4519"
-  HREF="node129.html">
+<A NAME="tex2html4525"
+  HREF="node132.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4513"
+<A NAME="tex2html4519"
   HREF="node144.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4521"
-  HREF="node211.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4523"
+<A NAME="tex2html4527"
   HREF="node214.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html4529"
+  HREF="node217.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -229,12 +539,12 @@ S: /* empty */  { $$ = ''; console.log("empty"); }
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4526"
-  HREF="node146.html">Depuración en jison</A>
-<B>Sup:</B> <A NAME="tex2html4520"
-  HREF="node129.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4514"
-  HREF="node144.html">Ejercicios: Casos de Estudio</A>
+<B> Sig:</B> <A NAME="tex2html4532"
+  HREF="node146.html">Definición Dirigida por la</A>
+<B>Sup:</B> <A NAME="tex2html4526"
+  HREF="node132.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4520"
+  HREF="node144.html">Esquemas de Traducción</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

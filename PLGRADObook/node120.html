@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Recursión por la Izquierda</TITLE>
-<META NAME="description" CONTENT="Recursión por la Izquierda">
+<TITLE>Conceptos Básicos para el Análisis Sintáctico</TITLE>
+<META NAME="description" CONTENT="Conceptos Básicos para el Análisis Sintáctico">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node121.html">
 <LINK REL="previous" HREF="node119.html">
-<LINK REL="up" HREF="node112.html">
+<LINK REL="up" HREF="node115.html">
 <LINK REL="next" HREF="node121.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4070"
+<A NAME="tex2html4058"
   HREF="node121.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4064"
-  HREF="node112.html">
+<A NAME="tex2html4052"
+  HREF="node115.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4058"
+<A NAME="tex2html4046"
   HREF="node119.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4066"
-  HREF="node211.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4068"
+<A NAME="tex2html4054"
   HREF="node214.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html4056"
+  HREF="node217.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,19 +88,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4071"
-  HREF="node121.html">Árbol de Análisis Abstracto</A>
-<B>Sup:</B> <A NAME="tex2html4065"
-  HREF="node112.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html4059"
-  HREF="node119.html">Esquemas de Traducción</A>
+<B> Sig:</B> <A NAME="tex2html4059"
+  HREF="node121.html">Análisis Sintáctico Predictivo Recursivo</A>
+<B>Sup:</B> <A NAME="tex2html4053"
+  HREF="node115.html">Análisis Sintáctico Descendente en</A>
+<B> Ant:</B> <A NAME="tex2html4047"
+  HREF="node119.html">Pruebas para el Analizador</A>
 <B> Con:</B> 
-<A NAME="tex2html4066"
-  HREF="node211.html">
+<A NAME="tex2html4054"
+  HREF="node214.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4068"
-  HREF="node214.html">
+<A NAME="tex2html4056"
+  HREF="node217.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
@@ -109,1024 +109,551 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html4072"
-  HREF="node120.html#SECTION05781000000000000000">Eliminación de la Recursión por la Izquierda en la Gramática</A>
-<LI><A NAME="tex2html4073"
-  HREF="node120.html#SECTION05782000000000000000">Eliminación de la Recursión por la Izquierda en un Esquema de Traducción</A>
-<LI><A NAME="tex2html4074"
-  HREF="node120.html#SECTION05783000000000000000">Ejercicio</A>
-<LI><A NAME="tex2html4075"
-  HREF="node120.html#SECTION05784000000000000000">Convirtiendo el Esquema en un Analizador Predictivo</A>
-<LI><A NAME="tex2html4076"
-  HREF="node120.html#SECTION05785000000000000000">Ejercicio</A>
-<LI><A NAME="tex2html4077"
-  HREF="node120.html#SECTION05786000000000000000">Práctica: Eliminación de la Recursividad por la Izquierda</A>
+<LI><A NAME="tex2html4060"
+  HREF="node120.html#SECTION05751000000000000000">Ejercicio</A>
 </UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION05780000000000000000"></A>
-<A NAME="section:recursionizquierda"></A>
+<H1><A NAME="SECTION05750000000000000000"></A>
+<A NAME="section:conceptos"></A>
 <BR>
-Recursión por la Izquierda
+Conceptos Básicos para el Análisis Sintáctico
 </H1>
+Suponemos que el lector de esta sección ha realizado con éxito
+un curso en teoría de autómatas y lenguajes formales.
+Las siguientes definiciones repasan los conceptos mas importantes.
 
 <P>
 <P>
-<DIV><B>Definición  <SPAN CLASS="arabic">34</SPAN>.<SPAN CLASS="arabic">8</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Una <A NAME="12211"></A><SPAN  CLASS="textbf">gramática es recursiva por la izquierda</SPAN> cuando existe una derivación
-<!-- MATH
- $A \stackrel{*}{\Longrightarrow} A \alpha$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="80" HEIGHT="24" ALIGN="BOTTOM" BORDER="0"
- SRC="img130.png"
- ALT="$ A \stackrel{*}{\Longrightarrow} A \alpha$"></SPAN>. 
-</I>
-<P>
-<I>En particular, es recursiva por la izquierda si contiene
-una regla de producción de la forma <!-- MATH
- $A \rightarrow A \alpha$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="69" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img131.png"
- ALT="$ A \rightarrow A \alpha$"></SPAN>. 
-En este caso se dice que la recursión por la izquierda es directa.</I></DIV><P></P>
-
-<P>
-Cuando la gramática es <A NAME="12213"></A><SPAN  CLASS="textbf">recursiva por la izquierda</SPAN>, 
-el método 
-de análisis recursivo descendente predictivo no funciona. 
-En ese caso, el procedimiento
-<code>A</code> asociado con <SPAN CLASS="MATH"><IMG
+<DIV><B>Definición  <SPAN CLASS="arabic">34</SPAN>.<SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Dado un conjunto <SPAN CLASS="MATH"><IMG
  WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
  SRC="img17.png"
- ALT="$ A$"></SPAN> ciclaría para siempre sin llegar a consumir ningún 
-terminal. 
-
-<P>
-
-<H2><A NAME="SECTION05781000000000000000"></A>
-<A NAME="subsection:eliminaleftrec"></A>
-<BR>
-Eliminación de la Recursión por la Izquierda en la Gramática
-</H2>
-Es posible modificar la gramática para eliminar la recursión por 
-la izquierda. En este apartado nos limitaremos al caso de recursión 
-por la izquierda directa. 
-La generalización al caso de recursión por la izquierda no-directa
-se reduce a la iteración de la solución propuesta 
-para el caso directo.
-
-<P>
-Consideremos una variable <SPAN CLASS="MATH"><IMG
+ ALT="$ A$"></SPAN>, se define <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="19" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.png"
+ ALT="$ A^*$"></SPAN> el cierre de Kleene de <SPAN CLASS="MATH"><IMG
  WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
  SRC="img17.png"
- ALT="$ A$"></SPAN> con dos producciones:
-
-<P>
-<BR>
-<BR>
-<DIV ALIGN="CENTER">
-<TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $A   \rightarrow A \alpha$
+ ALT="$ A$"></SPAN> como:
+</I><!-- MATH
+ \begin{math}
+A^* = \cup_{n=0}^{\infty} A^n
+\end{math}
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="69" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img131.png"
- ALT="$ A \rightarrow A \alpha$"></SPAN></TD>
-<TD ALIGN="LEFT"><SPAN CLASS="MATH"><IMG
- WIDTH="26" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img132.png"
- ALT="$ \vert \beta$"></SPAN></TD>
-</TR>
-</TABLE>
-</DIV>
-
+ WIDTH="109" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.png"
+ ALT="$ A^* = \cup_{n=0}^{\infty} A^n
+$"></SPAN>
 <P>
-donde <!-- MATH
- $\alpha, \beta \in (V \cup \Sigma)^*$
+<I>Se admite que <!-- MATH
+ $A^0 = \{ \epsilon \}$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="123" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img133.png"
- ALT="$ \alpha, \beta \in (V \cup \Sigma)^*$"></SPAN> no comienzan por <SPAN CLASS="MATH"><IMG
+ WIDTH="73" HEIGHT="39" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.png"
+ ALT="$ A^0 = \{ \epsilon \}$"></SPAN>, donde <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img21.png"
+ ALT="$ \epsilon$"></SPAN> denota la palabra vacía, esto es
+la palabra que tiene longitud cero, formada por cero símbolos del conjunto base <SPAN CLASS="MATH"><IMG
  WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
  SRC="img17.png"
- ALT="$ A$"></SPAN>.
-Estas dos producciones pueden ser sustituidas por:
+ ALT="$ A$"></SPAN>.</I></DIV><P></P>
 
 <P>
-<BR>
-<BR>
-<DIV ALIGN="CENTER">
-<TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $A   \rightarrow \beta R$
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">34</SPAN>.<SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
+<I>Una gramática <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.png"
+ ALT="$ G$"></SPAN> es una cuaterna <!-- MATH
+ $G =(\Sigma,V,P,S)$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="69" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img134.png"
- ALT="$ A \rightarrow \beta R$"></SPAN></TD>
-<TD ALIGN="LEFT">&nbsp;</TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $R   \rightarrow  \alpha R$
+ WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img23.png"
+ ALT="$ G =(\Sigma,V,P,S)$"></SPAN>. 
+<SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img24.png"
+ ALT="$ \Sigma$"></SPAN> es el conjunto de terminales. <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img25.png"
+ ALT="$ V$"></SPAN> es un conjunto (disjunto de <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img24.png"
+ ALT="$ \Sigma$"></SPAN>)
+que se denomina conjunto de <SPAN  CLASS="textbf">variables sintácticas</SPAN> o <SPAN  CLASS="textbf">categorías gramáticales</SPAN>,
+P es un conjunto de pares de <!-- MATH
+ $V \times (V \cup \Sigma )^*$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="70" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img135.png"
- ALT="$ R \rightarrow \alpha R$"></SPAN></TD>
-<TD ALIGN="LEFT"><!-- MATH
- $|\ \epsilon$
+ WIDTH="107" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.png"
+ ALT="$ V \times (V \cup \Sigma )^*$"></SPAN>. En vez de escribir
+un par usando la notación <!-- MATH
+ $(A, \alpha) \in P$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="23" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img108.png"
- ALT="$ \vert \epsilon$"></SPAN></TD>
-</TR>
-</TABLE>
-</DIV>
-
-<P>
-eliminando así la recursión por la izquierda.
-
-<P>
-<P>
-<DIV><B>Definición  <SPAN CLASS="arabic">34</SPAN>.<SPAN CLASS="arabic">8</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
-<I>La producción <!-- MATH
- $R   \rightarrow  \alpha R$
+ WIDTH="85" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img27.png"
+ ALT="$ (A, \alpha) \in P$"></SPAN> se escribe <!-- MATH
+ $A \rightarrow \alpha$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="70" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img135.png"
- ALT="$ R \rightarrow \alpha R$"></SPAN> se dice <A NAME="12215"></A><SPAN  CLASS="textbf">recursiva por la derecha</SPAN>.</I></DIV><P></P>
+ WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img28.png"
+ ALT="$ A \rightarrow \alpha$"></SPAN>.
+Un elemento de <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img29.png"
+ ALT="$ P$"></SPAN> se denomina producción. Por último, <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img30.png"
+ ALT="$ S$"></SPAN> es un símbolo del conjunto
+<SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img25.png"
+ ALT="$ V$"></SPAN> que se denomina símbolo de arranque.</I></DIV><P></P>
 
 <P>
-Las producciones recursivas por la derecha dan lugar a árboles
-que se hunden hacia la derecha. Es mas difícil traducir desde esta clase
-de árboles operadores como el menos, que son asociativos a izquierdas.
-
 <P>
-<P>
-<DIV><B>Ejercicio  <SPAN CLASS="arabic">34</SPAN>.<SPAN CLASS="arabic">8</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Elimine la recursión por la izquierda de la gramática 
-</I>
-<P>
-<I>
-<BR>
-<BR>
-</I><TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><I>
+<DIV><B>Definición  <SPAN CLASS="arabic">34</SPAN>.<SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">3</SPAN></B> &nbsp; 
+<I>Dada una gramática <!-- MATH
+ $G=(\Sigma,V,P,S)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img23.png"
+ ALT="$ G =(\Sigma,V,P,S)$"></SPAN> y <!-- MATH
+ $\mu = \alpha A \beta \in (V \cup \Sigma)^*$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="162" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img31.png"
+ ALT="$ \mu = \alpha A \beta \in (V \cup \Sigma)^*$"></SPAN>
+una frase formada por variables y terminales y <!-- MATH
+ $A \rightarrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.png"
+ ALT="$ A \rightarrow \gamma$"></SPAN> una producción de 
+<SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img29.png"
+ ALT="$ P$"></SPAN>, decimos que  <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img33.png"
+ ALT="$ \mu$"></SPAN> deriva en un paso en  <!-- MATH
+ $\alpha \gamma \beta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="37" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img34.png"
+ ALT="$ \alpha \gamma \beta$"></SPAN>. Esto es, derivar 
+una cadena <!-- MATH
+ $\alpha A \beta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="40" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \alpha A \beta$"></SPAN> es sustituir 
+una variable sintáctica <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img17.png"
+ ALT="$ A$"></SPAN> de <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img25.png"
+ ALT="$ V$"></SPAN> por la parte derecha <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \gamma$"></SPAN> de una de sus reglas de producción.
+Se dice que <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img33.png"
+ ALT="$ \mu$"></SPAN> deriva en <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$ n$"></SPAN> pasos en <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img37.png"
+ ALT="$ \delta$"></SPAN> si deriva en <SPAN CLASS="MATH"><IMG
+ WIDTH="45" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.png"
+ ALT="$ n-1$"></SPAN> pasos en una cadena
 <!-- MATH
- $expr   \rightarrow expr  -  NUM$
+ $\alpha A \beta$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="172" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img136.png"
- ALT="$ expr \rightarrow expr - NUM$"></SPAN> </I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-<!-- MATH
- $expr   \rightarrow NUM$
+ WIDTH="40" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \alpha A \beta$"></SPAN> la cual deriva en un paso en <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img37.png"
+ ALT="$ \delta$"></SPAN>. Se escribe entonces
+que <!-- MATH
+ $\mu  \stackrel{*}{\Longrightarrow}  \delta$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="116" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img121.png"
- ALT="$ expr \rightarrow NUM$"></SPAN> 
-</I></TD>
-</TR>
-</TABLE><I>
-<BR>
-<BR>
+ WIDTH="61" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
+ SRC="img39.png"
+ ALT="$ \mu \stackrel{*}{\Longrightarrow} \delta$"></SPAN>. Una cadena deriva en 0 pasos en si misma.
 </I>
 <P></DIV><P></P>
 
 <P>
 <P>
-<DIV><B>Ejercicio  <SPAN CLASS="arabic">34</SPAN>.<SPAN CLASS="arabic">8</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
-<I>¿Que hay de erróneo en este esquema de traducción?
+<DIV><A NAME="definition:lenguajegenerado"><B>Definición  <SPAN CLASS="arabic">34</SPAN>.<SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">4</SPAN></B></A> &nbsp; 
+<I>Dada una gramática <!-- MATH
+ $G=(\Sigma,V,P,S)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img23.png"
+ ALT="$ G =(\Sigma,V,P,S)$"></SPAN> se denota por <SPAN CLASS="MATH"><IMG
+ WIDTH="44" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img40.png"
+ ALT="$ L(G)$"></SPAN> o lenguaje
+generado por <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.png"
+ ALT="$ G$"></SPAN> al lenguaje:
 </I>
 <P>
-<I>
-<BR>
-<BR>
-</I><TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><I>
-<!-- MATH
- $expr   \rightarrow NUM - expr_1$
+<DIV ALIGN="CENTER"><I><!-- MATH
+ $L(G) = \{ x \in \Sigma^* : S \stackrel{*}{\Longrightarrow} x \}$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="179" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img137.png"
- ALT="$ expr \rightarrow NUM - expr_1$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I> <code>{ $expr{T} = $NUM{VAL}." ".$expr[1]{T}." - "}</code> </I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-<!-- MATH
- $expr   \rightarrow NUM$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="116" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img121.png"
- ALT="$ expr \rightarrow NUM$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I> <code>{ $expr{T} = $NUM{VAL} }</code>
-</I></TD>
-</TR>
-</TABLE><I>
-<BR>
-<BR></I></DIV><P></P>
+ WIDTH="210" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
+ SRC="img41.png"
+ ALT="$ L(G) = \{ x \in \Sigma^* : S \stackrel{*}{\Longrightarrow} x \}$"></SPAN></I></DIV>
+<P>
+<I>Esto es, el lenguaje generado por la gramática <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.png"
+ ALT="$ G$"></SPAN> esta formado por las cadenas
+de terminales que pueden ser derivados desde el símbolo de arranque.</I></DIV><P></P>
 
 <P>
 <P>
-<DIV><B>Ejercicio  <SPAN CLASS="arabic">34</SPAN>.<SPAN CLASS="arabic">8</SPAN>.<SPAN CLASS="arabic">3</SPAN></B> &nbsp; 
-<I>Dado el esquema de traducción:
+<DIV><B>Definición  <SPAN CLASS="arabic">34</SPAN>.<SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">5</SPAN></B> &nbsp; 
+<I>Una derivación que comienza en el símbolo de arranque y termina en una secuencia
+formada por sólo terminales de <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img24.png"
+ ALT="$ \Sigma$"></SPAN> se dice <SPAN  CLASS="textbf">completa</SPAN>.
 </I>
 <P>
-<I>
-<BR>
-<BR>
-</I><TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><I>
-<!-- MATH
- $e   \rightarrow\ NUM\ r$
+<I>Una derivación <!-- MATH
+ $\mu  \stackrel{*}{\Longrightarrow}  \delta$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="109" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img138.png"
- ALT="$ e \rightarrow NUM r$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I> <code>{ $e{TRA} = $NUM{VAL}." ".$r{TRA} }</code> </I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-<!-- MATH
- $r   \rightarrow - e$
+ WIDTH="61" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
+ SRC="img39.png"
+ ALT="$ \mu \stackrel{*}{\Longrightarrow} \delta$"></SPAN> 
+en la cual en cada paso <!-- MATH
+ $\alpha A x$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="62" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img139.png"
- ALT="$ r \rightarrow - e$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I> <code>{ $r{TRA} = $e{TRA}." - " }</code></I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-<!-- MATH
- $r   \rightarrow \epsilon$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="47" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img140.png"
- ALT="$ r \rightarrow \epsilon$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I> <code>{ $r{TRA} = "" }</code>
-</I></TD>
-</TR>
-</TABLE><I>
-<BR>
-<BR>
-</I>
-<P>
-<I>¿Cuál es el lenguaje generado por la gramática? ¿Puede el lenguaje
-ser analizado por un APDR?
-¿Cual es la traducción de 4-5-6? ¿Es un esquema de traducción adecuado 
-para traducir de infijo a postfijo?
-¿Cuál es la traducción si cambiamos el anterior esquema por este otro?:
-</I>
-<P>
-<I>
-<BR>
-<BR>
-</I><TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><I>
-<!-- MATH
- $e   \rightarrow NUM\  r$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="109" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img138.png"
- ALT="$ e \rightarrow NUM r$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I> <code>{ $e{TRA} = $NUM{VAL}." ".$r{TRA} }</code> </I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-<!-- MATH
- $r   \rightarrow - e$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="62" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img139.png"
- ALT="$ r \rightarrow - e$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I> <code>{ $r{TRA} = " - ".$e{TRA} }</code></I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-<!-- MATH
- $r   \rightarrow \epsilon$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="47" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img140.png"
- ALT="$ r \rightarrow \epsilon$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I> <code>{ $r{TRA} = "" }</code>
-</I></TD>
-</TR>
-</TABLE><I>
-<BR>
-<BR></I></DIV><P></P>
-
-<P>
-
-<H2><A NAME="SECTION05782000000000000000"></A>
-<A NAME="subsection:eliminarecesquem"></A>
-<BR>
-Eliminación de la Recursión por la Izquierda en un Esquema de Traducción
-</H2>
-La eliminación de la recursión por la izquierda es sólo un paso: debe 
-ser extendida a esquemas de traducción, 
-de manera que no sólo se preserve el lenguaje
-sino la secuencia de acciones. Supongamos que tenemos un esquema de
-traducción de la forma:
-
-<P>
-<BR>
-<BR>
-<TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $A   \rightarrow A \alpha$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="69" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img131.png"
- ALT="$ A \rightarrow A \alpha$"></SPAN></TD>
-<TD ALIGN="LEFT"><code>{ alpha_action }</code></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $A   \rightarrow A \beta$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="69" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img141.png"
- ALT="$ A \rightarrow A \beta$"></SPAN></TD>
-<TD ALIGN="LEFT"><code>{ beta_action }</code></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $A   \rightarrow \gamma$
+ WIDTH="39" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img42.png"
+ ALT="$ \alpha A x$"></SPAN> la regla de producción aplicada <!-- MATH
+ $A \rightarrow \gamma$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
  SRC="img32.png"
- ALT="$ A \rightarrow \gamma$"></SPAN></TD>
-<TD ALIGN="LEFT"><code>{ gamma_action }</code></TD>
-</TR>
-</TABLE>
-<BR>
-<BR>
-
+ ALT="$ A \rightarrow \gamma$"></SPAN>
+se aplica en la variable sintáctica mas a la derecha se dice <SPAN  CLASS="textbf">una derivación a derechas</SPAN>
+</I>
 <P>
-para una sentencia como <!-- MATH
- $\gamma \beta \alpha$
+<I>Una derivación <!-- MATH
+ $\mu  \stackrel{*}{\Longrightarrow}  \delta$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="37" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img142.png"
- ALT="$ \gamma \beta \alpha$"></SPAN> la secuencia de
-acciones será: 
-
-<P>
-<DIV ALIGN="CENTER">
-<code>gamma_action  beta_action alpha_action</code>
-
-</DIV>
-
-<P>
-¿Cómo construir un esquema de traducción para la gramática resultante
-de eliminar la recursión por la izquierda que ejecute las acciones
-asociadas en el mismo orden?. Supongamos para simplificar,
-que las acciones no dependen
-de atributos ni computan atributos, sino que actúan sobre
-variables globales. En tal caso, la siguiente
-ubicación de las acciones da lugar a que se ejecuten en el mismo
-orden:
-
-<P>
-<BR>
-<BR>
-<TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $A   \rightarrow \gamma$
+ WIDTH="61" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
+ SRC="img39.png"
+ ALT="$ \mu \stackrel{*}{\Longrightarrow} \delta$"></SPAN> 
+en la cual en cada paso <!-- MATH
+ $x A \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="39" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img43.png"
+ ALT="$ x A \alpha$"></SPAN> la regla de producción aplicada <!-- MATH
+ $A \rightarrow \gamma$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
  SRC="img32.png"
- ALT="$ A \rightarrow \gamma$"></SPAN> <code>{ gamma_action }</code> <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img143.png"
- ALT="$ R$"></SPAN></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $R   \rightarrow \beta$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="56" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img144.png"
- ALT="$ R \rightarrow \beta$"></SPAN> <code> { beta_action }</code> <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img143.png"
- ALT="$ R$"></SPAN></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $R   \rightarrow \alpha$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="57" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img145.png"
- ALT="$ R \rightarrow \alpha$"></SPAN> <code> { alpha_action }</code> <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img143.png"
- ALT="$ R$"></SPAN></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $R   \rightarrow \epsilon$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="52" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img146.png"
- ALT="$ R \rightarrow \epsilon$"></SPAN></TD>
-</TR>
-</TABLE>
+ ALT="$ A \rightarrow \gamma$"></SPAN>
+se aplica en la variable sintáctica mas a la izquierda se dice <SPAN  CLASS="textbf">una derivación a izquierdas</SPAN></I></DIV><P></P>
 
 <P>
-Si hay atributos en juego, la estrategia para construir un
-esquema de traducción equivalente para la gramática resultante
-de eliminar la recursividad por la izquierda se complica.
-Consideremos de nuevo el esquema de traducción de infijo a
-postfijo de expresiones aritméticas de restas:
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">34</SPAN>.<SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">6</SPAN></B> &nbsp; 
+<I>Observe que una derivación puede ser representada como un árbol cuyos nodos
+están etiquetados en <!-- MATH
+ $V \cup \Sigma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="51" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img44.png"
+ ALT="$ V \cup \Sigma$"></SPAN>. La aplicación de la regla de 
+producción <!-- MATH
+ $A \rightarrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.png"
+ ALT="$ A \rightarrow \gamma$"></SPAN> se traduce en asignar como hijos del nodo etiquetado con <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img17.png"
+ ALT="$ A$"></SPAN>
+a los nodos etiquetados con los símbolos <!-- MATH
+ $X_1 \ldots X_n$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="76" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img45.png"
+ ALT="$ X_1 \ldots X_n$"></SPAN> que constituyen
+la frase <!-- MATH
+ $\gamma = X_1 \ldots X_n$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="110" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img46.png"
+ ALT="$ \gamma = X_1 \ldots X_n$"></SPAN>.  
+Este árbol se llama <A NAME="12194"></A><SPAN  CLASS="textbf">árbol sintáctico concreto</SPAN> asociado 
+con la derivación.</I></DIV><P></P>
+
+<P>
+<P>
+<DIV><A NAME="definition:arbolconcreto"><B>Definición  <SPAN CLASS="arabic">34</SPAN>.<SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">7</SPAN></B></A> &nbsp; 
+<I>Observe que, dada una frase <!-- MATH
+ $x \in L(G)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="75" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img47.png"
+ ALT="$ x \in L(G)$"></SPAN> una derivación desde el
+símbolo de arranque da lugar a  un árbol. Ese árbol tiene como raíz el 
+símbolo de arranque y como hojas los terminales 
+<!-- MATH
+ $x_1 \ldots x_n$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="67" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img48.png"
+ ALT="$ x_1 \ldots x_n$"></SPAN> que forman <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img49.png"
+ ALT="$ x$"></SPAN>. Dicho árbol se denomina <SPAN  CLASS="textbf">árbol
+de análisis sintáctico concreto</SPAN> de <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img49.png"
+ ALT="$ x$"></SPAN>. Una derivación determina
+una forma de recorrido del árbol de análisis sintáctico concreto.</I></DIV><P></P>
+
+<P>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">34</SPAN>.<SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">8</SPAN></B> &nbsp; 
+<I>Una gramática <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.png"
+ ALT="$ G$"></SPAN> se dice ambigua si existe alguna frase <!-- MATH
+ $x \in L(G)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="75" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img47.png"
+ ALT="$ x \in L(G)$"></SPAN>
+con al menos dos árboles sintácticos. 
+Es claro que esta definición es equivalente a afirmar que existe 
+alguna frase <!-- MATH
+ $x \in L(G)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="75" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img47.png"
+ ALT="$ x \in L(G)$"></SPAN> para la cual existen dos derivaciones a 
+izquierda (derecha) distintas.</I></DIV><P></P>
+
+<P>
+
+<H2><A NAME="SECTION05751000000000000000"></A>
+<A NAME="ejercicio:tutugrammar"></A>
+<BR>
+Ejercicio
+</H2>
+Dada la gramática con producciones:
 
 <P>
 <BR>
 <BR>
 <TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $expr   \rightarrow expr_1  -  NUM$
+<TR><TD ALIGN="LEFT">program      <!-- MATH
+ $\rightarrow$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="179" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img120.png"
- ALT="$ expr \rightarrow expr_1 - NUM$"></SPAN></TD>
-<TD ALIGN="LEFT"><code>{ $expr{T} = $expr[1]{T}." ".$NUM{VAL}." - "}</code></TD>
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> declarations  statements         <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img51.png"
+ ALT="$ \vert$"></SPAN> statements</TD>
 </TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $expr   \rightarrow NUM$
+<TR><TD ALIGN="LEFT">declarations <!-- MATH
+ $\rightarrow$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="116" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img121.png"
- ALT="$ expr \rightarrow NUM$"></SPAN></TD>
-<TD ALIGN="LEFT"><code>{ $expr{T} = $NUM{VAL} }</code></TD>
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> declaration  ';'  declarations    <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img51.png"
+ ALT="$ \vert$"></SPAN> declaration ';'</TD>
+</TR>
+<TR><TD ALIGN="LEFT">declaration  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> INT  idlist                       <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img51.png"
+ ALT="$ \vert$"></SPAN> STRING   idlist</TD>
+</TR>
+<TR><TD ALIGN="LEFT">statements   <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> statement  ';'  statements        <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img51.png"
+ ALT="$ \vert$"></SPAN> statement</TD>
+</TR>
+<TR><TD ALIGN="LEFT">statement    <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> ID '=' expression                 <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img51.png"
+ ALT="$ \vert$"></SPAN> P  expression</TD>
+</TR>
+<TR><TD ALIGN="LEFT">expression   <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> term '+' expression               <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img51.png"
+ ALT="$ \vert$"></SPAN> term</TD>
+</TR>
+<TR><TD ALIGN="LEFT">term         <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> factor '*' term                   <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img51.png"
+ ALT="$ \vert$"></SPAN> factor</TD>
+</TR>
+<TR><TD ALIGN="LEFT">factor       <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> '(' expression ')' <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img51.png"
+ ALT="$ \vert$"></SPAN> ID <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img51.png"
+ ALT="$ \vert$"></SPAN> NUM <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img51.png"
+ ALT="$ \vert$"></SPAN> STR</TD>
+</TR>
+<TR><TD ALIGN="LEFT">idlist       <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> ID ',' idlist <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img51.png"
+ ALT="$ \vert$"></SPAN> ID</TD>
 </TR>
 </TABLE>
 <BR>
 <BR>
 
 <P>
-En este caso introducimos un atributo <code>H</code> para los nodos de la clase
-<SPAN CLASS="MATH"><IMG
- WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img147.png"
- ALT="$ r$"></SPAN> el cuál 
-acumula la traducción a postfijo hasta el momento. Observe como
-este atributo se computa en un nodo <SPAN CLASS="MATH"><IMG
- WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img147.png"
- ALT="$ r$"></SPAN> a partir del
-correspondiente atributo del el padre y/o de los hermanos del nodo:
+En esta gramática, <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img24.png"
+ ALT="$ \Sigma$"></SPAN> esta formado por los caracteres entre comillas simples y 
+los símbolos cuyos identificadores están en mayúsculas. Los restantes identificadores
+corresponden a elementos de <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img25.png"
+ ALT="$ V$"></SPAN>. El símbolo de arranque es <SPAN CLASS="MATH"><IMG
+ WIDTH="35" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img52.png"
+ ALT="$ S =$"></SPAN> program.
 
 <P>
-<BR>
-<BR>
-
-<!-- MATH
- $expr   \rightarrow NUM$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="116" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img121.png"
- ALT="$ expr \rightarrow NUM$"></SPAN> <code>{ $r{H} = $NUM{VAL} }</code>  <SPAN CLASS="MATH"><IMG
- WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img147.png"
- ALT="$ r$"></SPAN> <code>{ $expr{T} = $r{T} }</code> 
-<BR><!-- MATH
- $r   \rightarrow - NUM$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="102" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img148.png"
- ALT="$ r \rightarrow - NUM$"></SPAN> <code>{ $r_1{H} = $r{H}." ".$NUM{VAL}." - " }</code> <SPAN CLASS="MATH"><IMG
- WIDTH="20" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img149.png"
- ALT="$ r_1$"></SPAN> <code>{ $r{T} = $r_1{T} }</code>
-<BR><!-- MATH
- $r \rightarrow \epsilon$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="47" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img140.png"
- ALT="$ r \rightarrow \epsilon$"></SPAN> <code>{ $r{T} = $r{H} }</code>
-<BR>
-<BR>
-
-<P>
-El atributo <code>H</code> es un ejemplo de atributo heredado.
+Conteste a las siguientes cuestiones:
 
 <P>
 
-<H2><A NAME="SECTION05783000000000000000">
-Ejercicio</A>
-</H2>
-Calcule los valores de los atributos
-cuando se aplica el esquema de traducción anterior
-a la frase <code>4 - 5 - 7</code>. 
-
-<P>
-
-<H2><A NAME="SECTION05784000000000000000">
-Convirtiendo el Esquema en un Analizador Predictivo</A>
-</H2>
-A partir del esquema propuesto, que se basa en una fase de
-descenso con un atributo heredado y una de ascenso con un atributo
-sintetizado:
-
-<P>
-<BR>
-<BR>
-
-<!-- MATH
- $expr   \rightarrow NUM$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="116" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img121.png"
- ALT="$ expr \rightarrow NUM$"></SPAN> <code>{ $r{H} = $NUM{VAL} }</code>  <SPAN CLASS="MATH"><IMG
- WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img147.png"
- ALT="$ r$"></SPAN> <code>{ $expr{T} = $r{T} }</code> 
-<BR><!-- MATH
- $r   \rightarrow - NUM$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="102" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img148.png"
- ALT="$ r \rightarrow - NUM$"></SPAN> <code>{ $r_1{H} = $r{H}." ".$NUM{VAL}." - " }</code> <SPAN CLASS="MATH"><IMG
- WIDTH="20" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img149.png"
- ALT="$ r_1$"></SPAN> <code>{ $r{T} = $r_1{T} }</code>
-<BR><!-- MATH
- $r \rightarrow \epsilon$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="47" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img140.png"
- ALT="$ r \rightarrow \epsilon$"></SPAN> <code>{ $r{T} = $r{H} }</code>
-<BR>
-<BR>
-
-<P>
-es posible construir un APDR que ejecuta las acciones semánticas
-en los puntos indicados por el esquema de traducción. El atributo heredado
-se convierte en un parámetro de entrada a la subrutina asociada con la variable
-sintáctica:
-
-<P>
-<PRE>
-sub expression() {
-  my $r = $value." "; #accion intermedia
-  match('NUM'); 
-  return rest($r); # accion final $expr{T} = $r{T}
-}
-
-sub rest($) {
-  my $v = shift;
-
-  if ($lookahead eq '-') {
-    match('-');
-    my $r = "$v $value -"; # accion intermedia
-    match('NUM');
-    return rest($r); # accion final $r{t} = $r_1{t}
-  }
-  elsif ($lookahead ne 'EOI') {
-    error("Se esperaba un operador");
-  }
-  else { return $v; } # r -&gt; epsilon { $r{t} = $r{h} }
-}
-</PRE>
-
-<P>
-
-<H2><A NAME="SECTION05785000000000000000">
-Ejercicio</A>
-</H2>
-Generalize la estrategia anterior 
-para eliminar la recursividad por la izquierda al siguiente esquema de 
-traducción genérico recursivo por la izquierda y
-con un atributo sintetizado <SPAN CLASS="MATH"><IMG
- WIDTH="25" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img150.png"
- ALT="$ A^s$"></SPAN>:
-
-<P>
-<BR>
-<BR>
-<TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $A   \rightarrow A_1 X_1 X_2 X_3$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="132" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img151.png"
- ALT="$ A \rightarrow A_1 X_1 X_2 X_3$"></SPAN></TD>
-<TD ALIGN="LEFT"><!-- MATH
- $\{ A^s = f_X(A^s_1, X_1^s, X_2^s, X_3^s) \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="213" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img152.png"
- ALT="$ \{ A^s = f_X(A^s_1, X_1^s, X_2^s, X_3^s) \}$"></SPAN></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $A   \rightarrow A_1 Y_1 Y_2 Y_3$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="119" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img153.png"
- ALT="$ A \rightarrow A_1 Y_1 Y_2 Y_3$"></SPAN></TD>
-<TD ALIGN="LEFT"><!-- MATH
- $\{ A^s = f_Y(A^s_1, Y_1^s, Y_2^s, Y_3^s) \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="206" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img154.png"
- ALT="$ \{ A^s = f_Y(A^s_1, Y_1^s, Y_2^s, Y_3^s) \}$"></SPAN></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $A   \rightarrow Z_1 Z_2 Z_3$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="103" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img155.png"
- ALT="$ A \rightarrow Z_1 Z_2 Z_3$"></SPAN></TD>
-<TD ALIGN="LEFT"><!-- MATH
- $\{ A^s = f_Z(Z_1^s, Z_2^s, Z_3^s) \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="175" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img156.png"
- ALT="$ \{ A^s = f_Z(Z_1^s, Z_2^s, Z_3^s) \}$"></SPAN></TD>
-</TR>
-</TABLE>
-<BR>
-<BR>
-
-<P>
-donde <SPAN CLASS="MATH"><IMG
- WIDTH="54" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img157.png"
- ALT="$ f_X, f_Y$"></SPAN> y <SPAN CLASS="MATH"><IMG
- WIDTH="24" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img158.png"
- ALT="$ f_Z$"></SPAN> son funciones cualesquiera.
-
-<P>
-
-<H2><A NAME="SECTION05786000000000000000"></A>
-   <A NAME="12218"></A>
-  
-<A NAME="practica:recizq"></A>
-<BR>
-Práctica: Eliminación de la Recursividad por la Izquierda
-</H2>
-En esta práctica  vamos a 
-extender las fases de análisis léxico y sintáctico del 
-compilador del lenguaje Tutu cuya gramática se definió
-en el ejercicio <A HREF="node130.html#ejercicio:tutugrammar">35.1.1</A> 
-con expresiones que incluyen diferencias 
-y divisiones. Además construiremos una representación
-del árbol sintáctico concreto.
-Para ello consideremos el siguiente esquema de traducción
-recursivo por la izquierda (en concreto las reglas recursivas
-por la izquierda son las 10, 11, 13 y 14):
-
-<P>
-<BR>
-<BR>
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL">
-0 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> p  <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img50.png"
- ALT="$ \rightarrow$"></SPAN> ds  ss     </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $p{t}  = { n =&gt; 0, ds =&gt; $ds{t}, ss =&gt; $ss{t} } }</code></SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-1 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> p  <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img50.png"
- ALT="$ \rightarrow$"></SPAN> ss         </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $p{t}  = { n =&gt; 1, ss =&gt; $ss{t} } }</code></SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-2 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> ds <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img50.png"
- ALT="$ \rightarrow$"></SPAN> d  ';'  ds  </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $ds{t} = { n =&gt; 2, d =&gt; $d{t}, ; =&gt; ';', ds =&gt; $ds{t} } }</code></SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-3 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> ds <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img50.png"
- ALT="$ \rightarrow$"></SPAN> d ';'      </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $ds{t} = { n =&gt; 3, d =&gt; $d{t} ; =&gt; ';' } }</code></SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-4 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> d  <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img50.png"
- ALT="$ \rightarrow$"></SPAN> INT  il     </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $d{t}  = { n =&gt; 4, INT =&gt; 'INT', il &gt;$il{t} } }</code></SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-5 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> d  <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img50.png"
- ALT="$ \rightarrow$"></SPAN> STRING  il </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $d{t}  = { n =&gt; 5, STRING =&gt; 'STRING', il &gt;$il{t} } }</code></SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-6 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> ss <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img50.png"
- ALT="$ \rightarrow$"></SPAN> s  ';'  ss  </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $ss{t} = { n =&gt; 6, s =&gt; $s{t}, ; =&gt; ';' ss =&gt; $ss{t} } }</code></SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-7 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> ss <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img50.png"
- ALT="$ \rightarrow$"></SPAN> s          </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $ss{t} = { n =&gt; 7, s =&gt; $s{t} } }</code></SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-8 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> s  <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img50.png"
- ALT="$ \rightarrow$"></SPAN> ID '=' e    </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $s{t}  = { n =&gt; 8, ID =&gt; $ID{v}, = =&gt; '=', e =&gt; $e{t} } }</code></SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-9 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> s  <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img50.png"
- ALT="$ \rightarrow$"></SPAN> P  e       </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $s{t}  = { n =&gt; 9, P =&gt; 'P', e =&gt; $e{t} } }</code></SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-10 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> e <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img50.png"
- ALT="$ \rightarrow$"></SPAN> e1 '+' t    </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $e{t}  = { n =&gt; 10, e =&gt; $e1{t}, + =&gt; '+', t =&gt; $t{t} } }</code></SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-11 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> e <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img50.png"
- ALT="$ \rightarrow$"></SPAN> e1 '-' t    </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $e{t}  = { n =&gt; 11, e =&gt; $e1{t}, - =&gt; '-', t =&gt; $t{t} } }</code></SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-12 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> e <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img50.png"
- ALT="$ \rightarrow$"></SPAN> t           </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $e{t}  = { n =&gt; 12, t =&gt; $t{t} } }</code></SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-13 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> t <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img50.png"
- ALT="$ \rightarrow$"></SPAN> t1 '*' f    </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $t{t}  = { n =&gt; 13, t =&gt; $t1{t}, * =&gt; '*', f =&gt; $f{t} } }</code></SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-14 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> t <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img50.png"
- ALT="$ \rightarrow$"></SPAN> t '/' f     </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $t{t}  = { n =&gt; 14, t =&gt; $t1{t}, / =&gt; '/', f =&gt; $f{t} } }</code></SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-15 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> t <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img50.png"
- ALT="$ \rightarrow$"></SPAN> f           </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $t{t}  = { n =&gt; 15, f =&gt; $f{t} } }</code></SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-16 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> f <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img50.png"
- ALT="$ \rightarrow$"></SPAN> '(' e ')'   </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $f{t}  = { n =&gt; 16, ( =&gt; '(', e =&gt; $e{t}, ) =&gt; ')' } }</code></SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-17 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> f <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img50.png"
- ALT="$ \rightarrow$"></SPAN> ID         </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $f{t}  = { n =&gt; 17, ID =&gt; $ID{v} } }</code></SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-18 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> f <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img50.png"
- ALT="$ \rightarrow$"></SPAN> NUM        </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $f{t}  = { n =&gt; 18, NUM =&gt; $NUM{v} } }</code></SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-19 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> f <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img50.png"
- ALT="$ \rightarrow$"></SPAN> STR        </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $f{t}  = { n =&gt; 19, STR =&gt; $STR{v} } }</code></SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-20 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> il <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img50.png"
- ALT="$ \rightarrow$"></SPAN> ID ',' il  </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $il{t} = { n =&gt; 20, ID =&gt; $ID{v}, ',' =&gt; ',', il =&gt; $il{t} } }</code></SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL">  
-
-21 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> il <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img50.png"
- ALT="$ \rightarrow$"></SPAN> ID         </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $il{t} = { n =&gt; 21, ID =&gt; $ID{v} } }</code></SMALL></TD>
-</TR>
-<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
-
-22 </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> s <!-- MATH
- $\rightarrow \epsilon$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="34" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img159.png"
- ALT="$ \rightarrow \epsilon$"></SPAN> </SMALL></TD>
-<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  <code>{ $s{t} = { n =&gt; 22, s =&gt; '' }}</code></SMALL></TD>
-</TR>
-</TABLE>
-<BR>
-<BR>
-
-<P>
-Por razones de espacio hemos abreviado los nombres de las variables.
-El atributo <code>t</code> (por <SPAN  CLASS="textbf">tree</SPAN>) es una referencia a un hash.
-La entrada <code>n</code> contiene el número de la regla en juego.
-Hay una entrada por símbolo en la parte derecha. El atributo <code>v</code> de 
-<code>ID</code> es la cadena asociada con el identificador. 
-El atributo <code>v</code> de <code>NUM</code> es el valor numérico asociado con el terminal.
-Se trata de, siguiendo la metodología explicada en la sección anterior,
-construir un analizador descendente predictivo recursivo que sea equivalente
-al esquema anterior. Elimine la recursión por la izquierda. Traslade las acciones a los
-lugares convenientes en el nuevo esquema e introduzca los atributos heredados que sean necesarios.
-Genere pruebas siguiendo la metodología 
-explicada en la sección <A HREF="node116.html#subsection:tests">34.4.1</A>. ¡Note que el árbol que debe producir 
-es el de la gramática inicial, ¡No el de la gramática transformada!
+<OL>
+<LI>Describa con palabras el lenguaje generado.
+</LI>
+<LI><A NAME="ejer:arbol"></A>Construya el árbol de análisis sintáctico
+concreto para cuatro frases del lenguaje.
+</LI>
+<LI>Señale a que recorridos del árbol corresponden las respectivas
+derivaciones a izquierda y a derecha en el apartado <A HREF="node133.html#ejer:arbol">2</A>.
+</LI>
+<LI>¿Es ambigua esta gramática?. Justifique su respuesta.
+</LI>
+</OL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4070"
+<A NAME="tex2html4058"
   HREF="node121.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4064"
-  HREF="node112.html">
+<A NAME="tex2html4052"
+  HREF="node115.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4058"
+<A NAME="tex2html4046"
   HREF="node119.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4066"
-  HREF="node211.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4068"
+<A NAME="tex2html4054"
   HREF="node214.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html4056"
+  HREF="node217.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -1173,12 +700,12 @@ es el de la gramática inicial, ¡No el de la gramática transformada!
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4071"
-  HREF="node121.html">Árbol de Análisis Abstracto</A>
-<B>Sup:</B> <A NAME="tex2html4065"
-  HREF="node112.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html4059"
-  HREF="node119.html">Esquemas de Traducción</A>
+<B> Sig:</B> <A NAME="tex2html4059"
+  HREF="node121.html">Análisis Sintáctico Predictivo Recursivo</A>
+<B>Sup:</B> <A NAME="tex2html4053"
+  HREF="node115.html">Análisis Sintáctico Descendente en</A>
+<B> Ant:</B> <A NAME="tex2html4047"
+  HREF="node119.html">Pruebas para el Analizador</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

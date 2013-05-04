@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Generación interactiva de analizadores Yapp</TITLE>
-<META NAME="description" CONTENT="Generación interactiva de analizadores Yapp">
+<TITLE>Algoritmo de Análisis LR</TITLE>
+<META NAME="description" CONTENT="Algoritmo de Análisis LR">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node158.html">
 <LINK REL="previous" HREF="node156.html">
-<LINK REL="up" HREF="node149.html">
+<LINK REL="up" HREF="node152.html">
 <LINK REL="next" HREF="node158.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4732"
+<A NAME="tex2html4742"
   HREF="node158.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4726"
-  HREF="node149.html">
+<A NAME="tex2html4736"
+  HREF="node152.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4720"
+<A NAME="tex2html4730"
   HREF="node156.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4728"
-  HREF="node211.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4730"
+<A NAME="tex2html4738"
   HREF="node214.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html4740"
+  HREF="node217.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,122 +88,118 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4733"
-  HREF="node158.html">Construcción del Árbol Sintáctico</A>
-<B>Sup:</B> <A NAME="tex2html4727"
-  HREF="node149.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4721"
-  HREF="node156.html">Precedencia y Asociatividad</A>
+<B> Sig:</B> <A NAME="tex2html4743"
+  HREF="node158.html">Depuración en yapp</A>
+<B>Sup:</B> <A NAME="tex2html4737"
+  HREF="node152.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4731"
+  HREF="node156.html">El módulo Generado por</A>
 <B> Con:</B> 
-<A NAME="tex2html4728"
-  HREF="node211.html">
+<A NAME="tex2html4738"
+  HREF="node214.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4730"
-  HREF="node214.html">
+<A NAME="tex2html4740"
+  HREF="node217.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION05980000000000000000">
-Generación interactiva de analizadores <TT>Yapp</TT></A>
+<H1><A NAME="SECTION05950000000000000000"></A>
+<A NAME="section:algoritmoLR"></A>
+<BR>
+Algoritmo de Análisis LR
 </H1>
-En el siguiente código, la subrutina <TT>create_yapp_package</TT> 
-nos muestra como crear un analizador <TT>Yapp</TT> en tiempo de ejecución.
-Las dos líneas:
-<PRE>
-  my $p = new Parse::Yapp(input =&gt; $grammar);
-  $p = $p-&gt;Output(classname =&gt; $name);
-</PRE>
-crean una cadena en <code>$p</code> conteniendo el código de 
-la clase que implanta el analizador. Todo el truco está en hacer
-<PRE>
-  eval $p;
-</PRE>
-para tener el paquete a mano:
-<PRE>
-$ cat left.pl
-#!/usr/local/bin/perl5.8.0 -w
-#use strict;
-use Parse::Yapp;
+Asi  pues la tabla de transiciones del autómata nos genera dos tablas:
+la tabla de acciones y la de saltos.
+El  algoritmo  de análisis sintáctico <SPAN  CLASS="textbf">LR</SPAN> en el  que 
+se basa <SPAN  CLASS="textbf">yapp</SPAN> utiliza una pila y dos tablas 
+para analizar la entrada. Como se ha visto, la tabla  de acciones contiene cuatro tipo de acciones: 
 
-sub lex{
-    my($parser)=shift;
+<OL>
+<LI>Desplazar (<SPAN  CLASS="textbf">shift</SPAN>)
+</LI>
+<LI>Reducir (<SPAN  CLASS="textbf">reduce</SPAN>)
+</LI>
+<LI>Aceptar
+</LI>
+<LI>Error
+</LI>
+</OL>
+El algoritmo utiliza una pila en la que se guardan los estados
+del autómata. De este modo se evita tener que ``comenzar'' 
+el procesado de la forma sentencial derecha resultante
+después de una reducción (antiderivación).
+<P>
+<DIV><A NAME="alg:parser"><B>Algoritmo  <SPAN CLASS="arabic">36</SPAN>.<SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">1</SPAN></B></A> &nbsp; 
+<I>Análizador LR
+</I><PRE>
+push(s0);
+ b = yylex();
+ for( ; ; ;) {
+   s = top(0); a = b;
+   switch (action[s][a]) {
+     case "shift t" : 
+       push(t); 
+       b = yylex();
+       break;
+     case "reduce A -&gt;alpha" : 
+       eval(Sub{A -&gt; alpha}-&gt;(top(|alpha|-1).attr, ... , top(0).attr)); 
+       pop(|alpha|); 
+       push(goto[top(0)][A]); 
+       break;
+     case "accept" : return (1); 
+     default : yyerror("syntax error");
+   }
+ }
+</PRE></DIV><P></P>
+Como es habitual, <SPAN CLASS="MATH"><IMG
+ WIDTH="24" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img448.png"
+ ALT="$ \vert x\vert$"></SPAN> denota la longitud de la cadena <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img49.png"
+ ALT="$ x$"></SPAN>.
+La función <code>top(k)</code> devuelve el elemento que ocupa la 
+posición <code>k</code> desde el <SPAN  CLASS="textbf">top</SPAN> de la pila (esto es, está a profundidad <code>k</code>).
+La función <code>pop(k)</code> extrae <code>k</code> elementos de la pila.
+La notación <code>state.attr</code> hace referencia al atributo
+asociado con cada estado. Denotamos por <code>sub_{reduce A -&gt; alpha}</code>
+el código de la acción asociada con la regla <!-- MATH
+ $A \rightarrow \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img28.png"
+ ALT="$ A \rightarrow \alpha$"></SPAN>.
 
-    return('',undef) unless $parser-&gt;YYData-&gt;{INPUT};
-    for ($parser-&gt;YYData-&gt;{INPUT}) {
-        s/^\s*//;
-        s/^(.)//;
-        my $ret = $1;
-        return($ret, $ret);
-    }
-}
-
-sub yapp {
-  my $grammar = shift
-     or die "Must specify a grammar as first argument";
-  my $name = shift
-     or die "Must specify the name of the class as second argument";
-
-  my $p = new Parse::Yapp(input =&gt; $grammar) or die "Bad grammar.";
-  $p = $p-&gt;Output(classname =&gt; $name) or die "Can't generate parser.";
-
-  eval $p;
-  $@ and die "Error while compiling your parser: $@\n";
-}
-
-######## main #########
-my $grammar = q {
-%left '*'
-%%
-S:  A
-;
-
-A:  A '*' A  { "($_[1] $_[2] $_[3])" }
- |  B
-;
-
-B:  'a' | 'b' | 'c' | 'd'
-;
-
-%%
-};
-
-&amp;yapp($grammar, "Example");
-my $p = new Example(yylex =&gt; \&amp;lex, yyerror =&gt; sub {});
-
-print "Expresion: ";
-$p-&gt;YYData-&gt;{INPUT} = &lt;&gt;;
-$p-&gt;YYData-&gt;{INPUT} =~ s/\s*$//;
-
-my $out=$p-&gt;YYParse;
-print "out = $out\n";
-</PRE>
-Sigue un ejemplo de ejecución:
-<PRE>
-$ ./left.pl
-Expresion: a*b*c*d
-out = (((a * b) * c) * d)
-</PRE>
+<P>
+Todos los analizadores LR comparten, salvo pequeñas
+exepciones, el mismo algoritmo
+de análisis. Lo que más los diferencia es la forma en 
+la que construyen las tablas.
+En <code>yapp</code>
+la construcción de las tablas de <SPAN  CLASS="textbf">acciones</SPAN> y <SPAN  CLASS="textbf">gotos</SPAN>
+se realiza mediante el algoritmo <SPAN  CLASS="textbf">LALR</SPAN>.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4732"
+<A NAME="tex2html4742"
   HREF="node158.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4726"
-  HREF="node149.html">
+<A NAME="tex2html4736"
+  HREF="node152.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4720"
+<A NAME="tex2html4730"
   HREF="node156.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4728"
-  HREF="node211.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4730"
+<A NAME="tex2html4738"
   HREF="node214.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html4740"
+  HREF="node217.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -250,12 +246,12 @@ out = (((a * b) * c) * d)
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4733"
-  HREF="node158.html">Construcción del Árbol Sintáctico</A>
-<B>Sup:</B> <A NAME="tex2html4727"
-  HREF="node149.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4721"
-  HREF="node156.html">Precedencia y Asociatividad</A>
+<B> Sig:</B> <A NAME="tex2html4743"
+  HREF="node158.html">Depuración en yapp</A>
+<B>Sup:</B> <A NAME="tex2html4737"
+  HREF="node152.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4731"
+  HREF="node156.html">El módulo Generado por</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
