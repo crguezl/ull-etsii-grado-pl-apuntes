@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Práctica: Construcción del AST para el Lenguaje Simple C</TITLE>
-<META NAME="description" CONTENT="Práctica: Construcción del AST para el Lenguaje Simple C">
+<TITLE>Descripción Eyapp del Lenguaje SimpleC</TITLE>
+<META NAME="description" CONTENT="Descripción Eyapp del Lenguaje SimpleC">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node198.html">
 <LINK REL="previous" HREF="node196.html">
-<LINK REL="up" HREF="node194.html">
+<LINK REL="up" HREF="node195.html">
 <LINK REL="next" HREF="node198.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5419"
+<A NAME="tex2html5418"
   HREF="node198.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5413"
-  HREF="node194.html">
+<A NAME="tex2html5412"
+  HREF="node195.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5407"
+<A NAME="tex2html5406"
   HREF="node196.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5415"
-  HREF="node215.html">
+<A NAME="tex2html5414"
+  HREF="node216.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5417"
-  HREF="node218.html">
+<A NAME="tex2html5416"
+  HREF="node219.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,52 +88,720 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5420"
-  HREF="node198.html">Práctica: Análisis de Ámbito</A>
-<B>Sup:</B> <A NAME="tex2html5414"
-  HREF="node194.html">Análisis de Ámbito en</A>
-<B> Ant:</B> <A NAME="tex2html5408"
-  HREF="node196.html">Descripción Eyapp del Lenguaje</A>
+<B> Sig:</B> <A NAME="tex2html5419"
+  HREF="node198.html">Práctica: Construcción del AST</A>
+<B>Sup:</B> <A NAME="tex2html5413"
+  HREF="node195.html">Análisis de Ámbito en</A>
+<B> Ant:</B> <A NAME="tex2html5407"
+  HREF="node196.html">Análisis de Ámbito: Conceptos</A>
 <B> Con:</B> 
-<A NAME="tex2html5415"
-  HREF="node215.html">
+<A NAME="tex2html5414"
+  HREF="node216.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5417"
-  HREF="node218.html">
+<A NAME="tex2html5416"
+  HREF="node219.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<H1><A NAME="SECTION051230000000000000000"></A>
-   <A NAME="22177"></A>
-  
-<A NAME="practica:esquemadetradsimple"></A>
+<UL CLASS="ChildLinks">
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html5420"
+  HREF="node197.html#SECTION051220010000000000000">El Cuerpo</A>
+<LI><A NAME="tex2html5421"
+  HREF="node197.html#SECTION051220020000000000000">La Cabeza</A>
+<LI><A NAME="tex2html5422"
+  HREF="node197.html#SECTION051220030000000000000">La Cola</A>
+<LI><A NAME="tex2html5423"
+  HREF="node197.html#SECTION051220040000000000000">Ejemplo de Árbol Construido</A>
+<LI><A NAME="tex2html5424"
+  HREF="node197.html#SECTION051220050000000000000">Ejemplo de Árbol con Aplanamiento de <TT>STATEMENTS</TT></A>
+</UL></UL></UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION051220000000000000000"></A>
+<A NAME="section:simplec"></A>
 <BR>
-Práctica: Construcción del AST para el Lenguaje Simple C
+Descripción Eyapp del Lenguaje  SimpleC
 </H1>
-Reproduzca el analizador sintáctico para el lenguaje SimpleC introducido en la
-sección 
-<A HREF="node196.html#section:simplec">39.2</A>.
+El proceso de identificar los nombres conlleva establecer enlaces
+entre las ocurrencias y sus declaraciones o bien - en caso de error -
+determinar que dicho enlace no existe. El resultado de este proceso
+de identificación (o análisis de ámbito y visibilidad)
+será utilizado durante las fases posteriores.
+
+<P>
+En este capítulo usaremos  <TT>Parse::Eyapp</TT>  para desarrollar
+las primeras fases - análisis léxico, análisis sintáctico y análisis de ámbito -
+de un compilador para un subconjunto de C al que denominaremos  <TT>Simple C</TT> :
+
+<P>
+
+<H4><A NAME="SECTION051220010000000000000">
+El Cuerpo</A>
+</H4>
+  
+
+<A NAME="parrafo:elcuerpo"></A>
+<P>
+<PRE>
+%%
+program:
+    definition&lt;%name PROGRAM +&gt;.program
+      { $program }
+;
+
+definition:
+    $funcDef 
+      { $funcDef }
+  | %name FUNCTION
+    $basictype $funcDef
+      { $funcDef }
+  | declaration 
+      {}
+;
+
+basictype:
+    %name INT 
+    INT
+  | %name CHAR 
+    CHAR
+;
+
+funcDef:
+    $ID '('  $params  ')' $block
+      {
+         flat_statements($block);
+         $block-&gt;{parameters} = [];
+         $block-&gt;{function_name} = $ID;
+         $block-&gt;type("FUNCTION");
+         return $block;
+      }
+;
+
+params: 
+    ( basictype ID arraySpec)&lt;%name PARAMS * ','&gt;
+      { $_[1] }
+;
+
+block:
+    '{'.bracket 
+     declaration&lt;%name DECLARATIONS *&gt;.decs statement&lt;%name STATEMENTS *&gt;.sts '}'
+       {
+         flat_statements($sts);
+         $sts-&gt;type("BLOCK") if $decs-&gt;children;
+         return $sts; 
+       }
+;
+
+declaration:
+    %name DECLARATION
+    $basictype $declList ';' 
+;
+
+declList:
+    (ID arraySpec) &lt;%name VARLIST + ','&gt; { $_[1] } 
+;
+
+arraySpec:
+    ( '[' INUM ']')* { $_[1]-&gt;type("ARRAYSPEC"); $_[1] }
+;
+
+statement:
+    expression ';' { $_[1] }
+  | ';'
+  | %name BREAK
+    $BREAK ';'
+  | %name CONTINUE
+     $CONTINUE ';'
+  | %name EMPTYRETURN
+    RETURN ';'
+  | %name RETURN
+     RETURN expression ';'
+  | block { $_[1] }
+  | %name IF
+    ifPrefix statement %prec '+'
+  | %name IFELSE
+    ifPrefix statement 'ELSE' statement
+  | %name WHILE
+    $loopPrefix statement
+;
+
+ifPrefix:
+    IF '(' expression ')' { $_[3] }
+;
+
+loopPrefix:
+    $WHILE '(' expression ')' { $_[3] }
+;
+
+expression:
+    binary &lt;+ ','&gt; 
+      { 
+        return $_[1]-&gt;child(0) if ($_[1]-&gt;children() == 1); 
+        return $_[1];
+      }
+;
+
+Variable:
+    %name VAR
+    ID 
+  | %name  VARARRAY
+    $ID ('[' binary ']') &lt;%name INDEXSPEC +&gt; 
+;
+
+Primary:
+    %name INUM
+    INUM 
+  | %name CHARCONSTANT
+    CHARCONSTANT
+  | $Variable 
+      { 
+        return $Variable 
+      }
+  | '(' expression ')' { $_[2] }
+  | $function_call 
+      { 
+        return $function_call  # bypass
+      }
+;
+    
+function_call:  
+  %name 
+    FUNCTIONCALL
+    ID  '(' binary &lt;%name ARGLIST * ','&gt; ')'
+;
+
+Unary:
+    '++' Variable
+  | '--' Variable
+  | Primary { $_[1] }
+;
+
+binary:
+    Unary { $_[1] }
+  | %name PLUS
+    binary '+' binary
+  | %name MINUS
+    binary '-' binary
+  | %name TIMES
+    binary '*' binary
+  | %name DIV
+    binary '/' binary
+  | %name MOD
+    binary '%' binary
+  | %name LT
+    binary '&lt;' binary
+  | %name GT
+    binary '&gt;' binary
+  | %name GE
+    binary '&gt;=' binary
+  | %name LE
+    binary '&lt;=' binary
+  | %name EQ
+    binary '==' binary
+  | %name NE
+    binary '!=' binary
+  | %name AND
+    binary '&amp;' binary
+  | %name EXP
+    binary '**' binary
+  | %name OR
+    binary '|' binary
+  | %name ASSIGN
+    $Variable '=' binary
+  | %name PLUSASSIGN
+    $Variable '+=' binary
+  | %name MINUSASSIGN
+    $Variable '-=' binary
+  | %name TIMESASSIGN
+    $Variable '*=' binary
+  | %name DIVASSIGN
+    $Variable '/=' binary
+  | %name MODASSIGN
+    $Variable '%=' binary
+;
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION051220020000000000000">
+La Cabeza</A>
+</H4>
+  
+
+<P>
+<PRE>
+/* 
+File: Simple/Syntax.eyp
+Full Type checking
+To build it, Do make or:
+  eyapp -m Simple::Syntax Syntax.eyp; 
+*/
+%{
+use strict;
+use Carp;
+use warnings;
+use Data::Dumper;
+use List::MoreUtils qw(firstval);
+our $VERSION = "0.4";
+
+my $debug = 1;
+my %reserved = (
+  int =&gt; "INT",
+  char =&gt; "CHAR",
+  if =&gt; "IF",
+  else =&gt; "ELSE",
+  break =&gt; "BREAK",
+  continue =&gt; "CONTINUE",
+  return =&gt; "RETURN",
+  while =&gt; "WHILE"
+);
+
+my %lexeme = (
+  '='  =&gt; "ASSIGN",
+  '+'  =&gt; "PLUS",
+  '-'  =&gt; "MINUS",
+  '*'  =&gt; "TIMES",
+  '/'  =&gt; "DIV",
+  '%'  =&gt; "MOD",
+  '|'  =&gt; "OR",
+  '&amp;'  =&gt; "AND",
+  '{'  =&gt; "LEFTKEY",
+  '}'  =&gt; "RIGHTKEY",
+  ','  =&gt; "COMMA",
+  ';'  =&gt; "SEMICOLON",
+  '('  =&gt; "LEFTPARENTHESIS",
+  ')'  =&gt; "RIGHTPARENTHESIS",
+  '['  =&gt; "LEFTBRACKET",
+  ']'  =&gt; "RIGHTBRACKET",
+  '==' =&gt; "EQ",
+  '+=' =&gt; "PLUSASSIGN",
+  '-=' =&gt; "MINUSASSIGN",
+  '*=' =&gt; "TIMESASSIGN",
+  '/=' =&gt; "DIVASSIGN",
+  '%=' =&gt; "MODASSIGN",
+  '!=' =&gt; "NE",
+  '&lt;'  =&gt; "LT",
+  '&gt;'  =&gt; "GT",
+  '&lt;=' =&gt; "LE",
+  '&gt;=' =&gt; "GE",
+  '++' =&gt; "INC",
+  '--' =&gt; "DEC",
+  '**' =&gt; "EXP"
+);
+
+my ($tokenbegin, $tokenend) = (1, 1);
+
+sub flat_statements {
+  my $block = shift;
+
+  my $i = 0;
+  for ($block-&gt;children) {
+    if ($_-&gt;type eq "STATEMENTS") {
+      splice @{$block-&gt;{children}}, $i, 1, $_-&gt;children;
+    }
+    $i++;
+  }
+}
+%}
+
+%syntactic token RETURN BREAK CONTINUE
+
+%right '=' '+=' '-=' '*=' '/=' '%='
+%left '|'
+%left '&amp;'
+%left '==' '!='
+%left '&lt;' '&gt;' '&gt;=' '&lt;='
+%left '+' '-'
+%left '*' '/' '%'
+%right '**'
+%right '++' '--'
+%right 'ELSE'
+
+%tree
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION051220030000000000000">
+La Cola</A>
+</H4>
+  
+
+<P>
+<PRE>
+%%
+
+sub _Error {
+  my($token)=$_[0]-&gt;YYCurval;
+  my($what)= $token ? "input: '$token-&gt;[0]' in line $token-&gt;[1]" : "end of input";
+  my @expected = $_[0]-&gt;YYExpect();
+  my $expected = @expected? "Expected one of these tokens: '@expected'":"";
+
+  croak "Syntax error near $what. $expected\n";
+}
+
+sub _Lexer {
+  my($parser)=shift;
+
+  my $token;
+  for ($parser-&gt;YYData-&gt;{INPUT}) {
+      return('',undef) if !defined($_) or $_ eq '';
+
+      #Skip blanks
+      s{\A
+         ((?:
+              \s+       # any white space char
+          |   /\*.*?\*/ # C like comments
+          )+
+         )
+       }
+       {}xs
+      and do {
+            my($blanks)=$1;
+
+            #Maybe At EOF
+            return('', undef) if $_ eq '';
+            $tokenend += $blanks =~ tr/\n//;
+        };
+
+     $tokenbegin = $tokenend;
+
+      s/^('.')//
+              and return('CHARCONSTANT', [$1, $tokenbegin]);
+
+      s/^([0-9]+(?:\.[0-9]+)?)//
+              and return('INUM',[$1, $tokenbegin]);
+
+      s/^([A-Za-z][A-Za-z0-9_]*)//
+        and do {
+          my $word = $1;
+          my $r;
+          return ($r, [$r, $tokenbegin]) if defined($r = $reserved{$word});
+          return('ID',[$word, $tokenbegin]);
+      };
+
+      m/^(\S\S)/ and  defined($token = $1) and exists($lexeme{$token})
+        and do {
+          s/..//;
+          return ($token, [$token, $tokenbegin]);
+        }; # do
+
+      m/^(\S)/ and defined($token = $1) and  exists($lexeme{$token})
+        and do {
+          s/.//;
+          return ($token, [$token, $tokenbegin]);
+        }; # do
+      
+      die "Unexpected character at $tokenbegin\n";
+  } # for
+}
+
+sub compile {
+ my($self)=shift;
+
+ my ($t);
+   
+ $self-&gt;YYData-&gt;{INPUT} = $_[0];
+
+ $t = $self-&gt;YYParse( yylex =&gt; \&amp;_Lexer, yyerror =&gt; \&amp;_Error, 
+                      #yydebug =&gt; 0x1F 
+     );
+
+ return $t;
+}
+
+sub TERMINAL::value {
+  return $_[0]-&gt;{attr}[0];
+}
+
+########## line Support 
+
+sub TERMINAL::line {
+  return $_[0]-&gt;{attr}[1];
+}
+
+sub VAR::line {
+  my $self = shift;
+
+  return $self-&gt;child(0)-&gt;{attr}[1];
+}
+
+sub PLUS::line {
+  $_[0]-&gt;{lines}[0]
+}
+
+{ 
+no warnings;
+*TIMES::line = *DIV::line = *MINUS::line = *ASSIGN::line 
+=*GT::line
+=*IF::line
+=*RETURN::line
+= \&amp;PLUS::line;
+
+*VARARRAY::line = *FUNCTIONCALL::line 
+=\&amp;VAR::line;
+}
+
+############## Debugging and Display
+sub show_trees {
+ my ($t) = shift;
+ my $debug = shift;
+
+ $Data::Dumper::Indent = 1;
+ print Dumper $t if $debug &gt; 3;
+ local $Parse::Eyapp::Node::INDENT = $debug;
+ print $t-&gt;str."\n";
+}
+
+sub TERMINAL::info { 
+  my $a = join ':', @{$_[0]-&gt;{attr}}; 
+  return $a
+}
+
+sub TERMINAL::save_attributes {
+  # $_[0] is a syntactic terminal
+  # $_[1] is the father.
+  push @{$_[1]-&gt;{lines}}, $_[0]-&gt;[1]; # save the line!
+}
+
+sub WHILE::line {
+  return $_[0]-&gt;{line}
+}
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION051220040000000000000">
+Ejemplo de Árbol Construido</A>
+</H4>
+  
+
+<A NAME="parrafo:ejemplodearbolconstruido"></A>
+<P>
+<PRE>
+pl@nereida:~/Lbook/code/Simple-Syntax/script$ usesyntax.pl bugmatch01.c 2
+test (int n)
+{
+  while (1) {
+    if (1&gt;0) {
+      a = 2;
+      break;
+    }
+    else if (2&gt; 0){
+      b = 3;
+      continue;
+    }
+  }
+}
+
+PROGRAM(
+  FUNCTION(
+    WHILE(
+      INUM(
+        TERMINAL[1:3]
+      ),
+      STATEMENTS(
+        IFELSE(
+          GT(
+            INUM(
+              TERMINAL[1:4]
+            ),
+            INUM(
+              TERMINAL[0:4]
+            )
+          ) # GT,
+          STATEMENTS(
+            ASSIGN(
+              VAR(
+                TERMINAL[a:5]
+              ),
+              INUM(
+                TERMINAL[2:5]
+              )
+            ) # ASSIGN,
+            BREAK
+          ) # STATEMENTS,
+          IF(
+            GT(
+              INUM(
+                TERMINAL[2:8]
+              ),
+              INUM(
+                TERMINAL[0:8]
+              )
+            ) # GT,
+            STATEMENTS(
+              ASSIGN(
+                VAR(
+                  TERMINAL[b:9]
+                ),
+                INUM(
+                  TERMINAL[3:9]
+                )
+              ) # ASSIGN,
+              CONTINUE
+            ) # STATEMENTS
+          ) # IF
+        ) # IFELSE
+      ) # STATEMENTS
+    ) # WHILE
+  ) # FUNCTION
+) # PROGRAM
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION051220050000000000000">
+Ejemplo de Árbol con Aplanamiento de <TT>STATEMENTS</TT></A>
+</H4>
+  
+
+<P>
+<PRE>
+pl@nereida:~/Lbook/code/Simple-Syntax/script$ usesyntax.pl prueba26.c 2
+int a[20],b,e[10];
+
+g() {}
+
+int f(char c) {
+char d;
+ c = 'X';
+ e[d][b] = 'A'+c;
+ {
+   int d;
+   d = c * 2;
+ }
+ {
+   d = a + b;
+   {
+     c = a + 1;
+   }
+ }
+ c = d * 2;
+ return c;
+}
+
+
+PROGRAM(
+  FUNCTION,
+  FUNCTION(
+    ASSIGN(
+      VAR(
+        TERMINAL[c:7]
+      ),
+      CHARCONSTANT(
+        TERMINAL['X':7]
+      )
+    ) # ASSIGN,
+    ASSIGN(
+      VARARRAY(
+        TERMINAL[e:8],
+        INDEXSPEC(
+          VAR(
+            TERMINAL[d:8]
+          ),
+          VAR(
+            TERMINAL[b:8]
+          )
+        ) # INDEXSPEC
+      ) # VARARRAY,
+      PLUS(
+        CHARCONSTANT(
+          TERMINAL['A':8]
+        ),
+        VAR(
+          TERMINAL[c:8]
+        )
+      ) # PLUS
+    ) # ASSIGN,
+    BLOCK(
+      ASSIGN(
+        VAR(
+          TERMINAL[d:11]
+        ),
+        TIMES(
+          VAR(
+            TERMINAL[c:11]
+          ),
+          INUM(
+            TERMINAL[2:11]
+          )
+        ) # TIMES
+      ) # ASSIGN
+    ) # BLOCK,
+    ASSIGN(
+      VAR(
+        TERMINAL[d:14]
+      ),
+      PLUS(
+        VAR(
+          TERMINAL[a:14]
+        ),
+        VAR(
+          TERMINAL[b:14]
+        )
+      ) # PLUS
+    ) # ASSIGN,
+    ASSIGN(
+      VAR(
+        TERMINAL[c:16]
+      ),
+      PLUS(
+        VAR(
+          TERMINAL[a:16]
+        ),
+        INUM(
+          TERMINAL[1:16]
+        )
+      ) # PLUS
+    ) # ASSIGN,
+    ASSIGN(
+      VAR(
+        TERMINAL[c:19]
+      ),
+      TIMES(
+        VAR(
+          TERMINAL[d:19]
+        ),
+        INUM(
+          TERMINAL[2:19]
+        )
+      ) # TIMES
+    ) # ASSIGN,
+    RETURN(
+      VAR(
+        TERMINAL[c:20]
+      )
+    ) # RETURN
+  ) # FUNCTION
+) # PROGRAM
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5419"
+<A NAME="tex2html5418"
   HREF="node198.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5413"
-  HREF="node194.html">
+<A NAME="tex2html5412"
+  HREF="node195.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5407"
+<A NAME="tex2html5406"
   HREF="node196.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5415"
-  HREF="node215.html">
+<A NAME="tex2html5414"
+  HREF="node216.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5417"
-  HREF="node218.html">
+<A NAME="tex2html5416"
+  HREF="node219.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -180,12 +848,12 @@ sección
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5420"
-  HREF="node198.html">Práctica: Análisis de Ámbito</A>
-<B>Sup:</B> <A NAME="tex2html5414"
-  HREF="node194.html">Análisis de Ámbito en</A>
-<B> Ant:</B> <A NAME="tex2html5408"
-  HREF="node196.html">Descripción Eyapp del Lenguaje</A>
+<B> Sig:</B> <A NAME="tex2html5419"
+  HREF="node198.html">Práctica: Construcción del AST</A>
+<B>Sup:</B> <A NAME="tex2html5413"
+  HREF="node195.html">Análisis de Ámbito en</A>
+<B> Ant:</B> <A NAME="tex2html5407"
+  HREF="node196.html">Análisis de Ámbito: Conceptos</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

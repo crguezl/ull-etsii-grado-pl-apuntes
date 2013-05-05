@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Práctica: Construcción del AST para el Lenguaje Simple C</TITLE>
-<META NAME="description" CONTENT="Práctica: Construcción del AST para el Lenguaje Simple C">
+<TITLE>Diseño de Analizadores con Parse::Eyapp</TITLE>
+<META NAME="description" CONTENT="Diseño de Analizadores con Parse::Eyapp">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node183.html">
 <LINK REL="previous" HREF="node181.html">
-<LINK REL="up" HREF="node153.html">
+<LINK REL="up" HREF="node154.html">
 <LINK REL="next" HREF="node183.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5111"
+<A NAME="tex2html5115"
   HREF="node183.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5105"
-  HREF="node153.html">
+<A NAME="tex2html5109"
+  HREF="node154.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5099"
+<A NAME="tex2html5103"
   HREF="node181.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5107"
-  HREF="node215.html">
+<A NAME="tex2html5111"
+  HREF="node216.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5109"
-  HREF="node218.html">
+<A NAME="tex2html5113"
+  HREF="node219.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,95 +88,328 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5112"
-  HREF="node183.html">El Generador de Analizadores</A>
-<B>Sup:</B> <A NAME="tex2html5106"
-  HREF="node153.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5100"
-  HREF="node181.html">Diseño de Analizadores con</A>
+<B> Sig:</B> <A NAME="tex2html5116"
+  HREF="node183.html">Práctica: Construcción del AST</A>
+<B>Sup:</B> <A NAME="tex2html5110"
+  HREF="node154.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5104"
+  HREF="node181.html">Descripción Eyapp del Lenguaje</A>
 <B> Con:</B> 
-<A NAME="tex2html5107"
-  HREF="node215.html">
+<A NAME="tex2html5111"
+  HREF="node216.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5109"
-  HREF="node218.html">
+<A NAME="tex2html5113"
+  HREF="node219.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html5113"
-  HREF="node182.html#SECTION059290010000000000000">Analizador Léxico</A>
-</UL></UL></UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION059290000000000000000"></A>
-   <A NAME="18986"></A>
-  
-<A NAME="practica:esquemadetradsimple"></A>
+<H1><A NAME="SECTION059280000000000000000"></A>
+<A NAME="section:consejoseyapp"></A>
 <BR>
-Práctica: Construcción del AST para el Lenguaje Simple C
+Diseño de Analizadores con <TT>Parse::Eyapp</TT>
 </H1>
-Utilice 
-<A NAME="tex2html429"
-  HREF="Parse-Eyapp.tar.gz">Parse-Eyapp</A>.
-para construir un árbol de análisis sintáctico abstracto 
-para la gramática descrita en la sección
-<A HREF="node196.html#section:simplec">39.2</A>.
-Su analizador deberá seguir los consejos explícitados en la 
-sección <A HREF="node181.html#section:consejoseyapp">36.28</A>.
+A la hora de construir un analizador sintáctico tenga en cuenta 
+las siguientes normas de buena programación:
 
 <P>
 
-<H4><A NAME="SECTION059290010000000000000">
-Analizador Léxico</A>
-</H4>
+<OL>
+<LI>Comienze trabajando en el cuerpo de la gramática.
+</LI>
+<LI>Olvídese al principio del 
+analizador léxico. Su primer objetivo es tener una gramática limpia
+de conflictos y que reconozca el lenguaje dado. 
+</LI>
+<LI>Sustituya las repeticiones
+BNF por listas usando los operadores <code>eyapp</code> <code>+</code>, <code>*</code> y sus variantes con separadores. 
+Si una variable describe una lista de <code>cosas</code> pongale un adjetivo adecuado como
+<code>cosaslist</code>. 
+<SPAN ID="txt18666">Ponga nombres significativos a las variables y terminales</SPAN>. 
+No los llame <code>d1</code>, <code>d2</code>, etc.
+</LI>
+<LI>Si tiene un elemento opcional en la BNF, por ejemplo, en la regla: 
 
 <P>
-Además del tipo de terminal y su valor el analizador
-léxico deberá devolver el número de línea.
-El analizador léxico deberá aceptar comentarios C.
-En la gramática, el terminal <code>CHARACTER</code> se refiere a 
-caracteres entre comillas simples (por ejemplo <code>'a'</code>).
-El terminal <code>STRING</code> se refiere a 
-caracteres entre comillas dobles (por ejemplo <code>"hola"</code>).
+functiondefinition <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img50.png"
+ ALT="$ \rightarrow$"></SPAN> <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img493.png"
+ ALT="$ [$"></SPAN> basictype <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img494.png"
+ ALT="$ ]$"></SPAN> functionheader functionbody
 
 <P>
-Se aconseja que las palabras reservadas del lenguaje
-no se traten con expresiones regulares específicas sino que se
-capturen en el patrón de identificador <code>[a-z_]\w+</code>. 
-Se mantiene para ello un hash con las palabras reservadas 
-que es inicializado al comienzo del programa. Cuando 
-el analizador léxico encuentra un identificador
-mira en primer lugar en dicho hash 
-para ver si es una palabra reservada y,
-si lo es, devuelve el terminal correspondiente.
-En caso contrario se trata de un identificador.
+use el operador <code>?</code>.
+</LI>
+<LI>Cada par de reglas que introduzca vuelva a recompilar con <code>eyapp</code> la gramática
+para ver si se introducido ambiguedad. Cuando estoy editando la gramática
+suelo escribir a menudo la orden 
+
+<P>
+<code>:!eyapp %</code> 
+
+<P>
+para recompilar:
+
+<P>
+<BR>
+<BR>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=411><PRE>
+     15
+     16 declaratorlist: declarator +
+     17 ;
+     18 functiondefinition: 
+     19    basictype functionheader functionbody
+     20  | functionheader functionbody
+     21 ;
+     22
+     23 %%
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+:!eyapp %
+</PRE></TD>
+</TR>
+</TABLE>
+<BR>
+<BR>
+
+<P>
+Esto llama a <code>eyapp</code> con el fichero bajo edición. Si hay errores o conflictos (esto es,
+hemos introducido ambiguedad) los detectarémos enseguida.
+Procure detectar la aparición de un conflicto lo antes posible.
+Observe el sangrado del ejemplo. Es el que le recomiendo.
+</LI>
+<LI>Cuando esté en el proceso de construcción de la gramática y aún le queden
+por rellenar variables sintácticas, declárelas como terminales mediante
+<code>%token</code>. De esta manera
+evitará las quejas de <code>eyapp</code>.
+
+<P>
+</LI>
+<LI><B>Resolución de Ambiguedades y Conflictos</B>
+
+<P>
+Las operaciones de asignación tienen la prioridad mas baja,
+seguidas  de las lógicas, los test de igualdad,
+los de comparación, a continuación las aditivas, multiplicativas y por 
+último las operaciones de tipo <code>unary</code> y <code>primary</code>.
+Exprese la asociatividad natural y la
+prioridad especificada usando
+los mecanismos que <code>eyapp</code> provee al efecto: <code>%left</code>, <code>%right</code>,
+<code>%nonassoc</code> y <code>%prec</code>.
+
+<P>
+</LI>
+<LI>La gramática de SimpleC es ambigua, ya que para una sentencia como 
+
+<P>
+<DIV ALIGN="CENTER">
+if <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img502.png"
+ ALT="$ E_1$"></SPAN> then if <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img503.png"
+ ALT="$ E_2$"></SPAN> then <SPAN CLASS="MATH"><IMG
+ WIDTH="23" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img276.png"
+ ALT="$ S_1$"></SPAN> else <SPAN CLASS="MATH"><IMG
+ WIDTH="23" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img277.png"
+ ALT="$ S_2$"></SPAN>
+</DIV>
+
+<P>
+existen dos árboles posibles: uno que asocia el ``else'' con el primer ``if'' y otra
+que lo asocia con el segundo. Los dos árboles corresponden a las
+dos posibles parentizaciones:
+
+<P>
+<DIV ALIGN="CENTER">
+if <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img502.png"
+ ALT="$ E_1$"></SPAN> then (if <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img503.png"
+ ALT="$ E_2$"></SPAN> then <SPAN CLASS="MATH"><IMG
+ WIDTH="23" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img276.png"
+ ALT="$ S_1$"></SPAN> else <SPAN CLASS="MATH"><IMG
+ WIDTH="23" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img277.png"
+ ALT="$ S_2$"></SPAN>)
+
+</DIV>
+
+<P>
+Esta es la regla de prioridad usada en la mayor parte de los lenguajes:
+un ``else'' casa con el ``if'' mas cercano. La otra posible parentización
+es:
+
+<P>
+<DIV ALIGN="CENTER">
+if <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img502.png"
+ ALT="$ E_1$"></SPAN> then (if <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img503.png"
+ ALT="$ E_2$"></SPAN> then <SPAN CLASS="MATH"><IMG
+ WIDTH="23" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img276.png"
+ ALT="$ S_1$"></SPAN>) else <SPAN CLASS="MATH"><IMG
+ WIDTH="23" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img277.png"
+ ALT="$ S_2$"></SPAN>
+</DIV>
+
+<P>
+<SPAN  CLASS="textbf">La conducta por defecto de <TT>eyapp</TT> es parentizar a derechas</SPAN>.
+El generador  <TT>eyapp</TT>  nos informará del conflicto pero si no se le indica 
+como resolverlo parentizará a derechas.
+Resuelva este conflicto.
+
+<P>
+</LI>
+<LI><I>¿Que clase de árbol debe producir el analizador?</I>
+La respuesta es que sea lo mas abstracto posible.
+Debe 
+
+<UL>
+<LI>Contener toda la información necesaria para el manejo eficiente
+de las fases subsiguientes: Análisis de ámbito, Comprobación de tipos,
+Optimización independiente de la máquina, etc.
+</LI>
+<LI>Ser uniforme
+</LI>
+<LI>Legible (human-friendly)
+</LI>
+<LI>No contener nodos que no portan información. 
+</LI>
+</UL>
+
+<P>
+El siguiente ejemplo muestra una versión aceptable de árbol abstracto.
+Cuando se le proporciona el programa de entrada:
+
+<P>
+<PRE>
+nereida:~/doc/casiano/PLBOOK/PLBOOK/code&gt; cat -n prueba5.c
+     1  int f(int a)
+     2  {
+     3    if (a&gt;0)
+     4      a = f(a-1);
+     5  }
+</PRE>
+
+<P>
+El siguiente árbol ha sido producido por un analizador usando la directiva 
+<code>%tree</code> y añadiendo las correspondientes acciones de <code>bypass</code>.
+Puede considerarse un ejemplo aceptable de AST:
+
+<P>
+<PRE>
+nereida:~/doc/casiano/PLBOOK/PLBOOK/code&gt; eyapp Simple2 ;\
+                                  usesimple2.pl prueba5.c
+PROGRAM(
+  TYPEDFUNC(
+    INT(TERMINAL[INT:1]),
+    FUNCTION(
+      TERMINAL[f:1],
+      PARAMS(
+        PARAM(
+          INT(TERMINAL[INT:1]),
+          TERMINAL[a:1],
+          ARRAYSPEC
+        )
+      ),
+      BLOCK(
+        DECLARATIONS,
+        STATEMENTS(
+          IF(
+            GT(
+              VAR(TERMINAL[a:3]),
+              INUM(TERMINAL[0:3])
+            ),
+            ASSIGN(
+              VAR(TERMINAL[a:4]),
+              FUNCTIONCALL(
+                TERMINAL[f:4],
+                ARGLIST(
+                  MINUS(
+                    VAR(TERMINAL[a:4]),
+                    INUM(TERMINAL[1:4])
+                  )
+                ) # ARGLIST
+              ) # FUNCTIONCALL
+            ) # ASSIGN
+          ) # IF
+        ) # STATEMENTS
+      ) # BLOCK
+    ) # FUNCTION
+  ) # TYPEDFUNC
+) # PROGRAM
+</PRE>
+
+<P>
+Es deseable  darle una estructura uniforme al árbol. Por ejemplo, como consecuencia 
+de que la gramática admite funciones con declaración implícita del tipo
+retornado cuando este es entero
+
+<P>
+<PRE>
+ 1  definition:
+ 2      funcDef { $_[1]-&gt;type("INTFUNC"); $_[1] }
+ 3    | %name TYPEDFUNC
+ 4      basictype funcDef
+ 5    | declaration { $_[1] }
+ 6  ;
+</PRE>
+</LI>
+</OL>
+
+<P>
+se producen dos tipos de árboles. Es conveniente
+convertir las definiciones de función con declaración 
+implícita en el mismo árbol que se obtiene con 
+declaración explícita. 
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5111"
+<A NAME="tex2html5115"
   HREF="node183.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5105"
-  HREF="node153.html">
+<A NAME="tex2html5109"
+  HREF="node154.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5099"
+<A NAME="tex2html5103"
   HREF="node181.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5107"
-  HREF="node215.html">
+<A NAME="tex2html5111"
+  HREF="node216.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5109"
-  HREF="node218.html">
+<A NAME="tex2html5113"
+  HREF="node219.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -223,12 +456,12 @@ En caso contrario se trata de un identificador.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5112"
-  HREF="node183.html">El Generador de Analizadores</A>
-<B>Sup:</B> <A NAME="tex2html5106"
-  HREF="node153.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5100"
-  HREF="node181.html">Diseño de Analizadores con</A>
+<B> Sig:</B> <A NAME="tex2html5116"
+  HREF="node183.html">Práctica: Construcción del AST</A>
+<B>Sup:</B> <A NAME="tex2html5110"
+  HREF="node154.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5104"
+  HREF="node181.html">Descripción Eyapp del Lenguaje</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
