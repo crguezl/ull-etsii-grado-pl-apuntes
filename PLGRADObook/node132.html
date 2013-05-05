@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Generación de Código: Máquina Pila</TITLE>
-<META NAME="description" CONTENT="Generación de Código: Máquina Pila">
+<TITLE>Asignación de Direcciones</TITLE>
+<META NAME="description" CONTENT="Asignación de Direcciones">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node133.html">
 <LINK REL="previous" HREF="node131.html">
-<LINK REL="up" HREF="node118.html">
+<LINK REL="up" HREF="node119.html">
 <LINK REL="next" HREF="node133.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4285"
+<A NAME="tex2html4288"
   HREF="node133.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4279"
-  HREF="node118.html">
+<A NAME="tex2html4282"
+  HREF="node119.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4273"
+<A NAME="tex2html4276"
   HREF="node131.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4281"
-  HREF="node217.html">
+<A NAME="tex2html4284"
+  HREF="node218.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4283"
-  HREF="node220.html">
+<A NAME="tex2html4286"
+  HREF="node221.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,270 +88,339 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4286"
+<B> Sig:</B> <A NAME="tex2html4289"
   HREF="node133.html">Generación de Código: Máquina</A>
-<B>Sup:</B> <A NAME="tex2html4280"
-  HREF="node118.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html4274"
-  HREF="node131.html">Asignación de Direcciones</A>
+<B>Sup:</B> <A NAME="tex2html4283"
+  HREF="node119.html">Análisis Sintáctico Descendente en</A>
+<B> Ant:</B> <A NAME="tex2html4277"
+  HREF="node131.html">Patrones Árbol y Transformaciones</A>
 <B> Con:</B> 
-<A NAME="tex2html4281"
-  HREF="node217.html">
+<A NAME="tex2html4284"
+  HREF="node218.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4283"
-  HREF="node220.html">
+<A NAME="tex2html4286"
+  HREF="node221.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<H1><A NAME="SECTION057140000000000000000"></A>
-<A NAME="section:pila"></A>
-<BR>
-Generación de Código: Máquina Pila
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html4290"
+  HREF="node132.html#SECTION057131000000000000000">Práctica: Cálculo de las Direcciones</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION057130000000000000000">
+Asignación de Direcciones</A>
 </H1>
-El generador de código emite el código para el lenguaje objeto, utilizando
-las direcciones calculadas en la fase anterior. Hemos simplificado esta fase
-considerando una máquina orientada a pila: una memoria de pila en la que se
-computan las expresiones, un segmento de datos en el que se guardan las variables
-y un segmento para guardar las cadenas.
-La estrategia utilizada es similar a la que vimos en el plegado de las constantes.
-Definimos un método para la traducción de cada clase de nodo del AAA.
-Entonces, para traducir el programa basta con llamar al correspondiente método:
+Esta suele ser considerada  la primera de las fases de síntesis.
+Las anteriores lo eran de análisis. La fase de análisis
+es una transformación <!-- MATH
+ $texto\ fuente \rightarrow arbol$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="169" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img338.png"
+ ALT="$ texto fuente \rightarrow arbol$"></SPAN>, mientras
+que la fase síntesis es una transformación inversa
+<!-- MATH
+ $arbol \rightarrow texto\ objeto$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="163" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img339.png"
+ ALT="$ arbol \rightarrow texto objeto$"></SPAN> que produce una ``linealización''
+del árbol. En general, se ubican en la fase de síntesis todas
+las tareas que dependan del lenguaje objeto.
+
+<P>
+La asignación de direcciones depende de la máquina objetivo en cuanto
+conlleva consideraciones sobre la longitud de palabra, las unidades
+de memoria direccionables, la compactación de objetos pequeños (por ejemplo,
+valores lógicos), el alineamiento a fronteras de palabra, etc.
+
+<P>
+En nuestro caso debemos distinguir entre las cadenas y las variables enteras.
+
+<P>
+Las constantes literales (como <code>"hola"</code>) se almacenan 
+concatenadas en orden de aparición textual.
+Una variable de tipo cadena ocupa dos palabras, una dando su dirección 
+y otra dando su longitud.
 
 <P>
 <PRE>
-  $tree = Syntax::Analysis::parser;
-  ... # otras fases
-  ########code generation
-  local $target = ""; # target code
-  $tree-&gt;translate;
-  ...
-</PRE>
+sub factor() {
+  my ($e, $id, $str, $num);
 
-<P>
-en la cadena <code>$target</code> dejamos el código emitido.
-Cada método visita los hijos, traduciéndolos y añadiendo 
-el código que fuera necesario para la traducción del nodo.
-
-<P>
-<PRE>
-sub PROGRAM::translate {
-  my $tree = shift;
-
-  $target .= "DATA ". $data."\n" if $data;
-  $tree-&gt;STS-&gt;translate;
-}
-</PRE>
-
-<P>
-Traducir la lista de sentencias es concatenar la traducción
-de cada una de las sentencias en la lista:
-
-<P>
-<PRE>
-sub STATEMENTS::translate {
-  my $statements = shift;
-  my @statements = @{$statements};
-
-  for my $s (@statements) {
-    $s-&gt;translate;
+  if ($lookahead eq 'NUM') { ... }
+  elsif ($lookahead eq 'ID') { ... }
+  elsif ($lookahead eq 'STR') {
+    $str = $value;
+    my ($offset, $length) = Address::Assignment::str($str);
+    match('STR');
+    return STR-&gt;new(OFFSET =&gt; $offset, LENGTH =&gt; $length, TYPE =&gt; $string_type);
   }
+  elsif ($lookahead eq '(') { ... }
+  else { Error::fatal("Se esperaba (, NUM o ID"); }
 }
 </PRE>
 
 <P>
-Si suponemos que disponemos en el ensamblador de nuestra máquina
-objeto de instrucciones <code>PRINT_INT</code>  y <code>PRINT_STR</code>
-que imprimen el contenido 
-de la expresión que esta en la cima de la pila, la traducción será:
-
-<P>
+El código de la subrutina <code>Address::Assignment::str</code> es:
 <PRE>
-sub PRINT::translate {
-  my $self = shift;
-
-  $self-&gt;EXPRESSION-&gt;translate;
-  if ($self-&gt;EXPRESSION-&gt;TYPE == $int_type) { emit "PRINT_INT\n"; }
-  else {emit "PRINT_STR\n"; }
-}
-</PRE>
-Asi, si la sentencia era <code>P c</code>, donde <code>c</code> es del tipo cadena, 
-se debería eventualmente llamar al método de traducción del identificador:
-
-<P>
-<PRE>
-sub ID::translate {
-  my $self = shift;
-
-  my $id = $self-&gt;VAL;
-  my $type =  Semantic::Analysis::get_type($id);
-  if ($type == $int_type) {
-    emit "LOAD ".$symbol_table{$id}-&gt;{ADDRESS}."\n";
+  sub str {
+    my $str = shift;
+    my $len = length($str);
+    my $offset = length($data);
+    $data .= $str;
+    return ($offset, $len);
   }
-  else {
-    emit "LOAD_STRING ".$symbol_table{$id}-&gt;{ADDRESS}."\n";
+</PRE>
+Una posible mejora es la que se describe en 
+el punto
+<A HREF="#item:norepetidas">2</A>
+de la práctica
+<A HREF="#practica:calculodelasdirecciones">34.13.1</A>.
+
+<P>
+Hemos supuesto que las variables enteras y las referencias ocupan una palabra.
+Cada vez que una variable es declarada, se le computa su dirección relativa:
+
+<P>
+<PRE>
+# declaration -&gt; type idlist
+# type        -&gt; INT | STRING
+sub declaration() {
+  my ($t, $decl, @il);
+
+  if (($lookahead eq 'INT') or ($lookahead eq 'STRING')) {
+    $t = &amp;type(); @il = &amp;idlist();
+    &amp;Semantic::Analysis::set_types($t, @il);
+    &amp;Address::Assignment::compute_address($t, @il);
+    $decl = [$t, \@il];
+    return bless $decl, 'DECL';
   }
+  else { Error::fatal('Se esperaba un tipo'); }
 }
 </PRE>
-la función <code>emit</code> simplemente concatena el código 
-producido a la salida:
+
+<P>
+Se usa una variable <code>$global_address</code> para llevar la cuenta de la última 
+dirección utilizada y se introduce un atributo <code>ADDRESS</code> en 
+la tabla de símbolos:
 
 <P>
 <PRE>
-sub emit { $target .= shift; }
-</PRE>
+  sub compute_address {
+    my $type = shift;
+    my @id_list = @_;
 
-<P>
-Para la traducción de una sentencia de asignación
-supondremos de la existencia de isntrucciones <code>STORE_INT</code>
-y <code>STORE_STRING</code>. La instrucción <code>STORE_STRING</code> asume 
-que en la cima de la pila están la dirección y la cadena a almacenar.
-
-<P>
-<PRE>
-sub ASSIGN::translate {
-  my $self = shift;
-
-  $self-&gt;RIGHT-&gt;translate;
-  my $id = $self-&gt;LEFT;
-  $id-&gt;translate;
-  my $type =  Semantic::Analysis::get_type($id-&gt;VAL);
-
-  if ($type == $int_type) {
-    emit "STORE_INT\n";
+    for my $i (@id_list) {
+      $symbol_table{$i}-&gt;{ADDRESS} = $global_address;
+      $global_address += $type-&gt;LENGTH;
+    }
   }
-  else {
-    emit "STORE_STRING\n";
+</PRE>
+
+<P>
+Por último situamos todas las cadenas después de las variables
+del programa fuente:
+
+<P>
+<PRE>
+  ... 
+  ##### En compile, despues de haber calculado las direcciones
+  Tree::Transform::match_and_transform_list(
+    NODES =&gt; $tree-&gt;{STS},
+    PATTERN =&gt; sub { 
+      $_[0]-&gt;isa('STR')
+    },
+    ACTION =&gt; sub { $_[0]-&gt;{OFFSET} += $global_address; }
+  );
+</PRE>
+
+<P>
+Esta aproximación es bastante simplista en cuanto que usa una palabra
+por carácter. 
+El punto
+<A HREF="#item:compacta">3</A>
+de la práctica
+<A HREF="#practica:calculodelasdirecciones">34.13.1</A> propone una mejora.
+
+<P>
+
+<H2><A NAME="SECTION057131000000000000000"></A>
+   <A NAME="12462"></A>
+  
+<A NAME="practica:calculodelasdirecciones"></A>
+<BR>
+Práctica: Cálculo de las Direcciones
+</H2>
+Modifique el cálculo de las direcciones para la gramática de Tutu
+extendida con sentencias compuestas que fué presentada en 
+la sección 
+<A HREF="node129.html#practica:analisis_semantico">34.10.2</A>.
+
+<P>
+
+<OL>
+<LI>Resuelva el problema de calcular las direcciones de las variables
+declaradas en los bloques. La memoria ocupada por dichas variables
+se libera al terminar el bloque. Por tanto la variable <code>$global_address</code>
+disminuye al final de cada bloque.
+</LI>
+<LI><A NAME="item:norepetidas"></A>En el código de la subrutina <code>Address::Assignment::str</code> 
+
+<P>
+<PRE>
+  sub str {
+    my $str = shift;
+    my $len = length($str);
+    my $offset = length($data);
+    $data .= $str;
+    return ($offset, $len);
   }
-}
-</PRE>
-Si se está traduciendo una sentencia como <code>a = "hola"</code>,
-se acabará llamando al método 
-de traducción asociado con la clase <code>STR</code>
-el cual actúa empujando la dirección y la longitud de la cadena en
-la pila:
-<PRE>
-sub STR::translate {
-  my $self = shift;
-
-  emit "PUSHSTR ".$self-&gt;OFFSET." ".$self-&gt;LENGTH."\n";
-}
-</PRE>
-Así la traducción de este fuente:
-
-<P>
-<PRE>
-$ cat test06.tutu
-string a;
-a = "hola";
-p a
 </PRE>
 
 <P>
-es:
+no se comprueba si la cadena <code>$str</code> ya está en <code>$data</code>. 
+Es natural que si ya está no la insertemos de nuevo. Introduzca esa 
+mejora. Para ello use la función <code>pos</code>,
+la cual devuelve el desplazamiento en <code>$data</code> donde
+quedó la última búsqueda <code>$data =~ m/regexp/g</code>.
+ El siguiente ejemplo con
+el depurador le muestra como trabaja. Escriba <code>perldoc -f pos</code>
+para obtener mas información sobre la función <code>pos</code>.
+Vea un ejemplo de uso:
 
 <P>
 <PRE>
-$ ./main.pl test06.tutu test06.ok
-$ cat test06.ok
-DATA 2, hola
-PUSHSTR 2 4
-PUSHADDR 0
-STORE_STRING
-LOAD_STRING 0
-PRINT_STR
+DB&lt;1&gt; $str = "world"
+#              012345678901234567890123456789012
+DB&lt;2&gt; $data = "hello worldjust another statement"
+DB&lt;3&gt; $res = $data =~ m{$str}g
+DB&lt;4&gt; x pos($data) # la siguiente busqueda comienza en la 11
+0  11
+DB&lt;5&gt; $s = "hello"
+DB&lt;6&gt; $res = $data =~ m{$s}g
+DB&lt;7&gt; x pos($data) # No hay "hello" despues de world en $data
+0  undef
+DB&lt;8&gt; $res = $data =~ m{$str}g # Repetimos ...
+DB&lt;9&gt; x pos($data)
+0  11
+DB&lt;10&gt; pos($data) = 0  # Podemos reiniciar pos!
+DB&lt;11&gt; $res = $data =~ m{$s}g
+DB&lt;12&gt; x pos($data) # Ahora si se encuentra "hello"
+0  5
 </PRE>
 
 <P>
-El resto de los métodos de traducción es similar:
+</LI>
+<LI><A NAME="item:compacta"></A>Empaquete las cadenas asumiendo que cada carácter ocupa un octeto o byte.
+Una posible solución al problema de alineamiento que se produce es
+rellenar con ceros los bytes que faltan hasta completar la última palabra
+ocupada por la cadena. Por ejemplo, si la longitud de palabra de la 
+máquina objeto es de 4 
+bytes, la palabra <SPAN  CLASS="textbf">procesador</SPAN> se cargaría asi:
+
+<P>
+<DIV ALIGN="CENTER">
+</DIV><PRE>
+   0    |    1    |    2      
+0 1 2 3 | 4 5 6 7 | 8 9 10  11
+p r o c | e s a d | o r \0  \0
+</PRE>
+<DIV ALIGN="CENTER">
+</DIV>
+
+<P>
+Existen dos posibles formas de hacer esta empaquetado.
+Por ejemplo, si tenemos las cadenas
+<code>lucas</code> y <code>pedro</code> las podemos introducir en 
+la cadena <code>$data</code> asi:
+
+<P>
+<DIV ALIGN="CENTER">
+</DIV><PRE>
+   0    |     1      |    2      |    3
+0 1 2 3 | 4  5  6  7 | 8 9 10 11 | 12 13 14 15
+l u c a | s \0 \0 \0 | p e  d  r |  o \0 \0 \0
+</PRE>
+<DIV ALIGN="CENTER">
+</DIV>
+
+<P>
+o bien:
+
+<P>
+<DIV ALIGN="CENTER">
+</DIV><PRE>
+   0    |    1    |    2     
+0 1 2 3 | 4 5 6 7 | 8 9 10 11
+l u c a | s p e d | r o \0 \0
+</PRE>
+<DIV ALIGN="CENTER">
+</DIV>
+
+<P>
+La segunda forma aunque compacta más tiene la desventaja de hacer luego mas 
+lento el código para el 
+direccionamiento de las cadenas, ya que no empiezan en frontera de palabra. 
+Utilice el primer modo.
+
+<P>
+Observe que este empaquetado introduce un efecto en lo que 
+se considera un éxito en la búsqueda de una cadena 
+<code>$str</code> en <code>$data</code>. ¿Que ocurre si <code>$str</code>
+aparece en <code>$data</code> como subcadena de una cadena
+previamente empaquetada ocupando una posición que no es frontera de palabra?
+
+<P>
+Cuando rellene con <code>\0</code> la cadena use el operador <code>x</code> (letra equis)
+para multiplicar número por cadena:
+
+<P>
 <PRE>
-sub LEFTVALUE::translate {
-  my $id = shift -&gt;VAL;
-
-  emit "PUSHADDR ".$symbol_table{$id}-&gt;{ADDRESS}."\n";
-}
-
-sub NUM::translate {
-  my $self = shift;
-
-  emit "PUSH ".$self-&gt;VAL."\n";
-}
-
-sub PLUS::translate {
-  my $self = shift;
-
-  $self-&gt;LEFT-&gt;translate;
-  $self-&gt;RIGHT-&gt;translate;
-  emit "PLUS\n";
-}
-
-sub TIMES::translate {
-  my $self = shift;
-
-  $self-&gt;LEFT-&gt;translate;
-  $self-&gt;RIGHT-&gt;translate;
-  emit "MULT\n";
-}
+DB&lt;1&gt; $x = "hola"x4
+DB&lt;2&gt; p $x
+holaholaholahola
 </PRE>
 
 <P>
-Veamos un ejemplo. Dado el código fuente:
-<PRE>
-$ cat test02.tutu
-int a,b; string c; 
-a = 2+3; b = 3*4; c = "hola"; p c; 
-c = "mundo"; p c; p 9+2; p a+1; p b+1
-</PRE>
-el código generado es:
-<PRE>
-$ ./main.pl test02.tutu test02.ok
-$ cat test02.ok
-DATA 4, holamundo
-PUSH 5
-PUSHADDR 0
-STORE_INT
-PUSH 12
-PUSHADDR 1
-STORE_INT
-PUSHSTR 4 4
-PUSHADDR 2
-STORE_STRING
-LOAD_STRING 2
-PRINT_STR
-PUSHSTR 8 5
-PUSHADDR 2
-STORE_STRING
-LOAD_STRING 2
-PRINT_STR
-PUSH 11
-PRINT_INT
-LOAD 0
-INC
-PRINT_INT
-LOAD 1
-INC
-PRINT_INT
-</PRE>
+esto le evitará escribir un bucle.
+</LI>
+<LI>Mantega atributos distintos en el nodo <code>STR</code>
+para el desplazamiento y longitud 
+de <code>$str</code> en <code>$data</code> (en caracteres)
+y su dirección y tamaño final en memoria (en palabras).
+
+<P>
+</LI>
+</OL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4285"
+<A NAME="tex2html4288"
   HREF="node133.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4279"
-  HREF="node118.html">
+<A NAME="tex2html4282"
+  HREF="node119.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4273"
+<A NAME="tex2html4276"
   HREF="node131.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4281"
-  HREF="node217.html">
+<A NAME="tex2html4284"
+  HREF="node218.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4283"
-  HREF="node220.html">
+<A NAME="tex2html4286"
+  HREF="node221.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -398,12 +467,12 @@ PRINT_INT
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4286"
+<B> Sig:</B> <A NAME="tex2html4289"
   HREF="node133.html">Generación de Código: Máquina</A>
-<B>Sup:</B> <A NAME="tex2html4280"
-  HREF="node118.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html4274"
-  HREF="node131.html">Asignación de Direcciones</A>
+<B>Sup:</B> <A NAME="tex2html4283"
+  HREF="node119.html">Análisis Sintáctico Descendente en</A>
+<B> Ant:</B> <A NAME="tex2html4277"
+  HREF="node131.html">Patrones Árbol y Transformaciones</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
