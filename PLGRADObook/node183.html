@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Análisis Sintáctico Ascendente en C con yacc y bison</TITLE>
-<META NAME="description" CONTENT="Análisis Sintáctico Ascendente en C con yacc y bison">
+<TITLE>El Generador de Analizadores byacc</TITLE>
+<META NAME="description" CONTENT="El Generador de Analizadores byacc">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node190.html">
-<LINK REL="previous" HREF="node152.html">
-<LINK REL="up" HREF="node69.html">
+<LINK REL="previous" HREF="node182.html">
+<LINK REL="up" HREF="node153.html">
 <LINK REL="next" HREF="node184.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5120"
+<A NAME="tex2html5124"
   HREF="node184.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5114"
-  HREF="node69.html">
+<A NAME="tex2html5118"
+  HREF="node153.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5108"
+<A NAME="tex2html5114"
   HREF="node182.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5116"
-  HREF="node214.html">
+<A NAME="tex2html5120"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5118"
-  HREF="node217.html">
+<A NAME="tex2html5122"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,75 +87,249 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5121"
-  HREF="node184.html">Introducción a yacc</A>
-<B>Sup:</B> <A NAME="tex2html5115"
-  HREF="node69.html">SEGUNDA PARTE: APUNTES DE</A>
-<B> Ant:</B> <A NAME="tex2html5109"
-  HREF="node182.html">El Generador de Analizadores</A>
+<B> Sig:</B> <A NAME="tex2html5125"
+  HREF="node184.html">Análisis Sintáctico Ascendente en</A>
+<B>Sup:</B> <A NAME="tex2html5119"
+  HREF="node153.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5115"
+  HREF="node182.html">Práctica: Construcción del AST</A>
 <B> Con:</B> 
-<A NAME="tex2html5116"
-  HREF="node214.html">
+<A NAME="tex2html5120"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5118"
-  HREF="node217.html">
+<A NAME="tex2html5122"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION051000000000000000000">
-Análisis Sintáctico Ascendente en C con <TT>yacc</TT> y <TT>bison</TT></A>
+<H1><A NAME="SECTION059300000000000000000">
+El Generador de Analizadores <TT>byacc</TT></A>
 </H1>
-<BR> <HR>
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
+Existe una version del <code>yacc</code> de Berkeley que permite producir 
+código para Perl:
+<PRE>
+&gt; byacc -V
+byacc: Berkeley yacc version 1.8.2 (C or perl)
+</PRE>
+Se trata por tanto de un generador de analizadores LALR.
+Es bastante compatible con <code>AT&amp;T yacc</code>. Puedes encontrar 
+una versión en formato <code>tar.gz</code> en nuestro servidor
+<A NAME="tex2html430"
+  HREF="http://nereida.deioc.ull.es/~pl/pyacc-pack.tgz">http://nereida.deioc.ull.es/&#732;pl/pyacc-pack.tgz</A>
+o también desde 
+<A NAME="tex2html431"
+  HREF="http://www.perl.com/CPAN/src/misc/">http://www.perl.com/CPAN/src/misc/</A>.
 
-<UL CLASS="ChildLinks">
-<LI><A NAME="tex2html5122"
-  HREF="node184.html">Introducción a <TT>yacc</TT></A>
-<UL>
-<LI><A NAME="tex2html5123"
-  HREF="node184.html#SECTION051010010000000000000">Ejemplo: La Calculadora en <TT>yacc</TT></A>
-<LI><A NAME="tex2html5124"
-  HREF="node184.html#SECTION051010020000000000000">El Analizador Léxico</A>
-<LI><A NAME="tex2html5125"
-  HREF="node184.html#SECTION051010030000000000000">Compilación</A>
-<LI><A NAME="tex2html5126"
-  HREF="node184.html#SECTION051010040000000000000">Makefile</A>
-<LI><A NAME="tex2html5127"
-  HREF="node184.html#SECTION051010050000000000000">Ejecución</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html5128"
-  HREF="node185.html">Precedencia y Asociatividad</A>
-<LI><A NAME="tex2html5129"
-  HREF="node186.html">Uso de union y type</A>
-<LI><A NAME="tex2html5130"
-  HREF="node187.html">Acciones en medio de una regla</A>
-<LI><A NAME="tex2html5131"
-  HREF="node188.html">Recuperación de Errores</A>
-<LI><A NAME="tex2html5132"
-  HREF="node189.html">Recuperación de Errores en Listas</A>
-</UL>
-<!--End of Table of Child-Links-->
+<P>
+El formato de llamada es:
+<PRE>
+byacc  [ -CPcdlrtv ] [ -b file_prefix ] [ -p symbol_prefix ] filename
+</PRE>
+
+<P>
+Las opciones <code>C</code> o <code>c</code> permiten generar código C. Usando <code>-P</code>
+se genera código Perl. Las opciones <code>d</code> y <code>v</code> funcionan como es usual en 
+<code>yacc</code>. Con <code>t</code> se incorpora código para la depuración de la gramática.
+Si se especifica <code>l</code> el código del usuario no es insertado.
+La opción <code>r</code> permite generar ficheros separados para el código y las tablas. No la use
+con Perl.
+
+<P>
+Fichero conteniendo la gramática:
+<PRE>
+%{
+%}
+
+%token INT EOL
+%token LEFT_PAR RIGHT_PAR
+%left PLUS MINUS
+%left MULT DIV
+
+%%
+start:	|
+		start input
+	;
+
+input:		expr EOL	{ print $1 . "\n"; }
+	|	EOL
+	;
+
+expr:		INT		{ $p-&gt;mydebug("INT -&gt; Expr!"); $$ = $1; }
+	|	expr PLUS expr	{ $p-&gt;mydebug("PLUS -&gt; Expr!"); $$ = $1 + $3; }
+	|	expr MINUS expr	{ $p-&gt;mydebug("MINUS -&gt; Expr!"); $$ = $1 - $3; }
+	|	expr MULT expr	{ $p-&gt;mydebug("MULT -&gt; Expr!"); $$ = $1 * $3; }
+	|	expr DIV expr	{ $p-&gt;mydebug("DIV -&gt; Expr!"); $$ = $1 / $3; }
+	|	LEFT_PAR expr RIGHT_PAR { $p-&gt;mydebug("PARENS -&gt; Expr!"); $$ = $2; }
+	;
+%%
+
+sub yyerror {
+    my ($msg, $s) = @_;
+    my ($package, $filename, $line) = caller;
+    
+    die "$msg at &lt;DATA&gt; \n$package\n$filename\n$line\n";
+}
+
+sub mydebug {
+    my $p = shift;
+    my $msg = shift;
+    if ($p-&gt;{'yydebug'})
+    {
+        print "$msg\n";
+    }
+}
+</PRE>
+La compilación con <code>byacc</code> del fichero <code>calc.y</code>
+conteniendo la descripción de la gramática produce el módulo 
+Perl conteniendo el analizador.
+<PRE>
+&gt; ls -l
+total 12
+-rw-r-----    1 pl       casiano        47 Dec 29  2002 Makefile
+-rw-r-----    1 pl       casiano       823 Dec 29  2002 calc.y
+-rwxr-x--x    1 pl       casiano       627 Nov 10 15:37 tokenizer.pl
+&gt; cat Makefile
+MyParser.pm: calc.y
+        byacc -d -P MyParser $&lt;
+
+&gt; make
+byacc -d -P MyParser calc.y
+&gt; ls -ltr
+total 28
+-rw-r-----    1 pl       casiano       823 Dec 29  2002 calc.y
+-rw-r-----    1 pl       casiano        47 Dec 29  2002 Makefile
+-rwxr-x--x    1 pl       casiano       627 Nov 10 15:37 tokenizer.pl
+-rw-rw----    1 pl       users          95 Nov 16 12:49 y.tab.ph
+-rw-rw----    1 pl       users        9790 Nov 16 12:49 MyParser.pm
+</PRE>
+Observe que la opción <code>-P</code> es la que permite producir código Perl.
+Anteriormente se usaba la opción <code>-p</code>. Esto se hizo para mantener la 
+compatibilidad con otras versiones de <code>yacc</code> en las que la opción <code>-p</code>
+se usa para cambiar el prefijo por defecto (<code>yy</code>). Ese es el significado actual
+de la opción <code>-p</code> en <code>perl-byacc</code>.
+
+<P>
+El fichero <code>y.tab.ph</code> generado contiene las definiciones de los <SPAN  CLASS="textbf">tokens</SPAN>:
+<PRE>
+ cat y.tab.ph
+$INT=257;
+$EOL=258;
+$LEFT_PAR=259;
+$RIGHT_PAR=260;
+$PLUS=261;
+$MINUS=262;
+$MULT=263;
+$DIV=264;
+</PRE>
+El programa <code>tokenizer.pl</code> contiene la llamada al analizador 
+y la definición del analizador léxico:
+<PRE>
+&gt; cat tokenizer.pl
+#!/usr/local/bin/perl5.8.0
+
+require 5.004;
+use strict;
+use Parse::YYLex;
+use MyParser;
+
+print STDERR "Version $Parse::ALex::VERSION\n";
+
+my (@tokens) = ((LEFT_PAR =&gt; '\(',
+                 RIGHT_PAR =&gt; '\)',
+                 MINUS =&gt; '-',
+                 PLUS =&gt; '\+',
+                 MULT =&gt; '\*',
+                 DIV =&gt; '/',
+                 INT =&gt; '[1-9][0-9]*',
+                 EOL =&gt; '\n',
+                 ERROR =&gt; '.*'),
+                sub { die "!can\'t analyze: \"$_[1]\"\n!"; });
+
+my $lexer = Parse::YYLex-&gt;new(@tokens);
+
+sub yyerror
+{
+    die "There was an error:" . join("\n", @_). "\n";
+}
+
+my $debug = 0;
+my $parser = new MyParser($lexer-&gt;getyylex(), \&amp;MyParser::yyerror , $debug);
+$lexer-&gt;from(\*STDIN);
+$parser-&gt;yyparse(\*STDIN);
+</PRE>
+El módulo <code>Parse::YYLex</code> contiene una versión de <code>Parse::Lex</code> 
+que ha sido adaptada para funcionar con  <code>byacc</code>. Todas las versiones de <code>yacc</code> 
+esperan que el analizador léxico devuelva un <SPAN  CLASS="textbf">token</SPAN> numérico, mientras que 
+<code>Parse::Lex</code> devuelbe un objeto de la clase <SPAN  CLASS="textbf">token</SPAN>.
+Veamos un ejemplo de ejecución:
+<PRE>
+&gt; tokenizer.pl
+Version 2.15
+yydebug: state 0, reducing by rule 1 (start :)
+yydebug: after reduction, shifting from state 0 to state 1
+3*(5-9)
+yydebug: state 1, reading 257 (INT)
+yydebug: state 1, shifting to state 2
+yydebug: state 2, reducing by rule 5 (expr : INT)
+INT -&gt; Expr!
+yydebug: after reduction, shifting from state 1 to state 6
+yydebug: state 6, reading 263 (MULT)
+yydebug: state 6, shifting to state 11
+yydebug: state 11, reading 259 (LEFT_PAR)
+yydebug: state 11, shifting to state 4
+yydebug: state 4, reading 257 (INT)
+yydebug: state 4, shifting to state 2
+yydebug: state 2, reducing by rule 5 (expr : INT)
+INT -&gt; Expr!
+yydebug: after reduction, shifting from state 4 to state 7
+yydebug: state 7, reading 262 (MINUS)
+yydebug: state 7, shifting to state 10
+yydebug: state 10, reading 257 (INT)
+yydebug: state 10, shifting to state 2
+yydebug: state 2, reducing by rule 5 (expr : INT)
+INT -&gt; Expr!
+yydebug: after reduction, shifting from state 10 to state 15
+yydebug: state 15, reading 260 (RIGHT_PAR)
+yydebug: state 15, reducing by rule 7 (expr : expr MINUS expr)
+MINUS -&gt; Expr!
+yydebug: after reduction, shifting from state 4 to state 7
+yydebug: state 7, shifting to state 13
+yydebug: state 13, reducing by rule 10 (expr : LEFT_PAR expr RIGHT_PAR)
+PARENS -&gt; Expr!
+yydebug: after reduction, shifting from state 11 to state 16
+yydebug: state 16, reducing by rule 8 (expr : expr MULT expr)
+MULT -&gt; Expr!
+yydebug: after reduction, shifting from state 1 to state 6
+yydebug: state 6, reading 258 (EOL)
+yydebug: state 6, shifting to state 8
+yydebug: state 8, reducing by rule 3 (input : expr EOL)
+-12
+yydebug: after reduction, shifting from state 1 to state 5
+yydebug: state 5, reducing by rule 2 (start : start input)
+yydebug: after reduction, shifting from state 0 to state 1
+yydebug: state 1, reading 0 (end-of-file)
+</PRE>
+
+<P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5120"
+<A NAME="tex2html5124"
   HREF="node184.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5114"
-  HREF="node69.html">
+<A NAME="tex2html5118"
+  HREF="node153.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5108"
+<A NAME="tex2html5114"
   HREF="node182.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5116"
-  HREF="node214.html">
+<A NAME="tex2html5120"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5118"
-  HREF="node217.html">
+<A NAME="tex2html5122"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -203,17 +376,17 @@ Análisis Sintáctico Ascendente en C con <TT>yacc</TT> y <TT>bison</TT></A>
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5121"
-  HREF="node184.html">Introducción a yacc</A>
-<B>Sup:</B> <A NAME="tex2html5115"
-  HREF="node69.html">SEGUNDA PARTE: APUNTES DE</A>
-<B> Ant:</B> <A NAME="tex2html5109"
-  HREF="node182.html">El Generador de Analizadores</A>
+<B> Sig:</B> <A NAME="tex2html5125"
+  HREF="node184.html">Análisis Sintáctico Ascendente en</A>
+<B>Sup:</B> <A NAME="tex2html5119"
+  HREF="node153.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5115"
+  HREF="node182.html">Práctica: Construcción del AST</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-05-04</I>
+2013-05-05</I>
 </ADDRESS>
 </BODY>
 </HTML>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Práctica: El Análisis de las Acciones</TITLE>
-<META NAME="description" CONTENT="Práctica: El Análisis de las Acciones">
+<TITLE>La Estructura de Datos Generada por YappParse.yp</TITLE>
+<META NAME="description" CONTENT="La Estructura de Datos Generada por YappParse.yp">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node175.html">
 <LINK REL="previous" HREF="node173.html">
-<LINK REL="up" HREF="node152.html">
+<LINK REL="up" HREF="node153.html">
 <LINK REL="next" HREF="node175.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4995"
+<A NAME="tex2html4999"
   HREF="node175.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4989"
-  HREF="node152.html">
+<A NAME="tex2html4993"
+  HREF="node153.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4983"
+<A NAME="tex2html4987"
   HREF="node173.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4991"
-  HREF="node214.html">
+<A NAME="tex2html4995"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4993"
-  HREF="node217.html">
+<A NAME="tex2html4997"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,71 +88,190 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4996"
-  HREF="node175.html">Práctica: Autoacciones</A>
-<B>Sup:</B> <A NAME="tex2html4990"
-  HREF="node152.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4984"
-  HREF="node173.html">La Estructura de Datos</A>
+<B> Sig:</B> <A NAME="tex2html5000"
+  HREF="node175.html">Práctica: El Análisis de</A>
+<B>Sup:</B> <A NAME="tex2html4994"
+  HREF="node153.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4988"
+  HREF="node173.html">El Analizador Ascendente Parse::Yapp</A>
 <B> Con:</B> 
-<A NAME="tex2html4991"
-  HREF="node214.html">
+<A NAME="tex2html4995"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4993"
-  HREF="node217.html">
+<A NAME="tex2html4997"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION059220000000000000000"></A>
-   <A NAME="18911"></A>
-<BR>
-Práctica:  El Análisis de las Acciones
+<H1><A NAME="SECTION059210000000000000000">
+La Estructura de Datos Generada por <TT>YappParse.yp</TT></A>
 </H1>
-  
-Modifique el código de <code>YappParse.yp</code> para que el análisis
-léxico de las secciones de código (<code>HEADCODE</code>, <code>CODE</code> y <code>TAILCODE</code>)
-se haga a través de las correspondientes rutinas proveida como parámetros 
-para el análisis por el usuario. La idea es ofrecer un primer paso
-que facilite la generación de analizadores en diferentes 
-lenguajes <code>Perl</code>, <code>C</code>, etc.
 
 <P>
-Estudie el módulo <code>Text::Balanced</code>. Basándose en 
-las funciones 
+El fichero <code>YappParse.yp</code>.
+contiene la gramática <code>yapp</code> del lenguaje
+<code>yacc</code><A NAME="tex2html427"
+  HREF="footnode.html#foot18728"><SUP><SPAN CLASS="arabic">36</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A>. 
+Además de las dos rutinas de soporte típicas,
+la de tratamiento de errores <code>_Error</code> y la
+de análisis léxico <code>_Lexer</code>, el fichero
+contiene una subrutina para el manejo de las 
+reglas <code>_AddRules</code> y otra rutina <code>Parse</code> la cuál
+ actúa como <SPAN  CLASS="textbf">wrapper</SPAN> o filtro sobre el analizador
+<code>YYParse</code>.
 
 <P>
-<code>extract_codeblock</code> y <code>extract_quotelike</code>
+Durante el análisis sintáctico 
+de un programa <code>yapp</code> se construye una estructura de 
+datos para la posterior manipulación y tratamiento de 
+la gramática.  
+Como ejemplo usaremosla gramática:
+<PRE>
+pl@nereida:~/src/perl/Parse-AutoTree/trunk/scripts$ cat -n int.yp
+ 1  %right '+'
+ 2  %left 'a'
+ 3  %nonassoc 'b'
+ 4  %%
+ 5  S:   /* empty rule */                       { print "S -&gt; epsilon\n" }
+ 6   |   'a' { print "Intermediate\n"; } S 'b'  { print "S -&gt; a S b\n" }
+ 7   |   '+' S '+' %prec 'a'                    { print "S -&gt; + S + prec a\n" }
+ 8  ;
+ 9  %%
+10
+11  sub _Error {
+12          exists $_[0]-&gt;YYData-&gt;{ERRMSG}
+13      and do {
+14          print $_[0]-&gt;YYData-&gt;{ERRMSG};
+15          delete $_[0]-&gt;YYData-&gt;{ERRMSG};
+16          return;
+17      };
+18      print "Syntax error.\n";
+19  }
+20
+21  sub _Lexer {
+22      my($parser)=shift;
+23
+24          defined($parser-&gt;YYData-&gt;{INPUT})
+25      or  $parser-&gt;YYData-&gt;{INPUT} = &lt;STDIN&gt;
+26      or  return('',undef);
+27
+28      $parser-&gt;YYData-&gt;{INPUT}=~s/^[ \t\n]//;
+29
+30      for ($parser-&gt;YYData-&gt;{INPUT}) {
+31          s/^(.)//s and return($1,$1);
+32      }
+33  }
+34
+35  sub Run {
+36      my($self)=shift;
+37      $self-&gt;YYParse( yylex =&gt; \&amp;_Lexer, yyerror =&gt; \&amp;_Error, yydebug =&gt; 0x1F );
+38  }
+</PRE>
+Para construir la estructura podemos usar la siguiente subrutina:
+<PRE>
+sub Parse {
+  my $grammar = shift;
+
+  my $x = new Parse::Yapp::Parse;
+  my $r = $x-&gt;Parse($grammar);
+
+  return $r;
+}
+</PRE>
+La llamada a <code>Parse</code> produce la siguiente estructura de datos:
+<PRE>
+nereida:~/src/perl/Parse-AutoTree/trunk/scripts&gt; grammar.pl int.yp
+$VAR1 = {
+  'START' =&gt; 'S', # Símbolo de arranque
+  'SYMS' =&gt; { 'S' =&gt; 5, 'b' =&gt; 3, 'a' =&gt; 2, '+' =&gt; 1 }, # Símbolo =&gt; línea
+  'TERM' =&gt; { 
+    'b' =&gt; [ 'NONASSOC', 2 ],  # terminal =&gt; [ Asociatividad, precedencia ]
+    'a' =&gt; [ 'LEFT', 1 ],      # terminal =&gt; [ Asociatividad, precedencia ]
+    '+' =&gt; [ 'RIGHT', 0 ] },   # terminal =&gt; [ Asociatividad, precedencia ]
+    # Si el terminal no tiene precedencia toma la forma  terminal =&gt; []
+  'NTERM' =&gt; { 'S' =&gt; [ '1', '3', '4' ] }, # variable =&gt; [ indice en RULES de las reglas de S ]
+  'PREC' =&gt; { 'a' =&gt; 1 }, # Terminales que son usandos en una directiva %prec
+  'NULL' =&gt; { 'S' =&gt; 1 }, # Variables que producen vacío
+  'EXPECT' =&gt; 0, # Número de conflictos esperados
+  'RULES' =&gt; [
+     [ '$start', [ 'S', '' ], undef, undef ], # Regla de superarranque
+     [
+       'S', [], # producción
+       undef,   # precedencia explícita de la regla
+       [ ' print "S -&gt; epsilon\n" ', 5 ] # [ acción asociada, línea ]
+     ],
+     [
+       '@1-1', [], # Regla intermedia: Variable temporal
+       undef,
+       [ ' print "Intermediate\n"; ', 6 ]
+     ],
+     [
+       'S', [ 'a', '@1-1', 'S', 'b' ],
+       undef,
+       [ ' print "S -&gt; a S b\n" ', 6 ]
+     ],
+     [
+       'S', [ '+', 'S', '+' ],
+       1, # precedencia explícita de la regla
+       [ ' print "S -&gt; + S + prec a\n" ', 7 ]
+     ]
+   ],
+  'HEAD' =&gt; undef, # Código de cabecera 
+  'TAIL' =&gt; [ '... código de cola ...', 9 ], # Línea en la que comienza la sección de cola
+};
+</PRE>
 
 <P>
-del módulo <code>Text::Balanced</code>, resuelva el problema del reconocimiento
-de código Perl dentro del analizador léxico de <code>Parse::Yapp</code>,
-evitando forzar al usuario en la escritura de ``llaves fantasma''.
-Compare el rendimiento de esta solución con la que provee <code>Yapp</code>.
-Para analizar el <A NAME="18912"></A><SPAN  CLASS="textbf">rendimiento</SPAN> use el módulo <A NAME="18916"></A><TT>Benchmark</TT>.
+Las componentes del hash que aparece
+arriba se corresponden
+con diversas variables usadas por <code>YYParse</code> durante el análisis. La correspondencia
+se establece dentro  del método <code>Parse</code> cuando se hace la asignación:
 
 <P>
-¿Cu&#225;les son sus conclusiones? ¿Qué es mejor?
+<PRE>
+   @$parsed{ 'HEAD', 'TAIL', 'RULES', 'NTERM', 'TERM',
+              'NULL', 'PREC', 'SYMS',  'START', 'EXPECT' }
+    =       (  $head,  $tail,  $rules,  $nterm,  $term,
+               $nullable, $precterm, $syms, $start, $expect);
+</PRE>
+esta asignación es la que crea el hash.
+Las variables con identificadores en minúsculas son usadas 
+en el analizador. Son visibles en todo el fichero ya que,
+aunque declaradas léxicas, su declaración se encuentra 
+en la cabecera del analizador:
+<PRE>
+%{
+require 5.004;
+
+use Carp;
+
+my($input,$lexlevel,@lineno,$nberr,$prec,$labelno);
+my($syms,$head,$tail,$token,$term,$nterm,$rules,$precterm,$start,$nullable);
+my($expect);
+
+%}
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4995"
+<A NAME="tex2html4999"
   HREF="node175.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4989"
-  HREF="node152.html">
+<A NAME="tex2html4993"
+  HREF="node153.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4983"
+<A NAME="tex2html4987"
   HREF="node173.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4991"
-  HREF="node214.html">
+<A NAME="tex2html4995"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4993"
-  HREF="node217.html">
+<A NAME="tex2html4997"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -199,17 +318,17 @@ Para analizar el <A NAME="18912"></A><SPAN  CLASS="textbf">rendimiento</SPAN> us
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4996"
-  HREF="node175.html">Práctica: Autoacciones</A>
-<B>Sup:</B> <A NAME="tex2html4990"
-  HREF="node152.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4984"
-  HREF="node173.html">La Estructura de Datos</A>
+<B> Sig:</B> <A NAME="tex2html5000"
+  HREF="node175.html">Práctica: El Análisis de</A>
+<B>Sup:</B> <A NAME="tex2html4994"
+  HREF="node153.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4988"
+  HREF="node173.html">El Analizador Ascendente Parse::Yapp</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-05-04</I>
+2013-05-05</I>
 </ADDRESS>
 </BODY>
 </HTML>

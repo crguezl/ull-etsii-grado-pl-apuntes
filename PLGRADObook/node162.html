@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Acciones en Medio de una Regla</TITLE>
-<META NAME="description" CONTENT="Acciones en Medio de una Regla">
+<TITLE>Construcción del Árbol Sintáctico</TITLE>
+<META NAME="description" CONTENT="Construcción del Árbol Sintáctico">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node163.html">
 <LINK REL="previous" HREF="node161.html">
-<LINK REL="up" HREF="node152.html">
+<LINK REL="up" HREF="node153.html">
 <LINK REL="next" HREF="node163.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4821"
+<A NAME="tex2html4825"
   HREF="node163.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4815"
-  HREF="node152.html">
+<A NAME="tex2html4819"
+  HREF="node153.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4809"
+<A NAME="tex2html4813"
   HREF="node161.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4817"
-  HREF="node214.html">
+<A NAME="tex2html4821"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4819"
-  HREF="node217.html">
+<A NAME="tex2html4823"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,113 +88,156 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4822"
-  HREF="node163.html">Esquemas de Traducción</A>
-<B>Sup:</B> <A NAME="tex2html4816"
-  HREF="node152.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4810"
-  HREF="node161.html">Construcción del Árbol Sintáctico</A>
+<B> Sig:</B> <A NAME="tex2html4826"
+  HREF="node163.html">Acciones en Medio de</A>
+<B>Sup:</B> <A NAME="tex2html4820"
+  HREF="node153.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4814"
+  HREF="node161.html">Generación interactiva de analizadores</A>
 <B> Con:</B> 
-<A NAME="tex2html4817"
-  HREF="node214.html">
+<A NAME="tex2html4821"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4819"
-  HREF="node217.html">
+<A NAME="tex2html4823"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION059100000000000000000">
-Acciones en Medio de una Regla</A>
+<H1><A NAME="SECTION05990000000000000000">
+Construcción del Árbol Sintáctico</A>
 </H1>
-A veces necesitamos insertar una acción en medio de una regla.
-Una acción en medio de una regla puede hacer referencia a los atributos de
-los símbolos que la preceden (usando <code>$n</code>), pero no a los que le siguen.
-
-<P>
-Cuando se  inserta una acción <!-- MATH
- $\left \{ action_1\right \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="78" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img483.png"
- ALT="$ \left \{ action_1\right \}$"></SPAN>
-para su ejecución en medio de una regla <!-- MATH
- $A \rightarrow \alpha
-\beta$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="67" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img116.png"
- ALT="$ A \rightarrow \alpha \beta $"></SPAN> :
-<DIV ALIGN="CENTER">
-<!-- MATH
- $A \rightarrow \alpha \left \{ action_1 \right \} \beta \left \{ action_2\right \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="222" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img484.png"
- ALT="$ A \rightarrow \alpha \left \{ action_1 \right \} \beta \left \{ action_2\right \}$"></SPAN>
-</DIV>
-<code>yapp</code> crea una variable sintáctica temporal <SPAN CLASS="MATH"><IMG
- WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img485.png"
- ALT="$ T$"></SPAN> e introduce una nueva regla:
-
-<P>
-<DIV ALIGN="CENTER">
-</DIV>
-<OL>
-<LI><!-- MATH
- $A \rightarrow \alpha T \beta \left \{ action_2\right \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="155" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img486.png"
- ALT="$ A \rightarrow \alpha T \beta \left \{ action_2\right \}$"></SPAN> 
-</LI>
-<LI><!-- MATH
- $T \rightarrow \epsilon \left \{ action_1 \right \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="127" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img487.png"
- ALT="$ T \rightarrow \epsilon \left \{ action_1 \right \}$"></SPAN>
-</LI>
-</OL>
-<DIV ALIGN="CENTER">
-</DIV>
-
-<P>
-Las acciones en mitad de una regla cuentan como un símbolo mas en la parte 
-derecha de la regla. Asi pues, en una acción posterior en la regla,
-se deberán referenciar los  atributos de los símbolos, teniendo en cuenta este hecho.
-
-<P>
-Las acciones en mitad de la regla pueden tener un atributo. 
-Las acciones posteriores
-en la regla se referirán a él como <code>$_[n]</code>, siendo <code>n</code> su número de orden
-en la parte derecha. 
+El siguiente ejemplo usa <code>yapp</code> 
+para construir el árbol sintáctico de una expresión en infijo:
+<PRE>
+$ cat -n Infixtree_bless.yp
+ 1  #
+ 2  # Infixtree.yp
+ 3  #
+ 4
+ 5  %{
+ 6  use Data::Dumper;
+ 7  %}
+ 8  %right  '='
+ 9  %left   '-' '+'
+10  %left   '*' '/'
+11  %left   NEG
+12
+13  %%
+14  input:  #empty
+15          |   input line
+16  ;
+17
+18  line:     '\n'         { $_[1] }
+19          | exp '\n'     { print Dumper($_[1]); }
+20          | error '\n'   { $_[0]-&gt;YYErrok }
+21  ;
+22
+23  exp:        NUM
+24          |   VAR                 { $_[1] }
+25          |   VAR '=' exp         { bless [$_[1], $_[3]], 'ASSIGN' }
+26          |   exp '+' exp         { bless [$_[1], $_[3] ], 'PLUS'}
+27          |   exp '-' exp         { bless [$_[1], $_[3] ], 'MINUS'}
+28          |   exp '*' exp         { bless [$_[1], $_[3]], 'TIMES' }
+29          |   exp '/' exp         { bless [$_[1], $_[3]], 'DIVIDE' }
+30          |   '-' exp %prec NEG   { bless [$_[2]], 'NEG' }
+31          |   '(' exp ')'         { $_[2] }
+32  ;
+33
+34  %%
+35
+36  sub _Error {
+37          exists $_[0]-&gt;YYData-&gt;{ERRMSG}
+38      and do {
+39          print $_[0]-&gt;YYData-&gt;{ERRMSG};
+40          delete $_[0]-&gt;YYData-&gt;{ERRMSG};
+41          return;
+42      };
+43      print "Syntax error.\n";
+44  }
+45
+46  sub _Lexer {
+47      my($parser)=shift;
+48
+49          defined($parser-&gt;YYData-&gt;{INPUT})
+50      or  $parser-&gt;YYData-&gt;{INPUT} = &lt;STDIN&gt;
+51      or  return('',undef);
+52
+53      $parser-&gt;YYData-&gt;{INPUT}=~s/^[ \t]//;
+54
+55      for ($parser-&gt;YYData-&gt;{INPUT}) {
+56          s/^([0-9]+(?:\.[0-9]+)?)//
+57                  and return('NUM',$1);
+58          s/^([A-Za-z][A-Za-z0-9_]*)//
+59                  and return('VAR',$1);
+60          s/^(.)//s
+61                  and return($1,$1);
+62      }
+63  }
+64
+65  sub Run {
+66      my($self)=shift;
+67      $self-&gt;YYParse( yylex =&gt; \&amp;_Lexer, yyerror =&gt; \&amp;_Error );
+68  }
+</PRE>
+Para compilar hacemos:
+<PRE>
+$ yapp -m Infixtree Infixtree_bless.yp
+</PRE>
+El guión que usa el analizador anterior es similar al que vimos en la 
+sección <A HREF="node154.html#section:ejemplodeuso">36.1</A>:
+<PRE>
+$ cat -n ./useinfixtree.pl
+     1  #!/usr/bin/perl -w
+     2
+     3  use Infixtree;
+     4
+     5  $parser = new Infixtree();
+     6  $parser-&gt;Run;
+</PRE>
+Veamos un ejemplo de ejecución:
+<PRE>
+$ ./useinfixtree.pl
+a = 2+3
+$VAR1 = bless( [
+                 'a',
+                 bless( [
+                          '2',
+                          '3'
+                        ], 'PLUS' )
+               ], 'ASSIGN' );
+b = a*4+a
+$VAR1 = bless( [
+                 'b',
+                 bless( [
+                          bless( [
+                                   'a',
+                                   '4'
+                                 ], 'TIMES' ),
+                          'a'
+                        ], 'PLUS' )
+               ], 'ASSIGN' );
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4821"
+<A NAME="tex2html4825"
   HREF="node163.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4815"
-  HREF="node152.html">
+<A NAME="tex2html4819"
+  HREF="node153.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4809"
+<A NAME="tex2html4813"
   HREF="node161.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4817"
-  HREF="node214.html">
+<A NAME="tex2html4821"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4819"
-  HREF="node217.html">
+<A NAME="tex2html4823"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -241,17 +284,17 @@ en la parte derecha.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4822"
-  HREF="node163.html">Esquemas de Traducción</A>
-<B>Sup:</B> <A NAME="tex2html4816"
-  HREF="node152.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4810"
-  HREF="node161.html">Construcción del Árbol Sintáctico</A>
+<B> Sig:</B> <A NAME="tex2html4826"
+  HREF="node163.html">Acciones en Medio de</A>
+<B>Sup:</B> <A NAME="tex2html4820"
+  HREF="node153.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4814"
+  HREF="node161.html">Generación interactiva de analizadores</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-05-04</I>
+2013-05-05</I>
 </ADDRESS>
 </BODY>
 </HTML>

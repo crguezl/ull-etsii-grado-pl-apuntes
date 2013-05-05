@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Algoritmo de Análisis LR</TITLE>
-<META NAME="description" CONTENT="Algoritmo de Análisis LR">
+<TITLE>El módulo Generado por yapp</TITLE>
+<META NAME="description" CONTENT="El módulo Generado por yapp">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node158.html">
 <LINK REL="previous" HREF="node156.html">
-<LINK REL="up" HREF="node152.html">
+<LINK REL="up" HREF="node153.html">
 <LINK REL="next" HREF="node158.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4751"
+<A NAME="tex2html4755"
   HREF="node158.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4745"
-  HREF="node152.html">
+<A NAME="tex2html4749"
+  HREF="node153.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4739"
+<A NAME="tex2html4743"
   HREF="node156.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4747"
-  HREF="node214.html">
+<A NAME="tex2html4751"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4749"
-  HREF="node217.html">
+<A NAME="tex2html4753"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,118 +88,215 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4752"
-  HREF="node158.html">Depuración en yapp</A>
-<B>Sup:</B> <A NAME="tex2html4746"
-  HREF="node152.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4740"
-  HREF="node156.html">El módulo Generado por</A>
+<B> Sig:</B> <A NAME="tex2html4756"
+  HREF="node158.html">Algoritmo de Análisis LR</A>
+<B>Sup:</B> <A NAME="tex2html4750"
+  HREF="node153.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4744"
+  HREF="node156.html">Construcción de las Tablas</A>
 <B> Con:</B> 
-<A NAME="tex2html4747"
-  HREF="node214.html">
+<A NAME="tex2html4751"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4749"
-  HREF="node217.html">
+<A NAME="tex2html4753"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION05950000000000000000"></A>
-<A NAME="section:algoritmoLR"></A>
+<H1><A NAME="SECTION05940000000000000000"></A>
+<A NAME="section:tablas"></A>
 <BR>
-Algoritmo de Análisis LR
+El módulo Generado por <TT>yapp</TT>
 </H1>
-Asi  pues la tabla de transiciones del autómata nos genera dos tablas:
-la tabla de acciones y la de saltos.
-El  algoritmo  de análisis sintáctico <SPAN  CLASS="textbf">LR</SPAN> en el  que 
-se basa <SPAN  CLASS="textbf">yapp</SPAN> utiliza una pila y dos tablas 
-para analizar la entrada. Como se ha visto, la tabla  de acciones contiene cuatro tipo de acciones: 
-
-<OL>
-<LI>Desplazar (<SPAN  CLASS="textbf">shift</SPAN>)
-</LI>
-<LI>Reducir (<SPAN  CLASS="textbf">reduce</SPAN>)
-</LI>
-<LI>Aceptar
-</LI>
-<LI>Error
-</LI>
-</OL>
-El algoritmo utiliza una pila en la que se guardan los estados
-del autómata. De este modo se evita tener que ``comenzar'' 
-el procesado de la forma sentencial derecha resultante
-después de una reducción (antiderivación).
-<P>
-<DIV><A NAME="alg:parser"><B>Algoritmo  <SPAN CLASS="arabic">36</SPAN>.<SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">1</SPAN></B></A> &nbsp; 
-<I>Análizador LR
-</I><PRE>
-push(s0);
- b = yylex();
- for( ; ; ;) {
-   s = top(0); a = b;
-   switch (action[s][a]) {
-     case "shift t" : 
-       push(t); 
-       b = yylex();
-       break;
-     case "reduce A -&gt;alpha" : 
-       eval(Sub{A -&gt; alpha}-&gt;(top(|alpha|-1).attr, ... , top(0).attr)); 
-       pop(|alpha|); 
-       push(goto[top(0)][A]); 
-       break;
-     case "accept" : return (1); 
-     default : yyerror("syntax error");
-   }
- }
-</PRE></DIV><P></P>
-Como es habitual, <SPAN CLASS="MATH"><IMG
- WIDTH="24" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img448.png"
- ALT="$ \vert x\vert$"></SPAN> denota la longitud de la cadena <SPAN CLASS="MATH"><IMG
- WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img49.png"
- ALT="$ x$"></SPAN>.
-La función <code>top(k)</code> devuelve el elemento que ocupa la 
-posición <code>k</code> desde el <SPAN  CLASS="textbf">top</SPAN> de la pila (esto es, está a profundidad <code>k</code>).
-La función <code>pop(k)</code> extrae <code>k</code> elementos de la pila.
-La notación <code>state.attr</code> hace referencia al atributo
-asociado con cada estado. Denotamos por <code>sub_{reduce A -&gt; alpha}</code>
-el código de la acción asociada con la regla <!-- MATH
- $A \rightarrow \alpha$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img28.png"
- ALT="$ A \rightarrow \alpha$"></SPAN>.
+La ejecución de la orden <code>yapp -m Calc Calc.yp</code> produce 
+como salida el módulo <code>Calc.pm</code> el cual contiene las tablas LALR(1)
+para la gramática descrita en <code>Calc.yp</code>. Estas tablas son las que
+dirigen al analizador LR. 
+Puede ver el código completo del módulo en el apéndice
+que se encuentra en la página <A HREF="#apendice:calcpm"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>.
+La  estructura del módulo <code>Calc.pm</code> es como sigue:
 
 <P>
-Todos los analizadores LR comparten, salvo pequeñas
-exepciones, el mismo algoritmo
-de análisis. Lo que más los diferencia es la forma en 
-la que construyen las tablas.
-En <code>yapp</code>
-la construcción de las tablas de <SPAN  CLASS="textbf">acciones</SPAN> y <SPAN  CLASS="textbf">gotos</SPAN>
-se realiza mediante el algoritmo <SPAN  CLASS="textbf">LALR</SPAN>.
+<PRE>
+ 1 package Calc;
+ 2 use vars qw ( @ISA );
+ 3 use strict;
+ 4 @ISA= qw ( Parse::Yapp::Driver );
+ 5 use Parse::Yapp::Driver;
+ 6 
+ 7 sub new {
+ 8    my($class)=shift;
+ 9    ref($class) and $class=ref($class);
+10 
+11     my($self)=$class-&gt;SUPER::new( 
+12        yyversion =&gt; '1.05',
+13        yystates =&gt; [ 
+..          ...
+32        ], # estados
+33        yyrules  =&gt; [
+..       	# ... mas reglas
+70        ], # final de las reglas
+71        @_); # argumentos pasados
+72   bless($self,$class);
+73 }
+</PRE>
+
+<P>
+La clase <code>Calc</code> hereda de <code>Parse::Yapp::Driver</code>, pero el objeto creado
+será bendecido en la clase <code>Calc</code> (Línea 4, véanse también 
+la figura <A HREF="node173.html#fig:yappinheritance">36.3</A> 
+y la línea 72 del fuente). 
+Por tanto, el constructor llamado en la línea 11 es el de <code>Parse::Yapp::Driver</code>.
+Se utiliza la estrategia de llamada con parámetros con nombre. 
+El valor para la clave <code>yystates</code> es una referencia anónima 
+al array de estados y el valor para la clave <code>yyrules</code> 
+es una referencia anónima a las reglas.
+<PRE>
+10 
+11     my($self)=$class-&gt;SUPER::new( 
+12        yyversion =&gt; '1.05',
+13        yystates =&gt; [
+14         {#State 0
+15           DEFAULT =&gt; -1, GOTOS =&gt; { 'input' =&gt; 1 }
+16         },
+17         {#State 1
+18           ACTIONS =&gt; {
+19             'NUM' =&gt; 6, '' =&gt; 4, "-" =&gt; 2, "(" =&gt; 7,
+20             'VAR' =&gt; 8, "\n" =&gt; 5, 'error' =&gt; 9
+21           },
+22           GOTOS =&gt; { 'exp' =&gt; 3, 'line' =&gt; 10 }
+23         },
+24         # ...  mas estados
+25         {#State 27
+26           ACTIONS =&gt; {
+27             "-" =&gt; 12, "+" =&gt; 13, "/" =&gt; 15, "^" =&gt; 16,
+28             "*" =&gt; 17
+29           },
+30           DEFAULT =&gt; -8
+31         }
+32        ], # estados
+</PRE>
+Se ve que un estado se pasa como un hash anónimo indexado en las acciones
+y los saltos. 
+
+<P>
+Para consultar los números asociados con las reglas de producción
+vea el apéndice en la página <A HREF="#apendice:calcouput"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>
+conteniendo el fichero <code>Calc.output</code>.
+
+<P>
+A continuación vienen las reglas:
+<PRE>
+33        yyrules  =&gt; [
+34        [#Rule 0
+35              '$start', 2, undef ],
+36        [#Rule 1
+37              'input', 0, undef ],
+38        [#Rule 2
+39              'input', 2, sub
+40 #line 17 "Calc.yp"
+41              { push(@{$_[1]},$_[2]); $_[1] }
+42        ],
+43        [#Rule 3
+44              'line', 1, sub
+45 #line 20 "Calc.yp"
+46              { $_[1] }
+47        ],
+48        [#Rule 4
+49              'line', 2, sub
+50 #line 21 "Calc.yp"
+51              { print "$_[1]\n" }
+52        ],
+53   # ... mas reglas
+54     [#Rule 11
+55             'exp', 3, sub
+56 #line 30 "Calc.yp"
+57 { $_[1] * $_[3] }
+58    ],
+59   [#Rule 12
+60             'exp', 3, sub
+61 #line 31 "Calc.yp"
+62   {
+63     $_[3] and return($_[1] / $_[3]);
+64     $_[0]-&gt;YYData-&gt;{ERRMSG} =   "Illegal division by zero.\n";
+65     $_[0]-&gt;YYError;
+66     undef
+67   }
+68     ],
+69   # ... mas reglas
+70   ], # final de las reglas
+</PRE>
+Las reglas son arrays anónimos conteniendo el nombre de la regla o
+variable sintáctica (<code>exp</code>), el número de símbolos en la parte
+derecha y la subrutina anónima con el código asociado.
+
+<P>
+Vemos como la acción es convertida en una subrutina anónima. 
+Los argumentos de dicha subrutina son los atributos semánticos
+asociados con los símbolos en la parte derecha de la regla de 
+producción. El valor retornado por la acción/subrutina
+es el valor asociado con la reducción.
+
+<P>
+Para hacer que 
+el compilador Perl diagnostique los errores relativos al fuente 
+<code>Calc.yp</code> se usa una directiva <code>#line</code>.
+
+<P>
+<PRE>
+71   @_);
+72   bless($self,$class);
+73 }
+74
+</PRE>
+
+<P>
+la bendición con dos argumentos hace que el objeto pertenezca a la
+clase <code>Calc</code>. A continuación siguen las subrutinas de soporte:
+<PRE>
+75 #line 44 "Calc.yp" 
+76 
+77 
+78 sub _Error {
+79   # ...
+80 }
+81 
+82 sub _Lexer {
+83   my($parser)=shift;
+84   # ...
+85 }
+86 
+87 sub Run {
+88     my($self)=shift;
+89     $self-&gt;YYParse( yylex =&gt; \&amp;_Lexer, yyerror =&gt; \&amp;_Error );
+90 }
+91 
+92 my($calc)=new Calc;
+93 $calc-&gt;Run;
+94 
+95 1;
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4751"
+<A NAME="tex2html4755"
   HREF="node158.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4745"
-  HREF="node152.html">
+<A NAME="tex2html4749"
+  HREF="node153.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4739"
+<A NAME="tex2html4743"
   HREF="node156.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4747"
-  HREF="node214.html">
+<A NAME="tex2html4751"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4749"
-  HREF="node217.html">
+<A NAME="tex2html4753"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -246,17 +343,17 @@ se realiza mediante el algoritmo <SPAN  CLASS="textbf">LALR</SPAN>.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4752"
-  HREF="node158.html">Depuración en yapp</A>
-<B>Sup:</B> <A NAME="tex2html4746"
-  HREF="node152.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4740"
-  HREF="node156.html">El módulo Generado por</A>
+<B> Sig:</B> <A NAME="tex2html4756"
+  HREF="node158.html">Algoritmo de Análisis LR</A>
+<B>Sup:</B> <A NAME="tex2html4750"
+  HREF="node153.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4744"
+  HREF="node156.html">Construcción de las Tablas</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-05-04</I>
+2013-05-05</I>
 </ADDRESS>
 </BODY>
 </HTML>

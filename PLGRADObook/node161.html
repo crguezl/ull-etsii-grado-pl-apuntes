@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Construcción del Árbol Sintáctico</TITLE>
-<META NAME="description" CONTENT="Construcción del Árbol Sintáctico">
+<TITLE>Generación interactiva de analizadores Yapp</TITLE>
+<META NAME="description" CONTENT="Generación interactiva de analizadores Yapp">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node162.html">
 <LINK REL="previous" HREF="node160.html">
-<LINK REL="up" HREF="node152.html">
+<LINK REL="up" HREF="node153.html">
 <LINK REL="next" HREF="node162.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4807"
+<A NAME="tex2html4811"
   HREF="node162.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4801"
-  HREF="node152.html">
+<A NAME="tex2html4805"
+  HREF="node153.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4795"
+<A NAME="tex2html4799"
   HREF="node160.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4803"
-  HREF="node214.html">
+<A NAME="tex2html4807"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4805"
-  HREF="node217.html">
+<A NAME="tex2html4809"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,156 +88,122 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4808"
-  HREF="node162.html">Acciones en Medio de</A>
-<B>Sup:</B> <A NAME="tex2html4802"
-  HREF="node152.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4796"
-  HREF="node160.html">Generación interactiva de analizadores</A>
+<B> Sig:</B> <A NAME="tex2html4812"
+  HREF="node162.html">Construcción del Árbol Sintáctico</A>
+<B>Sup:</B> <A NAME="tex2html4806"
+  HREF="node153.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4800"
+  HREF="node160.html">Precedencia y Asociatividad</A>
 <B> Con:</B> 
-<A NAME="tex2html4803"
-  HREF="node214.html">
+<A NAME="tex2html4807"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4805"
-  HREF="node217.html">
+<A NAME="tex2html4809"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION05990000000000000000">
-Construcción del Árbol Sintáctico</A>
+<H1><A NAME="SECTION05980000000000000000">
+Generación interactiva de analizadores <TT>Yapp</TT></A>
 </H1>
-El siguiente ejemplo usa <code>yapp</code> 
-para construir el árbol sintáctico de una expresión en infijo:
+En el siguiente código, la subrutina <TT>create_yapp_package</TT> 
+nos muestra como crear un analizador <TT>Yapp</TT> en tiempo de ejecución.
+Las dos líneas:
 <PRE>
-$ cat -n Infixtree_bless.yp
- 1  #
- 2  # Infixtree.yp
- 3  #
- 4
- 5  %{
- 6  use Data::Dumper;
- 7  %}
- 8  %right  '='
- 9  %left   '-' '+'
-10  %left   '*' '/'
-11  %left   NEG
-12
-13  %%
-14  input:  #empty
-15          |   input line
-16  ;
-17
-18  line:     '\n'         { $_[1] }
-19          | exp '\n'     { print Dumper($_[1]); }
-20          | error '\n'   { $_[0]-&gt;YYErrok }
-21  ;
-22
-23  exp:        NUM
-24          |   VAR                 { $_[1] }
-25          |   VAR '=' exp         { bless [$_[1], $_[3]], 'ASSIGN' }
-26          |   exp '+' exp         { bless [$_[1], $_[3] ], 'PLUS'}
-27          |   exp '-' exp         { bless [$_[1], $_[3] ], 'MINUS'}
-28          |   exp '*' exp         { bless [$_[1], $_[3]], 'TIMES' }
-29          |   exp '/' exp         { bless [$_[1], $_[3]], 'DIVIDE' }
-30          |   '-' exp %prec NEG   { bless [$_[2]], 'NEG' }
-31          |   '(' exp ')'         { $_[2] }
-32  ;
-33
-34  %%
-35
-36  sub _Error {
-37          exists $_[0]-&gt;YYData-&gt;{ERRMSG}
-38      and do {
-39          print $_[0]-&gt;YYData-&gt;{ERRMSG};
-40          delete $_[0]-&gt;YYData-&gt;{ERRMSG};
-41          return;
-42      };
-43      print "Syntax error.\n";
-44  }
-45
-46  sub _Lexer {
-47      my($parser)=shift;
-48
-49          defined($parser-&gt;YYData-&gt;{INPUT})
-50      or  $parser-&gt;YYData-&gt;{INPUT} = &lt;STDIN&gt;
-51      or  return('',undef);
-52
-53      $parser-&gt;YYData-&gt;{INPUT}=~s/^[ \t]//;
-54
-55      for ($parser-&gt;YYData-&gt;{INPUT}) {
-56          s/^([0-9]+(?:\.[0-9]+)?)//
-57                  and return('NUM',$1);
-58          s/^([A-Za-z][A-Za-z0-9_]*)//
-59                  and return('VAR',$1);
-60          s/^(.)//s
-61                  and return($1,$1);
-62      }
-63  }
-64
-65  sub Run {
-66      my($self)=shift;
-67      $self-&gt;YYParse( yylex =&gt; \&amp;_Lexer, yyerror =&gt; \&amp;_Error );
-68  }
+  my $p = new Parse::Yapp(input =&gt; $grammar);
+  $p = $p-&gt;Output(classname =&gt; $name);
 </PRE>
-Para compilar hacemos:
+crean una cadena en <code>$p</code> conteniendo el código de 
+la clase que implanta el analizador. Todo el truco está en hacer
 <PRE>
-$ yapp -m Infixtree Infixtree_bless.yp
+  eval $p;
 </PRE>
-El guión que usa el analizador anterior es similar al que vimos en la 
-sección <A HREF="node153.html#section:ejemplodeuso">36.1</A>:
+para tener el paquete a mano:
 <PRE>
-$ cat -n ./useinfixtree.pl
-     1  #!/usr/bin/perl -w
-     2
-     3  use Infixtree;
-     4
-     5  $parser = new Infixtree();
-     6  $parser-&gt;Run;
+$ cat left.pl
+#!/usr/local/bin/perl5.8.0 -w
+#use strict;
+use Parse::Yapp;
+
+sub lex{
+    my($parser)=shift;
+
+    return('',undef) unless $parser-&gt;YYData-&gt;{INPUT};
+    for ($parser-&gt;YYData-&gt;{INPUT}) {
+        s/^\s*//;
+        s/^(.)//;
+        my $ret = $1;
+        return($ret, $ret);
+    }
+}
+
+sub yapp {
+  my $grammar = shift
+     or die "Must specify a grammar as first argument";
+  my $name = shift
+     or die "Must specify the name of the class as second argument";
+
+  my $p = new Parse::Yapp(input =&gt; $grammar) or die "Bad grammar.";
+  $p = $p-&gt;Output(classname =&gt; $name) or die "Can't generate parser.";
+
+  eval $p;
+  $@ and die "Error while compiling your parser: $@\n";
+}
+
+######## main #########
+my $grammar = q {
+%left '*'
+%%
+S:  A
+;
+
+A:  A '*' A  { "($_[1] $_[2] $_[3])" }
+ |  B
+;
+
+B:  'a' | 'b' | 'c' | 'd'
+;
+
+%%
+};
+
+&amp;yapp($grammar, "Example");
+my $p = new Example(yylex =&gt; \&amp;lex, yyerror =&gt; sub {});
+
+print "Expresion: ";
+$p-&gt;YYData-&gt;{INPUT} = &lt;&gt;;
+$p-&gt;YYData-&gt;{INPUT} =~ s/\s*$//;
+
+my $out=$p-&gt;YYParse;
+print "out = $out\n";
 </PRE>
-Veamos un ejemplo de ejecución:
+Sigue un ejemplo de ejecución:
 <PRE>
-$ ./useinfixtree.pl
-a = 2+3
-$VAR1 = bless( [
-                 'a',
-                 bless( [
-                          '2',
-                          '3'
-                        ], 'PLUS' )
-               ], 'ASSIGN' );
-b = a*4+a
-$VAR1 = bless( [
-                 'b',
-                 bless( [
-                          bless( [
-                                   'a',
-                                   '4'
-                                 ], 'TIMES' ),
-                          'a'
-                        ], 'PLUS' )
-               ], 'ASSIGN' );
+$ ./left.pl
+Expresion: a*b*c*d
+out = (((a * b) * c) * d)
 </PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4807"
+<A NAME="tex2html4811"
   HREF="node162.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4801"
-  HREF="node152.html">
+<A NAME="tex2html4805"
+  HREF="node153.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4795"
+<A NAME="tex2html4799"
   HREF="node160.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4803"
-  HREF="node214.html">
+<A NAME="tex2html4807"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4805"
-  HREF="node217.html">
+<A NAME="tex2html4809"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -284,17 +250,17 @@ $VAR1 = bless( [
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4808"
-  HREF="node162.html">Acciones en Medio de</A>
-<B>Sup:</B> <A NAME="tex2html4802"
-  HREF="node152.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4796"
-  HREF="node160.html">Generación interactiva de analizadores</A>
+<B> Sig:</B> <A NAME="tex2html4812"
+  HREF="node162.html">Construcción del Árbol Sintáctico</A>
+<B>Sup:</B> <A NAME="tex2html4806"
+  HREF="node153.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4800"
+  HREF="node160.html">Precedencia y Asociatividad</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-05-04</I>
+2013-05-05</I>
 </ADDRESS>
 </BODY>
 </HTML>
