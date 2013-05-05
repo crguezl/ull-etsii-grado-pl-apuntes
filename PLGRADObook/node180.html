@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Práctica: Nuevos Métodos</TITLE>
-<META NAME="description" CONTENT="Práctica: Nuevos Métodos">
+<TITLE>Práctica: Autoacciones</TITLE>
+<META NAME="description" CONTENT="Práctica: Autoacciones">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node181.html">
 <LINK REL="previous" HREF="node179.html">
-<LINK REL="up" HREF="node156.html">
+<LINK REL="up" HREF="node157.html">
 <LINK REL="next" HREF="node181.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5095"
+<A NAME="tex2html5099"
   HREF="node181.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5089"
-  HREF="node156.html">
+<A NAME="tex2html5093"
+  HREF="node157.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5083"
+<A NAME="tex2html5087"
   HREF="node179.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5091"
-  HREF="node218.html">
+<A NAME="tex2html5095"
+  HREF="node219.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5093"
-  HREF="node221.html">
+<A NAME="tex2html5097"
+  HREF="node222.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,108 +88,148 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5096"
-  HREF="node181.html">Práctica: Generación Automática de</A>
-<B>Sup:</B> <A NAME="tex2html5090"
-  HREF="node156.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5084"
-  HREF="node179.html">Práctica: Autoacciones</A>
+<B> Sig:</B> <A NAME="tex2html5100"
+  HREF="node181.html">Práctica: Nuevos Métodos</A>
+<B>Sup:</B> <A NAME="tex2html5094"
+  HREF="node157.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5088"
+  HREF="node179.html">Práctica: El Análisis de</A>
 <B> Con:</B> 
-<A NAME="tex2html5091"
-  HREF="node218.html">
+<A NAME="tex2html5095"
+  HREF="node219.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5093"
-  HREF="node221.html">
+<A NAME="tex2html5097"
+  HREF="node222.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION059240000000000000000"></A>
-   <A NAME="19032"></A>
+<H1><A NAME="SECTION059230000000000000000"></A>
+   <A NAME="19045"></A>
 <BR>
-Práctica: Nuevos Métodos
+Práctica:  Autoacciones
 </H1>
-  
-Continuemos extendiendo <code>Yapp</code>.
-
-<UL>
-<LI>Introduzca en el módulo <code>Driver.pm</code> de <code>Yapp</code>
-un método <code>YYLhs</code> que devuelva el identificador
-de la variable sintáctica en el lado izquierdo de la regla 
-de producción por la que se está reduciendo. 
-</LI>
-<LI>Para tener disponible el lado izquierdo
-deberá modificar la conducta del analizador LALR 
-(subrutina <code>_Parse</code>) para que guarde como un atributo
-el identificador de dicho noterminal.
-</LI>
-<LI>¿Que identificador se devuelve asociado con las acciones
-intermedias?
-</LI>
-</UL>
 
 <P>
-Sigue un ejemplo de como programar haciendo uso de esta y la 
-anterior extensión:
+Extienda <code>Parse::Yapp</code> con una directiva <code>%autoaction CODE</code> la
+cuál cambia la acción por defecto. Cuando una regla de producción 
+no tenga una acción asociada, en vez de ejecutarse la acción
+<code>yapp</code> por defecto se ejecutará el código especificado en <code>CODE</code>. 
+La directiva podrá aparecer en la
+parte de cabecera o en el cuerpo del programa <code>yapp</code> 
+en una sóla línea aparte. Si aparece en el cuerpo no debe hacerlo
+en medio de una regla.
+
+<P>
+Sigue un ejemplo de uso:
+
+<P>
 <PRE>
+%{
+use Data::Dumper;
+my %tree_name = ('=' =&gt; 'eq', '+' =&gt; 'plus', '-' =&gt; 'minus', 
+                 '*' =&gt; 'times', '/' =&gt; 'divide');
+%}
 %right  '='
 %left   '-' '+'
 %left   '*' '/'
 %left   NEG
-%autoaction { my $n = $#_;  bless [@_[1..$n]], $_[0]-&gt;YYLhs }
+%autoaction { [$tree_name{$_[2]}, $_[1], $_[3]] }
+
 %%
-input:                 
-        |   input line 
+input:               { undef }
+        | input line { undef } 
 ;
-line:     '\n'       { } 
-        | exp '\n'   { [ $_[1] ] } 
-        | error '\n' { }
+
+line:     '\n'         { undef }
+        | exp '\n'     { print Dumper($_[1]); }
+        | error '\n'   { $_[0]-&gt;YYErrok }
 ;
-exp:        NUM         |   VAR         |   VAR '=' exp         
-        |   exp '+' exp |   exp '-' exp |   exp '*' exp |   exp '/' exp      
-        |   '-' exp %prec NEG 
-        |   '(' exp ')' { [ $_[2] ] }     
+
+exp:        NUM                 { $_[1] }
+        |   VAR                 { $_[1] }
+        |   VAR '=' exp | exp '+' exp | exp '-' exp | exp '*' exp | exp '/' exp      
+        |   '-' exp %prec NEG   { ['neg', $_[2]] }
+        |   '(' exp ')'         { $_[2] }
 ;
+
 %%
-...
 </PRE>
-Veamos la ejecución correspondiente al ejemplo anterior:
+y un ejemplo de ejecución:
 <PRE>
-$ ./uselhs2.pl
+$ ./useautoaction1.pl
 2+3*4
-$VAR1 = bless( 
-[
-  bless( [], 'input' ),
-  [
-    bless( [
-      bless( [ '2' ], 'exp' ),
-      '+',
-      bless( [
-        bless( [ '3' ], 'exp' ), '*', bless( [ '4' ], 'exp' ) ], 'exp' )
-    ], 'exp' )
-  ]
-], 'input' );
+^D
+$VAR1 = [
+          'plus',
+          '2',
+          [ 'times', '3', '4' ]
+        ];
 </PRE>
+Analice la adecuación de los mensajes de error emitidos por
+el compilador de Perl cuando el código en la auto-acción contiene
+errores. ¿Son apropiados los números de línea?
+
+<P>
+Tenga en cuenta los siguientes consejos:
+
+<P>
+
+<UL>
+<LI>Cuando compile con <code>yapp</code> su módulo use 
+una orden como: <code>yapp -m Parse::Yapp::Parse Parse.yp</code>. 
+Este es un caso en que el nombre del fichero de salida (<code>Parse.pm</code>)
+y el nómbre del package <code>Parse::Yapp::Parse</code> no coinciden. 
+Este es un caso en que el nombre del fichero de salida (<code>Parse.pm</code>)
+y el nómbre del package <code>Parse::Yapp::Parse</code> no coinciden.
+</LI>
+<LI>Ahora tiene dos versiones de <code>Parse::Yapp</code> en su ordenador.
+El compilador de Perl va a intentar cargar la instalada. 
+Para ello en su versión del script <code>yapp</code> puede incluir
+una línea que le indique al compilador que debe buscar primero
+en el lugar en el que se encuentra nuestra librería:
+<PRE>
+BEGIN { unshift @INC, '/home/lhp/Lperl/src/yapp/Parse-Yapp-Auto/lib/' }
+</PRE>
+</LI>
+<LI>¿Qué estrategia a seguir? Una posibilidad es ``hacerle creer'' al
+resto de los módulos en <code>Yapp</code> que el usuario ha escrito el 
+código de la autoacción en aquellas reglas en las que no existe 
+código explícito asociado. Es posible realizar esta práctica modificando
+sólo el fichero <code>YappParse.yp</code>. El código original 
+<code>Yapp</code> usa <code>undef</code>
+para indicar, en el campo adecuado, que una acción no fué definida.
+La idea es sustituir ese <code>undef</code> por el código asociado con la
+autoacción:
+
+<P>
+<PRE>
+my($code)= $autoaction? $autoaction:undef;
+</PRE>
+
+<P>
+</LI>
+</UL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5095"
+<A NAME="tex2html5099"
   HREF="node181.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5089"
-  HREF="node156.html">
+<A NAME="tex2html5093"
+  HREF="node157.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5083"
+<A NAME="tex2html5087"
   HREF="node179.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5091"
-  HREF="node218.html">
+<A NAME="tex2html5095"
+  HREF="node219.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5093"
-  HREF="node221.html">
+<A NAME="tex2html5097"
+  HREF="node222.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -236,12 +276,12 @@ $VAR1 = bless(
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5096"
-  HREF="node181.html">Práctica: Generación Automática de</A>
-<B>Sup:</B> <A NAME="tex2html5090"
-  HREF="node156.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5084"
-  HREF="node179.html">Práctica: Autoacciones</A>
+<B> Sig:</B> <A NAME="tex2html5100"
+  HREF="node181.html">Práctica: Nuevos Métodos</A>
+<B>Sup:</B> <A NAME="tex2html5094"
+  HREF="node157.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5088"
+  HREF="node179.html">Práctica: El Análisis de</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

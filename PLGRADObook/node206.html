@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Práctica: Establecimiento de la relación uso-declaración</TITLE>
-<META NAME="description" CONTENT="Práctica: Establecimiento de la relación uso-declaración">
+<TITLE>Usando el Método str para Analizar el Árbol</TITLE>
+<META NAME="description" CONTENT="Usando el Método str para Analizar el Árbol">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node207.html">
 <LINK REL="previous" HREF="node205.html">
-<LINK REL="up" HREF="node197.html">
+<LINK REL="up" HREF="node198.html">
 <LINK REL="next" HREF="node207.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5591"
+<A NAME="tex2html5587"
   HREF="node207.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5585"
-  HREF="node197.html">
+<A NAME="tex2html5581"
+  HREF="node198.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5579"
+<A NAME="tex2html5575"
   HREF="node205.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5587"
-  HREF="node218.html">
+<A NAME="tex2html5583"
+  HREF="node219.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5589"
-  HREF="node221.html">
+<A NAME="tex2html5585"
+  HREF="node222.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,117 +88,788 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5592"
+<B> Sig:</B> <A NAME="tex2html5588"
   HREF="node207.html">Práctica: Establecimiento de la</A>
-<B>Sup:</B> <A NAME="tex2html5586"
-  HREF="node197.html">Análisis de Ámbito en</A>
-<B> Ant:</B> <A NAME="tex2html5580"
-  HREF="node205.html">Usando el Método str</A>
+<B>Sup:</B> <A NAME="tex2html5582"
+  HREF="node198.html">Análisis de Ámbito en</A>
+<B> Ant:</B> <A NAME="tex2html5576"
+  HREF="node205.html">Resultado del Análisis de</A>
 <B> Con:</B> 
-<A NAME="tex2html5587"
-  HREF="node218.html">
+<A NAME="tex2html5583"
+  HREF="node219.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5589"
-  HREF="node221.html">
+<A NAME="tex2html5585"
+  HREF="node222.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<H1><A NAME="SECTION051290000000000000000"></A>
-   <A NAME="22412"></A>
-  
-<A NAME="practica:identificaciondelosnombres"></A><A NAME="practica:otrosambitos"></A>
+<UL CLASS="ChildLinks">
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html5589"
+  HREF="node206.html#SECTION051280010000000000000">El Método <TT>str</TT> de los Nodos</A>
+<LI><A NAME="tex2html5590"
+  HREF="node206.html#SECTION051280020000000000000">El Método <TT>info</TT></A>
+<LI><A NAME="tex2html5591"
+  HREF="node206.html#SECTION051280030000000000000">Modo de uso de <TT>str</TT></A>
+<LI><A NAME="tex2html5592"
+  HREF="node206.html#SECTION051280040000000000000">Un ejemplo de Salida con Bloques Anidados</A>
+<LI><A NAME="tex2html5593"
+  HREF="node206.html#SECTION051280050000000000000">Usando el Depurador y <TT>str</TT> Para Ver los AST</A>
+<LI><A NAME="tex2html5594"
+  HREF="node206.html#SECTION051280060000000000000">Variables que Gobiernan la Conducta de <TT>str</TT></A>
+<LI><A NAME="tex2html5595"
+  HREF="node206.html#SECTION051280070000000000000">Footnotes</A>
+<LI><A NAME="tex2html5596"
+  HREF="node206.html#SECTION051280080000000000000">Usando <TT>str</TT> sobre una Lista de Áboles</A>
+</UL></UL></UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION051280000000000000000"></A>
+<A NAME="section:str"></A>
 <BR>
-Práctica: Establecimiento de la relación uso-declaración
+Usando el Método <TT>str</TT> para Analizar el Árbol
 </H1>
-En la segunda parte del análisis de ámbito se resuelve el problema de la identificación de los
-nombres estableciendo la relación entre el uso de un nombre y la declaración
-que se le aplica (dada por los atributos <code>scope</code> y <code>type</code>):
+
+<H4><A NAME="SECTION051280010000000000000">
+El Método <TT>str</TT> de los Nodos</A>
+</H4>
+  
 
 <P>
-Añada las siguientes comprobaciones dependientes del contexto al compilador
-de Simple C:
-
-<UL>
-<LI>Resuelva el problema del ámbito de los identificadores: asocie cada uso de un identificador
-con la declaración que se le aplica.
-</LI>
-<LI>Asocie cada nodo <code>RETURN</code> con el nodo de la subrutina que lo engloba.
-Añádale un atributo al nodo <code>RETURN</code> que indique el tipo que la rutina debe retornar.
-</LI>
-<LI>Asocie cada nodo <code>CONTINUE</code> y cada nodo <code>BREAK</code> con el nodo
-del bucle que lo engloba. Indique el error si la sentencia (<code>CONTINUE</code>
-o <code>BREAK</code>) no esta dentro de un bucle. Añada  a dichos nodos
-un atributo 
-que referencia al nodo del bucle que lo engloba.
-</LI>
-<LI>Añada etiquetas de salto y la sentencia <code>goto</code> al lenguaje Simple C.
-Toda etiqueta va asociada con una sentencia.
-      La sintáxis de statement debe ser extendida para incluir sentencias etiquetadas:
+Para dar soporte al análisis de los árboles y su representación, <code>Parse::Eyapp</code>
+provee el método  <TT>str</TT> . El siguiente ejemplo con el depurador muestra el uso del método
+ <TT>str</TT> .
+El método  <TT>Parse::Eyapp::Node::str</TT>  retorna
+una cadena que describe como término el árbol enraizado en el nodo
+que se ha pasado como argumento.
 
 <P>
+
+<H4><A NAME="SECTION051280020000000000000">
+El Método <TT>info</TT></A>
+</H4>
+  
+
+<P>
+El método  <TT>str</TT>  cuando visita un nodo comprueba la existencia de 
+un método  <TT>info</TT>  para la clase del nodo. Si es así el método
+será llamado. Obsérvese como en las líneas 5 y 6 proveemos de métodos
+<code>info</code> a los nodos <code>TERMINAL</code> y <code>FUNCTION</code>.
+La consecuencia es que en la llamada de la línea 7 el término
+que describe al árbol es decorado con los nombres de funciones
+y los atributos y números de línea de los terminales.
+
+<P>
+Los nodos de la clase  <TT>Parse::Eyapp::Node:Match</TT>  vienen con un
+método  <TT>info</TT>  asociado el cual muestra el tipo del
+nodo apuntado, su profundidad y el nómbre del patrón que casó (línea 9
+de la sesión).
+
+<P>
+Veamos un ejemplo que ilustra también algunos "trucos" de depuración.
+Se han introducido comentarios en el texto de salida:
 <PRE>
-      statement:
-          expression ';' { $_[1] }
-        | ';'
-        | %name BREAK
-          $BREAK ';'
-            { ...  }
-        | %name CONTINUE
-           $CONTINUE ';'
-            { ... }
-        | 'goto' ID ';'
-        | ID ':' statement
-            { ... }
-      ;
+nereida:~/doc/casiano/PLBOOK/PLBOOK/code&gt; perl -wd usesimple4.pl
+</PRE>
+la opción <code>-w</code> por warning y <code>-d</code> para activar el debugger
+<PRE>
+Loading DB routines from perl5db.pl version 1.28
+Editor support available.
+</PRE>
+El mensaje <code>Editor support available</code> nos señala 
+la presencia de los servicios de edición de la entrada.
+Si no sale el mensaje instale  <TT>Term::ReadLine::Gnu</TT>  en su máquina!
+<PRE>
+main::(usesimple4.pl:6):  $Data::Dumper::Indent = 1;
+</PRE>
+La información entre paréntesis indica 
+el fichero en que estamos y la línea (<code>usesimple4.pl</code>)
+<PRE>
+DB&lt;1&gt; f Simple4.eyp  # &lt;-- Quiero poner un break en Simple4.eyp,
+</PRE>
+El comando <code>f</code> es esencial cuando se usa <code>eyapp</code>. 
+Le indicamos al debugger que queremos usar como fichero
+por defecto el de nuestra gramática. Los siguientes
+comandos se referirán a <code>Simple4.eyp</code>:
+<PRE>
+DB&lt;2&gt; b 654     # &lt;--- break en la línea 654 de Simple4.eyp
+DB&lt;3&gt; l 654,656 # &lt;-- Se trata de las líneas en las que se establece 
+                #     la jerarquía de bloques
+654:b        my @blocks = $SimpleTrans::blocks-&gt;m($t);
+655:            $_-&gt;node-&gt;{fatherblock} = $_-&gt;father-&gt;{node} \
+             for (@blocks[1..$#blocks]);
+656:         $Data::Dumper::Deepcopy = 1;
+DB&lt;4&gt; c    # c indica que se continúa la ejecución del programa 
+           # hasta encontrar un "break"
+</PRE>
+La ejecución del programa continúa produciendo la salida 
+del fuente hasta encontrar el punto de break:
+<PRE>
+****************
+char d,e[1][2];
+char f() {
+  int c[2];
+  char d;
+
+  return d;
+}
+Simple4::Run(Simple4.eyp:654):       my @blocks = $SimpleTrans::blocks-&gt;m($t);
+DB&lt;4&gt; n   # &lt;--- next ejecuta la siguiente instrucción. Si es una sub no se entra.
+Simple4::Run(Simple4.eyp:655):       $_-&gt;node-&gt;{fatherblock} = $_-&gt;father-&gt;{node} \
+                                   for (@blocks[1..$#blocks]);
+DB&lt;4&gt;     # La simple pulsación de un retorno de carro 
+          # hace que se repita la última instrucción s o n
+Simple4::Run(Simple4.eyp:655):       $_-&gt;node-&gt;{fatherblock} = $_-&gt;father-&gt;{node} \
+                                   for (@blocks[1..$#blocks]);
+DB&lt;4&gt;
+Simple4::Run(Simple4.eyp:656):       $Data::Dumper::Deepcopy = 1;
+DB&lt;4&gt;
+Simple4::Run(Simple4.eyp:657):       print Dumper $t;
+DB&lt;4&gt; x $t-&gt;str # El método str para los objetos Parse::Eyapp::Node devuelve 
+                # una descripción del árbol
+0  'PROGRAM(FUNCTION(RETURN(TERMINAL,VAR(TERMINAL))))'
+DB&lt;5&gt; sub TERMINAL::info { @a = join ':', @{$_[0]-&gt;{attr}}; "[@a]"}
+DB&lt;6&gt; sub FUNCTION::info { "[".$_[0]-&gt;{function_name}[0]."]" }
+DB&lt;7&gt; x $t-&gt;str
+0  'PROGRAM(FUNCTION[f](RETURN(VAR(TERMINAL[d:6]))))'
+      # La variable @Parse::Eyapp::Node::PREFIXES Controla que 
+      # prefijos se deben eliminar en la presentación
+DB&lt;8&gt; p @Parse::Eyapp::Node::PREFIXES 
+Parse::Eyapp::Node::
+DB&lt;9&gt; x $blocks[0]-&gt;str
+0  'Match[PROGRAM:0:blocks](Match[FUNCTION:1:blocks:[f]])' 
+   # La información de un nodo Match es la 
+   # terna [type:depth:nombre de la treeregexp]
 </PRE>
 
 <P>
-Las siguientes indicaciones tienen por objeto ayudarle en el análisis de ámbito de etiquetas:
+
+<H4><A NAME="SECTION051280030000000000000">
+Modo de uso de <TT>str</TT></A>
+</H4>
+  
+
+<P>
+El método <code>str</code> ha sido concebido como una herramienta de
+ayuda a la depuración y verificación de los programas árbol.
+La metodología consiste en incorporar las pequeñas funciones
+<code>info</code> al programa en el que trabajamos. Así en <code>Simple4.eyp</code>
+añadimos el siguiente código:
+
+<P>
+<PRE>
+640  sub Run {
+641   my($self)=shift;
+...   ................
+663  }
+664
+665  sub TERMINAL::info {
+666    my @a = join ':', @{$_[0]-&gt;{attr}};
+667    return "[@a]"
+668  }
+669
+670  sub FUNCTION::info {
+671    return "[".$_[0]-&gt;{function_name}[0]."]"
+672  }
+673
+674  sub BLOCK::info {
+675    return "[".$_[0]-&gt;{line}."]"
+676  }
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION051280040000000000000">
+Un ejemplo de Salida con Bloques Anidados</A>
+</H4>
+  
+
+<P>
+En el código mostrado no se ha realizado la optimización
+consistente en no incluir en el árbol de bloques
+a aquellos bloques cuya sección de declaraciones es vacía.
+Asi podemos estudiar la estructura de datos resultante
+para un pequeño programa como el que sigue a continuación.
+
+<P>
+<BR>
+<DIV ALIGN="CENTER">
+<A NAME="table:programandhierarchy"></A><A NAME="22098"></A>
+<TABLE CELLPADDING=3 BORDER="1" ALIGN="CENTER">
+<CAPTION><STRONG>Tabla:</STRONG>
+Representación de AST con <TT>str</TT></CAPTION>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>Programa</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113><code>     $t-&gt;str</code></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198><code>   $blocks[0]-&gt;str</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85><PRE>
+ 1 char d0; 
+ 2 char f() {
+ 3   {
+ 4     {}
+ 5   }
+ 6   {
+ 7     { }
+ 8   }
+ 9   {
+10     {{}}
+11   }
+12 }
+
+13 g() {
+14  {}
+15  {
+16    {}
+17  }
+18  {}
+19 }
+</PRE></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113><PRE>
+PROGRAM(
+    FUNCTION[f](
+      BLOCK[3](
+        BLOCK[4]
+      ),
+      BLOCK[6](
+        BLOCK[7]),
+        BLOCK[9](
+          BLOCK[10](
+            BLOCK[10]
+          )
+       )
+    ),
+    FUNCTION[g](
+      BLOCK[14],
+      BLOCK[15](
+        BLOCK[16]
+      ),
+      BLOCK[18]
+    )
+)
+</PRE></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198><PRE>
+Match[PROGRAM:0:blocks](
+  Match[FUNCTION:1:blocks:[f]](
+    Match[BLOCK:2:blocks:[3]](
+      Match[BLOCK:3:blocks:[4]]
+      ),
+    Match[BLOCK:2:blocks:[6]](
+      Match[BLOCK:3:blocks:[7]]
+      ),
+    Match[BLOCK:2:blocks:[9]](
+      Match[BLOCK:3:blocks:[10]](
+        Match[BLOCK:4:blocks:[10]]
+      )
+    )
+  ),
+  Match[FUNCTION:1:blocks:[g]](
+    Match[BLOCK:2:blocks:[14]],
+    Match[BLOCK:2:blocks:[15]](
+      Match[BLOCK:3:blocks:[16]]
+    ),
+    Match[BLOCK:2:blocks:[18]]
+  )
+)
+</PRE></TD>
+</TR>
+</TABLE>
+</DIV>
+<BR>
+
+<P>
+La tabla 
+<A HREF="#table:programandhierarchy">39.1</A>
+muestra el fuente y el resultado de <code>$blocks[0]-&gt;str</code>
+después de la llamada
+
+<P>
+<code>my @blocks = $SimpleTrans::blocks-&gt;m($t);</code>
+
+<P>
+Obsérvese que los nodos <code>Match</code> son referencias 
+a los nodos actuales del árbol.
+
+<P>
+
+<H4><A NAME="SECTION051280050000000000000">
+Usando el Depurador y <TT>str</TT> Para Ver los AST</A>
+</H4>
+  
+
+<P>
+Veamos un ejemplo mas de sesión con el depurador cuando la entrada
+proveída es el programa en la tabla <A HREF="#table:programandhierarchy">39.1</A>:
+<PRE>
+nereida:~/doc/casiano/PLBOOK/PLBOOK/code&gt; eyapp Simple4 ; perl -wd usesimple4.pl
+main::(usesimple4.pl:6):        $Data::Dumper::Indent = 1;
+DB&lt;1&gt; f Simple4.eyp        #&lt;-- establecemos el fichero de trabajo
+DB&lt;2&gt; l 643                #&lt;-- nos paramos antes de la lectura 
+643:       $self-&gt;YYData-&gt;{INPUT} = $_;
+DB&lt;3&gt; b 643 $_=~ m{char d0} # &lt;-- nos detendremos sólo si se trata de este programa
+DB&lt;4&gt; c                     # &lt;-- a correr!
+..................          # salida correspondiente a los fuentes anteriores
+Simple4::Run(Simple4.eyp:643):     $self-&gt;YYData-&gt;{INPUT} = $_;
+DB&lt;5&gt; b Parse::Eyapp::Node::str # &lt;-- Especificación completa de la subrutina en la que parar
+DB&lt;6&gt; c
+........................
+Parse::Eyapp::Node::str(/home/pl/src/perl/YappWithDefaultAction/lib//Parse/Eyapp/Node.pm:543):
+543:      my $self = CORE::shift; # root of the subtree
+DB&lt;7&gt; L    # &lt;-- Listar todos los breakpoints
+/home/pl/src/perl/YappWithDefaultAction/lib//Parse/Eyapp/Node.pm:
+ 543:     my $self = CORE::shift; # root of the subtree
+   break if (1)
+Simple4.eyp:
+ 643:      $self-&gt;YYData-&gt;{INPUT} = $_;
+   break if ($_=~ m{char d0})
+DB&lt;8&gt; B *    # &lt;-- Eliminar todos los breakpoints
+Deleting all breakpoints...
+DB&lt;9&gt; b 654  # &lt;-- detengámonos después del matching árbol
+DB&lt;10&gt; c
+Simple4::Run(Simple4.eyp:654):       $_-&gt;node-&gt;{fatherblock} = $_-&gt;father-&gt;{node} for (@blocks[1..$#blocks]);
+DB&lt;4&gt; x $Parse::Eyapp::Node::INDENT # &lt;-- La variable INDENT controla el estilo en str
+0  1
+DB&lt;11&gt; x $t-&gt;str                   # &lt;--- Salida con sangrado
+0  '
+PROGRAM(
+  FUNCTION[f](
+    BLOCK[3](
+      BLOCK[4]
+    ),
+    BLOCK[6](
+      BLOCK[7]
+    ),
+    BLOCK[9](
+      BLOCK[10](
+        BLOCK[10]
+      )
+    )
+  ),
+  FUNCTION[g](
+    BLOCK[14],
+    BLOCK[15](
+      BLOCK[16]
+    ),
+    BLOCK[18]
+  )
+)'
+DB&lt;12&gt; $Parse::Eyapp::Node::INDENT = 0 # &lt;-- Estilo compacto. Por defecto
+DB&lt;13&gt; x $t-&gt;str                       # &lt;-- Todo en una línea
+0  'PROGRAM(FUNCTION[f](BLOCK[3](BLOCK[4]),BLOCK[6](BLOCK[7]),BLOCK[9](BLOCK[10](BLOCK[10]))),
+FUNCTION[g](BLOCK[14],BLOCK[15](BLOCK[16]),BLOCK[18]))'
+DB&lt;14&gt; .                              # Donde estoy? Que línea se va a ejecutar?
+Simple4::Run(Simple4.eyp:654): $_-&gt;node-&gt;{fatherblock} = $_-&gt;father-&gt;{node} for (@blocks[1..$#blocks]);
+DB&lt;15&gt; c 655      # &lt;-- Ejecutemos hasta la siguiente
+Simple4::Run(Simple4.eyp:655):       $Data::Dumper::Deepcopy = 1;
+DB&lt;16&gt; x $blocks[0]-&gt;str   # &lt;-- Veamos la forma del nodo de matching
+0  'Match[PROGRAM:0:blocks](Match[FUNCTION:1:blocks:[f]](Match[BLOCK:2:
+blocks:[3]](Match[BLOCK:3:blocks:[4]]),Match[BLOCK:2:blocks:[6]](Match[
+BLOCK:3:blocks:[7]]),Match[BLOCK:2:blocks:[9]](Match[BLOCK:3:blocks:[1
+0]](Match[BLOCK:4:blocks:[10]]))),Match[FUNCTION:1:blocks:[g]](Match[B
+LOCK:2:blocks:[14]],Match[BLOCK:2:blocks:[15]](Match[BLOCK:3:blocks:[1
+6]]),Match[BLOCK:2:blocks:[18]]))' # &lt;-- Todo está en una línea
+DB&lt;17&gt; $Parse::Eyapp::Node::INDENT = 1
+DB&lt;18&gt; x $blocks[0]-&gt;str
+0  '
+Match[PROGRAM:0:blocks](
+  Match[FUNCTION:1:blocks:[f]](
+    Match[BLOCK:2:blocks:[3]](
+      Match[BLOCK:3:blocks:[4]]
+    ),
+    Match[BLOCK:2:blocks:[6]](
+      Match[BLOCK:3:blocks:[7]]
+    ),
+    Match[BLOCK:2:blocks:[9]](
+      Match[BLOCK:3:blocks:[10]](
+        Match[BLOCK:4:blocks:[10]]
+      )
+    )
+  ),
+  Match[FUNCTION:1:blocks:[g]](
+    Match[BLOCK:2:blocks:[14]],
+    Match[BLOCK:2:blocks:[15]](
+      Match[BLOCK:3:blocks:[16]]
+    ),
+    Match[BLOCK:2:blocks:[18]]
+  )
+)'
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION051280060000000000000">
+Variables que Gobiernan la Conducta de <TT>str</TT></A>
+</H4>
+  
+
+<P>
+Las variables de paquete que gobiernan la conducta
+de <code>str</code> y sus valores por defecto aparecen en la siguiente lista:
+
+<P>
 
 <UL>
-<LI>Sólo se permiten saltos dentro de la misma subrutina.
+<LI><code>our @PREFIXES = qw(Parse::Eyapp::Node::)</code>
+
+<P>
+La variable de paquete  <TT>Parse::Eyapp::Node::PREFIXES</TT>  contiene
+la lista de prefijos de los nombres de tipo que serán eliminados
+cuando <code>str</code> muestra el término. Por defecto contiene 
+la cadena <code>'Parse::Eyapp::Node::'</code>. Es por esta razón
+que los nodos de matching que pertenecen a la clase <code>'Parse::Eyapp::Node::Match</code>
+son abreviados a la cadena <code>Match</code> (línea 9).
+
+<P>
 </LI>
-<LI>Será necesario crear un manejador de ámbito de etiquetas mediante <code>Parse::Eyapp::Scope-&gt;new</code>
+<LI><code>our $INDENT = 0</code>
+La variable  <TT>$Parse::Eyapp::Node::INDENT</TT>  controla el formato de presentación
+usado por  <TT>Parse::Eyapp::Node::str</TT> :
+
+<OL>
+<LI>Si es <code>0</code> la representación es compacta.
 </LI>
-<LI>Al comienzo de cada función comienza un ámbito de etiquetas.
+<LI>Si es 1 se usará un sangrado razonable. 
 </LI>
-<LI>Cada vez que se encuentra una sentencia etiquetada la etiqueta 
-                ID es guardada en una tabla de símbolos de etiquetas.
+<LI>Si es 2 cada paréntesis cerrar que este a una distancia 
+mayor de  <TT>$Parse::Eyapp::Node::LINESEP</TT>  líneas será comentado con el tipo del nodo. 
+Por defecto la variable <code>$Parse::Eyapp::Node::LINESEP</code> está a 4.
+Véase la página 
+<A HREF="node206.html#code:indent2"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>
+para un ejemplo con <code>$INDENT</code> a 2 y 
+<code>$Parse::Eyapp::Node::LINESEP</code> a 4.
 </LI>
-<LI>El valor asociado con la entrada para la etiqueta es una referencia a un hash. La clave mas importante en ese hash es la referencia a la sentencia que etiqueta.
+</OL>
+
+<P>
 </LI>
-<LI>Cada aparición de un goto es una instancia de ámbito.
+<LI><code>our $STRSEP = ','</code>
+
+<P>
+Separador de nodos en un término. Por defecto es la coma.
+
+<P>
 </LI>
-<LI>La llamada a <code>end_scope</code> (al terminar el análisis de la función) deberá decorar automáticamente el nodo GOTO con la referencia a la sentencia asociada con la etiqueta
+<LI><code>our $DELIMITER = '['</code>
+
+<P>
+Delimitador de presentación de la información proveída por el método
+<code>info</code>. Por defecto los delimitadores son corchetes. Puede elegirse 
+uno cualquiera de  la lista:
+<PRE>
+                    '[', '{', '(', '&lt;'
+</PRE>
+si se define como la cadena vacía o <code>undef</code> no se usarán delimitadores.
+
+<P>
 </LI>
-<LI>La tabla de etiquetas es un atributo del nodo asociado con la función.
+<LI><code>our $FOOTNOTE_HEADER = "\n---------------------------\n"</code>
+
+<P>
+Delimitador para las notas a pie de página.
+
+<P>
 </LI>
-</UL>
+<LI><code>our $FOOTNOTE_SEP = ")\n"</code>
+Separador de la etiqueta/número de la nota al pie
+
+<P>
+</LI>
+<LI><code>our $FOOTNOTE_LEFT = '^{'</code>, <code>our $FOOTNOTE_RIGHT = '}'</code>
+
+<P>
+Definen el texto que rodea al número de referencia en el nodo.
 
 <P>
 </LI>
 </UL>
+
+<P>
+
+<H4><A NAME="SECTION051280070000000000000">
+Footnotes</A>
+</H4>
+  
+
+<P>
+El siguiente ejemplo ilustra el manejo de <SPAN  CLASS="textbf">notas a pié de árbol</SPAN>
+usando  <TT>str</TT> . Se han definido los siguientes métodos:
+<PRE>
+nereida:~/doc/casiano/PLBOOK/PLBOOK/code&gt; sed -ne '677,$p' Simple6.eyp
+$Parse::Eyapp::Node::INDENT = 1;
+sub TERMINAL::info {
+  my @a = join ':', @{$_[0]-&gt;{attr}};
+  return "@a"
+}
+
+sub PROGRAM::footnote {
+  return "Types:\n"
+         .Dumper($_[0]-&gt;{types}).
+         "Symbol Table:\n"
+         .Dumper($_[0]-&gt;{symboltable})
+}
+
+sub FUNCTION::info {
+  return $_[0]-&gt;{function_name}[0]
+}
+
+sub FUNCTION::footnote {
+  return Dumper($_[0]-&gt;{symboltable})
+}
+
+sub BLOCK::info {
+  return $_[0]-&gt;{line}
+}
+
+sub VAR::info {
+  return $_[0]-&gt;{definition}{type} if defined $_[0]-&gt;{definition}{type};
+  return "No declarado!";
+}
+
+*FUNCTIONCALL::info = *VARARRAY::info = \&amp;VAR::info;
+</PRE>
+El resultado para el programa de entrada:
+<PRE>
+nereida:~/doc/casiano/PLBOOK/PLBOOK/code&gt; cat salida
+int a,b;
+
+int f(char c) {
+ a[2] = 4;
+ b[1][3] = a + b;
+ c = c[5] * 2;
+ return g(c);
+}
+</PRE>
+produce una salida por <code>stderr</code>:
+<PRE>
+Identifier g not declared
+</PRE>
+y la siguiente descripción de la estructura de datos:
+<PRE>
+PROGRAM^{0}(
+  FUNCTION{f}^{1}(
+    ASSIGN(
+      VARARRAY{INT}(
+        TERMINAL{a:4},
+        INDEXSPEC(
+          INUM(
+            TERMINAL{2:4}
+          )
+        )
+      ),
+      INUM(
+        TERMINAL{4:4}
+      )
+    ),
+    ASSIGN(
+      VARARRAY{INT}(
+        TERMINAL{b:5},
+        INDEXSPEC(
+          INUM(
+            TERMINAL{1:5}
+          ),
+          INUM(
+            TERMINAL{3:5}
+          )
+        )
+      ),
+      PLUS(
+        VAR{INT}(
+          TERMINAL{a:5}
+        ),
+        VAR{INT}(
+          TERMINAL{b:5}
+        )
+      )
+    ),
+    ASSIGN(
+      VAR{CHAR}(
+        TERMINAL{c:6}
+      ),
+      TIMES(
+        VARARRAY{CHAR}(
+          TERMINAL{c:6},
+          INDEXSPEC(
+            INUM(
+              TERMINAL{5:6}
+            )
+          )
+        ),
+        INUM(
+          TERMINAL{2:6}
+        )
+      )
+    ),
+    RETURN(
+      FUNCTIONCALL{No declarado!}(
+        TERMINAL{g:7},
+        ARGLIST(
+          VAR{CHAR}(
+            TERMINAL{c:7}
+          )
+        )
+      )
+    )
+  )
+)
+---------------------------
+0)
+Types:
+$VAR1 = {
+  'F(X_1(CHAR),INT)' =&gt; bless( {
+    'children' =&gt; [
+      bless( {
+        'children' =&gt; [
+          bless( {
+            'children' =&gt; []
+          }, 'CHAR' )
+        ]
+      }, 'X_1' ),
+      bless( {
+        'children' =&gt; []
+      }, 'INT' )
+    ]
+  }, 'F' ),
+  'CHAR' =&gt; bless( {
+    'children' =&gt; []
+  }, 'CHAR' ),
+  'INT' =&gt; bless( {
+    'children' =&gt; []
+  }, 'INT' )
+};
+Symbol Table:
+$VAR1 = {
+  'a' =&gt; {
+    'type' =&gt; 'INT',
+    'line' =&gt; 1
+  },
+  'b' =&gt; {
+    'type' =&gt; 'INT',
+    'line' =&gt; 1
+  },
+  'f' =&gt; {
+    'type' =&gt; 'F(X_1(CHAR),INT)',
+    'line' =&gt; 3
+  }
+};
+
+---------------------------
+1)
+$VAR1 = {
+  'c' =&gt; {
+    'type' =&gt; 'CHAR',
+    'param' =&gt; 1,
+    'line' =&gt; 3
+  }
+};
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION051280080000000000000">
+Usando <TT>str</TT> sobre una Lista de Áboles</A>
+</H4>
+  
+
+<P>
+Use <code>str</code> como método de clase 
+
+<P>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><code>Parse::Eyapp::Node-&gt;str(@forest)</code></TD>
+</TR>
+</TABLE>
+</DIV>
+
+<P>
+cuando quiera 
+convertir a su representación término mas de un árbol.
+El código:
+
+<P>
+<A NAME="code:indent2"></A><PRE>
+nereida:~/doc/casiano/PLBOOK/PLBOOK/code&gt; sed -ne '652,658p' Simple4.eyp \
+                                          | cat -n
+     1       local $Parse::Eyapp::Node::INDENT = 2;
+     2       local $Parse::Eyapp::Node::DELIMITER = "";
+     3       print $t-&gt;str."\n";
+     4       {
+     5         local $" = "\n";
+     6         print Parse::Eyapp::Node-&gt;str(@blocks)."\n";
+     7       }
+</PRE>
+
+<P>
+produce la salida:
+
+<P>
+<PRE>
+nereida:~/doc/casiano/PLBOOK/PLBOOK/code&gt; eyapp Simple4 ;\
+                                          treereg SimpleTrans.trg ;\
+                                          usesimple4.pl
+****************
+f() {
+  int a,b[1][2],c[1][2][3];
+  char d[10];
+  b[0][1] = a;
+}
+
+PROGRAM(
+  FUNCTION[f](
+    ASSIGN(
+      VARARRAY(
+        TERMINAL[b:4],
+        INDEXSPEC(
+          INUM(
+            TERMINAL[0:4]
+          ),
+          INUM(
+            TERMINAL[1:4]
+          )
+        ) # INDEXSPEC
+      ) # VARARRAY,
+      VAR(
+        TERMINAL[a:4]
+      )
+    ) # ASSIGN
+  ) # FUNCTION
+) # PROGRAM
+
+Match[PROGRAM:0:blocks](
+  Match[FUNCTION:1:blocks:[f]]
+)
+</PRE>
+
+<P>
+Obsérvense los comentarios <code># TIPODENODO</code> que acompañan a los paréntesis
+cerrar cuando estos están lejos (esto es, a una distancia de mas de
+ <TT>$Parse::Eyapp::Node::LINESEP</TT>  líneas) del correspondiente paréntesis abrir.
+Tales comentarios son consecuencia de haber establecido el valor de 
+ <TT>$Parse::Eyapp::Node::INDENT</TT>  a 2.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5591"
+<A NAME="tex2html5587"
   HREF="node207.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5585"
-  HREF="node197.html">
+<A NAME="tex2html5581"
+  HREF="node198.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5579"
+<A NAME="tex2html5575"
   HREF="node205.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5587"
-  HREF="node218.html">
+<A NAME="tex2html5583"
+  HREF="node219.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5589"
-  HREF="node221.html">
+<A NAME="tex2html5585"
+  HREF="node222.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -245,12 +916,12 @@ Las siguientes indicaciones tienen por objeto ayudarle en el análisis de ámbit
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5592"
+<B> Sig:</B> <A NAME="tex2html5588"
   HREF="node207.html">Práctica: Establecimiento de la</A>
-<B>Sup:</B> <A NAME="tex2html5586"
-  HREF="node197.html">Análisis de Ámbito en</A>
-<B> Ant:</B> <A NAME="tex2html5580"
-  HREF="node205.html">Usando el Método str</A>
+<B>Sup:</B> <A NAME="tex2html5582"
+  HREF="node198.html">Análisis de Ámbito en</A>
+<B> Ant:</B> <A NAME="tex2html5576"
+  HREF="node205.html">Resultado del Análisis de</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
