@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Análisis Sintáctico Ascendente en Perl</TITLE>
-<META NAME="description" CONTENT="Análisis Sintáctico Ascendente en Perl">
+<TITLE>Consejos a seguir al escribir un programa jison</TITLE>
+<META NAME="description" CONTENT="Consejos a seguir al escribir un programa jison">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node185.html">
-<LINK REL="previous" HREF="node134.html">
-<LINK REL="up" HREF="node69.html">
+<LINK REL="previous" HREF="node153.html">
+<LINK REL="up" HREF="node135.html">
 <LINK REL="next" HREF="node155.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4676"
+<A NAME="tex2html4680"
   HREF="node155.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4670"
-  HREF="node69.html">
+<A NAME="tex2html4674"
+  HREF="node135.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4664"
+<A NAME="tex2html4670"
   HREF="node153.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4672"
-  HREF="node216.html">
+<A NAME="tex2html4676"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4674"
-  HREF="node219.html">
+<A NAME="tex2html4678"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,137 +87,192 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4677"
-  HREF="node155.html">Parse::Yapp: Ejemplo de Uso</A>
-<B>Sup:</B> <A NAME="tex2html4671"
-  HREF="node69.html">SEGUNDA PARTE: APUNTES DE</A>
-<B> Ant:</B> <A NAME="tex2html4665"
-  HREF="node153.html">Consejos a seguir al</A>
+<B> Sig:</B> <A NAME="tex2html4681"
+  HREF="node155.html">Análisis Sintáctico Ascendente en</A>
+<B>Sup:</B> <A NAME="tex2html4675"
+  HREF="node135.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4671"
+  HREF="node153.html">Construcción del Árbol Sintáctico</A>
 <B> Con:</B> 
-<A NAME="tex2html4672"
-  HREF="node216.html">
+<A NAME="tex2html4676"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4674"
-  HREF="node219.html">
+<A NAME="tex2html4678"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION05900000000000000000">
-Análisis Sintáctico Ascendente en Perl</A>
+<H1><A NAME="SECTION058190000000000000000"></A>
+<A NAME="section:consejosjison"></A>
+<BR>
+Consejos a seguir al escribir un programa <TT>jison</TT>
 </H1>
-<BR> <HR>
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
+Cuando escriba un programa <code>jison</code> asegurese
+de seguir los siguientes consejos:
 
-<UL CLASS="ChildLinks">
-<LI><A NAME="tex2html4678"
-  HREF="node155.html"><TT>Parse::Yapp</TT>: Ejemplo de Uso</A>
-<LI><A NAME="tex2html4679"
-  HREF="node156.html">Conceptos Básicos</A>
-<LI><A NAME="tex2html4680"
-  HREF="node157.html">Construcción de las Tablas para el Análisis SLR</A>
-<UL>
-<LI><A NAME="tex2html4681"
-  HREF="node157.html#SECTION05931000000000000000">Los conjuntos de Primeros y Siguientes</A>
-<LI><A NAME="tex2html4682"
-  HREF="node157.html#SECTION05932000000000000000">Construcción de las Tablas</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html4683"
-  HREF="node158.html">El módulo Generado por <TT>yapp</TT></A>
-<LI><A NAME="tex2html4684"
-  HREF="node159.html">Algoritmo de Análisis LR</A>
-<LI><A NAME="tex2html4685"
-  HREF="node160.html">Depuración en <TT>yapp</TT></A>
-<LI><A NAME="tex2html4686"
-  HREF="node161.html">Precedencia y Asociatividad</A>
-<LI><A NAME="tex2html4687"
-  HREF="node162.html">Generación interactiva de analizadores <TT>Yapp</TT></A>
-<LI><A NAME="tex2html4688"
-  HREF="node163.html">Construcción del Árbol Sintáctico</A>
-<LI><A NAME="tex2html4689"
-  HREF="node164.html">Acciones en Medio de una Regla</A>
-<LI><A NAME="tex2html4690"
-  HREF="node165.html">Esquemas de Traducción</A>
-<LI><A NAME="tex2html4691"
-  HREF="node166.html">Definición Dirigida por la Sintáxis</A>
-<LI><A NAME="tex2html4692"
-  HREF="node167.html">Manejo en <TT>yapp</TT> de Atributos Heredados</A>
-<LI><A NAME="tex2html4693"
-  HREF="node168.html">Acciones en Medio de una Regla y Atributos Heredados</A>
-<LI><A NAME="tex2html4694"
-  HREF="node169.html">Recuperación de Errores</A>
-<LI><A NAME="tex2html4695"
-  HREF="node170.html">Recuperación de Errores en Listas</A>
-<LI><A NAME="tex2html4696"
-  HREF="node171.html">Consejos a seguir al escribir un programa <TT>yapp</TT></A>
-<LI><A NAME="tex2html4697"
-  HREF="node172.html">Práctica: Un C simplificado</A>
-<LI><A NAME="tex2html4698"
-  HREF="node173.html">La Gramática de <TT>yapp</TT> / <TT>yacc</TT></A>
-<UL>
-<LI><A NAME="tex2html4699"
-  HREF="node173.html#SECTION059191000000000000000">La Cabecera</A>
-<LI><A NAME="tex2html4700"
-  HREF="node173.html#SECTION059192000000000000000">La Cabecera: Diferencias entre <TT>yacc</TT> y <TT>yapp</TT></A>
-<LI><A NAME="tex2html4701"
-  HREF="node173.html#SECTION059193000000000000000">El Cuerpo</A>
-<LI><A NAME="tex2html4702"
-  HREF="node173.html#SECTION059194000000000000000">La Cola: Diferencias entre <TT>yacc</TT> y <TT>yapp</TT></A>
-<LI><A NAME="tex2html4703"
-  HREF="node173.html#SECTION059195000000000000000">El Análisis Léxico en <TT>yacc</TT>: <TT>flex</TT></A>
-<LI><A NAME="tex2html4704"
-  HREF="node173.html#SECTION059196000000000000000">Práctica: Uso de <TT>Yacc</TT> y <TT>Lex</TT></A>
-</UL>
-<BR>
-<LI><A NAME="tex2html4705"
-  HREF="node174.html">El Analizador Ascendente  <TT>Parse::Yapp</TT></A>
-<LI><A NAME="tex2html4706"
-  HREF="node175.html">La Estructura de Datos Generada por <TT>YappParse.yp</TT></A>
-<LI><A NAME="tex2html4707"
-  HREF="node176.html">Práctica:  El Análisis de las Acciones</A>
-<LI><A NAME="tex2html4708"
-  HREF="node177.html">Práctica:  Autoacciones</A>
-<LI><A NAME="tex2html4709"
-  HREF="node178.html">Práctica: Nuevos Métodos</A>
-<LI><A NAME="tex2html4710"
-  HREF="node179.html">Práctica: Generación Automática de Árboles</A>
-<LI><A NAME="tex2html4711"
-  HREF="node180.html">Recuperacion de Errores: Visión Detallada</A>
-<LI><A NAME="tex2html4712"
-  HREF="node181.html">Descripción Eyapp del Lenguaje  SimpleC</A>
-<LI><A NAME="tex2html4713"
-  HREF="node182.html">Diseño de Analizadores con <TT>Parse::Eyapp</TT></A>
-<LI><A NAME="tex2html4714"
-  HREF="node183.html">Práctica: Construcción del AST para el Lenguaje Simple C</A>
-<UL>
-<LI><A NAME="tex2html4715"
-  HREF="node183.html#SECTION059290010000000000000">Analizador Léxico</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html4716"
-  HREF="node184.html">El Generador de Analizadores <TT>byacc</TT></A>
-</UL>
-<!--End of Table of Child-Links-->
+<P>
+
+<OL>
+<LI>Coloque el punto y coma de separación de reglas en una línea aparte.
+Un punto y coma ``pegado'' al final de una regla puede confundirse
+con un terminal de la regla.
+
+<P>
+</LI>
+<LI>Si hay una regla que produce vacío, coloquela en primer lugar y acompáñela de 
+un comentario resaltando ese hecho.
+</LI>
+<LI>Nunca escriba dos reglas de producción en la misma línea.
+</LI>
+<LI>Sangre convenientemente todas las partes derechas de las reglas
+de producción de una variable, de modo que queden
+alineadas.
+</LI>
+<LI>Ponga nombres representativos a sus variables sintácticas. No llame 
+<code>Z</code> a una variable que representa el concepto ``lista de parámetros'',
+llámela <code>ListaDeParametros</code>.
+</LI>
+<LI>Es conveniente que declare los terminales simbólicos, esto es, aquellos que 
+llevan un identificador asociado. Si no llevan prioridad asociada o no 
+es necesaria, use una declaración <code>%token</code>. De esta manera
+el lector de su programa se dará cuenta rápidamente que dichos identificadores
+no se corresponden con variables sintácticas. Por la misma razón,
+si se trata de terminales
+asociados con caracteres o cadenas no es tan necesario que los declare, 
+a menos que, 
+como en el ejemplo de la calculadora para <code>'+'</code> y <code>'*'</code>,
+sea necesario asociarles una
+precedencia.
+</LI>
+<LI>Es importante que use la opción <code>-v</code> para producir
+el fichero <code>.output</code> conteniendo información detallada sobre
+los conflictos y el autómata. Cuando haya un conflicto shift-reduce
+no resuelto busque en el fichero el estado implicado y 
+vea que LR(0) items <!-- MATH
+ $A \rightarrow \alpha_\uparrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="64" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img432.png"
+ ALT="$ A \rightarrow \alpha_\uparrow$"></SPAN>
+y <!-- MATH
+ $B \rightarrow \beta_\uparrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="73" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img467.png"
+ ALT="$ B \rightarrow \beta_\uparrow \gamma$"></SPAN> entran en conflicto.
+
+<P>
+</LI>
+<LI><A NAME="item:conflictos"></A>Si según el informe de <code>jison</code>
+el conflicto se produce ante un terminal <SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img57.png"
+ ALT="$ a$"></SPAN>,
+es porque <!-- MATH
+ $a \in FOLLOW(A)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="146" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img468.png"
+ ALT="$ a \in FOLLOW(A)$"></SPAN> y
+<!-- MATH
+ $a \in FIRST(\gamma)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="119" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img469.png"
+ ALT="$ a \in FIRST(\gamma)$"></SPAN>. Busque las causas por las que esto ocurre 
+y modifique su gramática con vistas a eliminar la presencia
+del terminal <SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img57.png"
+ ALT="$ a$"></SPAN> en uno de los dos conjuntos implicados
+o bien establezca reglas de prioridad entre los terminales
+implicados que resuelvan el conflicto.
+
+<P>
+</LI>
+<LI>Nótese que cuando existe un conflicto de desplazamiento 
+reducción entre <!-- MATH
+ $A \rightarrow \alpha_\uparrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="64" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img432.png"
+ ALT="$ A \rightarrow \alpha_\uparrow$"></SPAN> 
+y  <!-- MATH
+ $B \rightarrow \beta_\uparrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="73" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img467.png"
+ ALT="$ B \rightarrow \beta_\uparrow \gamma$"></SPAN>, el programa
+<code>jison</code> contabiliza un error por cada terminal 
+<!-- MATH
+ $a \in FOLLOW(A) \cap FIRST(\gamma)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="249" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img470.png"
+ ALT="$ a \in FOLLOW(A) \cap FIRST(\gamma)$"></SPAN>. Por esta razón,
+si hay 16 elementos en <!-- MATH
+ $FOLLOW(A) \cap FIRST(\gamma)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="218" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img471.png"
+ ALT="$ FOLLOW(A) \cap FIRST(\gamma)$"></SPAN>,
+el analizador <code>jison</code> informará de la existencia
+de 16 conflictos <SPAN  CLASS="textbf">shift-reduce</SPAN>,
+cuando en realidad se trata de uno sólo. No desespere, 
+los conflictos ``auténticos'' suelen
+ser menos de los que <code>jison</code> anuncia.
+
+<P>
+</LI>
+<LI>Si necesita declarar variables globales, inicializaciones, etc.
+que afectan la conducta global del analizador, escriba el código 
+correspondiente en la cabecera del analizador, protegido
+por los delimitadores <code>%{</code> y <code>%}</code>. Estos delimitadores
+deberán aparecer en una línea aparte. Por ejemplo:
+
+<P>
+<PRE>
+%{
+our contador = 0;
+%}
+
+%token NUM
+...
+%%
+</PRE>
+
+<P>
+</LI>
+</OL>
+
+<P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4676"
+<A NAME="tex2html4680"
   HREF="node155.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4670"
-  HREF="node69.html">
+<A NAME="tex2html4674"
+  HREF="node135.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4664"
+<A NAME="tex2html4670"
   HREF="node153.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4672"
-  HREF="node216.html">
+<A NAME="tex2html4676"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4674"
-  HREF="node219.html">
+<A NAME="tex2html4678"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -265,12 +319,12 @@ Análisis Sintáctico Ascendente en Perl</A>
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4677"
-  HREF="node155.html">Parse::Yapp: Ejemplo de Uso</A>
-<B>Sup:</B> <A NAME="tex2html4671"
-  HREF="node69.html">SEGUNDA PARTE: APUNTES DE</A>
-<B> Ant:</B> <A NAME="tex2html4665"
-  HREF="node153.html">Consejos a seguir al</A>
+<B> Sig:</B> <A NAME="tex2html4681"
+  HREF="node155.html">Análisis Sintáctico Ascendente en</A>
+<B>Sup:</B> <A NAME="tex2html4675"
+  HREF="node135.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4671"
+  HREF="node153.html">Construcción del Árbol Sintáctico</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
