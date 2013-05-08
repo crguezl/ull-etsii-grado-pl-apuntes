@@ -198,7 +198,7 @@ Asociación Incorrecta para la Resta y la División</A>
 <P>
 <P>
 <DIV><B>Definición  <SPAN CLASS="arabic">33</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Una <A NAME="10692"></A><SPAN  CLASS="textbf">gramática es recursiva por la izquierda</SPAN> cuando existe una derivación
+<I>Una <A NAME="10694"></A><SPAN  CLASS="textbf">gramática es recursiva por la izquierda</SPAN> cuando existe una derivación
 <!-- MATH
  $A \stackrel{*}{\Longrightarrow} A \alpha$
  -->
@@ -219,7 +219,7 @@ una regla de producción de la forma <!-- MATH
 En este caso se dice que la recursión por la izquierda es directa.</I></DIV><P></P>
 
 <P>
-Cuando la gramática es <A NAME="10694"></A><SPAN  CLASS="textbf">recursiva por la izquierda</SPAN>, 
+Cuando la gramática es <A NAME="10696"></A><SPAN  CLASS="textbf">recursiva por la izquierda</SPAN>, 
 el método 
 de análisis recursivo descendente predictivo no funciona. 
 En ese caso, el procedimiento
@@ -228,6 +228,25 @@ En ese caso, el procedimiento
  SRC="img19.png"
  ALT="$ A$"></SPAN> ciclaría para siempre sin llegar a consumir ningún 
 terminal. 
+
+<P>
+Es por eso que hemos escrito las reglas de la caluladora con recursividad
+a derechas, 
+<PRE>
+additive
+  = left:multiplicative PLUS right:additive { return left + right; }
+  / left:multiplicative MINUS right:additive { return left - right; }
+  / multiplicative
+
+multiplicative
+  = left:primary MULT right:multiplicative { return left * right; }
+  / left:primary DIV right:multiplicative { return left / right; }
+  / primary
+</PRE>
+
+<P>
+pero eso da lugar a árboles hundidos hacia la derecha y a una
+aplicación de las reglas semánticas errónea:
 
 <P>
 <PRE>
