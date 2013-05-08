@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Asociando un else con su if mas cercano</TITLE>
-<META NAME="description" CONTENT="Asociando un else con su if mas cercano">
+<TITLE>Eliminación de la Recursividad por la Izquierda y Atributos Heredados</TITLE>
+<META NAME="description" CONTENT="Eliminación de la Recursividad por la Izquierda y Atributos Heredados">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -28,20 +28,20 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3884"
+<A NAME="tex2html3888"
   HREF="node116.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3878"
+<A NAME="tex2html3882"
   HREF="node111.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3872"
+<A NAME="tex2html3876"
   HREF="node114.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3880"
-  HREF="node220.html">
+<A NAME="tex2html3884"
+  HREF="node221.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3882"
-  HREF="node223.html">
+<A NAME="tex2html3886"
+  HREF="node224.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,78 +88,86 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3885"
-  HREF="node116.html">Comentarios Anidados</A>
-<B>Sup:</B> <A NAME="tex2html3879"
+<B> Sig:</B> <A NAME="tex2html3889"
+  HREF="node116.html">Asociando un else con</A>
+<B>Sup:</B> <A NAME="tex2html3883"
   HREF="node111.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html3873"
-  HREF="node114.html">Código de Inicialización</A>
+<B> Ant:</B> <A NAME="tex2html3877"
+  HREF="node114.html">Eliminación de la Recursividad</A>
 <B> Con:</B> 
-<A NAME="tex2html3880"
-  HREF="node220.html">
+<A NAME="tex2html3884"
+  HREF="node221.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3882"
-  HREF="node223.html">
+<A NAME="tex2html3886"
+  HREF="node224.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
 <H1><A NAME="SECTION05640000000000000000">
-Asociando un else con su if mas cercano</A>
+Eliminación de la Recursividad por la Izquierda y Atributos Heredados</A>
 </H1>
 
 <P>
 <PRE>
-$ cat danglingelse.pegjs 
-/*
-S ← 'if' C 'then' S 'else' S / 'if' C 'then' S
-*/
+[~/pegjs/examples(master)]$ cat inherited.pegjs 
+{
+  var h = 0, number = 0;
+}
+e = NUMBER aux1 r         { return h; }
+aux1 = /* empty */        { h = number; } 
 
-S =   if C:C then S1:S else S2:S { return [ 'ifthenelse', C, S1, S2 ]; }
-    / if C:C then S:S            { return [ 'ifthen', C, S]; }
-    / O                          { return 'O'; }
-_ = ' '*
-C = _'c'_                        { return 'c'; }
-O = _'o'_                        { return 'o'; }
-else = _'else'_                 
-if = _'if'_
-then = _'then'_
+r =   '-' NUMBER  aux2 r  { return h; }
+    / /* empty */
+aux2 = /* empty */        { h -= number; }
+
+NUMBER = _ digits:$[0-9]+ _  { number = parseInt(digits, 10); return number; }
+
+_ = $[ \t\n\r]*
 </PRE>
 
 <P>
 <PRE>
-$ cat use_danglingelse.js 
-var PEG = require("./danglingelse.js");
-var r = PEG.parse("if c then if c then o else o");
+[~/pegjs/examples(master)]$ cat use_inherited.js 
+var PEG = require("./inherited.js");
+var r = PEG.parse("2-1-1");
 console.log(r);
-</PRE>
 
-<P>
-<PRE>
-$ ../bin/pegjs danglingelse.pegjs 
-$ node use_danglingelse.js 
-[ 'ifthen', 'c', [ 'ifthenelse', 'c', 'O', 'O' ] ]
+var r = PEG.parse("4-2-1");
+console.log(r);
+
+var r = PEG.parse("2-3-1");
+console.log(r);
+
+
+[~/pegjs/examples(master)]$ pegjs inherited.pegjs 
+Referenced rule "$" does not exist.
+[~/pegjs/examples(master)]$ ../bin/pegjs inherited.pegjs 
+[~/pegjs/examples(master)]$ node use_inherited.js 
+0
+1
+-2
 </PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3884"
+<A NAME="tex2html3888"
   HREF="node116.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3878"
+<A NAME="tex2html3882"
   HREF="node111.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3872"
+<A NAME="tex2html3876"
   HREF="node114.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3880"
-  HREF="node220.html">
+<A NAME="tex2html3884"
+  HREF="node221.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3882"
-  HREF="node223.html">
+<A NAME="tex2html3886"
+  HREF="node224.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -206,17 +214,17 @@ $ node use_danglingelse.js
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3885"
-  HREF="node116.html">Comentarios Anidados</A>
-<B>Sup:</B> <A NAME="tex2html3879"
+<B> Sig:</B> <A NAME="tex2html3889"
+  HREF="node116.html">Asociando un else con</A>
+<B>Sup:</B> <A NAME="tex2html3883"
   HREF="node111.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html3873"
-  HREF="node114.html">Código de Inicialización</A>
+<B> Ant:</B> <A NAME="tex2html3877"
+  HREF="node114.html">Eliminación de la Recursividad</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-05-07</I>
+2013-05-08</I>
 </ADDRESS>
 </BODY>
 </HTML>
