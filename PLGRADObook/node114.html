@@ -128,20 +128,14 @@ Consideremos una variable <SPAN CLASS="MATH"><IMG
 <BR>
 <BR>
 <DIV ALIGN="CENTER">
-<TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $A   \rightarrow A \alpha$
+<!-- MATH
+ $A   \rightarrow A \alpha |\ \beta$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="69" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img18.png"
- ALT="$ A \rightarrow A \alpha$"></SPAN></TD>
-<TD ALIGN="LEFT"><SPAN CLASS="MATH"><IMG
- WIDTH="26" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ WIDTH="91" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
  SRC="img20.png"
- ALT="$ \vert \beta$"></SPAN></TD>
-</TR>
-</TABLE>
+ ALT="$ A \rightarrow A \alpha \vert \beta$"></SPAN> 
+
 </DIV>
 
 <P>
@@ -172,10 +166,7 @@ Estas dos producciones pueden ser sustituidas por:
 
 <P>
 eliminando así la recursión por la izquierda.
-
-<P>
-Es posible especificar mediante llaves  un código 
-que este disponible dentro de las acciones semánticas:
+La siguiente gramática resuelve el problema anterior:
 
 <P>
 <PRE>
@@ -214,6 +205,21 @@ value   = number:$[0-9]+                    { return parseInt(number,10); }
 </PRE>
 
 <P>
+Es posible especificar mediante llaves  un código 
+que este disponible dentro de las acciones semánticas.
+
+<P>
+Ejecución:
+<PRE>
+[~/pegjs/examples(master)]$ cat use_simple.js 
+var PEG = require("./simple.js");
+var r = PEG.parse("2-3-4");
+console.log(r);
+
+[~/pegjs/examples(master)]$ node use_simple.js 
+-5
+</PRE>
+Veamos otra ejecución:
 <PRE>
 [~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat use_simple.js 
 var PEG = require("./simple.js");
