@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>La Estructura de Datos Generada por YappParse.yp</TITLE>
-<META NAME="description" CONTENT="La Estructura de Datos Generada por YappParse.yp">
+<TITLE>El Analizador Ascendente Parse::Yapp</TITLE>
+<META NAME="description" CONTENT="El Analizador Ascendente Parse::Yapp">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node181.html">
 <LINK REL="previous" HREF="node179.html">
-<LINK REL="up" HREF="node159.html">
+<LINK REL="up" HREF="node160.html">
 <LINK REL="next" HREF="node181.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5135"
+<A NAME="tex2html5143"
   HREF="node181.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5129"
-  HREF="node159.html">
+<A NAME="tex2html5137"
+  HREF="node160.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5123"
+<A NAME="tex2html5131"
   HREF="node179.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5131"
-  HREF="node221.html">
+<A NAME="tex2html5139"
+  HREF="node222.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5133"
-  HREF="node224.html">
+<A NAME="tex2html5141"
+  HREF="node225.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,190 +88,318 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5136"
-  HREF="node181.html">Práctica: El Análisis de</A>
-<B>Sup:</B> <A NAME="tex2html5130"
-  HREF="node159.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5124"
-  HREF="node179.html">El Analizador Ascendente Parse::Yapp</A>
+<B> Sig:</B> <A NAME="tex2html5144"
+  HREF="node181.html">La Estructura de Datos</A>
+<B>Sup:</B> <A NAME="tex2html5138"
+  HREF="node160.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5132"
+  HREF="node179.html">La Gramática de yapp</A>
 <B> Con:</B> 
-<A NAME="tex2html5131"
-  HREF="node221.html">
+<A NAME="tex2html5139"
+  HREF="node222.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5133"
-  HREF="node224.html">
+<A NAME="tex2html5141"
+  HREF="node225.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION059210000000000000000">
-La Estructura de Datos Generada por <TT>YappParse.yp</TT></A>
+<H1><A NAME="SECTION059200000000000000000"></A>
+<A NAME="section:analizadorLR"></A>
+<BR>
+El Analizador Ascendente  <TT>Parse::Yapp</TT>
 </H1>
 
 <P>
-El fichero <code>YappParse.yp</code>.
-contiene la gramática <code>yapp</code> del lenguaje
-<code>yacc</code><A NAME="tex2html427"
-  HREF="footnode.html#foot19087"><SUP><SPAN CLASS="arabic">36</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A>. 
-Además de las dos rutinas de soporte típicas,
-la de tratamiento de errores <code>_Error</code> y la
-de análisis léxico <code>_Lexer</code>, el fichero
-contiene una subrutina para el manejo de las 
-reglas <code>_AddRules</code> y otra rutina <code>Parse</code> la cuál
- actúa como <SPAN  CLASS="textbf">wrapper</SPAN> o filtro sobre el analizador
-<code>YYParse</code>.
+El program <code>yapp</code> es un traductor y, por tanto, constituye
+un ejemplo de como escribir un traductor. El lenguaje fuente
+es el lenguaje <code>yacc</code> y el lenguaje objeto es <code>Perl</code>.
+Como es habitual en muchos lenguajes, el lenguaje objeto se ve 
+"expandido" con un conjunto de funciones de soporte. En el caso de 
+<code>yapp</code> estas funciones de soporte, son en 
+realidad métodos y están en el módulo <code>Parse::Yapp::Driver</code>.
+Cualquier módulo generado por <code>yapp</code> hereda de dicho módulo
+(véase por ejemplo, el módulo generado para nuestro ejemplo de la calculadora,
+en la sección <A HREF="node164.html#section:tablas">36.4</A>).
 
 <P>
-Durante el análisis sintáctico 
-de un programa <code>yapp</code> se construye una estructura de 
-datos para la posterior manipulación y tratamiento de 
-la gramática.  
-Como ejemplo usaremosla gramática:
-<PRE>
-pl@nereida:~/src/perl/Parse-AutoTree/trunk/scripts$ cat -n int.yp
- 1  %right '+'
- 2  %left 'a'
- 3  %nonassoc 'b'
- 4  %%
- 5  S:   /* empty rule */                       { print "S -&gt; epsilon\n" }
- 6   |   'a' { print "Intermediate\n"; } S 'b'  { print "S -&gt; a S b\n" }
- 7   |   '+' S '+' %prec 'a'                    { print "S -&gt; + S + prec a\n" }
- 8  ;
- 9  %%
-10
-11  sub _Error {
-12          exists $_[0]-&gt;YYData-&gt;{ERRMSG}
-13      and do {
-14          print $_[0]-&gt;YYData-&gt;{ERRMSG};
-15          delete $_[0]-&gt;YYData-&gt;{ERRMSG};
-16          return;
-17      };
-18      print "Syntax error.\n";
-19  }
-20
-21  sub _Lexer {
-22      my($parser)=shift;
-23
-24          defined($parser-&gt;YYData-&gt;{INPUT})
-25      or  $parser-&gt;YYData-&gt;{INPUT} = &lt;STDIN&gt;
-26      or  return('',undef);
-27
-28      $parser-&gt;YYData-&gt;{INPUT}=~s/^[ \t\n]//;
-29
-30      for ($parser-&gt;YYData-&gt;{INPUT}) {
-31          s/^(.)//s and return($1,$1);
-32      }
-33  }
-34
-35  sub Run {
-36      my($self)=shift;
-37      $self-&gt;YYParse( yylex =&gt; \&amp;_Lexer, yyerror =&gt; \&amp;_Error, yydebug =&gt; 0x1F );
-38  }
-</PRE>
-Para construir la estructura podemos usar la siguiente subrutina:
-<PRE>
-sub Parse {
-  my $grammar = shift;
-
-  my $x = new Parse::Yapp::Parse;
-  my $r = $x-&gt;Parse($grammar);
-
-  return $r;
-}
-</PRE>
-La llamada a <code>Parse</code> produce la siguiente estructura de datos:
-<PRE>
-nereida:~/src/perl/Parse-AutoTree/trunk/scripts&gt; grammar.pl int.yp
-$VAR1 = {
-  'START' =&gt; 'S', # Símbolo de arranque
-  'SYMS' =&gt; { 'S' =&gt; 5, 'b' =&gt; 3, 'a' =&gt; 2, '+' =&gt; 1 }, # Símbolo =&gt; línea
-  'TERM' =&gt; { 
-    'b' =&gt; [ 'NONASSOC', 2 ],  # terminal =&gt; [ Asociatividad, precedencia ]
-    'a' =&gt; [ 'LEFT', 1 ],      # terminal =&gt; [ Asociatividad, precedencia ]
-    '+' =&gt; [ 'RIGHT', 0 ] },   # terminal =&gt; [ Asociatividad, precedencia ]
-    # Si el terminal no tiene precedencia toma la forma  terminal =&gt; []
-  'NTERM' =&gt; { 'S' =&gt; [ '1', '3', '4' ] }, # variable =&gt; [ indice en RULES de las reglas de S ]
-  'PREC' =&gt; { 'a' =&gt; 1 }, # Terminales que son usandos en una directiva %prec
-  'NULL' =&gt; { 'S' =&gt; 1 }, # Variables que producen vacío
-  'EXPECT' =&gt; 0, # Número de conflictos esperados
-  'RULES' =&gt; [
-     [ '$start', [ 'S', '' ], undef, undef ], # Regla de superarranque
-     [
-       'S', [], # producción
-       undef,   # precedencia explícita de la regla
-       [ ' print "S -&gt; epsilon\n" ', 5 ] # [ acción asociada, línea ]
-     ],
-     [
-       '@1-1', [], # Regla intermedia: Variable temporal
-       undef,
-       [ ' print "Intermediate\n"; ', 6 ]
-     ],
-     [
-       'S', [ 'a', '@1-1', 'S', 'b' ],
-       undef,
-       [ ' print "S -&gt; a S b\n" ', 6 ]
-     ],
-     [
-       'S', [ '+', 'S', '+' ],
-       1, # precedencia explícita de la regla
-       [ ' print "S -&gt; + S + prec a\n" ', 7 ]
-     ]
-   ],
-  'HEAD' =&gt; undef, # Código de cabecera 
-  'TAIL' =&gt; [ '... código de cola ...', 9 ], # Línea en la que comienza la sección de cola
-};
-</PRE>
+Como se ve en la figura <A HREF="#fig:yappinheritance">36.3</A>, 
+los módulos generados por <code>yapp</code>
+heredan y usan la clase <code>Parse::Yapp::Driver</code>
+la  cual contiene el analizador sintáctico LR genérico.
+Este módulo contiene los métodos de soporte visibles
+al usuario <code>YYParse</code>, <code>YYData</code>, <code>YYErrok</code>, <code>YYSemval</code>,
+etc.
 
 <P>
-Las componentes del hash que aparece
-arriba se corresponden
-con diversas variables usadas por <code>YYParse</code> durante el análisis. La correspondencia
-se establece dentro  del método <code>Parse</code> cuando se hace la asignación:
+La figura <A HREF="#fig:yappinheritance">36.3</A> muestra además el 
+resto de los módulos
+que conforman el ``compilador'' <code>Parse::Yapp</code>.
+La herencia se ha representado mediante flechas contínuas.
+Las flechas punteadas indican una relación de uso entre los módulos.
+El guión <code>yapp</code> es un programa aparte que es
+usado para producir el correspondiente
+módulo desde el fichero conteniendo la gramática.
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="fig:yappinheritance"></A><A NAME="19104"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figura:</STRONG>
+Esquema de herencia de <TT>Parse::Yapp</TT>. 
+Las flechas contínuas indican herencia, las punteadas uso.
+La clase <TT>Calc</TT> es implementada en el módulo generado por <TT>yapp</TT></CAPTION>
+<TR><TD></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+(Para ver el contenido de los módulos, descarge <code>yapp</code> desde CPAN:
+
+<a href="http://search.cpan.org/~fdesar/Parse-Yapp-1.05/lib/Parse/Yapp.pm">http://search.cpan.org/~fdesar/Parse-Yapp-1.05/lib/Parse/Yapp.pm</a>
+o bien desde uno de nuestros servidores locales; en 
+el mismo directorio en que se guarda la
+versión HTML de estos apuntes encontrará una copia de 
+<A NAME="tex2html430"
+  HREF="Parse-Yapp-1.05.tar.gz">Parse-Yapp-1.05.tar.gz</A>).
+La versión a la que se refiere este capítulo es la 1.05.
+
+<P>
+El módulo <code>Parse/Yapp/Yapp.pm</code> se limita a contener la documentación
+y descansa toda la tarea de análisis en los otros módulos.
+El módulo <code>Parse/Yapp/Output.pm</code> contiene los métodos
+<code>_CopyDriver</code> y <code>Output</code> los cuales se encargan de escribir
+el analizador: partiendo de un esqueleto genérico rellenan 
+las partes específicas a partir de la información computada
+por los otros módulos. 
+
+<P>
+El módulo <code>Parse/Yapp/Options.pm</code>
+analiza las opciones de entrada. El módulo <code>Parse/Yapp/Lalr.pm</code>
+calcula las tablas de análisis LALR. Por último el módulo
+<code>Parse/Yapp/Grammar</code> contiene varios métodos de soporte 
+para el tratamiento de la gramática.
+
+<P>
+El modulo <TT>Parse::Yapp::Driver</TT> contiene el método
+<code>YYparse</code> encargado del análisis.
+En realidad, el método <code>YYparse</code> delega 
+en el método privado <code>_Parse</code> la tarea de análisis.
+Esta es la estructura del analizador genérico usado por <code>yapp</code>.
+Léalo con cuidado y compare con la estructura explicada en la
+sección <A HREF="node165.html#section:algoritmoLR">36.5</A>.
 
 <P>
 <PRE>
-   @$parsed{ 'HEAD', 'TAIL', 'RULES', 'NTERM', 'TERM',
-              'NULL', 'PREC', 'SYMS',  'START', 'EXPECT' }
-    =       (  $head,  $tail,  $rules,  $nterm,  $term,
-               $nullable, $precterm, $syms, $start, $expect);
+ 1 sub _Parse {
+ 2   my($self)=shift;
+ 3 
+ 4   my($rules,$states,$lex,$error)
+ 5      = @$self{ 'RULES', 'STATES', 'LEX', 'ERROR' };
+ 6   my($errstatus,$nberror,$token,$value,$stack,$check,$dotpos)
+ 7      = @$self{ 'ERRST', 'NBERR', 'TOKEN', 'VALUE', 'STACK', 'CHECK', 'DOTPOS' };
+ 8 
+ 9   $$errstatus=0;
+10   $$nberror=0;
+11   ($$token,$$value)=(undef,undef);
+12   @$stack=( [ 0, undef ] ); # push estado 0
+13   $$check='';
 </PRE>
-esta asignación es la que crea el hash.
-Las variables con identificadores en minúsculas son usadas 
-en el analizador. Son visibles en todo el fichero ya que,
-aunque declaradas léxicas, su declaración se encuentra 
-en la cabecera del analizador:
+La componente 0 de <code>@$stack</code> es el estado, la componente
+1 es el atributo.
 <PRE>
-%{
-require 5.004;
-
-use Carp;
-
-my($input,$lexlevel,@lineno,$nberr,$prec,$labelno);
-my($syms,$head,$tail,$token,$term,$nterm,$rules,$precterm,$start,$nullable);
-my($expect);
-
-%}
+14 
+15   while(1) { 
+16     my($actions,$act,$stateno);
+17 
+18     $stateno=$$stack[-1][0];     # sacar el estado en el top de 
+19     $actions=$$states[$stateno]; # la pila
 </PRE>
+<code>$states</code> es una referencia a un vector. Cada entrada 
+<code>$$states[$stateno]</code> es una referencia a un hash que 
+contiene dos claves. La clave <code>ACTIONS</code> contiene
+las acciones para ese estado. La clave <code>GOTOS</code>
+contiene los saltos correspondientes a ese estado.
+<PRE>
+20 
+21     if  (exists($$actions{ACTIONS})) {
+22       defined($$token) or do {
+23         ($$token,$$value)=&amp;$lex($self); # leer siguiente token
+24       };
+25 
+26       # guardar en $act la acción asociada con el estado y el token
+27       $act = exists($$actions{ACTIONS}{$$token})?   
+28          $$actions{ACTIONS}{$$token} : 
+29          exists($$actions{DEFAULT})? $$actions{DEFAULT} : undef;
+30     }
+31     else { $act=$$actions{DEFAULT}; }
+</PRE>
+La entrada <code>DEFAULT</code> de una acción contiene la acción 
+a ejecutar por defecto.
+<PRE>
+32 
+33     defined($act) and do {
+34       $act &gt; 0 and do { # $act &gt;0 indica shift
+35          $$errstatus and do { --$$errstatus; };
+</PRE>
+La línea 35 esta relacionada con la recuperación de errores.
+Cuando <code>yapp</code> ha podido desplazar varios terminales
+sin que se produzca error considerará que se ha recuperado 
+con éxito del último error.
+<PRE>
+36          # Transitar: guardar (estado, valor)
+37          push(@$stack,[ $act, $$value ]);
+38          $$token ne ''   #Don't eat the eof
+39          and $$token=$$value=undef;
+40          next; # siguiente iteración
+41       };
+</PRE>
+A menos que se trate del final de fichero, se reinicializa
+la pareja <code>($$token, $$value)</code> y se repite el bucle
+de análisis.
+Si <code>$act</code> es negativo se trata de una reducción
+y la entrada <code>$$rules[-$act]</code> es una referencia
+a un vector con tres elementos: la variable sintáctica,
+la longitud de la parte derecha y el código asociado:
+<PRE>
+43       # $act &lt; 0, indica reduce
+44       my($lhs,$len,$code,@sempar,$semval);
+45 
+46       #obtenemos una referencia a la variable,
+47       #longitud de la parte derecha, referencia
+48       #a la acción
+49       ($lhs,$len,$code)=@{$$rules[-$act]};
+50       $act or $self-&gt;YYAccept();
+</PRE>
+Si <code>$act</code> es cero indica una acción de aceptación.
+El método <code>YYAccept</code> se encuentra en <code>Driver.pm</code>.
+Simplemente contiene:
+
+<P>
+<PRE>
+              sub YYAccept {
+                my($self)=shift;
+
+                ${$$self{CHECK}}='ACCEPT';
+                  undef;
+              }
+</PRE>
+
+<P>
+Esta entrada será comprobada al final de la iteración para comprobar
+la condición de aceptación (a través de la 
+variable <code>$check</code>, la cuál es una referencia).
+
+<P>
+<PRE>
+51       $$dotpos=$len; # dotpos es la longitud de la regla
+52       unpack('A1',$lhs) eq '@'    #In line rule
+53       and do {
+54         $lhs =~ /^\@[0-9]+\-([0-9]+)$/
+55           or  die "In line rule name '$lhs' ill formed: ".
+56                   "report it as a BUG.\n";
+57         $$dotpos = $1;
+58       };
+</PRE>
+En la línea 52 obtenemos el primer carácter en el nombre de la variable.
+Las acciones intermedias en <code>yapp</code> producen una variable
+auxiliar que comienza por <code>@</code> y casa con el patrón
+especificado en la línea 54. Obsérvese que el número después
+del guión contiene la posición relativa en la regla 
+de la acción intermedia.
+<PRE>
+60       @sempar = $$dotpos ?   
+61          map { $$_[1] } @$stack[ -$$dotpos .. -1 ] : ();
+</PRE>
+El array <code>@sempar</code> se inicia a la lista vacía 
+si <code>$len</code> es nulo. En caso contrario
+contiene la lista de los atributos de los últimos <code>$$dotpos</code>
+elementos referenciados en la pila.
+Si la regla es intermedia estamos haciendo referencia
+a los atributos de los símbolos a su izquierda.
+<PRE>
+62       $semval = $code ? &amp;$code( $self, @sempar ) : 
+63                         @sempar ? $sempar[0] : undef;
+</PRE>
+Es en este punto que ocurre la ejecución de la acción.
+La subrutina referenciada por <code>$code</code> es llamada
+con primer argumento la referencia al objeto analizador <code>$self</code>
+y como argumentos los atributos que se han computado
+previamente en <code>@sempar</code>. Si no existe tal código se devuelve 
+el atributo del primer elemento, si es que existe un tal primer
+elemento. 
+
+<P>
+El valor retornado por la subrutina/acción asociada es guardado en 
+<code>$semval</code>.
+
+<P>
+<PRE>
+65       splice(@$stack,-$len,$len);
+</PRE>
+La funci&#243;n <code>splice</code> toma en general cuatro argumentos:
+el array a modificar, el &#305;ndice en el cual es modificado,
+el n&#250;mero de elementos a suprimir y la lista de elementos
+extra a insertar. Aquí, la llamada a <code>splice</code> cambia los elementos de
+<code>@$stack</code> a partir del índice <code>-$len</code>.
+El número de elementos a suprimir es <code>$len</code>.  
+A continuación se comprueba si hay que terminar, bien 
+porque se ha llegado al estado de aceptación (<code>$$check eq 'ACCEPT'</code>)
+o porque ha habido un error fatal:
+<PRE>
+      $$check eq 'ACCEPT' and do { return($semval); };
+      $$check eq 'ABORT' and  do { return(undef); };
+</PRE>
+Si las cosas van bien, se empuja en la cima de la pila el estado
+resultante de transitar desde el estado en la cima con la variable
+sintáctica en el lado izquierdo:
+<PRE>
+      $$check eq 'ERROR' or  do { 
+          push(@$stack, [ $$states[$$stack[-1][0]]{GOTOS}{$lhs}, $semval ]);
+          $$check='';
+          next;
+      };
+</PRE>
+La expresión <code>$$states[$$stack[-1][0]]</code> es una referencia a un hash cuya
+clave <code>GOTOS</code> contiene una referencia a un hash conteniendo la 
+tabla de transiciones del éstado en la cima de la pila (<code>$stack[-1][0]</code>).
+La entrada de clave <code>$lhs</code> contiene el estado al que se transita al ver la
+variable sintáctica de la izquierda de la regla de producción. El atributo
+asociado es el devuelto por la acción: <code>$semval</code>.
+<PRE>
+      $$check='';
+
+    }; # fin de defined($act)
+
+    # Manejo de errores: código suprimido
+    ... 
+
+  }
+}#_Parse
+</PRE>
+... y el bucle <code>while(1)</code> de la línea 15 continúa.  
+Compare este código con el seudo-código introducido
+en la sección <A HREF="node165.html#section:algoritmoLR">36.5</A>.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5135"
+<A NAME="tex2html5143"
   HREF="node181.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5129"
-  HREF="node159.html">
+<A NAME="tex2html5137"
+  HREF="node160.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5123"
+<A NAME="tex2html5131"
   HREF="node179.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5131"
-  HREF="node221.html">
+<A NAME="tex2html5139"
+  HREF="node222.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5133"
-  HREF="node224.html">
+<A NAME="tex2html5141"
+  HREF="node225.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -318,17 +446,17 @@ my($expect);
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5136"
-  HREF="node181.html">Práctica: El Análisis de</A>
-<B>Sup:</B> <A NAME="tex2html5130"
-  HREF="node159.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5124"
-  HREF="node179.html">El Analizador Ascendente Parse::Yapp</A>
+<B> Sig:</B> <A NAME="tex2html5144"
+  HREF="node181.html">La Estructura de Datos</A>
+<B>Sup:</B> <A NAME="tex2html5138"
+  HREF="node160.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5132"
+  HREF="node179.html">La Gramática de yapp</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-05-08</I>
+2013-05-10</I>
 </ADDRESS>
 </BODY>
 </HTML>
