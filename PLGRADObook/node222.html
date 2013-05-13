@@ -314,6 +314,80 @@ desde <code>g</code>.
 
 <P>
 </LI>
+<LI>La siguiente gramática no es LR(1).
+<PRE>
+[~/srcPLgrado/jison/jison-nolr]$ cat confusingsolvedppcr.y
+%%
+A: 
+    B 'c' 'd' 
+  | E 'c' 'f' 
+;
+B: 
+    'x' 'y'
+;
+E: 
+    'x' 'y' 
+;
+
+%%
+</PRE>
+Encuentre una gramática sin conflictos equivalente a la anterior.
+
+<P>
+</LI>
+<LI>La siguiente gramática presenta conflictos reduce-reduce:
+
+<P>
+<PRE>
+[~/srcPLgrado/jison/jison-reducereduceconflict]$ cat reducereduceconflictPPCR2.y
+%token ID
+
+%%
+
+def:    param_spec return_spec ','
+        ;
+param_spec:
+             type
+        |    name_list ':' type
+        ;
+return_spec:
+             type
+        |    name ':' type
+        ;
+type:        
+             ID
+        ;
+name:        
+             ID 
+        ;
+name_list:
+             name
+        |    name ',' name_list
+        ;
+%%
+</PRE>
+Este es el diagnóstico de Jison:
+<PRE>
+~/srcPLgrado/jison/jison-reducereduceconflict]$ jison reducereduceconflictPPCR2.y
+Conflict in grammar: multiple actions possible when lookahead token is ID in state 5
+- reduce by rule: name -&gt; ID
+- reduce by rule: type -&gt; ID
+Conflict in grammar: multiple actions possible when lookahead token is : in state 5
+- reduce by rule: name -&gt; ID
+- reduce by rule: type -&gt; ID
+Conflict in grammar: multiple actions possible when lookahead token is , in state 5
+- reduce by rule: name -&gt; ID
+- reduce by rule: type -&gt; ID
+
+States with conflicts:
+State 5
+  type -&gt; ID . #lookaheads= ID : ,
+  name -&gt; ID . #lookaheads= ID : ,
+</PRE>
+Encuentre una gramática equivalente a la anterior sin conflictos.
+
+<P>
+</LI>
 </OL>
 
 <P>
