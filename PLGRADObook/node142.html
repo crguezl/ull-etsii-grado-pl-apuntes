@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Ejemplo Simple en Jison</TITLE>
-<META NAME="description" CONTENT="Ejemplo Simple en Jison">
+<TITLE>Optimización de Código</TITLE>
+<META NAME="description" CONTENT="Optimización de Código">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node143.html">
 <LINK REL="previous" HREF="node141.html">
-<LINK REL="up" HREF="node140.html">
+<LINK REL="up" HREF="node126.html">
 <LINK REL="next" HREF="node143.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4549"
+<A NAME="tex2html4508"
   HREF="node143.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4543"
-  HREF="node140.html">
+<A NAME="tex2html4502"
+  HREF="node126.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4537"
+<A NAME="tex2html4498"
   HREF="node141.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4545"
-  HREF="node223.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4547"
+<A NAME="tex2html4504"
   HREF="node226.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html4506"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,19 +87,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4550"
-  HREF="node143.html">Ejemplo en Jison: Calculadora</A>
-<B>Sup:</B> <A NAME="tex2html4544"
-  HREF="node140.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4538"
-  HREF="node141.html">Conceptos Básicos para el</A>
+<B> Sig:</B> <A NAME="tex2html4509"
+  HREF="node143.html">Análisis Sintáctico Ascendente en</A>
+<B>Sup:</B> <A NAME="tex2html4503"
+  HREF="node126.html">Análisis Sintáctico Descendente en</A>
+<B> Ant:</B> <A NAME="tex2html4499"
+  HREF="node141.html">Generación de Código: Máquina</A>
 <B> Con:</B> 
-<A NAME="tex2html4545"
-  HREF="node223.html">
+<A NAME="tex2html4504"
+  HREF="node226.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4547"
-  HREF="node226.html">
+<A NAME="tex2html4506"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
@@ -109,341 +108,164 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html4551"
-  HREF="node142.html#SECTION05820010000000000000">Gramática</A>
-<LI><A NAME="tex2html4552"
-  HREF="node142.html#SECTION05820020000000000000">basic2_lex.jison</A>
-<LI><A NAME="tex2html4553"
-  HREF="node142.html#SECTION05820030000000000000">index.html</A>
-<LI><A NAME="tex2html4554"
-  HREF="node142.html#SECTION05820040000000000000">Rakefile</A>
-<LI><A NAME="tex2html4555"
-  HREF="node142.html#SECTION05820050000000000000">Véase También</A>
-<LI><A NAME="tex2html4556"
-  HREF="node142.html#SECTION05820060000000000000">global.css</A>
-</UL>
-</UL>
-<BR>
-<LI><A NAME="tex2html4557"
-  HREF="node142.html#SECTION05821000000000000000">Véase También</A>
-<LI><A NAME="tex2html4558"
-  HREF="node142.html#SECTION05822000000000000000">Práctica: Secuencia de Asignaciones Simples</A>
+<LI><A NAME="tex2html4510"
+  HREF="node142.html#SECTION067161000000000000000">Práctica: Optimización Peephole</A>
 </UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION05820000000000000000">
-Ejemplo Simple en Jison</A>
+<H1><A NAME="SECTION067160000000000000000">
+Optimización de Código</A>
 </H1>
-
-<P>
-Jison es un generador de analizadores sintácticos LALR. Otro
-analizador LALR es 
-<A NAME="tex2html398"
-  HREF="http://jscc.phorward-software.com/">JS/CC</A>.
-
-<P>
-
-<H4><A NAME="SECTION05820010000000000000">
-Gramática</A>
-</H4>
-  
-
-<P>
-<PRE>
-%%
-
-S   : A
-    ;
-A   : /* empty */  
-    | A x 
-    ;
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION05820020000000000000">
-basic2_lex.jison</A>
-</H4>
-  
-
-<PRE>
-[~/jison/examples/basic2_lex(develop)]$ cat basic2_lex.jison 
-/* description: Basic grammar that contains a nullable A nonterminal. */
-
-%lex
-%%
-
-\s+               {/* skip whitespace */}
-[a-zA-Z_]\w*      {return 'x';}
-
-/lex
-
-%%
-
-S   : A
-           { return $1+" identifiers"; }
-    ;
-A   : /* empty */  
-           { 
-              console.log("starting"); 
-              $$ = 0; 
-           }
-    | A x  { 
-              $$ = $1 + 1;  
-              console.log($$)
-           }
-    ;
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION05820030000000000000">
-index.html</A>
-</H4>
-  
-
-<PRE>
-$ cat basic2_lex.html
-&lt;!DOCTYPE HTML&gt;
-&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;meta charset="utf-8"&gt;
-    &lt;title&gt;Jison&lt;/title&gt;
-    &lt;link rel="stylesheet" href="global.css" type="text/css" media="screen" charset="utf-8" /&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;h1&gt;basic2_lex demo&lt;/h1&gt;
-    &lt;div id="content"&gt;
-      &lt;script src="jquery/jquery.js"&gt;&lt;/script&gt; 
-      &lt;script src="basic2_lex.js"&gt;&lt;/script&gt;
-      &lt;script src="main.js"&gt;&lt;/script&gt;
-      &lt;p&gt;
-        &lt;input type="text" value="x x x x" /&gt; &lt;button&gt;parse&lt;/button&gt; 
-        &lt;span id="output"&gt;&lt;/span&gt; &lt;!-- Output goes here! --&gt;
-      &lt;/p&gt;
-    &lt;/div&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION05820040000000000000">
-Rakefile</A>
-</H4>
-  
+Aunque en esta fase se incluyen toda clase de optimizaciones,
+es aquí donde se hacen las optimizaciones de código dependientes
+del sistema objeto. Normalmente se
+recorre el código generado buscando secuencias 
+de instrucciones que se puedan sustituir por otras cuya 
+ejecución sea mas eficiente.
+El nombre <A NAME="12880"></A><SPAN  CLASS="textbf">Peephole optimization</SPAN> hace alusión a esta especie de
+``ventana
+de visión'' que se desplaza sobre el código.  En nuestro caso,
+supongamos que disponemos de una instrucción <code>INC</code> que permite
+incrementar eficientemente una expresión. Recorremos el código buscando
+por un patrón "sumar 1" y lo reeemplazamos adecuadamente.
 
 <P>
 <PRE>
-$ cat Rakefile 
-# install package:
-#     sudo npm install beautifier
-# 
-#   more about beautifier:
-#       https://github.com/rickeyski/node-beautifier
+package Peephole::Optimization;
 
-dec "compile the grammar basic2_lex_ugly.jison"
-task :default =&gt; %w{basic2_lex_ugly.js} do
-  sh "mv basic2_lex.js basic2_lex_ugly.js"
-  sh "jsbeautify basic2_lex_ugly.js &gt; basic2_lex.js"
-  sh "rm -f basic2_lex_ugly.js"
-end
-
-file "basic2_lex_ugly.js" =&gt; %w{basic2_lex.jison} do
-  sh "jison basic2_lex.jison -o basic2_lex.js"
-end
-</PRE>
-
-<P>
-
-<OL>
-<LI><A NAME="tex2html399"
-  HREF="https://github.com/rickeyski/node-beautifier">node-beautifier</A>
-</LI>
-</OL>
-
-<P>
-
-<H4><A NAME="SECTION05820050000000000000">
-Véase También</A>
-</H4>
-  
-
-<OL>
-<LI><A NAME="tex2html400"
-  HREF="http://zaach.github.com/jison/">JISON</A>
-</LI>
-<LI><A NAME="tex2html401"
-  HREF="http://zaach.github.com/jison/try/usf/">Try Jison Examples</A>
-</LI>
-<LI><A NAME="tex2html402"
-  HREF="http://www-archive.mozilla.org/js/language/grammar14.html">JavaScript 1.4 LR(1) Grammar</A>
-1999.
-</LI>
-<LI><A NAME="tex2html403"
-  HREF="http://cjihrig.com/blog/creating-a-javascript-parser/">Creating a JavaScript Parser</A>
-Una implementación de ECMAScript 5.1 usando Jison 
-disponible 
-en GitHub
- en
-<A NAME="tex2html404"
-  HREF="https://github.com/cjihrig/jsparser">https://github.com/cjihrig/jsparser</A>.
-Puede probarse en:
-<A NAME="tex2html405"
-  HREF="http://www.cjihrig.com/development/jsparser/">http://www.cjihrig.com/development/jsparser/</A>
-</LI>
-<LI><A NAME="tex2html406"
-  HREF="http://www.rolilink.com/presentations/Jison/Charla.html">Bison on JavaScript</A>
-por Rolando Perez
-</LI>
-<LI><A NAME="tex2html407"
-  HREF="http://hansineffect.github.com/Slogo/">Slogo</A>
-a language written using Jison
-</LI>
-<LI><A NAME="tex2html408"
-  HREF="https://github.com/jashkenas/coffee-script/wiki/List-of-languages-that-compile-to-JS">List of languages that compile to JS</A>
-</LI>
-<LI><A NAME="tex2html409"
-  HREF="http://blog.kalleberg.org/post/1256702765/prototype-of-a-scannerless-generalized-left-to-right">Prototype of a Scannerless, Generalized Left-to-right Rightmost (SGLR) derivation parser for JavaScript</A>
-</LI>
-</OL>
-<H4><A NAME="SECTION05820060000000000000">
-global.css</A>
-</H4>
-  
-
-<P>
-<PRE>
-[~/jison/examples/basic2_lex(develop)]$ cat global.css 
-html *
-{
-   font-size: large; 
-   /* The !important ensures that nothing can override what you've set in this style (unless it is also important). */
-   font-family: Arial;
-}
-
-.thumb {
-    height: 75px;
-    border: 1px solid #000;
-    margin: 10px 5px 0 0;
-  }
-
-h1            { text-align: center; font-size: x-large; }
-th, td        { vertical-align: top; text-align: left; }   
-/* #finaltable  * { color: white; background-color: black; }   */
-
-/* #finaltable table { border-collapse:collapse; } */
-/* #finaltable table, td { border:1px solid white; } */
-#finaltable:hover td { background-color: blue; } 
-tr:nth-child(odd)    { background-color:#eee; }
-tr:nth-child(even)    { background-color:#00FF66; }
-input        { text-align: right;  border: none;       }     /* Align input to the right  */
-textarea     { border: outset; border-color: white;       }                        
-table        { border: inset; border-color: white; }
-.hidden      { display: none; }
-.unhidden    { display: block; }
-table.center { margin-left:auto; margin-right:auto; }
-#result      { border-color: red; }
-tr.error       { background-color: red; }
-pre.output   { background-color: white; }
-span.repeated { background-color: red }
-span.header { background-color: blue }
-span.comments { background-color: orange }
-span.blanks { background-color: green }
-span.nameEqualValue { background-color: cyan }
-span.error { background-color: red }
-
-body
-{
- background-color:#b0c4de;  /* blue */
+sub transform {
+  $target = shift;
+  $target =~ s/PUSH 1\nPLUS/INC/g;
 }
 </PRE>
 
 <P>
-
-<H2><A NAME="SECTION05821000000000000000">
-Véase También</A>
-</H2>
-
-<OL>
-<LI><A NAME="tex2html410"
-  HREF="http://zaach.github.com/jison/">JISON</A>
-</LI>
-<LI><A NAME="tex2html411"
-  HREF="http://zaach.github.com/jison/try/usf/">Try Jison Examples</A>
-</LI>
-<LI><A NAME="tex2html412"
-  HREF="http://www-archive.mozilla.org/js/language/grammar14.html">JavaScript 1.4 LR(1) Grammar</A>
-1999.
-</LI>
-<LI><A NAME="tex2html413"
-  HREF="http://cjihrig.com/blog/creating-a-javascript-parser/">Creating a JavaScript Parser</A>
-Una implementación de ECAMScript 5.1 usando Jison 
-disponible 
-en GitHub
- en
-<A NAME="tex2html414"
-  HREF="https://github.com/cjihrig/jsparser">https://github.com/cjihrig/jsparser</A>.
-Puede probarse en:
-<A NAME="tex2html415"
-  HREF="http://www.cjihrig.com/development/jsparser/">http://www.cjihrig.com/development/jsparser/</A>
-</LI>
-<LI><A NAME="tex2html416"
-  HREF="http://hansineffect.github.com/Slogo/">Slogo</A>
-a language written using Jison
-</LI>
-<LI><A NAME="tex2html417"
-  HREF="https://github.com/jashkenas/coffee-script/wiki/List-of-languages-that-compile-to-JS">List of languages that compile to JS</A>
-</LI>
-<LI><A NAME="tex2html418"
-  HREF="http://blog.kalleberg.org/post/1256702765/prototype-of-a-scannerless-generalized-left-to-right">Prototype of a Scannerless, Generalized Left-to-right Rightmost (SGLR) derivation parser for JavaScript</A>
-</LI>
-</OL>
+Otro ejemplo de optimización peephole consiste en reemplazar las operaciones
+flotantes de división por una constante por la multiplicación por la inversa
+de la misma (aquí se pueden introducir diferencias en el resultado, debido
+a la inexactitud de las operaciones en punto flotante y a que, si
+se trata de un <A NAME="12882"></A><SPAN  CLASS="textbf">compilador cruzado</SPAN> la aritmética 
+flotante en la máquina en la que se ejecuta el compilador puede ser diferente
+de la de la máquina que ejecutará el código objeto).
 
 <P>
 
-<H2><A NAME="SECTION05822000000000000000"></A>
-   <A NAME="16461"></A>
+<H2><A NAME="SECTION067161000000000000000"></A>
+   <A NAME="12885"></A>
+  
+<A NAME="practica:peephole"></A>
 <BR>
-Práctica: Secuencia de Asignaciones Simples
+Práctica: Optimización Peephole
 </H2>
-  
-Modifique este ejemplo para que el lenguaje acepte una secuencia
-de sentencias de asignación de la forma <code>ID = NUM</code> separadas
-por puntos y comas, por ejemplo <code>a = 4; b = 4.56; c = -8.57e34</code>.
-El analizador retorna un hash/objeto 
-cuyas claves son los identificadores y cuyos valores 
-son los números.
-Clone el repositorio en
-<A NAME="tex2html419"
-  HREF="https://github.com/crguezl/jison-basic2">https://github.com/crguezl/jison-basic2</A>.
+
+<OL>
+<LI>Optimice el código generado para la máquina de registros sustituyendo
+las operaciones de multiplicación y división enteras por una constante que sea
+potencia de dos (de la forma <SPAN CLASS="MATH"><IMG
+ WIDTH="23" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img371.png"
+ ALT="$ 2^n$"></SPAN>) por operaciones de desplazamiento.
+Repase el capítulo de expresiones regulares. Es posible que aquí quiera emplear
+una sustitución en la que la cadena de reemplazo
+sea evaluada sobre la marcha. Si es así, repase la sección
+<A HREF="node100.html#section:regeval">33.1.6</A>. La siguiente sesión con el depurador
+pretende ilustrar la idea:
+<PRE>
+$ perl -de 0
+DB&lt;1&gt; $a = "MUL R2, 16"
+DB&lt;2&gt; $a =~ s/MUL R(\d), (\d+)/($2 == 16)?"SHL R$1, 4":$&amp;/e
+DB&lt;3&gt; p $a
+SHL R2, 4
+DB&lt;5&gt; $a = "MUL R2, 7"
+DB&lt;6&gt; $a =~ s/MUL R(\d), (\d+)/($2 == 16)?"SHL R$1, 4":$&amp;/e
+DB&lt;7&gt; p $a
+MUL R2, 7
+DB&lt;8&gt;
+</PRE>
 
 <P>
-Modifique los analizadores léxico y sintáctico de forma conveniente.
+</LI>
+<LI>El plegado de constantes realizado durante la optimización de código independiente
+de la máquina (véase la sección
+<A HREF="node137.html#section:optimizacion">36.11</A>)
+es parcial. Si los árboles para el producto se hunden a izquierdas, una expresión
+como <code>a = a * 2 * 3</code> no será plegada, ya que produce
+un árbol de la forma 
 
 <P>
-Añada acciones semánticas para que el analizador devuelva una tabla de símbolos con los identificadores y sus valores.
+<DIV ALIGN="CENTER">
+<!-- MATH
+ $t = TIMES(TIMES(a,2),3)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="236" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img372.png"
+ ALT="$ t = TIMES(TIMES(a,2),3)$"></SPAN>
+</DIV>
+
+<P>
+Dado que el algoritmo no
+puede plegar <SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img294.png"
+ ALT="$ t/1$"></SPAN> tampoco plegará <SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img193.png"
+ ALT="$ t$"></SPAN>.  Busque en el código objeto
+secuencias de multiplicaciones 
+por constantes y abrévielas en una. Haga lo mismo para las restantes operaciones.
+
+<P>
+</LI>
+<LI>Dado el siguiente programa:
+<PRE>
+$ cat test14.tutu
+int a,b; a = 2; b = a*a+1
+</PRE>
+El código producido por el traductor para la máquina de registros es:
+<PRE>
+1 LOADC R0, 2
+2 STORE  0, R0 # a
+3 LOADM R0, 0 # a
+4 MULTM R0, 0 # a
+5 PLUSC R0, 1 # 1
+6 STORE  1, R0 # b
+</PRE>
+Se ve que la instrucción de carga <code>LOADM R0, 0</code> de la 
+línea 3 es innecesaria por cuanto
+el contenido de la variable <code>a</code> ya está en el registro <code>R0</code>, 
+ya que fué cargada en el registro en la línea 2.
+Nótese que esta hipótesis no es necesariamente cierta
+si la línea 3 fuera el objetivo de un salto desde 
+otro punto del programa. Esta condición se cumple
+cuando nos movemos dentro de un <A NAME="12886"></A><SPAN  CLASS="textbf">bloque básico</SPAN>: 
+una secuencia de instrucciones que no contiene instrucciones
+de salto ni es el objetivo de instrucciones de salto, con la excepción
+de las instrucciones inicial y final.
+Mejore el código generado 
+intentando detectar patrones
+de este tipo, eliminando la operación de carga correspondiente.
+</LI>
+</OL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4549"
+<A NAME="tex2html4508"
   HREF="node143.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4543"
-  HREF="node140.html">
+<A NAME="tex2html4502"
+  HREF="node126.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4537"
+<A NAME="tex2html4498"
   HREF="node141.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4545"
-  HREF="node223.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4547"
+<A NAME="tex2html4504"
   HREF="node226.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html4506"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -490,17 +312,17 @@ Añada acciones semánticas para que el analizador devuelva una tabla de símbol
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4550"
-  HREF="node143.html">Ejemplo en Jison: Calculadora</A>
-<B>Sup:</B> <A NAME="tex2html4544"
-  HREF="node140.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4538"
-  HREF="node141.html">Conceptos Básicos para el</A>
+<B> Sig:</B> <A NAME="tex2html4509"
+  HREF="node143.html">Análisis Sintáctico Ascendente en</A>
+<B>Sup:</B> <A NAME="tex2html4503"
+  HREF="node126.html">Análisis Sintáctico Descendente en</A>
+<B> Ant:</B> <A NAME="tex2html4499"
+  HREF="node141.html">Generación de Código: Máquina</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-05-15</I>
+2013-06-01</I>
 </ADDRESS>
 </BODY>
 </HTML>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Transferencia de Control</TITLE>
-<META NAME="description" CONTENT="Transferencia de Control">
+<TITLE>Expresiones Regulares Posix en C</TITLE>
+<META NAME="description" CONTENT="Expresiones Regulares Posix en C">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -28,20 +28,20 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3018"
+<A NAME="tex2html2988"
   HREF="node85.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3012"
+<A NAME="tex2html2982"
   HREF="node83.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3006"
+<A NAME="tex2html2976"
   HREF="node83.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3014"
-  HREF="node223.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3016"
+<A NAME="tex2html2984"
   HREF="node226.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html2986"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,73 +88,121 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3019"
-  HREF="node85.html">Inserción de Texto</A>
-<B>Sup:</B> <A NAME="tex2html3013"
-  HREF="node83.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html3007"
-  HREF="node83.html">Expresiones Regulares en sed</A>
+<B> Sig:</B> <A NAME="tex2html2989"
+  HREF="node85.html">Expresiones Regulares en Flex</A>
+<B>Sup:</B> <A NAME="tex2html2983"
+  HREF="node83.html">Expresiones Regulares en C</A>
+<B> Ant:</B> <A NAME="tex2html2977"
+  HREF="node83.html">Expresiones Regulares en C</A>
 <B> Con:</B> 
-<A NAME="tex2html3014"
-  HREF="node223.html">
+<A NAME="tex2html2984"
+  HREF="node226.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3016"
-  HREF="node226.html">
+<A NAME="tex2html2986"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<H1><A NAME="SECTION05310000000000000000">
-Transferencia de Control</A>
+<UL CLASS="ChildLinks">
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html2990"
+  HREF="node84.html#SECTION06210010000000000000">Enlaces Relacionados</A>
+</UL></UL></UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION06210000000000000000">
+Expresiones Regulares Posix en C</A>
 </H1>
-La orden <SPAN  CLASS="textit">b</SPAN> tiene la sintáxis:
-<BR><I>[address1][,address2]b[label]</I>
-<BR>
-Transfiere el control a la etiqueta especificada. Si no se especifica
-la etiqueta, el control se transfiere al final del <I>script</I>, por lo que
-no se aplica ningún otro comando a la línea actual. Los dos siguientes
-ejemplos utilizan <I>b</I>:
+Las Expresiones Regulares 'a la Perl' no forman parte de ANSI C. 
+La forma mas sencilla de usar regexps en C es utilizando la versión POSIX de la
+librería que viene con la mayoría de los Unix.
+Sigue un ejemplo que usa regex POSIX en C:
 <PRE>
-$ cat b.sed
-s/fish/cow/
-b
-s/cow/horse/
-$ sed -f b.sed b.test
-cow
-cow
+[~/src/C/regexp]$ cat use_posix.c 
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;regex.h&gt;        
+
+int main() {
+       regex_t regex;
+       int reti;
+       char msgbuf[100];
+
+/* Compile regular expression */
+        reti = regcomp(&amp;regex, "^a[[:alnum:]]", 0);
+        if( reti ){ fprintf(stderr, "Could not compile regex\n"); exit(1); }
+
+/* Execute regular expression */
+        reti = regexec(&amp;regex, "abc", 0, NULL, 0);
+        if( !reti ){
+                puts("Match");
+        }
+        else if( reti == REG_NOMATCH ){
+                puts("No match");
+        }
+        else{
+                regerror(reti, &amp;regex, msgbuf, sizeof(msgbuf));
+                fprintf(stderr, "Regex match failed: %s\n", msgbuf);
+                exit(1);
+        }
+
+/* Free compiled regular expression if you want to use the regex_t again */
+    regfree(&amp;regex);
+}
 </PRE>
-Utilizando <I>b</I> con una etiqueta:
+Compilación y ejecución:
 <PRE>
-$ cat blabel.sed
-s/fish/cow/
-b another
-s/cow/horse/
-:another
-s/cow/cat/
-$ sed -f blabel.sed b.test
-cat
-cat
+[~/src/C/regexp]$ cc use_posix.c  -o use_posix
+[~/src/C/regexp]$ ./use_posix 
+Match
 </PRE>
 
 <P>
 
+<H4><A NAME="SECTION06210010000000000000">
+Enlaces Relacionados</A>
+</H4>
+  
+
+<OL>
+<LI><A NAME="tex2html139"
+  HREF="http://www.gnu.org/software/libc/manual/html_node/Regular-Expressions.html">Regular Expression Matching in GNU C</A>
+</LI>
+<LI><A NAME="tex2html140"
+  HREF="http://www.gnu.org/software/libc/manual/html_node/Pattern-Matching.html#Pattern-Matching">Pattern Matching in GNU C</A>
+</LI>
+<LI><A NAME="tex2html141"
+  HREF="http://www.pcre.org/">PCRE</A>
+</LI>
+<LI><A NAME="tex2html142"
+  HREF="http://www.pcre.org/pcre.txt">PCRE doc</A>
+</LI>
+</OL>
+
+<P>
+
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3018"
+<A NAME="tex2html2988"
   HREF="node85.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3012"
+<A NAME="tex2html2982"
   HREF="node83.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3006"
+<A NAME="tex2html2976"
   HREF="node83.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3014"
-  HREF="node223.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3016"
+<A NAME="tex2html2984"
   HREF="node226.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html2986"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -201,17 +249,17 @@ cat
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3019"
-  HREF="node85.html">Inserción de Texto</A>
-<B>Sup:</B> <A NAME="tex2html3013"
-  HREF="node83.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html3007"
-  HREF="node83.html">Expresiones Regulares en sed</A>
+<B> Sig:</B> <A NAME="tex2html2989"
+  HREF="node85.html">Expresiones Regulares en Flex</A>
+<B>Sup:</B> <A NAME="tex2html2983"
+  HREF="node83.html">Expresiones Regulares en C</A>
+<B> Ant:</B> <A NAME="tex2html2977"
+  HREF="node83.html">Expresiones Regulares en C</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-05-15</I>
+2013-06-01</I>
 </ADDRESS>
 </BODY>
 </HTML>

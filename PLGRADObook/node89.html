@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Manipulando tablas numéricas</TITLE>
-<META NAME="description" CONTENT="Manipulando tablas numéricas">
+<TITLE>Trasferencia de Control Condicional</TITLE>
+<META NAME="description" CONTENT="Trasferencia de Control Condicional">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node90.html">
 <LINK REL="previous" HREF="node88.html">
-<LINK REL="up" HREF="node83.html">
+<LINK REL="up" HREF="node86.html">
 <LINK REL="next" HREF="node90.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3088"
+<A NAME="tex2html3103"
   HREF="node90.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3082"
-  HREF="node83.html">
+<A NAME="tex2html3097"
+  HREF="node86.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3076"
+<A NAME="tex2html3091"
   HREF="node88.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3084"
-  HREF="node223.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3086"
+<A NAME="tex2html3099"
   HREF="node226.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html3101"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,130 +88,126 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3089"
-  HREF="node90.html">Traducción entre Tablas</A>
-<B>Sup:</B> <A NAME="tex2html3083"
-  HREF="node83.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html3077"
-  HREF="node88.html">Siguiente Línea: La orden</A>
+<B> Sig:</B> <A NAME="tex2html3104"
+  HREF="node90.html">Rangos</A>
+<B>Sup:</B> <A NAME="tex2html3098"
+  HREF="node86.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html3092"
+  HREF="node88.html">Inserción de Texto</A>
 <B> Con:</B> 
-<A NAME="tex2html3084"
-  HREF="node223.html">
+<A NAME="tex2html3099"
+  HREF="node226.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3086"
-  HREF="node226.html">
+<A NAME="tex2html3101"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION05360000000000000000">
-Manipulando tablas numéricas</A>
+<H1><A NAME="SECTION06330000000000000000">
+Trasferencia de Control Condicional</A>
 </H1>
-El siguiente ejemplo intercambia la primera y ultima columnas
-de un fichero como el que sigue:
+La sintaxis de la orden <I>t</I> es:
+<DIV ALIGN="CENTER">
+<I>[address1][,address2]t[label]</I> 
+</DIV>
+Si la sustitución tiene éxito, se bifurca a <I>label</I>, Si la etiqueta no se especifica, 
+se salta al final del <I>script</I>.
+<BR>
+Consideremos el siguiente fichero de entrada:
 <PRE>
-$ cat columns.test
-11111 22222 33333 44444 55555
-  111    22    33  4444  5555
-11111 22222 33333 44444 55555
-   11    22     3   444  5555
+$ cat t.test
+name: "fulano de tal" address: "Leganitos,4" phone: "342255"
+name: "fulano de cual"
+name: "fulano de alli" address: "Legitos,4"
+name: "zutano de tal"  address: "Leg,8"  phone: "342255"
 </PRE>
-La parte mas complicada es preservar el sangrado.
-El truco reside, en parte, en el patrón central <!-- MATH
- $\backslash$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="14" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img10.png"
- ALT="$ \backslash$"></SPAN>2, que 
-memoriza los blancos después de la primera columna y un sólo blanco 
-antes de la última.
+Se asume que siempre que figura el teléfono se ha puesto la dirección y que si está
+la dirección se ha escrito el nombre. Se pretenden rellenar las líneas con un campo por defecto:
 <PRE>
-$ cat columns.sed
-s/^\( *[0-9][0-9]*\)\( .*[0-9] \)\( *[0-9][0-9]*\)$/\3\2\1/
-$ sed -f columns.sed columns.test
-55555 22222 33333 44444 11111
- 5555    22    33  4444   111
-55555 22222 33333 44444 11111
- 5555    22     3   444    11
+$ cat t.sed
+/name:/{
+s/.*name:[ ]*".*"[ ]*address:[ ]*".*"[ ].*phone:[ ]*".*".*/&amp;/
+t
+s/.*name:[ ]*".*"[ ]*address:[ ]*".*"/&amp; phone: "????"/
+t
+s/.*name:[ ]*".*"/&amp; address: "???? ????" phone: "????"/
+}
 </PRE>
-El siguiente ejemplo utiliza
-una opción del operador de sustitución que permite decidir que aparición
-del patrón deseamos sustituir. Asi,
+Esta es la llamada al script y la salida generada:
+<PRE>
+$ sed -f t.sed t.test
+name: "fulano de tal" address: "Leganitos,4" phone: "342255"
+name: "fulano de cual" address: "???? ????" phone: "????"
+name: "fulano de alli" address: "Legitos,4" phone: "????"
+name: "zutano de tal"  address: "Leg,8"  phone: "342255"
+$
+</PRE>
 
 <P>
-<code>s/A/B/3</code>
+<SPAN  CLASS="textit">Ejemplo:</SPAN>
 
 <P>
-sustituirá la 3 aparición de <code>A</code> por <code>B</code>, obviando las otras.
+El fichero de entrada es un <SPAN  CLASS="textit">folder</SPAN> de 
+
+...
+<PRE>
+01_NAME: XXX
+02_SURNAME: XXX
+03_TITLE: SISTEMAS
+04_OtherTitle:
+05_BIRTHDAY: XXX
+06_BIRTHMONTH: XXX
+07_BIRTHYEAR: XXX
+08_ADDRESSFAMILY: XXX
+09_ADDRESSACTUAL: XXX
+10_POSTALCODE: XXX
+11_EMAIL: XXX@csi.ull.es
+12_TELEPHONE: XXX
+13_FAX: XXX
+14_LABGROUP: xxx
+15_COMMENTS:
+</PRE>
+...
 
 <P>
-El ejemplo selecciona la columna dos del fichero:
-<PRE>
-$ cat col2.sed
-#extracts the second column
-s/^  *//
-s/\&lt;[0-9][0-9]*\&gt;//1
-s/\&lt;[0-9][0-9]*\&gt;//2
-s/\&lt;[0-9][0-9]*\&gt;//2
-s/\&lt;[0-9][0-9]*\&gt;//2
-s/  *$//
-$ sed -f col2.sed columns.test
- 22222
-    22
- 22222
-    22
+Se trata de escribir un script que produzca como salida los <SPAN  CLASS="textit">emails</SPAN>
+de los diferentes alumnos. Esta es una solución (suponemos que el <SPAN  CLASS="textit">script</SPAN> se llama con la opción <PRE>
+#!/bin/sed -f
+/^11_EMAIL:/{
+s/11_EMAIL: *\([a-zA-Z0-9]*@[a-zA-Z0-9.]*\)/\1/
+t print
+s/11_EMAIL: *\([a-zA-Z0-9]*\)/\1@csi.ull.es/
+:print
+p
+}
 </PRE>
-Mas general que el anterior, el siguiente ejemplo elimina 
-un número de columnas arbitrario <code>$1</code> por la izquierda y otro 
-número <code>$2</code> por la derecha.
-Para lograrlo, es necesario utilizar un un guión para la <code>shell</code> 
-que llama al correspondiente guión <code>sed</code>. Los parámetros 
-son introducidos en el guión <code>sed</code> mediante el uso apropiado
-de las comillas dobles y simples:
 
 <P>
-<PRE>
-&gt; cat colbranch.sh
-#!/bin/bash
-sed -e '
-s/^\( *[0-9]\+\)\{'"$1"'\}//
-s/\( *[0-9]\+\)\{'"$2"'\}$//
-'
-</PRE>
-Veamos un ejemplo de uso:
-<PRE>
-&gt; cat columns.test
-11111 22222 33333 44444 55555
-  111    22    33  4444  5555
-11111 22222 33333 44444 55555
-   11    22     3   444  5555
-&gt; colbranch.sh 2 1 &lt; columns.test
- 33333 44444
-    33  4444
- 33333 44444
-     3   444
-</PRE>
+Una característica no comentada y observada en algunos <code>sed</code>, incluyendo 
+la versión Linux, es que, si existen varias sustituciones consecutivas antes de la
+sentencia de transferencia de control, basta con que una tenga éxito para que el salto
+se realice. 
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3088"
+<A NAME="tex2html3103"
   HREF="node90.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3082"
-  HREF="node83.html">
+<A NAME="tex2html3097"
+  HREF="node86.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3076"
+<A NAME="tex2html3091"
   HREF="node88.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3084"
-  HREF="node223.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3086"
+<A NAME="tex2html3099"
   HREF="node226.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html3101"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -258,17 +254,17 @@ Veamos un ejemplo de uso:
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3089"
-  HREF="node90.html">Traducción entre Tablas</A>
-<B>Sup:</B> <A NAME="tex2html3083"
-  HREF="node83.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html3077"
-  HREF="node88.html">Siguiente Línea: La orden</A>
+<B> Sig:</B> <A NAME="tex2html3104"
+  HREF="node90.html">Rangos</A>
+<B>Sup:</B> <A NAME="tex2html3098"
+  HREF="node86.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html3092"
+  HREF="node88.html">Inserción de Texto</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-05-15</I>
+2013-06-01</I>
 </ADDRESS>
 </BODY>
 </HTML>

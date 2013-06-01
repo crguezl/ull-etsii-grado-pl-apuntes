@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Recuperación de Errores en Listas</TITLE>
-<META NAME="description" CONTENT="Recuperación de Errores en Listas">
+<TITLE>Uso de union y type</TITLE>
+<META NAME="description" CONTENT="Uso de union y type">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,28 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
+<LINK REL="next" HREF="node198.html">
 <LINK REL="previous" HREF="node196.html">
-<LINK REL="up" HREF="node191.html">
+<LINK REL="up" HREF="node194.html">
 <LINK REL="next" HREF="node198.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5411"
+<A NAME="tex2html5428"
   HREF="node198.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5405"
-  HREF="node191.html">
+<A NAME="tex2html5422"
+  HREF="node194.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5401"
+<A NAME="tex2html5416"
   HREF="node196.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5407"
-  HREF="node223.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5409"
+<A NAME="tex2html5424"
   HREF="node226.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html5426"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -87,356 +88,135 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5412"
-  HREF="node198.html">Análisis Sintáctico Ascendente en</A>
-<B>Sup:</B> <A NAME="tex2html5406"
-  HREF="node191.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5402"
-  HREF="node196.html">Recuperación de Errores</A>
+<B> Sig:</B> <A NAME="tex2html5429"
+  HREF="node198.html">Acciones en medio de</A>
+<B>Sup:</B> <A NAME="tex2html5423"
+  HREF="node194.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5417"
+  HREF="node196.html">Precedencia y Asociatividad</A>
 <B> Con:</B> 
-<A NAME="tex2html5407"
-  HREF="node223.html">
+<A NAME="tex2html5424"
+  HREF="node226.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5409"
-  HREF="node226.html">
+<A NAME="tex2html5426"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION051060000000000000000"></A>
-<A NAME="section:recuperryacclistas"></A>
+<H1><A NAME="SECTION061030000000000000000"></A>
+<A NAME="section:union"></A>
 <BR>
-Recuperación de Errores en Listas
+Uso de union y type
 </H1>
-Aunque no existe un método exacto para decidir como ubicar
-las reglas de recuperación de errores, 
-en general, los s&#305;mbolos de error deben ubicarse intentado 
-satisfacer las siguientes reglas:
+En general, los atributos asociados con las diferentes variables sintácticas y terminales tendrán tipos de datos distintos. Para ello, <code>yacc</code> provee
+la declaración <code>%union</code>.
 
 <P>
-
-<UL>
-<LI>Tan cerca como sea posible del s&#305;mbolo de arranque.
-</LI>
-<LI>Tan cerca como sea posible de los s&#305;mbolos terminales.
-</LI>
-<LI>Sin introducir nuevos conflictos.
-</LI>
-</UL>
+La declaración <code>%union</code> especifica la colección de posibles tipos de datos de <code>yylval</code> y de los atributos <code>$1</code>, <code>$2</code>, ...
 
 <P>
+He aqui un ejemplo:
+
 <P>
-<DIV><A NAME="scheme:errinlists"><B>Esquema  <SPAN CLASS="arabic">37</SPAN>.<SPAN CLASS="arabic">6</SPAN>.<SPAN CLASS="arabic">1</SPAN></B></A> &nbsp; 
-<I>En el caso particular de las listas, se recomienda seguir el
-siguiente esquema:
-</I>
-<P><!-- MATH
- \begin{math}
-\begin{array}{lll}
-Construct         & EBNF & yacc\ input\\
-\hline
-optional\ sequence & x:\{y\}   & \verb|x : /* null */             |\\
-                   &           & \verb|  | x y  { yyerrok; }      |\\
-                   &           & \verb|  | x error                |\\
-\hline
-sequence          & x:y\{y\}  & \verb|x : y                      |\\
-                  &           & \verb|  | xy   { yyerrok; }      |\\
-                &           & \verb|  | error                  |\\
-                &           & \verb|  | x error                |\\
-\hline
-list              & x:y\{Ty\} & \verb|x : y                       |\\
-                  &           & \verb|  | x T y { yyerrok; }      |\\
-                &           & \verb|  | error                   |\\
-                &           & \verb|  | x error                 |\\
-                &           & \verb|  | x error y { yyerrok; }  |\\
-                &           & \verb|  | x  T error              |\\
-\hline
-\end{array}
-\end{math}
+<PRE>
+%union {
+  double val;
+  int index;
+}
+</PRE>
+Esto dice que los dos tipos de alternativas son <code>double</code> y <code>int </code>. Se les han dado los nombres <code>val</code> y <code>index</code>.
+<PRE>
+%token &lt;val&gt;   NUMBER
+%token &lt;index&gt; VAR
+%type  &lt;val&gt;   expr
+%right '='
+%left '+' '-'
+%left '*' '/'
+</PRE>
+
+<P>
+Estos nombres <code>&lt;val&gt;</code> e <code>&lt;index&gt;</code> se utilizan en las declaraciones de <code>%token</code> y <code>%type</code> para definir el tipo del correspondiente atributo asociado.
+
+<P>
+Dentro de las acciones, se puede especificar el tipo de un símbolo insertando <code>&lt;tipo&gt;</code> despues del <code>$</code> que referencia al atributo. En el ejemplo anterior podríamos escribir <code>$&lt;val&gt;1</code> para indicar que manipulamos el atributo
+del primer símbolo de la parte derecha de la regla como si fuera un <code>double</code>.
+
+<P>
+La información que provee la declaración <code>%union</code> es utilizada por  <code>yacc</code>
+para realizar la sustitución de las referencias textuales/formales
+(<code>$$</code>, <code>$1</code>, ...<code>$</code><SPAN CLASS="MATH"><IMG
+ WIDTH="26" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img510.png"
+ ALT="$ \vert\alpha\vert$"></SPAN>) a los  atributos de
+los símbolos que conforman la regla (que pueden verse como parámetros
+formales de las acciones) por las referencias a las zonas de memoria
+en las que se guardan (que están asociadas con los correspondientes
+estados de la pila) cuando tiene lugar la reducción en el algoritmo de
+análisis LR:
+
+<P>
+<DIV ALIGN="LEFT">
+<code>    case "reduce A </code><!-- MATH
+ $\rightarrow \alpha$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="516" HEIGHT="323" BORDER="0"
- SRC="img520.png"
- ALT="\begin{displaymath}
-\begin{array}{lll}
-Construct &amp; EBNF &amp; yacc input\\
-\hline
-...
-...\\
-&amp; &amp; \verb\vert \vert x T error \vert\\
-\hline
-\end{array}\end{displaymath}"></SPAN></DIV><P></P>
+ WIDTH="38" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img511.png"
+ ALT="$ \rightarrow \alpha$"></SPAN><code>" : </code>
+
+<BR><code>      execute("reduce A </code><!-- MATH
+ $\rightarrow \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="38" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img511.png"
+ ALT="$ \rightarrow \alpha$"></SPAN><code>", top(</code><SPAN CLASS="MATH"><IMG
+ WIDTH="26" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img510.png"
+ ALT="$ \vert\alpha\vert$"></SPAN><code>-1), </code><SPAN CLASS="MATH"><IMG
+ WIDTH="28" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img512.png"
+ ALT="$ \cdots$"></SPAN><code> , top(0));</code> 
+
+<BR><code>      pop(</code><SPAN CLASS="MATH"><IMG
+ WIDTH="26" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img510.png"
+ ALT="$ \vert\alpha\vert$"></SPAN><code>);</code> 
+
+<BR><code>      push(goto[top(0)][A];</code> 
+
+<BR><code>      break;</code>
+
+</DIV>
 
 <P>
-<P>
-<DIV><B>Programa  <SPAN CLASS="arabic">37</SPAN>.<SPAN CLASS="arabic">6</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Para comprobar el funcionamiento y la validez de la metodología 
-esquematizada en el esquema <A HREF="#scheme:errinlists">37.6.1</A>, 
-consideremos los contenidos del fichero <code>error.y</code>.
-En el se muestra el tercer caso x:y{Ty} con 
-x = <TT>list</TT>, T = <TT>,</TT> e y = <TT>NUMBER</TT>:
-</I><PRE>
-%{
-#include &lt;stdio.h&gt;
-void put(double x);
-void err(int code); 
-%}
-
-%union { 
-  double val; 
-}
-%token &lt;val&gt;NUMBER
-%%
-command 
-  : 
-  | command list '\n' { yyerrok; } 
-  ;
-
-list 
-    : NUMBER            { put($1); }
-    | list ',' NUMBER   { put($3); yyerrok; }
-    | error             { err(1); }
-    | list error        { err(2); }
-    | list error NUMBER { err(3); put($3); yyerrok; }
-    | list ',' error    { err(4); }
-    ;
-    
-%%    
-void put(double x) {   
-  printf("%2.1lf\n",x);
-}
-
-void err(int code) {
-  printf("err %d\n",code);
-}
-
-main() {
-  yydebug = 1;
-  yyparse();
-}
-
-yyerror(char *s) {
-  printf("%s\n",s);
-}
-</PRE></DIV><P></P>
-
-<P>
-<P>
-<DIV><B>Listado  <SPAN CLASS="arabic">37</SPAN>.<SPAN CLASS="arabic">6</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>La compilación con <code>yacc</code> da lugar a una tabla ligeramente diferente
-de la producida por <code>bison</code>.
-El fichero <code>y.output</code> contiene la tabla:
-</I><PRE>
-   0  $accept : command $end
-
-   1  command :
-   2          | command list '\n'
-
-   3  list : NUMBER
-   4       | list ',' NUMBER
-   5       | error
-   6       | list error
-   7       | list error NUMBER
-   8       | list ',' error
-
-state 0
-	$accept : . command $end  (0)
-	command : .  (1)
-
-	.  reduce 1
-
-	command  goto 1
-
-
-state 1
-	$accept : command . $end  (0)
-	command : command . list '\n'  (2)
-
-	$end  accept
-	error  shift 2
-	NUMBER  shift 3
-	.  error
-
-	list  goto 4
-
-
-state 2
-	list : error .  (5)
-
-	.  reduce 5
-
-
-state 3
-	list : NUMBER .  (3)
-
-	.  reduce 3
-
-
-state 4
-	command : command list . '\n'  (2)
-	list : list . ',' NUMBER  (4)
-	list : list . error  (6)
-	list : list . error NUMBER  (7)
-	list : list . ',' error  (8)
-
-	error  shift 5
-	'\n'  shift 6
-	','  shift 7
-	.  error
-
-
-state 5
-	list : list error .  (6)
-	list : list error . NUMBER  (7)
-
-	NUMBER  shift 8
-	error  reduce 6
-	'\n'  reduce 6
-	','  reduce 6
-
-
-state 6
-	command : command list '\n' .  (2)
-
-	.  reduce 2
-
-
-state 7
-	list : list ',' . NUMBER  (4)
-	list : list ',' . error  (8)
-
-	error  shift 9
-	NUMBER  shift 10
-	.  error
-
-
-state 8
-	list : list error NUMBER .  (7)
-
-	.  reduce 7
-
-
-state 9
-	list : list ',' error .  (8)
-
-	.  reduce 8
-
-
-state 10
-	list : list ',' NUMBER .  (4)
-
-	.  reduce 4
-
-
-5 terminals, 3 nonterminals
-9 grammar rules, 11 states
-</PRE></DIV><P></P>
-
-<P>
-<DIV><B>Ejecución  <SPAN CLASS="arabic">37</SPAN>.<SPAN CLASS="arabic">6</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>La ejecución del programa generado por <TT>yacc</TT> es como sigue:
-</I><PRE>
-&gt; error
-yydebug: state 0, reducing by rule 1 (command :)
-yydebug: after reduction, shifting from state 0 to state 1
-10 20
-yydebug: state 1, reading 257 (NUMBER)
-yydebug: state 1, shifting to state 3
-yydebug: state 3, reducing by rule 3 (list : NUMBER)
-10.0
-yydebug: after reduction, shifting from state 1 to state 4
-yydebug: state 4, reading 257 (NUMBER)
-syntax error
-yydebug: state 4, error recovery shifting to state 5
-yydebug: state 5, shifting to state 8
-yydebug: state 8, reducing by rule 7 (list : list error NUMBER)
-err 3
-20.0
-yydebug: after reduction, shifting from state 1 to state 4
-yydebug: state 4, reading 10 ('\n')
-yydebug: state 4, shifting to state 6
-yydebug: state 6, reducing by rule 2 (command : command list '\n')
-yydebug: after reduction, shifting from state 0 to state 1
-10;20 30
-yydebug: state 1, reading 257 (NUMBER)
-yydebug: state 1, shifting to state 3
-yydebug: state 3, reducing by rule 3 (list : NUMBER)
-10.0
-yydebug: after reduction, shifting from state 1 to state 4
-yydebug: state 4, reading 59 (illegal-symbol)
-syntax error
-yydebug: state 4, error recovery shifting to state 5
-yydebug: state 5, error recovery discards token 59 (illegal-symbol)
-yydebug: state 5, reading 257 (NUMBER)
-yydebug: state 5, shifting to state 8
-yydebug: state 8, reducing by rule 7 (list : list error NUMBER)
-err 3
-20.0
-yydebug: after reduction, shifting from state 1 to state 4
-yydebug: state 4, reading 257 (NUMBER)
-syntax error
-yydebug: state 4, error recovery shifting to state 5
-yydebug: state 5, shifting to state 8
-yydebug: state 8, reducing by rule 7 (list : list error NUMBER)
-err 3
-30.0
-yydebug: after reduction, shifting from state 1 to state 4
-yydebug: state 4, reading 10 ('\n')
-yydebug: state 4, shifting to state 6
-yydebug: state 6, reducing by rule 2 (command : command list '\n')
-yydebug: after reduction, shifting from state 0 to state 1
-3,
-yydebug: state 1, reading 257 (NUMBER)
-yydebug: state 1, shifting to state 3
-yydebug: state 3, reducing by rule 3 (list : NUMBER)
-3.0
-yydebug: after reduction, shifting from state 1 to state 4
-yydebug: state 4, reading 44 (',')
-yydebug: state 4, shifting to state 7
-yydebug: state 7, reading 10 ('\n')
-syntax error
-yydebug: state 7, error recovery shifting to state 9
-yydebug: state 9, reducing by rule 8 (list : list ',' error)
-err 4
-yydebug: after reduction, shifting from state 1 to state 4
-yydebug: state 4, shifting to state 6
-yydebug: state 6, reducing by rule 2 (command : command list '\n')
-yydebug: after reduction, shifting from state 0 to state 1
-#
-yydebug: state 1, reading 35 (illegal-symbol)
-syntax error
-yydebug: state 1, error recovery shifting to state 2
-yydebug: state 2, reducing by rule 5 (list : error)
-err 1
-yydebug: after reduction, shifting from state 1 to state 4
-yydebug: state 4, error recovery discards token 35 (illegal-symbol)
-yydebug: state 4, reading 10 ('\n')
-yydebug: state 4, shifting to state 6
-yydebug: state 6, reducing by rule 2 (command : command list '\n')
-yydebug: after reduction, shifting from state 0 to state 1
-yydebug: state 1, reading 0 (end-of-file)
-</PRE></DIV><P></P>
-
+Asi, <code>yacc</code> es capaz de insertar 
+el código de ahormado de tipos correcto.
+Ello puede hacerse porque se conocen los tipos 
+asociados con los símbolos en la parte derecha de 
+una regla, ya que han sido proveídos en  
+las declaraciones <code>%union</code>, <code>%token</code> y <code>%type</code>.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5411"
+<A NAME="tex2html5428"
   HREF="node198.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5405"
-  HREF="node191.html">
+<A NAME="tex2html5422"
+  HREF="node194.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5401"
+<A NAME="tex2html5416"
   HREF="node196.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5407"
-  HREF="node223.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5409"
+<A NAME="tex2html5424"
   HREF="node226.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html5426"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -483,17 +263,17 @@ yydebug: state 1, reading 0 (end-of-file)
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5412"
-  HREF="node198.html">Análisis Sintáctico Ascendente en</A>
-<B>Sup:</B> <A NAME="tex2html5406"
-  HREF="node191.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5402"
-  HREF="node196.html">Recuperación de Errores</A>
+<B> Sig:</B> <A NAME="tex2html5429"
+  HREF="node198.html">Acciones en medio de</A>
+<B>Sup:</B> <A NAME="tex2html5423"
+  HREF="node194.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5417"
+  HREF="node196.html">Precedencia y Asociatividad</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-05-15</I>
+2013-06-01</I>
 </ADDRESS>
 </BODY>
 </HTML>

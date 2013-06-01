@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Práctica: Análisis de Ámbito del Lenguaje Simple C</TITLE>
-<META NAME="description" CONTENT="Práctica: Análisis de Ámbito del Lenguaje Simple C">
+<TITLE>Análisis de Ámbito: Conceptos</TITLE>
+<META NAME="description" CONTENT="Análisis de Ámbito: Conceptos">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node206.html">
 <LINK REL="previous" HREF="node204.html">
-<LINK REL="up" HREF="node201.html">
+<LINK REL="up" HREF="node204.html">
 <LINK REL="next" HREF="node206.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5608"
+<A NAME="tex2html5611"
   HREF="node206.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5602"
-  HREF="node201.html">
+<A NAME="tex2html5605"
+  HREF="node204.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5596"
+<A NAME="tex2html5599"
   HREF="node204.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5604"
-  HREF="node223.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5606"
+<A NAME="tex2html5607"
   HREF="node226.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html5609"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,19 +88,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5609"
-  HREF="node206.html">La Dificultad de Elaboración</A>
-<B>Sup:</B> <A NAME="tex2html5603"
-  HREF="node201.html">Análisis de Ámbito en</A>
-<B> Ant:</B> <A NAME="tex2html5597"
-  HREF="node204.html">Práctica: Construcción del AST</A>
+<B> Sig:</B> <A NAME="tex2html5612"
+  HREF="node206.html">Descripción Eyapp del Lenguaje</A>
+<B>Sup:</B> <A NAME="tex2html5606"
+  HREF="node204.html">Análisis de Ámbito en</A>
+<B> Ant:</B> <A NAME="tex2html5600"
+  HREF="node204.html">Análisis de Ámbito en</A>
 <B> Con:</B> 
-<A NAME="tex2html5604"
-  HREF="node223.html">
+<A NAME="tex2html5607"
+  HREF="node226.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5606"
-  HREF="node226.html">
+<A NAME="tex2html5609"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
@@ -111,748 +111,834 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <UL CLASS="ChildLinks">
 <LI><UL>
 <LI><UL>
-<LI><A NAME="tex2html5610"
-  HREF="node205.html#SECTION051240010000000000000">La tabla de Símbolos</A>
-<LI><A NAME="tex2html5611"
-  HREF="node205.html#SECTION051240020000000000000">¿Que es una declaración?</A>
-<LI><A NAME="tex2html5612"
-  HREF="node205.html#SECTION051240030000000000000">El código asociado con <TT>declaration</TT></A>
 <LI><A NAME="tex2html5613"
-  HREF="node205.html#SECTION051240040000000000000">Tratamiento de los Bloques</A>
+  HREF="node205.html#SECTION061210010000000000000">El Problema del Análisis de Ámbito</A>
 <LI><A NAME="tex2html5614"
-  HREF="node205.html#SECTION051240050000000000000">Tratamiento de las Funciones</A>
+  HREF="node205.html#SECTION061210020000000000000">Binding Estático y Binding Dinámico</A>
 <LI><A NAME="tex2html5615"
-  HREF="node205.html#SECTION051240060000000000000">El Tratamiento del Programa Principal</A>
+  HREF="node205.html#SECTION061210030000000000000">Intervención del Programador en Tiempo de Compilación</A>
 <LI><A NAME="tex2html5616"
-  HREF="node205.html#SECTION051240070000000000000">Ejemplo de Salida:  Control de declaraciones duplicadas</A>
+  HREF="node205.html#SECTION061210040000000000000">Visibilidad</A>
 <LI><A NAME="tex2html5617"
-  HREF="node205.html#SECTION051240080000000000000">Un ejemplo de Volcado de un AST</A>
+  HREF="node205.html#SECTION061210050000000000000">Declaraciones y Definiciones</A>
 <LI><A NAME="tex2html5618"
-  HREF="node205.html#SECTION051240090000000000000">Métodos de soporte para el Volcado del Arbol</A>
+  HREF="node205.html#SECTION061210060000000000000">Inferencia, Declaraciones Implícitas y Ámbito</A>
+<LI><A NAME="tex2html5619"
+  HREF="node205.html#SECTION061210070000000000000">Ámbito Dinámico</A>
 </UL></UL></UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION051240000000000000000"></A>
-   <A NAME="22593"></A>
-  
-<A NAME="practica:ambitoytipossamplec"></A>
-<BR>
-Práctica: Análisis de Ámbito del Lenguaje Simple C
+<H1><A NAME="SECTION061210000000000000000">
+Análisis de Ámbito: Conceptos</A>
 </H1>
-Haga una primera parte del análisis de ámbito del lenguaje Simple C 
-presentado
-en la práctica
-<A HREF="node204.html#practica:esquemadetradsimple">39.3</A>.
-
-<P>
-En esta primera parte
-se construyen las declaraciones y las tablas de símbolos de cada bloque. 
-Sin embargo no queda establecida la asignación desde una instancia de un
-objeto a su declaración.
 
 <P>
 
-<H4><A NAME="SECTION051240010000000000000">
-La tabla de Símbolos</A>
+<H4><A NAME="SECTION061210010000000000000">
+El Problema del Análisis de Ámbito</A>
 </H4>
-Comenzaremos describiendo las estructuras de datos que van a conformar la tabla de símbolos
-de nuestro compilador:
-
-<P>
-
-<OL>
-<LI>Dote de los siguientes atributos a los nodos de tipo "bloque", 
-esto es a aquellos nodos que definen ámbito. Por ejemplo, los nodos asociados
-con la variable sintáctica <code>block</code> son de tipo "bloque":
-<PRE>
-block:
-    %name BLOCK
-    '{' declaration %name DECLARATIONS * statement %name STATEMENTS * '}'
-</PRE>
-
-<P>
-
-<OL>
-<LI>Atributo <code>symboltable</code>: referencia a la tabla de símbolos asociada con el bloque
-  La tabla de símbolos asociada al bloque es un simple hash.
-</LI>
-<LI>Atributo <code>fatherblock</code>: referencia al nodo <code>BLOCK</code> que inmediatamente anida a este.
-  Los nodos de tipo bloque quedan enlazados según el árbol de anidamiento de bloques
-</LI>
-<LI>Los bloques con declaraciones vacías pueden ser simplificados en el árbol de bloques
   
-</LI>
-</OL>
 
 <P>
-</LI>
-<LI>Los nodos <code>FUNCTION</code> asociados con las
-funciones son nodos de tipo bloque y
-serán tratados de manera similar a los nodos  <code>BLOCK</code>, esto es, 
-tendrán su tabla de símbolos asociada en la cual se guardarán los parámetros 
-de la función. Este bloque es el bloque padre del bloque formado por
-el cuerpo de la función. Posteriormente se pueden fusionar estos dos bloques
-siempre que se conserve la información necesaria sobre los parámetros.
+En los lenguajes de programación <A NAME="22542"></A><SPAN  CLASS="textbf">name binding</SPAN> (binding = encuadernado, encarpetado,
+ligadura, unificación) es la asociación de valores con identificadores. 
+Decimos de un identificador ligado a un valor que es una <SPAN  CLASS="textbf">referencia</SPAN> a dicho valor.
+El concepto de binding es un concepto proveído por los lenguajes de programación:
+a nivel de máquina no existe el concepto de binding, de relación (nombre, valor).
+El concepto de Binding esta intimamente relacionado con el concepto de ámbito
+<A NAME="22544"></A><SPAN  CLASS="textbf">scope</SPAN>), ya que el <A NAME="22546"></A><SPAN  CLASS="textbf">análisis de ámbito</SPAN> es la determinación de las relaciones
+de binding.
 
 <P>
-<PRE>
-funcDef:
-    %name FUNCTION
-    ID '('  param &lt;%name PARAMS * ','&gt; ')' 
-      block
-</PRE>
+El problema del análisis de ámbito sería sencillo sino fuera porque 
+los lenguajes de programación suelen permitir el uso del mismo
+<A NAME="22548"></A><SPAN  CLASS="textbf">nombre</SPAN><A NAME="tex2html461"
+  HREF="footnode.html#foot21917"><SUP><SPAN CLASS="arabic">41</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A> 
+para denotar distintos elementos de un
+programa. Es por ello que es necesario determinar que definición o declaración
+se aplica a una determinada ocurrencia de un elemento.
 
 <P>
-</LI>
-<LI>Los identificadores de funciones van en la tabla de símbolos global, asociada con el nodo
-<code>PROGRAM</code>:
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">41</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>En un lenguaje de programación, una <A NAME="22550"></A><SPAN  CLASS="textbf">declaración</SPAN> es un constructo sintáctico que define y provee información 
+sobre un nombre.
+La declaración provee información sobre las propiedades asociadas con el uso del nombre: 'este nombre es una función que recibe enteros y
+retorna enteros', 'este nombre puede ser usado para referirse a listas de enteros y es visible sólo en el ámbito actual', etc.</I></DIV><P></P>
 
 <P>
-<PRE>
-pl@nereida:~/Lbook/code/Simple-SymbolTables/lib/Simple$ sed -ne '/^program:/,/^;/p' SymbolTables.eyp | cat -n
- 1  program:
- 2        { reset_file_scope_vars(); }
- 3      definition&lt;%name PROGRAM +&gt;.program
- 4        {
- 5          $program-&gt;{symboltable} = { %st };  # creates a copy of the s.t.
- 6          for (keys %type) {
- 7            $type{$_} = Parse::Eyapp::Node-&gt;hnew($_);
- 8          }
- 9          $program-&gt;{depth} = 0;
-10          $program-&gt;{line}  = 1;
-11          $program-&gt;{types} = { %type };
-12          $program-&gt;{lines} = $tokenend;
-13
-14          reset_file_scope_vars();
-15          $program;
-16        }
-17  ;
-</PRE>
-
 <P>
-Observe que en C una función puede ser usada antes de que aparezca su definición.
-
-<P>
-</LI>
-<LI>Las instancias de los objetos y en particular los nodos <code>VAR</code> deben tener atributos
-  que determinen que declaración se les aplica y en que ámbito viven. Sin embargo estos
-  atributos no serán trabajados en esta práctica:
-  
-<OL>
-<LI>Atributo <code>entry</code>: Su entrada en la tabla de símbolos a la que pertenece
-</LI>
-<LI>Atributo <code>scope</code>: Una referencia al nodo <code>BLOCK</code> en el que fué declarada la variable
-  
-</LI>
-</OL>
-
-<P>
-</LI>
-<LI>La tabla de símbolos es un árbol de tablas. Cada tabla esta relacionada con un bloque.
-Cada tabla tiene una entrada para cada identificador que fué declarado
-en su bloque.  En dicha entrada figuran los atributos del identificador: entre estos 
-últimos la línea en la que fue declarado y su tipo.
-
-<P>
-</LI>
-</OL>
+<DIV><B>Definición  <SPAN CLASS="arabic">41</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
+<I>Las <A NAME="22552"></A><SPAN  CLASS="textbf">reglas de ámbito</SPAN> de un lenguaje determinan que declaración
+del nombre es la que se <SPAN  CLASS="textbf">aplica</SPAN> cuando el nombre es usado.</I></DIV><P></P>
 
 <P>
 
-<H4><A NAME="SECTION051240020000000000000">
-¿Que es una declaración?</A>
+<H4><A NAME="SECTION061210020000000000000">
+Binding Estático y Binding Dinámico</A>
 </H4>
+  
 
 <P>
-Para facilitar el análisis de ámbito y la comprobación de tipos
-debemos modificar la fase de construcción del AST para
-producir declaraciones que permitan comprobar con facilidad
-la <A NAME="22594"></A><SPAN  CLASS="textbf">equivalencia de tipos</SPAN>
+En la definición anterior no se especifica en que momento se resuelve
+la correspondencia (nombre, definición).
 
 <P>
-La equivalencia de tipos se realiza habitualmente mediante 
-<A NAME="22596"></A><SPAN  CLASS="textbf">expresiones de tipo</SPAN>. En nuestro caso vamos a
-elegir una representación dual mediante cadenas y árboles 
-de las expresiones de tipo. Las cadenas serán términos
-árbol. Como primera aproximación, entenderemos
-que dos tipos son equivalentes si las cadenas que representan
-sus expresiones de tipo son iguales. 
+Se habla de <A NAME="22558"></A><SPAN  CLASS="textbf">static binding</SPAN> 
+cuando las reglas y la resolución de la  correspondencia (nombre, definición)
+puede ser  resuelta en tiempo de compilación, a partir del análisis 
+del texto del programa fuente (también se habla de <A NAME="22560"></A><SPAN  CLASS="textbf">early binding</SPAN>).
+
+<P>
+Por el contrario cuando se habla de <A NAME="22562"></A><SPAN  CLASS="textbf">dynamic binding</SPAN> 
+cuando la determinación de que definición se aplica a un nombre es 
+establecida en tiempo de ejecución (también se denomina <A NAME="22564"></A><SPAN  CLASS="textbf">late binding</SPAN> o <A NAME="22566"></A><SPAN  CLASS="textbf">virtual binding</SPAN>).
+
+<P>
+Un ejemplo de static binding es una llamada a a una función en C:
+la función referenciada por un identificador no puede cambiarse en tiempo 
+de ejecución. Un ejemplo de binding dinámico puede ocurrir cuando se trabaja 
+con métodos polimorfos en un lenguaje de programación orientada a objetos, 
+ya que la definición completa del tipo del objeto no
+se conoce hasta el momento de la ejecución. 
+
+<P>
+El siguiente ejemplo de <A NAME="tex2html462"
+  HREF="http://en.wikipedia.org/wiki/Dynamic_binding">Dynamic_binding</A>tomado de la wikipedia,  
+ilustra el binding dinámico. 
+
+<P>
+Supongamos que todas las formas de vida son mortales.
+En OOP podemos decir que la clase <code>Persona</code> y la clase <code>Planta</code> 
+deben implementar los métodos de <code>Mortal</code>, el cual contiene
+el método <code>muere</code>.
+
+<P>
+Las personas y las plantas mueren de forma diferente, por ejemplo las plantas 
+no tienen un corazón que se detenga. Dynamic binding
+es la práctica de determinar que definición/declaración se aplica 
+a un método en tiempo de ejecución:
 
 <P>
 <PRE>
-pl@nereida:~/Lbook/code/Simple-SymbolTables/lib/Simple$ sed -ne '1,/%}/p' SymbolTables.eyp | cat -n
-  1  /*
-  2  File: SymbolTables.eyp
-  3  Scope Analysis: Only symbol table construction
-  4  */
-  5  %{
-  6  use strict;
-  7  use Data::Dumper;
-  8  use List::MoreUtils qw(firstval lastval);
-  9  use Simple::Trans;
- 10
- 11  my %reserved = (
- ..    ..... =&gt; "....."
- 20  );
- 21
- 22  my %lexeme = (
- ..    '..' =&gt; ".."
- 53  );
- 54
- 55  our ($blocks);
- 56
- 57  sub is_duplicated {
- ..    .........
- 65  }
- 66
- 67  sub build_type {
- ..    .............
- 82  }
- 83
- 84  my ($tokenbegin, $tokenend);
- 85  my %type;
- 86  my $depth;
- 87
- 88  my %st; # Global symbol table
- 89
- 90  sub build_function_scope {
-...    ................
-114  }
-115
-116  sub reset_file_scope_vars {
-117    %st = (); # reset symbol table
-118    ($tokenbegin, $tokenend) = (1, 1);
-119    %type = ( INT  =&gt; 1,
-120              CHAR =&gt; 1,
-121              VOID =&gt; 1,
-122            );
-123    $depth = 0;
-124  }
-125
-126  %}
+void mata(Mortal m) {
+  m.muere();
+}
 </PRE>
 
 <P>
+No esta claro cual es la clase actual de <code>m</code>, una persona o una planta. 
+Ambos <code>Planta.muere</code> y <code>Persona.muere</code> pueden ser invocados.
+Cuando se usa dynamic binding, el objeto <code>m</code> es examinado en tiempo de 
+ejecución para determinar que método es invocado. Esto supone una 'renuncia' por
+parte del lenguaje y su compilador a obtener una definición completa del objeto.
 
-<H4><A NAME="SECTION051240030000000000000">
-El código asociado con <TT>declaration</TT></A>
+<P>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">41</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">3</SPAN></B> &nbsp; 
+<I>Cuando se usa <SPAN  CLASS="textbf">static binding</SPAN>,
+la parte del texto del programa al cual se aplica la declaración de un 
+nombre se denomina <A NAME="22570"></A><SPAN  CLASS="textbf">ámbito de la declaración</SPAN></I></DIV><P></P>
+
+<P>
+<P>
+<DIV><B>Ejercicio  <SPAN CLASS="arabic">41</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>En el siguiente código existen dos definiciones para 
+el nombre <code>one</code>, una en la línea 11 y otra en la
+línea 20.
+</I>
+<P><PRE>
+pl@europa:~/src/perl/perltesting$ cat -n ds.pl
+     1  package Father;
+     2  use warnings;
+     3  use strict;
+     4
+     5  sub new {
+     6    my $class = shift;
+     7
+     8    bless { @_ }, $class;
+     9  }
+    10
+    11  sub one {
+    12    "Executing Father::one\n";
+    13  }
+    14
+    15  package Child;
+    16  use warnings;
+    17  use strict;
+    18  our @ISA = 'Father';
+    19
+    20  sub one {
+    21    "Executing Child::one\n";
+    22  }
+    23
+    24  package main;
+    25
+    26  for (1..10) {
+    27    my $class = int(rand(2)) ? 'Child' : 'Father';
+    28    my $c = $class-&gt;new;
+    29    print $c-&gt;one;
+    30  }
+</PRE><I>
+¿Que definiciones se aplican a los 10 usos del nombre <code>one</code>
+en la línea 28? 
+¿Estos usos constituyen un ejemplo de binding estático
+o dinámico?
+¿Cuál es el ámbito de las declaraciones de <code>one</code>?</I></DIV><P></P>
+
+<P>
+Incluso en los casos en los que la resolución del binding se deja para el momento de la ejecución
+el compilador debe tener información suficiente para poder generar código. En el caso
+anterior, el compilador de Perl infiere de la presencia de la flecha en <code>$c-&gt;one</code> 
+que <code>one</code> es el nombre de una subrutina. 
+
+<P>
+<P>
+<DIV><B>Ejercicio  <SPAN CLASS="arabic">41</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
+<I>En el siguiente ejemplo se usa una referencia simbólica para
+acceder a una función:
+</I><PRE>
+pl@europa:~/src/perl/testing$ cat -n symbolic.pl
+ 1  use warnings;
+ 2  use strict;
+ 3
+ 4  sub one {
+ 5    "1\n";
+ 6  }
+ 7
+ 8  sub two {
+ 9    "2\n";
+10  }
+11
+12  my $x = &lt;&gt;;
+13  chomp($x);
+14
+15  no strict 'refs';
+16  print &amp;$x();
+</PRE><I>
+Al ejecutarlo con entrada <code>one</code> obtenenmos:
+</I><PRE>
+pl@europa:~/src/perl/testing$ perl symbolic.pl
+one
+1
+</PRE><I>
+¿El uso de la línea 16 es un ejemplo de binding estático o dinámico?
+¿Cuál es el binding de las declaraciones de <code>x</code>?</I></DIV><P></P>
+
+<P>
+<P>
+<DIV><B>Ejercicio  <SPAN CLASS="arabic">41</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">3</SPAN></B> &nbsp; 
+<I>En el siguiente ejemplo la clase <code>Two</code> hereda de <code>One</code>.
+</I><PRE>
+pl@europa:~/src/perl/testing$ cat -n latebinding.pl
+     1  package One;
+     2  use warnings;
+     3  use strict;
+     4
+     5  our $x = 1;
+     6  sub tutu {
+     7    "Inside tutu: x = $x\n";
+     8  }
+     9
+    10  package Two;
+    11  use warnings;
+    12  use strict;
+    13  our @ISA = 'One';
+    14
+    15  our $x = 2;
+    16
+    17  print Two-&gt;tutu();
+</PRE><I>
+¿Qué definición de <code>$x</code> se aplica al uso en la línea 7?
+¿Cuál será la salida del programa?</I></DIV><P></P>
+
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">41</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">4</SPAN></B> &nbsp; 
+<I>La tarea de asignar las ocurrencias de las declaraciones de nombres a las 
+ocurrencias de uso  de los nombres de acuerdo a las reglas de ámbito
+del lenguaje se denomina <A NAME="22572"></A><SPAN  CLASS="textbf">identificación de los nombres</SPAN></I></DIV><P></P>
+
+<P>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">41</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">5</SPAN></B> &nbsp; 
+<I>Una ocurrencia de un nombre se dice <A NAME="22574"></A><SPAN  CLASS="textbf">local</SPAN> si está en el ámbito 
+de una declaración que no se aplica desde el comienzo de la declaración 
+hasta el final del texto del programa. Tal declaración
+es una <A NAME="22576"></A><SPAN  CLASS="textbf">declaración local</SPAN>.</I></DIV><P></P>
+
+<P>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">41</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">6</SPAN></B> &nbsp; 
+<I>Si, por el contrario, una ocurrencia de un nombre está en el ámbito
+de una declaración que se aplica desde el comienzo de la declaración 
+hasta el final del texto del programa se dice que la declaración
+es una <A NAME="22578"></A><SPAN  CLASS="textbf">declaración global</SPAN>.</I></DIV><P></P>
+
+<P>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">41</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">7</SPAN></B> &nbsp; 
+<I>Aunque la definición anterior establece el <A NAME="22580"></A><SPAN  CLASS="textbf">atributo ámbito</SPAN>
+como un atributo de la declaración es usual y conveniente
+hablar del 
+</I>
+<BLOCKQUOTE><I>"<SPAN  CLASS="textbf">ámbito del nombre <TT>x</TT></SPAN>" 
+</I></BLOCKQUOTE><I>
+como una abreviación
+de 
+</I>
+<BLOCKQUOTE><I>"<SPAN  CLASS="textbf">el ámbito de la declaración del nombre <TT>x</TT>
+que se aplica a esta ocurrencia de <TT>x</TT></SPAN>"
+</I></BLOCKQUOTE></DIV><P></P>
+
+<P>
+
+<H4><A NAME="SECTION061210030000000000000">
+Intervención del Programador en Tiempo de Compilación</A>
 </H4>
-Veamos como modificamos la construcción del AST durante las declaraciones:
+  
+
+<P>
+En algunos lenguajes - especialmente en los lenguajes dinámicos- la diferenciación 
+entre tiempo de compilación y tiempo de ejecución puede ser difusa.
+En el siguiente fragmento de código Perl se usa el módulo
+ <TT>Contextual::Return</TT> 
+para crear una variable cuya definición cambia 
+con la forma de uso.
 
 <P>
 <PRE>
-pl@nereida:~/Lbook/code/Simple-SymbolTables/lib/Simple$ sed -ne '/^declaration:/,/^;/p' SymbolTables.eyp | cat -n
- 1  declaration:
- 2      %name DECLARATION
- 3      $basictype $declList ';'
- 4        {
- 5           my %st; # Symbol table local to this declaration
- 6           my $bt = $basictype-&gt;type;
- 7           my @decs = $declList-&gt;children();
- 8           while (my ($id, $arrspec) = splice(@decs, 0, 2)) {
- 9             my $name = $id-&gt;{attr}[0];
-10             my $type = build_type($bt, $arrspec);
-11             $type{$type} = 1; # has too much $type for me!
-12
-13             # control duplicated declarations
-14             die "Duplicated declaration of $name at line $id-&gt;{attr}[1]\n" if exists($st{$name});
-15             $st{$name}-&gt;{type} = $type;
-16             $st{$name}-&gt;{line} = $id-&gt;{attr}[1];
-17           }
-18           return \%st;
-19        }
-20  ;
-</PRE>
-El código de la función <code>build_type</code> es como sigue:
-
-<P>
-<PRE>
-pl@nereida:~/Lbook/code/Simple-SymbolTables/lib/Simple$ sed -ne '/^sub build_type/,82p' SymbolTables.eyp | cat -n
- 1  sub build_type {
- 2    my $bt = shift;
- 3    my @arrayspec = shift()-&gt;children();
+lhp@nereida:~/Lperl/src/testing$ cat -n context1.pl
+ 1  #!/usr/local/bin/perl -w
+ 2  use strict;
+ 3  use Contextual::Return;
  4
- 5    my $type = '';
- 6    for my $s (@arrayspec) {
- 7      $type .= "A_$s-&gt;{attr}[0](";
- 8    }
- 9    if ($type) {
-10      $type = "$type$bt".(")"x@arrayspec);
-11    }
-12    else {
-13      $type = $bt;
-14    }
-15    return $type;
-16  }
+ 5  my $x = BOOL { 0 } NUM { 3.14 } STR { "pi" };
+ 6
+ 7  unless ($x) { warn "¡El famoso número $x (".(0+$x).") pasa a ser falso!\n" } # executed!
+
+lhp@nereida:~/Lperl/src/testing$ context1.pl
+¡El famoso número pi (3.14) pasa a ser falso!
+</PRE>
+
+<P>
+Obsérvese que el binding de <code>$x</code> es estático y que a los 
+tres usos de <code>$x</code> en la línea 7 se les asigna la definición 
+en la línea 5.
+La declaración de <code>$x</code> ocurre en lo que Perl denomina
+'tiempo de compilación', 
+sin embargo, el hecho de que un módulo cargado en tiempo de compilación
+puede ejecutar sentencias permite a  <TT>Contextual::Return</TT> 
+expandir el lenguaje de las declaraciones Perl.
+
+<P>
+<P>
+<DIV><B>Ejercicio  <SPAN CLASS="arabic">41</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">4</SPAN></B> &nbsp; 
+<I>Considere el siguiente código Perl:
+</I><PRE>
+pl@europa:~/src/perl/testing$ cat -n contextual.pl
+     1  #!/usr/bin/perl -w
+     2  use strict;
+     3  use Contextual::Return;
+     4
+     5  sub sensible {
+     6    return STR { "one" }
+     7           NUM { 1 }
+     8           LIST   { 1,2,3 }
+     9           HASHREF   { {name =&gt; 'foo', value =&gt; 99} }
+    10    ;
+    11  }
+    12
+    13  print "Result = ".sensible()."\n";
+    14  print "Result = ".(0+sensible())."\n";
+    15  print "Result = ",sensible(),"\n";
+    16  print "Result = (name = ",sensible()-&gt;{name},", value = ", sensible()-&gt;{value},")\n";
+</PRE><I>
+Cuando se ejecuta, este programa produce la siguiente salida:
+</I><PRE>
+pl@europa:~/src/perl/testing$ ./contextual.pl
+Result = one
+Result = 1
+Result = 123
+Result = (name = foo, value = 99)
+</PRE>
+<P>
+<I>Las relaciones de definición-uso de la función <code>sensible</code> ¿Son un caso de
+binding estático o de binding dinámico?
+¿Cuál es el ámbito de la declaración de <code>sensible</code> en las líneas 5-11?</I></DIV><P></P>
+
+<P>
+
+<H4><A NAME="SECTION061210040000000000000">
+Visibilidad</A>
+</H4>
+  
+
+<P>
+Como ya sabemos, es falso que en el ámbito de una declaración que define a <code>x</code> 
+dicha declaración se aplique a todas las ocurrencias de <code>x</code> en su ámbito.
+En un ámbito estático, una declaración local a la anterior puede <A NAME="22592"></A><SPAN  CLASS="textbf">ocultar la visibilidad</SPAN> de 
+la declaración anterior de <code>x</code>.
+
+<P>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">41</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">8</SPAN></B> &nbsp; 
+<I>Las <A NAME="22594"></A><SPAN  CLASS="textbf">reglas de visibilidad</SPAN> de un lenguaje especifican como se relacionan los nombres
+con las declaraciones que se les aplican.</I></DIV><P></P>
+
+<P>
+El concepto de nombre depende del lenguaje. 
+Algunos lenguajes permiten que en un cierto ámbito haya mas de una definición asociada 
+con un identificador.  Un mecanismo que puede ser usado para determinar univocamente que definición
+se aplica a un determinado uso de un nombre es que el uso del nombre vaya acompañado
+de un sigil.
+(podría reinterpretarse que en realidad el nombre de una variable en Perl incluye el sigil).
+
+<P>
+Así, en Perl tenemos que es 
+legal tener diferentes variables con nombre <code>x</code>: <code>$x</code>, <code>@x</code>, <code>%x</code>, <code>&amp;x</code>, <code>*x</code>,
+etc. ya que van prefijadas por diferentes <SPAN  CLASS="textbf">sigils</SPAN> 
+<code>$</code>, <code>@</code>, etc. El sigil que prefija <code>x</code> determina que definición se aplica al uso de <code>x</code>
+(La palabra sigil hace referencia a 'sellos mágicos' - combinaciones de símbolos 
+y figuras geométricas - que son usados en algunas invocaciones con el propósito de producir un
+sortilegio).
+
+<P>
+En algunos casos existen mecanismos para la
+extensión de los nombres.
+En Perl es posible acceder a una variable de paquete
+ocultada por una léxica usando su nombre completo.
+
+<P>
+La asignación de una declaración a ciertos usos de un identificador puede requerir
+de otras fases de análisis semántico, como el análisis de tipos.
+El uso de los nombres de campo de un registro en  Pascal y en C 
+constituye un ejemplo:
+
+<P>
+<PRE>
+ 1	type 
+ 2	  a = ^b;
+ 3	  b = record
+ 4	        a: Integer;
+ 5	        b: Char;
+ 6	        c: a
+ 7	      end;
+ 8	var
+ 9	  pointertob: a;
+10	  c         : Integer;
+11	
+12	...
+13	new(pointertob);
+14	
+15	pointertob^.c := nil;
+16	c             := 4;
+17	...
+</PRE>
+
+<P>
+El uso de <code>c</code> en la ĺinea 15 es posible porque el tipo de la expresión <code>pointertob^</code>
+es un registro. La definición que se aplica al uso de <code>c</code> en la línea 16 es la de la línea 10.
+
+<P>
+También es posible hacer visible un nombre escondido - sin necesidad de extender el identificador - 
+mediante alguna directiva que lo haga visible: 
+Un ejemplo es la declaración <code>with</code> the Pascal:
+
+<P>
+<PRE>
+new(pointertob);
+ 
+with pointertob^ do
+begin
+  a := 10;
+  b := 'A';
+  c := nil
+end;
+...
 </PRE>
 
 <P>
 
-<H4><A NAME="SECTION051240040000000000000">
-Tratamiento de los Bloques</A>
+<H4><A NAME="SECTION061210050000000000000">
+Declaraciones y Definiciones</A>
 </H4>
-La variable sintáctica <code>bloque</code>
-genera el lenguaje de las definiciones seguidas de sentencias:
+  
 
 <P>
+En algunos lenguajes se distingue entre declaraciones que sólo proporcionan información sobre el elemento
+y lo hacen <SPAN  CLASS="textbf">visible</SPAN> - pero no asignan memoria o producen código para la implementación del mismo - y otras
+que si producen dicho código. A las primeras se las suele llamar declaraciones
+y a las segundas definiciones.
+En tales lenguajes se considera un error que dos declaraciones de un mismo elemento difieran.
+
+<P>
+Por ejemplo, en C una variable o función sólo es definida una vez,
+pero puede ser declarada varias veces.
+El calificativo <code>extern</code> es usado en C para indicar que una declaración provee
+visibilidad pero no conlleva definición (creación):
+
+<P>
+<PRE>
+extern char stack[10];
+extern int stkptr;
+</PRE>
+
+<P>
+Estas declaraciones le dicen al compilador C que las definiciones de los nombres
+<code>stack</code> y <code>stackptr</code> se encuentran en otro fichero. 
+Si la palabra <code>extern</code> fuera omitida el compilador asignaría memoria para
+las mismas.
+
+<P>
+Otro ejemplo en el que una directiva hace visible una definición escondida
+es el uso de la declaración  <TT>our</TT>  de Perl cuando un paquete está repartido
+entre varios ficheros que usan repetitivamente <code>strict</code>:
+
+<P>
+<P>
+<DIV><B>Ejercicio  <SPAN CLASS="arabic">41</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">5</SPAN></B> &nbsp; 
+<I>Considere el siguiente programa:
+</I><PRE>
+pl@europa:~/src/perl/perltesting$ cat -n useA.pl
+     1  #!/usr/bin/perl
+     2  package A;
+     3  use warnings;
+     4  use strict;
+     5
+     6  use A;
+     7
+     8  #our $x;
+     9  print "$x\n";
+</PRE><I>
+La variable <code>$x</code> esta declarada en el fichero <code>A.pm</code>:
+</I><PRE>
+pl@europa:~/src/perl/perltesting$ cat -n A.pm
+     1  package A;
+     2  use warnings;
+     3  use strict;
+     4
+     5  our $x = 1;
+     6
+     7  1;
+</PRE>
+<P>
+<I>Sin embargo la compilación de <code>useA.pl</code> produce errores,
+pues <code>$x</code> no es visible:
+</I><PRE>
+pl@europa:~/src/perl/perltesting$ perl -c useA.pl
+Variable "$x" is not imported at useA.pl line 9.
+Global symbol "$x" requires explicit package name at useA.pl line 9.
+useA.pl had compilation errors.
+</PRE><I>
+El mensaje se arregla descomentando la declaración de <code>$x</code>
+en la línea 8 de <code>useA.pl</code>:
+</I><PRE>
+pl@europa:~/src/perl/perltesting$ perl -ce `sed -e 's/#our/our/' useA.pl`
+-e syntax OK
+</PRE><I>
+La declaración de la línea 8 hace visible la variable <code>$x</code> en el
+fichero <code>useA.pl</code>. 
+</I>
+<P>
+<I>¿Cual es entonces el ámbito de la declaración de <code>$x</code> en la línea 5 de 
+<code>A.pm</code>? ¿Es todo el paquete? ¿O sólo el segmento del paquete que está en
+el fichero <code>A.pm</code>? (se supone que trabajamos con <code>strict</code> activado).</I></DIV><P></P>
+
+<P>
+
+<H4><A NAME="SECTION061210060000000000000">
+Inferencia, Declaraciones Implícitas y Ámbito</A>
+</H4>
+  
+
+<P>
+<P>
+<DIV><B>Ejercicio  <SPAN CLASS="arabic">41</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">6</SPAN></B> &nbsp; 
+<I>Tanto en los lenguajes estáticos como en los dinámicos
+se suele requerir que exista una declaración del objeto usado que determine las propiedades del mismo.
+</I>
+<P>
+<I>Aunque en los lenguajes dinámicos la creación/definición del elemento asociado
+con un nombre puede postergarse hasta el tiempo de ejecución, la generación de
+código para la sentencia de uso suele requerir un conocimiento (aunque sea
+mínimo) del objeto que esta siendo usado. En algunos casos, es necesario
+inferir la declaración a partir del uso, de manera que la declaración asociada
+con un uso es construida a partir del propio uso.
+</I>
+<P>
+<I>Los lenguajes típicamente estáticos fuertemente tipeados suelen requerir que
+para todo uso exista una declaración explícita y completa del nombre y de las
+operaciones que son válidas sobre el mismo al finalizar la fase de compilación.
+Sin embargo, el código para la creación/definición de algunos objetos puede ser
+postergado a la fase de enlace. De hecho, la resolución de ciertos enlaces
+pueden ocurrir durante la fase de ejecución (énlace dinámico). 
+</I>
+<P>
+<I>El siguiente ejemplo hace uso de un typeglob selectivo en la línea 8 para 
+definir la función <code>ONE</code>:
+</I><PRE>
+pl@europa:~/src/perl/testing$ cat -n glob.pl
+     1  use warnings;
+     2  use strict;
+     3
+     4  sub one {
+     5    "1\n"
+     6  }
+     7
+     8  *ONE = \&amp;one;
+     9  print ONE();
+</PRE><I>
+Al ejecutar este programa se produce la salida;
+</I><PRE>
+pl@europa:~/src/perl/testing$ perl glob.pl
+1
+</PRE><I>
+ ¿El uso de <code>ONE</code> en la línea 9 es un ejemplo de binding estático o dinámico?
+¿Cuál es el ámbito de la declaración de <code>ONE</code>?
+</I>
+<P>
+<I>Responda estas mismas preguntas para esta otra variante del ejemplo anterior:
+</I>
+<P><PRE>
+pl@nereida:~/src/perl/perltesting$ cat -n coderef.pl
+     1  use warnings;
+     2  use strict;
+     3
+     4  *ONE = sub { "1\n" };
+     5  print ONE();
+</PRE></DIV><P></P>
+
+<P>
+En los ejemplos anteriores el propio uso del nombre <code>ONE</code> 
+actúa como una declaración: Perl deduce 
+de la presencia de paréntesis después de <code>ONE</code> que <code>ONE</code> es el nombre de una función.
+Esta información es suficiente para generar el código necesario. Podría decirse
+que la forma del uso declara al ente <code>ONE</code> y que la línea de uso conlleva una declaración
+implícita. Sin embargo, la creación/definición completa de <code>ONE</code> es postergada hasta la fase de 
+ejecución.
+
+<P>
+<P>
+<DIV><B>Ejercicio  <SPAN CLASS="arabic">41</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">7</SPAN></B> &nbsp; 
+<I>La conducta del compilador de Perl cambia si se sustituye el programa anterior por este otro:
+</I><PRE>
+pl@europa:~/src/perl/testing$ cat -n globwarn.pl
+     1  use warnings;
+     2  use strict;
+     3
+     4  sub one {
+     5    "1\n"
+     6  }
+     7
+     8  *ONE = \&amp;one;
+     9  my $x = ONE;
+    10  print $x;
+</PRE><I>
+Al compilar se obtiene un error:
+</I><PRE>
+pl@europa:~/src/perl/testing$ perl -c globwarn.pl
+Bareword "ONE" not allowed while "strict subs" in use at globwarn.pl line 9.
+globwarn.pl had compilation errors.
+</PRE><I>
+¿Sabría explicar la causa de este cambio de conducta?</I></DIV><P></P>
+
+<P>
+<P>
+<DIV><B>Ejercicio  <SPAN CLASS="arabic">41</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">8</SPAN></B> &nbsp; 
+<I>El error que se observa en el ejercicio anterior desaparece 
+cuando se modifica el código como sigue:
+</I><PRE>
+lusasoft@LusaSoft:~/src/perl/perltesting$ cat -n globheader.pl
+     1  #!/usr/bin/perl
+     2  use warnings;
+     3  use strict;
+     4
+     5  sub ONE;
+     6
+     7  sub one {
+     8    "1\n"
+     9  }
+    10
+    11  *ONE = \&amp;one;
+    12  my $x = ONE;
+    13  print $x;
+</PRE><I>
+¿Cual es el significado de la línea 5?</I></DIV><P></P>
+
+<P>
+En el caso del lenguaje Simple C introducido en la práctica 
+<A HREF="node207.html#practica:esquemadetradsimple">41.3</A>
+hay una única declaración que se aplica a cada 
+ocurrencia correcta de un nombre en el ámbito de dicha declaración.
+
+<P>
+Esto no tiene porque ser siempre así: en ciertos lenguajes 
+una redeclaración de un cierto nombre <code>x</code> puede que sólo oculte 
+a otra declaración previa de <code>x</code> si las dos declaraciones
+asignan el mismo tipo a <code>x</code>. Esta idea suele conocerse
+como <A NAME="22605"></A><SPAN  CLASS="textbf">sobrecarga de identificadores</SPAN>. De todos modos, sigue 
+siendo cierto que para que el programa
+sea considerado correcto es necesario que sea posible <I>inferir</I>
+para cada ocurrencia de un identificador que única definición se
+aplica. Así una llamada  a una cierta función
+<code>min(x,y)</code> llamaría a diferentes 
+funciones <code>min</code> según fueran los tipos de <code>x</code> e <code>y</code>.
+Para resolver este caso es necesario combinar las fases
+de análisis de ámbito y de análisis de tipos.
+
+<P>
+Algunos lenguajes - especialmente los lenguajes funcionales - logran eliminar la mayoría 
+de las declaraciones. Disponen de un mecanismo de inferencia que les permite - en
+tiempo de compilación - deducir
+del uso la definición y propiedades del nombre. 
+
+<P>
+Véase como ejemplo de inferencia la siguiente sesión en <A NAME="tex2html463"
+  HREF="http://en.wikipedia.org/wiki/OCaml">OCaml</A>
+<PRE>
+pl@nereida:~/src/perl/attributegrammar/Language-AttributeGrammar-0.08/examples$ ocaml
+        Objective Caml version 3.09.2
+
+# let minimo = fun i j -&gt; if i&lt;j then i else j;;
+val minimo : 'a -&gt; 'a -&gt; 'a = &lt;fun&gt;
+# minimo 2 3;;
+- : int = 2
+# minimo 4.9 5.3;;
+- : float = 4.9
+# minimo "hola" "mundo";;
+- : string = "hola"
+</PRE>
+
+<P>
+El compilador <code>OCaml</code> infiere el tipo de las expresiones. 
+Así el tipo asociado con la función <code>minimo</code> es
+
+<P>
+<PRE>
+                    'a -&gt; 'a -&gt; 'a
+</PRE>
+
+<P>
+que es una <A NAME="22609"></A><SPAN  CLASS="textbf">expresión de tipo</SPAN> que contiene
+<A NAME="22611"></A><SPAN  CLASS="textbf">variables de tipo</SPAN>. El operador <code>-&gt;</code> es asociativo a derechas
+y asi la expresión debe ser leída como <code>'a -&gt; ('a -&gt; 'a)</code>. 
+Básicamente dice: 
+
+<P>
+El tipo de la expresión es una función que toma un argumento de tipo <code>'a</code>
+(donde <code>'a</code> es una variable tipo que será instanciada en el momento del
+uso de la función) y devuelve una función que toma elementos de tipo <code>'a</code>
+y retorna elementos de tipo <code>'a</code>. 
+
+<P>
+
+<H4><A NAME="SECTION061210070000000000000">
+Ámbito Dinámico</A>
+</H4>
+  
+
+<P>
+En el <A NAME="22617"></A><SPAN  CLASS="textbf">ámbito dinámico</SPAN>, cada nombre para el que se usa ámbito dinámico
+tiene asociada una pila de bindings. Cuando se crea un nuevo ámbito
+dinámico se empuja en la pila el viejo valor (que podría no estar definido).
+Cuando se sale del ámbito se saca de la pila el antiguo valor.
+La evaluación de <code>x</code> retorna siempre el valor en el top de la pila.
+
+<P>
+La sentencia  <TT>local</TT>  de Perl provee de ámbito dinámico
+a las variables de paquete.
+Una aproximaci&#243;n a lo que ocurre cuando se ejecuta 
+<code>local</code> es:
+
+<P>
+<BR>
+<BR>
 <DIV ALIGN="CENTER">
-<TABLE CELLPADDING=3>
-<TR><TD ALIGN="CENTER">'{' { datadefinition } { statement } '}'</TD>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>DECLARACI&#211;N  DE <code>local</code></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>SIGNIFICADO</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198><PRE>
+{
+  local($SomeVar);
+  $SomeVar = 'My Value';
+       ...
+}
+</PRE></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198><PRE>
+{
+  my $TempCopy = $SomeVar;
+  $SomeVar = undef;
+  $SomeVar = 'My Value';
+       ...
+  $SomeVar = $TempCopy;
+}
+</PRE></TD>
 </TR>
 </TABLE>
 </DIV>
+<BR>
+<BR>
 
 <P>
-El lenguaje de los bloques es modificado en consonancia:
-
-<P>
-<PRE>
-pl@nereida:~/Lbook/code/Simple-SymbolTables/lib/Simple$ sed -ne '/^block:/,/^;/p' SymbolTables.eyp | cat -n
-  1  block:
-  2      '{'.bracket declaration&lt;%name DECLARATIONS *&gt;.decs statement&lt;%name STATEMENTS *&gt;.sts '}'
-  3         {
-  4           my %st;
-  5
-  6           for my $lst ($decs-&gt;children) {
-  7
-  8               # control duplicated declarations
-  9             my $message;
- 10             die $message if $message = is_duplicated(\%st, $lst);
- 11
- 12             %st = (%st, %$lst);
- 13           }
- 14           $sts-&gt;{symboltable} = \%st;
- 15           $sts-&gt;{line} = $bracket-&gt;[1];
- 16           $sts-&gt;type("BLOCK") if %st;
- 17           return $sts;
- 18         }
- 19
- 20  ;
-</PRE>
-
-<P>
-El código de la función <code>is_duplicated</code> es como sigue:
-<A NAME="code:isduplicated"></A>
-<P>
-<PRE>
-sub is_duplicated {
-  my ($st1, $st2) = @_;
-
-  my $id;
-
-    defined($id=firstval{exists $st1-&gt;{$_}} keys %$st2)
-  and return "Error. Variable $id at line $st2-&gt;{$id}-&gt;{line} declared twice.\n";
-  return 0;
-}
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION051240050000000000000">
-Tratamiento de las Funciones</A>
-</H4>
-
-<P>
-El código para las funciones es similar.
-Unimos la tabla de símbolos
-de los parámetros a la del bloque para posteriormente reconvertir el
-bloque en un nodo <code>FUNCTION</code>:
+La diferencia entre ámbito dinámico y estático debería quedar mas clara observando
+la conducta del siguiente código
 
 <P>
 <PRE>
-pl@nereida:~/Lbook/code/Simple-SymbolTables/lib/Simple$ sed -ne '/^funcDef:/,/^;/p' SymbolTables.eyp | cat -n
-  1  funcDef:
-  2      $ID '('  $params  ')'
-  3        $block
-  4      {
-  5         my $st = $block-&gt;{symboltable};
-  6         my @decs = $params-&gt;children();
-  7         $block-&gt;{parameters} = [];
-  8         while (my ($bt, $id, $arrspec) = splice(@decs, 0, 3)) {
-  9             my $bt = ref($bt); # The string 'INT', 'CHAR', etc.
- 10             my $name = $id-&gt;{attr}[0];
- 11             my $type = build_type($bt, $arrspec);
- 12             $type{$type} = 1; # has too much $type for me!
- 13
- 14             # control duplicated declarations
- 15             #die "Duplicated declaration of $name at line $id-&gt;{attr}[1]\n" if exists($st-&gt;{$name});
- 16             die "Duplicated declaration of $name at line $st-&gt;{$name}{line}\n" if exists($st-&gt;{$name});
- 17             $st-&gt;{$name}-&gt;{type} = $type;
- 18             $st-&gt;{$name}-&gt;{param} = 1;
- 19             $st-&gt;{$name}-&gt;{line} = $id-&gt;{attr}[1];
- 20             push @{$block-&gt;{parameters}}, $name;
- 21         }
- 22         $block-&gt;{function_name} = $ID;
- 23         $block-&gt;type("FUNCTION");
- 24         return $block;
- 25      }
- 26  ;
-</PRE>
-
-<P>
-En la línea 8  se procesan las declaraciones de parámetros. 
-La lista de parámetros estaba definida por:
-<PRE>
-params: 
-    ( basictype ID arraySpec)&lt;%name PARAMS * ','&gt;
-      { $_[1] }
-</PRE>
-
-<P>
-En una segunda fase, a la altura de <code>definition</code> 
-se construye la entrada para la función en la tabla de símbolos global:
-
-<P>
-<PRE>
-pl@nereida:~/Lbook/code/Simple-SymbolTables/lib/Simple$ sed -ne '/^definition:/,/^;/p' SymbolTables.eyp | cat -n
- 1  definition:
- 2      $funcDef
- 3        {
- 4          build_function_scope($funcDef, 'INT');
- 5        }
- 6    | %name FUNCTION
- 7      $basictype $funcDef
- 8        {
- 9          build_function_scope($funcDef, $basictype-&gt;type);
-10        }
-11    | declaration
-12       {
-13         #control duplicated declarations
-14         my $message;
-15         die $message if $message = is_duplicated(\%st, $_[1]);
-16         %st = (%st,  %{$_[1]}); # improve this code
-17         return undef; # will not be inserted in the AST
-18       }
-19  ;
-</PRE>
-El código de la función <code>build_function_scope</code> es como sigue:
-
-<P>
-<PRE>
-pl@nereida:~/Lbook/code/Simple-SymbolTables/lib/Simple$ sed -ne '/sub build_func/,114p' SymbolTables.eyp | cat -n
- 1  sub build_function_scope {
- 2    my ($funcDef, $returntype) = @_;
+lhp@nereida:~/Lperl/src$ cat -n local.pl
+ 1  #!/usr/bin/perl -w
+ 2  use strict;
  3
- 4    my $function_name = $funcDef-&gt;{function_name}[0];
- 5    my @parameters = @{$funcDef-&gt;{parameters}};
- 6    my $lst = $funcDef-&gt;{symboltable};
- 7    my $numargs = scalar(@parameters);
- 8
- 9    #compute type
-10    my $partype = "";
-11    my @types = map { $lst-&gt;{$_}{type} } @parameters;
-12    $partype .= join ",", @types if @types;
-13    my $type = "F(X_$numargs($partype),$returntype)";
-14
-15    #insert it in the hash of types
-16    $type{$type} = 1;
-17
-18    #insert it in the global symbol table
-19    die "Duplicated declaration of $function_name at line $funcDef--&gt;{attr}[1]\n"
-20      if exists($st{$function_name});
-21    $st{$function_name}-&gt;{type} = $type;
-22    $st{$function_name}-&gt;{line} = $funcDef-&gt;{function_name}[1]; # redundant
-23
-24    return $funcDef;
-25  }
+ 4  our $x;
+ 5
+ 6  sub pr { print "$x\n"; }
+ 7  sub titi { my $x = "titi"; pr(); }
+ 8  sub toto { local $x = "toto"; &amp;pr(); &amp;titi(); }
+ 9
+10  $x = "global";
+11  &amp;pr();
+12  &amp;toto();
+13  &amp;titi();
 </PRE>
 
 <P>
-
-<H4><A NAME="SECTION051240060000000000000">
-El Tratamiento del Programa Principal</A>
-</H4>
-Sigue el código (incompleto) asociado con la variable sintáctica de
-arranque:
+Cuando se ejecuta, se obtiene la siguiente salida:
 
 <P>
 <PRE>
-pl@nereida:~/Lbook/code/Simple-SymbolTables/lib/Simple$ sed -ne '/^program:/,/^;/p' SymbolTables.eyp | cat -n
- 1  program:
- 2        { reset_file_scope_vars(); }
- 3      definition&lt;%name PROGRAM +&gt;.program
- 4        {
- 5          $program-&gt;{symboltable} = { %st };  # creates a copy of the s.t.
- 6          for (keys %type) {
- 7            $type{$_} = Parse::Eyapp::Node-&gt;hnew($_);
- 8          }
- 9          $program-&gt;{depth} = 0;
-10          $program-&gt;{line}  = 1;
-11          $program-&gt;{types} = { %type };
-12          $program-&gt;{lines} = $tokenend;
-13
-14          reset_file_scope_vars();
-15          $program;
-16        }
-17  ;
-</PRE>
-Las árboles asociados con las expresiones de tipo son calculados 
-en las líneas 6-8.
-
-<P>
-
-<H4><A NAME="SECTION051240070000000000000">
-Ejemplo de Salida:  Control de declaraciones duplicadas</A>
-</H4>
-  
-
-<P>
-A estas alturas del análisis de ámbito podemos controlar
-la aparición de declaraciones duplicadas:
-para el programa de entrada:
-<PRE>
-pl@nereida:~/Lbook/code/Simple-SymbolTables/script$ usesymboltables.pl declaredtwice.c 2
-int a, b[1][2];
-char d, e[1][2];
-char f(int a, char b[10]) {
-  int c[1][2];
-  char b[10], e[9]; /* b is declared twice */
-
-  return b[0];
-}
-
-Duplicated declaration of b at line 5
-</PRE>
-Sin embargo no podemos conocer los objetos no declarados (variables, funciones)
-hasta que hayamos finalizado el análisis de ámbito.
-
-<P>
-
-<H4><A NAME="SECTION051240080000000000000">
-Un ejemplo de Volcado de un AST</A>
-</H4>
-  
-
-<P>
-Sigue un ejemplo de salida para un programa sin errores de ámbito:
-
-<P>
-<PRE>
-pl@nereida:~/Lbook/code/Simple-SymbolTables/script$ usesymboltables.pl prueba10.c 2
-int a,b;
-f(int a, int b) {
-  b = a+1;
-}
-
-int main() {
-  a = 4;
-  {
-    int d;
-    d = f(a);
-  }
-}
-
-PROGRAM^{0}(
-  FUNCTION[f]^{1}(
-    ASSIGN(
-      VAR[No declarado!](
-        TERMINAL[b:3]
-      ),
-      PLUS(
-        VAR[No declarado!](
-          TERMINAL[a:3]
-        ),
-        INUM(
-          TERMINAL[1:3]
-        )
-      ) # PLUS
-    ) # ASSIGN
-  ) # FUNCTION,
-  FUNCTION[main]^{2}(
-    ASSIGN(
-      VAR[No declarado!](
-        TERMINAL[a:7]
-      ),
-      INUM(
-        TERMINAL[4:7]
-      )
-    ) # ASSIGN,
-    BLOCK[8]^{3}(
-      ASSIGN(
-        VAR[No declarado!](
-          TERMINAL[d:10]
-        ),
-        FUNCTIONCALL[No declarado!](
-          TERMINAL[f:10],
-          ARGLIST(
-            VAR[No declarado!](
-              TERMINAL[a:10]
-            )
-          ) # ARGLIST
-        ) # FUNCTIONCALL
-      ) # ASSIGN
-    ) # BLOCK
-  ) # FUNCTION
-) # PROGRAM
----------------------------
-0)
-Types:
-$VAR1 = {
-  'CHAR' =&gt; bless( {
-    'children' =&gt; []
-  }, 'CHAR' ),
-  'VOID' =&gt; bless( {
-    'children' =&gt; []
-  }, 'VOID' ),
-  'INT' =&gt; bless( {
-    'children' =&gt; []
-  }, 'INT' ),
-  'F(X_0(),INT)' =&gt; bless( {
-    'children' =&gt; [
-      bless( {
-        'children' =&gt; []
-      }, 'X_0' ),
-      $VAR1-&gt;{'INT'}
-    ]
-  }, 'F' ),
-  'F(X_2(INT,INT),INT)' =&gt; bless( {
-    'children' =&gt; [
-      bless( {
-        'children' =&gt; [
-          $VAR1-&gt;{'INT'},
-          $VAR1-&gt;{'INT'}
-        ]
-      }, 'X_2' ),
-      $VAR1-&gt;{'INT'}
-    ]
-  }, 'F' )
-};
-Symbol Table of the Main Program:
-$VAR1 = {
-  'a' =&gt; {
-    'type' =&gt; 'INT',
-    'line' =&gt; 1
-  },
-  'b' =&gt; {
-    'type' =&gt; 'INT',
-    'line' =&gt; 1
-  },
-  'f' =&gt; {
-    'type' =&gt; 'F(X_2(INT,INT),INT)',
-    'line' =&gt; 2
-  },
-  'main' =&gt; {
-    'type' =&gt; 'F(X_0(),INT)',
-    'line' =&gt; 6
-  }
-};
-
----------------------------
-1)
-Symbol Table of f
-$VAR1 = {
-  'a' =&gt; {
-    'type' =&gt; 'INT',
-    'param' =&gt; 1,
-    'line' =&gt; 2
-  },
-  'b' =&gt; {
-    'type' =&gt; 'INT',
-    'param' =&gt; 1,
-    'line' =&gt; 2
-  }
-};
-
----------------------------
-2)
-Symbol Table of main
-$VAR1 = {};
-
----------------------------
-3)
-Symbol Table of block at line 8
-$VAR1 = {
-  'd' =&gt; {
-    'type' =&gt; 'INT',
-    'line' =&gt; 9
-  }
-};
-
-pl@nereida:~/Lbook/code/Simple-SymbolTables/script$
+&gt; local.pl
+global
+toto
+toto
+global
 </PRE>
 
 <P>
-
-<H4><A NAME="SECTION051240090000000000000">
-Métodos de soporte para el Volcado del Arbol</A>
-</H4>
-  
-
 <P>
-Se han utilizado las siguientes funciones de soporte para producir el volcado:
-
-<P>
-<PRE>
-pl@nereida:~/Lbook/code/Simple-SymbolTables/lib/Simple$ sed -ne '683,$p' SymbolTables.eyp
-############## Debugging and Display
-sub show_trees {
- my ($t) = @_;
-
- print Dumper $t if $debug &gt; 1;
- $Parse::Eyapp::Node::INDENT = 2;
- $Data::Dumper::Indent = 1;
- print $t-&gt;str."\n";
-}
-
-$Parse::Eyapp::Node::INDENT = 1;
-sub TERMINAL::info {
-  my @a = join ':', @{$_[0]-&gt;{attr}};
-  return "@a"
-}
-
-sub PROGRAM::footnote {
-  return "Types:\n"
-         .Dumper($_[0]-&gt;{types}).
-         "Symbol Table of the Main Program:\n"
-         .Dumper($_[0]-&gt;{symboltable})
-}
-
-sub FUNCTION::info {
-  return $_[0]-&gt;{function_name}[0]
-}
-
-sub FUNCTION::footnote {
-  my $text = '';
-  $text .= "Symbol Table of $_[0]-&gt;{function_name}[0]\n" if $_[0]-&gt;type eq 'FUNCTION';
-  $text .= "Symbol Table of block at line $_[0]-&gt;{line}\n" if $_[0]-&gt;type eq 'BLOCK';
-  $text .= Dumper($_[0]-&gt;{symboltable});
-  return $text;
-}
-
-sub BLOCK::info {
-  my $info = "$_[0]-&gt;{line}";
-  return $info;
-}
-
-*BLOCK::footnote = \&amp;FUNCTION::footnote;
-
-sub VAR::info {
-  return $_[0]-&gt;{type} if defined $_[0]-&gt;{type};
-  return "No declarado!";
-}
-
-*FUNCTIONCALL::info = *VARARRAY::info = \&amp;VAR::info;
-pl@nereida:~/Lbook/code/Simple-SymbolTables/lib/Simple$
-</PRE>
+<DIV><B>Ejercicio  <SPAN CLASS="arabic">41</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">9</SPAN></B> &nbsp; 
+<I>¿Es <code>local</code> una declaración o una sentencia?
+¿Que declaraciones se aplican a los diferentes 
+usos de <code>$x</code> en las líneas 6, 7, 8 y 10?.</I></DIV><P></P>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5608"
+<A NAME="tex2html5611"
   HREF="node206.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5602"
-  HREF="node201.html">
+<A NAME="tex2html5605"
+  HREF="node204.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5596"
+<A NAME="tex2html5599"
   HREF="node204.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5604"
-  HREF="node223.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5606"
+<A NAME="tex2html5607"
   HREF="node226.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html5609"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -899,17 +985,17 @@ pl@nereida:~/Lbook/code/Simple-SymbolTables/lib/Simple$
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5609"
-  HREF="node206.html">La Dificultad de Elaboración</A>
-<B>Sup:</B> <A NAME="tex2html5603"
-  HREF="node201.html">Análisis de Ámbito en</A>
-<B> Ant:</B> <A NAME="tex2html5597"
-  HREF="node204.html">Práctica: Construcción del AST</A>
+<B> Sig:</B> <A NAME="tex2html5612"
+  HREF="node206.html">Descripción Eyapp del Lenguaje</A>
+<B>Sup:</B> <A NAME="tex2html5606"
+  HREF="node204.html">Análisis de Ámbito en</A>
+<B> Ant:</B> <A NAME="tex2html5600"
+  HREF="node204.html">Análisis de Ámbito en</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-05-15</I>
+2013-06-01</I>
 </ADDRESS>
 </BODY>
 </HTML>

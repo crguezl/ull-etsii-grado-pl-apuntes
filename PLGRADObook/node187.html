@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Descripción Eyapp del Lenguaje SimpleC</TITLE>
-<META NAME="description" CONTENT="Descripción Eyapp del Lenguaje SimpleC">
+<TITLE>Práctica: Nuevos Métodos</TITLE>
+<META NAME="description" CONTENT="Práctica: Nuevos Métodos">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node188.html">
 <LINK REL="previous" HREF="node186.html">
-<LINK REL="up" HREF="node160.html">
+<LINK REL="up" HREF="node163.html">
 <LINK REL="next" HREF="node188.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5258"
+<A NAME="tex2html5273"
   HREF="node188.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5252"
-  HREF="node160.html">
+<A NAME="tex2html5267"
+  HREF="node163.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5246"
+<A NAME="tex2html5261"
   HREF="node186.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5254"
-  HREF="node223.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5256"
+<A NAME="tex2html5269"
   HREF="node226.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html5271"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,125 +88,108 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5259"
-  HREF="node188.html">Diseño de Analizadores con</A>
-<B>Sup:</B> <A NAME="tex2html5253"
-  HREF="node160.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5247"
-  HREF="node186.html">Recuperacion de Errores: Visión</A>
+<B> Sig:</B> <A NAME="tex2html5274"
+  HREF="node188.html">Práctica: Generación Automática de</A>
+<B>Sup:</B> <A NAME="tex2html5268"
+  HREF="node163.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5262"
+  HREF="node186.html">Práctica: Autoacciones</A>
 <B> Con:</B> 
-<A NAME="tex2html5254"
-  HREF="node223.html">
+<A NAME="tex2html5269"
+  HREF="node226.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5256"
-  HREF="node226.html">
+<A NAME="tex2html5271"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION059270000000000000000"></A>
-<A NAME="section:simplec"></A>
+<H1><A NAME="SECTION069240000000000000000"></A>
+   <A NAME="19447"></A>
 <BR>
-Descripción Eyapp del Lenguaje  SimpleC
+Práctica: Nuevos Métodos
 </H1>
-En este capítulo usaremos  <TT>Parse::Eyapp</TT>  para desarrollar
-un compilador para el siguiente lenguaje, al que denominaremos  <TT>Simple C</TT> :
+  
+Continuemos extendiendo <code>Yapp</code>.
+
+<UL>
+<LI>Introduzca en el módulo <code>Driver.pm</code> de <code>Yapp</code>
+un método <code>YYLhs</code> que devuelva el identificador
+de la variable sintáctica en el lado izquierdo de la regla 
+de producción por la que se está reduciendo. 
+</LI>
+<LI>Para tener disponible el lado izquierdo
+deberá modificar la conducta del analizador LALR 
+(subrutina <code>_Parse</code>) para que guarde como un atributo
+el identificador de dicho noterminal.
+</LI>
+<LI>¿Que identificador se devuelve asociado con las acciones
+intermedias?
+</LI>
+</UL>
 
 <P>
+Sigue un ejemplo de como programar haciendo uso de esta y la 
+anterior extensión:
 <PRE>
-program: definition+
-
-definition: funcDef | basictype funcDef | declaration
-
-basictype: INT | CHAR
-
-funcDef: ID '('  params  ')' block
-
-params: ( basictype ID arraySpec)&lt;* ','&gt;
-
-block: '{' declaration* statement* '}'
-
-declaration: basictype declList ';'
-
-declList: (ID arraySpec) &lt;+ ','&gt;
-
-arraySpec: ( '[' INUM ']')*
-
-statement:
-    expression ';'
-  | ';'
-  | BREAK ';'
-  | CONTINUE ';'
-  | RETURN ';'
-  | RETURN expression ';'
-  | block
-  | ifPrefix statement %prec '+'
-  | ifPrefix statement 'ELSE' statement
-  | loopPrefix statement
-
-ifPrefix: IF '(' expression ')'
-
-loopPrefix: WHILE '(' expression ')'
-
-expression: binary &lt;+ ','&gt;
-
-Variable: ID ('[' binary ']') *
-
-Primary:
-    INUM
-  | CHARCONSTANT
-  | Variable
-  | '(' expression ')'
-  | function_call
-
-function_call:  ID  '(' binary &lt;* ','&gt; ')'
-
-Unary: '++' Variable | '--' Variable | Primary
-
-binary:
-    Unary
-  | binary '+' binary
-  | binary '-' binary
-  | binary '*' binary
-  | binary '/' binary
-  | binary '%' binary
-  | binary '&lt;' binary
-  | binary '&gt;' binary
-  | binary '&gt;=' binary
-  | binary '&lt;=' binary
-  | binary '==' binary
-  | binary '!=' binary
-  | binary '&amp;' binary
-  | binary '**' binary
-  | binary '|' binary
-  | Variable '=' binary
-  | Variable '+=' binary
-  | Variable '-=' binary
-  | Variable '*=' binary
-  | Variable '/=' binary
-  | Variable '%=' binary
-  | etc. etc.
+%right  '='
+%left   '-' '+'
+%left   '*' '/'
+%left   NEG
+%autoaction { my $n = $#_;  bless [@_[1..$n]], $_[0]-&gt;YYLhs }
+%%
+input:                 
+        |   input line 
+;
+line:     '\n'       { } 
+        | exp '\n'   { [ $_[1] ] } 
+        | error '\n' { }
+;
+exp:        NUM         |   VAR         |   VAR '=' exp         
+        |   exp '+' exp |   exp '-' exp |   exp '*' exp |   exp '/' exp      
+        |   '-' exp %prec NEG 
+        |   '(' exp ')' { [ $_[2] ] }     
+;
+%%
+...
+</PRE>
+Veamos la ejecución correspondiente al ejemplo anterior:
+<PRE>
+$ ./uselhs2.pl
+2+3*4
+$VAR1 = bless( 
+[
+  bless( [], 'input' ),
+  [
+    bless( [
+      bless( [ '2' ], 'exp' ),
+      '+',
+      bless( [
+        bless( [ '3' ], 'exp' ), '*', bless( [ '4' ], 'exp' ) ], 'exp' )
+    ], 'exp' )
+  ]
+], 'input' );
 </PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5258"
+<A NAME="tex2html5273"
   HREF="node188.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5252"
-  HREF="node160.html">
+<A NAME="tex2html5267"
+  HREF="node163.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5246"
+<A NAME="tex2html5261"
   HREF="node186.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5254"
-  HREF="node223.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5256"
+<A NAME="tex2html5269"
   HREF="node226.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html5271"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -253,17 +236,17 @@ binary:
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5259"
-  HREF="node188.html">Diseño de Analizadores con</A>
-<B>Sup:</B> <A NAME="tex2html5253"
-  HREF="node160.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5247"
-  HREF="node186.html">Recuperacion de Errores: Visión</A>
+<B> Sig:</B> <A NAME="tex2html5274"
+  HREF="node188.html">Práctica: Generación Automática de</A>
+<B>Sup:</B> <A NAME="tex2html5268"
+  HREF="node163.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5262"
+  HREF="node186.html">Práctica: Autoacciones</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-05-15</I>
+2013-06-01</I>
 </ADDRESS>
 </BODY>
 </HTML>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Construcción del Árbol Sintáctico</TITLE>
-<META NAME="description" CONTENT="Construcción del Árbol Sintáctico">
+<TITLE>Depuración en yapp</TITLE>
+<META NAME="description" CONTENT="Depuración en yapp">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node170.html">
 <LINK REL="previous" HREF="node168.html">
-<LINK REL="up" HREF="node160.html">
+<LINK REL="up" HREF="node163.html">
 <LINK REL="next" HREF="node170.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5000"
+<A NAME="tex2html5015"
   HREF="node170.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4994"
-  HREF="node160.html">
+<A NAME="tex2html5009"
+  HREF="node163.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4988"
+<A NAME="tex2html5003"
   HREF="node168.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4996"
-  HREF="node223.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4998"
+<A NAME="tex2html5011"
   HREF="node226.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html5013"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,156 +88,126 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5001"
-  HREF="node170.html">Acciones en Medio de</A>
-<B>Sup:</B> <A NAME="tex2html4995"
-  HREF="node160.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4989"
-  HREF="node168.html">Generación interactiva de analizadores</A>
+<B> Sig:</B> <A NAME="tex2html5016"
+  HREF="node170.html">Precedencia y Asociatividad</A>
+<B>Sup:</B> <A NAME="tex2html5010"
+  HREF="node163.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5004"
+  HREF="node168.html">Algoritmo de Análisis LR</A>
 <B> Con:</B> 
-<A NAME="tex2html4996"
-  HREF="node223.html">
+<A NAME="tex2html5011"
+  HREF="node226.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4998"
-  HREF="node226.html">
+<A NAME="tex2html5013"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION05990000000000000000">
-Construcción del Árbol Sintáctico</A>
+<H1><A NAME="SECTION06960000000000000000"></A>
+<A NAME="section:depuracion"></A>
+<BR>
+Depuración en <TT>yapp</TT>
 </H1>
-El siguiente ejemplo usa <code>yapp</code> 
-para construir el árbol sintáctico de una expresión en infijo:
+Es posible añadir un parámetro en la llamada a <code>YYParse</code>
+con nombre <A NAME="19333"></A><SPAN  CLASS="textbf">yydebug</SPAN> y valor el nivel de depuración requerido.
+Ello 
+nos permite observar la conducta del analizador. Los 
+posibles valores de depuración son:
+
+<P>
+<BR>
+<BR>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">Bit</TD>
+<TD ALIGN="LEFT">Información de Depuración</TD>
+</TR>
+<TR><TD ALIGN="LEFT">0x01</TD>
+<TD ALIGN="LEFT">Lectura de los terminales</TD>
+</TR>
+<TR><TD ALIGN="LEFT">0x02</TD>
+<TD ALIGN="LEFT">Información sobre los estados</TD>
+</TR>
+<TR><TD ALIGN="LEFT">0x04</TD>
+<TD ALIGN="LEFT">Acciones (shifts, reduces, accept ...)</TD>
+</TR>
+<TR><TD ALIGN="LEFT">0x08</TD>
+<TD ALIGN="LEFT">Volcado de la pila</TD>
+</TR>
+<TR><TD ALIGN="LEFT">0x10</TD>
+<TD ALIGN="LEFT">Recuperación de errores</TD>
+</TR>
+</TABLE>
+</DIV>
+<BR>
+<BR>
+
+<P>
+Veamos un ejemplo de salida para la gramática
+ que se describe en la página 
+ <A HREF="#apendice:asb"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>
+ cuando se llama con: 
+
+<P>
+<code>$self-&gt;YYParse( yylex =&gt; \&_Lexer, yyerror =&gt; \&_Error, yydebug =&gt; 0x1F )</code>
+
+<P>
 <PRE>
-$ cat -n Infixtree_bless.yp
- 1  #
- 2  # Infixtree.yp
- 3  #
- 4
- 5  %{
- 6  use Data::Dumper;
- 7  %}
- 8  %right  '='
- 9  %left   '-' '+'
-10  %left   '*' '/'
-11  %left   NEG
-12
-13  %%
-14  input:  #empty
-15          |   input line
-16  ;
-17
-18  line:     '\n'         { $_[1] }
-19          | exp '\n'     { print Dumper($_[1]); }
-20          | error '\n'   { $_[0]-&gt;YYErrok }
-21  ;
-22
-23  exp:        NUM
-24          |   VAR                 { $_[1] }
-25          |   VAR '=' exp         { bless [$_[1], $_[3]], 'ASSIGN' }
-26          |   exp '+' exp         { bless [$_[1], $_[3] ], 'PLUS'}
-27          |   exp '-' exp         { bless [$_[1], $_[3] ], 'MINUS'}
-28          |   exp '*' exp         { bless [$_[1], $_[3]], 'TIMES' }
-29          |   exp '/' exp         { bless [$_[1], $_[3]], 'DIVIDE' }
-30          |   '-' exp %prec NEG   { bless [$_[2]], 'NEG' }
-31          |   '(' exp ')'         { $_[2] }
-32  ;
-33
-34  %%
-35
-36  sub _Error {
-37          exists $_[0]-&gt;YYData-&gt;{ERRMSG}
-38      and do {
-39          print $_[0]-&gt;YYData-&gt;{ERRMSG};
-40          delete $_[0]-&gt;YYData-&gt;{ERRMSG};
-41          return;
-42      };
-43      print "Syntax error.\n";
-44  }
-45
-46  sub _Lexer {
-47      my($parser)=shift;
-48
-49          defined($parser-&gt;YYData-&gt;{INPUT})
-50      or  $parser-&gt;YYData-&gt;{INPUT} = &lt;STDIN&gt;
-51      or  return('',undef);
-52
-53      $parser-&gt;YYData-&gt;{INPUT}=~s/^[ \t]//;
-54
-55      for ($parser-&gt;YYData-&gt;{INPUT}) {
-56          s/^([0-9]+(?:\.[0-9]+)?)//
-57                  and return('NUM',$1);
-58          s/^([A-Za-z][A-Za-z0-9_]*)//
-59                  and return('VAR',$1);
-60          s/^(.)//s
-61                  and return($1,$1);
-62      }
-63  }
-64
-65  sub Run {
-66      my($self)=shift;
-67      $self-&gt;YYParse( yylex =&gt; \&amp;_Lexer, yyerror =&gt; \&amp;_Error );
-68  }
-</PRE>
-Para compilar hacemos:
-<PRE>
-$ yapp -m Infixtree Infixtree_bless.yp
-</PRE>
-El guión que usa el analizador anterior es similar al que vimos en la 
-sección <A HREF="node161.html#section:ejemplodeuso">36.1</A>:
-<PRE>
-$ cat -n ./useinfixtree.pl
-     1  #!/usr/bin/perl -w
-     2
-     3  use Infixtree;
-     4
-     5  $parser = new Infixtree();
-     6  $parser-&gt;Run;
-</PRE>
-Veamos un ejemplo de ejecución:
-<PRE>
-$ ./useinfixtree.pl
-a = 2+3
-$VAR1 = bless( [
-                 'a',
-                 bless( [
-                          '2',
-                          '3'
-                        ], 'PLUS' )
-               ], 'ASSIGN' );
-b = a*4+a
-$VAR1 = bless( [
-                 'b',
-                 bless( [
-                          bless( [
-                                   'a',
-                                   '4'
-                                 ], 'TIMES' ),
-                          'a'
-                        ], 'PLUS' )
-               ], 'ASSIGN' );
+ 1  $ ./use_aSb.pl
+ 2  ----------------------------------------
+ 3  In state 0:
+ 4  Stack:[0]
+ 5  ab  # el usuario ha escrito esto
+ 6  Need token. Got &gt;a&lt;
+ 7  Shift and go to state 2.
+ 8  ----------------------------------------
+ 9  In state 2:
+10  Stack:[0,2]
+11  Need token. Got &gt;b&lt;
+12  Reduce using rule 1 (S,0): S -&gt; epsilon
+13  Back to state 2, then go to state 4.
+14  ----------------------------------------
+15  In state 4:
+16  Stack:[0,2,4]
+17  Shift and go to state 5.
+18  ----------------------------------------
+19  In state 5:
+20  Stack:[0,2,4,5]
+21  Don't need token.
+22  Reduce using rule 2 (S,3): S -&gt; a S b
+23  Back to state 0, then go to state 1.
+24  ----------------------------------------
+25  In state 1:
+26  Stack:[0,1]
+27  Need token. Got &gt;&lt;
+28  Shift and go to state 3.
+29  ----------------------------------------
+30  In state 3:
+31  Stack:[0,1,3]
+32  Don't need token.
+33  Accept.
 </PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5000"
+<A NAME="tex2html5015"
   HREF="node170.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4994"
-  HREF="node160.html">
+<A NAME="tex2html5009"
+  HREF="node163.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4988"
+<A NAME="tex2html5003"
   HREF="node168.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4996"
-  HREF="node223.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4998"
+<A NAME="tex2html5011"
   HREF="node226.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html5013"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -284,17 +254,17 @@ $VAR1 = bless( [
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5001"
-  HREF="node170.html">Acciones en Medio de</A>
-<B>Sup:</B> <A NAME="tex2html4995"
-  HREF="node160.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4989"
-  HREF="node168.html">Generación interactiva de analizadores</A>
+<B> Sig:</B> <A NAME="tex2html5016"
+  HREF="node170.html">Precedencia y Asociatividad</A>
+<B>Sup:</B> <A NAME="tex2html5010"
+  HREF="node163.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5004"
+  HREF="node168.html">Algoritmo de Análisis LR</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-05-15</I>
+2013-06-01</I>
 </ADDRESS>
 </BODY>
 </HTML>

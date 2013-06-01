@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Traducción entre Tablas</TITLE>
-<META NAME="description" CONTENT="Traducción entre Tablas">
+<TITLE>Rangos</TITLE>
+<META NAME="description" CONTENT="Rangos">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node91.html">
 <LINK REL="previous" HREF="node89.html">
-<LINK REL="up" HREF="node83.html">
+<LINK REL="up" HREF="node86.html">
 <LINK REL="next" HREF="node91.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3102"
+<A NAME="tex2html3117"
   HREF="node91.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3096"
-  HREF="node83.html">
+<A NAME="tex2html3111"
+  HREF="node86.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3090"
+<A NAME="tex2html3105"
   HREF="node89.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3098"
-  HREF="node223.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3100"
+<A NAME="tex2html3113"
   HREF="node226.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html3115"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,58 +88,150 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3103"
-  HREF="node91.html">Del espacio de Patrones</A>
-<B>Sup:</B> <A NAME="tex2html3097"
-  HREF="node83.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html3091"
-  HREF="node89.html">Manipulando tablas numéricas</A>
+<B> Sig:</B> <A NAME="tex2html3118"
+  HREF="node91.html">Siguiente Línea: La orden</A>
+<B>Sup:</B> <A NAME="tex2html3112"
+  HREF="node86.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html3106"
+  HREF="node89.html">Trasferencia de Control Condicional</A>
 <B> Con:</B> 
-<A NAME="tex2html3098"
-  HREF="node223.html">
+<A NAME="tex2html3113"
+  HREF="node226.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3100"
-  HREF="node226.html">
+<A NAME="tex2html3115"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION05370000000000000000">
-Traducción entre Tablas</A>
+<H1><A NAME="SECTION06340000000000000000">
+Rangos</A>
 </H1>
-El  comando <I>y</I> realiza una traducción entre dos tablas de caracteres.
-Observa el ejemplo:
+Cuando se usan dos direcciones separadas por una coma, el rango que
+representan se extiende desde la primera línea que casa con el patrón
+hasta la siguiente línea que casa con el segundo patrón.
+El siguiente <I>script</I> muestra las tablas que aparecen en un fichero <SPAN CLASS="logo,LaTeX">L<SUP><SMALL>A</SMALL></SUP>T<SMALL>E</SMALL>X</SPAN>:
 <PRE>
-$ cat toupper.sed
-y/aáéíóúäëïöübcdefghijklmnopqrstuvxyzñ/AÁÉÍÓÚÄËÏÖÜBCDEFGHIJKLMNOPQRSTUVXYZÑ/
-$ cat sp2en.test
-¡Coño! ¿Es plím el que hizo plúm?
+$ cat tables.sed
+#Imprime las tablas en un fichero tex
+/\\begin{tabular}/,/end{tabular}/p
+$ sed -n -f tables.sed *.tex
+\begin{tabular}{c|c}
+        [address]a$\backslash$ &amp; [address]i$\backslash$\\
+        text                   &amp; text\\
+\end{tabular}\\
+\begin{tabular}{c|c}
+        [address]a$\backslash$ &amp; [address]i$\backslash$\\
+        text                   &amp; text\\
+\end{tabular}\\
 </PRE>
-Obtenemos asi los contenidos del fichero en mayúsculas:
+
+<P>
+La siguiente selección para un rango comienza después de la
+última línea del rango previo; esto es, si el rango es /A/,/B/,
+el primer conjunto de líneas que casa va desde la primera
+aparicion de /A/ hasta la siguiente aparición de /B/. Asi,
+el número mínimo de líneas seleccionadas (si no es cero)
+es dos. Sólo en el caso en que la primera dirección es una
+expresión regular y la segunda un número de línea que viene
+antes de la línea que casa, es que sólo se selecciona una
+línea de emparejamiento.  No hay por tanto solapes entre dos
+casamientos en un misma rango de direcciones.  
+El siguiente ejemplo ilustra la forma en la que <code>sed</code> interpreta
+los rangos de direcciones. Es una aproximación al problema de escribir
+los comentarios de un programa <I>C</I>.
 <PRE>
-$ sed -f toupper.sed sp2en.test
-¡COÑO! ¿ES PLÍM EL QUE HIZO PLÚM?
+$ cat scope.sed
+#execute: sed -n -f scope.sed scope.test
+/\/\*/,/\*\//p
+</PRE>
+Este <I>script</I> puede funcionar con programas cuyos
+comentarios (no anidados) empiecen y terminen en líneas 
+diferentes, como el del ejemplo:
+<PRE>
+$ cat scope2.test
+#file scope2.test
+#include &lt;stdio.h&gt;
+ 
+fact(int n) { /* recursive function
+if(n == 0) return 1;
+else(return n*fact(n-1));*/
+}
+ 
+void toto(id) {
+}
+ 
+main() {
+  toto();
+  printf("Hello world! factorial of 4 = %d\n",fact(4)); /* the
+         comment takes two lines */
+}
+</PRE>
+La ejecución del script selecciona los dos grupos de líneas
+que contienen comentarios:
+<PRE>
+$ sed -n -f scope.sed scope2.test
+fact(int n) { /* recursive function
+if(n == 0) return 1;
+else(return n*fact(n-1));*/
+  printf("Hello world! factorial of 4 = %d\n",fact(4)); /* the
+         comment takes two lines */
+</PRE>
+Sin embargo, el script fallará en este otro ejemplo:
+<PRE>
+$ cat scope.test
+#include &lt;stdio.h&gt;
+ 
+fact(int n) { /* recursive function */
+if(n == 0) return 1;
+else(return n*fact(n-1));
+}
+ 
+void toto(id) {
+}
+ 
+main() {
+  toto();
+  printf("Hello world! factorial of 4 = %d\n",fact(4)); /* the
+         comment takes two lines */
+}
+</PRE>
+La ejecución del programa da como resultado:
+<PRE>
+$ sed -n -f scope.sed scope.test
+fact(int n) { /* recursive function */
+if(n == 0) return 1;
+else(return n*fact(n-1));
+}
+ 
+void toto(id) {
+}
+ 
+main() {
+  toto();
+  printf("Hello world! factorial of 4 = %d\n",fact(4)); /* the
+         comment takes two lines */
 </PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3102"
+<A NAME="tex2html3117"
   HREF="node91.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3096"
-  HREF="node83.html">
+<A NAME="tex2html3111"
+  HREF="node86.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3090"
+<A NAME="tex2html3105"
   HREF="node89.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3098"
-  HREF="node223.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3100"
+<A NAME="tex2html3113"
   HREF="node226.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html3115"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -186,17 +278,17 @@ $ sed -f toupper.sed sp2en.test
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3103"
-  HREF="node91.html">Del espacio de Patrones</A>
-<B>Sup:</B> <A NAME="tex2html3097"
-  HREF="node83.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html3091"
-  HREF="node89.html">Manipulando tablas numéricas</A>
+<B> Sig:</B> <A NAME="tex2html3118"
+  HREF="node91.html">Siguiente Línea: La orden</A>
+<B>Sup:</B> <A NAME="tex2html3112"
+  HREF="node86.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html3106"
+  HREF="node89.html">Trasferencia de Control Condicional</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-05-15</I>
+2013-06-01</I>
 </ADDRESS>
 </BODY>
 </HTML>

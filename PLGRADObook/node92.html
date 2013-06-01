@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>La orden N</TITLE>
-<META NAME="description" CONTENT="La orden N">
+<TITLE>Manipulando tablas numéricas</TITLE>
+<META NAME="description" CONTENT="Manipulando tablas numéricas">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node93.html">
 <LINK REL="previous" HREF="node91.html">
-<LINK REL="up" HREF="node83.html">
+<LINK REL="up" HREF="node86.html">
 <LINK REL="next" HREF="node93.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3130"
+<A NAME="tex2html3145"
   HREF="node93.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3124"
-  HREF="node83.html">
+<A NAME="tex2html3139"
+  HREF="node86.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3118"
+<A NAME="tex2html3133"
   HREF="node91.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3126"
-  HREF="node223.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3128"
+<A NAME="tex2html3141"
   HREF="node226.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html3143"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,194 +88,130 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3131"
-  HREF="node93.html">Suprimir: El Comando D</A>
-<B>Sup:</B> <A NAME="tex2html3125"
-  HREF="node83.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html3119"
-  HREF="node91.html">Del espacio de Patrones</A>
+<B> Sig:</B> <A NAME="tex2html3146"
+  HREF="node93.html">Traducción entre Tablas</A>
+<B>Sup:</B> <A NAME="tex2html3140"
+  HREF="node86.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html3134"
+  HREF="node91.html">Siguiente Línea: La orden</A>
 <B> Con:</B> 
-<A NAME="tex2html3126"
-  HREF="node223.html">
+<A NAME="tex2html3141"
+  HREF="node226.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3128"
-  HREF="node226.html">
+<A NAME="tex2html3143"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION05390000000000000000">
-La orden <I>N</I></A>
+<H1><A NAME="SECTION06360000000000000000">
+Manipulando tablas numéricas</A>
 </H1>
-<I>N</I> añade la siguiente línea de entrada al espacio de
-patrones. Las dos líneas se separan mediante un retorno de
-carro. Después de su ejecución, el comando <I>N</I> pasa el control a los
-subsiguientes comandos en el <I>script</I>.
-<BR>
-El siguiente ejemplo propuesto en [<A
- HREF="node227.html#sedawk">6</A>] muestra una
-búsqueda y sustitución multilínea. Se trata de sustituir la
-cadena ``Owner and Operator Guide'' por ``Installation Guide'', cualquiera que sea su posición en una línea o entre ellas.
-Los autores de [<A
- HREF="node227.html#sedawk">6</A>] y [<A
- HREF="node227.html#power">7</A>] proponen la siguiente
-solución:
+El siguiente ejemplo intercambia la primera y ultima columnas
+de un fichero como el que sigue:
 <PRE>
-$ cat multiline2.sed
-#Assume the pattern is in no more than two lines
-s/Owner and Operator Guide/Installation Guide/g
-/Owner/{
-  N
-  s/ *\n/ /g
-  s/Owner  *and  *Operator  *Guide/Installation Guide/g
-}
+$ cat columns.test
+11111 22222 33333 44444 55555
+  111    22    33  4444  5555
+11111 22222 33333 44444 55555
+   11    22     3   444  5555
 </PRE>
-Veamos primero los contenidos del fichero de prueba:
-<PRE>
-$ cat multiline.test
-Dear Owner: Consult
-Section 3.1 in the Owner and
-Operator Guide for a description of the tape drives available for the Owner
-of your system.
- 
-Consult Section 3.1 in the Owner and Operator
-Guide for a description of the tape drives
-available on your system.
- 
-Look in the Owner and Operator Guide, we mean the Owner
-and Operator Guide shipped with your system.
- 
-Two manuals are provided including the Owner and
-Operator Guide and the User Guide.
- 
-The Owner and Operator Guide is shipped with your system.
- 
-Look in the Owner
-and Operator Guide shipped with your system.
- 
-The Owner
-and
-Operator
-Guide is shipped with your system.
-</PRE>
-La ejecución del <I>script</I> da la siguiente salida:
-<PRE>
-$ sed -f multiline2.sed multiline.test
-Dear Owner: Consult Section 3.1 in the Owner and
-Operator Guide for a description of the tape drives available for the Owner
-of your system.
- 
-Consult Section 3.1 in the Installation Guide for a description of the tape
-drives
-available on your system.
- 
-Look in the Installation Guide, we mean the Installation Guide shipped with
-your system.
- 
-Two manuals are provided including the Installation Guide and the User Guide.
- 
-The Installation Guide is shipped with your system.
- 
-Look in the Installation Guide shipped with your system.
- 
-The Owner and
-Operator
-Guide is shipped with your system.
-</PRE>
-Uno de los problemas, que aparece en el primer párrafo del
-ejemplo de prueba, es que la segunda línea leída debe ser
-"reciclada"
-para su uso en la siguiente búsqueda. El segundo fallo, 
-que aparece en el último párrafo, es consecuencia de la
-limitación del <I>script</I> para trabajar con  patrones partidos
-en más de dos líneas.
-<BR>
-Consideremos esta otra solución:
-<PRE>
-$ cat multiline.sed
-s/Owner and Operator Guide/Installation Guide/g
-/Owner/{
-:label
-  N
-  s/\n/ /g
-  s/Owner  *and  *Operator  *Guide/Installation Guide/g
-  /Owner *$/b label
-  /Owner  *and *$/b label
-  /Owner  *and  *Operator *$/b label
-  }
-</PRE>
-Este otro <I>script</I> hace que <TT>sed</TT> permanezca en un bucle mientras
-la línea adjuntada en segundo lugar contenga un prefijo estricto 
-de la cadena buscada. 
-
-<P>
-<PRE>
-$sed -f multiline.sed multiline.test
-Dear Owner: Consult Section 3.1 in the Installation Guide for \
-a description of the tape drives available for the Owner  of \
-your system.
- 
-Consult Section 3.1 in the Installation Guide for a description of the tape drives
-available on your system.
- 
-Look in the Installation Guide, we mean the Installation Guide \
-shipped with your system.
- 
-Two manuals are provided including the Installation Guide and the User Guide.
- 
-The Installation Guide is shipped with your system.
- 
-Look in the Installation Guide shipped with your system.
- 
-The Installation Guide is shipped with your system.
-</PRE>
-Un problema que aparece con esta aproximación es la presencia
-de líneas muy largas. Las líneas permanecen en el espacio de trabajo
-mientras terminen en un prefijo de la cadena buscada. Para
-que la salida quepa en la hoja he
-tenido que partir las líneas del fichero de salida, lo que he indicado con los
-símbolos <!-- MATH
+La parte mas complicada es preservar el sangrado.
+El truco reside, en parte, en el patrón central <!-- MATH
  $\backslash$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="14" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
  SRC="img10.png"
- ALT="$ \backslash$"></SPAN>. Considere esta modificación:
+ ALT="$ \backslash$"></SPAN>2, que 
+memoriza los blancos después de la primera columna y un sólo blanco 
+antes de la última.
 <PRE>
-#!/bin/sed -f
-s/Owner and Operator Guide/Installation Guide/g
-/Owner/{
-:label
-  N
-  s/Owner\([ \n]*\)and\([ \n]*\)Operator\([ \n]*\)Guide/Installation\1\2Guide\3/g
-  /Owner *$/b label
-  /Owner  *and *$/b label
-  /Owner  *and  *Operator *$/b label
-  }
+$ cat columns.sed
+s/^\( *[0-9][0-9]*\)\( .*[0-9] \)\( *[0-9][0-9]*\)$/\3\2\1/
+$ sed -f columns.sed columns.test
+55555 22222 33333 44444 11111
+ 5555    22    33  4444   111
+55555 22222 33333 44444 11111
+ 5555    22     3   444    11
 </PRE>
-Es indudable la ventaja de disponer de esta
-capacidad de búsqueda multilínea no puede realizarse con 
-otras utilidades como <I>ex</I> o <I>vi</I>.
+El siguiente ejemplo utiliza
+una opción del operador de sustitución que permite decidir que aparición
+del patrón deseamos sustituir. Asi,
+
+<P>
+<code>s/A/B/3</code>
+
+<P>
+sustituirá la 3 aparición de <code>A</code> por <code>B</code>, obviando las otras.
+
+<P>
+El ejemplo selecciona la columna dos del fichero:
+<PRE>
+$ cat col2.sed
+#extracts the second column
+s/^  *//
+s/\&lt;[0-9][0-9]*\&gt;//1
+s/\&lt;[0-9][0-9]*\&gt;//2
+s/\&lt;[0-9][0-9]*\&gt;//2
+s/\&lt;[0-9][0-9]*\&gt;//2
+s/  *$//
+$ sed -f col2.sed columns.test
+ 22222
+    22
+ 22222
+    22
+</PRE>
+Mas general que el anterior, el siguiente ejemplo elimina 
+un número de columnas arbitrario <code>$1</code> por la izquierda y otro 
+número <code>$2</code> por la derecha.
+Para lograrlo, es necesario utilizar un un guión para la <code>shell</code> 
+que llama al correspondiente guión <code>sed</code>. Los parámetros 
+son introducidos en el guión <code>sed</code> mediante el uso apropiado
+de las comillas dobles y simples:
+
+<P>
+<PRE>
+&gt; cat colbranch.sh
+#!/bin/bash
+sed -e '
+s/^\( *[0-9]\+\)\{'"$1"'\}//
+s/\( *[0-9]\+\)\{'"$2"'\}$//
+'
+</PRE>
+Veamos un ejemplo de uso:
+<PRE>
+&gt; cat columns.test
+11111 22222 33333 44444 55555
+  111    22    33  4444  5555
+11111 22222 33333 44444 55555
+   11    22     3   444  5555
+&gt; colbranch.sh 2 1 &lt; columns.test
+ 33333 44444
+    33  4444
+ 33333 44444
+     3   444
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3130"
+<A NAME="tex2html3145"
   HREF="node93.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3124"
-  HREF="node83.html">
+<A NAME="tex2html3139"
+  HREF="node86.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3118"
+<A NAME="tex2html3133"
   HREF="node91.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3126"
-  HREF="node223.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3128"
+<A NAME="tex2html3141"
   HREF="node226.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html3143"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -322,17 +258,17 @@ otras utilidades como <I>ex</I> o <I>vi</I>.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3131"
-  HREF="node93.html">Suprimir: El Comando D</A>
-<B>Sup:</B> <A NAME="tex2html3125"
-  HREF="node83.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html3119"
-  HREF="node91.html">Del espacio de Patrones</A>
+<B> Sig:</B> <A NAME="tex2html3146"
+  HREF="node93.html">Traducción entre Tablas</A>
+<B>Sup:</B> <A NAME="tex2html3140"
+  HREF="node86.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html3134"
+  HREF="node91.html">Siguiente Línea: La orden</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-05-15</I>
+2013-06-01</I>
 </ADDRESS>
 </BODY>
 </HTML>

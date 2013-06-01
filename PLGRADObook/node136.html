@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Asignación de Direcciones</TITLE>
-<META NAME="description" CONTENT="Asignación de Direcciones">
+<TITLE>Análisis Semántico</TITLE>
+<META NAME="description" CONTENT="Análisis Semántico">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node137.html">
 <LINK REL="previous" HREF="node135.html">
-<LINK REL="up" HREF="node123.html">
+<LINK REL="up" HREF="node126.html">
 <LINK REL="next" HREF="node137.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4409"
+<A NAME="tex2html4420"
   HREF="node137.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4403"
-  HREF="node123.html">
+<A NAME="tex2html4414"
+  HREF="node126.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4397"
+<A NAME="tex2html4408"
   HREF="node135.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4405"
-  HREF="node223.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4407"
+<A NAME="tex2html4416"
   HREF="node226.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html4418"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,19 +88,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4410"
-  HREF="node137.html">Generación de Código: Máquina</A>
-<B>Sup:</B> <A NAME="tex2html4404"
-  HREF="node123.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html4398"
-  HREF="node135.html">Patrones Árbol y Transformaciones</A>
+<B> Sig:</B> <A NAME="tex2html4421"
+  HREF="node137.html">Optimización Independiente de la</A>
+<B>Sup:</B> <A NAME="tex2html4415"
+  HREF="node126.html">Análisis Sintáctico Descendente en</A>
+<B> Ant:</B> <A NAME="tex2html4409"
+  HREF="node135.html">Árbol de Análisis Abstracto</A>
 <B> Con:</B> 
-<A NAME="tex2html4405"
-  HREF="node223.html">
+<A NAME="tex2html4416"
+  HREF="node226.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4407"
-  HREF="node226.html">
+<A NAME="tex2html4418"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
@@ -109,49 +109,144 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html4411"
-  HREF="node136.html#SECTION057131000000000000000">Práctica: Cálculo de las Direcciones</A>
+<LI><A NAME="tex2html4422"
+  HREF="node136.html#SECTION067101000000000000000">Práctica: Declaraciones Automáticas</A>
+<LI><A NAME="tex2html4423"
+  HREF="node136.html#SECTION067102000000000000000">Práctica: Análisis Semántico</A>
 </UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION057130000000000000000">
-Asignación de Direcciones</A>
+<H1><A NAME="SECTION067100000000000000000">
+Análisis Semántico</A>
 </H1>
-Esta suele ser considerada  la primera de las fases de síntesis.
-Las anteriores lo eran de análisis. La fase de análisis
-es una transformación <!-- MATH
- $texto\ fuente \rightarrow arbol$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="169" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img341.png"
- ALT="$ texto fuente \rightarrow arbol$"></SPAN>, mientras
-que la fase síntesis es una transformación inversa
-<!-- MATH
- $arbol \rightarrow texto\ objeto$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="163" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img342.png"
- ALT="$ arbol \rightarrow texto objeto$"></SPAN> que produce una ``linealización''
-del árbol. En general, se ubican en la fase de síntesis todas
-las tareas que dependan del lenguaje objeto.
+Hay quien dice que el análisis semántico es la determinación 
+de aquellas propiedades que, siendo dependientes del contexto, pueden ser
+computadas estáticamente en tiempo de compilación para cualquier programa
+correcto. Entre estas propiedades
+están: la comprobación de que las variables son declaradas,
+la compatibilidad de tipos
+en las expresiones, el correcto uso de las llamadas a función asi
+como el ámbito y visibilidad de las variables.
+La fase de análisis semántico puede verse como una fase de ``adornado''
+o ``etiquetado'' del AAA, en la cual los atributos de los nodos
+del AAA son computados.
 
 <P>
-La asignación de direcciones depende de la máquina objetivo en cuanto
-conlleva consideraciones sobre la longitud de palabra, las unidades
-de memoria direccionables, la compactación de objetos pequeños (por ejemplo,
-valores lógicos), el alineamiento a fronteras de palabra, etc.
+Aunque la veamos como una fase separada del análisis sintáctico, puede
+en numerosas ocasiones llevarse a cabo al mismo tiempo que se construye
+el árbol. Así lo hacemos en este ejemplo: incrustamos la acción semántica
+en la correspondiente rutina de análisis sintáctico. Así, en la rutina <code>term</code>, una vez 
+que hemos obtenido los dos operandos, comprobamos que son de tipo numérico
+llamando (línea 8) a 
 
 <P>
-En nuestro caso debemos distinguir entre las cadenas y las variables enteras.
+<DIV ALIGN="CENTER">
+<code>Semantic::Analysis::check_type_numeric_operator</code>:
+
+</DIV>
 
 <P>
-Las constantes literales (como <code>"hola"</code>) se almacenan 
-concatenadas en orden de aparición textual.
-Una variable de tipo cadena ocupa dos palabras, una dando su dirección 
-y otra dando su longitud.
+Observe como aparece un nuevo atributo <code>TYPE</code> decorando el nodo
+creado (línea 9):
+
+<P>
+<PRE>
+ 1 sub term() {
+ 2   my ($t, $t2);
+ 3 
+ 4   $t = factor;
+ 5   if ($lookahead eq '*') {
+ 6     match('*');
+ 7     $t2 = term;
+ 8     my $type = Semantic::Analysis::check_type_numeric_operator($t, $t2, '*');
+ 9     $t = TIMES-&gt;new( LEFT =&gt; $t, RIGHT =&gt; $t2, TYPE =&gt; $type);
+10   }
+11   return $t;
+12 }
+</PRE>
+
+<P>
+En el manejo de errores de tipo, un tipo especial <code>$err_type</code>
+es usado para indicar un error de tipo:
+
+<P>
+<PRE>
+  sub check_type_numeric_operator {
+    my ($op1, $op2, $operator) = @_;
+
+    my $type = numeric_compatibility($op1, $op2, $operator);
+    if ($type == $err_type) {
+      Error::fatal("Operandos incompatibles para el operador $operator") 
+    }
+    else {
+      return $type;
+    }
+  }
+</PRE>
+La subrutina <code>numeric_compatibility</code> comprueba que los
+dos operandos son de tipo numérico y devuelve el correspondiente
+tipo. Si ha ocurrido un error de tipo, intenta encontrar 
+un tipo conveniente para el operando:
+
+<P>
+<PRE>
+  sub numeric_compatibility {
+    my ($op1, $op2, $operator) = @_;
+
+    if (($op1-&gt;TYPE == $op2-&gt;TYPE) and is_numeric($op1-&gt;TYPE)) {
+      return $op1-&gt;TYPE; # correct
+    }
+    ... # código de recuperación de errores de tipo
+  }
+
+  sub is_numeric {
+    my $type = shift;
+
+    return ($type == $int_type); # añadir long, float, double, etc.
+  }
+</PRE>
+
+<P>
+Es parte del análisis semántico la declaración de tipos:
+
+<P>
+<PRE>
+sub declaration() {
+  my ($t, $class, @il);
+
+  if (($lookahead eq 'INT') or ($lookahead eq 'STRING')) {
+    $class = $lookahead;
+    $t = &amp;type();
+    @il = &amp;idlist();
+    &amp;Semantic::Analysis::set_types($t, @il);
+    &amp;Address::Assignment::compute_address($t, @il);
+    return $class-&gt;new(TYPE =&gt; $t, IDLIST =&gt; \@il);
+  }
+  else {
+    Error::fatal('Se esperaba un tipo');
+  }
+}
+</PRE>
+Para ello se utiliza una tabla de símbolos que es un hash <code>%symbol_table</code>
+indexado en los identificadores del programa:
+
+<P>
+<PRE>
+sub set_types {
+  my $type = shift;
+  my @vars = @_;
+
+  foreach my $var (@vars) {
+    if (!exists($symbol_table{$id})) { $symbol_table{$var}-&gt;{TYPE} = $type; }
+    else { Error::error("$id declarado dos veces en el mismo ámbito"); }
+  }
+}
+</PRE>
+
+<P>
+Cada vez que aparece una variable en el código, bien en un factor o en 
+una asignación, comprobamos que ha sido declarada:
 
 <P>
 <PRE>
@@ -159,268 +254,402 @@ sub factor() {
   my ($e, $id, $str, $num);
 
   if ($lookahead eq 'NUM') { ... }
-  elsif ($lookahead eq 'ID') { ... }
-  elsif ($lookahead eq 'STR') {
-    $str = $value;
-    my ($offset, $length) = Address::Assignment::str($str);
-    match('STR');
-    return STR-&gt;new(OFFSET =&gt; $offset, LENGTH =&gt; $length, TYPE =&gt; $string_type);
+  elsif ($lookahead eq 'ID') {
+    $id = $value;
+    match('ID');
+    my $type = Semantic::Analysis::check_declared($id);
+    return ID-&gt;new( VAL =&gt; $id, TYPE =&gt; $type);
   }
+  elsif ($lookahead eq 'STR') { ... }
   elsif ($lookahead eq '(') { ... }
   else { Error::fatal("Se esperaba (, NUM o ID"); }
 }
 </PRE>
 
 <P>
-El código de la subrutina <code>Address::Assignment::str</code> es:
-<PRE>
-  sub str {
-    my $str = shift;
-    my $len = length($str);
-    my $offset = length($data);
-    $data .= $str;
-    return ($offset, $len);
-  }
-</PRE>
-Una posible mejora es la que se describe en 
-el punto
-<A HREF="#item:norepetidas">2</A>
-de la práctica
-<A HREF="#practica:calculodelasdirecciones">34.13.1</A>.
-
-<P>
-Hemos supuesto que las variables enteras y las referencias ocupan una palabra.
-Cada vez que una variable es declarada, se le computa su dirección relativa:
+La función <code>check_declared</code> devuelve el atributo
+<code>TYPE</code> de la correspondiente entrada en la tabla de 
+símbolos.
 
 <P>
 <PRE>
-# declaration -&gt; type idlist
-# type        -&gt; INT | STRING
-sub declaration() {
-  my ($t, $decl, @il);
+sub check_declared {
+  my $id = shift;
 
-  if (($lookahead eq 'INT') or ($lookahead eq 'STRING')) {
-    $t = &amp;type(); @il = &amp;idlist();
-    &amp;Semantic::Analysis::set_types($t, @il);
-    &amp;Address::Assignment::compute_address($t, @il);
-    $decl = [$t, \@il];
-    return bless $decl, 'DECL';
+  if (!exists($symbol_table{$id})) {
+    Error::error("$id no ha sido declarado!");
+    # auto-declaración de la variable a err_type
+    Semantic::Analysis::set_types($err_type, ($id));
   }
-  else { Error::fatal('Se esperaba un tipo'); }
+  return $symbol_table{$id}-&gt;{TYPE};
 }
 </PRE>
 
 <P>
-Se usa una variable <code>$global_address</code> para llevar la cuenta de la última 
-dirección utilizada y se introduce un atributo <code>ADDRESS</code> en 
-la tabla de símbolos:
 
-<P>
-<PRE>
-  sub compute_address {
-    my $type = shift;
-    my @id_list = @_;
-
-    for my $i (@id_list) {
-      $symbol_table{$i}-&gt;{ADDRESS} = $global_address;
-      $global_address += $type-&gt;LENGTH;
-    }
-  }
-</PRE>
-
-<P>
-Por último situamos todas las cadenas después de las variables
-del programa fuente:
-
-<P>
-<PRE>
-  ... 
-  ##### En compile, despues de haber calculado las direcciones
-  Tree::Transform::match_and_transform_list(
-    NODES =&gt; $tree-&gt;{STS},
-    PATTERN =&gt; sub { 
-      $_[0]-&gt;isa('STR')
-    },
-    ACTION =&gt; sub { $_[0]-&gt;{OFFSET} += $global_address; }
-  );
-</PRE>
-
-<P>
-Esta aproximación es bastante simplista en cuanto que usa una palabra
-por carácter. 
-El punto
-<A HREF="#item:compacta">3</A>
-de la práctica
-<A HREF="#practica:calculodelasdirecciones">34.13.1</A> propone una mejora.
-
-<P>
-
-<H2><A NAME="SECTION057131000000000000000"></A>
-   <A NAME="12824"></A>
-  
-<A NAME="practica:calculodelasdirecciones"></A>
+<H2><A NAME="SECTION067101000000000000000"></A>
+   <A NAME="12833"></A>
 <BR>
-Práctica: Cálculo de las Direcciones
+Práctica: Declaraciones Automáticas
 </H2>
-Modifique el cálculo de las direcciones para la gramática de Tutu
-extendida con sentencias compuestas que fué presentada en 
-la sección 
-<A HREF="node133.html#practica:analisis_semantico">34.10.2</A>.
+
+<P>
+Modifique la subrutina <code>check_declared</code> para que cuando
+una variable no haya sido declarada se declare ``sobre la marcha''. 
+¿Puede utilizar 
+información dependiente del contexto para decidir cual es la mejor forma
+de declararla?
 
 <P>
 
-<OL>
-<LI>Resuelva el problema de calcular las direcciones de las variables
-declaradas en los bloques. La memoria ocupada por dichas variables
-se libera al terminar el bloque. Por tanto la variable <code>$global_address</code>
-disminuye al final de cada bloque.
-</LI>
-<LI><A NAME="item:norepetidas"></A>En el código de la subrutina <code>Address::Assignment::str</code> 
+<H2><A NAME="SECTION067102000000000000000"></A>
+   <A NAME="12835"></A>
+  
+<A NAME="practica:analisis_semantico"></A>
+<BR>
+Práctica: Análisis Semántico
+</H2>
+Extienda el código de la práctica 
+<A HREF="node135.html#practica:AAA">36.9.5</A>
+para comprobar la compatibilidad de tipos.
+
+<P>
+<BR>
+<BR>
+
+<DIV ALIGN="CENTER"><TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL">
+1 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  p  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> b     </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+2 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  b  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> ds  ss     </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+3 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  b  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> ss         </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+4 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  ds <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> d  ';'  ds  </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+5 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  ds <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> d ';'      </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+6 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  d  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> INT  il     </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+7 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  d  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> STRING  il </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+8 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  ss <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> s  ';'  ss  </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+9 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  ss <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> s          </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+10 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  s  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> ID '=' e   </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+11 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  s  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> '{' b '}'   </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+12 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  s  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> P  e       </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+13 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  s <!-- MATH
+ $\rightarrow \epsilon$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="34" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img163.png"
+ ALT="$ \rightarrow \epsilon$"></SPAN> </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+14 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  e <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> e1 '+' t    </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+15 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  e <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> e1 '-' t    </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+16 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  e <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> t           </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+17 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  t <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> t1 '*' f    </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+18 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  t <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> t '/' f     </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+19 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  t <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> f           </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+20 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  f <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> '(' e ')'   </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+21 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  f <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> ID         </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+22 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  f <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> NUM        </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+23 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  f <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> STR        </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+24 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  il <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> ID ',' il  </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+25 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  il <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> ID         </SMALL></TD>
+</TR>
+</TABLE></DIV>
+<BR>
+<BR>
+En cuanto a las sentencias de bloque,
+se pretende que el ámbito y visibilidad de las variables sea como en el lenguaje
+C, esto es, las declaraciones mas internas con el mismo identificador
+ocultan las mas externas. Así:
 
 <P>
 <PRE>
-  sub str {
-    my $str = shift;
-    my $len = length($str);
-    my $offset = length($data);
-    $data .= $str;
-    return ($offset, $len);
-  }
+int a;
+a = 4;
+{
+  int a;
+  a = 5;
+  p a
+}; /* el ; es necesario */
+p a
 </PRE>
 
 <P>
-no se comprueba si la cadena <code>$str</code> ya está en <code>$data</code>. 
-Es natural que si ya está no la insertemos de nuevo. Introduzca esa 
-mejora. Para ello use la función <code>pos</code>,
-la cual devuelve el desplazamiento en <code>$data</code> donde
-quedó la última búsqueda <code>$data =~ m/regexp/g</code>.
- El siguiente ejemplo con
-el depurador le muestra como trabaja. Escriba <code>perldoc -f pos</code>
-para obtener mas información sobre la función <code>pos</code>.
-Vea un ejemplo de uso:
+Imprimiría 5 y 4. Para traducir esta sentencia es necesario 
+<SPAN  CLASS="textbf">usar una lista/pila de referencias a tablas de símbolos. Cada 
+sentencia compuesta o bloque tendrá
+su propia tabla de símbolos</SPAN>. Los identificadores se búscan
+en la lista de referencias a tablas de símbolos, primero 
+en la última tabla de símbolos insertada y sino se encuentra
+se busca en la penúltima insertada, etc.
 
 <P>
-<PRE>
-DB&lt;1&gt; $str = "world"
-#              012345678901234567890123456789012
-DB&lt;2&gt; $data = "hello worldjust another statement"
-DB&lt;3&gt; $res = $data =~ m{$str}g
-DB&lt;4&gt; x pos($data) # la siguiente busqueda comienza en la 11
-0  11
-DB&lt;5&gt; $s = "hello"
-DB&lt;6&gt; $res = $data =~ m{$s}g
-DB&lt;7&gt; x pos($data) # No hay "hello" despues de world en $data
-0  undef
-DB&lt;8&gt; $res = $data =~ m{$str}g # Repetimos ...
-DB&lt;9&gt; x pos($data)
-0  11
-DB&lt;10&gt; pos($data) = 0  # Podemos reiniciar pos!
-DB&lt;11&gt; $res = $data =~ m{$s}g
-DB&lt;12&gt; x pos($data) # Ahora si se encuentra "hello"
-0  5
-</PRE>
-
-<P>
-</LI>
-<LI><A NAME="item:compacta"></A>Empaquete las cadenas asumiendo que cada carácter ocupa un octeto o byte.
-Una posible solución al problema de alineamiento que se produce es
-rellenar con ceros los bytes que faltan hasta completar la última palabra
-ocupada por la cadena. Por ejemplo, si la longitud de palabra de la 
-máquina objeto es de 4 
-bytes, la palabra <SPAN  CLASS="textbf">procesador</SPAN> se cargaría asi:
-
-<P>
-<DIV ALIGN="CENTER">
-</DIV><PRE>
-   0    |    1    |    2      
-0 1 2 3 | 4 5 6 7 | 8 9 10  11
-p r o c | e s a d | o r \0  \0
-</PRE>
-<DIV ALIGN="CENTER">
-</DIV>
-
-<P>
-Existen dos posibles formas de hacer esta empaquetado.
-Por ejemplo, si tenemos las cadenas
-<code>lucas</code> y <code>pedro</code> las podemos introducir en 
-la cadena <code>$data</code> asi:
-
-<P>
-<DIV ALIGN="CENTER">
-</DIV><PRE>
-   0    |     1      |    2      |    3
-0 1 2 3 | 4  5  6  7 | 8 9 10 11 | 12 13 14 15
-l u c a | s \0 \0 \0 | p e  d  r |  o \0 \0 \0
-</PRE>
-<DIV ALIGN="CENTER">
-</DIV>
-
-<P>
-o bien:
-
-<P>
-<DIV ALIGN="CENTER">
-</DIV><PRE>
-   0    |    1    |    2     
-0 1 2 3 | 4 5 6 7 | 8 9 10 11
-l u c a | s p e d | r o \0 \0
-</PRE>
-<DIV ALIGN="CENTER">
-</DIV>
-
-<P>
-La segunda forma aunque compacta más tiene la desventaja de hacer luego mas 
-lento el código para el 
-direccionamiento de las cadenas, ya que no empiezan en frontera de palabra. 
-Utilice el primer modo.
-
-<P>
-Observe que este empaquetado introduce un efecto en lo que 
-se considera un éxito en la búsqueda de una cadena 
-<code>$str</code> en <code>$data</code>. ¿Que ocurre si <code>$str</code>
-aparece en <code>$data</code> como subcadena de una cadena
-previamente empaquetada ocupando una posición que no es frontera de palabra?
-
-<P>
-Cuando rellene con <code>\0</code> la cadena use el operador <code>x</code> (letra equis)
-para multiplicar número por cadena:
-
-<P>
-<PRE>
-DB&lt;1&gt; $x = "hola"x4
-DB&lt;2&gt; p $x
-holaholaholahola
-</PRE>
-
-<P>
-esto le evitará escribir un bucle.
-</LI>
-<LI>Mantega atributos distintos en el nodo <code>STR</code>
-para el desplazamiento y longitud 
-de <code>$str</code> en <code>$data</code> (en caracteres)
-y su dirección y tamaño final en memoria (en palabras).
-
-<P>
-</LI>
-</OL>
+Guarde como un atributo del identificador (<SPAN CLASS="MATH"><IMG
+ WIDTH="115" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img270.png"
+ ALT="$ SYMTABLE$"></SPAN>) 
+la referencia a la tabla de símbolos
+a la que pertenece. Guarde como un atributo del nodo bloque (<SPAN CLASS="MATH"><IMG
+ WIDTH="74" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img271.png"
+ ALT="$ BLOCK$"></SPAN>) 
+la referencia a la tabla de símbolos asociada.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4409"
+<A NAME="tex2html4420"
   HREF="node137.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4403"
-  HREF="node123.html">
+<A NAME="tex2html4414"
+  HREF="node126.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4397"
+<A NAME="tex2html4408"
   HREF="node135.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4405"
-  HREF="node223.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4407"
+<A NAME="tex2html4416"
   HREF="node226.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html4418"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -467,17 +696,17 @@ y su dirección y tamaño final en memoria (en palabras).
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4410"
-  HREF="node137.html">Generación de Código: Máquina</A>
-<B>Sup:</B> <A NAME="tex2html4404"
-  HREF="node123.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html4398"
-  HREF="node135.html">Patrones Árbol y Transformaciones</A>
+<B> Sig:</B> <A NAME="tex2html4421"
+  HREF="node137.html">Optimización Independiente de la</A>
+<B>Sup:</B> <A NAME="tex2html4415"
+  HREF="node126.html">Análisis Sintáctico Descendente en</A>
+<B> Ant:</B> <A NAME="tex2html4409"
+  HREF="node135.html">Árbol de Análisis Abstracto</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-05-15</I>
+2013-06-01</I>
 </ADDRESS>
 </BODY>
 </HTML>

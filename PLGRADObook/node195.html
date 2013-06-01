@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Acciones en medio de una regla</TITLE>
-<META NAME="description" CONTENT="Acciones en medio de una regla">
+<TITLE>Introducción a yacc</TITLE>
+<META NAME="description" CONTENT="Introducción a yacc">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node196.html">
 <LINK REL="previous" HREF="node194.html">
-<LINK REL="up" HREF="node191.html">
+<LINK REL="up" HREF="node194.html">
 <LINK REL="next" HREF="node196.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5385"
+<A NAME="tex2html5395"
   HREF="node196.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5379"
-  HREF="node191.html">
+<A NAME="tex2html5389"
+  HREF="node194.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5373"
+<A NAME="tex2html5383"
   HREF="node194.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5381"
-  HREF="node223.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5383"
+<A NAME="tex2html5391"
   HREF="node226.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html5393"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,379 +88,321 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5386"
-  HREF="node196.html">Recuperación de Errores</A>
-<B>Sup:</B> <A NAME="tex2html5380"
-  HREF="node191.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5374"
-  HREF="node194.html">Uso de union y</A>
+<B> Sig:</B> <A NAME="tex2html5396"
+  HREF="node196.html">Precedencia y Asociatividad</A>
+<B>Sup:</B> <A NAME="tex2html5390"
+  HREF="node194.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5384"
+  HREF="node194.html">Análisis Sintáctico Ascendente en</A>
 <B> Con:</B> 
-<A NAME="tex2html5381"
-  HREF="node223.html">
+<A NAME="tex2html5391"
+  HREF="node226.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5383"
-  HREF="node226.html">
+<A NAME="tex2html5393"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<H1><A NAME="SECTION051040000000000000000"></A>
-<A NAME="section:mediareglayacc"></A>
+<UL CLASS="ChildLinks">
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html5397"
+  HREF="node195.html#SECTION061010010000000000000">Ejemplo: La Calculadora en <TT>yacc</TT></A>
+<LI><A NAME="tex2html5398"
+  HREF="node195.html#SECTION061010020000000000000">El Analizador Léxico</A>
+<LI><A NAME="tex2html5399"
+  HREF="node195.html#SECTION061010030000000000000">Compilación</A>
+<LI><A NAME="tex2html5400"
+  HREF="node195.html#SECTION061010040000000000000">Makefile</A>
+<LI><A NAME="tex2html5401"
+  HREF="node195.html#SECTION061010050000000000000">Ejecución</A>
+</UL></UL></UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION061010000000000000000"></A>
+<A NAME="section:introyacc"></A>
 <BR>
-Acciones en medio de una regla
+Introducción a <TT>yacc</TT>
 </H1>
-A veces necesitamos insertar una acción en medio de una regla.
-Una acción en medio de una regla puede hacer referencia a los atributos de
-los símbolos que la preceden (usando <code>$n</code>), pero no a los que le siguen.
+Los fuentes de esta sección pueden encontrarse en
+<A NAME="tex2html456"
+  HREF="https://github.com/crguezl/yacc-examples">https://github.com/crguezl/yacc-examples</A>.
 
 <P>
-Cuando se  inserta una acción <!-- MATH
- $\left \{ action_1\right \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="78" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img487.png"
- ALT="$ \left \{ action_1\right \}$"></SPAN>
-para su ejecución en medio de una regla <!-- MATH
- $A \rightarrow \alpha
-\beta$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="67" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img138.png"
- ALT="$ A \rightarrow \alpha \beta $"></SPAN> :
-<DIV ALIGN="CENTER">
-<!-- MATH
- $A \rightarrow \alpha \left \{ action_1 \right \} \beta \left \{ action_2\right \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="222" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img488.png"
- ALT="$ A \rightarrow \alpha \left \{ action_1 \right \} \beta \left \{ action_2\right \}$"></SPAN>
-</DIV>
-<code>yacc</code> crea una variable sintáctica temporal <SPAN CLASS="MATH"><IMG
- WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img489.png"
- ALT="$ T$"></SPAN> e introduce una nueva regla:
+Veamos un ejemplo sencillo de analizador sintáctico escrito en  <TT>yacc</TT> .
+La gramática se especifica entre las dos líneas de <code>%%</code>. 
+Por defecto, el símbolo de arranque es el primero que aparece, en este caso
+<code>list</code>. En <code>bison</code> es posible hacer que otro variable lo sea
+utilizando la declaración <code>%start</code>:
 
 <P>
-<DIV ALIGN="CENTER">
-</DIV>
-<OL>
-<LI><!-- MATH
- $A \rightarrow \alpha T \beta \left \{ action_2\right \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="155" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img490.png"
- ALT="$ A \rightarrow \alpha T \beta \left \{ action_2\right \}$"></SPAN> 
-</LI>
-<LI><!-- MATH
- $T \rightarrow \epsilon \left \{ action_1 \right \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="127" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img491.png"
- ALT="$ T \rightarrow \epsilon \left \{ action_1 \right \}$"></SPAN>
-</LI>
-</OL>
-<DIV ALIGN="CENTER">
-</DIV>
 
-<P>
-Las acciones en mitad de una regla cuentan como un símbolo mas en la parte 
-derecha de la regla. Asi pues, en una acción posterior en la regla,
-se deberán referenciar los  atributos de los símbolos, teniendo en cuenta este hecho.
-
-<P>
-Las acciones en mitad de la regla pueden tener un atributo. La acción en cuestión puede
-hacer referencia a ese atributo mediante <code>$$</code>, y las acciones posteriores
-en la regla se referirán a él como <code>$n</code>, siendo <code>n</code> su número de orden
-en la parte derecha. Dado que no existe un símbolo explícito que identifique a 
-la acción, no hay manera de que el programador declare su tipo. Sin embargo, es
-posible utilizar la construcción <code>$&lt;valtipo&gt;#</code> para especificar 
-la forma en la que queremos manipular su atributo.
-
-<P>
-Na hay forma de darle, en una acción a media regla, un valor al atributo asociado con
-la variable en la izquierda de la regla de producción (ya que <code>$$</code> se refiere
-al atributo de la variable temporal utilizada para introducir la acción a media regla).
+<H4><A NAME="SECTION061010010000000000000">
+Ejemplo: La Calculadora en <TT>yacc</TT></A>
+</H4>
+  
 
 <P>
 <P>
-<DIV><B>Programa  <SPAN CLASS="arabic">37</SPAN>.<SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>El siguiente programa ilustra el uso de <code>%union</code> y de las
-acciones en medio de una regla.
-<A NAME="prog:media"></A></I><PRE>
-%{
-#include &lt;string.h&gt;
-char buffer[256];
-#define YYDEBUG 1
-%}
-%union {
-  char tA;
-  char *tx;
-}
-%token &lt;tA&gt; A
-%type &lt;tx&gt; x
-%%
-s : x { *$1 = '\0'; printf("%s\n",buffer); } '\n' s 
-  |
-  ;
-
-x : A { $$ = buffer + sprintf(buffer,"%c",$1); }
-  | A { $&lt;tx&gt;$ = strdup("**"); } x 
-    { $$ = $3 + sprintf($3,"%s%c",$&lt;tx&gt;2,$1); free($2); }
-  ;
-
-%%
-
-main() {
-  yydebug=1;
-  yyparse();
-}
-
-yyerror(char *s) {
-  printf("%s\n",s);
-}
+<DIV><B>Programa  <SPAN CLASS="arabic">39</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Calculadora elemental. Análizador sintáctico.
+<A NAME="prog:calc1"></A></I><PRE>
+nereida:~/src/precedencia/hoc1&gt; cat -n hoc1.y
+ 1  %{
+ 2  /* File: /home/pl/src/precedencia/hoc1/hoc1.y */
+ 3  #define YYSTYPE double
+ 4  #include &lt;stdio.h&gt;
+ 5  %}
+ 6  %token NUMBER
+ 7  %left '+' '-'
+ 8  %left '*' '/'
+ 9  %%
+10  list
+11      :
+12      | list '\n'
+13      | list expr   { printf("%.8g\n",$2);}
+14      ;
+15
+16  expr
+17      : NUMBER { $$ = $1;}
+18      | expr '+' expr {$$ = $1 + $3;}
+19      | expr '-' expr {$$ = $1 - $3;}
+20      | expr '*' expr {$$ = $1 * $3;}
+21      | expr '/' expr {$$ = $1 / $3;}
+22      ;
+23
+24  %%
+25
+26  extern FILE * yyin;
+27
+28  main(int argc, char **argv) {
+29    if (argc &gt; 1) yyin = fopen(argv[1],"r");
+30    yydebug = 1;
+31    yyparse();
+32  }
+33
+34  yyerror(char *s) {
+35    printf("%s\n",s);
+36  }
 </PRE></DIV><P></P>
+La macro  <TT>YYSTYPE</TT>  (línea 3) contiene el tipo del valor semántico.
+Si no se declara se asume <code>int</code>.
+
+<P>
+El fichero  <TT>yyin</TT>  (líneas 26 y 29) es definido en el 
+fichero conteniendo el analizador léxico 
+ <TT>lex.yy.c</TT> . Refiere al fichero de entrada conteniendo
+el texto a analizar.
+
+<P>
+Al poner la variable  <TT>yydebug</TT>  a 1 activamos el modo depuración.
+Para que la depuración se haga efectiva es necesario definir además
+la macro  <TT>YYDEBUG</TT> .
+
+<P>
+El analizador sintáctico proveido por <code>yacc</code> se llama  <TT>yyparse</TT>  
+(línea 31). Por defecto su declaración es <code>int yyparse ()</code>
+
+<P>
+
+<H4><A NAME="SECTION061010020000000000000">
+El Analizador Léxico</A>
+</H4>
+  
 
 <P>
 <P>
-<DIV><B>Programa  <SPAN CLASS="arabic">37</SPAN>.<SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
-<I>El analizador léxico utilizado es el siguiente:
+<DIV><A NAME="program:hoc1l"><B>Programa  <SPAN CLASS="arabic">39</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">2</SPAN></B></A> &nbsp; 
+<I>Calculadora elemental.  Analizador léxico:
 </I><PRE>
-%{
-#include "y.tab.h"
-%}
-%%
-[\t ]+
-[a-zA-Z0-9]   { yylval.tA = yytext[0]; return A; }
-(.|\n)        { return yytext[0]; }
-%%
-yywrap() { return 1; }
+nereida:~/src/precedencia/hoc1&gt; cat -n hoc1.l
+ 1  %{
+ 2  #include "y.tab.h"
+ 3  extern YYSTYPE yylval;
+ 4  %}
+ 5  number [0-9]+(\.[0-9]+)?([eE][+-]?[0-9]+)?
+ 6  %%
+ 7  {number} { yylval = atof(yytext); return NUMBER; }
+ 8  .|\n     { return yytext[0];}
+ 9  %%
+10  int yywrap() { return 1; }
 </PRE></DIV><P></P>
 
 <P>
+
+<H4><A NAME="SECTION061010030000000000000">
+Compilación</A>
+</H4>
+  
+
 <P>
-<DIV><B>Ejemplo  <SPAN CLASS="arabic">37</SPAN>.<SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Considere el programa <code>yacc</code> <A HREF="#prog:media">37.4.1</A>. ¿Cuál es la salida para la entrada 
+Al compilar el program <code>yacc</code> con la opción <code>-d</code>
+se produce además del fichero  <TT>y.tab.c</TT>  conteniendo el
+analizador sintáctico un fichero adicional de cabecera  <TT>y.tab.h</TT> 
+conteniendo
+las definiciones de los terminales:
+<PRE>
+nereida:~/src/precedencia/hoc1&gt; yacc -d -v hoc1.y
+nereida:~/src/precedencia/hoc1&gt; ls -lt | head -4
+total 200
+-rw-rw----  1 pl users    2857 2007-01-18 10:26 y.output
+-rw-rw----  1 pl users   35936 2007-01-18 10:26 y.tab.c
+-rw-rw----  1 pl users    1638 2007-01-18 10:26 y.tab.h
+nereida:~/src/precedencia/hoc1&gt; sed -ne '27,48p' y.tab.h | cat -n
+ 1  #ifndef YYTOKENTYPE
+ 2  # define YYTOKENTYPE
+ 3     /* Put the tokens into the symbol table, so that GDB and other debuggers
+ 4        know about them.  */
+ 5     enum yytokentype {
+ 6       NUMBER = 258
+ 7     };
+ 8  #endif
+ 9  /* Tokens.  */
+10  #define NUMBER 258
+..  .........................................................
+15  #if ! defined (YYSTYPE) &amp;&amp; ! defined (YYSTYPE_IS_DECLARED)
+16  typedef int YYSTYPE;
+17  # define yystype YYSTYPE /* obsolescent; will be withdrawn */
+18  # define YYSTYPE_IS_DECLARED 1
+19  # define YYSTYPE_IS_TRIVIAL 1
+20  #endif
+21
+22  extern YYSTYPE yylval;
+</PRE>
+La variable  <TT>yylval</TT>  (líneas 3 y 7 del listado <A HREF="#program:hoc1l">39.1.2</A>) 
+es declarada por el
+analizador sintáctico y usada por el analizador 
+léxico. El analizador léxico deja en la misma el valor semántico
+asociado con el token actual.
+
+<P>
+
+<H4><A NAME="SECTION061010040000000000000">
+Makefile</A>
+</H4>
+  
+
+<P>
+Para compilar todo el proyecto usaremos el siguiente
+fichero Makefile:
+<P>
+<DIV><B>Programa  <SPAN CLASS="arabic">39</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">3</SPAN></B> &nbsp; 
+<I>Calculadora elemental.  Makefile:
+</I><PRE>
+&gt; cat Makefile
+hoc1: y.tab.c lex.yy.c
+        gcc -DYYDEBUG=1 -g -o hoc1 y.tab.c lex.yy.c
+y.tab.c y.tab.h: hoc1.y
+        yacc -d -v hoc1.y
+lex.yy.c: hoc1.l y.tab.h
+        flex -l hoc1.l
+clean:
+        - rm -f y.tab.c lex.yy.c *.o core hoc1
+</PRE></DIV><P></P>
+
+<P>
+
+<H4><A NAME="SECTION061010050000000000000">
+Ejecución</A>
+</H4>
+  
+
+<P>
+<P>
+<DIV><B>Ejecución  <SPAN CLASS="arabic">39</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Para saber que esta haciendo el analizador, insertamos una
+asignación: <code>yydebug = 1;</code> justo antes de la llamada a
+<code>yyparse()</code> y ejecutamos el programa resultante:
+</I><PRE>
+$ hoc1
+yydebug: state 0, reducing by rule 1 (list :)
+yydebug: after reduction, shifting from state 0 to state 1
+2.5+3.5+1
+</PRE><I>
+Introducimos la expresión <code>2.5+3.5+1</code>. Antes que incluso ocurra la entrada, el algoritmo LR reduce por la regla <!-- MATH
+ $List \rightarrow \epsilon$
+ -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="46" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img513.png"
- ALT="$ ABC$"></SPAN>?
+ WIDTH="71" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img508.png"
+ ALT="$ List \rightarrow \epsilon$"></SPAN>.
+</I><PRE>
+yydebug: state 1, reading 257 (NUMBER)
+yydebug: state 1, shifting to state 2
+yydebug: state 2, reducing by rule 4 (expr : NUMBER)
+yydebug: after reduction, shifting from state 1 to state 4
+yydebug: state 4, reading 43 ('+')
+yydebug: state 4, shifting to state 5
+yydebug: state 5, reading 257 (NUMBER)
+yydebug: state 5, shifting to state 2
+yydebug: state 2, reducing by rule 4 (expr : NUMBER)
+yydebug: after reduction, shifting from state 5 to state 6
+yydebug: state 6, reducing by rule 5 (expr : expr '+' expr)
+</PRE><I>
+Observe como la declaración de la asociatividad a izquierdas <code>%left '+'</code> se traduce en la reducción por la regla 5.
 </I>
-<P>
-<I>La gramática inicial se ve aumentada con dos nuevas variables sintácticas temporales
-y dos reglas <!-- MATH
- $t_1 \rightarrow \epsilon$
+<P><PRE>
+yydebug: after reduction, shifting from state 1 to state 4
+yydebug: state 4, reading 43 ('+')
+yydebug: state 4, shifting to state 5
+yydebug: state 5, reading 257 (NUMBER)
+yydebug: state 5, shifting to state 2
+yydebug: state 2, reducing by rule 4 (expr : NUMBER)
+yydebug: after reduction, shifting from state 5 to state 6
+yydebug: state 6, reducing by rule 5 (expr : expr '+' expr)
+yydebug: after reduction, shifting from state 1 to state 4
+yydebug: state 4, reading 10 ('\n')
+yydebug: state 4, reducing by rule 3 (list : list expr)
+7
+</PRE><I>
+La reducción por la regla <!-- MATH
+ $list \rightarrow list\ expr$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="53" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img514.png"
- ALT="$ t_1 \rightarrow \epsilon$"></SPAN> y <!-- MATH
- $t_2 \rightarrow \epsilon$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="53" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img515.png"
- ALT="$ t_2 \rightarrow \epsilon$"></SPAN>. Además las reglas
-correspondientes pasan a ser: <!-- MATH
- $s \rightarrow x t_1 s$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="72" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img516.png"
- ALT="$ s \rightarrow x t_1 s$"></SPAN> y <!-- MATH
- $x \rightarrow A t_2 x$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="79" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img517.png"
- ALT="$ x \rightarrow A t_2 x$"></SPAN>. El análisis 
-de la entrada <SPAN CLASS="MATH"><IMG
- WIDTH="46" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img513.png"
- ALT="$ ABC$"></SPAN> nos produce el siguiente árbol anotado:
+ WIDTH="125" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img509.png"
+ ALT="$ list \rightarrow list expr$"></SPAN> produce la ejecución
+del <code>printf("%.8g\n",$2);</code> asociado con la regla y la salida
+del valor <code>7</code> que constituye el atributo de <SPAN CLASS="MATH"><IMG
+ WIDTH="40" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img143.png"
+ ALT="$ expr$"></SPAN>.
+</I><PRE>    
+yydebug: after reduction, shifting from state 0 to state 1
+yydebug: state 1, shifting to state 3
+yydebug: state 3, reducing by rule 2 (list : list '\n')
+yydebug: after reduction, shifting from state 0 to state 1
+yydebug: state 1, reading 0 (end-of-file)
+$
+</PRE><I>
+En Unix la combinación de teclas CTRL-D nos permite
+generar el final de fichero.
 </I>
 <P></DIV><P></P>
 
 <P>
-<P>
-<DIV><B>Ejecución  <SPAN CLASS="arabic">37</SPAN>.<SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Observe la salida de la ejecución del programa <A HREF="#prog:media">37.4.1</A>.
-La variable ``temporal'' creada por <code>yacc</code>  para la acción
-en medio de la regla
-</I>
-<DIV ALIGN="CENTER"><I><code>s </code><!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ \rightarrow$"></SPAN> <code> x { *$1 = '\0'; printf("%s\n",buffer); } '\n' s</code> 
-</I></DIV><I>
-se denota por <code>$$1</code>. La asociada con la acción en medio de la regla
-</I>
-<DIV ALIGN="CENTER"><I><code>x </code> <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ \rightarrow$"></SPAN> <code> A { $&lt;tx&gt;$ = strdup("**"); } x</code> 
-</I></DIV><I>
-se denota <code>$$2</code>.
-</I><PRE>
-$ yacc -d -v media4.y ; flex -l medial.l ; gcc -g y.tab.c lex.yy.c
-$ a.out
-ABC
-yydebug: state 0, reading 257 (A)
-yydebug: state 0, shifting to state 1
-yydebug: state 1, reading 257 (A)
-yydebug: state 1, reducing by rule 5 ($$2 :)
-yydebug: after reduction, shifting from state 1 to state 4
-yydebug: state 4, shifting to state 1
-yydebug: state 1, reading 257 (A)
-yydebug: state 1, reducing by rule 5 ($$2 :)
-yydebug: after reduction, shifting from state 1 to state 4
-yydebug: state 4, shifting to state 1
-yydebug: state 1, reading 10 ('\n')
-yydebug: state 1, reducing by rule 4 (x : A)
-yydebug: after reduction, shifting from state 4 to state 6
-yydebug: state 6, reducing by rule 6 (x : A $$2 x)
-yydebug: after reduction, shifting from state 4 to state 6
-yydebug: state 6, reducing by rule 6 (x : A $$2 x)
-yydebug: after reduction, shifting from state 0 to state 3
-yydebug: state 3, reducing by rule 1 ($$1 :)
-C**B**A
-yydebug: after reduction, shifting from state 3 to state 5
-yydebug: state 5, shifting to state 7
-yydebug: state 7, reading 0 (end-of-file)
-yydebug: state 7, reducing by rule 3 (s :)
-yydebug: after reduction, shifting from state 7 to state 8
-yydebug: state 8, reducing by rule 2 (s : x $$1 '\n' s)
-yydebug: after reduction, shifting from state 0 to state 2
-</PRE></DIV><P></P>
-
-<P>
-<P>
-<DIV><A NAME="exa:conflicto"><B>Ejemplo  <SPAN CLASS="arabic">37</SPAN>.<SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">2</SPAN></B></A> &nbsp; 
-<I>¿Que ocurre si en el programa <A HREF="#prog:media">37.4.1</A> adelantamos la acción intermedia  en la regla
-</I>
-<DIV ALIGN="CENTER"><I><code>x</code> <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ \rightarrow$"></SPAN> <code> A { $&lt;tx&gt;$ = strdup("**"); } x</code>
-</I></DIV><I>
-y la reescribimos 
-</I>
-<DIV ALIGN="CENTER"><I><code>x</code> <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ \rightarrow$"></SPAN> <code>  { $&lt;tx&gt;$ = strdup("**"); } A x</code>?
-</I></DIV>
-<P><P>
-<DIV><B>Ejecución  <SPAN CLASS="arabic">37</SPAN>.<SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
-<I>En tal caso obtendremos:
-</I><PRE>
-$ yacc -d -v media3.y
-yacc: 1 rule never reduced
-yacc: 3 shift/reduce conflicts.
-</PRE><I>
-¿Cuáles son esos 3 conflictos?</I></DIV><P></P><P>
-<DIV><B>Listado  <SPAN CLASS="arabic">37</SPAN>.<SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>El fichero <code>y.output</code> comienza enumerando las reglas de 
-la gramática extendida:
-</I><PRE>
- 1    0  $accept : s $end
- 2
- 3    1  $$1 :
- 4
- 5    2  s : x $$1 '\n' s
- 6    3    |
- 7
- 8    4  x : A
- 9
-10    5  $$2 :
-11
-12    6  x : $$2 A x
-13 ^L
-</PRE><I>
-A continuación nos informa de un conflicto 
-en el estado 0. Ante el <SPAN  CLASS="textbf">token</SPAN> <code>A</code>
-no se sabe si se debe desplazar al estado 1
-o reducir por la regla 5: <code> $$2 : </code>.
-</I><PRE>
-14 0: shift/reduce conflict (shift 1, reduce 5) on A
-15 state 0
-16         $accept : . s $end  (0)
-17         s : .  (3)
-18         $$2 : .  (5)
-19
-20         A  shift 1
-21         $end  reduce 3
-22
-23         s  goto 2
-24         x  goto 3
-25         $$2  goto 4
-</PRE><I>
-Observe que, efectivamente, <code>$$2 : .</code> esta
-en la clausura del estado de arranque del NFA (<code>$accept : . s $end</code>)
-Esto es asi, ya que al estar el marcador junto a <code>x</code>, estará el item
- <code>s : . x $$1 '\n' s</code> y de aqui que también este
-<code>x : . $$2 A x</code>. 
-</I>
-<P>
-<I>Además el <SPAN  CLASS="textbf">token</SPAN> <code>A</code> está en 
-el conjunto <!-- MATH
- $FOLLOW(\verb|$$2|)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="130" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img518.png"
- ALT="$ FOLLOW(\verb\vert$$2\vert)$"></SPAN> (Basta con mirar la regla 6 para confirmarlo). 
-Por razones análogas también está en la clausura del estado de 
-arranque el item <code>x : . A</code> que es el que motiva el
-desplazamiento al estado 1.
-</I>
-<P>
-<I>La dificultad para <code>yacc</code> se resolvería si
-dispusiera de información acerca de cual es el <SPAN  CLASS="textbf">token</SPAN>
-que viene después de la <code>A</code> que causa el conflicto. </I></DIV><P></P></DIV><P></P>
-
-<P>
-<P>
-<DIV><B>Ejercicio  <SPAN CLASS="arabic">37</SPAN>.<SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>¿Que acción debe tomarse en el conflicto del ejemplo <A HREF="#exa:conflicto">37.4.2</A> 
-si el <SPAN  CLASS="textbf">token</SPAN> que viene después de <code>A</code> es <code>\n</code>?
-¿Y si el <SPAN  CLASS="textbf">token</SPAN> es <code>A</code>? ¿Se debe reducir o desplazar?</I></DIV><P></P>
-
-<P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5385"
+<A NAME="tex2html5395"
   HREF="node196.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5379"
-  HREF="node191.html">
+<A NAME="tex2html5389"
+  HREF="node194.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5373"
+<A NAME="tex2html5383"
   HREF="node194.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5381"
-  HREF="node223.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5383"
+<A NAME="tex2html5391"
   HREF="node226.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html5393"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -507,17 +449,17 @@ si el <SPAN  CLASS="textbf">token</SPAN> que viene después de <code>A</code> es
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5386"
-  HREF="node196.html">Recuperación de Errores</A>
-<B>Sup:</B> <A NAME="tex2html5380"
-  HREF="node191.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5374"
-  HREF="node194.html">Uso de union y</A>
+<B> Sig:</B> <A NAME="tex2html5396"
+  HREF="node196.html">Precedencia y Asociatividad</A>
+<B>Sup:</B> <A NAME="tex2html5390"
+  HREF="node194.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5384"
+  HREF="node194.html">Análisis Sintáctico Ascendente en</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-05-15</I>
+2013-06-01</I>
 </ADDRESS>
 </BODY>
 </HTML>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Seleccionando Items en un Registro Multilínea</TITLE>
-<META NAME="description" CONTENT="Seleccionando Items en un Registro Multilínea">
+<TITLE>La orden N</TITLE>
+<META NAME="description" CONTENT="La orden N">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,28 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
+<LINK REL="next" HREF="node96.html">
 <LINK REL="previous" HREF="node94.html">
-<LINK REL="up" HREF="node83.html">
+<LINK REL="up" HREF="node86.html">
 <LINK REL="next" HREF="node96.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3170"
+<A NAME="tex2html3187"
   HREF="node96.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3164"
-  HREF="node83.html">
+<A NAME="tex2html3181"
+  HREF="node86.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3160"
+<A NAME="tex2html3175"
   HREF="node94.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3166"
-  HREF="node223.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3168"
+<A NAME="tex2html3183"
   HREF="node226.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html3185"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -87,91 +88,194 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3171"
-  HREF="node96.html">Expresiones Regulares en Perl</A>
-<B>Sup:</B> <A NAME="tex2html3165"
-  HREF="node83.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html3161"
-  HREF="node94.html">Búsqueda entre líneas</A>
+<B> Sig:</B> <A NAME="tex2html3188"
+  HREF="node96.html">Suprimir: El Comando D</A>
+<B>Sup:</B> <A NAME="tex2html3182"
+  HREF="node86.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html3176"
+  HREF="node94.html">Del espacio de Patrones</A>
 <B> Con:</B> 
-<A NAME="tex2html3166"
-  HREF="node223.html">
+<A NAME="tex2html3183"
+  HREF="node226.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3168"
-  HREF="node226.html">
+<A NAME="tex2html3185"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION053120000000000000000">
-Seleccionando Items en un Registro Multilínea</A>
+<H1><A NAME="SECTION06390000000000000000">
+La orden <I>N</I></A>
 </H1>
-El ejercicio resuelto aqui consiste en listar los alumnos que han seleccionado un determinado grupo de prácticas.
-Suponemos la organización del fichero de entrada descrita en la sección  <A HREF="node91.html#section:alumnos">30.9</A>. 
-El <SPAN  CLASS="textit">script</SPAN> recibe como primer argumento el nombre del fichero conteniendo la carpeta de correo (asociada con la asignatura y como segundo argumento el grupo. Un primer <SPAN  CLASS="textit">script</SPAN> que no es descrito
-aqui, denominado <code>makefichas.sed</code> produce como salida el archivo con la estructura
-descrita en la sección <A HREF="node91.html#section:alumnos">30.9</A>. El segundo guión, denominado <code>grupo.sh</code> y que es
-el que nos ocupa, produce como salida los alumnos que pertenecen a ese grupo ed prácticas.
+<I>N</I> añade la siguiente línea de entrada al espacio de
+patrones. Las dos líneas se separan mediante un retorno de
+carro. Después de su ejecución, el comando <I>N</I> pasa el control a los
+subsiguientes comandos en el <I>script</I>.
+<BR>
+El siguiente ejemplo propuesto en [<A
+ HREF="node230.html#sedawk">6</A>] muestra una
+búsqueda y sustitución multilínea. Se trata de sustituir la
+cadena ``Owner and Operator Guide'' por ``Installation Guide'', cualquiera que sea su posición en una línea o entre ellas.
+Los autores de [<A
+ HREF="node230.html#sedawk">6</A>] y [<A
+ HREF="node230.html#power">7</A>] proponen la siguiente
+solución:
+<PRE>
+$ cat multiline2.sed
+#Assume the pattern is in no more than two lines
+s/Owner and Operator Guide/Installation Guide/g
+/Owner/{
+  N
+  s/ *\n/ /g
+  s/Owner  *and  *Operator  *Guide/Installation Guide/g
+}
+</PRE>
+Veamos primero los contenidos del fichero de prueba:
+<PRE>
+$ cat multiline.test
+Dear Owner: Consult
+Section 3.1 in the Owner and
+Operator Guide for a description of the tape drives available for the Owner
+of your system.
+ 
+Consult Section 3.1 in the Owner and Operator
+Guide for a description of the tape drives
+available on your system.
+ 
+Look in the Owner and Operator Guide, we mean the Owner
+and Operator Guide shipped with your system.
+ 
+Two manuals are provided including the Owner and
+Operator Guide and the User Guide.
+ 
+The Owner and Operator Guide is shipped with your system.
+ 
+Look in the Owner
+and Operator Guide shipped with your system.
+ 
+The Owner
+and
+Operator
+Guide is shipped with your system.
+</PRE>
+La ejecución del <I>script</I> da la siguiente salida:
+<PRE>
+$ sed -f multiline2.sed multiline.test
+Dear Owner: Consult Section 3.1 in the Owner and
+Operator Guide for a description of the tape drives available for the Owner
+of your system.
+ 
+Consult Section 3.1 in the Installation Guide for a description of the tape
+drives
+available on your system.
+ 
+Look in the Installation Guide, we mean the Installation Guide shipped with
+your system.
+ 
+Two manuals are provided including the Installation Guide and the User Guide.
+ 
+The Installation Guide is shipped with your system.
+ 
+Look in the Installation Guide shipped with your system.
+ 
+The Owner and
+Operator
+Guide is shipped with your system.
+</PRE>
+Uno de los problemas, que aparece en el primer párrafo del
+ejemplo de prueba, es que la segunda línea leída debe ser
+"reciclada"
+para su uso en la siguiente búsqueda. El segundo fallo, 
+que aparece en el último párrafo, es consecuencia de la
+limitación del <I>script</I> para trabajar con  patrones partidos
+en más de dos líneas.
+<BR>
+Consideremos esta otra solución:
+<PRE>
+$ cat multiline.sed
+s/Owner and Operator Guide/Installation Guide/g
+/Owner/{
+:label
+  N
+  s/\n/ /g
+  s/Owner  *and  *Operator  *Guide/Installation Guide/g
+  /Owner *$/b label
+  /Owner  *and *$/b label
+  /Owner  *and  *Operator *$/b label
+  }
+</PRE>
+Este otro <I>script</I> hace que <TT>sed</TT> permanezca en un bucle mientras
+la línea adjuntada en segundo lugar contenga un prefijo estricto 
+de la cadena buscada. 
 
 <P>
-Estos son los contenidos del <SPAN  CLASS="textit">script</SPAN> <code>grupo</code>:
 <PRE>
-~/bin/makefichas.sed -n ~/mail/$1 | grupo.sh $2 | sort -u
+$sed -f multiline.sed multiline.test
+Dear Owner: Consult Section 3.1 in the Installation Guide for \
+a description of the tape drives available for the Owner  of \
+your system.
+ 
+Consult Section 3.1 in the Installation Guide for a description of the tape drives
+available on your system.
+ 
+Look in the Installation Guide, we mean the Installation Guide \
+shipped with your system.
+ 
+Two manuals are provided including the Installation Guide and the User Guide.
+ 
+The Installation Guide is shipped with your system.
+ 
+Look in the Installation Guide shipped with your system.
+ 
+The Installation Guide is shipped with your system.
 </PRE>
-Los contenidos del fichero <PRE>
- 1  #!/bin/bash
- 2  search=$1
- 3  sed -n '
- 4  /^NAME:/ {
- 5    s/^NAME://
- 6    h
- 7    n
- 8    s/^SURNAME://
- 9    G
-10    s/\n/,/
-11    y/ÁÉÍÓÚáéíóúabcdefghijklmnñopqrstuvxyz/AEIOUAEIOUABCDEFGHIJKLMNÑOPQRSTUVXYZ/
-12   h
-13 }
-14 /^LABGROUP:/ {
-15   y/ÁÉÍÓÚáéíóúabcdefghijklmnñopqrstuvxyz/AEIOUAEIOUABCDEFGHIJKLMNÑOPQRSTUVXYZ/
-16   s/'"$search"'/&amp;/
-17   t print
-18   b 
-19 :print
-20   g
-21   p
-22 }
-23 '
+Un problema que aparece con esta aproximación es la presencia
+de líneas muy largas. Las líneas permanecen en el espacio de trabajo
+mientras terminen en un prefijo de la cadena buscada. Para
+que la salida quepa en la hoja he
+tenido que partir las líneas del fichero de salida, lo que he indicado con los
+símbolos <!-- MATH
+ $\backslash$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img10.png"
+ ALT="$ \backslash$"></SPAN>. Considere esta modificación:
+<PRE>
+#!/bin/sed -f
+s/Owner and Operator Guide/Installation Guide/g
+/Owner/{
+:label
+  N
+  s/Owner\([ \n]*\)and\([ \n]*\)Operator\([ \n]*\)Guide/Installation\1\2Guide\3/g
+  /Owner *$/b label
+  /Owner  *and *$/b label
+  /Owner  *and  *Operator *$/b label
+  }
 </PRE>
-De nuevo hacemos uso de las comillas simples y dobles
-en este ejemplo.
-Obsérvese como se proteje el guión <code>sed</code> entre las líneas 3 y 16. 
-En la línea 16 el cierre de la comilla simple y el uso de la doble comilla 
-permite la actuación de la interpretación de la <code>shell</code>, sustituyendo 
-<code>$search</code> que coincide con el
-parámetro pasado en la llamada como <code>$2</code>. La siguiente comilla 
-simple en esa línea permite la protección del resto
-del guión.
+Es indudable la ventaja de disponer de esta
+capacidad de búsqueda multilínea no puede realizarse con 
+otras utilidades como <I>ex</I> o <I>vi</I>.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3170"
+<A NAME="tex2html3187"
   HREF="node96.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3164"
-  HREF="node83.html">
+<A NAME="tex2html3181"
+  HREF="node86.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3160"
+<A NAME="tex2html3175"
   HREF="node94.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3166"
-  HREF="node223.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3168"
+<A NAME="tex2html3183"
   HREF="node226.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html3185"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -218,17 +322,17 @@ del guión.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3171"
-  HREF="node96.html">Expresiones Regulares en Perl</A>
-<B>Sup:</B> <A NAME="tex2html3165"
-  HREF="node83.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html3161"
-  HREF="node94.html">Búsqueda entre líneas</A>
+<B> Sig:</B> <A NAME="tex2html3188"
+  HREF="node96.html">Suprimir: El Comando D</A>
+<B>Sup:</B> <A NAME="tex2html3182"
+  HREF="node86.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html3176"
+  HREF="node94.html">Del espacio de Patrones</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-05-15</I>
+2013-06-01</I>
 </ADDRESS>
 </BODY>
 </HTML>

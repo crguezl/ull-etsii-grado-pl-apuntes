@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Búsqueda entre líneas</TITLE>
-<META NAME="description" CONTENT="Búsqueda entre líneas">
+<TITLE>Del espacio de Patrones al de Mantenimiento</TITLE>
+<META NAME="description" CONTENT="Del espacio de Patrones al de Mantenimiento">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node95.html">
 <LINK REL="previous" HREF="node93.html">
-<LINK REL="up" HREF="node83.html">
+<LINK REL="up" HREF="node86.html">
 <LINK REL="next" HREF="node95.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3158"
+<A NAME="tex2html3173"
   HREF="node95.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3152"
-  HREF="node83.html">
+<A NAME="tex2html3167"
+  HREF="node86.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3146"
+<A NAME="tex2html3161"
   HREF="node93.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3154"
-  HREF="node223.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3156"
+<A NAME="tex2html3169"
   HREF="node226.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html3171"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,132 +88,215 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3159"
-  HREF="node95.html">Seleccionando Items en un</A>
-<B>Sup:</B> <A NAME="tex2html3153"
-  HREF="node83.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html3147"
-  HREF="node93.html">Suprimir: El Comando D</A>
+<B> Sig:</B> <A NAME="tex2html3174"
+  HREF="node95.html">La orden N</A>
+<B>Sup:</B> <A NAME="tex2html3168"
+  HREF="node86.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html3162"
+  HREF="node93.html">Traducción entre Tablas</A>
 <B> Con:</B> 
-<A NAME="tex2html3154"
-  HREF="node223.html">
+<A NAME="tex2html3169"
+  HREF="node226.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3156"
-  HREF="node226.html">
+<A NAME="tex2html3171"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION053110000000000000000">
-Búsqueda entre líneas</A>
+<H1><A NAME="SECTION06380000000000000000">
+Del espacio de Patrones al de Mantenimiento</A>
 </H1>
-Este otro caso, tambien esta tomado de [<A
- HREF="node227.html#sedawk">6</A>] y [<A
- HREF="node227.html#power">7</A>].
-Se trata de extender la capacidad de búsqueda de <SPAN  CLASS="textit">grep</SPAN>, de modo que el 
-patrón pueda ser encontrado incluso si se encuentra diseminado
-entre a lo mas dos líneas. El <I>script</I> presentado es una ligera variante
-del que aparece en [<A
- HREF="node227.html#sedawk">6</A>] y escribe la(s) líneas que
-casan precedidas del número de la segunda línea.
-<PRE>
-$ cat phrase
-#! /bin/sh
-# phrase -- search for words across two lines.
-# Prints the line number
-# $1 = search string; remaining args = filenames
-search=$1
-shift
-for file
-do
-sed -n '
-  /'"$search"'/b final
-  N
-  h
-  s/.*\n//
-  /'"$search"'/b final
-  g
-  s/ *\n//
-  /'"$search"'/{
-    g
-    b final
-  }
-  g
-  D
-:final
-  =
-  p
-' $file
-done
-</PRE>
-Así, con el ejemplo ``multiline.test'' usado anteriormente
-obtenemos la siguiente salida:
-<PRE>
-$ phrase "Owner and Operator Guide" multiline.test
-3
-Section 3.1 in the Owner and
-Operator Guide for a description of the tape drives available for the Owner
-7
-Consult Section 3.1 in the Owner and Operator
-Guide for a description of the tape drives
-10
-Look in the Owner and Operator Guide, we mean the Owner
-14
-Two manuals are provided including the Owner and
-Operator Guide and the User Guide.
-16
-The Owner and Operator Guide is shipped with your system.
-19
-Look in the Owner
-and Operator Guide shipped with your system.
-</PRE>
-Primero se busca el patrón <code>/'"$search"'/</code> en la línea actual.
-Observe el habilidoso uso de las comillas simples y dobles para permitir
-la sustitución de la variable. La primera comilla simple cierra
-la comilla simple al final de la línea 10. Las comillas dobles
-hacen que la <SPAN  CLASS="textit">shell</SPAN> sustituya permite continuar el texto sin sustituciones.
+En <code>sed</code> se dispone, como en muchos otros editores
+de una zona de memoria a la que se puede enviar texto ``cortado''
+o `copiado'' y desde la cual se puede recuperar el texto para 
+insertarlo en la zona de trabajo  (<I>pattern space</I>).
+en la jerga <code>sed</code> dicho espacio se conoce como <SPAN  CLASS="textit">hold space</SPAN>.
+El contenido del espacio de patrones (<I>pattern space</I>) puede moverse al espacio 
+de mantenimiento (<SPAN  CLASS="textit">hold space</SPAN>) y recíprocamente:
 
 <P>
-Si se encuentra el patrón de búsqueda, imprimimos el número de línea (comando <TT>=</TT>) y la línea.
-Si no, leemos la siguiente línea, formando un patrón multilínea. 
-Salvamos las dos líneas en el <I>hold space</I>.
-Entonces intentamos buscar el patrón <code>/'"$search"'/</code> en
-la línea que acaba de incorporarse. Es por eso que eliminamos 
-del espacio de patrones la primera línea con la orden 
-<code>s/ *\n//</code>. Si se encuentra, imprimimos y se repite el ciclo.
-Si no, recuperamos las dos líneas del <I>hold space</I> 
-sustituimos el retorno de carro por un blanco y realizamos 
-una nueva busqueda.
-Si tiene éxito, se obtienen las dos líneas y se imprimen.
-En caso contrario, esto es, si el patrón no se ha encontrado en ninguna
-de las dos líneas, es necesario preservar la última para el siguiente
-ciclo. Por eso, se obtienen una vez mas las líneas del <I>hold space</I>
-y se suprime con <SPAN  CLASS="textit">D</SPAN> la primera de ellas. Dado que <SPAN  CLASS="textit">D</SPAN> 
-devuelve el control al comienzo del <I>script</I>, la segunda línea no es eliminada. 
-De todos modos,  el <I>script</I> no es capaz de captar cuando un prefijo del patrón 
-aparece  al final de esta segunda línea, como muestra el
-ejemplo de prueba. En el primer párrafo el patrón se encuentra
-dos veces y sólo es encontrado una.
+<BR>
+<BR>
+<BR>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT"><SPAN  CLASS="textit">Hold</SPAN></TD>
+<TD ALIGN="CENTER">h ó H</TD>
+<TD ALIGN="LEFT">Copia o añade (append) los contenidos del <I>pattern space</I> al <I>hold space</I>.</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><SPAN  CLASS="textit">Get</SPAN></TD>
+<TD ALIGN="CENTER">g ó G</TD>
+<TD ALIGN="LEFT">Copia o añade los contenidos del <I>hold space</I> al <I>pattern space</I>.</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><SPAN  CLASS="textit">Exchange</SPAN></TD>
+<TD ALIGN="CENTER">x</TD>
+<TD ALIGN="LEFT">Intercambia los contenidos del <I>hold space</I> y el <I>pattern space</I></TD>
+</TR>
+</TABLE>
+<BR>
+<BR>
+<BR>
+
+<P>
+Los comandos en minúsculas sobrescriben mientras que los que van en mayúsculas añaden.
+Asi <I>h</I> copia los contenidos del <I>pattern space</I> en el <I>hold space</I>, borrando los
+contenidos previos que estuvieran en el <I>hold space</I>. Las orden <I>G</I> añade (paste)
+los contenidos del <I>hold space</I> al espacio de patrones actual (por el final).  
+Las dos cadenas se enlazan a través de un retorno de carro.
+
+<P>
+<B>Ejemplo</B>
+Este guión intenta mediante una heurística poner la definiciones de 
+funciones C al final del fichero, suponiendo que una definición de función
+comienza en la columna 1 y que se caracterizan mediante uno o dos identificadores 
+seguidos de un paréntesis:
+<PRE>
+$ cat G.sed
+/\&lt;if\&gt;/s/.*/&amp;/
+t
+/\&lt;else\&gt;/s/.*/&amp;/
+t
+#... lo mismo para las otras palabras clave
+/^[a-zA-Z][a-zA-Z]*([A-Z]*/H
+t
+/^[a-zA-Z][a-zA-Z]*  *[a-zA-Z][a-zA-Z]*(/H
+${
+G
+}
+</PRE>
+Ejemplo de uso:
+<PRE>
+$ cat p.test
+#include &lt;stdio.h&gt;
+ 
+fact(int n) { /* recursive function */
+if(n == 0) return 1;
+else(return n*fact(n-1));
+}
+ 
+void toto(id) {
+}
+ 
+main() {
+  toto();
+  printf("Hello world! factorial of 4 = %d\n",fact(4)); /* the
+         comment takes two lines */
+}
+</PRE>
+Al ejecutar nuestro <I>script</I> obtenemos la salida:
+<PRE>
+$ sed -f G.sed p.test
+#include &lt;stdio.h&gt;
+ 
+fact(int n) { /* recursive function */
+if(n == 0) return 1;
+else(return n*fact(n-1));
+}
+ 
+void toto(id) {
+}
+ 
+main() {
+  toto();
+  printf("Hello world! factorial of 4 = %d\n",fact(4)); /* the
+         comment takes two lines */
+}
+ 
+fact(int n) { /* recursive function */
+void toto(id) {
+main() {
+</PRE>
+
+<P>
+<B>Ejemplo</B>
+El siguiente guión invierte los contenidos de un fichero:
+<PRE>
+&gt; cat reverse.sed
+$!{
+:loop
+h
+n
+G
+$!b loop
+}
+${
+p
+}
+</PRE>
+He aqui el resultado de una ejecución:
+
+<P>
+<PRE>
+&gt; cat reverse.test
+one
+two
+three
+&gt; sed -n -f reverse.sed reverse.test
+three
+two
+one
+</PRE>
+
+<P>
+<B>Ejemplo</B>
+
+<P>
+Supuesto un fichero de entrada con formato:
+<A NAME="section:alumnos"></A>...
+<PRE>
+NAME: xxx
+SURNAME: xxx
+TITLE: SISTEMAS
+OtherTitle: 
+BIRTHDAY: xxx
+BIRTHMONTH: xxx
+BIRTHYEAR: xxx
+ADDRESSFAMILY: xxx
+ADDRESSACTUAL: xxx
+POSTALCODE: xxx
+EMAIL: XXXXXXX@csi.ull.es
+TELEPHONE: xxx
+FAX: xxx
+LABGROUP: xxx
+COMMENTS:
+</PRE>
+...
+
+<P>
+Se pretenden extraer los apellidos y el nombre, concatenados con una coma. He aqui una posible solución:
+<PRE>
+#!/bin/sed -f
+/^NAME:/ {
+  s/^NAME://
+  h
+  n
+  s/^SURNAME://
+  G
+  s/\n/,/
+  y/áéíóúabcdefghijklmnñopqrstuvwxyz/ÁÉÍÓÚABCDEFGHIJKLMNÑOPQRSTUVWXYZ/
+  p
+}
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3158"
+<A NAME="tex2html3173"
   HREF="node95.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3152"
-  HREF="node83.html">
+<A NAME="tex2html3167"
+  HREF="node86.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3146"
+<A NAME="tex2html3161"
   HREF="node93.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3154"
-  HREF="node223.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3156"
+<A NAME="tex2html3169"
   HREF="node226.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html3171"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -260,17 +343,17 @@ dos veces y sólo es encontrado una.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3159"
-  HREF="node95.html">Seleccionando Items en un</A>
-<B>Sup:</B> <A NAME="tex2html3153"
-  HREF="node83.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html3147"
-  HREF="node93.html">Suprimir: El Comando D</A>
+<B> Sig:</B> <A NAME="tex2html3174"
+  HREF="node95.html">La orden N</A>
+<B>Sup:</B> <A NAME="tex2html3168"
+  HREF="node86.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html3162"
+  HREF="node93.html">Traducción entre Tablas</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-05-15</I>
+2013-06-01</I>
 </ADDRESS>
 </BODY>
 </HTML>

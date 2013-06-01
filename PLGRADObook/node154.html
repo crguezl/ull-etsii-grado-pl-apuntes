@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Definición Dirigida por la Sintáxis</TITLE>
-<META NAME="description" CONTENT="Definición Dirigida por la Sintáxis">
+<TITLE>Precedencia y Asociatividad</TITLE>
+<META NAME="description" CONTENT="Precedencia y Asociatividad">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node155.html">
 <LINK REL="previous" HREF="node153.html">
-<LINK REL="up" HREF="node140.html">
+<LINK REL="up" HREF="node143.html">
 <LINK REL="next" HREF="node155.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4747"
+<A NAME="tex2html4762"
   HREF="node155.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4741"
-  HREF="node140.html">
+<A NAME="tex2html4756"
+  HREF="node143.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4735"
+<A NAME="tex2html4750"
   HREF="node153.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4743"
-  HREF="node223.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4745"
+<A NAME="tex2html4758"
   HREF="node226.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html4760"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,293 +88,369 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4748"
-  HREF="node155.html">Ejercicios: Casos de Estudio</A>
-<B>Sup:</B> <A NAME="tex2html4742"
-  HREF="node140.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4736"
-  HREF="node153.html">Manejo en jison de</A>
+<B> Sig:</B> <A NAME="tex2html4763"
+  HREF="node155.html">Esquemas de Traducción</A>
+<B>Sup:</B> <A NAME="tex2html4757"
+  HREF="node143.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4751"
+  HREF="node153.html">El módulo Generado por</A>
 <B> Con:</B> 
-<A NAME="tex2html4743"
-  HREF="node223.html">
+<A NAME="tex2html4758"
+  HREF="node226.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4745"
-  HREF="node226.html">
+<A NAME="tex2html4760"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION058140000000000000000">
-Definición Dirigida por la Sintáxis</A>
+<H1><A NAME="SECTION068110000000000000000"></A>
+<A NAME="section:prioridades"></A>
+<BR>
+Precedencia y Asociatividad
 </H1>
-Una <A NAME="17755"></A><SPAN  CLASS="textbf">definición dirigida por la sintáxis</SPAN> es un pariente cercano
-de los esquemas de traducción. En una definición dirigida por la
-sintáxis una gramática <!-- MATH
- $G = (V, \Sigma, P, S)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img466.png"
- ALT="$ G = (V, \Sigma, P, S)$"></SPAN> se aumenta 
-con nuevas características:
-
-<UL>
-<LI>A cada símbolo <!-- MATH
- $S \in V \cup \Sigma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="84" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img467.png"
- ALT="$ S \in V \cup \Sigma$"></SPAN> de la gramática se le asocian
-cero o mas atributos. Un atributo queda caracterizado por un identificador
-o nombre y un tipo o clase. A este nivel son <A NAME="17757"></A><SPAN  CLASS="textbf">atributos formales</SPAN>,
-como los parámetros formales, en el sentido de que su realización 
-se produce cuando el nodo del árbol es creado.
-</LI>
-<LI>A cada regla de producción <!-- MATH
- $A \rightarrow X_1 X_2 \ldots X_n \in P$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="173" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img468.png"
- ALT="$ A \rightarrow X_1 X_2 \ldots X_n \in P$"></SPAN>
-se le asocian un conjunto de <A NAME="17759"></A><SPAN  CLASS="textbf">reglas de evaluación de los atributos</SPAN>
-o <A NAME="17761"></A><SPAN  CLASS="textbf">reglas semánticas</SPAN> que indican que el atributo en la parte
-izquierda de la regla semántica depende de los atributos que aparecen en la parte
-derecha de la regla. El atributo que aparece en la parte izquierda de la regla semántica
-puede estar asociado con un símbolo en la parte derecha de la regla de producción.
-</LI>
-<LI>Los atributos de cada símbolo de la gramática <!-- MATH
- $X \in V \cup \Sigma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="88" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img459.png"
- ALT="$ X \in V \cup \Sigma$"></SPAN>
-se dividen en dos grupos disjuntos: <A NAME="17763"></A><SPAN  CLASS="textbf">atributos sintetizados</SPAN>
-y <A NAME="17765"></A><SPAN  CLASS="textbf">atributos heredados</SPAN>. Un atributo de <SPAN CLASS="MATH"><IMG
- WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img460.png"
- ALT="$ X$"></SPAN> es un <A NAME="17767"></A><SPAN  CLASS="textbf">atributo heredado</SPAN> 
-si depende de atributos de su padre y hermános en el árbol.
-Un <A NAME="17769"></A><SPAN  CLASS="textbf">atributo sintetizado</SPAN> es aquél tal que el valor del atributo depende
-de los valores de los atributos de los hijos, 
-es decir en tal caso <SPAN CLASS="MATH"><IMG
- WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img460.png"
- ALT="$ X$"></SPAN> ha de ser una variable sintáctica
-y los atributos en la parte derecha de la regla semántica deben
-ser atributos de símbolos en la parte derecha de la regla de producción 
-asociada.
-</LI>
-<LI>Los atributos predefinidos se denominán <A NAME="17771"></A><SPAN  CLASS="textbf">atributos intrínsecos</SPAN>.
-Ejemplos de atributos intrínsecos son los atributos 
-sintetizados de los terminales, los cuáles se han
-computado durante la fase de análisis léxico. También
-son atributos intrínsecos los atributos heredados del símbolo
-de arranque, los cuales son pasados como parámetros 
-al comienzo de la computación.
-</LI>
-</UL>
-
-<P>
-La diferencia principal con un esquema de traducción está en que
-no se especifica el orden de ejecución de las reglas semánticas.
-Se asume que, bien de forma manual o automática, se resolverán
-las dependencias existentes entre los atributos determinadas
-por la aplicación de las reglas semánticas, de manera
-que serán evaluados primero aquellos atributos que no dependen
-de ningún otro, despues los que dependen de estos, etc. siguiendo
-un esquema de ejecución que viene guiado por las dependencias
-existentes entre los datos.
-
-<P>
-Aunque hay muchas formas de realizar un evaluador de una definición
-dirigida por la sintáxis, conceptualmente, tal evaluador debe:
+Recordemos que si al construir la tabla LALR,
+alguna de las entradas de la tabla resulta multievaluada, decimos
+que existe un conflicto.
+Si una de las acciones es de `reducción'' y la otra es de
+`desplazamiento'', se dice que hay un <A NAME="17780"></A><SPAN  CLASS="textbf">conflicto shift-reduce</SPAN> o
+<A NAME="17782"></A><SPAN  CLASS="textbf">conflicto de desplazamiento-reducción</SPAN>. Si las
+dos reglas indican una acción de reducción, decimos que tenemos un 
+<A NAME="17784"></A><SPAN  CLASS="textbf">conflicto reduce-reduce</SPAN> o de <A NAME="17786"></A><SPAN  CLASS="textbf">reducción-reducción</SPAN>.
+En caso de que no existan indicaciones específicas <SPAN  CLASS="textbf">jison</SPAN> resuelve
+los conflictos que aparecen en la construcción de la tabla utilizando
+las siguientes reglas:
 
 <P>
 
 <OL>
-<LI>Construir el árbol de análisis sintáctico para la gramática
-y la entrada dadas.
+<LI>Un conflicto <SPAN  CLASS="textbf">reduce-reduce</SPAN> se resuelve eligiendo la producción
+que se listó primero en la especificación de la gramática.
 </LI>
-<LI>Analizar las reglas semánticas para determinar los atributos,
-su clase y las dependencias entre los mismos.
-</LI>
-<LI>Construir el <A NAME="17773"></A><SPAN  CLASS="textbf">grafo de dependencias</SPAN> de los atributos,
-el cual tiene
-un nodo para cada ocurrencia de un atributo en el árbol de análisis
-sintáctico etiquetado con dicho atributo. El grafo tiene una arista entre dos
-nodos si existe una dependencia entre los dos atributos a través de alguna
-regla semántica. 
-</LI>
-<LI>Supuesto que el grafo de dependencias determina un <A NAME="17775"></A><SPAN  CLASS="textbf">orden parcial</SPAN>
-(esto es cumple las propiedades reflexiva, antisimétrica y transitiva) 
-construir un <A NAME="17777"></A><SPAN  CLASS="textbf">orden topológico</SPAN> compatible con el orden parcial.
-</LI>
-<LI>Evaluar las reglas semánticas de acuerdo con el orden topológico.
+<LI>Un conflicto <SPAN  CLASS="textbf">shift-reduce</SPAN> se resuelve siempre en favor del <SPAN  CLASS="textbf">shift</SPAN>
 </LI>
 </OL>
 
 <P>
-Una definición dirigida por la sintáxis en la que las reglas semánticas
-no tienen efectos laterales se denomina una <A NAME="17779"></A><SPAN  CLASS="textbf">gramática atribuída</SPAN>.
+Las declaraciones de precedencia y asociatividad mediante las
+palabras reservadas  <TT>%left</TT> ,  <TT>%right</TT> ,  <TT>%nonassoc</TT> 
+se utilizan para modificar estos criterios por defecto. 
+La declaración de  <TT>token</TT> s mediante la palabra
+reservada  <TT>%token</TT>  no modifica la precedencia. Si lo hacen las
+declaraciones realizadas usando las palabras  <TT>left</TT> ,  <TT>right</TT> 
+y  <TT>nonassoc</TT> . 
 
 <P>
-Si la definición dirigida por la sintáxis puede ser realizada 
-mediante un esquema de traducción se dice que es <A NAME="17781"></A><SPAN  CLASS="textbf">L-atribuída</SPAN>.
-Para que una definición dirigida por la sintáxis sea L-atribuída
-deben cumplirse que cualquiera que sea la regla de producción
-<!-- MATH
- $A \rightarrow X_1 \ldots X_n$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="117" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img469.png"
- ALT="$ A \rightarrow X_1 \ldots X_n$"></SPAN>, los atributos heredados de
-<SPAN CLASS="MATH"><IMG
- WIDTH="26" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img458.png"
- ALT="$ X_j$"></SPAN> pueden depender únicamente de:
 
 <OL>
-<LI>Los atributos de los símbolos a la izquierda de <SPAN CLASS="MATH"><IMG
- WIDTH="26" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img458.png"
- ALT="$ X_j$"></SPAN>
+<LI>Los <SPAN  CLASS="textbf">tokens</SPAN> declarados  en la misma línea
+tienen igual precedencia e igual asociatividad. 
+La precedencia es mayor cuanto mas abajo 
+su posición en
+el texto. Así, en el ejemplo de la calculadora en la sección 
+<A HREF="node164.html#section:ejemplodeuso">38.1</A>, el <SPAN  CLASS="textbf">token</SPAN> <code>*</code> tiene 
+mayor precedencia que <code>+</code> pero la misma que <code>/</code>.
 </LI>
-<LI>Los atributos heredados de <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img19.png"
- ALT="$ A$"></SPAN>
+<LI>La precedencia de una regla <!-- MATH
+ $A \rightarrow \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img51.png"
+ ALT="$ A \rightarrow \alpha$"></SPAN> se
+define como la del terminal mas a la derecha que aparece en
+<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img79.png"
+ ALT="$ \alpha$"></SPAN>. En el ejemplo, la producción 
+
+<P>
+<DIV ALIGN="CENTER">
+<code> expr : expr '+' expr</code> 
+
+</DIV>
+
+<P>
+tiene la precedencia del <SPAN  CLASS="textbf">token</SPAN> <code>+</code>.
+</LI>
+<LI>Para decidir en un conflicto <SPAN  CLASS="textbf">shift-reduce</SPAN> se comparan la precedencia 
+de la regla con la del terminal que va a ser desplazado. Si la de la
+regla es mayor se reduce
+si la del <SPAN  CLASS="textbf">token</SPAN> es mayor, se desplaza.
+</LI>
+<LI>Si en un conflicto <SPAN  CLASS="textbf">shift-reduce</SPAN> ambos la regla y el terminal que
+va a ser desplazado tiene la misma precedencia <SPAN  CLASS="textbf">jison</SPAN> considera la
+asociatividad, si es asociativa a izquierdas, reduce y si es asociativa
+a derechas desplaza. Si no es asociativa, genera un mensaje de error.
+<BR>
+Obsérvese que, en esta situación, la asociatividad de la regla y la del
+<SPAN  CLASS="textbf">token</SPAN> han de ser por fuerza, las mismas.  Ello es así, porque en
+<SPAN  CLASS="textbf">jison</SPAN> los <SPAN  CLASS="textbf">tokens</SPAN> con la misma precedencia se declaran en
+la misma línea y sólo se permite una declaración por línea.
+
+<P>
+</LI>
+<LI><SPAN  CLASS="textbf"> Por tanto es imposible declarar dos <SPAN  CLASS="textbf">tokens</SPAN> con diferente
+asociatividad y la misma precedencia</SPAN>.
+</LI>
+<LI>Es posible modificar la precedencia ``natural'' de una regla, calificándola
+con un <SPAN  CLASS="textbf">token</SPAN> específico.  para ello se escribe a la derecha de
+la regla <code>prec token</code>, donde <code>token</code> es un <SPAN  CLASS="textbf">token</SPAN> con
+la precedencia que deseamos. Vea el uso del <SPAN  CLASS="textbf">token</SPAN> <code>dummy</code>
+en el siguiente ejercicio.
 </LI>
 </OL>
 
 <P>
-Nótese que las restricciones se refieren a los atributos heredados.
-El cálculo de los atributos sintetizados no supone 
-problema para un esquema de traducción. Si la gramática
-es LL(1), resulta fácil realizar una definición 
-L-atribuída en un analizador descendente recursivo predictivo.
+Para ilustrar las reglas anteriores usaremos el siguiente 
+programa <code>jison</code>:
 
 <P>
-Si la definición dirigida por la sintáxis sólo utiliza 
-atributos sintetizados se denomina <A NAME="17783"></A><SPAN  CLASS="textbf">S-atribuída</SPAN>. Una
-definición S-atribuída puede ser fácilmente trasladada a un programa
-<code>jison</code>.
+<PRE>
+[~/jison/jison-prec(ast)]$ cat -n precedencia.jison 
+ 1  %token NUMBER
+ 2  %left '@'
+ 3  %right '&amp;'  dummy
+ 4  %%
+ 5  s 
+ 6      : list      { console.log($list); }
+ 7      ;
+ 8  
+ 9  list
+10      :
+11                  {
+12                    $$ = [];
+13                  }
+14      | list '\n'
+15                  {
+16                    $$ = $1;
+17                  }
+18      | list e
+19                  {
+20                    $$ = $1;
+21                    $$.push($e);
+22                  }
+23      ;
+24  
+25  e : NUMBER
+26                  {
+27                    $$ = "NUMBER ("+yytext+")";
+28                  }
+29    | e '&amp;' e
+30                  {
+31                    $$ = [ "&amp;", $e1, $e2];
+32                  }
+33    | e '@' e %prec dummy
+34                  {
+35                    $$ = ["@", $e1, $e2];
+36                  }
+37    ;
+38  
+39  %%
+</PRE>            
+Obsérvese la siguiente ejecución:
 
 <P>
-<P>
-<DIV><B>Ejercicio  <SPAN CLASS="arabic">35</SPAN>.<SPAN CLASS="arabic">14</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>El siguiente es un ejemplo de definición dirigida por la sintáxis:
-<BR>
-<BR>
-</I>
-<DIV ALIGN="CENTER"><TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT"><I>
-S <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ \rightarrow$"></SPAN> a A C   </I></TD>
-<TD ALIGN="LEFT"><I> <code>$C{i} = $A{s}</code></I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-
-S <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ \rightarrow$"></SPAN> b A B C </I></TD>
-<TD ALIGN="LEFT"><I> <code>$C{i} = $A{s}</code></I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-
-C <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ \rightarrow$"></SPAN> c       </I></TD>
-<TD ALIGN="LEFT"><I> <code>$C{s} = $C{i}</code></I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-
-A <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ \rightarrow$"></SPAN> a       </I></TD>
-<TD ALIGN="LEFT"><I> <code>$A{s} = "a"</code></I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-
-B <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ \rightarrow$"></SPAN> b       </I></TD>
-<TD ALIGN="LEFT"><I> <code>$B{s} = "b"</code></I></TD>
-</TR>
-</TABLE></DIV><I>
-<BR>
-<BR>
-</I>
-<P>
-<I>Determine un orden correcto de evaluación de la anterior
-definición dirigida por la sintáxis para la entrada <code>b a b c</code>.</I></DIV><P></P>
+<PRE>
+[~/jison/jison-prec(ast)]$ cat input.txt 
+2@3@4
+2&amp;3&amp;4
+[~/jison/jison-prec(ast)]$ node precedencia.js input.txt 
+[ [ '@', [ '@', 'NUMBER (2)', 'NUMBER (3)' ], 'NUMBER (4)' ],
+  [ '&amp;', 'NUMBER (2)', [ '&amp;', 'NUMBER (3)', 'NUMBER (4)' ] ] ]
+</PRE>
 
 <P>
+Compilamos a continuación con <code>bison</code> usando la opción <code>-v</code> para
+producir información sobre los conflictos y las tablas de salto y 
+de acciones:
+<PRE>
+[~/jison/jison-prec(ast)]$ bison -v precedencia.jison 
+precedencia.jison:6.31: warning: stray `$'
+precedencia.jison:21.27: warning: stray `$'
+precedencia.jison:31.31: warning: stray `$'
+precedencia.jison:31.36: warning: stray `$'
+precedencia.jison:35.30: warning: stray `$'
+precedencia.jison:35.35: warning: stray `$'
+</PRE>
+
 <P>
-<DIV><B>Ejercicio  <SPAN CLASS="arabic">35</SPAN>.<SPAN CLASS="arabic">14</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
-<I>Lea el artículo 
-<A NAME="tex2html431"
-  HREF="ftp://www.cocolab.com/products/cocktail/doc.pdf/industry.pdf">Are Attribute Grammars used in Industry?</A>
-por Josef Grosch
-</I>
-<BLOCKQUOTE><I>I am observing a lack of education and knowledge about compiler
-construction in industry. When I am asking the participants of our
-trainings or the employees we met in our projects then only few people
-have learned about compiler construction during their education. For
-many of them compiler construction has a bad reputation because of what
-and how they have learned about this topic. Even fewer people have a
-usable knowledge about compilers. Even fewer people know about the theory
-of attribute grammars. And even fewer people know how to use attribute
-grammars for solving practical problems.  Nevertheless, attribute grammars
-are used in industry. However, in many cases the people in industry
-do not know about this fact. They are running prefabricated subsystems
-constructed by external companies such as ours. These subsystems are
-for example parsers which use attribute grammar technology.
-</I></BLOCKQUOTE></DIV><P></P>
+La opción <code>-v</code> genera el fichero <code>Precedencia.output</code>
+el cual contiene información detallada sobre el autómata:
+
+<P>
+<PRE>
+[~/jison/jison-prec(ast)]$ cat precedencia.output 
+Grammar
+
+    0 $accept: s $end
+
+    1 s: list
+
+    2 list: /* empty */
+    3     | list '\n'
+    4     | list e
+
+    5 e: NUMBER
+    6  | e '&amp;' e
+    7  | e '@' e
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'\n' (10) 3
+'&amp;' (38) 6
+'@' (64) 7
+error (256)
+NUMBER (258) 5
+dummy (259)
+
+
+Nonterminals, with rules where they appear
+
+$accept (8)
+    on left: 0
+s (9)
+    on left: 1, on right: 0
+list (10)
+    on left: 2 3 4, on right: 1 3 4
+e (11)
+    on left: 5 6 7, on right: 4 6 7
+
+
+state 0
+
+    0 $accept: . s $end
+
+    $default  reduce using rule 2 (list)
+
+    s     go to state 1
+    list  go to state 2
+
+
+state 1
+
+    0 $accept: s . $end
+
+    $end  shift, and go to state 3
+
+
+state 2
+
+    1 s: list .
+    3 list: list . '\n'
+    4     | list . e
+
+    NUMBER  shift, and go to state 4
+    '\n'    shift, and go to state 5
+
+    $default  reduce using rule 1 (s)
+
+    e  go to state 6
+
+
+state 3
+
+    0 $accept: s $end .
+
+    $default  accept
+
+
+state 4
+
+    5 e: NUMBER .
+
+    $default  reduce using rule 5 (e)
+
+
+state 5
+
+    3 list: list '\n' .
+
+    $default  reduce using rule 3 (list)
+
+
+state 6
+
+    4 list: list e .
+    6 e: e . '&amp;' e
+    7  | e . '@' e
+
+    '@'  shift, and go to state 7
+    '&amp;'  shift, and go to state 8
+
+    $default  reduce using rule 4 (list)
+
+
+state 7
+
+    7 e: e '@' . e
+
+    NUMBER  shift, and go to state 4
+
+    e  go to state 9
+
+
+state 8
+
+    6 e: e '&amp;' . e
+
+    NUMBER  shift, and go to state 4
+
+    e  go to state 10
+
+
+state 9
+
+    6 e: e . '&amp;' e
+    7  | e . '@' e
+    7  | e '@' e .
+
+    '&amp;'  shift, and go to state 8
+
+    $default  reduce using rule 7 (e)
+
+
+state 10
+
+    6 e: e . '&amp;' e
+    6  | e '&amp;' e .
+    7  | e . '@' e
+
+    '&amp;'  shift, and go to state 8
+
+    $default  reduce using rule 6 (e)
+</PRE>
+
+<P>
+La presencia de conflictos, aunque no siempre, en muchos casos es debida
+a la introducción de ambiguedad en la gramática. Si el conflicto 
+es de desplazamiento-reducción se puede resolver explicitando 
+alguna regla que rompa la ambiguedad. Los conflictos de
+reducción-reducción suelen producirse por un diseño erróneo
+de la gramática. En tales casos, suele ser mas adecuado
+modificar la gramática.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4747"
+<A NAME="tex2html4762"
   HREF="node155.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4741"
-  HREF="node140.html">
+<A NAME="tex2html4756"
+  HREF="node143.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4735"
+<A NAME="tex2html4750"
   HREF="node153.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4743"
-  HREF="node223.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4745"
+<A NAME="tex2html4758"
   HREF="node226.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html4760"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -421,17 +497,17 @@ for example parsers which use attribute grammar technology.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4748"
-  HREF="node155.html">Ejercicios: Casos de Estudio</A>
-<B>Sup:</B> <A NAME="tex2html4742"
-  HREF="node140.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4736"
-  HREF="node153.html">Manejo en jison de</A>
+<B> Sig:</B> <A NAME="tex2html4763"
+  HREF="node155.html">Esquemas de Traducción</A>
+<B>Sup:</B> <A NAME="tex2html4757"
+  HREF="node143.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4751"
+  HREF="node153.html">El módulo Generado por</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-05-15</I>
+2013-06-01</I>
 </ADDRESS>
 </BODY>
 </HTML>
