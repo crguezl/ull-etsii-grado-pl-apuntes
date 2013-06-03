@@ -28,19 +28,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3972"
+<A NAME="tex2html3978"
   HREF="node118.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3966"
+<A NAME="tex2html3972"
   HREF="node114.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3960"
+<A NAME="tex2html3966"
   HREF="node116.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3968"
+<A NAME="tex2html3974"
   HREF="node226.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3970"
+<A NAME="tex2html3976"
   HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -88,23 +88,32 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3973"
+<B> Sig:</B> <A NAME="tex2html3979"
   HREF="node118.html">Eliminación de la Recursividad</A>
-<B>Sup:</B> <A NAME="tex2html3967"
+<B>Sup:</B> <A NAME="tex2html3973"
   HREF="node114.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html3961"
+<B> Ant:</B> <A NAME="tex2html3967"
   HREF="node116.html">Un Ejemplo Sencillo</A>
 <B> Con:</B> 
-<A NAME="tex2html3968"
+<A NAME="tex2html3974"
   HREF="node226.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3970"
+<A NAME="tex2html3976"
   HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html3980"
+  HREF="node117.html#SECTION06631000000000000000">Eliminando la Recursividad por la Izquierda en la Calculadora</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
 
 <H1><A NAME="SECTION06630000000000000000">
 Eliminación de la Recursividad por la Izquierda</A>
@@ -170,6 +179,80 @@ La siguiente gramática resuelve el problema anterior:
 
 <P>
 <PRE>
+[~/pegjs-coffee-remove-left(master)]$ cat -n remove_left_recursive.pegjs 
+     1  /*
+     2  
+     3  Exercise: Find a PEG equivalent to the following left-recursive
+     4  grammar:
+     5  
+     6  A : A 'x' { $$ = do_x($1, $2); } | 'y' { $$ = do_y($1); }
+     7  
+     8  */
+     9  
+    10  {
+    11    @do_y = (y)   -&gt; console.log("do_y(#{y})"); y
+    12    @do_x = (a, x)-&gt; console.log("do_x(#{a}, #{x})"); a+x
+    13  }
+    14  
+    15  A = y:'y' xs:('x'*) 
+    16       {
+    17          a = @do_y(y)
+    18          for x in xs
+    19            a = @do_x(a, x)
+    20          a
+    21       }
+</PRE>
+
+<P>
+<PRE>
+[~/pegjs-coffee-remove-left(master)]$ pegcoffee remove_left_recursive.pegjs 
+[~/pegjs-coffee-remove-left(master)]$ ls -ltr | tail -1
+-rw-rw-r--  1 casiano  staff   8919  3 jun 10:42 remove_left_recursive.js
+</PRE>
+
+<P>
+<PRE>
+[~/pegjs-coffee-remove-left(master)]$ cat use_remove_left.coffee 
+PEG = require("./remove_left_recursive.js")
+inputs = [
+           "yxx"
+           "y"
+           "yxxx"
+         ]
+
+for input in inputs 
+  console.log("input = #{input}")
+  r = PEG.parse input
+  console.log("result = #{r}\n")
+</PRE>
+
+<P>
+<PRE>
+[~/pegjs-coffee-remove-left(master)]$ coffee use_remove_left.coffee 
+input = yxx
+do_y(y)
+do_x(y, x)
+do_x(yx, x)
+result = yxx
+
+input = y
+do_y(y)
+result = y
+
+input = yxxx
+do_y(y)
+do_x(y, x)
+do_x(yx, x)
+do_x(yxx, x)
+result = yxxx
+</PRE>
+
+<P>
+
+<H2><A NAME="SECTION06631000000000000000">
+Eliminando la Recursividad por la Izquierda en la Calculadora</A>
+</H2>
+<PRE>
 [~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat simple.pegjs 
 /* From the Wikipedia
 Value   ← [0-9]+ / '(' Expr ')'
@@ -234,19 +317,19 @@ console.log(r);
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3972"
+<A NAME="tex2html3978"
   HREF="node118.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3966"
+<A NAME="tex2html3972"
   HREF="node114.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3960"
+<A NAME="tex2html3966"
   HREF="node116.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3968"
+<A NAME="tex2html3974"
   HREF="node226.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3970"
+<A NAME="tex2html3976"
   HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -294,17 +377,17 @@ console.log(r);
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3973"
+<B> Sig:</B> <A NAME="tex2html3979"
   HREF="node118.html">Eliminación de la Recursividad</A>
-<B>Sup:</B> <A NAME="tex2html3967"
+<B>Sup:</B> <A NAME="tex2html3973"
   HREF="node114.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html3961"
+<B> Ant:</B> <A NAME="tex2html3967"
   HREF="node116.html">Un Ejemplo Sencillo</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-06-01</I>
+2013-06-03</I>
 </ADDRESS>
 </BODY>
 </HTML>
