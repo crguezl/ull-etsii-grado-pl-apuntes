@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Conceptos Básicos para el Análisis Sintáctico</TITLE>
-<META NAME="description" CONTENT="Conceptos Básicos para el Análisis Sintáctico">
+<TITLE>Análisis Léxico</TITLE>
+<META NAME="description" CONTENT="Análisis Léxico">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node132.html">
 <LINK REL="previous" HREF="node130.html">
-<LINK REL="up" HREF="node126.html">
+<LINK REL="up" HREF="node128.html">
 <LINK REL="next" HREF="node132.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4329"
+<A NAME="tex2html4309"
   HREF="node132.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4323"
-  HREF="node126.html">
+<A NAME="tex2html4303"
+  HREF="node128.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4317"
+<A NAME="tex2html4297"
   HREF="node130.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4325"
-  HREF="node226.html">
+<A NAME="tex2html4305"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4327"
-  HREF="node229.html">
+<A NAME="tex2html4307"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,19 +88,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4330"
-  HREF="node132.html">Análisis Sintáctico Predictivo Recursivo</A>
-<B>Sup:</B> <A NAME="tex2html4324"
-  HREF="node126.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html4318"
-  HREF="node130.html">Pruebas para el Analizador</A>
+<B> Sig:</B> <A NAME="tex2html4310"
+  HREF="node132.html">Pruebas para el Analizador</A>
+<B>Sup:</B> <A NAME="tex2html4304"
+  HREF="node128.html">Análisis Sintáctico Descendente en</A>
+<B> Ant:</B> <A NAME="tex2html4298"
+  HREF="node130.html">Las Fases de un</A>
 <B> Con:</B> 
-<A NAME="tex2html4325"
-  HREF="node226.html">
+<A NAME="tex2html4305"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4327"
-  HREF="node229.html">
+<A NAME="tex2html4307"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
@@ -109,551 +109,733 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html4331"
-  HREF="node131.html#SECTION06751000000000000000">Ejercicio</A>
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html4311"
+  HREF="node131.html#SECTION06730010000000000000">El Operador de Binding</A>
+<LI><A NAME="tex2html4312"
+  HREF="node131.html#SECTION06730020000000000000">Casando a partir del Ültimo Emparejamiento</A>
+<LI><A NAME="tex2html4313"
+  HREF="node131.html#SECTION06730030000000000000">La opción <TT>g</TT></A>
+<LI><A NAME="tex2html4314"
+  HREF="node131.html#SECTION06730040000000000000">La opción <TT>c</TT></A>
+<LI><A NAME="tex2html4315"
+  HREF="node131.html#SECTION06730050000000000000">La opción <TT>i</TT></A>
+<LI><A NAME="tex2html4316"
+  HREF="node131.html#SECTION06730060000000000000">Código del Analizador Léxico</A>
+<LI><A NAME="tex2html4317"
+  HREF="node131.html#SECTION06730070000000000000">Relación de corutina con el Analizador Sintáctico</A>
+<LI><A NAME="tex2html4318"
+  HREF="node131.html#SECTION06730080000000000000">Manejo de Errores</A>
+</UL>
+</UL>
+<BR>
+<LI><A NAME="tex2html4319"
+  HREF="node131.html#SECTION06731000000000000000">Ejercicio: La opción <TT>g</TT></A>
+<LI><A NAME="tex2html4320"
+  HREF="node131.html#SECTION06732000000000000000">Ejercicio: Opciones <TT>g</TT> y <TT>c</TT> en Expresiones Regulares</A>
+<LI><A NAME="tex2html4321"
+  HREF="node131.html#SECTION06733000000000000000">Ejercicio: El orden de las expresiones regulares</A>
+<LI><A NAME="tex2html4322"
+  HREF="node131.html#SECTION06734000000000000000">Ejercicio: Regexp para cadenas</A>
+<LI><A NAME="tex2html4323"
+  HREF="node131.html#SECTION06735000000000000000">Ejercicio: El <TT>or</TT> es vago</A>
+<LI><A NAME="tex2html4324"
+  HREF="node131.html#SECTION06736000000000000000">Práctica: Números de Línea, Errores, Cadenas y Comentarios</A>
 </UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION06750000000000000000"></A>
-<A NAME="section:conceptos"></A>
+<H1><A NAME="SECTION06730000000000000000"></A>
+<A NAME="section:analisislexico"></A>
 <BR>
-Conceptos Básicos para el Análisis Sintáctico
+Análisis Léxico
 </H1>
-Suponemos que el lector de esta sección ha realizado con éxito
-un curso en teoría de autómatas y lenguajes formales.
-Las siguientes definiciones repasan los conceptos mas importantes.
+Comenzaremos con la parte mas sencilla del compilador: el analizador 
+léxico. 
+Habitualmente el término ``análisis léxico'' se refiere al tratamiento
+de la entrada que produce como salida
+la lista de <SPAN  CLASS="textbf">tokens</SPAN>. Un <SPAN  CLASS="textbf">token</SPAN> hace alusión 
+a las unidades mas simples que tiene significado. Habitualmente 
+un <SPAN  CLASS="textbf">token</SPAN> o lexema queda descrito por una expresión regular.
+Léxico viene del griego <SPAN  CLASS="textbf">lexis</SPAN>, que significa ``palabra''.
+Perl es, sobra decirlo, una herramienta eficaz para encontrar en que lugar 
+de la cadena se produce un emparejamiento.
+Sin embargo, en el análisis léxico, el problema es encontrar la subcadena
+a partir de la última posición en la que se produjo un emparejamiento
+y que es aceptada por una de las expresiones
+regulares que definen los lexemas del lenguaje dado.
 
 <P>
-<P>
-<DIV><B>Definición  <SPAN CLASS="arabic">36</SPAN>.<SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Dado un conjunto <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img19.png"
- ALT="$ A$"></SPAN>, se define <SPAN CLASS="MATH"><IMG
- WIDTH="25" HEIGHT="19" ALIGN="BOTTOM" BORDER="0"
- SRC="img41.png"
- ALT="$ A^*$"></SPAN> el cierre de Kleene de <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img19.png"
- ALT="$ A$"></SPAN> como:
-</I><!-- MATH
- \begin{math}
-A^* = \cup_{n=0}^{\infty} A^n
-\end{math}
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="109" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
- SRC="img42.png"
- ALT="$ A^* = \cup_{n=0}^{\infty} A^n
-$"></SPAN>
-<P>
-<I>Se admite que <!-- MATH
- $A^0 = \{ \epsilon \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="73" HEIGHT="39" ALIGN="MIDDLE" BORDER="0"
- SRC="img43.png"
- ALT="$ A^0 = \{ \epsilon \}$"></SPAN>, donde <SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img44.png"
- ALT="$ \epsilon$"></SPAN> denota la palabra vacía, esto es
-la palabra que tiene longitud cero, formada por cero símbolos del conjunto base <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img19.png"
- ALT="$ A$"></SPAN>.</I></DIV><P></P>
+La estructura general del analizador léxico consiste en un bucle en el que se va
+recorriendo la entrada, buscando por un emparejamiento con 
+uno de los patrones/lexemas especificados y, cuando se encuentra, se retorna esa información
+al analziador sintáctico. Como no tenemos escrito el analaizador sintáctico 
+simplemente iremos añadiéndo los terminales al final de una lista.
 
 <P>
-<P>
-<DIV><B>Definición  <SPAN CLASS="arabic">36</SPAN>.<SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
-<I>Una gramática <SPAN CLASS="MATH"><IMG
- WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img45.png"
- ALT="$ G$"></SPAN> es una cuaterna <!-- MATH
- $G =(\Sigma,V,P,S)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img46.png"
- ALT="$ G =(\Sigma,V,P,S)$"></SPAN>. 
-<SPAN CLASS="MATH"><IMG
- WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img47.png"
- ALT="$ \Sigma$"></SPAN> es el conjunto de terminales. <SPAN CLASS="MATH"><IMG
- WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img48.png"
- ALT="$ V$"></SPAN> es un conjunto (disjunto de <SPAN CLASS="MATH"><IMG
- WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img47.png"
- ALT="$ \Sigma$"></SPAN>)
-que se denomina conjunto de <SPAN  CLASS="textbf">variables sintácticas</SPAN> o <SPAN  CLASS="textbf">categorías gramáticales</SPAN>,
-P es un conjunto de pares de <!-- MATH
- $V \times (V \cup \Sigma )^*$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="107" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img49.png"
- ALT="$ V \times (V \cup \Sigma )^*$"></SPAN>. En vez de escribir
-un par usando la notación <!-- MATH
- $(A, \alpha) \in P$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="85" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img50.png"
- ALT="$ (A, \alpha) \in P$"></SPAN> se escribe <!-- MATH
- $A \rightarrow \alpha$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img51.png"
- ALT="$ A \rightarrow \alpha$"></SPAN>.
-Un elemento de <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img52.png"
- ALT="$ P$"></SPAN> se denomina producción. Por último, <SPAN CLASS="MATH"><IMG
- WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img53.png"
- ALT="$ S$"></SPAN> es un símbolo del conjunto
-<SPAN CLASS="MATH"><IMG
- WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img48.png"
- ALT="$ V$"></SPAN> que se denomina símbolo de arranque.</I></DIV><P></P>
+Una iteración del bucle tiene la forma de una secuencia de condicionales
+en las que se va comprobando si la entrada casa con cada una de las expresiones regulares
+que definen los terminales del lenguaje. Las condiciones tienen un aspecto similar a este:
 
 <P>
-<P>
-<DIV><B>Definición  <SPAN CLASS="arabic">36</SPAN>.<SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">3</SPAN></B> &nbsp; 
-<I>Dada una gramática <!-- MATH
- $G=(\Sigma,V,P,S)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img46.png"
- ALT="$ G =(\Sigma,V,P,S)$"></SPAN> y <!-- MATH
- $\mu = \alpha A \beta \in (V \cup \Sigma)^*$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="162" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img54.png"
- ALT="$ \mu = \alpha A \beta \in (V \cup \Sigma)^*$"></SPAN>
-una frase formada por variables y terminales y <!-- MATH
- $A \rightarrow \gamma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img29.png"
- ALT="$ A \rightarrow \gamma$"></SPAN> una producción de 
-<SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img52.png"
- ALT="$ P$"></SPAN>, decimos que  <SPAN CLASS="MATH"><IMG
- WIDTH="15" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img55.png"
- ALT="$ \mu$"></SPAN> deriva en un paso en  <!-- MATH
- $\alpha \gamma \beta$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="37" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img56.png"
- ALT="$ \alpha \gamma \beta$"></SPAN>. Esto es, derivar 
-una cadena <!-- MATH
- $\alpha A \beta$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="40" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img57.png"
- ALT="$ \alpha A \beta$"></SPAN> es sustituir 
-una variable sintáctica <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img19.png"
- ALT="$ A$"></SPAN> de <SPAN CLASS="MATH"><IMG
- WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img48.png"
- ALT="$ V$"></SPAN> por la parte derecha <SPAN CLASS="MATH"><IMG
- WIDTH="15" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img58.png"
- ALT="$ \gamma$"></SPAN> de una de sus reglas de producción.
-Se dice que <SPAN CLASS="MATH"><IMG
- WIDTH="15" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img55.png"
- ALT="$ \mu$"></SPAN> deriva en <SPAN CLASS="MATH"><IMG
- WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img11.png"
- ALT="$ n$"></SPAN> pasos en <SPAN CLASS="MATH"><IMG
- WIDTH="13" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img59.png"
- ALT="$ \delta$"></SPAN> si deriva en <SPAN CLASS="MATH"><IMG
- WIDTH="45" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img60.png"
- ALT="$ n-1$"></SPAN> pasos en una cadena
-<!-- MATH
- $\alpha A \beta$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="40" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img57.png"
- ALT="$ \alpha A \beta$"></SPAN> la cual deriva en un paso en <SPAN CLASS="MATH"><IMG
- WIDTH="13" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img59.png"
- ALT="$ \delta$"></SPAN>. Se escribe entonces
-que <!-- MATH
- $\mu  \stackrel{*}{\Longrightarrow}  \delta$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="61" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
- SRC="img61.png"
- ALT="$ \mu \stackrel{*}{\Longrightarrow} \delta$"></SPAN>. Una cadena deriva en 0 pasos en si misma.
-</I>
-<P></DIV><P></P>
+<PRE>
+     ...
+     if (m{\G\s*(\d+)}gc) {
+       push @tokens, 'NUM', $1;
+     } 
+     elsif (m{\G\s*([a-z_]\w*)\b}igc) {
+       push @tokens, 'ID', $1;
+     } 
+     ...
+</PRE>
 
 <P>
-<P>
-<DIV><A NAME="definition:lenguajegenerado"><B>Definición  <SPAN CLASS="arabic">36</SPAN>.<SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">4</SPAN></B></A> &nbsp; 
-<I>Dada una gramática <!-- MATH
- $G=(\Sigma,V,P,S)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img46.png"
- ALT="$ G =(\Sigma,V,P,S)$"></SPAN> se denota por <SPAN CLASS="MATH"><IMG
- WIDTH="44" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img62.png"
- ALT="$ L(G)$"></SPAN> o lenguaje
-generado por <SPAN CLASS="MATH"><IMG
- WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img45.png"
- ALT="$ G$"></SPAN> al lenguaje:
-</I>
-<P>
-<DIV ALIGN="CENTER"><I><!-- MATH
- $L(G) = \{ x \in \Sigma^* : S \stackrel{*}{\Longrightarrow} x \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="210" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
- SRC="img63.png"
- ALT="$ L(G) = \{ x \in \Sigma^* : S \stackrel{*}{\Longrightarrow} x \}$"></SPAN></I></DIV>
-<P>
-<I>Esto es, el lenguaje generado por la gramática <SPAN CLASS="MATH"><IMG
- WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img45.png"
- ALT="$ G$"></SPAN> esta formado por las cadenas
-de terminales que pueden ser derivados desde el símbolo de arranque.</I></DIV><P></P>
-
-<P>
-<P>
-<DIV><B>Definición  <SPAN CLASS="arabic">36</SPAN>.<SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">5</SPAN></B> &nbsp; 
-<I>Una derivación que comienza en el símbolo de arranque y termina en una secuencia
-formada por sólo terminales de <SPAN CLASS="MATH"><IMG
- WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img47.png"
- ALT="$ \Sigma$"></SPAN> se dice <SPAN  CLASS="textbf">completa</SPAN>.
-</I>
-<P>
-<I>Una derivación <!-- MATH
- $\mu  \stackrel{*}{\Longrightarrow}  \delta$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="61" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
- SRC="img61.png"
- ALT="$ \mu \stackrel{*}{\Longrightarrow} \delta$"></SPAN> 
-en la cual en cada paso <!-- MATH
- $\alpha A x$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="39" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img64.png"
- ALT="$ \alpha A x$"></SPAN> la regla de producción aplicada <!-- MATH
- $A \rightarrow \gamma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img29.png"
- ALT="$ A \rightarrow \gamma$"></SPAN>
-se aplica en la variable sintáctica mas a la derecha se dice <SPAN  CLASS="textbf">una derivación a derechas</SPAN>
-</I>
-<P>
-<I>Una derivación <!-- MATH
- $\mu  \stackrel{*}{\Longrightarrow}  \delta$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="61" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
- SRC="img61.png"
- ALT="$ \mu \stackrel{*}{\Longrightarrow} \delta$"></SPAN> 
-en la cual en cada paso <!-- MATH
- $x A \alpha$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="39" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img65.png"
- ALT="$ x A \alpha$"></SPAN> la regla de producción aplicada <!-- MATH
- $A \rightarrow \gamma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img29.png"
- ALT="$ A \rightarrow \gamma$"></SPAN>
-se aplica en la variable sintáctica mas a la izquierda se dice <SPAN  CLASS="textbf">una derivación a izquierdas</SPAN></I></DIV><P></P>
-
-<P>
-<P>
-<DIV><B>Definición  <SPAN CLASS="arabic">36</SPAN>.<SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">6</SPAN></B> &nbsp; 
-<I>Observe que una derivación puede ser representada como un árbol cuyos nodos
-están etiquetados en <!-- MATH
- $V \cup \Sigma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="51" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img66.png"
- ALT="$ V \cup \Sigma$"></SPAN>. La aplicación de la regla de 
-producción <!-- MATH
- $A \rightarrow \gamma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img29.png"
- ALT="$ A \rightarrow \gamma$"></SPAN> se traduce en asignar como hijos del nodo etiquetado con <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img19.png"
- ALT="$ A$"></SPAN>
-a los nodos etiquetados con los símbolos <!-- MATH
- $X_1 \ldots X_n$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="76" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img67.png"
- ALT="$ X_1 \ldots X_n$"></SPAN> que constituyen
-la frase <!-- MATH
- $\gamma = X_1 \ldots X_n$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="110" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img68.png"
- ALT="$ \gamma = X_1 \ldots X_n$"></SPAN>.  
-Este árbol se llama <A NAME="12770"></A><SPAN  CLASS="textbf">árbol sintáctico concreto</SPAN> asociado 
-con la derivación.</I></DIV><P></P>
-
-<P>
-<P>
-<DIV><A NAME="definition:arbolconcreto"><B>Definición  <SPAN CLASS="arabic">36</SPAN>.<SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">7</SPAN></B></A> &nbsp; 
-<I>Observe que, dada una frase <!-- MATH
- $x \in L(G)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="75" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img69.png"
- ALT="$ x \in L(G)$"></SPAN> una derivación desde el
-símbolo de arranque da lugar a  un árbol. Ese árbol tiene como raíz el 
-símbolo de arranque y como hojas los terminales 
-<!-- MATH
- $x_1 \ldots x_n$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="67" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img70.png"
- ALT="$ x_1 \ldots x_n$"></SPAN> que forman <SPAN CLASS="MATH"><IMG
- WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img71.png"
- ALT="$ x$"></SPAN>. Dicho árbol se denomina <SPAN  CLASS="textbf">árbol
-de análisis sintáctico concreto</SPAN> de <SPAN CLASS="MATH"><IMG
- WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img71.png"
- ALT="$ x$"></SPAN>. Una derivación determina
-una forma de recorrido del árbol de análisis sintáctico concreto.</I></DIV><P></P>
-
-<P>
-<P>
-<DIV><B>Definición  <SPAN CLASS="arabic">36</SPAN>.<SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">8</SPAN></B> &nbsp; 
-<I>Una gramática <SPAN CLASS="MATH"><IMG
- WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img45.png"
- ALT="$ G$"></SPAN> se dice ambigua si existe alguna frase <!-- MATH
- $x \in L(G)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="75" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img69.png"
- ALT="$ x \in L(G)$"></SPAN>
-con al menos dos árboles sintácticos. 
-Es claro que esta definición es equivalente a afirmar que existe 
-alguna frase <!-- MATH
- $x \in L(G)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="75" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img69.png"
- ALT="$ x \in L(G)$"></SPAN> para la cual existen dos derivaciones a 
-izquierda (derecha) distintas.</I></DIV><P></P>
+Una expresión como <code>m{\G\s*(\d+)}gc</code> es una expresión regular.
+Es conveniente que en este punto repase la introducción a las 
+expresiones regulares en 
+<A HREF="#section:introregexp">
+<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
+ HREF="node232.html#CasianoIntroAPerl">10</A>]. 
 
 <P>
 
-<H2><A NAME="SECTION06751000000000000000"></A>
-<A NAME="ejercicio:tutugrammar"></A>
-<BR>
-Ejercicio
+<H4><A NAME="SECTION06730010000000000000">
+El Operador de Binding</A>
+</H4>
+  
+
+<P>
+Nótese que, puesto que no se menciona sobre que variable
+se hace el <SPAN  CLASS="textbf">binding</SPAN> (no se usa ninguno de los operadores
+de <SPAN  CLASS="textbf">binding</SPAN> <code>=~</code> y <code>!~</code>): se entiende que 
+es sobre la variable por defecto <code>$_</code> sobre la que se 
+hace el matching.
+
+<P>
+
+<H4><A NAME="SECTION06730020000000000000">
+Casando a partir del Ültimo Emparejamiento</A>
+</H4>
+  
+
+<P>
+El ancla <code>\G</code> 
+casa con el punto en la cadena en el que terminó el último emparejamiento.
+
+<P>
+La expresión regular describiendo el patrón de interés se pone
+entre paréntesis para usar la estrategia de los paréntesis
+con memoria (véanse 
+<A HREF="node102.html#section:variablesmagicasereg">34.1.4</A>
+y
+<A HREF="node102.html#section:dolar1">34.1.1</A>). 
+
+<P>
+Las opciones <code>c</code> y <code>g</code> son especialmente 
+útiles para la construcción del analizador.
+
+<P>
+
+<H4><A NAME="SECTION06730030000000000000">
+La opción <TT>g</TT></A>
+</H4>
+  
+
+<P>
+<SPAN  CLASS="textbf">
+Como lo usamos en un contexto escalar, la opción <TT>g</TT> itera sobre la cadena, devolviendo
+cierto cada vez que casa, y falso cuando deja de casar.</SPAN> 
+Se puede averiguar la posicion del emparejamiento
+utilizando la función <code>pos</code>. 
+(véase la sección <A HREF="node102.html#section:g">34.1.6</A> para mas información sobre la opción <code>g</code>).
+
+<P>
+
+<H4><A NAME="SECTION06730040000000000000">
+La opción <TT>c</TT></A>
+</H4>
+  
+
+<P>
+La opción
+<code>/c</code> afecta a las operaciones de emparejamiento
+con <code>/g</code> en un contexto escalar. Normalmente, <SPAN  CLASS="textbf">cuando una
+búsqueda global escalar tiene lugar y no ocurre casamiento,
+la posici&#243;n de comienzo de búsqueda es reestablecida</SPAN> al comienzo de
+la cadena.
+La opci&#243;n <code>/c</code> hace que la posici&#243;n inicial de 
+emparejamiento permanezca donde la dej&#243; el &#250;ltimo
+emparejamiento con &#233;xito y no se vaya al comienzo. 
+Al combinar esto con el ancla <code>\G</code>, la cuál
+casa con el final del último emparejamiento, obtenemos que la combinación
+
+<P>
+<PRE>
+                            m{\G\s*(...)}gc
+</PRE>
+
+<P>
+logra el efecto deseado: Si la primera expresión regular
+en la cadena <code>elsif</code> fracasa, la posición de búsqueda no es inicializada
+de nuevo gracias a la opción <code>c</code> y el ancla <code>\G</code> sigue recordando
+donde terminó el ultimo casamiento.
+
+<P>
+
+<H4><A NAME="SECTION06730050000000000000">
+La opción <TT>i</TT></A>
+</H4>
+  
+
+<P>
+Por último, la opción <code>i</code> permite ignorar el tipo de letra (mayúsculas 
+o minúsculas).
+
+<P>
+Repase la sección
+<A HREF="node102.html#section:opciones">34.1.6</A>
+para ver algunas de las opciones mas usadas.
+
+<P>
+
+<H4><A NAME="SECTION06730060000000000000">
+Código del Analizador Léxico</A>
+</H4>
+  
+
+<P>
+Este es el código completo de la subrutina <code>scanner</code> que se encarga
+del análisis léxico:
+
+<P>
+<PRE>
+ 1 package Lexical::Analysis;
+ 2 sub scanner {
+ 3   local $_ = shift;
+ 4   { # Con el redo del final hacemos un bucle "infinito"
+ 5     if (m{\G\s*(\d+)}gc) {
+ 6       push @tokens, 'NUM', $1;
+ 7     } 
+ 8     elsif (m{\G\s*int\b}igc) {
+ 9       push @tokens, 'INT', 'INT';
+10     } 
+11     elsif (m{\G\s*string\b}igc) {
+12       push @tokens, 'STRING', 'STRING';
+13     } 
+14     elsif (m{\G\s*p\b}igc) {
+15       push @tokens, 'P', 'P'; # P para imprimir
+16     } 
+17     elsif (m{\G\s*([a-z_]\w*)\b}igc) {
+18       push @tokens, 'ID', $1;
+19     } 
+20     elsif (m{\G\s*\"([^"]*)\"}igc) {
+21       push @tokens, 'STR', $1;
+22     } 
+23     elsif (m{\G\s*([+*()=;,])}gc) {
+24       push @tokens, 'PUN', $1;
+25     }
+26     elsif (m{\G\s*(\S)}gc) { # Hay un caracter "no blanco"
+27       Error::fatal "Caracter invalido: $1\n";
+28     }
+29     else {
+30       last;
+31     }
+32     redo;
+33   }
+34 }
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION06730070000000000000">
+Relación de corutina con el Analizador Sintáctico</A>
+</H4>
+  
+
+<P>
+Si decidieramos establecer una relación de corutina con el analizador léxico los 
+condicionales se pueden programar siguiendo secuencias con esta estructura:
+
+<P>
+<PRE>
+      return ('INT', 'INT') if (m{\G\s*int\b}igc);
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION06730080000000000000">
+Manejo de Errores</A>
+</H4>
+  
+
+<P>
+Para completar el analizador solo quedan declarar 
+las variables usadas y las subrutinas de manejo de errores:
+
+<P>
+<PRE>
+######## global scope variables
+our @tokens = ();
+our $errorflag = 0;
+
+package Error;
+
+sub error($) {
+  my $msg = shift;
+  if (!$errorflag) {
+    warn "Error: $msg\n";
+    $errorflag = 1;
+  }
+}
+
+sub fatal($) {
+  my $msg = shift;
+  die "Error: $msg\n";
+}
+</PRE>
+
+<P>
+El uso de <code>our</code> es necesario porque hemos 
+declarado al comienzo del módulo <code>use strict</code>.
+El pragma <TT>use strict</TT> le indica al compilador Perl 
+que debe considerar como obligatorias un conjunto de reglas de
+buen estilo de programación. Entre otras restricciones, el uso del
+pragma implica que
+todas las variables (no-mágicas) 
+deben ser declaradas explícitamente (uso de <code>my</code>, <code>our</code>, etc.)
+La declaración <code>our</code> se describe en <A HREF="#subsection:our">
+<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
+ HREF="node232.html#CasianoIntroAPerl">10</A>].
+
+<P>
+
+<H2><A NAME="SECTION06731000000000000000">
+Ejercicio: La opción <TT>g</TT></A>
 </H2>
-Dada la gramática con producciones:
+   <A NAME="12695"></A>
 
 <P>
-<BR>
-<BR>
-<TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT">program      <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ \rightarrow$"></SPAN> declarations  statements         <SPAN CLASS="MATH"><IMG
- WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img73.png"
- ALT="$ \vert$"></SPAN> statements</TD>
-</TR>
-<TR><TD ALIGN="LEFT">declarations <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ \rightarrow$"></SPAN> declaration  ';'  declarations    <SPAN CLASS="MATH"><IMG
- WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img73.png"
- ALT="$ \vert$"></SPAN> declaration ';'</TD>
-</TR>
-<TR><TD ALIGN="LEFT">declaration  <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ \rightarrow$"></SPAN> INT  idlist                       <SPAN CLASS="MATH"><IMG
- WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img73.png"
- ALT="$ \vert$"></SPAN> STRING   idlist</TD>
-</TR>
-<TR><TD ALIGN="LEFT">statements   <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ \rightarrow$"></SPAN> statement  ';'  statements        <SPAN CLASS="MATH"><IMG
- WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img73.png"
- ALT="$ \vert$"></SPAN> statement</TD>
-</TR>
-<TR><TD ALIGN="LEFT">statement    <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ \rightarrow$"></SPAN> ID '=' expression                 <SPAN CLASS="MATH"><IMG
- WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img73.png"
- ALT="$ \vert$"></SPAN> P  expression</TD>
-</TR>
-<TR><TD ALIGN="LEFT">expression   <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ \rightarrow$"></SPAN> term '+' expression               <SPAN CLASS="MATH"><IMG
- WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img73.png"
- ALT="$ \vert$"></SPAN> term</TD>
-</TR>
-<TR><TD ALIGN="LEFT">term         <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ \rightarrow$"></SPAN> factor '*' term                   <SPAN CLASS="MATH"><IMG
- WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img73.png"
- ALT="$ \vert$"></SPAN> factor</TD>
-</TR>
-<TR><TD ALIGN="LEFT">factor       <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ \rightarrow$"></SPAN> '(' expression ')' <SPAN CLASS="MATH"><IMG
- WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img73.png"
- ALT="$ \vert$"></SPAN> ID <SPAN CLASS="MATH"><IMG
- WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img73.png"
- ALT="$ \vert$"></SPAN> NUM <SPAN CLASS="MATH"><IMG
- WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img73.png"
- ALT="$ \vert$"></SPAN> STR</TD>
-</TR>
-<TR><TD ALIGN="LEFT">idlist       <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ \rightarrow$"></SPAN> ID ',' idlist <SPAN CLASS="MATH"><IMG
- WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img73.png"
- ALT="$ \vert$"></SPAN> ID</TD>
-</TR>
-</TABLE>
-<BR>
-<BR>
-
-<P>
-En esta gramática, <SPAN CLASS="MATH"><IMG
- WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img47.png"
- ALT="$ \Sigma$"></SPAN> esta formado por los caracteres entre comillas simples y 
-los símbolos cuyos identificadores están en mayúsculas. Los restantes identificadores
-corresponden a elementos de <SPAN CLASS="MATH"><IMG
- WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img48.png"
- ALT="$ V$"></SPAN>. El símbolo de arranque es <SPAN CLASS="MATH"><IMG
- WIDTH="35" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img74.png"
- ALT="$ S =$"></SPAN> program.
-
-<P>
-Conteste a las siguientes cuestiones:
+Explique cada una de las líneas que siguen:
+<PRE>
+$ perl -wde 0
+main::(-e:1):   0
+  DB&lt;1&gt; $x = "ababab"
+  DB&lt;2&gt; $x =~ m{b}g; print "match= ".$&amp;." pos = ".pos($x)
+match= b pos = 2
+  DB&lt;3&gt; $x =~ m{b}g; print "match= ".$&amp;." pos = ".pos($x)
+match= b pos = 4
+  DB&lt;4&gt; $x =~ m{b}g; print "match= ".$&amp;." pos = ".pos($x)
+match= b pos = 6
+  DB&lt;5&gt; print "falso" unless $x =~ m{b}g
+falso
+</PRE>
 
 <P>
 
-<OL>
-<LI>Describa con palabras el lenguaje generado.
+<H2><A NAME="SECTION06732000000000000000">
+Ejercicio: Opciones <TT>g</TT> y <TT>c</TT> en Expresiones Regulares</A>
+</H2>
+   <A NAME="12703"></A>
+
+<P>
+Explique cada una de las conductas que siguen
+
+<UL>
+<LI>¿Porqué en la línea 18 se casa con la primera <code>b</code>?
+<PRE>
+  DB&lt;5&gt; $x = "bbabab"
+  DB&lt;6&gt; $x =~ m{a}g; print "match= ".$&amp;." pos = ".pos($x)
+match= a pos = 3
+  DB&lt;7&gt; $x =~ m{b}g; print "match= ".$&amp;." pos = ".pos($x)
+match= b pos = 4
+  DB&lt;8&gt; $x =~ m{c}g; print "match= ".$&amp;." pos = ".pos($x)
+Use of uninitialized value in concatenation (.) 
+  DB&lt;18&gt; $x =~ m{b}g; print "match= ".$&amp;." pos = ".pos($x)
+match= b pos = 1
+</PRE>
+
+<P>
 </LI>
-<LI><A NAME="ejer:arbol"></A>Construya el árbol de análisis sintáctico
-concreto para cuatro frases del lenguaje.
+<LI>¿Porqué en la línea 27 se casa con la última <code>b</code>?
+<PRE>
+  DB&lt;23&gt; $x = "bbabab"
+  DB&lt;24&gt; $x =~ m{a}g; print "match= ".$&amp;." pos = ".pos($x)
+match= a pos = 3
+  DB&lt;25&gt; $x =~ m{b}g; print "match= ".$&amp;." pos = ".pos($x)
+match= b pos = 4
+  DB&lt;26&gt; $x =~ m{c}gc
+  DB&lt;27&gt; $x =~ m{b}g; print "match= ".$&amp;." pos = ".pos($x)
+match= b pos = 6
+</PRE>
+
+<P>
 </LI>
-<LI>Señale a que recorridos del árbol corresponden las respectivas
-derivaciones a izquierda y a derecha en el apartado <A HREF="node144.html#ejer:arbol">2</A>.
+<LI>¿Porqué en la línea 5 se produce casamiento y en la línea 8 no?
+<PRE>
+  DB&lt;3&gt; $x = "bcbabab"
+  DB&lt;4&gt; $x =~ m{b}gc; print "match= ".$&amp;." pos = ".pos($x)
+match= b pos = 1
+  DB&lt;5&gt; $x =~ m{a}gc; print "match= ".$&amp;." pos = ".pos($x)
+match= a pos = 4
+
+  DB&lt;6&gt; $x = "bcbabab"
+  DB&lt;7&gt; $x =~ m{b}gc; print "match= ".$&amp;." pos = ".pos($x)
+match= b pos = 1
+  DB&lt;8&gt; $x =~ m{\Ga}gc; print "match= ".$&amp;." pos = ".pos($x)
+Use of uninitialized value in concatenation 
+match=  pos = 1
+</PRE>
 </LI>
-<LI>¿Es ambigua esta gramática?. Justifique su respuesta.
+</UL>
+
+<P>
+
+<H2><A NAME="SECTION06733000000000000000"></A>
+   <A NAME="12709"></A>
+<BR>
+Ejercicio: El orden de las expresiones regulares
+</H2>
+  
+¿Que ocurriría en la subrutina <code>scanner</code> si el código en las líneas
+17-19 que reconoce los identificadores se adelanta a la línea 8? 
+¿Que ocurriría con el reconocimiento de las palabras reservadas como
+<code>INT</code>? ¿Seguiría funcionando correctamente 
+el analizador?
+
+<P>
+
+<H2><A NAME="SECTION06734000000000000000"></A>
+   <A NAME="12711"></A>
+<BR>
+Ejercicio: Regexp para cadenas
+</H2>
+  
+En la rutina <code>scanner</code>. ¿Es legal que una cadena correspondiente
+al terminal <code>STR</code> contenga retornos de carro entre las comillas dobles?
+
+<P>
+
+<H2><A NAME="SECTION06735000000000000000">
+Ejercicio: El <TT>or</TT> es vago</A>
+</H2>
+   <A NAME="12716"></A>
+  
+Explique el resultado de la siguiente sesión con el depurador:
+<PRE>
+lhp@nereida:~/Lperl/src/topdown/PL0506/03lexico/PL-Tutu/lib/PL/Lexical$ perl -de 0
+  DB&lt;1&gt; 'bb' =~ m{b|bb}; print $&amp;
+  b
+  DB&lt;2&gt; 'bb' =~ m{bb|b}; print $&amp;
+  bb
+</PRE>
+Perl convierte la expresión regular en un NFA. A diferencia de lo 
+que ocurre en otras herramientas, el NFA no es convertido en un DFA.
+El NFA es entonces simulado. ¿Que está ocurriendo en la simulación? 
+
+<P>
+
+<H2><A NAME="SECTION06736000000000000000"></A>
+   <A NAME="12720"></A>
+  
+<A NAME="practica:lineasyerrores"></A>
+<BR>
+Práctica: Números de Línea, Errores, Cadenas y Comentarios
+</H2>
+Extienda el analizador léxico para que:
+
+<UL>
+<LI>Reescriba la expresión regular para las cadenas de manera que acepte comillas dobles 
+escapadas <code>\"</code> en el interior de una cadena.
+Por ejemplo en <code>"esta \"palabra\" va entre comillas"</code>.
+
+<P>
+Analice esta solución ¿Es correcta?:
+<PRE>
+ DB&lt;1&gt; $stringre = qr{"(\\.|[^\\"])*"}
+ DB&lt;2&gt; print $&amp; if '"esta \"palabra\" va entre comillas"' =~ $stringre
+ "esta \"palabra\" va entre comillas"
+</PRE>
+
+<P>
 </LI>
-</OL>
+<LI>Consuma comentarios a la Perl: 
+cualesquiera caracteres después de una almohadilla hasta el final 
+de la línea (<code># ...</code>).
+</LI>
+<LI>Consuma comentarios no anidados a la <SPAN  CLASS="textbf">C</SPAN> (<code>/* ... */</code>.).
+Repase las secciones sobre expresiones regulares no ``greedy'' (p. ej. sección
+<A HREF="node102.html#section:nogreedy">34.1.1</A>) y la sección <A HREF="node102.html#section:x">34.1.1</A>.
+Recuerde que, en una expresión regular, 
+la opción <code>/s</code> hace que el punto <code>'.'</code> empareje con un 
+retorno de carro <code>\n</code>.  Esto es, el punto ``casa'' con cualquier carácter.
+
+<P>
+Observe el siguiente ejemplo:
+<PRE>
+pl@nereida:~/src/perl/testing$ cat -n ccomments.pl
+ 1  #!/usr/bin/perl -w
+ 2  use strict;
+ 3
+ 4  sub showmatches {
+ 5   my ($x, $re) = @_;
+ 6
+ 7    for (my $i = 0; $x =~ /$re/gsx; $i++) {
+ 8      print "matching $i: $1\n";
+ 9      $i++;
+10    }
+11  }
+12
+13  my $x = &lt;&lt;'EOC';
+14  if (x) {
+15    /* a comment */ return x + 1; /* another comment */
+16  }
+17  else {
+18    return x + 2; /* a last comment */
+19  }
+20  EOC
+21
+22  print "\n************************\n";
+23
+24  my $greedy = q{ (
+25           /\*  # Abrir comentario
+26           .*   # Consumir caracteres (greedy)
+27           \*/  # Cerrar comentario
+28           )
+29  };
+30  print "Greedy:\n";
+31  showmatches($x, $greedy);
+32
+33  print "\n************************\n";
+34
+35  my $lazy = q{ (
+36           /\*  # Abrir comentario
+37           .*?  # Consumir caracteres (lazy)
+38           \*/  # Cerrar comentario
+39           )
+40  };
+41  print "Lazy:\n";
+42  showmatches($x, $lazy);
+</PRE>
+Cuando se ejecuta produce:
+<PRE>
+pl@nereida:~/src/perl/testing$ ccomments.pl
+
+************************
+Greedy:
+matching 0: /* a comment */ return x + 1; /* another comment */
+}
+else {
+  return x + 2; /* a last comment */
+
+************************
+Lazy:
+matching 0: /* a comment */
+matching 2: /* another comment */
+matching 4: /* a last comment */
+</PRE>
+
+<P>
+Explique la conducta.
+
+<P>
+</LI>
+<LI>Números en punto flotante (como <code>-1.32e-04</code> o <code>.91</code>).
+El siguiente ejemplo intenta ayudarle en la búsqueda de la solución:
+<PRE>
+lhp@nereida:~$ perl -de 0
+  DB&lt;1&gt; print "Si" if  ('.5' =~ m{\d+})
+Si
+  DB&lt;2&gt; print "Si" if  ('.5' =~ m{^\d+})
+
+  DB&lt;3&gt; print "Si" if  '0.7' =~ m{^\d+(\.\d+)?(e[+-]?\d+)?$}
+Si
+  DB&lt;4&gt; print "Si" if  '.7' =~ m{^\d+(\.\d+)?(e[+-]?\d+)?$}
+
+  DB&lt;5&gt; print "Si" if  '1e2' =~ m{^\d+(\.\d+)?(e[+-]?\d+)?$}
+Si
+  DB&lt;6&gt; print "Si " while  'ababa' =~ m{a}g
+Si Si Si
+  DB&lt;7&gt; print "@a" if @a = 'ababa' =~ m{(a)}g
+a a a
+</PRE>
+¿Sabría decir porque la respuesta al primer comando del depurador es
+<code>si</code>?.
+
+<P>
+</LI>
+<LI>Tenga presente el posible conflicto entre los terminales <code>INT</code> y <code>FLOAT</code>.
+Si la entrada contiene <code>3.5</code> el terminal debería ser <code>(FLOAT, '3.5')</code>
+y no <code>(INT, 3), ('.', '.'), (INT, 5)</code>.
+
+<P>
+</LI>
+<LI>En esta práctica si lo desea puede instalar y usar 
+<A NAME="tex2html385"
+  HREF="http://search.cpan.org/~abigail/Regexp-Common-2.120/lib/Regexp/Common.pm">el módulo</A>
+<TT>Regexp::Common</TT> 
+<A NAME="tex2html386"
+  HREF="http://search.cpan.org/~abigail/">mantenido por</A>
+<A NAME="12722"></A><SPAN  CLASS="textbf">Abigail</SPAN> el cual provee expresiones regulares para las situaciones mas comunes: números, 
+teléfonos, IP, códigos postales, listas, etc. Puede incluso usarlo para encontrar 
+soluciones a las cuestiones planteadas en esta práctica:
+
+<P>
+<PRE>
+nereida:~/doc/casiano/PLBOOK/PLBOOK&gt; perl -MRegexp::Common -e 'print "$RE{num}{int}\n"'
+(?:(?:[+-]?)(?:[0123456789]+))
+</PRE>
+Podemos hacer uso directo del hash <code>%RE</code> directamente 
+en las expresiones regulares aprovechando que estas interpolan
+las variables en su interior:
+ <PRE>
+nereida:/tmp&gt; cat -n prueba.pl
+     1  #!/usr/bin/perl -w
+     2  use strict;
+     3  use Regexp::Common;
+     4
+     5  my $input = &lt;&gt;;
+     6
+     7  print "$&amp;\n" if $input =~ /^$RE{num}{real}$/;
+nereida:/tmp&gt; ./prueba.pl
+23.45
+23.45
+nereida:/tmp&gt; ./prueba.pl
+jshdf
+nereida:/tmp&gt;
+</PRE>
+</LI>
+<LI>Para mejorar la calidad de los mensajes de error extienda el par <code>(terminal, valor)</code>
+devuelto por el <code>scanner</code> a un par <code>(terminal, [valor, número de línea ])</code> cuya
+segunda componente es un array anónimo conteniendo 
+el valor y el número de línea en el que aparece el terminal.
+
+<P>
+El siguiente extracto de un analizador léxico muestra como hacerlo:
+
+<P>
+<PRE>
+sub _Lexer {
+
+  return('', undef) unless defined($input);
+
+  #Skip blanks
+      $input=~m{\G((?:
+              \s+       # any white space char
+          |   \#[^\n]*  # Perl like comments
+          )+)}xsgc
+    and do {
+        my($blanks)=$1;
+
+        #Maybe At EOF
+            pos($input) &gt;= length($input)
+        and return('', undef);
+        $tokenend += $blanks =~ tr/\n//;
+    };
+    
+    $tokenbegin = $tokenend;
+
+      $input=~/\G(and)/gc
+    and return($1, [$1, $tokenbegin]);
+
+      $input=~/\G(?:[A-Za-z_][A-Za-z0-9_]*::)*([A-Za-z_][A-Za-z0-9_]*)/gc
+    and do {
+      return('IDENT', [$1, $tokenbegin]);
+    };
+
+    ....................
+
+        $input=~/\G{/gc
+    and do {
+        my($level,$from,$code);
+
+        $from=pos($input);
+
+        $level=1;
+        while($input=~/([{}])/gc) {
+                substr($input,pos($input)-1,1) eq '\\' #Quoted
+            and next;
+                $level += ($1 eq '{' ? 1 : -1)
+            or last;
+        }
+            $level
+        and  _SyntaxError("Not closed open curly bracket { at $tokenbegin");
+        $code = substr($input,$from,pos($input)-$from-1);
+        $tokenend+= $code=~tr/\n//;
+        return('CODE', [$code, $tokenbegin]);
+    };
+
+
+    #Always return something
+      $input=~/\G(.)/sg
+    and do {
+      $1 eq "\n" and ++$tokenend;
+      return ($1, [$1, $tokenbegin]);
+    };
+    #At EOF
+    return('', undef);
+}
+</PRE>
+El operador <code>tr</code> ha sido utilizado para contar los retornos de carro
+(descrito en la sección 
+<A HREF="node107.html#section:tr">34.5</A>). El operador, ademas de reemplazar
+devuelve el número de carácteres reeemplazados
+o suprimidos: 
+<PRE>
+$cuenta = $cielo =~ tr/*/*/; # cuenta el numero de estrellas en cielo
+</PRE>
+Para aprender soluciones alternativas consulte 
+<code>perldoc -q 'substring'</code>.
+</LI>
+<LI>Mejore sus mensajes de error ahora que lleva la cuenta de los números
+de línea. En vez de usar las rutinas <code>error</code> y <code>fatal</code>
+introducidas en la sección anterior escriba una sola rutina
+que recibe el nivel de severidad del error (parámetro <code>$level</code>
+en el siguiente ejemplo)
+y ejecuta la acción apropiada. El código de <code>_SyntaxError</code>
+ilustra como hacerlo:
+<PRE>
+sub _SyntaxError {
+  my($level,$message,$lineno)=@_;
+
+  $message= "*".
+      [ 'Warning', 'Error', 'Fatal' ]-&gt;[$level].
+      "* $message, at ".
+      ($lineno &lt; 0 ? "eof" : "line $lineno")." at file $filename\n";
+
+      $level &gt; 1
+  and die $message;
+
+  warn $message;
+
+  $level &gt; 0 and ++$nberr;
+
+      $nberr == $max_errors
+  and die "*Fatal* Too many errors detected.\n"
+}
+</PRE>
+
+<P>
+</LI>
+</UL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4329"
+<A NAME="tex2html4309"
   HREF="node132.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4323"
-  HREF="node126.html">
+<A NAME="tex2html4303"
+  HREF="node128.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4317"
+<A NAME="tex2html4297"
   HREF="node130.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4325"
-  HREF="node226.html">
+<A NAME="tex2html4305"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4327"
-  HREF="node229.html">
+<A NAME="tex2html4307"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -700,17 +882,17 @@ derivaciones a izquierda y a derecha en el apartado <A HREF="node144.html#ejer:a
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4330"
-  HREF="node132.html">Análisis Sintáctico Predictivo Recursivo</A>
-<B>Sup:</B> <A NAME="tex2html4324"
-  HREF="node126.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html4318"
-  HREF="node130.html">Pruebas para el Analizador</A>
+<B> Sig:</B> <A NAME="tex2html4310"
+  HREF="node132.html">Pruebas para el Analizador</A>
+<B>Sup:</B> <A NAME="tex2html4304"
+  HREF="node128.html">Análisis Sintáctico Descendente en</A>
+<B> Ant:</B> <A NAME="tex2html4298"
+  HREF="node130.html">Las Fases de un</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-06-03</I>
+2013-06-08</I>
 </ADDRESS>
 </BODY>
 </HTML>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Acciones en Medio de una Regla</TITLE>
-<META NAME="description" CONTENT="Acciones en Medio de una Regla">
+<TITLE>Generación interactiva de analizadores Yapp</TITLE>
+<META NAME="description" CONTENT="Generación interactiva de analizadores Yapp">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node174.html">
 <LINK REL="previous" HREF="node172.html">
-<LINK REL="up" HREF="node163.html">
+<LINK REL="up" HREF="node165.html">
 <LINK REL="next" HREF="node174.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5083"
+<A NAME="tex2html5089"
   HREF="node174.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5077"
-  HREF="node163.html">
+<A NAME="tex2html5083"
+  HREF="node165.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5071"
+<A NAME="tex2html5077"
   HREF="node172.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5079"
-  HREF="node226.html">
+<A NAME="tex2html5085"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5081"
-  HREF="node229.html">
+<A NAME="tex2html5087"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,113 +88,122 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5084"
-  HREF="node174.html">Esquemas de Traducción</A>
-<B>Sup:</B> <A NAME="tex2html5078"
-  HREF="node163.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5072"
-  HREF="node172.html">Construcción del Árbol Sintáctico</A>
+<B> Sig:</B> <A NAME="tex2html5090"
+  HREF="node174.html">Construcción del Árbol Sintáctico</A>
+<B>Sup:</B> <A NAME="tex2html5084"
+  HREF="node165.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5078"
+  HREF="node172.html">Precedencia y Asociatividad</A>
 <B> Con:</B> 
-<A NAME="tex2html5079"
-  HREF="node226.html">
+<A NAME="tex2html5085"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5081"
-  HREF="node229.html">
+<A NAME="tex2html5087"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION069100000000000000000">
-Acciones en Medio de una Regla</A>
+<H1><A NAME="SECTION06980000000000000000">
+Generación interactiva de analizadores <TT>Yapp</TT></A>
 </H1>
-A veces necesitamos insertar una acción en medio de una regla.
-Una acción en medio de una regla puede hacer referencia a los atributos de
-los símbolos que la preceden (usando <code>$n</code>), pero no a los que le siguen.
+En el siguiente código, la subrutina <TT>create_yapp_package</TT> 
+nos muestra como crear un analizador <TT>Yapp</TT> en tiempo de ejecución.
+Las dos líneas:
+<PRE>
+  my $p = new Parse::Yapp(input =&gt; $grammar);
+  $p = $p-&gt;Output(classname =&gt; $name);
+</PRE>
+crean una cadena en <code>$p</code> conteniendo el código de 
+la clase que implanta el analizador. Todo el truco está en hacer
+<PRE>
+  eval $p;
+</PRE>
+para tener el paquete a mano:
+<PRE>
+$ cat left.pl
+#!/usr/local/bin/perl5.8.0 -w
+#use strict;
+use Parse::Yapp;
 
-<P>
-Cuando se  inserta una acción <!-- MATH
- $\left \{ action_1\right \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="78" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img487.png"
- ALT="$ \left \{ action_1\right \}$"></SPAN>
-para su ejecución en medio de una regla <!-- MATH
- $A \rightarrow \alpha
-\beta$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="67" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img138.png"
- ALT="$ A \rightarrow \alpha \beta $"></SPAN> :
-<DIV ALIGN="CENTER">
-<!-- MATH
- $A \rightarrow \alpha \left \{ action_1 \right \} \beta \left \{ action_2\right \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="222" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img488.png"
- ALT="$ A \rightarrow \alpha \left \{ action_1 \right \} \beta \left \{ action_2\right \}$"></SPAN>
-</DIV>
-<code>yapp</code> crea una variable sintáctica temporal <SPAN CLASS="MATH"><IMG
- WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img489.png"
- ALT="$ T$"></SPAN> e introduce una nueva regla:
+sub lex{
+    my($parser)=shift;
 
-<P>
-<DIV ALIGN="CENTER">
-</DIV>
-<OL>
-<LI><!-- MATH
- $A \rightarrow \alpha T \beta \left \{ action_2\right \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="155" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img490.png"
- ALT="$ A \rightarrow \alpha T \beta \left \{ action_2\right \}$"></SPAN> 
-</LI>
-<LI><!-- MATH
- $T \rightarrow \epsilon \left \{ action_1 \right \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="127" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img491.png"
- ALT="$ T \rightarrow \epsilon \left \{ action_1 \right \}$"></SPAN>
-</LI>
-</OL>
-<DIV ALIGN="CENTER">
-</DIV>
+    return('',undef) unless $parser-&gt;YYData-&gt;{INPUT};
+    for ($parser-&gt;YYData-&gt;{INPUT}) {
+        s/^\s*//;
+        s/^(.)//;
+        my $ret = $1;
+        return($ret, $ret);
+    }
+}
 
-<P>
-Las acciones en mitad de una regla cuentan como un símbolo mas en la parte 
-derecha de la regla. Asi pues, en una acción posterior en la regla,
-se deberán referenciar los  atributos de los símbolos, teniendo en cuenta este hecho.
+sub yapp {
+  my $grammar = shift
+     or die "Must specify a grammar as first argument";
+  my $name = shift
+     or die "Must specify the name of the class as second argument";
 
-<P>
-Las acciones en mitad de la regla pueden tener un atributo. 
-Las acciones posteriores
-en la regla se referirán a él como <code>$_[n]</code>, siendo <code>n</code> su número de orden
-en la parte derecha. 
+  my $p = new Parse::Yapp(input =&gt; $grammar) or die "Bad grammar.";
+  $p = $p-&gt;Output(classname =&gt; $name) or die "Can't generate parser.";
+
+  eval $p;
+  $@ and die "Error while compiling your parser: $@\n";
+}
+
+######## main #########
+my $grammar = q {
+%left '*'
+%%
+S:  A
+;
+
+A:  A '*' A  { "($_[1] $_[2] $_[3])" }
+ |  B
+;
+
+B:  'a' | 'b' | 'c' | 'd'
+;
+
+%%
+};
+
+&amp;yapp($grammar, "Example");
+my $p = new Example(yylex =&gt; \&amp;lex, yyerror =&gt; sub {});
+
+print "Expresion: ";
+$p-&gt;YYData-&gt;{INPUT} = &lt;&gt;;
+$p-&gt;YYData-&gt;{INPUT} =~ s/\s*$//;
+
+my $out=$p-&gt;YYParse;
+print "out = $out\n";
+</PRE>
+Sigue un ejemplo de ejecución:
+<PRE>
+$ ./left.pl
+Expresion: a*b*c*d
+out = (((a * b) * c) * d)
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5083"
+<A NAME="tex2html5089"
   HREF="node174.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5077"
-  HREF="node163.html">
+<A NAME="tex2html5083"
+  HREF="node165.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5071"
+<A NAME="tex2html5077"
   HREF="node172.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5079"
-  HREF="node226.html">
+<A NAME="tex2html5085"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5081"
-  HREF="node229.html">
+<A NAME="tex2html5087"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -241,17 +250,17 @@ en la parte derecha.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5084"
-  HREF="node174.html">Esquemas de Traducción</A>
-<B>Sup:</B> <A NAME="tex2html5078"
-  HREF="node163.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5072"
-  HREF="node172.html">Construcción del Árbol Sintáctico</A>
+<B> Sig:</B> <A NAME="tex2html5090"
+  HREF="node174.html">Construcción del Árbol Sintáctico</A>
+<B>Sup:</B> <A NAME="tex2html5084"
+  HREF="node165.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5078"
+  HREF="node172.html">Precedencia y Asociatividad</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-06-03</I>
+2013-06-08</I>
 </ADDRESS>
 </BODY>
 </HTML>

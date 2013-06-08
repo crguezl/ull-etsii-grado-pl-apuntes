@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Construcción del Árbol Sintáctico</TITLE>
-<META NAME="description" CONTENT="Construcción del Árbol Sintáctico">
+<TITLE>Recuperación de Errores</TITLE>
+<META NAME="description" CONTENT="Recuperación de Errores">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node162.html">
 <LINK REL="previous" HREF="node160.html">
-<LINK REL="up" HREF="node143.html">
+<LINK REL="up" HREF="node145.html">
 <LINK REL="next" HREF="node162.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4876"
+<A NAME="tex2html4882"
   HREF="node162.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4870"
-  HREF="node143.html">
+<A NAME="tex2html4876"
+  HREF="node145.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4864"
+<A NAME="tex2html4870"
   HREF="node160.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4872"
-  HREF="node226.html">
+<A NAME="tex2html4878"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4874"
-  HREF="node229.html">
+<A NAME="tex2html4880"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,47 +88,101 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4877"
-  HREF="node162.html">Consejos a seguir al</A>
-<B>Sup:</B> <A NAME="tex2html4871"
-  HREF="node143.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4865"
-  HREF="node160.html">Depuración en jison</A>
+<B> Sig:</B> <A NAME="tex2html4883"
+  HREF="node162.html">Depuración en jison</A>
+<B>Sup:</B> <A NAME="tex2html4877"
+  HREF="node145.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4871"
+  HREF="node160.html">Ejercicios: Casos de Estudio</A>
 <B> Con:</B> 
-<A NAME="tex2html4872"
-  HREF="node226.html">
+<A NAME="tex2html4878"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4874"
-  HREF="node229.html">
+<A NAME="tex2html4880"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION068180000000000000000">
-Construcción del Árbol Sintáctico</A>
+<H1><A NAME="SECTION068160000000000000000"></A>
+<A NAME="section:errores"></A>
+<BR>
+Recuperación de Errores
 </H1>
-El siguiente ejemplo usa <code>jison</code> 
-para construir el árbol sintáctico de una expresión en infijo:
+
+<P>
+La recuperación de errores no parece estar implementada en Jison.
+véase 
+
+<UL>
+<LI>la sección 
+<A NAME="tex2html445"
+  HREF="http://zaach.github.io/jison/docs/">Error Recovery</A>
+de la documentación
+</LI>
+<LI><A NAME="tex2html446"
+  HREF="https://github.com/zaach/jison/pull/147">Pullreq 5 - parser built-in grammar error recovery was completely broken</A>
+</LI>
+</UL>
+<PRE>
+[~/srcPLgrado/jison/jison-aSb(error)]$ cat aSb.jison 
+%lex
+%%
+\s+             {}
+[ab]            { return yytext; }
+.               { return "INVALID"; }
+/lex
+%%
+S: /* empty */  { $$ = ''; console.log("empty"); }
+   | 'a' S 'b'  { $$ = $1 + $2 + $3; console.log("S -&gt; aSb"); }
+   | 'a' S error
+;
+%%
+</PRE>
+
+<P>
+<PRE>
+        parse: function parse(input) {
+              var self = this,
+                  stack = [0],
+                  vstack = [null], // semantic value stack
+                  lstack = [], // location stack
+                  ...
+                  recovering = 0,
+                  TERROR = 2,
+                  EOF = 1;
+            while (true) {
+                  // retreive state number from top of stack
+                  state = stack[stack.length - 1];
+  
+                  ...
+  
+                  // handle parse error
+&gt;&gt;                _handle_error: if (typeof action === 'undefined' || !action.length || !  ...action[0]) {
+  
+                      var errStr = '';
+                      if (!recovering) {
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4876"
+<A NAME="tex2html4882"
   HREF="node162.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4870"
-  HREF="node143.html">
+<A NAME="tex2html4876"
+  HREF="node145.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4864"
+<A NAME="tex2html4870"
   HREF="node160.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4872"
-  HREF="node226.html">
+<A NAME="tex2html4878"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4874"
-  HREF="node229.html">
+<A NAME="tex2html4880"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -175,17 +229,17 @@ para construir el árbol sintáctico de una expresión en infijo:
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4877"
-  HREF="node162.html">Consejos a seguir al</A>
-<B>Sup:</B> <A NAME="tex2html4871"
-  HREF="node143.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4865"
-  HREF="node160.html">Depuración en jison</A>
+<B> Sig:</B> <A NAME="tex2html4883"
+  HREF="node162.html">Depuración en jison</A>
+<B>Sup:</B> <A NAME="tex2html4877"
+  HREF="node145.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4871"
+  HREF="node160.html">Ejercicios: Casos de Estudio</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-06-03</I>
+2013-06-08</I>
 </ADDRESS>
 </BODY>
 </HTML>

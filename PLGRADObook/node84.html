@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Expresiones Regulares Posix en C</TITLE>
-<META NAME="description" CONTENT="Expresiones Regulares Posix en C">
+<TITLE>Práctica: Analizador Léxico para Un Subconjunto de JavaScript</TITLE>
+<META NAME="description" CONTENT="Práctica: Analizador Léxico para Un Subconjunto de JavaScript">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node85.html">
 <LINK REL="previous" HREF="node83.html">
-<LINK REL="up" HREF="node83.html">
+<LINK REL="up" HREF="node75.html">
 <LINK REL="next" HREF="node85.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html2996"
+<A NAME="tex2html2965"
   HREF="node85.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2990"
-  HREF="node83.html">
+<A NAME="tex2html2959"
+  HREF="node75.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2984"
+<A NAME="tex2html2955"
   HREF="node83.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2992"
-  HREF="node226.html">
+<A NAME="tex2html2961"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2994"
-  HREF="node229.html">
+<A NAME="tex2html2963"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,121 +87,57 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2997"
-  HREF="node85.html">Expresiones Regulares en Flex</A>
-<B>Sup:</B> <A NAME="tex2html2991"
-  HREF="node83.html">Expresiones Regulares en C</A>
-<B> Ant:</B> <A NAME="tex2html2985"
-  HREF="node83.html">Expresiones Regulares en C</A>
+<B> Sig:</B> <A NAME="tex2html2966"
+  HREF="node85.html">Expresiones Regulares en C</A>
+<B>Sup:</B> <A NAME="tex2html2960"
+  HREF="node75.html">Expresiones Regulares y Análisis</A>
+<B> Ant:</B> <A NAME="tex2html2956"
+  HREF="node83.html">Práctica: Ficheros INI</A>
 <B> Con:</B> 
-<A NAME="tex2html2992"
-  HREF="node226.html">
+<A NAME="tex2html2961"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html2994"
-  HREF="node229.html">
+<A NAME="tex2html2963"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html2998"
-  HREF="node84.html#SECTION06210010000000000000">Enlaces Relacionados</A>
-</UL></UL></UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION06210000000000000000">
-Expresiones Regulares Posix en C</A>
+<H1><A NAME="SECTION06190000000000000000"></A>
+   <A NAME="2387"></A>
+<BR>
+Práctica: Analizador Léxico para Un Subconjunto de JavaScript
 </H1>
-Las Expresiones Regulares 'a la Perl' no forman parte de ANSI C. 
-La forma mas sencilla de usar regexps en C es utilizando la versión POSIX de la
-librería que viene con la mayoría de los Unix.
-Sigue un ejemplo que usa regex POSIX en C:
-<PRE>
-[~/src/C/regexp]$ cat use_posix.c 
-#include &lt;stdio.h&gt;
-#include &lt;stdlib.h&gt;
-#include &lt;regex.h&gt;        
-
-int main() {
-       regex_t regex;
-       int reti;
-       char msgbuf[100];
-
-/* Compile regular expression */
-        reti = regcomp(&amp;regex, "^a[[:alnum:]]", 0);
-        if( reti ){ fprintf(stderr, "Could not compile regex\n"); exit(1); }
-
-/* Execute regular expression */
-        reti = regexec(&amp;regex, "abc", 0, NULL, 0);
-        if( !reti ){
-                puts("Match");
-        }
-        else if( reti == REG_NOMATCH ){
-                puts("No match");
-        }
-        else{
-                regerror(reti, &amp;regex, msgbuf, sizeof(msgbuf));
-                fprintf(stderr, "Regex match failed: %s\n", msgbuf);
-                exit(1);
-        }
-
-/* Free compiled regular expression if you want to use the regex_t again */
-    regfree(&amp;regex);
-}
-</PRE>
-Compilación y ejecución:
-<PRE>
-[~/src/C/regexp]$ cc use_posix.c  -o use_posix
-[~/src/C/regexp]$ ./use_posix 
-Match
-</PRE>
 
 <P>
 
-<H4><A NAME="SECTION06210010000000000000">
-Enlaces Relacionados</A>
-</H4>
-  
-
 <OL>
-<LI><A NAME="tex2html141"
-  HREF="http://www.gnu.org/software/libc/manual/html_node/Regular-Expressions.html">Regular Expression Matching in GNU C</A>
-</LI>
-<LI><A NAME="tex2html142"
-  HREF="http://www.gnu.org/software/libc/manual/html_node/Pattern-Matching.html#Pattern-Matching">Pattern Matching in GNU C</A>
-</LI>
-<LI><A NAME="tex2html143"
-  HREF="http://www.pcre.org/">PCRE</A>
-</LI>
-<LI><A NAME="tex2html144"
-  HREF="http://www.pcre.org/pcre.txt">PCRE doc</A>
+<LI>Clone el proyecto 
+<A NAME="tex2html141"
+  HREF="https://github.com/crguezl/ull-etsii-grado-pl-minijavascript">ull-etsii-grado-pl-minijavascript</A>
+en github. Rellene las partes que faltan en cada fichero.
 </LI>
 </OL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html2996"
+<A NAME="tex2html2965"
   HREF="node85.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2990"
-  HREF="node83.html">
+<A NAME="tex2html2959"
+  HREF="node75.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2984"
+<A NAME="tex2html2955"
   HREF="node83.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2992"
-  HREF="node226.html">
+<A NAME="tex2html2961"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2994"
-  HREF="node229.html">
+<A NAME="tex2html2963"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -249,17 +184,17 @@ Enlaces Relacionados</A>
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2997"
-  HREF="node85.html">Expresiones Regulares en Flex</A>
-<B>Sup:</B> <A NAME="tex2html2991"
-  HREF="node83.html">Expresiones Regulares en C</A>
-<B> Ant:</B> <A NAME="tex2html2985"
-  HREF="node83.html">Expresiones Regulares en C</A>
+<B> Sig:</B> <A NAME="tex2html2966"
+  HREF="node85.html">Expresiones Regulares en C</A>
+<B>Sup:</B> <A NAME="tex2html2960"
+  HREF="node75.html">Expresiones Regulares y Análisis</A>
+<B> Ant:</B> <A NAME="tex2html2956"
+  HREF="node83.html">Práctica: Ficheros INI</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-06-03</I>
+2013-06-08</I>
 </ADDRESS>
 </BODY>
 </HTML>

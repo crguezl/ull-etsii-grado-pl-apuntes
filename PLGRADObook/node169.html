@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Depuración en yapp</TITLE>
-<META NAME="description" CONTENT="Depuración en yapp">
+<TITLE>El módulo Generado por yapp</TITLE>
+<META NAME="description" CONTENT="El módulo Generado por yapp">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node170.html">
 <LINK REL="previous" HREF="node168.html">
-<LINK REL="up" HREF="node163.html">
+<LINK REL="up" HREF="node165.html">
 <LINK REL="next" HREF="node170.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5027"
+<A NAME="tex2html5033"
   HREF="node170.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5021"
-  HREF="node163.html">
+<A NAME="tex2html5027"
+  HREF="node165.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5015"
+<A NAME="tex2html5021"
   HREF="node168.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5023"
-  HREF="node226.html">
+<A NAME="tex2html5029"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5025"
-  HREF="node229.html">
+<A NAME="tex2html5031"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,126 +88,215 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5028"
-  HREF="node170.html">Precedencia y Asociatividad</A>
-<B>Sup:</B> <A NAME="tex2html5022"
-  HREF="node163.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5016"
-  HREF="node168.html">Algoritmo de Análisis LR</A>
+<B> Sig:</B> <A NAME="tex2html5034"
+  HREF="node170.html">Algoritmo de Análisis LR</A>
+<B>Sup:</B> <A NAME="tex2html5028"
+  HREF="node165.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5022"
+  HREF="node168.html">Construcción de las Tablas</A>
 <B> Con:</B> 
-<A NAME="tex2html5023"
-  HREF="node226.html">
+<A NAME="tex2html5029"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5025"
-  HREF="node229.html">
+<A NAME="tex2html5031"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION06960000000000000000"></A>
-<A NAME="section:depuracion"></A>
+<H1><A NAME="SECTION06940000000000000000"></A>
+<A NAME="section:tablas"></A>
 <BR>
-Depuración en <TT>yapp</TT>
+El módulo Generado por <TT>yapp</TT>
 </H1>
-Es posible añadir un parámetro en la llamada a <code>YYParse</code>
-con nombre <A NAME="19359"></A><SPAN  CLASS="textbf">yydebug</SPAN> y valor el nivel de depuración requerido.
-Ello 
-nos permite observar la conducta del analizador. Los 
-posibles valores de depuración son:
-
-<P>
-<BR>
-<BR>
-<DIV ALIGN="CENTER">
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT">Bit</TD>
-<TD ALIGN="LEFT">Información de Depuración</TD>
-</TR>
-<TR><TD ALIGN="LEFT">0x01</TD>
-<TD ALIGN="LEFT">Lectura de los terminales</TD>
-</TR>
-<TR><TD ALIGN="LEFT">0x02</TD>
-<TD ALIGN="LEFT">Información sobre los estados</TD>
-</TR>
-<TR><TD ALIGN="LEFT">0x04</TD>
-<TD ALIGN="LEFT">Acciones (shifts, reduces, accept ...)</TD>
-</TR>
-<TR><TD ALIGN="LEFT">0x08</TD>
-<TD ALIGN="LEFT">Volcado de la pila</TD>
-</TR>
-<TR><TD ALIGN="LEFT">0x10</TD>
-<TD ALIGN="LEFT">Recuperación de errores</TD>
-</TR>
-</TABLE>
-</DIV>
-<BR>
-<BR>
-
-<P>
-Veamos un ejemplo de salida para la gramática
- que se describe en la página 
- <A HREF="#apendice:asb"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>
- cuando se llama con: 
-
-<P>
-<code>$self-&gt;YYParse( yylex =&gt; \&_Lexer, yyerror =&gt; \&_Error, yydebug =&gt; 0x1F )</code>
+La ejecución de la orden <code>yapp -m Calc Calc.yp</code> produce 
+como salida el módulo <code>Calc.pm</code> el cual contiene las tablas LALR(1)
+para la gramática descrita en <code>Calc.yp</code>. Estas tablas son las que
+dirigen al analizador LR. 
+Puede ver el código completo del módulo en el apéndice
+que se encuentra en la página <A HREF="#apendice:calcpm"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>.
+La  estructura del módulo <code>Calc.pm</code> es como sigue:
 
 <P>
 <PRE>
- 1  $ ./use_aSb.pl
- 2  ----------------------------------------
- 3  In state 0:
- 4  Stack:[0]
- 5  ab  # el usuario ha escrito esto
- 6  Need token. Got &gt;a&lt;
- 7  Shift and go to state 2.
- 8  ----------------------------------------
- 9  In state 2:
-10  Stack:[0,2]
-11  Need token. Got &gt;b&lt;
-12  Reduce using rule 1 (S,0): S -&gt; epsilon
-13  Back to state 2, then go to state 4.
-14  ----------------------------------------
-15  In state 4:
-16  Stack:[0,2,4]
-17  Shift and go to state 5.
-18  ----------------------------------------
-19  In state 5:
-20  Stack:[0,2,4,5]
-21  Don't need token.
-22  Reduce using rule 2 (S,3): S -&gt; a S b
-23  Back to state 0, then go to state 1.
-24  ----------------------------------------
-25  In state 1:
-26  Stack:[0,1]
-27  Need token. Got &gt;&lt;
-28  Shift and go to state 3.
-29  ----------------------------------------
-30  In state 3:
-31  Stack:[0,1,3]
-32  Don't need token.
-33  Accept.
+ 1 package Calc;
+ 2 use vars qw ( @ISA );
+ 3 use strict;
+ 4 @ISA= qw ( Parse::Yapp::Driver );
+ 5 use Parse::Yapp::Driver;
+ 6 
+ 7 sub new {
+ 8    my($class)=shift;
+ 9    ref($class) and $class=ref($class);
+10 
+11     my($self)=$class-&gt;SUPER::new( 
+12        yyversion =&gt; '1.05',
+13        yystates =&gt; [ 
+..          ...
+32        ], # estados
+33        yyrules  =&gt; [
+..       	# ... mas reglas
+70        ], # final de las reglas
+71        @_); # argumentos pasados
+72   bless($self,$class);
+73 }
+</PRE>
+
+<P>
+La clase <code>Calc</code> hereda de <code>Parse::Yapp::Driver</code>, pero el objeto creado
+será bendecido en la clase <code>Calc</code> (Línea 4, véanse también 
+la figura <A HREF="node185.html#fig:yappinheritance">39.3</A> 
+y la línea 72 del fuente). 
+Por tanto, el constructor llamado en la línea 11 es el de <code>Parse::Yapp::Driver</code>.
+Se utiliza la estrategia de llamada con parámetros con nombre. 
+El valor para la clave <code>yystates</code> es una referencia anónima 
+al array de estados y el valor para la clave <code>yyrules</code> 
+es una referencia anónima a las reglas.
+<PRE>
+10 
+11     my($self)=$class-&gt;SUPER::new( 
+12        yyversion =&gt; '1.05',
+13        yystates =&gt; [
+14         {#State 0
+15           DEFAULT =&gt; -1, GOTOS =&gt; { 'input' =&gt; 1 }
+16         },
+17         {#State 1
+18           ACTIONS =&gt; {
+19             'NUM' =&gt; 6, '' =&gt; 4, "-" =&gt; 2, "(" =&gt; 7,
+20             'VAR' =&gt; 8, "\n" =&gt; 5, 'error' =&gt; 9
+21           },
+22           GOTOS =&gt; { 'exp' =&gt; 3, 'line' =&gt; 10 }
+23         },
+24         # ...  mas estados
+25         {#State 27
+26           ACTIONS =&gt; {
+27             "-" =&gt; 12, "+" =&gt; 13, "/" =&gt; 15, "^" =&gt; 16,
+28             "*" =&gt; 17
+29           },
+30           DEFAULT =&gt; -8
+31         }
+32        ], # estados
+</PRE>
+Se ve que un estado se pasa como un hash anónimo indexado en las acciones
+y los saltos. 
+
+<P>
+Para consultar los números asociados con las reglas de producción
+vea el apéndice en la página <A HREF="#apendice:calcouput"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>
+conteniendo el fichero <code>Calc.output</code>.
+
+<P>
+A continuación vienen las reglas:
+<PRE>
+33        yyrules  =&gt; [
+34        [#Rule 0
+35              '$start', 2, undef ],
+36        [#Rule 1
+37              'input', 0, undef ],
+38        [#Rule 2
+39              'input', 2, sub
+40 #line 17 "Calc.yp"
+41              { push(@{$_[1]},$_[2]); $_[1] }
+42        ],
+43        [#Rule 3
+44              'line', 1, sub
+45 #line 20 "Calc.yp"
+46              { $_[1] }
+47        ],
+48        [#Rule 4
+49              'line', 2, sub
+50 #line 21 "Calc.yp"
+51              { print "$_[1]\n" }
+52        ],
+53   # ... mas reglas
+54     [#Rule 11
+55             'exp', 3, sub
+56 #line 30 "Calc.yp"
+57 { $_[1] * $_[3] }
+58    ],
+59   [#Rule 12
+60             'exp', 3, sub
+61 #line 31 "Calc.yp"
+62   {
+63     $_[3] and return($_[1] / $_[3]);
+64     $_[0]-&gt;YYData-&gt;{ERRMSG} =   "Illegal division by zero.\n";
+65     $_[0]-&gt;YYError;
+66     undef
+67   }
+68     ],
+69   # ... mas reglas
+70   ], # final de las reglas
+</PRE>
+Las reglas son arrays anónimos conteniendo el nombre de la regla o
+variable sintáctica (<code>exp</code>), el número de símbolos en la parte
+derecha y la subrutina anónima con el código asociado.
+
+<P>
+Vemos como la acción es convertida en una subrutina anónima. 
+Los argumentos de dicha subrutina son los atributos semánticos
+asociados con los símbolos en la parte derecha de la regla de 
+producción. El valor retornado por la acción/subrutina
+es el valor asociado con la reducción.
+
+<P>
+Para hacer que 
+el compilador Perl diagnostique los errores relativos al fuente 
+<code>Calc.yp</code> se usa una directiva <code>#line</code>.
+
+<P>
+<PRE>
+71   @_);
+72   bless($self,$class);
+73 }
+74
+</PRE>
+
+<P>
+la bendición con dos argumentos hace que el objeto pertenezca a la
+clase <code>Calc</code>. A continuación siguen las subrutinas de soporte:
+<PRE>
+75 #line 44 "Calc.yp" 
+76 
+77 
+78 sub _Error {
+79   # ...
+80 }
+81 
+82 sub _Lexer {
+83   my($parser)=shift;
+84   # ...
+85 }
+86 
+87 sub Run {
+88     my($self)=shift;
+89     $self-&gt;YYParse( yylex =&gt; \&amp;_Lexer, yyerror =&gt; \&amp;_Error );
+90 }
+91 
+92 my($calc)=new Calc;
+93 $calc-&gt;Run;
+94 
+95 1;
 </PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5027"
+<A NAME="tex2html5033"
   HREF="node170.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5021"
-  HREF="node163.html">
+<A NAME="tex2html5027"
+  HREF="node165.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5015"
+<A NAME="tex2html5021"
   HREF="node168.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5023"
-  HREF="node226.html">
+<A NAME="tex2html5029"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5025"
-  HREF="node229.html">
+<A NAME="tex2html5031"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -254,17 +343,17 @@ Veamos un ejemplo de salida para la gramática
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5028"
-  HREF="node170.html">Precedencia y Asociatividad</A>
-<B>Sup:</B> <A NAME="tex2html5022"
-  HREF="node163.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5016"
-  HREF="node168.html">Algoritmo de Análisis LR</A>
+<B> Sig:</B> <A NAME="tex2html5034"
+  HREF="node170.html">Algoritmo de Análisis LR</A>
+<B>Sup:</B> <A NAME="tex2html5028"
+  HREF="node165.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5022"
+  HREF="node168.html">Construcción de las Tablas</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-06-03</I>
+2013-06-08</I>
 </ADDRESS>
 </BODY>
 </HTML>

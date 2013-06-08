@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Ejercicios: Casos de Estudio</TITLE>
-<META NAME="description" CONTENT="Ejercicios: Casos de Estudio">
+<TITLE>Manejo en jison de Atributos Heredados</TITLE>
+<META NAME="description" CONTENT="Manejo en jison de Atributos Heredados">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node159.html">
 <LINK REL="previous" HREF="node157.html">
-<LINK REL="up" HREF="node143.html">
+<LINK REL="up" HREF="node145.html">
 <LINK REL="next" HREF="node159.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4830"
+<A NAME="tex2html4836"
   HREF="node159.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4824"
-  HREF="node143.html">
+<A NAME="tex2html4830"
+  HREF="node145.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4818"
+<A NAME="tex2html4824"
   HREF="node157.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4826"
-  HREF="node226.html">
+<A NAME="tex2html4832"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4828"
-  HREF="node229.html">
+<A NAME="tex2html4834"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,210 +88,411 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4831"
-  HREF="node159.html">Recuperación de Errores</A>
-<B>Sup:</B> <A NAME="tex2html4825"
-  HREF="node143.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4819"
-  HREF="node157.html">Definición Dirigida por la</A>
+<B> Sig:</B> <A NAME="tex2html4837"
+  HREF="node159.html">Definición Dirigida por la</A>
+<B>Sup:</B> <A NAME="tex2html4831"
+  HREF="node145.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4825"
+  HREF="node157.html">Esquemas de Traducción</A>
 <B> Con:</B> 
-<A NAME="tex2html4826"
-  HREF="node226.html">
+<A NAME="tex2html4832"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4828"
-  HREF="node229.html">
+<A NAME="tex2html4834"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><A NAME="tex2html4832"
-  HREF="node158.html#SECTION068151000000000000000">Un mal diseño</A>
-<LI><A NAME="tex2html4833"
-  HREF="node158.html#SECTION068152000000000000000">Gramática no LR(1)</A>
-<LI><A NAME="tex2html4834"
-  HREF="node158.html#SECTION068153000000000000000">Un Lenguaje Intrínsecamente Ambiguo</A>
-<LI><A NAME="tex2html4835"
-  HREF="node158.html#SECTION068154000000000000000">Conflicto reduce-reduce</A>
-</UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION068150000000000000000">
-Ejercicios: Casos de Estudio</A>
+<H1><A NAME="SECTION068130000000000000000"></A>
+<A NAME="section:heredados"></A>
+<BR>
+Manejo en <TT>jison</TT> de Atributos Heredados
 </H1>
-Véase nuestro proyecto
-<A NAME="tex2html443"
-  HREF="https://code.google.com/p/grammar-repository/">Grammar Repository</A>
-en GoogleCode.
 
 <P>
-
-<H2><A NAME="SECTION068151000000000000000">
-Un mal diseño</A>
-</H2>
-<P>
-<DIV><B>Ejercicio  <SPAN CLASS="arabic">37</SPAN>.<SPAN CLASS="arabic">15</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>This grammar 
-</I>
-<P><PRE>
-  %token D S
-
-  %%
-  p: ds ';' ss  | ss ;
-  ds: D ';' ds    
-    | D  
-  ;
-  ss: S ';' ss  | S  ;
-  %% 
-</PRE>
-<P>
-<I>illustrates a typical LALR conflict due to a 
-bad grammar design. 
-</I>
-<UL>
-<LI>Reescriba la gramática para que no existan conflictos
-</LI>
-<LI>Escriba las acciones semánticas necesarias para imprimir la lista de <code>D</code>s seguida de la lista de <code>S</code>s
-</LI>
-</UL></DIV><P></P>
+Supongamos  que <code>jison</code> esta inmerso 
+en la construcción de la antiderivación a derechas y que la forma sentencial
+derecha en ese momento es:
 
 <P>
-
-<H2><A NAME="SECTION068152000000000000000">
-Gramática no LR(1)</A>
-</H2>
+<DIV ALIGN="CENTER">
+<!-- MATH
+ $X_m \ldots X_1 X_0 Y_1 \ldots  Y_n a_1 \ldots a_0$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="225" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img461.png"
+ ALT="$ X_m \ldots X_1 X_0 Y_1 \ldots Y_n a_1 \ldots a_0$"></SPAN>
+</DIV>
 
 <P>
-La siguiente gramática no es LR(1).
+y que el mango es <!-- MATH
+ $B \rightarrow Y_1 \ldots  Y_n$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="109" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img462.png"
+ ALT="$ B \rightarrow Y_1 \ldots Y_n$"></SPAN> y en la entrada quedan por 
+procesar <!-- MATH
+ $a_1 \ldots a_0$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="65" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img463.png"
+ ALT="$ a_1 \ldots a_0$"></SPAN>.
+
+<P>
+No es posible acceder en <code>jison</code> a los valores de los atributos de los estados en la pila
+del analizador que se encuentran ``por debajo'' o si se quiere
+``a la izquierda'' de los estados asociados
+con la regla por la que se reduce. 
+
+<P>
+Vamos a usar un pequeño hack para acceder a los atributos asociados con símbolos vistos 
+en el pasado "remoto":
 <PRE>
-[~/srcPLgrado/jison/jison-nolr]$ cat confusingsolvedppcr.y
+[~/jison/jison-inherited(grammar)]$ cat inherited.jison 
+%lex
 %%
-A: 
-    B 'c' 'd' 
-  | E 'c' 'f' 
-;
-B: 
-    'x' 'y'
-;
-E: 
-    'x' 'y' 
+\s+                           {}
+(global|local|integer|float)  { return yytext; }
+[a-zA-Z_]\w*                  { return 'id'; }
+.                             { return yytext; }
+/lex
+%%
+D 
+  : C T L 
+  ;
+
+C
+  : global
+  | local
+  ; 
+  
+T
+  : integer
+  | float
 ;
 
+L 
+  : L ',' id    { 
+                  console.log("L -&gt; L ',' id ("+yytext+")");
+                  var s =  eval('$$');
+                  console.log(s);
+                }
+  | id          {
+                  console.log("L -&gt; id ("+yytext+")");
+                  var s =  eval('$$');
+                  console.log(s);
+                }
+  ;
 %%
 </PRE>
-Encuentre una gramática sin conflictos equivalente a la anterior.
 
 <P>
+Veamos un ejemplo de ejecución:
 
-<H2><A NAME="SECTION068153000000000000000">
-Un Lenguaje Intrínsecamente Ambiguo</A>
-</H2>
 <P>
-<DIV><B>Ejercicio  <SPAN CLASS="arabic">37</SPAN>.<SPAN CLASS="arabic">15</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
-<I>A context-free language is inherently ambiguous if all context-free
-grammars generating that language are ambiguous.  While some
-context-free languages  have both ambiguous and unambiguous grammars, there
-are context-free languages for which no unambiguous context-free
-grammar can exist. An example of an inherently ambiguous language
-is the set 
-</I>
+<PRE>
+[~/jison/jison-inherited(grammar)]$ cat input.txt 
+global integer a, b, c
+[~/jison/jison-inherited(grammar)]$ node inherited.js input.txt 
+L -&gt; id (a)
+[ null, 'global', 'integer', 'a' ]
+L -&gt; L ',' id (b)
+[ null, 'global', 'integer', 'a', ',', 'b' ]
+L -&gt; L ',' id (c)
+[ null, 'global', 'integer', 'a', ',', 'c' ]
+</PRE>
+
 <P>
-<I><code>{ a^n b^n c^m : n &gt;= 0, m &gt;= 0 } U { a^n b^m c^m : n &gt;= 0, m &gt;= 0 }</code>
-</I>
+Esta forma de acceder a los atributos es especialmente útil cuando se 
+trabaja con <A NAME="17846"></A><SPAN  CLASS="textbf">atributos heredados</SPAN>. Esto es, cuando un atributo
+de un nodo del árbol sintáctico se computa en términos
+de valores de atributos de su padre y/o sus hermanos.
+Ejemplos de atributos heredados son la clase y tipo en la declaración
+de variables. 
+
 <P>
-<I>Esto  es: Concatenaciones de repeticiones 
-de <code>a</code>s seguidas de repeticiones de <code>b</code>s y seguidas de
-repeticiones de <code>c</code>s donde el número
-de <code>a</code>s es igual al número de <code>b</code>s
-o bien el número de <code>b</code>s es igual al número de <code>c</code>s.
-</I>
+Es importante darse cuenta que en cualquier derivación a derechas
+desde<code>D</code>, cuando se reduce por una de las reglas 
+
 <P>
+<DIV ALIGN="CENTER">
+L <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> id <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img73.png"
+ ALT="$ \vert$"></SPAN> L<SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img454.png"
+ ALT="$ _1$"></SPAN> ',' id
+
+</DIV>
+
+<P>
+el símbolo a la izquierda de L es T y el que esta a la izquierda de T es C.
+Considere, por ejemplo la derivación a derechas:
+
+<P>
+<DIV ALIGN="CENTER">
+D <!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img464.png"
+ ALT="$ \Longrightarrow$"></SPAN> C T L <!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img464.png"
+ ALT="$ \Longrightarrow$"></SPAN> C T L, id <!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img464.png"
+ ALT="$ \Longrightarrow$"></SPAN> C T L, id, id
+<!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img464.png"
+ ALT="$ \Longrightarrow$"></SPAN> C T id, id, id <!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img464.png"
+ ALT="$ \Longrightarrow$"></SPAN> 
+<BR><!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img464.png"
+ ALT="$ \Longrightarrow$"></SPAN> C float id, id, id <!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img464.png"
+ ALT="$ \Longrightarrow$"></SPAN> local float id, id, id
+
+</DIV>
+
+<P>
+Observe que el orden de recorrido de <code>jison</code> es:
+<DIV ALIGN="CENTER">
+local float id, id, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img465.png"
+ ALT="$ \Longleftarrow$"></SPAN> C float id, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img465.png"
+ ALT="$ \Longleftarrow$"></SPAN>
+C T id, id, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img465.png"
+ ALT="$ \Longleftarrow$"></SPAN>
+<BR><!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img465.png"
+ ALT="$ \Longleftarrow$"></SPAN> C T L, id, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img465.png"
+ ALT="$ \Longleftarrow$"></SPAN> C T L, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img465.png"
+ ALT="$ \Longleftarrow$"></SPAN> C T L <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img465.png"
+ ALT="$ \Longleftarrow$"></SPAN> D
+
+</DIV>
+
+<P>
+en la antiderivación, cuando el mango es una de las dos reglas 
+para listas de identificadores, L <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> id y L <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> L, id 
+es decir durante las tres ultimas antiderivaciones:
+
+<P>
+<DIV ALIGN="CENTER">
+C T L, id, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img465.png"
+ ALT="$ \Longleftarrow$"></SPAN> C T L, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img465.png"
+ ALT="$ \Longleftarrow$"></SPAN> C T L <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img465.png"
+ ALT="$ \Longleftarrow$"></SPAN> D
+
+</DIV>
+
+<P>
+las variables a la izquierda del mango son
+T y C. Esto ocurre siempre. 
+Estas observaciones nos conducen al siguiente
+programa <code>jison</code>: 
+
+<P>
+<PRE>
+[~/jison/jison-inherited(deepstack)]$ cat inherited.jison 
+%lex
+%%
+\s+                           {}
+(global|local|integer|float)  { return yytext; }
+[a-zA-Z_]\w*                  { return 'id'; }
+.                             { return yytext; }
+/lex
+%%
+D 
+  : C T L 
+  ;
+
+C
+  : global
+  | local
+  ; 
+  
+T
+  : integer
+  | float
+  ;
+
+L 
+  : L ',' id    { 
+                  var s =  eval('$$');
+                  var b0 = s.length - 3;
+
+                  console.log("L -&gt; L ',' id ("+yytext+")");
+                  console.log($id + ' is of type ' + s[b0-1]);
+                  console.log(s[b0] + ' is of class ' + s[b0-2]);
+                }
+  | id          {
+                  var s =  eval('$$');
+                  var b0 = s.length - 1;
+
+                  console.log("L -&gt; id ("+yytext+")");
+                  console.log($id + ' is of type ' + s[b0-1]);
+                  console.log(s[b0] + ' is of class ' + s[b0-2]);
+                }
+  ;
+%%
+</PRE>
+
+<P>
+A continuación sigue un ejemplo de ejecución:
+
+<P>
+<PRE>
+[~/jison/jison-inherited(deepstack)]$ node inherited.js input.txt 
+L -&gt; id (a)
+a is of type integer
+a is of class global
+L -&gt; L ',' id (b)
+b is of type integer
+a is of class global
+L -&gt; L ',' id (c)
+c is of type integer
+a is of class global
+</PRE>
+
+<P>
+En este caso, existen varias alternativas simples
+a esta solución:
+
 <UL>
-<LI>Escriba una gramática que genere dicho lenguaje
-
-<P>
+<LI>Montar la lista de identificadores  en un array y ponerles el tipo y la clase de "golpe"
+ en la regla de producción superior <code>D : C T L ;</code>
 </LI>
-<LI>Escriba un programa Jison que reconozca este lenguaje.
+<LI>usar variables visibles (globales o atributos del objeto parser, por ejemplo) 
+como <code>current_type</code>, <code>current_class</code>
+<PRE>
+C
+  : global { current_class = 'global'; }
+  | local  { current_class = 'local'; }
+</PRE>
+y depués accederlas en las reglas de <code>L</code>
 </LI>
-</UL></DIV><P></P>
-
-<P>
-
-<H2><A NAME="SECTION068154000000000000000">
-Conflicto reduce-reduce</A>
-</H2>
-La siguiente gramática presenta conflictos reduce-reduce:
-<P>
-<DIV><B>Ejercicio  <SPAN CLASS="arabic">37</SPAN>.<SPAN CLASS="arabic">15</SPAN>.<SPAN CLASS="arabic">3</SPAN></B> &nbsp; <PRE>
-[~/srcPLgrado/jison/jison-reducereduceconflict]$ cat reducereduceconflictPPCR2.y
-%token ID
-
-%%
-
-def:    param_spec return_spec ','
-        ;
-param_spec:
-             type
-        |    name_list ':' type
-        ;
-return_spec:
-             type
-        |    name ':' type
-        ;
-type:        
-             ID
-        ;
-name:        
-             ID 
-        ;
-name_list:
-             name
-        |    name ',' name_list
-        ;
-%%
-</PRE><I>
-Este es el diagnóstico de Jison:
-</I><PRE>
-~/srcPLgrado/jison/jison-reducereduceconflict]$ jison reducereduceconflictPPCR2.y
-Conflict in grammar: multiple actions possible when lookahead token is ID in state 5
-- reduce by rule: name -&gt; ID
-- reduce by rule: type -&gt; ID
-Conflict in grammar: multiple actions possible when lookahead token is : in state 5
-- reduce by rule: name -&gt; ID
-- reduce by rule: type -&gt; ID
-Conflict in grammar: multiple actions possible when lookahead token is , in state 5
-- reduce by rule: name -&gt; ID
-- reduce by rule: type -&gt; ID
-
-States with conflicts:
-State 5
-  type -&gt; ID . #lookaheads= ID : ,
-  name -&gt; ID . #lookaheads= ID : ,
-</PRE><I>
-Encuentre una gramática equivalente a la anterior sin conflictos.</I></DIV><P></P>
+<LI>La que posiblemente sea la mejor estrategia general: construir 
+el árbol de análisis sintáctico. Posteriormente podemos recorrer
+el árbol como queramos y tantas veces como queramos.
+</LI>
+</UL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4830"
+<A NAME="tex2html4836"
   HREF="node159.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4824"
-  HREF="node143.html">
+<A NAME="tex2html4830"
+  HREF="node145.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4818"
+<A NAME="tex2html4824"
   HREF="node157.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4826"
-  HREF="node226.html">
+<A NAME="tex2html4832"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4828"
-  HREF="node229.html">
+<A NAME="tex2html4834"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -338,17 +539,17 @@ Encuentre una gramática equivalente a la anterior sin conflictos.</I></DIV><P><
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4831"
-  HREF="node159.html">Recuperación de Errores</A>
-<B>Sup:</B> <A NAME="tex2html4825"
-  HREF="node143.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4819"
-  HREF="node157.html">Definición Dirigida por la</A>
+<B> Sig:</B> <A NAME="tex2html4837"
+  HREF="node159.html">Definición Dirigida por la</A>
+<B>Sup:</B> <A NAME="tex2html4831"
+  HREF="node145.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4825"
+  HREF="node157.html">Esquemas de Traducción</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-06-03</I>
+2013-06-08</I>
 </ADDRESS>
 </BODY>
 </HTML>

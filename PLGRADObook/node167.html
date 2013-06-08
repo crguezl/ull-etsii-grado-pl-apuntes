@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>El módulo Generado por yapp</TITLE>
-<META NAME="description" CONTENT="El módulo Generado por yapp">
+<TITLE>Conceptos Básicos</TITLE>
+<META NAME="description" CONTENT="Conceptos Básicos">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node168.html">
 <LINK REL="previous" HREF="node166.html">
-<LINK REL="up" HREF="node163.html">
+<LINK REL="up" HREF="node165.html">
 <LINK REL="next" HREF="node168.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4999"
+<A NAME="tex2html5003"
   HREF="node168.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4993"
-  HREF="node163.html">
+<A NAME="tex2html4997"
+  HREF="node165.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4987"
+<A NAME="tex2html4991"
   HREF="node166.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4995"
-  HREF="node226.html">
+<A NAME="tex2html4999"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4997"
-  HREF="node229.html">
+<A NAME="tex2html5001"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,215 +88,564 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5000"
-  HREF="node168.html">Algoritmo de Análisis LR</A>
-<B>Sup:</B> <A NAME="tex2html4994"
-  HREF="node163.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4988"
-  HREF="node166.html">Construcción de las Tablas</A>
+<B> Sig:</B> <A NAME="tex2html5004"
+  HREF="node168.html">Construcción de las Tablas</A>
+<B>Sup:</B> <A NAME="tex2html4998"
+  HREF="node165.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4992"
+  HREF="node166.html">Parse::Yapp: Ejemplo de Uso</A>
 <B> Con:</B> 
-<A NAME="tex2html4995"
-  HREF="node226.html">
+<A NAME="tex2html4999"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4997"
-  HREF="node229.html">
+<A NAME="tex2html5001"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION06940000000000000000"></A>
-<A NAME="section:tablas"></A>
+<H1><A NAME="SECTION06920000000000000000"></A>
+<A NAME="section:conceptosbasicos"></A>
 <BR>
-El módulo Generado por <TT>yapp</TT>
+Conceptos Básicos
 </H1>
-La ejecución de la orden <code>yapp -m Calc Calc.yp</code> produce 
-como salida el módulo <code>Calc.pm</code> el cual contiene las tablas LALR(1)
-para la gramática descrita en <code>Calc.yp</code>. Estas tablas son las que
-dirigen al analizador LR. 
-Puede ver el código completo del módulo en el apéndice
-que se encuentra en la página <A HREF="#apendice:calcpm"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>.
-La  estructura del módulo <code>Calc.pm</code> es como sigue:
+Los analizadores generador por <code>yapp</code> entran en la categoría de analizadores
+<A NAME="19311"></A><SPAN  CLASS="textbf">LR</SPAN>. Estos analizadores construyen una derivación a derechas inversa 
+(o <A NAME="19313"></A><SPAN  CLASS="textbf">antiderivación</SPAN>).
+De ahí la R en LR (del inglés <A NAME="19315"></A><SPAN  CLASS="textbf">rightmost derivation</SPAN>). El árbol sintáctico 
+es construido de las hojas hacia la raíz, siendo el último paso en la antiderivación
+la construcción de la primera derivación desde el símbolo de arranque.
 
 <P>
-<PRE>
- 1 package Calc;
- 2 use vars qw ( @ISA );
- 3 use strict;
- 4 @ISA= qw ( Parse::Yapp::Driver );
- 5 use Parse::Yapp::Driver;
- 6 
- 7 sub new {
- 8    my($class)=shift;
- 9    ref($class) and $class=ref($class);
-10 
-11     my($self)=$class-&gt;SUPER::new( 
-12        yyversion =&gt; '1.05',
-13        yystates =&gt; [ 
-..          ...
-32        ], # estados
-33        yyrules  =&gt; [
-..       	# ... mas reglas
-70        ], # final de las reglas
-71        @_); # argumentos pasados
-72   bless($self,$class);
-73 }
-</PRE>
+Empezaremos entonces considerando las frases que pueden aparecer en una derivación
+a derechas. Tales frases consituyen el lenguaje <SPAN CLASS="MATH"><IMG
+ WIDTH="45" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img374.png"
+ ALT="$ FSD$"></SPAN>:
 
 <P>
-La clase <code>Calc</code> hereda de <code>Parse::Yapp::Driver</code>, pero el objeto creado
-será bendecido en la clase <code>Calc</code> (Línea 4, véanse también 
-la figura <A HREF="node183.html#fig:yappinheritance">38.3</A> 
-y la línea 72 del fuente). 
-Por tanto, el constructor llamado en la línea 11 es el de <code>Parse::Yapp::Driver</code>.
-Se utiliza la estrategia de llamada con parámetros con nombre. 
-El valor para la clave <code>yystates</code> es una referencia anónima 
-al array de estados y el valor para la clave <code>yyrules</code> 
-es una referencia anónima a las reglas.
-<PRE>
-10 
-11     my($self)=$class-&gt;SUPER::new( 
-12        yyversion =&gt; '1.05',
-13        yystates =&gt; [
-14         {#State 0
-15           DEFAULT =&gt; -1, GOTOS =&gt; { 'input' =&gt; 1 }
-16         },
-17         {#State 1
-18           ACTIONS =&gt; {
-19             'NUM' =&gt; 6, '' =&gt; 4, "-" =&gt; 2, "(" =&gt; 7,
-20             'VAR' =&gt; 8, "\n" =&gt; 5, 'error' =&gt; 9
-21           },
-22           GOTOS =&gt; { 'exp' =&gt; 3, 'line' =&gt; 10 }
-23         },
-24         # ...  mas estados
-25         {#State 27
-26           ACTIONS =&gt; {
-27             "-" =&gt; 12, "+" =&gt; 13, "/" =&gt; 15, "^" =&gt; 16,
-28             "*" =&gt; 17
-29           },
-30           DEFAULT =&gt; -8
-31         }
-32        ], # estados
-</PRE>
-Se ve que un estado se pasa como un hash anónimo indexado en las acciones
-y los saltos. 
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">39</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Dada una gramática <!-- MATH
+ $G=(\Sigma,V,P,S)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img46.png"
+ ALT="$ G =(\Sigma,V,P,S)$"></SPAN> no ambigua, se denota por <SPAN CLASS="MATH"><IMG
+ WIDTH="45" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img374.png"
+ ALT="$ FSD$"></SPAN> 
+(lenguaje de las formas Sentenciales a Derechas) al lenguaje de 
+las sentencias que aparecen en una derivación a derechas desde el símbolo de arranque.
+</I>
+<P>
+<DIV ALIGN="CENTER"><I><!-- MATH
+ $FSD = \left \{ \alpha \in (\Sigma \cup V)* : \exists S \begin{array}{c} *\\\Longrightarrow \\{\scriptstyle RM} \end{array} \alpha \right \}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="291" HEIGHT="82" ALIGN="MIDDLE" BORDER="0"
+ SRC="img375.png"
+ ALT="$ FSD = \left \{ \alpha \in (\Sigma \cup V)* : \exists S \begin{array}{c} * \Longrightarrow  {\scriptstyle RM} \end{array} \alpha \right \}$"></SPAN></I></DIV>
+<P>
+<I>Donde la notacion RM indica una derivación a derechas (<SPAN  CLASS="textbf">rightmost</SPAN>).
+Los elementos de <SPAN CLASS="MATH"><IMG
+ WIDTH="45" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img374.png"
+ ALT="$ FSD$"></SPAN> se llaman ``formas sentenciales derechas''.</I></DIV><P></P>
 
 <P>
-Para consultar los números asociados con las reglas de producción
-vea el apéndice en la página <A HREF="#apendice:calcouput"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>
-conteniendo el fichero <code>Calc.output</code>.
+Dada una gramática no ambigua <!-- MATH
+ $G=(\Sigma,V,P,S)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img46.png"
+ ALT="$ G =(\Sigma,V,P,S)$"></SPAN> y una frase <!-- MATH
+ $x \in L(G)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="75" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img69.png"
+ ALT="$ x \in L(G)$"></SPAN> el proceso
+de antiderivación consiste en encontrar la última derivación a derechas que dió lugar a 
+<SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img71.png"
+ ALT="$ x$"></SPAN>. Esto es, si <!-- MATH
+ $x \in L(G)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="75" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img69.png"
+ ALT="$ x \in L(G)$"></SPAN> es porque existe una derivación a derechas de la forma
 
 <P>
-A continuación vienen las reglas:
-<PRE>
-33        yyrules  =&gt; [
-34        [#Rule 0
-35              '$start', 2, undef ],
-36        [#Rule 1
-37              'input', 0, undef ],
-38        [#Rule 2
-39              'input', 2, sub
-40 #line 17 "Calc.yp"
-41              { push(@{$_[1]},$_[2]); $_[1] }
-42        ],
-43        [#Rule 3
-44              'line', 1, sub
-45 #line 20 "Calc.yp"
-46              { $_[1] }
-47        ],
-48        [#Rule 4
-49              'line', 2, sub
-50 #line 21 "Calc.yp"
-51              { print "$_[1]\n" }
-52        ],
-53   # ... mas reglas
-54     [#Rule 11
-55             'exp', 3, sub
-56 #line 30 "Calc.yp"
-57 { $_[1] * $_[3] }
-58    ],
-59   [#Rule 12
-60             'exp', 3, sub
-61 #line 31 "Calc.yp"
-62   {
-63     $_[3] and return($_[1] / $_[3]);
-64     $_[0]-&gt;YYData-&gt;{ERRMSG} =   "Illegal division by zero.\n";
-65     $_[0]-&gt;YYError;
-66     undef
-67   }
-68     ],
-69   # ... mas reglas
-70   ], # final de las reglas
-</PRE>
-Las reglas son arrays anónimos conteniendo el nombre de la regla o
-variable sintáctica (<code>exp</code>), el número de símbolos en la parte
-derecha y la subrutina anónima con el código asociado.
+<DIV ALIGN="CENTER">
+<!-- MATH
+ $S \stackrel{*}{\Longrightarrow} y A z \Longrightarrow y w z = x$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="187" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
+ SRC="img376.png"
+ ALT="$ S \stackrel{*}{\Longrightarrow} y A z \Longrightarrow y w z = x$"></SPAN>. 
+
+</DIV>
 
 <P>
-Vemos como la acción es convertida en una subrutina anónima. 
-Los argumentos de dicha subrutina son los atributos semánticos
-asociados con los símbolos en la parte derecha de la regla de 
-producción. El valor retornado por la acción/subrutina
-es el valor asociado con la reducción.
+El problema es averiguar que regla <!-- MATH
+ $A \rightarrow w$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="58" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img377.png"
+ ALT="$ A \rightarrow w$"></SPAN> se aplicó y en que lugar 
+de la cadena <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img71.png"
+ ALT="$ x$"></SPAN> se aplicó. En general, si queremos antiderivar
+una forma sentencial derecha <!-- MATH
+ $\beta \alpha w$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="40" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img378.png"
+ ALT="$ \beta \alpha w$"></SPAN> 
+debemos averiguar por que regla <!-- MATH
+ $A \rightarrow \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img51.png"
+ ALT="$ A \rightarrow \alpha$"></SPAN>
+seguir y en que lugar de la forma (después de <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img141.png"
+ ALT="$ \beta$"></SPAN> en el ejemplo)
+aplicarla. 
 
 <P>
-Para hacer que 
-el compilador Perl diagnostique los errores relativos al fuente 
-<code>Calc.yp</code> se usa una directiva <code>#line</code>.
+<DIV ALIGN="CENTER">
+<!-- MATH
+ $S \stackrel{*}{\Longrightarrow} \beta A w \Longrightarrow \beta \alpha w$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="164" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
+ SRC="img379.png"
+ ALT="$ S \stackrel{*}{\Longrightarrow} \beta A w \Longrightarrow \beta \alpha w$"></SPAN>. 
+
+</DIV>
 
 <P>
-<PRE>
-71   @_);
-72   bless($self,$class);
-73 }
-74
-</PRE>
+La pareja formada por la regla y la posición 
+se denomina mango o manecilla de la forma. Esta denominación viene
+de la visualización gráfica de la regla de producción como una mano
+que nos permite escalar hacia arriba en el árbol. Los ``dedos'' serían los
+símbolos en la parte derecha de la regla de producción.
 
 <P>
-la bendición con dos argumentos hace que el objeto pertenezca a la
-clase <code>Calc</code>. A continuación siguen las subrutinas de soporte:
-<PRE>
-75 #line 44 "Calc.yp" 
-76 
-77 
-78 sub _Error {
-79   # ...
-80 }
-81 
-82 sub _Lexer {
-83   my($parser)=shift;
-84   # ...
-85 }
-86 
-87 sub Run {
-88     my($self)=shift;
-89     $self-&gt;YYParse( yylex =&gt; \&amp;_Lexer, yyerror =&gt; \&amp;_Error );
-90 }
-91 
-92 my($calc)=new Calc;
-93 $calc-&gt;Run;
-94 
-95 1;
-</PRE>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">39</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
+<I>Dada una gramática <!-- MATH
+ $G=(\Sigma,V,P,S)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img46.png"
+ ALT="$ G =(\Sigma,V,P,S)$"></SPAN> no ambigua, y dada una forma sentencial derecha 
+<!-- MATH
+ $\alpha = \beta \gamma x$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="70" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img380.png"
+ ALT="$ \alpha = \beta \gamma x$"></SPAN>, con <!-- MATH
+ $x \in \Sigma^*$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="56" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img381.png"
+ ALT="$ x \in \Sigma^*$"></SPAN>, el <A NAME="19317"></A><SPAN  CLASS="textbf">mango</SPAN> o <A NAME="19319"></A><SPAN  CLASS="textbf">handle</SPAN>  de 
+<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img79.png"
+ ALT="$ \alpha$"></SPAN> es la última producción/posición  que dió lugar a <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img79.png"
+ ALT="$ \alpha$"></SPAN>:
+</I>
+<P>
+<DIV ALIGN="CENTER"><I><!-- MATH
+ $S \begin{array}{c} *\\\Longrightarrow  \\{\scriptstyle RM} \end{array} \beta B x \Longrightarrow \beta \gamma x = \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="198" HEIGHT="82" ALIGN="MIDDLE" BORDER="0"
+ SRC="img382.png"
+ ALT="$ S \begin{array}{c} * \Longrightarrow  {\scriptstyle RM} \end{array} \beta B x \Longrightarrow \beta \gamma x = \alpha$"></SPAN></I></DIV>
+<P></DIV><P></P>
+Escribiremos: 
+<!-- MATH
+ $handle(\alpha) = (B \rightarrow \gamma, \beta \gamma)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="199" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img383.png"
+ ALT="$ handle(\alpha) = (B \rightarrow \gamma, \beta \gamma)$"></SPAN>. La función <SPAN CLASS="MATH"><IMG
+ WIDTH="57" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img384.png"
+ ALT="$ handle$"></SPAN> tiene dos componentes:
+<!-- MATH
+ $handle_1(\alpha) = B \rightarrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="164" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img385.png"
+ ALT="$ handle_1(\alpha) = B \rightarrow \gamma$"></SPAN> y 
+<!-- MATH
+ $handle_2(\alpha) =  \beta \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="134" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img386.png"
+ ALT="$ handle_2(\alpha) = \beta \gamma$"></SPAN>
+
+<P>
+Si dispusieramos de un procedimiento que fuera capaz de identificar el mango,
+esto es, de detectar la regla y el lugar en el que se posiciona, tendríamos un
+mecanismo para construir un analizador. 
+Lo curioso es que, a menudo es posible encontrar un autómata finito que
+reconoce el lenguaje de los prefijos <!-- MATH
+ $\beta \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="26" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img387.png"
+ ALT="$ \beta \gamma$"></SPAN> que terminan 
+en el mango. Con mas precisión, del lenguaje:
+
+<P>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">39</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">3</SPAN></B> &nbsp; 
+<I>El conjunto de <SPAN  CLASS="textbf">prefijos viables</SPAN> de una gramática G se define
+como  el conjunto:
+</I>
+<P>
+<DIV ALIGN="CENTER"><I><!-- MATH
+ $PV = \left \{ \delta \in (\Sigma \cup V)* :  \exists S \begin{array}{c} *\\\Longrightarrow \\{\scriptstyle RM} \end{array} \alpha\  y\ \delta\ es\ un\ prefijo\ de\  handle_2(\alpha) \right \}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="531" HEIGHT="82" ALIGN="MIDDLE" BORDER="0"
+ SRC="img481.png"
+ ALT="$ PV = \left \{ \delta \in (\Sigma \cup V)* : \exists S \begin{array}{c} * \Lo...
+... \end{array} \alpha y \delta es un prefijo de handle_2(\alpha) \right \}$"></SPAN></I></DIV></DIV><P></P>
+
+<P>
+Esto es, es el lenguaje de los prefijos viables es el 
+conjunto de frases que son prefijos de 
+<!-- MATH
+ $handle_2(\alpha)) =  \beta \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="140" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img389.png"
+ ALT="$ handle_2(\alpha)) = \beta \gamma$"></SPAN>, 
+siendo <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img79.png"
+ ALT="$ \alpha$"></SPAN> una forma sentencial derecha (<!-- MATH
+ $\alpha \in FSD$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="78" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img390.png"
+ ALT="$ \alpha \in FSD$"></SPAN>). Los
+elementos de <SPAN CLASS="MATH"><IMG
+ WIDTH="32" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img391.png"
+ ALT="$ PV$"></SPAN> se denominan prefijos viables.
+
+<P>
+Obsérvese que si se dispone de un autómata que reconoce 
+<SPAN CLASS="MATH"><IMG
+ WIDTH="32" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img391.png"
+ ALT="$ PV$"></SPAN> entonces se dispone de un mecanismo para investigar el lugar y 
+el aspecto que pueda tener el mango. Si damos como 
+entrada la sentencia <!-- MATH
+ $\alpha = \beta \gamma x$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="70" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img380.png"
+ ALT="$ \alpha = \beta \gamma x$"></SPAN>
+a dicho autómata, el autómata aceptará la cadena <!-- MATH
+ $\beta \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="26" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img387.png"
+ ALT="$ \beta \gamma$"></SPAN> pero rechazará
+cualquier extensión del prefijo. Ahora sabemos que el mango 
+será alguna regla de producción de <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img45.png"
+ ALT="$ G$"></SPAN> cuya parte derecha 
+sea un sufijo de  <!-- MATH
+ $\beta \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="26" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img387.png"
+ ALT="$ \beta \gamma$"></SPAN>.
+
+<P>
+<P>
+<DIV><A NAME="definition:slrautomata"><B>Definición  <SPAN CLASS="arabic">39</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">4</SPAN></B></A> &nbsp; 
+<I>El siguiente autómata finito no determinista puede ser utilizado para
+reconocer el lenguaje de los prefijos viables PV:
+</I>
+<UL>
+<LI><!-- MATH
+ $Alfabeto = V \cup \Sigma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="143" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img482.png"
+ ALT="$ Alfabeto = V \cup \Sigma$"></SPAN>
+</LI>
+<LI>Los estados del autómata se denominan LR(0) items. Son parejas formadas
+por una regla de producción de la gramática y una posición en la parte derecha 
+de la regla de producción. Por ejemplo, <!-- MATH
+ $(E \rightarrow E + E, 2)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="125" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img392.png"
+ ALT="$ (E \rightarrow E + E, 2)$"></SPAN> sería un
+LR(0) item para la gramática de las expresiones.
+
+<P>
+Conjunto de Estados:
+
+<P>
+<!-- MATH
+ $Q =  \left \{ (A \rightarrow \alpha, n) :  A \rightarrow \alpha \in P,\ n \le |\alpha| \right \}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="309" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img393.png"
+ ALT="$ Q = \left \{ (A \rightarrow \alpha, n) : A \rightarrow \alpha \in P, n \le \vert\alpha\vert \right \}$"></SPAN>
+
+<P>
+La notación <!-- MATH
+ $\mid \alpha \mid$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="35" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img394.png"
+ ALT="$ \mid \alpha \mid$"></SPAN> denota la longitud de la cadena <!-- MATH
+ $\mid \alpha \mid$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="35" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img394.png"
+ ALT="$ \mid \alpha \mid$"></SPAN>.
+ En vez de la notación <!-- MATH
+ $(A \rightarrow \alpha, n)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="88" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img395.png"
+ ALT="$ (A \rightarrow \alpha, n)$"></SPAN> escribiremos: 
+ <!-- MATH
+ $A \rightarrow \beta _\uparrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="72" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img396.png"
+ ALT="$ A \rightarrow \beta _\uparrow \gamma$"></SPAN> <SPAN CLASS="MATH"><IMG
+ WIDTH="34" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img397.png"
+ ALT="$ = \alpha$"></SPAN>, 
+ donde la flecha ocupa el lugar indicado por el número <!-- MATH
+ $n = \mid \beta \mid$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="64" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img398.png"
+ ALT="$ n = \mid \beta \mid$"></SPAN> :
+</LI>
+<LI>Función de transición:
+
+<P>
+<!-- MATH
+ $\delta(A \rightarrow \alpha _\uparrow X \beta, X) = A \rightarrow \alpha X _\uparrow \beta\ \forall X \in  V \cup \Sigma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="342" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img399.png"
+ ALT="$ \delta(A \rightarrow \alpha _\uparrow X \beta, X) = A \rightarrow \alpha X _\uparrow \beta \forall X \in V \cup \Sigma$"></SPAN> 
+
+<P>
+<!-- MATH
+ $\delta(A \rightarrow \alpha _\uparrow B \beta, \epsilon) = B \rightarrow \gamma  \forall B \in  V$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="259" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img483.png"
+ ALT="$ \delta(A \rightarrow \alpha _\uparrow B \beta, \epsilon) = B \rightarrow \gamma \forall B \in V$"></SPAN> 
+</LI>
+<LI>Estado de arranque: Se añade la ``superregla'' <!-- MATH
+ $S' \rightarrow S$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="60" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img401.png"
+ ALT="$ S' \rightarrow S$"></SPAN> a la gramática <!-- MATH
+ $G = (\Sigma,V,P,S)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img46.png"
+ ALT="$ G =(\Sigma,V,P,S)$"></SPAN>. El LR(0) item 
+<!-- MATH
+ $S' \rightarrow _\uparrow S$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="67" HEIGHT="35" ALIGN="MIDDLE" BORDER="0"
+ SRC="img402.png"
+ ALT="$ S' \rightarrow _\uparrow S$"></SPAN> es el estado de arranque.
+</LI>
+<LI>Todos los estados definidos (salvo el de muerte) son de aceptación.
+</LI>
+</UL></DIV><P></P>
+
+<P>
+Denotaremos por <SPAN CLASS="MATH"><IMG
+ WIDTH="52" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img403.png"
+ ALT="$ LR(0)$"></SPAN> a este autómata. Sus estados se denominan <!-- MATH
+ $LR(0)-items$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="117" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img404.png"
+ ALT="$ LR(0)-items$"></SPAN>. La idea es que este
+autómata nos ayuda a reconocer los prefijos viables <SPAN CLASS="MATH"><IMG
+ WIDTH="32" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img391.png"
+ ALT="$ PV$"></SPAN>.
+
+<P>
+Una vez que se tiene un autómata que reconoce los prefijos viables es posible construir un analizador sintáctico que construye una antiderivación a derechas. La estrategia consiste en ``alimentar'' el autómata con la forma sentencial derecha. El lugar en el que el autómata se detiene, rechazando indica el lugar exacto en el que termina el <SPAN  CLASS="textbf">handle</SPAN> de dicha forma.
+
+<P>
+<P>
+<DIV><A NAME="example:asb"><B>Ejemplo  <SPAN CLASS="arabic">39</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">1</SPAN></B></A> &nbsp; 
+<I>Consideremos la gramática:
+</I>
+<P>
+<I>
+<BR>
+<BR>
+</I>
+<DIV ALIGN="CENTER"><TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><I>
+S      <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> a S b</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I> 
+S      <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img44.png"
+ ALT="$ \epsilon$"></SPAN></I></TD>
+</TR>
+</TABLE></DIV><I>
+<BR>
+<BR>
+</I>
+<P>
+<I>El lenguaje generado por esta gramática es <!-- MATH
+ $L(G) = \{ a^n b^n\ :\ n \ge 0 \}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="188" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img405.png"
+ ALT="$ L(G) = \{ a^n b^n : n \ge 0 \}$"></SPAN>
+Es bien sabido que el lenguaje <SPAN CLASS="MATH"><IMG
+ WIDTH="44" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img62.png"
+ ALT="$ L(G)$"></SPAN> no es regular.
+La figura <A HREF="#fig:nfa">39.1</A> muestra 
+el <A NAME="19321"></A><SPAN  CLASS="textbf">autómata finito no determinista con <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img44.png"
+ ALT="$ \epsilon$"></SPAN>-transiciones</SPAN> 
+(<A NAME="19323"></A><SPAN  CLASS="textbf">NFA</SPAN>)
+que reconoce los prefijos viables de esta gramática, construido
+de acuerdo con el algoritmo <A HREF="#definition:slrautomata">39.2.4</A>.
+</I>
+<P>
+<DIV ALIGN="CENTER"></DIV>
+<DIV ALIGN="CENTER"><A NAME="fig:nfa"></A><A NAME="18404"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figura 39.1:</STRONG>
+NFA que reconoce los prefijos viables</CAPTION>
+<TR><TD></TD></TR>
+</TABLE>
+</DIV>
+<DIV ALIGN="CENTER"></DIV></DIV><P></P>
+
+<P>
+<P>
+<DIV><B>Ejercicio  <SPAN CLASS="arabic">39</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Simule el comportamiento del autómata sobre la entrada <SPAN CLASS="MATH"><IMG
+ WIDTH="38" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img407.png"
+ ALT="$ aabb$"></SPAN>. ¿Donde rechaza?
+¿En que estados está el autómata en el momento del rechazo?. ¿Qué etiquetas tienen?
+Haga también las
+trazas del autómata para las entradas <SPAN CLASS="MATH"><IMG
+ WIDTH="50" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img408.png"
+ ALT="$ aaSbb$"></SPAN> y <SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img409.png"
+ ALT="$ aSb$"></SPAN>. ¿Que antiderivación 
+ha construido el autómata con sus sucesivos rechazos? ¿Que terminales
+se puede esperar que hayan en la entrada cuando se produce el rechazo
+del autómata?</I></DIV><P></P>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4999"
+<A NAME="tex2html5003"
   HREF="node168.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4993"
-  HREF="node163.html">
+<A NAME="tex2html4997"
+  HREF="node165.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4987"
+<A NAME="tex2html4991"
   HREF="node166.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4995"
-  HREF="node226.html">
+<A NAME="tex2html4999"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4997"
-  HREF="node229.html">
+<A NAME="tex2html5001"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -343,17 +692,17 @@ clase <code>Calc</code>. A continuación siguen las subrutinas de soporte:
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5000"
-  HREF="node168.html">Algoritmo de Análisis LR</A>
-<B>Sup:</B> <A NAME="tex2html4994"
-  HREF="node163.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4988"
-  HREF="node166.html">Construcción de las Tablas</A>
+<B> Sig:</B> <A NAME="tex2html5004"
+  HREF="node168.html">Construcción de las Tablas</A>
+<B>Sup:</B> <A NAME="tex2html4998"
+  HREF="node165.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4992"
+  HREF="node166.html">Parse::Yapp: Ejemplo de Uso</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-06-03</I>
+2013-06-08</I>
 </ADDRESS>
 </BODY>
 </HTML>

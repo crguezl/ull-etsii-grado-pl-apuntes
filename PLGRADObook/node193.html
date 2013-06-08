@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>El Generador de Analizadores byacc</TITLE>
-<META NAME="description" CONTENT="El Generador de Analizadores byacc">
+<TITLE>Diseño de Analizadores con Parse::Eyapp</TITLE>
+<META NAME="description" CONTENT="Diseño de Analizadores con Parse::Eyapp">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,28 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
+<LINK REL="next" HREF="node194.html">
 <LINK REL="previous" HREF="node192.html">
-<LINK REL="up" HREF="node163.html">
+<LINK REL="up" HREF="node165.html">
 <LINK REL="next" HREF="node194.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5368"
+<A NAME="tex2html5375"
   HREF="node194.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5362"
-  HREF="node163.html">
+<A NAME="tex2html5369"
+  HREF="node165.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5358"
+<A NAME="tex2html5363"
   HREF="node192.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5364"
-  HREF="node226.html">
+<A NAME="tex2html5371"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5366"
-  HREF="node229.html">
+<A NAME="tex2html5373"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -87,249 +88,328 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5369"
-  HREF="node194.html">Análisis Sintáctico Ascendente en</A>
-<B>Sup:</B> <A NAME="tex2html5363"
-  HREF="node163.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5359"
-  HREF="node192.html">Práctica: Construcción del AST</A>
+<B> Sig:</B> <A NAME="tex2html5376"
+  HREF="node194.html">Práctica: Construcción del AST</A>
+<B>Sup:</B> <A NAME="tex2html5370"
+  HREF="node165.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5364"
+  HREF="node192.html">Descripción Eyapp del Lenguaje</A>
 <B> Con:</B> 
-<A NAME="tex2html5364"
-  HREF="node226.html">
+<A NAME="tex2html5371"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5366"
-  HREF="node229.html">
+<A NAME="tex2html5373"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION069300000000000000000">
-El Generador de Analizadores <TT>byacc</TT></A>
+<H1><A NAME="SECTION069280000000000000000"></A>
+<A NAME="section:consejoseyapp"></A>
+<BR>
+Diseño de Analizadores con <TT>Parse::Eyapp</TT>
 </H1>
-Existe una version del <code>yacc</code> de Berkeley que permite producir 
-código para Perl:
-<PRE>
-&gt; byacc -V
-byacc: Berkeley yacc version 1.8.2 (C or perl)
-</PRE>
-Se trata por tanto de un generador de analizadores LALR.
-Es bastante compatible con <code>AT&amp;T yacc</code>. Puedes encontrar 
-una versión en formato <code>tar.gz</code> en nuestro servidor
-<A NAME="tex2html456"
-  HREF="http://nereida.deioc.ull.es/~pl/pyacc-pack.tgz">http://nereida.deioc.ull.es/&#732;pl/pyacc-pack.tgz</A>
-o también desde 
-<A NAME="tex2html457"
-  HREF="http://www.perl.com/CPAN/src/misc/">http://www.perl.com/CPAN/src/misc/</A>.
+A la hora de construir un analizador sintáctico tenga en cuenta 
+las siguientes normas de buena programación:
 
 <P>
-El formato de llamada es:
+
+<OL>
+<LI>Comienze trabajando en el cuerpo de la gramática.
+</LI>
+<LI>Olvídese al principio del 
+analizador léxico. Su primer objetivo es tener una gramática limpia
+de conflictos y que reconozca el lenguaje dado. 
+</LI>
+<LI>Sustituya las repeticiones
+BNF por listas usando los operadores <code>eyapp</code> <code>+</code>, <code>*</code> y sus variantes con separadores. 
+Si una variable describe una lista de <code>cosas</code> pongale un adjetivo adecuado como
+<code>cosaslist</code>. 
+<SPAN ID="txt19154">Ponga nombres significativos a las variables y terminales</SPAN>. 
+No los llame <code>d1</code>, <code>d2</code>, etc.
+</LI>
+<LI>Si tiene un elemento opcional en la BNF, por ejemplo, en la regla: 
+
+<P>
+functiondefinition <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img497.png"
+ ALT="$ [$"></SPAN> basictype <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img498.png"
+ ALT="$ ]$"></SPAN> functionheader functionbody
+
+<P>
+use el operador <code>?</code>.
+</LI>
+<LI>Cada par de reglas que introduzca vuelva a recompilar con <code>eyapp</code> la gramática
+para ver si se introducido ambiguedad. Cuando estoy editando la gramática
+suelo escribir a menudo la orden 
+
+<P>
+<code>:!eyapp %</code> 
+
+<P>
+para recompilar:
+
+<P>
+<BR>
+<BR>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=411><PRE>
+     15
+     16 declaratorlist: declarator +
+     17 ;
+     18 functiondefinition: 
+     19    basictype functionheader functionbody
+     20  | functionheader functionbody
+     21 ;
+     22
+     23 %%
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+:!eyapp %
+</PRE></TD>
+</TR>
+</TABLE>
+<BR>
+<BR>
+
+<P>
+Esto llama a <code>eyapp</code> con el fichero bajo edición. Si hay errores o conflictos (esto es,
+hemos introducido ambiguedad) los detectarémos enseguida.
+Procure detectar la aparición de un conflicto lo antes posible.
+Observe el sangrado del ejemplo. Es el que le recomiendo.
+</LI>
+<LI>Cuando esté en el proceso de construcción de la gramática y aún le queden
+por rellenar variables sintácticas, declárelas como terminales mediante
+<code>%token</code>. De esta manera
+evitará las quejas de <code>eyapp</code>.
+
+<P>
+</LI>
+<LI><B>Resolución de Ambiguedades y Conflictos</B>
+
+<P>
+Las operaciones de asignación tienen la prioridad mas baja,
+seguidas  de las lógicas, los test de igualdad,
+los de comparación, a continuación las aditivas, multiplicativas y por 
+último las operaciones de tipo <code>unary</code> y <code>primary</code>.
+Exprese la asociatividad natural y la
+prioridad especificada usando
+los mecanismos que <code>eyapp</code> provee al efecto: <code>%left</code>, <code>%right</code>,
+<code>%nonassoc</code> y <code>%prec</code>.
+
+<P>
+</LI>
+<LI>La gramática de SimpleC es ambigua, ya que para una sentencia como 
+
+<P>
+<DIV ALIGN="CENTER">
+if <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img506.png"
+ ALT="$ E_1$"></SPAN> then if <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img507.png"
+ ALT="$ E_2$"></SPAN> then <SPAN CLASS="MATH"><IMG
+ WIDTH="23" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img280.png"
+ ALT="$ S_1$"></SPAN> else <SPAN CLASS="MATH"><IMG
+ WIDTH="23" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img281.png"
+ ALT="$ S_2$"></SPAN>
+</DIV>
+
+<P>
+existen dos árboles posibles: uno que asocia el ``else'' con el primer ``if'' y otra
+que lo asocia con el segundo. Los dos árboles corresponden a las
+dos posibles parentizaciones:
+
+<P>
+<DIV ALIGN="CENTER">
+if <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img506.png"
+ ALT="$ E_1$"></SPAN> then (if <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img507.png"
+ ALT="$ E_2$"></SPAN> then <SPAN CLASS="MATH"><IMG
+ WIDTH="23" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img280.png"
+ ALT="$ S_1$"></SPAN> else <SPAN CLASS="MATH"><IMG
+ WIDTH="23" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img281.png"
+ ALT="$ S_2$"></SPAN>)
+
+</DIV>
+
+<P>
+Esta es la regla de prioridad usada en la mayor parte de los lenguajes:
+un ``else'' casa con el ``if'' mas cercano. La otra posible parentización
+es:
+
+<P>
+<DIV ALIGN="CENTER">
+if <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img506.png"
+ ALT="$ E_1$"></SPAN> then (if <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img507.png"
+ ALT="$ E_2$"></SPAN> then <SPAN CLASS="MATH"><IMG
+ WIDTH="23" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img280.png"
+ ALT="$ S_1$"></SPAN>) else <SPAN CLASS="MATH"><IMG
+ WIDTH="23" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img281.png"
+ ALT="$ S_2$"></SPAN>
+</DIV>
+
+<P>
+<SPAN  CLASS="textbf">La conducta por defecto de <TT>eyapp</TT> es parentizar a derechas</SPAN>.
+El generador  <TT>eyapp</TT>  nos informará del conflicto pero si no se le indica 
+como resolverlo parentizará a derechas.
+Resuelva este conflicto.
+
+<P>
+</LI>
+<LI><I>¿Que clase de árbol debe producir el analizador?</I>
+La respuesta es que sea lo mas abstracto posible.
+Debe 
+
+<UL>
+<LI>Contener toda la información necesaria para el manejo eficiente
+de las fases subsiguientes: Análisis de ámbito, Comprobación de tipos,
+Optimización independiente de la máquina, etc.
+</LI>
+<LI>Ser uniforme
+</LI>
+<LI>Legible (human-friendly)
+</LI>
+<LI>No contener nodos que no portan información. 
+</LI>
+</UL>
+
+<P>
+El siguiente ejemplo muestra una versión aceptable de árbol abstracto.
+Cuando se le proporciona el programa de entrada:
+
+<P>
 <PRE>
-byacc  [ -CPcdlrtv ] [ -b file_prefix ] [ -p symbol_prefix ] filename
+nereida:~/doc/casiano/PLBOOK/PLBOOK/code&gt; cat -n prueba5.c
+     1  int f(int a)
+     2  {
+     3    if (a&gt;0)
+     4      a = f(a-1);
+     5  }
 </PRE>
 
 <P>
-Las opciones <code>C</code> o <code>c</code> permiten generar código C. Usando <code>-P</code>
-se genera código Perl. Las opciones <code>d</code> y <code>v</code> funcionan como es usual en 
-<code>yacc</code>. Con <code>t</code> se incorpora código para la depuración de la gramática.
-Si se especifica <code>l</code> el código del usuario no es insertado.
-La opción <code>r</code> permite generar ficheros separados para el código y las tablas. No la use
-con Perl.
+El siguiente árbol ha sido producido por un analizador usando la directiva 
+<code>%tree</code> y añadiendo las correspondientes acciones de <code>bypass</code>.
+Puede considerarse un ejemplo aceptable de AST:
 
 <P>
-Fichero conteniendo la gramática:
 <PRE>
-%{
-%}
-
-%token INT EOL
-%token LEFT_PAR RIGHT_PAR
-%left PLUS MINUS
-%left MULT DIV
-
-%%
-start:	|
-		start input
-	;
-
-input:		expr EOL	{ print $1 . "\n"; }
-	|	EOL
-	;
-
-expr:		INT		{ $p-&gt;mydebug("INT -&gt; Expr!"); $$ = $1; }
-	|	expr PLUS expr	{ $p-&gt;mydebug("PLUS -&gt; Expr!"); $$ = $1 + $3; }
-	|	expr MINUS expr	{ $p-&gt;mydebug("MINUS -&gt; Expr!"); $$ = $1 - $3; }
-	|	expr MULT expr	{ $p-&gt;mydebug("MULT -&gt; Expr!"); $$ = $1 * $3; }
-	|	expr DIV expr	{ $p-&gt;mydebug("DIV -&gt; Expr!"); $$ = $1 / $3; }
-	|	LEFT_PAR expr RIGHT_PAR { $p-&gt;mydebug("PARENS -&gt; Expr!"); $$ = $2; }
-	;
-%%
-
-sub yyerror {
-    my ($msg, $s) = @_;
-    my ($package, $filename, $line) = caller;
-    
-    die "$msg at &lt;DATA&gt; \n$package\n$filename\n$line\n";
-}
-
-sub mydebug {
-    my $p = shift;
-    my $msg = shift;
-    if ($p-&gt;{'yydebug'})
-    {
-        print "$msg\n";
-    }
-}
+nereida:~/doc/casiano/PLBOOK/PLBOOK/code&gt; eyapp Simple2 ;\
+                                  usesimple2.pl prueba5.c
+PROGRAM(
+  TYPEDFUNC(
+    INT(TERMINAL[INT:1]),
+    FUNCTION(
+      TERMINAL[f:1],
+      PARAMS(
+        PARAM(
+          INT(TERMINAL[INT:1]),
+          TERMINAL[a:1],
+          ARRAYSPEC
+        )
+      ),
+      BLOCK(
+        DECLARATIONS,
+        STATEMENTS(
+          IF(
+            GT(
+              VAR(TERMINAL[a:3]),
+              INUM(TERMINAL[0:3])
+            ),
+            ASSIGN(
+              VAR(TERMINAL[a:4]),
+              FUNCTIONCALL(
+                TERMINAL[f:4],
+                ARGLIST(
+                  MINUS(
+                    VAR(TERMINAL[a:4]),
+                    INUM(TERMINAL[1:4])
+                  )
+                ) # ARGLIST
+              ) # FUNCTIONCALL
+            ) # ASSIGN
+          ) # IF
+        ) # STATEMENTS
+      ) # BLOCK
+    ) # FUNCTION
+  ) # TYPEDFUNC
+) # PROGRAM
 </PRE>
-La compilación con <code>byacc</code> del fichero <code>calc.y</code>
-conteniendo la descripción de la gramática produce el módulo 
-Perl conteniendo el analizador.
-<PRE>
-&gt; ls -l
-total 12
--rw-r-----    1 pl       casiano        47 Dec 29  2002 Makefile
--rw-r-----    1 pl       casiano       823 Dec 29  2002 calc.y
--rwxr-x--x    1 pl       casiano       627 Nov 10 15:37 tokenizer.pl
-&gt; cat Makefile
-MyParser.pm: calc.y
-        byacc -d -P MyParser $&lt;
-
-&gt; make
-byacc -d -P MyParser calc.y
-&gt; ls -ltr
-total 28
--rw-r-----    1 pl       casiano       823 Dec 29  2002 calc.y
--rw-r-----    1 pl       casiano        47 Dec 29  2002 Makefile
--rwxr-x--x    1 pl       casiano       627 Nov 10 15:37 tokenizer.pl
--rw-rw----    1 pl       users          95 Nov 16 12:49 y.tab.ph
--rw-rw----    1 pl       users        9790 Nov 16 12:49 MyParser.pm
-</PRE>
-Observe que la opción <code>-P</code> es la que permite producir código Perl.
-Anteriormente se usaba la opción <code>-p</code>. Esto se hizo para mantener la 
-compatibilidad con otras versiones de <code>yacc</code> en las que la opción <code>-p</code>
-se usa para cambiar el prefijo por defecto (<code>yy</code>). Ese es el significado actual
-de la opción <code>-p</code> en <code>perl-byacc</code>.
 
 <P>
-El fichero <code>y.tab.ph</code> generado contiene las definiciones de los <SPAN  CLASS="textbf">tokens</SPAN>:
+Es deseable  darle una estructura uniforme al árbol. Por ejemplo, como consecuencia 
+de que la gramática admite funciones con declaración implícita del tipo
+retornado cuando este es entero
+
+<P>
 <PRE>
- cat y.tab.ph
-$INT=257;
-$EOL=258;
-$LEFT_PAR=259;
-$RIGHT_PAR=260;
-$PLUS=261;
-$MINUS=262;
-$MULT=263;
-$DIV=264;
+ 1  definition:
+ 2      funcDef { $_[1]-&gt;type("INTFUNC"); $_[1] }
+ 3    | %name TYPEDFUNC
+ 4      basictype funcDef
+ 5    | declaration { $_[1] }
+ 6  ;
 </PRE>
-El programa <code>tokenizer.pl</code> contiene la llamada al analizador 
-y la definición del analizador léxico:
-<PRE>
-&gt; cat tokenizer.pl
-#!/usr/local/bin/perl5.8.0
+</LI>
+</OL>
 
-require 5.004;
-use strict;
-use Parse::YYLex;
-use MyParser;
-
-print STDERR "Version $Parse::ALex::VERSION\n";
-
-my (@tokens) = ((LEFT_PAR =&gt; '\(',
-                 RIGHT_PAR =&gt; '\)',
-                 MINUS =&gt; '-',
-                 PLUS =&gt; '\+',
-                 MULT =&gt; '\*',
-                 DIV =&gt; '/',
-                 INT =&gt; '[1-9][0-9]*',
-                 EOL =&gt; '\n',
-                 ERROR =&gt; '.*'),
-                sub { die "!can\'t analyze: \"$_[1]\"\n!"; });
-
-my $lexer = Parse::YYLex-&gt;new(@tokens);
-
-sub yyerror
-{
-    die "There was an error:" . join("\n", @_). "\n";
-}
-
-my $debug = 0;
-my $parser = new MyParser($lexer-&gt;getyylex(), \&amp;MyParser::yyerror , $debug);
-$lexer-&gt;from(\*STDIN);
-$parser-&gt;yyparse(\*STDIN);
-</PRE>
-El módulo <code>Parse::YYLex</code> contiene una versión de <code>Parse::Lex</code> 
-que ha sido adaptada para funcionar con  <code>byacc</code>. Todas las versiones de <code>yacc</code> 
-esperan que el analizador léxico devuelva un <SPAN  CLASS="textbf">token</SPAN> numérico, mientras que 
-<code>Parse::Lex</code> devuelbe un objeto de la clase <SPAN  CLASS="textbf">token</SPAN>.
-Veamos un ejemplo de ejecución:
-<PRE>
-&gt; tokenizer.pl
-Version 2.15
-yydebug: state 0, reducing by rule 1 (start :)
-yydebug: after reduction, shifting from state 0 to state 1
-3*(5-9)
-yydebug: state 1, reading 257 (INT)
-yydebug: state 1, shifting to state 2
-yydebug: state 2, reducing by rule 5 (expr : INT)
-INT -&gt; Expr!
-yydebug: after reduction, shifting from state 1 to state 6
-yydebug: state 6, reading 263 (MULT)
-yydebug: state 6, shifting to state 11
-yydebug: state 11, reading 259 (LEFT_PAR)
-yydebug: state 11, shifting to state 4
-yydebug: state 4, reading 257 (INT)
-yydebug: state 4, shifting to state 2
-yydebug: state 2, reducing by rule 5 (expr : INT)
-INT -&gt; Expr!
-yydebug: after reduction, shifting from state 4 to state 7
-yydebug: state 7, reading 262 (MINUS)
-yydebug: state 7, shifting to state 10
-yydebug: state 10, reading 257 (INT)
-yydebug: state 10, shifting to state 2
-yydebug: state 2, reducing by rule 5 (expr : INT)
-INT -&gt; Expr!
-yydebug: after reduction, shifting from state 10 to state 15
-yydebug: state 15, reading 260 (RIGHT_PAR)
-yydebug: state 15, reducing by rule 7 (expr : expr MINUS expr)
-MINUS -&gt; Expr!
-yydebug: after reduction, shifting from state 4 to state 7
-yydebug: state 7, shifting to state 13
-yydebug: state 13, reducing by rule 10 (expr : LEFT_PAR expr RIGHT_PAR)
-PARENS -&gt; Expr!
-yydebug: after reduction, shifting from state 11 to state 16
-yydebug: state 16, reducing by rule 8 (expr : expr MULT expr)
-MULT -&gt; Expr!
-yydebug: after reduction, shifting from state 1 to state 6
-yydebug: state 6, reading 258 (EOL)
-yydebug: state 6, shifting to state 8
-yydebug: state 8, reducing by rule 3 (input : expr EOL)
--12
-yydebug: after reduction, shifting from state 1 to state 5
-yydebug: state 5, reducing by rule 2 (start : start input)
-yydebug: after reduction, shifting from state 0 to state 1
-yydebug: state 1, reading 0 (end-of-file)
-</PRE>
+<P>
+se producen dos tipos de árboles. Es conveniente
+convertir las definiciones de función con declaración 
+implícita en el mismo árbol que se obtiene con 
+declaración explícita. 
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5368"
+<A NAME="tex2html5375"
   HREF="node194.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5362"
-  HREF="node163.html">
+<A NAME="tex2html5369"
+  HREF="node165.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5358"
+<A NAME="tex2html5363"
   HREF="node192.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5364"
-  HREF="node226.html">
+<A NAME="tex2html5371"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5366"
-  HREF="node229.html">
+<A NAME="tex2html5373"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -376,17 +456,17 @@ yydebug: state 1, reading 0 (end-of-file)
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5369"
-  HREF="node194.html">Análisis Sintáctico Ascendente en</A>
-<B>Sup:</B> <A NAME="tex2html5363"
-  HREF="node163.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5359"
-  HREF="node192.html">Práctica: Construcción del AST</A>
+<B> Sig:</B> <A NAME="tex2html5376"
+  HREF="node194.html">Práctica: Construcción del AST</A>
+<B>Sup:</B> <A NAME="tex2html5370"
+  HREF="node165.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5364"
+  HREF="node192.html">Descripción Eyapp del Lenguaje</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-06-03</I>
+2013-06-08</I>
 </ADDRESS>
 </BODY>
 </HTML>

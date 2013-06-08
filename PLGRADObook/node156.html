@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Manejo en jison de Atributos Heredados</TITLE>
-<META NAME="description" CONTENT="Manejo en jison de Atributos Heredados">
+<TITLE>Precedencia y Asociatividad</TITLE>
+<META NAME="description" CONTENT="Precedencia y Asociatividad">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node157.html">
 <LINK REL="previous" HREF="node155.html">
-<LINK REL="up" HREF="node143.html">
+<LINK REL="up" HREF="node145.html">
 <LINK REL="next" HREF="node157.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4802"
+<A NAME="tex2html4808"
   HREF="node157.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4796"
-  HREF="node143.html">
+<A NAME="tex2html4802"
+  HREF="node145.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4790"
+<A NAME="tex2html4796"
   HREF="node155.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4798"
-  HREF="node226.html">
+<A NAME="tex2html4804"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4800"
-  HREF="node229.html">
+<A NAME="tex2html4806"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,411 +88,369 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4803"
-  HREF="node157.html">Definición Dirigida por la</A>
-<B>Sup:</B> <A NAME="tex2html4797"
-  HREF="node143.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4791"
-  HREF="node155.html">Esquemas de Traducción</A>
+<B> Sig:</B> <A NAME="tex2html4809"
+  HREF="node157.html">Esquemas de Traducción</A>
+<B>Sup:</B> <A NAME="tex2html4803"
+  HREF="node145.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4797"
+  HREF="node155.html">El módulo Generado por</A>
 <B> Con:</B> 
-<A NAME="tex2html4798"
-  HREF="node226.html">
+<A NAME="tex2html4804"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4800"
-  HREF="node229.html">
+<A NAME="tex2html4806"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION068130000000000000000"></A>
-<A NAME="section:heredados"></A>
+<H1><A NAME="SECTION068110000000000000000"></A>
+<A NAME="section:prioridades"></A>
 <BR>
-Manejo en <TT>jison</TT> de Atributos Heredados
+Precedencia y Asociatividad
 </H1>
+Recordemos que si al construir la tabla LALR,
+alguna de las entradas de la tabla resulta multievaluada, decimos
+que existe un conflicto.
+Si una de las acciones es de `reducción'' y la otra es de
+`desplazamiento'', se dice que hay un <A NAME="17820"></A><SPAN  CLASS="textbf">conflicto shift-reduce</SPAN> o
+<A NAME="17822"></A><SPAN  CLASS="textbf">conflicto de desplazamiento-reducción</SPAN>. Si las
+dos reglas indican una acción de reducción, decimos que tenemos un 
+<A NAME="17824"></A><SPAN  CLASS="textbf">conflicto reduce-reduce</SPAN> o de <A NAME="17826"></A><SPAN  CLASS="textbf">reducción-reducción</SPAN>.
+En caso de que no existan indicaciones específicas <SPAN  CLASS="textbf">jison</SPAN> resuelve
+los conflictos que aparecen en la construcción de la tabla utilizando
+las siguientes reglas:
 
 <P>
-Supongamos  que <code>jison</code> esta inmerso 
-en la construcción de la antiderivación a derechas y que la forma sentencial
-derecha en ese momento es:
 
-<P>
-<DIV ALIGN="CENTER">
-<!-- MATH
- $X_m \ldots X_1 X_0 Y_1 \ldots  Y_n a_1 \ldots a_0$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="225" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img461.png"
- ALT="$ X_m \ldots X_1 X_0 Y_1 \ldots Y_n a_1 \ldots a_0$"></SPAN>
-</DIV>
-
-<P>
-y que el mango es <!-- MATH
- $B \rightarrow Y_1 \ldots  Y_n$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="109" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img462.png"
- ALT="$ B \rightarrow Y_1 \ldots Y_n$"></SPAN> y en la entrada quedan por 
-procesar <!-- MATH
- $a_1 \ldots a_0$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="65" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img463.png"
- ALT="$ a_1 \ldots a_0$"></SPAN>.
-
-<P>
-No es posible acceder en <code>jison</code> a los valores de los atributos de los estados en la pila
-del analizador que se encuentran ``por debajo'' o si se quiere
-``a la izquierda'' de los estados asociados
-con la regla por la que se reduce. 
-
-<P>
-Vamos a usar un pequeño hack para acceder a los atributos asociados con símbolos vistos 
-en el pasado "remoto":
-<PRE>
-[~/jison/jison-inherited(grammar)]$ cat inherited.jison 
-%lex
-%%
-\s+                           {}
-(global|local|integer|float)  { return yytext; }
-[a-zA-Z_]\w*                  { return 'id'; }
-.                             { return yytext; }
-/lex
-%%
-D 
-  : C T L 
-  ;
-
-C
-  : global
-  | local
-  ; 
-  
-T
-  : integer
-  | float
-;
-
-L 
-  : L ',' id    { 
-                  console.log("L -&gt; L ',' id ("+yytext+")");
-                  var s =  eval('$$');
-                  console.log(s);
-                }
-  | id          {
-                  console.log("L -&gt; id ("+yytext+")");
-                  var s =  eval('$$');
-                  console.log(s);
-                }
-  ;
-%%
-</PRE>
-
-<P>
-Veamos un ejemplo de ejecución:
-
-<P>
-<PRE>
-[~/jison/jison-inherited(grammar)]$ cat input.txt 
-global integer a, b, c
-[~/jison/jison-inherited(grammar)]$ node inherited.js input.txt 
-L -&gt; id (a)
-[ null, 'global', 'integer', 'a' ]
-L -&gt; L ',' id (b)
-[ null, 'global', 'integer', 'a', ',', 'b' ]
-L -&gt; L ',' id (c)
-[ null, 'global', 'integer', 'a', ',', 'c' ]
-</PRE>
-
-<P>
-Esta forma de acceder a los atributos es especialmente útil cuando se 
-trabaja con <A NAME="17832"></A><SPAN  CLASS="textbf">atributos heredados</SPAN>. Esto es, cuando un atributo
-de un nodo del árbol sintáctico se computa en términos
-de valores de atributos de su padre y/o sus hermanos.
-Ejemplos de atributos heredados son la clase y tipo en la declaración
-de variables. 
-
-<P>
-Es importante darse cuenta que en cualquier derivación a derechas
-desde<code>D</code>, cuando se reduce por una de las reglas 
-
-<P>
-<DIV ALIGN="CENTER">
-L <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ \rightarrow$"></SPAN> id <SPAN CLASS="MATH"><IMG
- WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img73.png"
- ALT="$ \vert$"></SPAN> L<SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img454.png"
- ALT="$ _1$"></SPAN> ',' id
-
-</DIV>
-
-<P>
-el símbolo a la izquierda de L es T y el que esta a la izquierda de T es C.
-Considere, por ejemplo la derivación a derechas:
-
-<P>
-<DIV ALIGN="CENTER">
-D <!-- MATH
- $\Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img464.png"
- ALT="$ \Longrightarrow$"></SPAN> C T L <!-- MATH
- $\Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img464.png"
- ALT="$ \Longrightarrow$"></SPAN> C T L, id <!-- MATH
- $\Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img464.png"
- ALT="$ \Longrightarrow$"></SPAN> C T L, id, id
-<!-- MATH
- $\Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img464.png"
- ALT="$ \Longrightarrow$"></SPAN> C T id, id, id <!-- MATH
- $\Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img464.png"
- ALT="$ \Longrightarrow$"></SPAN> 
-<BR><!-- MATH
- $\Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img464.png"
- ALT="$ \Longrightarrow$"></SPAN> C float id, id, id <!-- MATH
- $\Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img464.png"
- ALT="$ \Longrightarrow$"></SPAN> local float id, id, id
-
-</DIV>
-
-<P>
-Observe que el orden de recorrido de <code>jison</code> es:
-<DIV ALIGN="CENTER">
-local float id, id, id <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img465.png"
- ALT="$ \Longleftarrow$"></SPAN> C float id, id <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img465.png"
- ALT="$ \Longleftarrow$"></SPAN>
-C T id, id, id <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img465.png"
- ALT="$ \Longleftarrow$"></SPAN>
-<BR><!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img465.png"
- ALT="$ \Longleftarrow$"></SPAN> C T L, id, id <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img465.png"
- ALT="$ \Longleftarrow$"></SPAN> C T L, id <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img465.png"
- ALT="$ \Longleftarrow$"></SPAN> C T L <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img465.png"
- ALT="$ \Longleftarrow$"></SPAN> D
-
-</DIV>
-
-<P>
-en la antiderivación, cuando el mango es una de las dos reglas 
-para listas de identificadores, L <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ \rightarrow$"></SPAN> id y L <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ \rightarrow$"></SPAN> L, id 
-es decir durante las tres ultimas antiderivaciones:
-
-<P>
-<DIV ALIGN="CENTER">
-C T L, id, id <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img465.png"
- ALT="$ \Longleftarrow$"></SPAN> C T L, id <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img465.png"
- ALT="$ \Longleftarrow$"></SPAN> C T L <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img465.png"
- ALT="$ \Longleftarrow$"></SPAN> D
-
-</DIV>
-
-<P>
-las variables a la izquierda del mango son
-T y C. Esto ocurre siempre. 
-Estas observaciones nos conducen al siguiente
-programa <code>jison</code>: 
-
-<P>
-<PRE>
-[~/jison/jison-inherited(deepstack)]$ cat inherited.jison 
-%lex
-%%
-\s+                           {}
-(global|local|integer|float)  { return yytext; }
-[a-zA-Z_]\w*                  { return 'id'; }
-.                             { return yytext; }
-/lex
-%%
-D 
-  : C T L 
-  ;
-
-C
-  : global
-  | local
-  ; 
-  
-T
-  : integer
-  | float
-  ;
-
-L 
-  : L ',' id    { 
-                  var s =  eval('$$');
-                  var b0 = s.length - 3;
-
-                  console.log("L -&gt; L ',' id ("+yytext+")");
-                  console.log($id + ' is of type ' + s[b0-1]);
-                  console.log(s[b0] + ' is of class ' + s[b0-2]);
-                }
-  | id          {
-                  var s =  eval('$$');
-                  var b0 = s.length - 1;
-
-                  console.log("L -&gt; id ("+yytext+")");
-                  console.log($id + ' is of type ' + s[b0-1]);
-                  console.log(s[b0] + ' is of class ' + s[b0-2]);
-                }
-  ;
-%%
-</PRE>
-
-<P>
-A continuación sigue un ejemplo de ejecución:
-
-<P>
-<PRE>
-[~/jison/jison-inherited(deepstack)]$ node inherited.js input.txt 
-L -&gt; id (a)
-a is of type integer
-a is of class global
-L -&gt; L ',' id (b)
-b is of type integer
-a is of class global
-L -&gt; L ',' id (c)
-c is of type integer
-a is of class global
-</PRE>
-
-<P>
-En este caso, existen varias alternativas simples
-a esta solución:
-
-<UL>
-<LI>Montar la lista de identificadores  en un array y ponerles el tipo y la clase de "golpe"
- en la regla de producción superior <code>D : C T L ;</code>
+<OL>
+<LI>Un conflicto <SPAN  CLASS="textbf">reduce-reduce</SPAN> se resuelve eligiendo la producción
+que se listó primero en la especificación de la gramática.
 </LI>
-<LI>usar variables visibles (globales o atributos del objeto parser, por ejemplo) 
-como <code>current_type</code>, <code>current_class</code>
+<LI>Un conflicto <SPAN  CLASS="textbf">shift-reduce</SPAN> se resuelve siempre en favor del <SPAN  CLASS="textbf">shift</SPAN>
+</LI>
+</OL>
+
+<P>
+Las declaraciones de precedencia y asociatividad mediante las
+palabras reservadas  <TT>%left</TT> ,  <TT>%right</TT> ,  <TT>%nonassoc</TT> 
+se utilizan para modificar estos criterios por defecto. 
+La declaración de  <TT>token</TT> s mediante la palabra
+reservada  <TT>%token</TT>  no modifica la precedencia. Si lo hacen las
+declaraciones realizadas usando las palabras  <TT>left</TT> ,  <TT>right</TT> 
+y  <TT>nonassoc</TT> . 
+
+<P>
+
+<OL>
+<LI>Los <SPAN  CLASS="textbf">tokens</SPAN> declarados  en la misma línea
+tienen igual precedencia e igual asociatividad. 
+La precedencia es mayor cuanto mas abajo 
+su posición en
+el texto. Así, en el ejemplo de la calculadora en la sección 
+<A HREF="node166.html#section:ejemplodeuso">39.1</A>, el <SPAN  CLASS="textbf">token</SPAN> <code>*</code> tiene 
+mayor precedencia que <code>+</code> pero la misma que <code>/</code>.
+</LI>
+<LI>La precedencia de una regla <!-- MATH
+ $A \rightarrow \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img51.png"
+ ALT="$ A \rightarrow \alpha$"></SPAN> se
+define como la del terminal mas a la derecha que aparece en
+<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img79.png"
+ ALT="$ \alpha$"></SPAN>. En el ejemplo, la producción 
+
+<P>
+<DIV ALIGN="CENTER">
+<code> expr : expr '+' expr</code> 
+
+</DIV>
+
+<P>
+tiene la precedencia del <SPAN  CLASS="textbf">token</SPAN> <code>+</code>.
+</LI>
+<LI>Para decidir en un conflicto <SPAN  CLASS="textbf">shift-reduce</SPAN> se comparan la precedencia 
+de la regla con la del terminal que va a ser desplazado. Si la de la
+regla es mayor se reduce
+si la del <SPAN  CLASS="textbf">token</SPAN> es mayor, se desplaza.
+</LI>
+<LI>Si en un conflicto <SPAN  CLASS="textbf">shift-reduce</SPAN> ambos la regla y el terminal que
+va a ser desplazado tiene la misma precedencia <SPAN  CLASS="textbf">jison</SPAN> considera la
+asociatividad, si es asociativa a izquierdas, reduce y si es asociativa
+a derechas desplaza. Si no es asociativa, genera un mensaje de error.
+<BR>
+Obsérvese que, en esta situación, la asociatividad de la regla y la del
+<SPAN  CLASS="textbf">token</SPAN> han de ser por fuerza, las mismas.  Ello es así, porque en
+<SPAN  CLASS="textbf">jison</SPAN> los <SPAN  CLASS="textbf">tokens</SPAN> con la misma precedencia se declaran en
+la misma línea y sólo se permite una declaración por línea.
+
+<P>
+</LI>
+<LI><SPAN  CLASS="textbf"> Por tanto es imposible declarar dos <SPAN  CLASS="textbf">tokens</SPAN> con diferente
+asociatividad y la misma precedencia</SPAN>.
+</LI>
+<LI>Es posible modificar la precedencia ``natural'' de una regla, calificándola
+con un <SPAN  CLASS="textbf">token</SPAN> específico.  para ello se escribe a la derecha de
+la regla <code>prec token</code>, donde <code>token</code> es un <SPAN  CLASS="textbf">token</SPAN> con
+la precedencia que deseamos. Vea el uso del <SPAN  CLASS="textbf">token</SPAN> <code>dummy</code>
+en el siguiente ejercicio.
+</LI>
+</OL>
+
+<P>
+Para ilustrar las reglas anteriores usaremos el siguiente 
+programa <code>jison</code>:
+
+<P>
 <PRE>
-C
-  : global { current_class = 'global'; }
-  | local  { current_class = 'local'; }
+[~/jison/jison-prec(ast)]$ cat -n precedencia.jison 
+ 1  %token NUMBER
+ 2  %left '@'
+ 3  %right '&amp;'  dummy
+ 4  %%
+ 5  s 
+ 6      : list      { console.log($list); }
+ 7      ;
+ 8  
+ 9  list
+10      :
+11                  {
+12                    $$ = [];
+13                  }
+14      | list '\n'
+15                  {
+16                    $$ = $1;
+17                  }
+18      | list e
+19                  {
+20                    $$ = $1;
+21                    $$.push($e);
+22                  }
+23      ;
+24  
+25  e : NUMBER
+26                  {
+27                    $$ = "NUMBER ("+yytext+")";
+28                  }
+29    | e '&amp;' e
+30                  {
+31                    $$ = [ "&amp;", $e1, $e2];
+32                  }
+33    | e '@' e %prec dummy
+34                  {
+35                    $$ = ["@", $e1, $e2];
+36                  }
+37    ;
+38  
+39  %%
+</PRE>            
+Obsérvese la siguiente ejecución:
+
+<P>
+<PRE>
+[~/jison/jison-prec(ast)]$ cat input.txt 
+2@3@4
+2&amp;3&amp;4
+[~/jison/jison-prec(ast)]$ node precedencia.js input.txt 
+[ [ '@', [ '@', 'NUMBER (2)', 'NUMBER (3)' ], 'NUMBER (4)' ],
+  [ '&amp;', 'NUMBER (2)', [ '&amp;', 'NUMBER (3)', 'NUMBER (4)' ] ] ]
 </PRE>
-y depués accederlas en las reglas de <code>L</code>
-</LI>
-<LI>La que posiblemente sea la mejor estrategia general: construir 
-el árbol de análisis sintáctico. Posteriormente podemos recorrer
-el árbol como queramos y tantas veces como queramos.
-</LI>
-</UL>
+
+<P>
+Compilamos a continuación con <code>bison</code> usando la opción <code>-v</code> para
+producir información sobre los conflictos y las tablas de salto y 
+de acciones:
+<PRE>
+[~/jison/jison-prec(ast)]$ bison -v precedencia.jison 
+precedencia.jison:6.31: warning: stray `$'
+precedencia.jison:21.27: warning: stray `$'
+precedencia.jison:31.31: warning: stray `$'
+precedencia.jison:31.36: warning: stray `$'
+precedencia.jison:35.30: warning: stray `$'
+precedencia.jison:35.35: warning: stray `$'
+</PRE>
+
+<P>
+La opción <code>-v</code> genera el fichero <code>Precedencia.output</code>
+el cual contiene información detallada sobre el autómata:
+
+<P>
+<PRE>
+[~/jison/jison-prec(ast)]$ cat precedencia.output 
+Grammar
+
+    0 $accept: s $end
+
+    1 s: list
+
+    2 list: /* empty */
+    3     | list '\n'
+    4     | list e
+
+    5 e: NUMBER
+    6  | e '&amp;' e
+    7  | e '@' e
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'\n' (10) 3
+'&amp;' (38) 6
+'@' (64) 7
+error (256)
+NUMBER (258) 5
+dummy (259)
+
+
+Nonterminals, with rules where they appear
+
+$accept (8)
+    on left: 0
+s (9)
+    on left: 1, on right: 0
+list (10)
+    on left: 2 3 4, on right: 1 3 4
+e (11)
+    on left: 5 6 7, on right: 4 6 7
+
+
+state 0
+
+    0 $accept: . s $end
+
+    $default  reduce using rule 2 (list)
+
+    s     go to state 1
+    list  go to state 2
+
+
+state 1
+
+    0 $accept: s . $end
+
+    $end  shift, and go to state 3
+
+
+state 2
+
+    1 s: list .
+    3 list: list . '\n'
+    4     | list . e
+
+    NUMBER  shift, and go to state 4
+    '\n'    shift, and go to state 5
+
+    $default  reduce using rule 1 (s)
+
+    e  go to state 6
+
+
+state 3
+
+    0 $accept: s $end .
+
+    $default  accept
+
+
+state 4
+
+    5 e: NUMBER .
+
+    $default  reduce using rule 5 (e)
+
+
+state 5
+
+    3 list: list '\n' .
+
+    $default  reduce using rule 3 (list)
+
+
+state 6
+
+    4 list: list e .
+    6 e: e . '&amp;' e
+    7  | e . '@' e
+
+    '@'  shift, and go to state 7
+    '&amp;'  shift, and go to state 8
+
+    $default  reduce using rule 4 (list)
+
+
+state 7
+
+    7 e: e '@' . e
+
+    NUMBER  shift, and go to state 4
+
+    e  go to state 9
+
+
+state 8
+
+    6 e: e '&amp;' . e
+
+    NUMBER  shift, and go to state 4
+
+    e  go to state 10
+
+
+state 9
+
+    6 e: e . '&amp;' e
+    7  | e . '@' e
+    7  | e '@' e .
+
+    '&amp;'  shift, and go to state 8
+
+    $default  reduce using rule 7 (e)
+
+
+state 10
+
+    6 e: e . '&amp;' e
+    6  | e '&amp;' e .
+    7  | e . '@' e
+
+    '&amp;'  shift, and go to state 8
+
+    $default  reduce using rule 6 (e)
+</PRE>
+
+<P>
+La presencia de conflictos, aunque no siempre, en muchos casos es debida
+a la introducción de ambiguedad en la gramática. Si el conflicto 
+es de desplazamiento-reducción se puede resolver explicitando 
+alguna regla que rompa la ambiguedad. Los conflictos de
+reducción-reducción suelen producirse por un diseño erróneo
+de la gramática. En tales casos, suele ser mas adecuado
+modificar la gramática.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4802"
+<A NAME="tex2html4808"
   HREF="node157.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4796"
-  HREF="node143.html">
+<A NAME="tex2html4802"
+  HREF="node145.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4790"
+<A NAME="tex2html4796"
   HREF="node155.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4798"
-  HREF="node226.html">
+<A NAME="tex2html4804"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4800"
-  HREF="node229.html">
+<A NAME="tex2html4806"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -539,17 +497,17 @@ el árbol como queramos y tantas veces como queramos.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4803"
-  HREF="node157.html">Definición Dirigida por la</A>
-<B>Sup:</B> <A NAME="tex2html4797"
-  HREF="node143.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4791"
-  HREF="node155.html">Esquemas de Traducción</A>
+<B> Sig:</B> <A NAME="tex2html4809"
+  HREF="node157.html">Esquemas de Traducción</A>
+<B>Sup:</B> <A NAME="tex2html4803"
+  HREF="node145.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4797"
+  HREF="node155.html">El módulo Generado por</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-06-03</I>
+2013-06-08</I>
 </ADDRESS>
 </BODY>
 </HTML>

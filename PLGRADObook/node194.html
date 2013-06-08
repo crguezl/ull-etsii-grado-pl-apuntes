@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Análisis Sintáctico Ascendente en C con yacc y bison</TITLE>
-<META NAME="description" CONTENT="Análisis Sintáctico Ascendente en C con yacc y bison">
+<TITLE>Práctica: Construcción del AST para el Lenguaje Simple C</TITLE>
+<META NAME="description" CONTENT="Práctica: Construcción del AST para el Lenguaje Simple C">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node201.html">
-<LINK REL="previous" HREF="node163.html">
-<LINK REL="up" HREF="node72.html">
+<LINK REL="next" HREF="node195.html">
+<LINK REL="previous" HREF="node193.html">
+<LINK REL="up" HREF="node165.html">
 <LINK REL="next" HREF="node195.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5382"
+<A NAME="tex2html5389"
   HREF="node195.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5376"
-  HREF="node72.html">
+<A NAME="tex2html5383"
+  HREF="node165.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5370"
+<A NAME="tex2html5377"
   HREF="node193.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5378"
-  HREF="node226.html">
+<A NAME="tex2html5385"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5380"
-  HREF="node229.html">
+<A NAME="tex2html5387"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,75 +88,95 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5383"
-  HREF="node195.html">Introducción a yacc</A>
-<B>Sup:</B> <A NAME="tex2html5377"
-  HREF="node72.html">TERCERA PARTE: APUNTES DE</A>
-<B> Ant:</B> <A NAME="tex2html5371"
-  HREF="node193.html">El Generador de Analizadores</A>
+<B> Sig:</B> <A NAME="tex2html5390"
+  HREF="node195.html">El Generador de Analizadores</A>
+<B>Sup:</B> <A NAME="tex2html5384"
+  HREF="node165.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5378"
+  HREF="node193.html">Diseño de Analizadores con</A>
 <B> Con:</B> 
-<A NAME="tex2html5378"
-  HREF="node226.html">
+<A NAME="tex2html5385"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5380"
-  HREF="node229.html">
+<A NAME="tex2html5387"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-
-<H1><A NAME="SECTION061000000000000000000">
-Análisis Sintáctico Ascendente en C con <TT>yacc</TT> y <TT>bison</TT></A>
-</H1>
-<BR> <HR>
 <!--Table of Child-Links-->
 <A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html5384"
-  HREF="node195.html">Introducción a <TT>yacc</TT></A>
-<UL>
-<LI><A NAME="tex2html5385"
-  HREF="node195.html#SECTION061010010000000000000">Ejemplo: La Calculadora en <TT>yacc</TT></A>
-<LI><A NAME="tex2html5386"
-  HREF="node195.html#SECTION061010020000000000000">El Analizador Léxico</A>
-<LI><A NAME="tex2html5387"
-  HREF="node195.html#SECTION061010030000000000000">Compilación</A>
-<LI><A NAME="tex2html5388"
-  HREF="node195.html#SECTION061010040000000000000">Makefile</A>
-<LI><A NAME="tex2html5389"
-  HREF="node195.html#SECTION061010050000000000000">Ejecución</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html5390"
-  HREF="node196.html">Precedencia y Asociatividad</A>
+<LI><UL>
+<LI><UL>
 <LI><A NAME="tex2html5391"
-  HREF="node197.html">Uso de union y type</A>
-<LI><A NAME="tex2html5392"
-  HREF="node198.html">Acciones en medio de una regla</A>
-<LI><A NAME="tex2html5393"
-  HREF="node199.html">Recuperación de Errores</A>
-<LI><A NAME="tex2html5394"
-  HREF="node200.html">Recuperación de Errores en Listas</A>
-</UL>
+  HREF="node194.html#SECTION069290010000000000000">Analizador Léxico</A>
+</UL></UL></UL>
 <!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION069290000000000000000"></A>
+   <A NAME="19493"></A>
+  
+<A NAME="practica:esquemadetradsimple"></A>
+<BR>
+Práctica: Construcción del AST para el Lenguaje Simple C
+</H1>
+Utilice 
+<A NAME="tex2html456"
+  HREF="Parse-Eyapp.tar.gz">Parse-Eyapp</A>.
+para construir un árbol de análisis sintáctico abstracto 
+para la gramática descrita en la sección
+<A HREF="node208.html#section:simplec">42.2</A>.
+Su analizador deberá seguir los consejos explícitados en la 
+sección <A HREF="node193.html#section:consejoseyapp">39.28</A>.
+
+<P>
+
+<H4><A NAME="SECTION069290010000000000000">
+Analizador Léxico</A>
+</H4>
+
+<P>
+Además del tipo de terminal y su valor el analizador
+léxico deberá devolver el número de línea.
+El analizador léxico deberá aceptar comentarios C.
+En la gramática, el terminal <code>CHARACTER</code> se refiere a 
+caracteres entre comillas simples (por ejemplo <code>'a'</code>).
+El terminal <code>STRING</code> se refiere a 
+caracteres entre comillas dobles (por ejemplo <code>"hola"</code>).
+
+<P>
+Se aconseja que las palabras reservadas del lenguaje
+no se traten con expresiones regulares específicas sino que se
+capturen en el patrón de identificador <code>[a-z_]\w+</code>. 
+Se mantiene para ello un hash con las palabras reservadas 
+que es inicializado al comienzo del programa. Cuando 
+el analizador léxico encuentra un identificador
+mira en primer lugar en dicho hash 
+para ver si es una palabra reservada y,
+si lo es, devuelve el terminal correspondiente.
+En caso contrario se trata de un identificador.
+
+<P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5382"
+<A NAME="tex2html5389"
   HREF="node195.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5376"
-  HREF="node72.html">
+<A NAME="tex2html5383"
+  HREF="node165.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5370"
+<A NAME="tex2html5377"
   HREF="node193.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5378"
-  HREF="node226.html">
+<A NAME="tex2html5385"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5380"
-  HREF="node229.html">
+<A NAME="tex2html5387"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -203,17 +223,17 @@ Análisis Sintáctico Ascendente en C con <TT>yacc</TT> y <TT>bison</TT></A>
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5383"
-  HREF="node195.html">Introducción a yacc</A>
-<B>Sup:</B> <A NAME="tex2html5377"
-  HREF="node72.html">TERCERA PARTE: APUNTES DE</A>
-<B> Ant:</B> <A NAME="tex2html5371"
-  HREF="node193.html">El Generador de Analizadores</A>
+<B> Sig:</B> <A NAME="tex2html5390"
+  HREF="node195.html">El Generador de Analizadores</A>
+<B>Sup:</B> <A NAME="tex2html5384"
+  HREF="node165.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5378"
+  HREF="node193.html">Diseño de Analizadores con</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-06-03</I>
+2013-06-08</I>
 </ADDRESS>
 </BODY>
 </HTML>

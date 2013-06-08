@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Asignación de Direcciones</TITLE>
-<META NAME="description" CONTENT="Asignación de Direcciones">
+<TITLE>Optimización Independiente de la Máquina</TITLE>
+<META NAME="description" CONTENT="Optimización Independiente de la Máquina">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node140.html">
 <LINK REL="previous" HREF="node138.html">
-<LINK REL="up" HREF="node126.html">
+<LINK REL="up" HREF="node128.html">
 <LINK REL="next" HREF="node140.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4478"
+<A NAME="tex2html4482"
   HREF="node140.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4472"
-  HREF="node126.html">
+<A NAME="tex2html4476"
+  HREF="node128.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4466"
+<A NAME="tex2html4470"
   HREF="node138.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4474"
-  HREF="node226.html">
+<A NAME="tex2html4478"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4476"
-  HREF="node229.html">
+<A NAME="tex2html4480"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,19 +88,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4479"
-  HREF="node140.html">Generación de Código: Máquina</A>
-<B>Sup:</B> <A NAME="tex2html4473"
-  HREF="node126.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html4467"
-  HREF="node138.html">Patrones Árbol y Transformaciones</A>
+<B> Sig:</B> <A NAME="tex2html4483"
+  HREF="node140.html">Patrones Árbol y Transformaciones</A>
+<B>Sup:</B> <A NAME="tex2html4477"
+  HREF="node128.html">Análisis Sintáctico Descendente en</A>
+<B> Ant:</B> <A NAME="tex2html4471"
+  HREF="node138.html">Análisis Semántico</A>
 <B> Con:</B> 
-<A NAME="tex2html4474"
-  HREF="node226.html">
+<A NAME="tex2html4478"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4476"
-  HREF="node229.html">
+<A NAME="tex2html4480"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
@@ -109,318 +109,276 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html4480"
-  HREF="node139.html#SECTION067131000000000000000">Práctica: Cálculo de las Direcciones</A>
+<LI><A NAME="tex2html4484"
+  HREF="node139.html#SECTION067111000000000000000">Práctica: Plegado de las Constantes</A>
 </UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION067130000000000000000">
-Asignación de Direcciones</A>
-</H1>
-Esta suele ser considerada  la primera de las fases de síntesis.
-Las anteriores lo eran de análisis. La fase de análisis
-es una transformación <!-- MATH
- $texto\ fuente \rightarrow arbol$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="169" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img341.png"
- ALT="$ texto fuente \rightarrow arbol$"></SPAN>, mientras
-que la fase síntesis es una transformación inversa
-<!-- MATH
- $arbol \rightarrow texto\ objeto$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="163" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img342.png"
- ALT="$ arbol \rightarrow texto objeto$"></SPAN> que produce una ``linealización''
-del árbol. En general, se ubican en la fase de síntesis todas
-las tareas que dependan del lenguaje objeto.
-
-<P>
-La asignación de direcciones depende de la máquina objetivo en cuanto
-conlleva consideraciones sobre la longitud de palabra, las unidades
-de memoria direccionables, la compactación de objetos pequeños (por ejemplo,
-valores lógicos), el alineamiento a fronteras de palabra, etc.
-
-<P>
-En nuestro caso debemos distinguir entre las cadenas y las variables enteras.
-
-<P>
-Las constantes literales (como <code>"hola"</code>) se almacenan 
-concatenadas en orden de aparición textual.
-Una variable de tipo cadena ocupa dos palabras, una dando su dirección 
-y otra dando su longitud.
-
-<P>
-<PRE>
-sub factor() {
-  my ($e, $id, $str, $num);
-
-  if ($lookahead eq 'NUM') { ... }
-  elsif ($lookahead eq 'ID') { ... }
-  elsif ($lookahead eq 'STR') {
-    $str = $value;
-    my ($offset, $length) = Address::Assignment::str($str);
-    match('STR');
-    return STR-&gt;new(OFFSET =&gt; $offset, LENGTH =&gt; $length, TYPE =&gt; $string_type);
-  }
-  elsif ($lookahead eq '(') { ... }
-  else { Error::fatal("Se esperaba (, NUM o ID"); }
-}
-</PRE>
-
-<P>
-El código de la subrutina <code>Address::Assignment::str</code> es:
-<PRE>
-  sub str {
-    my $str = shift;
-    my $len = length($str);
-    my $offset = length($data);
-    $data .= $str;
-    return ($offset, $len);
-  }
-</PRE>
-Una posible mejora es la que se describe en 
-el punto
-<A HREF="#item:norepetidas">2</A>
-de la práctica
-<A HREF="#practica:calculodelasdirecciones">36.13.1</A>.
-
-<P>
-Hemos supuesto que las variables enteras y las referencias ocupan una palabra.
-Cada vez que una variable es declarada, se le computa su dirección relativa:
-
-<P>
-<PRE>
-# declaration -&gt; type idlist
-# type        -&gt; INT | STRING
-sub declaration() {
-  my ($t, $decl, @il);
-
-  if (($lookahead eq 'INT') or ($lookahead eq 'STRING')) {
-    $t = &amp;type(); @il = &amp;idlist();
-    &amp;Semantic::Analysis::set_types($t, @il);
-    &amp;Address::Assignment::compute_address($t, @il);
-    $decl = [$t, \@il];
-    return bless $decl, 'DECL';
-  }
-  else { Error::fatal('Se esperaba un tipo'); }
-}
-</PRE>
-
-<P>
-Se usa una variable <code>$global_address</code> para llevar la cuenta de la última 
-dirección utilizada y se introduce un atributo <code>ADDRESS</code> en 
-la tabla de símbolos:
-
-<P>
-<PRE>
-  sub compute_address {
-    my $type = shift;
-    my @id_list = @_;
-
-    for my $i (@id_list) {
-      $symbol_table{$i}-&gt;{ADDRESS} = $global_address;
-      $global_address += $type-&gt;LENGTH;
-    }
-  }
-</PRE>
-
-<P>
-Por último situamos todas las cadenas después de las variables
-del programa fuente:
-
-<P>
-<PRE>
-  ... 
-  ##### En compile, despues de haber calculado las direcciones
-  Tree::Transform::match_and_transform_list(
-    NODES =&gt; $tree-&gt;{STS},
-    PATTERN =&gt; sub { 
-      $_[0]-&gt;isa('STR')
-    },
-    ACTION =&gt; sub { $_[0]-&gt;{OFFSET} += $global_address; }
-  );
-</PRE>
-
-<P>
-Esta aproximación es bastante simplista en cuanto que usa una palabra
-por carácter. 
-El punto
-<A HREF="#item:compacta">3</A>
-de la práctica
-<A HREF="#practica:calculodelasdirecciones">36.13.1</A> propone una mejora.
-
-<P>
-
-<H2><A NAME="SECTION067131000000000000000"></A>
-   <A NAME="12903"></A>
-  
-<A NAME="practica:calculodelasdirecciones"></A>
+<H1><A NAME="SECTION067110000000000000000"></A>
+<A NAME="section:optimizacion"></A>
 <BR>
-Práctica: Cálculo de las Direcciones
-</H2>
-Modifique el cálculo de las direcciones para la gramática de Tutu
-extendida con sentencias compuestas que fué presentada en 
-la sección 
-<A HREF="node136.html#practica:analisis_semantico">36.10.2</A>.
+Optimización Independiente de la Máquina
+</H1>
+En esta fase se hace un análisis del árbol, sometiéndolo a transformaciones 
+que aumenten la eficiencia del código final producido. 
 
 <P>
+Ejemplos de tareas que se pueden llevar a cabo en esta fase son: 
 
-<OL>
-<LI>Resuelva el problema de calcular las direcciones de las variables
-declaradas en los bloques. La memoria ocupada por dichas variables
-se libera al terminar el bloque. Por tanto la variable <code>$global_address</code>
-disminuye al final de cada bloque.
+<UL>
+<LI>Extracción del interior de un bucle de cálculos que son invariantes del bucle
 </LI>
-<LI><A NAME="item:norepetidas"></A>En el código de la subrutina <code>Address::Assignment::str</code> 
+<LI>Plegado de constantes: computar las expresiones constantes en tiempo de compilación,
+no de ejecución
+</LI>
+<LI>Propagación de las constantes: si se sabe que una variable  en un punto del programa
+tiene un valor constante <code>a = 4</code>, se puede sustituir su uso por el de la constante
+</LI>
+<LI>Eliminación de computaciones redundantes, cuando la misma expresión aparece repetidas
+veces con los mismos valores de las variables
+</LI>
+<LI>La eliminación de código ``muerto'': código que se sabe que nunca podrá ser ejecutado
+</LI>
+</UL>
+
+<P>
+En nuestro primer ejemplo, reduciremos esta fase a realizar una tarea de plegado
+de las constantes. Primero lo haremos mediante la rutina
+
+<P>
+<DIV ALIGN="CENTER">
+</DIV><PRE>
+&amp;Machine::Independent::Optimization::fold
+</PRE>
+<DIV ALIGN="CENTER">
+</DIV>
+
+<P>
+En esta fase transformamos los AAA: si tenemos un árbol de la forma 
+OPERATION(left, right), esto es, su raíz es una operación,
+primero plegamos los subárboles left y right, y si se han
+transformado en constantes numéricas, entonces plegamos el nodo
+que pasa a ser numérico:
 
 <P>
 <PRE>
-  sub str {
-    my $str = shift;
-    my $len = length($str);
-    my $offset = length($data);
-    $data .= $str;
-    return ($offset, $len);
+ 1 sub operator_fold { # Obsérvese el uso del aliasing
+ 2 
+ 3   if ($_[0]-&gt;LEFT-&gt;is_operation) {
+ 4     $_[0]-&gt;{LEFT}-&gt;fold; 
+ 5   }
+ 6   if ($_[0]-&gt;RIGHT-&gt;is_operation) {
+ 7     $_[0]-&gt;{RIGHT}-&gt;fold;
+ 8   }
+ 9   if (ref($_[0]-&gt;LEFT) eq "NUM" and ref($_[0]-&gt;RIGHT) eq "NUM") {
+10     $_[0] = reduce_children($_[0]);
+11   }
+12 }
+13 
+14 sub PLUS::fold {
+15  operator_fold(@_);
+16 }
+17 
+18 sub TIMES::fold {
+19  operator_fold(@_);
+20 }
+</PRE>
+
+<P>
+El plegado de las operaciones binarias se ha delegado
+en la subrutina <code>operator_fold</code>. En las líneas 3 y 6 se comprueba
+que se trata de un nodo de tipo operación. Si es así se procede
+a su plegado. Una vez plegados los dos subárboles hijo comprobamos
+en la línea 9 que los hijos actuales son de la clase <code>NUM</code>.
+Si es el caso, en la línea 10 cambiamos el nodo por el resultado de operar
+los dos hijos. Los nodos han sido
+extendidos con un método <code>is_operation</code> que determina si 
+se trata de un nodo operación binaria o no. Para ello 
+se han introducido nuevas clases de nodos: la clase <code>Node</code>
+está en la raíz de la jerarquía de herencia, las clases <code>Leaf</code>
+y <code>Binary</code> se usan para representar los nodos hoja y binarios
+y heredan de la anterior.
+Una clase informa a Perl que desea heredar de otra clase añadiendo 
+el nombre de esa clase a la variable <code>@ISA</code> de su paquete.
+La herencia en Perl determina la forma de búsqueda de un método. Si el objeto
+no se puede encontrar en la clase, recursivamente y en orden primero-profundo
+se busca en las clases de las cuales esta hereda, esto es en las clases
+especificadas en el vector <code>@ISA</code>.
+
+<P>
+<PRE>
+package Node;
+
+sub is_operation {
+  my $node = shift;
+
+  return ref($node) =~ /^(TIMES)|(PLUS)$/;
+}
+
+package Leaf; # hoja del AAA
+our @ISA = ("Node");
+sub children {
+  return ();
+}
+
+package Binary;
+our @ISA = ("Node");
+sub children {
+  my $self = shift;
+
+  return (LEFT =&gt; $self-&gt;{LEFT}, RIGHT =&gt; $self-&gt;{RIGHT});
+}
+</PRE>
+Así pues, los objetos de la clase <code>Leaf</code> tienen acceso 
+al método <code>is_operation</code>.
+
+<P>
+Ahora hacemos que las clases <code>PLUS</code> y <code>TIMES</code> 
+hereden de la clase <code>BINARY</code>:
+<PRE>
+package PLUS;
+our @ISA = ("Binary");
+
+sub operator {
+  my $self = shift;
+
+  $_[0]+$_[1];
+}
+
+....
+
+package TIMES;
+our @ISA = ("Binary");
+
+sub operator {
+  my $self = shift;
+
+  $_[0]*$_[1];
+}
+
+....
+</PRE>
+
+<P>
+Obsérvese que en las líneas 4 y 7 del código del plegado
+de nodos de operación se ha accedido directamente 
+al dato en vez de usar el método para modificar el atributo, 
+saltándonos lo que la buena programación
+orientada a objetos indica. La forma en la que esta escrito
+hace que, por ejemplo, <code>$_[0]-&gt;{LEFT}</code> sea modificado. 
+Recuérdese que en Perl
+<SPAN  CLASS="textbf">los argumentos son alias de los parámetros</SPAN>.
+
+<P>
+La subrutina <code>reduce_children</code> es la encargada 
+de crear el nuevo nodo con el resultado de operar los
+hijos izquierdo y derecho:
+
+<P>
+<PRE>
+1 sub reduce_children {
+2   my ($node) = @_;
+3 
+4   my $value = $node-&gt;operator($node-&gt;LEFT-&gt;VAL, $node-&gt;RIGHT-&gt;VAL);
+5   NUM-&gt;new(VAL =&gt; $value, TYPE =&gt; $PL::Tutu::int_type);
+6 }
+</PRE>
+
+<P>
+En la línea 4 se usa el método <code>operator</code> asociado 
+con un nodo operación. 
+
+<P>
+Plegar una sentencia de impresión es plegar la expresión
+a imprimir:
+<PRE>
+sub PRINT::fold {
+  $_[0]-&gt;{EXPRESSION}-&gt;fold;
+}
+</PRE>
+Plegar una sentencia de asignación es plegar
+la parte derecha de la asignación:
+<PRE>
+sub ASSIGN::fold {
+  $_[0]-&gt;{RIGHT}-&gt;fold;
+}
+</PRE>
+de nuevo, hemos accedido a los campos en vez de usar los métodos.
+
+<P>
+Las restantes operaciones de plegado son triviales:
+<PRE>
+sub ID::fold { }
+
+sub NUM::fold { }
+
+sub STR::fold { }
+</PRE>
+Por último, para plegar todas las expresiones
+recorremos la lista de sentencias del programa
+y las plegamos una a una.
+
+<P>
+<PRE>
+sub fold {
+  my @statements = @{$tree-&gt;{STS}};
+  for my $s (@statements) {
+    $s-&gt;fold;
   }
+}
 </PRE>
 
 <P>
-no se comprueba si la cadena <code>$str</code> ya está en <code>$data</code>. 
-Es natural que si ya está no la insertemos de nuevo. Introduzca esa 
-mejora. Para ello use la función <code>pos</code>,
-la cual devuelve el desplazamiento en <code>$data</code> donde
-quedó la última búsqueda <code>$data =~ m/regexp/g</code>.
- El siguiente ejemplo con
-el depurador le muestra como trabaja. Escriba <code>perldoc -f pos</code>
-para obtener mas información sobre la función <code>pos</code>.
-Vea un ejemplo de uso:
+
+<H2><A NAME="SECTION067111000000000000000"></A>
+   <A NAME="12877"></A>
+<BR>
+Práctica: Plegado de las Constantes
+</H2>
+  
+Complete su proyecto de compilador de Tutu 
+con la fase de plegado de las constantes siguiendo 
+la metodología explicada 
+en los párrafos previos. Mejore la jerarquía de 
+clases con una clase abstracta <code>Operation</code> que represente a los nodos
+que se corresponden con operaciones binarias. Defina el método
+abstracto <code>operation</code> en dicha clase. 
+Un <A NAME="12878"></A><SPAN  CLASS="textbf">método abstracto</SPAN> es uno que, mas que proveer un servicio 
+representa un servicio o categoría.
+La idea es que al definir un clase base abstracta se indica un conjunto de métodos
+que deberían estar definidos en todas las clases que heredan de la clase base abstracta.
+Es como una declaración de interfaz que indica la necesidad de definir su funcionalidad
+en las clases descendientes, pero que no se define en la clase base.
+Un método abstracto debe producir una excepción con el mensaje de error adecuado
+si no se ha redefinido en la clase desendiente. 
 
 <P>
-<PRE>
-DB&lt;1&gt; $str = "world"
-#              012345678901234567890123456789012
-DB&lt;2&gt; $data = "hello worldjust another statement"
-DB&lt;3&gt; $res = $data =~ m{$str}g
-DB&lt;4&gt; x pos($data) # la siguiente busqueda comienza en la 11
-0  11
-DB&lt;5&gt; $s = "hello"
-DB&lt;6&gt; $res = $data =~ m{$s}g
-DB&lt;7&gt; x pos($data) # No hay "hello" despues de world en $data
-0  undef
-DB&lt;8&gt; $res = $data =~ m{$str}g # Repetimos ...
-DB&lt;9&gt; x pos($data)
-0  11
-DB&lt;10&gt; pos($data) = 0  # Podemos reiniciar pos!
-DB&lt;11&gt; $res = $data =~ m{$s}g
-DB&lt;12&gt; x pos($data) # Ahora si se encuentra "hello"
-0  5
-</PRE>
-
-<P>
-</LI>
-<LI><A NAME="item:compacta"></A>Empaquete las cadenas asumiendo que cada carácter ocupa un octeto o byte.
-Una posible solución al problema de alineamiento que se produce es
-rellenar con ceros los bytes que faltan hasta completar la última palabra
-ocupada por la cadena. Por ejemplo, si la longitud de palabra de la 
-máquina objeto es de 4 
-bytes, la palabra <SPAN  CLASS="textbf">procesador</SPAN> se cargaría asi:
-
-<P>
-<DIV ALIGN="CENTER">
-</DIV><PRE>
-   0    |    1    |    2      
-0 1 2 3 | 4 5 6 7 | 8 9 10  11
-p r o c | e s a d | o r \0  \0
-</PRE>
-<DIV ALIGN="CENTER">
-</DIV>
-
-<P>
-Existen dos posibles formas de hacer esta empaquetado.
-Por ejemplo, si tenemos las cadenas
-<code>lucas</code> y <code>pedro</code> las podemos introducir en 
-la cadena <code>$data</code> asi:
-
-<P>
-<DIV ALIGN="CENTER">
-</DIV><PRE>
-   0    |     1      |    2      |    3
-0 1 2 3 | 4  5  6  7 | 8 9 10 11 | 12 13 14 15
-l u c a | s \0 \0 \0 | p e  d  r |  o \0 \0 \0
-</PRE>
-<DIV ALIGN="CENTER">
-</DIV>
-
-<P>
-o bien:
-
-<P>
-<DIV ALIGN="CENTER">
-</DIV><PRE>
-   0    |    1    |    2     
-0 1 2 3 | 4 5 6 7 | 8 9 10 11
-l u c a | s p e d | r o \0 \0
-</PRE>
-<DIV ALIGN="CENTER">
-</DIV>
-
-<P>
-La segunda forma aunque compacta más tiene la desventaja de hacer luego mas 
-lento el código para el 
-direccionamiento de las cadenas, ya que no empiezan en frontera de palabra. 
-Utilice el primer modo.
-
-<P>
-Observe que este empaquetado introduce un efecto en lo que 
-se considera un éxito en la búsqueda de una cadena 
-<code>$str</code> en <code>$data</code>. ¿Que ocurre si <code>$str</code>
-aparece en <code>$data</code> como subcadena de una cadena
-previamente empaquetada ocupando una posición que no es frontera de palabra?
-
-<P>
-Cuando rellene con <code>\0</code> la cadena use el operador <code>x</code> (letra equis)
-para multiplicar número por cadena:
-
-<P>
-<PRE>
-DB&lt;1&gt; $x = "hola"x4
-DB&lt;2&gt; p $x
-holaholaholahola
-</PRE>
-
-<P>
-esto le evitará escribir un bucle.
-</LI>
-<LI>Mantega atributos distintos en el nodo <code>STR</code>
-para el desplazamiento y longitud 
-de <code>$str</code> en <code>$data</code> (en caracteres)
-y su dirección y tamaño final en memoria (en palabras).
-
-<P>
-</LI>
-</OL>
+Para ello use la clave 
+<code>abstract</code> del módulo <code>Class::MethodMaker</code>. Consulte 
+la documentación del módulo <code>Class::MethodMaker</code>. Consulte 
+<A HREF="#subsection:abstractos">
+<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
+ HREF="node232.html#CasianoIntroAPerl">10</A>]
+para saber más sobre clases abstractas.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4478"
+<A NAME="tex2html4482"
   HREF="node140.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4472"
-  HREF="node126.html">
+<A NAME="tex2html4476"
+  HREF="node128.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4466"
+<A NAME="tex2html4470"
   HREF="node138.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4474"
-  HREF="node226.html">
+<A NAME="tex2html4478"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4476"
-  HREF="node229.html">
+<A NAME="tex2html4480"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -467,17 +425,17 @@ y su dirección y tamaño final en memoria (en palabras).
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4479"
-  HREF="node140.html">Generación de Código: Máquina</A>
-<B>Sup:</B> <A NAME="tex2html4473"
-  HREF="node126.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html4467"
-  HREF="node138.html">Patrones Árbol y Transformaciones</A>
+<B> Sig:</B> <A NAME="tex2html4483"
+  HREF="node140.html">Patrones Árbol y Transformaciones</A>
+<B>Sup:</B> <A NAME="tex2html4477"
+  HREF="node128.html">Análisis Sintáctico Descendente en</A>
+<B> Ant:</B> <A NAME="tex2html4471"
+  HREF="node138.html">Análisis Semántico</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-06-03</I>
+2013-06-08</I>
 </ADDRESS>
 </BODY>
 </HTML>

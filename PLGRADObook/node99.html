@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Expresiones Regulares en Perl</TITLE>
-<META NAME="description" CONTENT="Expresiones Regulares en Perl">
+<TITLE>Búsqueda entre líneas</TITLE>
+<META NAME="description" CONTENT="Búsqueda entre líneas">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node111.html">
-<LINK REL="previous" HREF="node86.html">
-<LINK REL="up" HREF="node72.html">
+<LINK REL="next" HREF="node100.html">
+<LINK REL="previous" HREF="node98.html">
+<LINK REL="up" HREF="node88.html">
 <LINK REL="next" HREF="node100.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3249"
+<A NAME="tex2html3257"
   HREF="node100.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3243"
-  HREF="node72.html">
+<A NAME="tex2html3251"
+  HREF="node88.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3237"
+<A NAME="tex2html3245"
   HREF="node98.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3245"
-  HREF="node226.html">
+<A NAME="tex2html3253"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3247"
-  HREF="node229.html">
+<A NAME="tex2html3255"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,600 +88,132 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3250"
-  HREF="node100.html">Introducción</A>
-<B>Sup:</B> <A NAME="tex2html3244"
-  HREF="node72.html">TERCERA PARTE: APUNTES DE</A>
-<B> Ant:</B> <A NAME="tex2html3238"
-  HREF="node98.html">Seleccionando Items en un</A>
+<B> Sig:</B> <A NAME="tex2html3258"
+  HREF="node100.html">Seleccionando Items en un</A>
+<B>Sup:</B> <A NAME="tex2html3252"
+  HREF="node88.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html3246"
+  HREF="node98.html">Suprimir: El Comando D</A>
 <B> Con:</B> 
-<A NAME="tex2html3245"
-  HREF="node226.html">
+<A NAME="tex2html3253"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3247"
-  HREF="node229.html">
+<A NAME="tex2html3255"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION06400000000000000000"></A>
-<A NAME="chapter:regulares"></A>
-<BR>
-Expresiones Regulares en Perl
+<H1><A NAME="SECTION063110000000000000000">
+Búsqueda entre líneas</A>
 </H1>
+Este otro caso, tambien esta tomado de [<A
+ HREF="node232.html#sedawk">6</A>] y [<A
+ HREF="node232.html#power">7</A>].
+Se trata de extender la capacidad de búsqueda de <SPAN  CLASS="textit">grep</SPAN>, de modo que el 
+patrón pueda ser encontrado incluso si se encuentra diseminado
+entre a lo mas dos líneas. El <I>script</I> presentado es una ligera variante
+del que aparece en [<A
+ HREF="node232.html#sedawk">6</A>] y escribe la(s) líneas que
+casan precedidas del número de la segunda línea.
+<PRE>
+$ cat phrase
+#! /bin/sh
+# phrase -- search for words across two lines.
+# Prints the line number
+# $1 = search string; remaining args = filenames
+search=$1
+shift
+for file
+do
+sed -n '
+  /'"$search"'/b final
+  N
+  h
+  s/.*\n//
+  /'"$search"'/b final
+  g
+  s/ *\n//
+  /'"$search"'/{
+    g
+    b final
+  }
+  g
+  D
+:final
+  =
+  p
+' $file
+done
+</PRE>
+Así, con el ejemplo ``multiline.test'' usado anteriormente
+obtenemos la siguiente salida:
+<PRE>
+$ phrase "Owner and Operator Guide" multiline.test
+3
+Section 3.1 in the Owner and
+Operator Guide for a description of the tape drives available for the Owner
+7
+Consult Section 3.1 in the Owner and Operator
+Guide for a description of the tape drives
+10
+Look in the Owner and Operator Guide, we mean the Owner
+14
+Two manuals are provided including the Owner and
+Operator Guide and the User Guide.
+16
+The Owner and Operator Guide is shipped with your system.
+19
+Look in the Owner
+and Operator Guide shipped with your system.
+</PRE>
+Primero se busca el patrón <code>/'"$search"'/</code> en la línea actual.
+Observe el habilidoso uso de las comillas simples y dobles para permitir
+la sustitución de la variable. La primera comilla simple cierra
+la comilla simple al final de la línea 10. Las comillas dobles
+hacen que la <SPAN  CLASS="textit">shell</SPAN> sustituya permite continuar el texto sin sustituciones.
 
 <P>
-<BR> <HR>
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
+Si se encuentra el patrón de búsqueda, imprimimos el número de línea (comando <TT>=</TT>) y la línea.
+Si no, leemos la siguiente línea, formando un patrón multilínea. 
+Salvamos las dos líneas en el <I>hold space</I>.
+Entonces intentamos buscar el patrón <code>/'"$search"'/</code> en
+la línea que acaba de incorporarse. Es por eso que eliminamos 
+del espacio de patrones la primera línea con la orden 
+<code>s/ *\n//</code>. Si se encuentra, imprimimos y se repite el ciclo.
+Si no, recuperamos las dos líneas del <I>hold space</I> 
+sustituimos el retorno de carro por un blanco y realizamos 
+una nueva busqueda.
+Si tiene éxito, se obtienen las dos líneas y se imprimen.
+En caso contrario, esto es, si el patrón no se ha encontrado en ninguna
+de las dos líneas, es necesario preservar la última para el siguiente
+ciclo. Por eso, se obtienen una vez mas las líneas del <I>hold space</I>
+y se suprime con <SPAN  CLASS="textit">D</SPAN> la primera de ellas. Dado que <SPAN  CLASS="textit">D</SPAN> 
+devuelve el control al comienzo del <I>script</I>, la segunda línea no es eliminada. 
+De todos modos,  el <I>script</I> no es capaz de captar cuando un prefijo del patrón 
+aparece  al final de esta segunda línea, como muestra el
+ejemplo de prueba. En el primer párrafo el patrón se encuentra
+dos veces y sólo es encontrado una.
 
-<UL CLASS="ChildLinks">
-<LI><A NAME="tex2html3251"
-  HREF="node100.html">Introducción</A>
-<UL>
-<LI><A NAME="tex2html3252"
-  HREF="node100.html#SECTION06410010000000000000">Véase También</A>
-<LI><A NAME="tex2html3253"
-  HREF="node100.html#SECTION06411000000000000000">Un ejemplo sencillo</A>
-<UL>
-<LI><A NAME="tex2html3254"
-  HREF="node100.html#SECTION06411010000000000000">Matching en Contexto Escalar</A>
-<LI><A NAME="tex2html3255"
-  HREF="node100.html#SECTION06411020000000000000">Número de Paréntesis</A>
-<LI><A NAME="tex2html3256"
-  HREF="node100.html#SECTION06411030000000000000">Contexto de Lista</A>
-<LI><A NAME="tex2html3257"
-  HREF="node100.html#SECTION06411040000000000000">El modificador <TT>s</TT></A>
-<LI><A NAME="tex2html3258"
-  HREF="node100.html#SECTION06411050000000000000">El modificador <TT>m</TT></A>
-<LI><A NAME="tex2html3259"
-  HREF="node100.html#SECTION06411060000000000000">El conversor de temperaturas reescrito usando contexto de lista</A>
-<LI><A NAME="tex2html3260"
-  HREF="node100.html#SECTION06411070000000000000">La opción <TT>x</TT></A>
-<LI><A NAME="tex2html3261"
-  HREF="node100.html#SECTION06411080000000000000">Paréntesis sin memoria</A>
-<LI><A NAME="tex2html3262"
-  HREF="node100.html#SECTION06411090000000000000">Interpolación en los patrones: La opción <TT>o</TT></A>
-<LI><A NAME="tex2html3263"
-  HREF="node100.html#SECTION064110100000000000000">Cuantificadores greedy</A>
-<LI><A NAME="tex2html3264"
-  HREF="node100.html#SECTION064110110000000000000">Regexp y Bucles Infinitos</A>
-<LI><A NAME="tex2html3265"
-  HREF="node100.html#SECTION064110120000000000000">Cuantificadores <I>lazy</I></A>
-<LI><A NAME="tex2html3266"
-  HREF="node100.html#SECTION064110130000000000000">Descripción detallada del proceso de matching</A>
-<LI><A NAME="tex2html3267"
-  HREF="node100.html#SECTION064110140000000000000">Rendimiento</A>
-<LI><A NAME="tex2html3268"
-  HREF="node100.html#SECTION064110150000000000000">Eliminación de Comentarios de un Programa C</A>
-<LI><A NAME="tex2html3269"
-  HREF="node100.html#SECTION064110160000000000000">Negaciones y operadores <I>lazy</I></A>
-<LI><A NAME="tex2html3270"
-  HREF="node100.html#SECTION064110170000000000000">Copia y sustitución simultáneas</A>
-<LI><A NAME="tex2html3271"
-  HREF="node100.html#SECTION064110180000000000000">Referencias a Paréntesis Previos</A>
-<LI><A NAME="tex2html3272"
-  HREF="node100.html#SECTION064110190000000000000">Usando Referencias con Nombre (Perl 5.10)</A>
-<LI><A NAME="tex2html3273"
-  HREF="node100.html#SECTION064110200000000000000">Grupos con Nombre y Factorización</A>
-<LI><A NAME="tex2html3274"
-  HREF="node100.html#SECTION064110210000000000000">LLamadas a expresiones regulares via paréntesis con memoria</A>
-<LI><A NAME="tex2html3275"
-  HREF="node100.html#SECTION064110220000000000000">Reutilizando Expresiones Regulares</A>
-<LI><A NAME="tex2html3276"
-  HREF="node100.html#SECTION064110230000000000000">El Módulo Regexp::Common</A>
-<LI><A NAME="tex2html3277"
-  HREF="node100.html#SECTION064110240000000000000">Smart Matching</A>
-<LI><A NAME="tex2html3278"
-  HREF="node100.html#SECTION064110250000000000000">Ejercicios</A>
-</UL>
-<LI><A NAME="tex2html3279"
-  HREF="node100.html#SECTION06412000000000000000">Depuración de Expresiones Regulares</A>
-<LI><A NAME="tex2html3280"
-  HREF="node100.html#SECTION06413000000000000000">Tablas de Escapes, Metacarácteres, Cuantificadores, Clases</A>
-<UL>
-<LI><A NAME="tex2html3281"
-  HREF="node100.html#SECTION06413010000000000000">Metacharacters</A>
-<LI><A NAME="tex2html3282"
-  HREF="node100.html#SECTION06413020000000000000">Standard greedy quantifiers</A>
-<LI><A NAME="tex2html3283"
-  HREF="node100.html#SECTION06413030000000000000">Non greedy quantifiers</A>
-<LI><A NAME="tex2html3284"
-  HREF="node100.html#SECTION06413040000000000000">Possesive quantifiers</A>
-<LI><A NAME="tex2html3285"
-  HREF="node100.html#SECTION06413050000000000000">Escape sequences</A>
-<LI><A NAME="tex2html3286"
-  HREF="node100.html#SECTION06413060000000000000">Character Classes and other Special Escapes</A>
-<LI><A NAME="tex2html3287"
-  HREF="node100.html#SECTION06413070000000000000">Zero width assertions</A>
-<LI><A NAME="tex2html3288"
-  HREF="node100.html#SECTION06413100000000000000">The POSIX character class syntax</A>
-<UL>
-<LI><A NAME="tex2html3289"
-  HREF="node100.html#SECTION06413110000000000000">Available classes</A>
-<LI><A NAME="tex2html3290"
-  HREF="node100.html#SECTION06413120000000000000">Equivalences to Unicode</A>
-<LI><A NAME="tex2html3291"
-  HREF="node100.html#SECTION06413130000000000000">Negated character classes</A>
-</UL>
-</UL>
-<LI><A NAME="tex2html3292"
-  HREF="node100.html#SECTION06414000000000000000">Variables especiales después de un emparejamiento</A>
-<UL>
-<LI><A NAME="tex2html3293"
-  HREF="node100.html#SECTION06414010000000000000">Las Variables de match, pre-match y post-mach</A>
-<LI><A NAME="tex2html3294"
-  HREF="node100.html#SECTION06414020000000000000">Texto Asociado con el Último Paréntesis</A>
-<LI><A NAME="tex2html3295"
-  HREF="node100.html#SECTION06414030000000000000">Los Offsets de los Inicios de los Casamientos: <TT>@-</TT></A>
-<LI><A NAME="tex2html3296"
-  HREF="node100.html#SECTION06414040000000000000">Desplazamientos de los Finales de los Emparejamientos: <TT>@+</TT></A>
-<LI><A NAME="tex2html3297"
-  HREF="node100.html#SECTION06414050000000000000">Número de paréntesis en la última regexp con éxito</A>
-<LI><A NAME="tex2html3298"
-  HREF="node100.html#SECTION06414060000000000000">Indice del Ultimo Paréntesis</A>
-<LI><A NAME="tex2html3299"
-  HREF="node100.html#SECTION06414070000000000000"><TT>@-</TT> y <TT>@+</TT> no tienen que tener el mismo tamaño</A>
-<LI><A NAME="tex2html3300"
-  HREF="node100.html#SECTION06414080000000000000">Véase También</A>
-</UL>
-<LI><A NAME="tex2html3301"
-  HREF="node100.html#SECTION06415000000000000000">Ambito Automático</A>
-<LI><A NAME="tex2html3302"
-  HREF="node100.html#SECTION06416000000000000000">Opciones</A>
-<UL>
-<LI><A NAME="tex2html3303"
-  HREF="node100.html#SECTION06416010000000000000">El Modificador <TT>/g</TT></A>
-<LI><A NAME="tex2html3304"
-  HREF="node100.html#SECTION06416020000000000000">La opción <TT>e</TT>: Evaluación del remplazo</A>
-</UL>
-</UL>
-<BR>
-<LI><A NAME="tex2html3305"
-  HREF="node101.html">Algunas Extensiones</A>
-<UL>
-<LI><A NAME="tex2html3306"
-  HREF="node101.html#SECTION06421000000000000000">Comentarios</A>
-<LI><A NAME="tex2html3307"
-  HREF="node101.html#SECTION06422000000000000000">Modificadores locales</A>
-<LI><A NAME="tex2html3308"
-  HREF="node101.html#SECTION06423000000000000000">Mirando hacia adetrás y hacia adelante</A>
-<UL>
-<LI><A NAME="tex2html3309"
-  HREF="node101.html#SECTION06423010000000000000">Las zero-width assertions como caso particular de mirar atrás-adelante</A>
-<LI><A NAME="tex2html3310"
-  HREF="node101.html#SECTION06423020000000000000">Lookahead assertion</A>
-<LI><A NAME="tex2html3311"
-  HREF="node101.html#SECTION06423030000000000000">A hard RegEx problem</A>
-<LI><A NAME="tex2html3312"
-  HREF="node101.html#SECTION06423040000000000000">Los paréntesis looakehaed and lookbehind no capturan</A>
-<LI><A NAME="tex2html3313"
-  HREF="node101.html#SECTION06423050000000000000">Limitaciones del lookbehind</A>
-<LI><A NAME="tex2html3314"
-  HREF="node101.html#SECTION06423060000000000000">Negación de los operadores de lookahead y lookbehind</A>
-<LI><A NAME="tex2html3315"
-  HREF="node101.html#SECTION06423070000000000000">Ejemplo: split con lookahead y lookbehind</A>
-<LI><A NAME="tex2html3316"
-  HREF="node101.html#SECTION06423080000000000000">Look Around en perlre</A>
-<LI><A NAME="tex2html3317"
-  HREF="node101.html#SECTION06423090000000000000">Operador de predicción negativo: Última ocurrencia</A>
-<LI><A NAME="tex2html3318"
-  HREF="node101.html#SECTION064230100000000000000">Diferencias entre mirar adelante negativo y mirar adelante con clase negada</A>
-<LI><A NAME="tex2html3319"
-  HREF="node101.html#SECTION064230110000000000000">AND y AND NOT</A>
-<LI><A NAME="tex2html3320"
-  HREF="node101.html#SECTION064230120000000000000">Lookahead negativo versus lookbehind</A>
-<LI><A NAME="tex2html3321"
-  HREF="node101.html#SECTION064230130000000000000">Ejercicios</A>
-</UL>
-<LI><A NAME="tex2html3322"
-  HREF="node101.html#SECTION06424000000000000000">Definición de Nombres de Patrones</A>
-<UL>
-<LI><A NAME="tex2html3323"
-  HREF="node101.html#SECTION06424010000000000000">Lo que dice <TT>perlretut</TT> sobre la definición de nombres de patrones</A>
-<LI><A NAME="tex2html3324"
-  HREF="node101.html#SECTION06424020000000000000">Lo que dice <TT>perlre</TT> sobre la definición de patrones</A>
-<LI><A NAME="tex2html3325"
-  HREF="node101.html#SECTION06424030000000000000">Lo que dice <TT>perlvar</TT> sobre patrones con nombre</A>
-</UL>
-<LI><A NAME="tex2html3326"
-  HREF="node101.html#SECTION06425000000000000000">Patrones Recursivos</A>
-<UL>
-<LI><A NAME="tex2html3327"
-  HREF="node101.html#SECTION06425010000000000000">Palíndromos</A>
-<LI><A NAME="tex2html3328"
-  HREF="node101.html#SECTION06425020000000000000">Lo que dice <TT>perlre</TT> sobre recursividad</A>
-<LI><A NAME="tex2html3329"
-  HREF="node101.html#SECTION06425030000000000000">Paréntesis Equilibrados</A>
-<LI><A NAME="tex2html3330"
-  HREF="node101.html#SECTION06425040000000000000">Capturando los bloques de un programa</A>
-<LI><A NAME="tex2html3331"
-  HREF="node101.html#SECTION06425050000000000000">Reconocimiento de Lenguajes Recursivos: Un subconjunto de <SPAN CLASS="logo,LaTeX">L<SUP><SMALL>A</SMALL></SUP>T<SMALL>E</SMALL>X</SPAN></A>
-<LI><A NAME="tex2html3332"
-  HREF="node101.html#SECTION06425060000000000000">Reconocimiento de Expresiones Aritméticas</A>
-</UL>
-<LI><A NAME="tex2html3333"
-  HREF="node101.html#SECTION06426000000000000000">Cuantificadores Posesivos</A>
-<UL>
-<LI><A NAME="tex2html3334"
-  HREF="node101.html#SECTION06426010000000000000">Cadenas Delimitadas por Comillas Dobles</A>
-<LI><A NAME="tex2html3335"
-  HREF="node101.html#SECTION06426020000000000000">Paréntesis Posesivos</A>
-<LI><A NAME="tex2html3336"
-  HREF="node101.html#SECTION06426030000000000000">Paréntesis Balanceados</A>
-<LI><A NAME="tex2html3337"
-  HREF="node101.html#SECTION06426040000000000000">Encontrando los bloques de un programa</A>
-<LI><A NAME="tex2html3338"
-  HREF="node101.html#SECTION06426050000000000000">Véase también</A>
-</UL>
-<LI><A NAME="tex2html3339"
-  HREF="node101.html#SECTION06427000000000000000">Perl 5.10: Numeración de los Grupos en Alternativas</A>
-<LI><A NAME="tex2html3340"
-  HREF="node101.html#SECTION06428000000000000000">Ejecución de Código dentro de una Expresión Regular</A>
-<UL>
-<LI><A NAME="tex2html3341"
-  HREF="node101.html#SECTION06428010000000000000">Resultado de la última ejecución</A>
-<LI><A NAME="tex2html3342"
-  HREF="node101.html#SECTION06428020000000000000">El Código empotrado no es interpolado</A>
-<LI><A NAME="tex2html3343"
-  HREF="node101.html#SECTION06428030000000000000">Contenido del último paréntesis y la variable por defecto en acciones empotradas</A>
-<LI><A NAME="tex2html3344"
-  HREF="node101.html#SECTION06428040000000000000">Los cuantificadores y el código empotrado</A>
-<LI><A NAME="tex2html3345"
-  HREF="node101.html#SECTION06428050000000000000">Ámbito</A>
-<LI><A NAME="tex2html3346"
-  HREF="node101.html#SECTION06428060000000000000">Caveats</A>
-<LI><A NAME="tex2html3347"
-  HREF="node101.html#SECTION06428070000000000000">Depurando con código empotrado Colisiones en los Nombres de las Subexpresiones Regulares</A>
-</UL>
-<LI><A NAME="tex2html3348"
-  HREF="node101.html#SECTION06429000000000000000">Expresiones Regulares en tiempo de matching</A>
-<UL>
-<LI><A NAME="tex2html3349"
-  HREF="node101.html#SECTION06429010000000000000">Paréntesis con memoria dentro de una <I>pattern code expression</I></A>
-<LI><A NAME="tex2html3350"
-  HREF="node101.html#SECTION06429020000000000000">Ejemplo: Secuencias de dígitos de longitud especificada por el primer dígito</A>
-<LI><A NAME="tex2html3351"
-  HREF="node101.html#SECTION06429030000000000000">Ejemplo: Secuencias de dígitos no repetidos</A>
-<LI><A NAME="tex2html3352"
-  HREF="node101.html#SECTION06429040000000000000">Palíndromos con independencia del acento</A>
-<LI><A NAME="tex2html3353"
-  HREF="node101.html#SECTION06429050000000000000">Postponiendo para conseguir recursividad</A>
-<LI><A NAME="tex2html3354"
-  HREF="node101.html#SECTION06429060000000000000">Caveats</A>
-</UL>
-<LI><A NAME="tex2html3355"
-  HREF="node101.html#SECTION064210000000000000000">Expresiones Condicionales</A>
-<UL>
-<LI><A NAME="tex2html3356"
-  HREF="node101.html#SECTION064210010000000000000">Condiciones: número de paréntesis</A>
-<LI><A NAME="tex2html3357"
-  HREF="node101.html#SECTION064210020000000000000">Ejemplo: cadenas de la forma <I>una</I>-otra-otra-<I>una</I></A>
-<LI><A NAME="tex2html3358"
-  HREF="node101.html#SECTION064210030000000000000">Condiciones: Código</A>
-<LI><A NAME="tex2html3359"
-  HREF="node101.html#SECTION064210040000000000000">Ejemplo: Cadenas con posible paréntesis inicial (no anidados)</A>
-<LI><A NAME="tex2html3360"
-  HREF="node101.html#SECTION064210050000000000000">Expresiones Condicionales con <TT>(R)</TT></A>
-<LI><A NAME="tex2html3361"
-  HREF="node101.html#SECTION064210060000000000000">Ejemplo: Palíndromos con Equivalencia de Acentos Españoles</A>
-</UL>
-<LI><A NAME="tex2html3362"
-  HREF="node101.html#SECTION064211000000000000000">Verbos que controlan el retroceso</A>
-<UL>
-<LI><A NAME="tex2html3363"
-  HREF="node101.html#SECTION064211010000000000000">El verbo de control <TT>(*FAIL)</TT></A>
-<LI><A NAME="tex2html3364"
-  HREF="node101.html#SECTION064211020000000000000">El verbo de control <TT>(*ACCEPT)</TT></A>
-<LI><A NAME="tex2html3365"
-  HREF="node101.html#SECTION064211030000000000000">El verbo <TT>SKIP</TT></A>
-<LI><A NAME="tex2html3366"
-  HREF="node101.html#SECTION064211040000000000000">Marcas</A>
-<LI><A NAME="tex2html3367"
-  HREF="node101.html#SECTION064211050000000000000">Poniendo un espacio después de cada signo de puntuación</A>
-</UL>
-</UL>
-<BR>
-<LI><A NAME="tex2html3368"
-  HREF="node102.html">Unicode</A>
-<UL>
-<LI><A NAME="tex2html3369"
-  HREF="node102.html#SECTION06430010000000000000">Introducción</A>
-<LI><A NAME="tex2html3370"
-  HREF="node102.html#SECTION06430020000000000000">Operadores, <TT>STDOUT</TT> y Unicode</A>
-<LI><A NAME="tex2html3371"
-  HREF="node102.html#SECTION06430030000000000000">Ficheros Unicode en <TT>vim</TT></A>
-<LI><A NAME="tex2html3372"
-  HREF="node102.html#SECTION06430040000000000000">Apertura de ficheros UTF-8</A>
-<LI><A NAME="tex2html3373"
-  HREF="node102.html#SECTION06430050000000000000">El Módulo <TT>charnames</TT></A>
-<LI><A NAME="tex2html3374"
-  HREF="node102.html#SECTION06430060000000000000">Expresiones Regulares y Unicode</A>
-<LI><A NAME="tex2html3375"
-  HREF="node102.html#SECTION06430070000000000000">Macros: Dígitos y Words</A>
-<LI><A NAME="tex2html3376"
-  HREF="node102.html#SECTION06430080000000000000">Semántica de Carácter versus Semántica de Byte</A>
-<LI><A NAME="tex2html3377"
-  HREF="node102.html#SECTION06430090000000000000">Caja e Inversión de Cadenas Unicode</A>
-<LI><A NAME="tex2html3378"
-  HREF="node102.html#SECTION064300100000000000000">Propiedades</A>
-<LI><A NAME="tex2html3379"
-  HREF="node102.html#SECTION064300110000000000000">Conversores</A>
-<LI><A NAME="tex2html3380"
-  HREF="node102.html#SECTION064300120000000000000">Véase también</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html3381"
-  HREF="node103.html">Expresiones Regulares en Otros Lenguajes</A>
-<UL>
-<LI><A NAME="tex2html3382"
-  HREF="node103.html#SECTION06440010000000000000">Vim</A>
-<LI><A NAME="tex2html3383"
-  HREF="node103.html#SECTION06440020000000000000">Java</A>
-<LI><A NAME="tex2html3384"
-  HREF="node103.html#SECTION06440030000000000000">bash</A>
-<LI><A NAME="tex2html3385"
-  HREF="node103.html#SECTION06440040000000000000">C</A>
-<LI><A NAME="tex2html3386"
-  HREF="node103.html#SECTION06440050000000000000">Python</A>
-<LI><A NAME="tex2html3387"
-  HREF="node103.html#SECTION06440060000000000000">Ruby</A>
-<LI><A NAME="tex2html3388"
-  HREF="node103.html#SECTION06440070000000000000">Javascript</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html3389"
-  HREF="node104.html">Casos de Estudio</A>
-<UL>
-<LI><A NAME="tex2html3390"
-  HREF="node104.html#SECTION06451000000000000000">Secuencias de números de tamaño fijo</A>
-<UL>
-<LI><A NAME="tex2html3391"
-  HREF="node104.html#SECTION06451010000000000000">Solución usando el ancla <TT><!-- MATH
- $\backslash$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="14" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img10.png"
- ALT="$ \backslash$"></SPAN> G</TT></A>
-<LI><A NAME="tex2html3392"
-  HREF="node104.html#SECTION06451020000000000000">Sustitución</A>
-</UL>
-<LI><A NAME="tex2html3393"
-  HREF="node104.html#SECTION06452000000000000000">Palabras Repetidas</A>
-<LI><A NAME="tex2html3394"
-  HREF="node104.html#SECTION06453000000000000000">Análisis de cadenas con datos separados por comas</A>
-<LI><A NAME="tex2html3395"
-  HREF="node104.html#SECTION06454000000000000000">Las Expresiones Regulares como Exploradores de un Árbol de Soluciones</A>
-<UL>
-<LI><A NAME="tex2html3396"
-  HREF="node104.html#SECTION06454010000000000000">Números Primos</A>
-<LI><A NAME="tex2html3397"
-  HREF="node104.html#SECTION06454020000000000000">Ecuaciones Diofánticas: Una solución</A>
-<LI><A NAME="tex2html3398"
-  HREF="node104.html#SECTION06454030000000000000">Ecuaciones Diofánticas: Todas las soluciones</A>
-<LI><A NAME="tex2html3399"
-  HREF="node104.html#SECTION06454040000000000000">Ecuaciones Diofánticas: Resolutor general</A>
-<LI><A NAME="tex2html3400"
-  HREF="node104.html#SECTION06454050000000000000">Las  Tres Hijas</A>
-<LI><A NAME="tex2html3401"
-  HREF="node104.html#SECTION06454060000000000000">Mochila 0-1</A>
-<LI><A NAME="tex2html3402"
-  HREF="node104.html#SECTION06454070000000000000">Véase también</A>
-</UL>
-<LI><A NAME="tex2html3403"
-  HREF="node104.html#SECTION06455000000000000000">Número de substituciones realizadas</A>
-<LI><A NAME="tex2html3404"
-  HREF="node104.html#SECTION06456000000000000000">Expandiendo y comprimiendo tabs</A>
-<LI><A NAME="tex2html3405"
-  HREF="node104.html#SECTION06457000000000000000">Modificación de Múltiples Ficheros: one liner</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html3406"
-  HREF="node105.html">tr y split</A>
-<LI><A NAME="tex2html3407"
-  HREF="node106.html"><TT>Pack</TT> y <TT>Unpack</TT></A>
-<LI><A NAME="tex2html3408"
-  HREF="node107.html">Práctica: Un lenguaje para Componer Invitaciones</A>
-<LI><A NAME="tex2html3409"
-  HREF="node108.html">Analisis Sintáctico con Expresiones Regulares Perl</A>
-<UL>
-<LI><A NAME="tex2html3410"
-  HREF="node108.html#SECTION06491000000000000000">Introducción al Anaĺisis Sintáctico con Expresiones Regulares</A>
-<UL>
-<LI><A NAME="tex2html3411"
-  HREF="node108.html#SECTION06491010000000000000">Ejemplo: Traducción de expresiones aritméticas en infijo a postfijo</A>
-<LI><A NAME="tex2html3412"
-  HREF="node108.html#SECTION06491020000000000000">Accediendo a los atributos de paréntesis anteriores mediante acciones intermedias</A>
-<LI><A NAME="tex2html3413"
-  HREF="node108.html#SECTION06491030000000000000">Accediendo a los atributos de paréntesis anteriores mediante <TT>@-</TT></A>
-<LI><A NAME="tex2html3414"
-  HREF="node108.html#SECTION06491040000000000000">Accediendo a los atributos de paréntesis anteriores mediante paréntesis 
-con nombre</A>
-<LI><A NAME="tex2html3415"
-  HREF="node108.html#SECTION06491050000000000000">Véase También</A>
-</UL>
-<LI><A NAME="tex2html3416"
-  HREF="node108.html#SECTION06492000000000000000">Construyendo el AST con Expresiones Regulares 5.10</A>
-<UL>
-<LI><A NAME="tex2html3417"
-  HREF="node108.html#SECTION06492010000000000000">Programa Principal: usando la pila de atributos</A>
-<LI><A NAME="tex2html3418"
-  HREF="node108.html#SECTION06492020000000000000">Las Clases representando a los AST</A>
-<LI><A NAME="tex2html3419"
-  HREF="node108.html#SECTION06492030000000000000">Accediendo a los paréntesis lejanos: El módulo <TT>Regexp::Paren</TT></A>
-</UL>
-</UL>
-<BR>
-<LI><A NAME="tex2html3420"
-  HREF="node109.html">Práctica: Traducción de <TT>invitation</TT> a <TT>HTML</TT></A>
-<LI><A NAME="tex2html3421"
-  HREF="node110.html">Análisis Sintáctico con <TT>Regexp::Grammars</TT></A>
-<UL>
-<LI><A NAME="tex2html3422"
-  HREF="node110.html#SECTION064111000000000000000">Introducción</A>
-<UL>
-<LI><A NAME="tex2html3423"
-  HREF="node110.html#SECTION064111010000000000000">El Problema</A>
-<LI><A NAME="tex2html3424"
-  HREF="node110.html#SECTION064111020000000000000">Una solución: <TT>Regexp::Grammars</TT></A>
-<LI><A NAME="tex2html3425"
-  HREF="node110.html#SECTION064111030000000000000">La sintaxis de una expresión regular <TT>Regexp::Grammars</TT></A>
-<LI><A NAME="tex2html3426"
-  HREF="node110.html#SECTION064111040000000000000">El hash <TT>%/</TT>: Una representación del AST</A>
-<LI><A NAME="tex2html3427"
-  HREF="node110.html#SECTION064111050000000000000">Diferencias entre <TT>token</TT> y <TT>rule</TT></A>
-<LI><A NAME="tex2html3428"
-  HREF="node110.html#SECTION064111060000000000000">Redefinición de los espacios en blanco</A>
-<LI><A NAME="tex2html3429"
-  HREF="node110.html#SECTION064111070000000000000">Llamando a las subreglas</A>
-<LI><A NAME="tex2html3430"
-  HREF="node110.html#SECTION064111080000000000000">Eliminación del anidamiento de ramas unarias en <TT>%/</TT></A>
-<LI><A NAME="tex2html3431"
-  HREF="node110.html#SECTION064111090000000000000">Ámbito de uso de <TT>Regexp::Grammars</TT></A>
-</UL>
-<LI><A NAME="tex2html3432"
-  HREF="node110.html#SECTION064112000000000000000">Objetos</A>
-<LI><A NAME="tex2html3433"
-  HREF="node110.html#SECTION064113000000000000000">Renombrando los resultados de una subregla</A>
-<UL>
-<LI><A NAME="tex2html3434"
-  HREF="node110.html#SECTION064113010000000000000">Nombre de la regla versus Nombre del Resultado</A>
-<LI><A NAME="tex2html3435"
-  HREF="node110.html#SECTION064113020000000000000">Colisión de nombres de reglas</A>
-<LI><A NAME="tex2html3436"
-  HREF="node110.html#SECTION064113030000000000000">Aliasing</A>
-<LI><A NAME="tex2html3437"
-  HREF="node110.html#SECTION064113040000000000000">Normalización de los resultados mediante aliasing</A>
-<LI><A NAME="tex2html3438"
-  HREF="node110.html#SECTION064113050000000000000">Ejemplo</A>
-</UL>
-<LI><A NAME="tex2html3439"
-  HREF="node110.html#SECTION064114000000000000000">Listas</A>
-<UL>
-<LI><A NAME="tex2html3440"
-  HREF="node110.html#SECTION064114010000000000000">El operador de cierre positivo</A>
-<LI><A NAME="tex2html3441"
-  HREF="node110.html#SECTION064114020000000000000">Operadores de listas y espacios en blanco</A>
-<LI><A NAME="tex2html3442"
-  HREF="node110.html#SECTION064114030000000000000">Una Solución al problema de recordar los resultados de una lista: El uso de brackets</A>
-<LI><A NAME="tex2html3443"
-  HREF="node110.html#SECTION064114040000000000000">Otra forma de resolver las colisiones de nombres: salvarlos en una lista</A>
-<LI><A NAME="tex2html3444"
-  HREF="node110.html#SECTION064114050000000000000">Aliasing de listas</A>
-<LI><A NAME="tex2html3445"
-  HREF="node110.html#SECTION064114060000000000000">Caveat: Cierres y Warnings</A>
-</UL>
-<LI><A NAME="tex2html3446"
-  HREF="node110.html#SECTION064115000000000000000">Pseudo sub-reglas</A>
-<UL>
-<LI><A NAME="tex2html3447"
-  HREF="node110.html#SECTION064115010000000000000">Subpatrones</A>
-<LI><A NAME="tex2html3448"
-  HREF="node110.html#SECTION064115020000000000000">Bloques de código</A>
-<LI><A NAME="tex2html3449"
-  HREF="node110.html#SECTION064115030000000000000">Pseudo subreglas y depuración</A>
-</UL>
-<LI><A NAME="tex2html3450"
-  HREF="node110.html#SECTION064116000000000000000">Llamadas a subreglas desmemoriadas</A>
-<UL>
-<LI><A NAME="tex2html3451"
-  HREF="node110.html#SECTION064116010000000000000">Ejemplo: Números entre comas</A>
-</UL>
-<LI><A NAME="tex2html3452"
-  HREF="node110.html#SECTION064117000000000000000">Destilación del resultado</A>
-<UL>
-<LI><A NAME="tex2html3453"
-  HREF="node110.html#SECTION064117010000000000000">Destilación manual</A>
-<LI><A NAME="tex2html3454"
-  HREF="node110.html#SECTION064117020000000000000">Destilación en el programa</A>
-</UL>
-<LI><A NAME="tex2html3455"
-  HREF="node110.html#SECTION064118000000000000000">Llamadas privadas a subreglas y subreglas privadas</A>
-<LI><A NAME="tex2html3456"
-  HREF="node110.html#SECTION064119000000000000000">Mas sobre listas</A>
-<UL>
-<LI><A NAME="tex2html3457"
-  HREF="node110.html#SECTION064119010000000000000">Reconocimiento manual de listas</A>
-<LI><A NAME="tex2html3458"
-  HREF="node110.html#SECTION064119020000000000000">Analizando listas manualmente</A>
-<LI><A NAME="tex2html3459"
-  HREF="node110.html#SECTION064119030000000000000">Influencia del orden en el lenguaje reconocido</A>
-<LI><A NAME="tex2html3460"
-  HREF="node110.html#SECTION064119040000000000000">Aplanamiento manual de listas</A>
-<LI><A NAME="tex2html3461"
-  HREF="node110.html#SECTION064119050000000000000">Los operadores de repetición</A>
-<LI><A NAME="tex2html3462"
-  HREF="node110.html#SECTION064119060000000000000">Listas separadas por Algo</A>
-<LI><A NAME="tex2html3463"
-  HREF="node110.html#SECTION064119070000000000000">Ejemplo: Listas de números separados por comas</A>
-<LI><A NAME="tex2html3464"
-  HREF="node110.html#SECTION064119080000000000000">Ejemplo: AST para las expresiones aritméticas</A>
-</UL>
-<LI><A NAME="tex2html3465"
-  HREF="node110.html#SECTION0641110000000000000000">La directiva <TT>require</TT></A>
-<LI><A NAME="tex2html3466"
-  HREF="node110.html#SECTION0641111000000000000000">Casando con las claves de un hash</A>
-<UL>
-<LI><A NAME="tex2html3467"
-  HREF="node110.html#SECTION0641111010000000000000">Ejemplo de uso de la directiva hash</A>
-</UL>
-<LI><A NAME="tex2html3468"
-  HREF="node110.html#SECTION0641112000000000000000">Depuración</A>
-<UL>
-<LI><A NAME="tex2html3469"
-  HREF="node110.html#SECTION0641112010000000000000">Debugging grammar creation</A>
-<LI><A NAME="tex2html3470"
-  HREF="node110.html#SECTION0641112020000000000000">Debugging grammar execution</A>
-</UL>
-<LI><A NAME="tex2html3471"
-  HREF="node110.html#SECTION0641113000000000000000">Mensajes de <TT>log</TT> del usuario</A>
-<LI><A NAME="tex2html3472"
-  HREF="node110.html#SECTION0641114000000000000000">Depuración de Regexps</A>
-<LI><A NAME="tex2html3473"
-  HREF="node110.html#SECTION0641115000000000000000">Manejo y recuperación de errores</A>
-<LI><A NAME="tex2html3474"
-  HREF="node110.html#SECTION0641116000000000000000">Mensajes de Warning</A>
-<LI><A NAME="tex2html3475"
-  HREF="node110.html#SECTION0641117000000000000000">Simplificando el AST</A>
-<LI><A NAME="tex2html3476"
-  HREF="node110.html#SECTION0641118000000000000000">Reciclando una <TT>Regexp::Grammar</TT></A>
-<UL>
-<LI><A NAME="tex2html3477"
-  HREF="node110.html#SECTION0641118010000000000000">Ejecución</A>
-<LI><A NAME="tex2html3478"
-  HREF="node110.html#SECTION0641118020000000000000">Estructura de la aplicación</A>
-<LI><A NAME="tex2html3479"
-  HREF="node110.html#SECTION0641118030000000000000">Programa principal</A>
-<LI><A NAME="tex2html3480"
-  HREF="node110.html#SECTION0641118040000000000000">Las Clases de nodos del AST</A>
-<LI><A NAME="tex2html3481"
-  HREF="node110.html#SECTION0641118050000000000000">Definiendo <TT>sem</TT> para la evaluación de la expresión</A>
-<LI><A NAME="tex2html3482"
-  HREF="node110.html#SECTION0641118060000000000000">Definiendo <TT>sem</TT> para la traducción a postfijo</A>
-</UL>
-<LI><A NAME="tex2html3483"
-  HREF="node110.html#SECTION0641119000000000000000">Práctica: Calculadora con <TT>Regexp::Grammars</TT></A>
-</UL></UL>
-<!--End of Table of Child-Links-->
+<P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3249"
+<A NAME="tex2html3257"
   HREF="node100.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3243"
-  HREF="node72.html">
+<A NAME="tex2html3251"
+  HREF="node88.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3237"
+<A NAME="tex2html3245"
   HREF="node98.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3245"
-  HREF="node226.html">
+<A NAME="tex2html3253"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3247"
-  HREF="node229.html">
+<A NAME="tex2html3255"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -728,17 +260,17 @@ con nombre</A>
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3250"
-  HREF="node100.html">Introducción</A>
-<B>Sup:</B> <A NAME="tex2html3244"
-  HREF="node72.html">TERCERA PARTE: APUNTES DE</A>
-<B> Ant:</B> <A NAME="tex2html3238"
-  HREF="node98.html">Seleccionando Items en un</A>
+<B> Sig:</B> <A NAME="tex2html3258"
+  HREF="node100.html">Seleccionando Items en un</A>
+<B>Sup:</B> <A NAME="tex2html3252"
+  HREF="node88.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html3246"
+  HREF="node98.html">Suprimir: El Comando D</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-06-03</I>
+2013-06-08</I>
 </ADDRESS>
 </BODY>
 </HTML>

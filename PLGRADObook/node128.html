@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Las Fases de un Compilador</TITLE>
-<META NAME="description" CONTENT="Las Fases de un Compilador">
+<TITLE>Análisis Sintáctico Descendente en Perl</TITLE>
+<META NAME="description" CONTENT="Análisis Sintáctico Descendente en Perl">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node129.html">
-<LINK REL="previous" HREF="node127.html">
-<LINK REL="up" HREF="node126.html">
+<LINK REL="next" HREF="node145.html">
+<LINK REL="previous" HREF="node116.html">
+<LINK REL="up" HREF="node74.html">
 <LINK REL="next" HREF="node129.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4251"
+<A NAME="tex2html4153"
   HREF="node129.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4245"
-  HREF="node126.html">
+<A NAME="tex2html4147"
+  HREF="node74.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4239"
+<A NAME="tex2html4141"
   HREF="node127.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4247"
-  HREF="node226.html">
+<A NAME="tex2html4149"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4249"
-  HREF="node229.html">
+<A NAME="tex2html4151"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,787 +88,352 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4252"
-  HREF="node129.html">Análisis Léxico</A>
-<B>Sup:</B> <A NAME="tex2html4246"
-  HREF="node126.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html4240"
-  HREF="node127.html">Las Bases</A>
+<B> Sig:</B> <A NAME="tex2html4154"
+  HREF="node129.html">Las Bases</A>
+<B>Sup:</B> <A NAME="tex2html4148"
+  HREF="node74.html">TERCERA PARTE: APUNTES DE</A>
+<B> Ant:</B> <A NAME="tex2html4142"
+  HREF="node127.html">Práctica: Inventando un Lenguaje:</A>
 <B> Con:</B> 
-<A NAME="tex2html4247"
-  HREF="node226.html">
+<A NAME="tex2html4149"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4249"
-  HREF="node229.html">
+<A NAME="tex2html4151"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION06700000000000000000">
+Análisis Sintáctico Descendente en Perl</A>
+</H1>
+<A NAME="chapter:introcomp"></A>Este capítulo tiene por objeto darte una visión global de la 
+estructura de un compilador e introducirte en las técnicas básicas
+de la construcción de compiladores usando Perl.
+
+<P>
+Puesto que no todos los alumnos que se incorporan en este capítulo 
+han leído los anteriores y no necesariamente conocen Perl, en la sección
+<A HREF="node129.html#section:lasbases">37.1</A>
+comenzamos haciendo un breve repaso a como construir un módulo en Perl.
+Si quieres tener un conocimiento mas profundo
+lee el capítulo sobre módulos en 
+<A HREF="#chapter:modulos">
+<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
+ HREF="node232.html#CasianoIntroAPerl">10</A>]. 
+
+<P>
+La sección 
+<A HREF="node130.html#section:fases">37.2</A>
+describe las fases en las que -al menos conceptualmente-
+se divide un compilador.
+A continuación la sección 
+<A HREF="node131.html#section:analisislexico">37.3</A>
+presenta la primera de dichas fases, el análisis léxico.
+En la sección 
+<A HREF="node146.html#section:conceptos">38.1</A>
+repasamos conceptos de análisis sintáctico 
+que deberían ser familiares a cualquiera que haya 
+seguido un curso en teoría de autómatas 
+y lenguajes formales.
+Antes de comenzar a traducir es conveniente tener un <SPAN  CLASS="textbf">esquema</SPAN> o estrategia
+de traducción para cada constructo sintáctico. 
+La sección 
+<A HREF="node135.html#section:esquemas">37.7</A>
+introduce el concepto de esquema de traducción.
+La fase de análisis sintáctico consiste en la construcción
+del <SPAN  CLASS="textbf">árbol de análisis</SPAN> a partir de la <SPAN  CLASS="textbf">secuencia de unidades léxicas</SPAN>. 
+Existen diversas estrategias para resolver esta fase.
+En la sección 
+<A HREF="node134.html#section:predictivo">37.6</A>
+introducimos la que posiblemente sea la mas sencilla de todas: el análisis
+descendente predictivo recursivo.
+En la sección
+<A HREF="node136.html#section:recursionizquierda">37.8</A>
+abordamos una estrategia para transformar ciertas
+gramáticas para las que dicho método no funciona.
+
+<P>
+Un analizador sintáctico implícitamente construye 
+el árbol de análisis concreto. En muchas ocasiones
+resulta mas rentable trabajar con una forma simplificada
+(<SPAN  CLASS="textbf">abstracta</SPAN>) del árbol que contiene la misma información 
+que aquél. La sección 
+<A HREF="node137.html#section:aat">37.9</A> trata de la construcción de los 
+árboles de análisis abstractos.
+
+<P>
+<BR> <HR>
 <!--Table of Child-Links-->
 <A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html4253"
-  HREF="node128.html#SECTION06720010000000000000">Esquema del Compilador</A>
-<LI><A NAME="tex2html4254"
-  HREF="node128.html#SECTION06720020000000000000">Añadiendo Ejecutables</A>
-<LI><A NAME="tex2html4255"
-  HREF="node128.html#SECTION06720030000000000000">Búsqueda de Librerías en Tiempo de Desarrollo</A>
-<LI><A NAME="tex2html4256"
-  HREF="node128.html#SECTION06720040000000000000">Añadiendo Los Ejecutables al <TT>MANIFEST</TT></A>
-<LI><A NAME="tex2html4257"
-  HREF="node128.html#SECTION06720050000000000000">Indicando al Sistema de Distribución que los Ficheros son Ejecutables</A>
-<LI><A NAME="tex2html4258"
-  HREF="node128.html#SECTION06720060000000000000">Reconstrucci&#243;n de la aplicación</A>
-<LI><A NAME="tex2html4259"
-  HREF="node128.html#SECTION06720070000000000000">Ejecución</A>
-<LI><A NAME="tex2html4260"
-  HREF="node128.html#SECTION06720080000000000000">Construcción de una Distribución</A>
-</UL>
-</UL>
-<BR>
-<LI><A NAME="tex2html4261"
-  HREF="node128.html#SECTION06721000000000000000">Repaso: Fases de un Compilador</A>
-<LI><A NAME="tex2html4262"
-  HREF="node128.html#SECTION06722000000000000000">Práctica: Fases de un Compilador</A>
-</UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION06720000000000000000"></A>
-<A NAME="section:fases"></A>
-<BR>
-Las Fases de un Compilador
-</H1>
-La estructura del compilador, descompuesto en fases, queda explicitada 
-en el código de la subrutina <code>compile</code>:
-
-<P>
-
-<H4><A NAME="SECTION06720010000000000000">
-Esquema del Compilador</A>
-</H4>
-  
-
-<P>
-<PRE>
- 1 package PL::Tutu;
- 2 use 5.008004;   # Versión mínima de Perl 5.84
- 3 use strict;     # Variables deben ser declaradas, etc.
- 4 use warnings;   # Enviar warnings
- 5 use IO::File;
- 6 use Carp;       # Provee alternativas a "die" and "warn" 
- 7 
- 8 require Exporter;
- 9 
-10 our @ISA = qw(Exporter);   # Heredamos los métodos de la clase Exporter
-11 our @EXPORT = qw( compile compile_from_file); # Estas funciones serán exportadas
-12 our $VERSION = '0.01';     # Variable que define la versión del módulo
-13 
-14 our %symbol_table;         # La tabla de símbolos $symbol_table{x} contiene
-15 our $data;                 # la información asociada con el objeto 'x'
-16 our $target;               # tipo, dirección, etc.
-17 our @tokens;               # La lista de terminales
-18 our $errorflag;
-19 our ($lookahead, $value);  # Token actual y su atributo
-20 our $tree;                 # referencia al objeto que contiene
-21 our $global_address;       # el árbol sintáctico
-22 
-23 # Lexical analyzer 
-24 package Lexical::Analysis;
-25 sub scanner {
-26 }
-27 
-28 package Syntax::Analysis;
-29 sub parser {
-30 }
-31 
-32 package Machine::Independent::Optimization;
-33 sub Optimize {
-34 }
-35 
-36 package Code::Generation;
-37 sub code_generator {
-38 }
-39   
-40 package Peephole::Optimization;
-41 sub transform {
-42 }
-43 
-44 package PL::Tutu;
-45 sub compile {
-46   my ($input) = @_; # Observe el contexto!
-47   local %symbol_table = (); 
-48   local $data = ""; # Contiene todas las cadenas en el programa fuente
-49   local $target = ""; # target code
-50   local @tokens =();    # "local" salva el valor que serÃ¡ recuperado al finalizar
-51   local $errorflag = 0; # el Ã¡mbito
-52   local ($lookahead, $value) = ();
-53   local $tree = undef; # Referencia al Ã¡rbol sintÃctico abstracto 
-54   local $global_address = 0; # Usado para guardar la Ãltima direcciÃn ocupada
-55   
-56   ########lexical analysis
-57   &amp;Lexical::Analysis::scanner($input);
-58 
-59   ########syntax (and semantic) analysis
-60   $tree = &amp;Syntax::Analysis::parser;
-61 
-62   ########machine independent optimizations
-63   &amp;Machine::Independent::Optimization::Optimize;
-64 
-65   ########code generation
-66   &amp;Code::Generation::code_generator;
-67 
-68   ########peephole optimization
-69   &amp;Peephole::Optimization::transform($target);
-70 
-71   return \$target; #retornamos una referencia a $target
-72 }
-73 
-74 sub compile_from_file {
-75   my ($input_name, $output_name) = @_; # Nombres de ficheros
-76   my $fhi;                             # de entrada y de salida
-77   my $targetref;
-78   
-79   if (defined($input_name) and (-r $input_name)) {
-80     $fhi = IO::File-&gt;new("&lt; $input_name");
-81   }
-82   else { $fhi = 'STDIN'; }
-83   my $input;
-84   { # leer todo el fichero
-85     local $/ = undef; # localizamos para evitar efectos laterales
-86     $input = &lt;$fhi&gt;;
-87   }
-88   $targetref = compile($input);
-89 
-90   ########code output
-91   my $fh = defined($output_name)? IO::File-&gt;new("&gt; $output_name") : 'STDOUT';
-92   $fh-&gt;print($$targetref);
-93   $fh-&gt;close;
-94   1; # El Ãºltimo valor evaluado es el valor retornado
-95 }
-96 
-97 1;  # El 1 indica que la fase de carga termina con éxito
-98 # Sigue la documentación ...
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION06720020000000000000">
-Añadiendo Ejecutables</A>
-</H4>
-  
-
-<P>
-Vamos a añadir un <SPAN  CLASS="textbf">script</SPAN> que use el módulo
-<code>PL::Tutu</code> para asi poder ejecutar nuestro compilador:
-<PRE>
-lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu/$ mkdir scripts
-lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu$ cd scripts/
-</PRE>
-A continuación creamos dos versiones del compilador <code>tutu.pl</code>
-y <code>tutu</code> y un programa de prueba <code>test01.tutu</code>:
-
-<P>
-<PRE>
-... # despues de crear los ficheros
-lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu/scripts$ ls
-test01.tutu  tutu  tutu.pl
-lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu/scripts$ cat tutu.pl
-#!/usr/bin/perl -w -I../lib/
-use PL::Tutu;
-
-PL::Tutu::compile_from_file(@ARGV);
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION06720030000000000000">
-Búsqueda de Librerías en Tiempo de Desarrollo</A>
-</H4>
-  
-
-<P>
-El programa <code>tutu</code> ilustra otra forma de conseguir que el intérprete
-Perl busque por la librería que está siendo desarrollada, mediante el
-uso de <code>use lib</code>:
-
-<P>
-<PRE>
-lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu/scripts$ cat tutu
-#!/usr/bin/perl -w
-use lib ('../lib');
-use PL::Tutu;
-
-&amp;PL::Tutu::compile_from_file(@ARGV);
-</PRE>
-
-<P>
-Una tercera forma (la que recomiendo):
-<PRE>
-$ export PERL5LIB=~/Lperl/src/topdown/PL0506/02fases/PL-Tutu/lib
-$ perl -MPL::Tutu -e 'PL::Tutu::compile_from_file("test01.tutu")'
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION06720040000000000000">
-Añadiendo Los Ejecutables al <TT>MANIFEST</TT></A>
-</H4>
-  
-
-<P>
-Ahora tenemos que añadir estos ficheros en <code>MANIFEST</code> para que formen
-parte del proyecto. En vez de eso lo que podemos hacer es crear un fichero
-<code>MANIFEST.SKIP</code>:
-<PRE>
-lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu$ cat MANIFEST.SKIP
-\.o$
-^\.cvsignore$
-/\.cvsignore$
-\.cvsignore$
-CVS/[^/]+$
-\.svn\b
-^Makefile$
-/Makefile$
-^blib/
-\.swp$
-\.bak$
-\.pdf$
-\.ps$
-\.sal$
-pm_to_blib
-\.pdf$
-\.tar.gz$
-\.tgz$
-^META.yml$
-</PRE>
-Ahora al hacer
-<PRE>
-make manifest
-</PRE>
-se crea un fichero <code>MANIFEST</code> que contiene los caminos 
-relativos de todos los ficheros
-en la jerarquía cuyos nombres no casan con una de las expresiones
-regulares en <code>MANIFEST.SKIP</code>.
-
-<P>
-Para saber mas sobre <code>MANIFEST</code> léa 
-<A HREF="#subsection:MANIFEST">
-<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
- HREF="node230.html#CasianoIntroAPerl">10</A>].
-
-<P>
-No recomiendo el uso de <code>MANIFEST.SKIP</code>. Prefiero un control manual de los
-ficheros que integran la aplicacion.
-
-<P>
-
-<H4><A NAME="SECTION06720050000000000000">
-Indicando al Sistema de Distribución que los Ficheros son Ejecutables</A>
-</H4>
-  
-
-<P>
-Es necesario indicarle a Perl que los ficheros añadidos son ejecutables.
-Esto se hace mediante el par&#225;metro <code>EXE_FILES</code> de <code>WriteMakefile</code>:
-<PRE>
-lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu$ cat Makefile.PL
-use 5.008004;
-use ExtUtils::MakeMaker;
-# See lib/ExtUtils/MakeMaker.pm for details of how to influence
-# the contents of the Makefile that is written.
-WriteMakefile(
-    NAME              =&gt; 'PL::Tutu',
-    VERSION_FROM      =&gt; 'lib/PL/Tutu.pm', # finds $VERSION
-    PREREQ_PM         =&gt; {}, # e.g., Module::Name =&gt; 1.1
-    EXE_FILES         =&gt; [ 'scripts/tutu.pl', 'scripts/tutu' ],
-    ($] &gt;= 5.005 ?     ## Add these new keywords supported since 5.005
-      (ABSTRACT_FROM  =&gt; 'lib/PL/Tutu.pm', # retrieve abstract from module
-       AUTHOR         =&gt; 'Lenguajes y Herramientas de Programacion &lt;lhp@&gt;') : ()),
-);
-</PRE>
-Perl utilizará esa información durante la fase de instalación
-para instalar los ejecutables en el <SPAN  CLASS="textbf">path</SPAN> de búsqueda.
-
-<P>
-
-<H4><A NAME="SECTION06720060000000000000">
-Reconstrucci&#243;n de la aplicación</A>
-</H4>
-  
-
-<P>
-A continuación hay que rehacer el <code>Makefile</code>:
-<PRE>
-lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu$ perl Makefile.PL
-Writing Makefile for PL::Tutu
-</PRE>
-
-<P>
-Para crear una versión funcional hacemos <code>make</code>:
-<PRE>
-lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu$ make
-cp scripts/tutu blib/script/tutu
-/usr/bin/perl "-MExtUtils::MY" -e "MY-&gt;fixin(shift)" blib/script/tutu
-cp scripts/tutu.pl blib/script/tutu.pl
-/usr/bin/perl "-MExtUtils::MY" -e "MY-&gt;fixin(shift)" blib/script/tutu.pl
-Manifying blib/man3/PL::Tutu.3pm
-</PRE>
-
-<P>
-Para crear el <code>MANIFEST</code> hacemos <code>make manifest</code>:
-<PRE>
-lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu$ make manifest
-/usr/bin/perl "-MExtUtils::Manifest=mkmanifest" -e mkmanifest
-Added to MANIFEST: scripts/tutu
-</PRE>
-
-<P>
-Comprobemos que el test de prueba generado automáticamente por
-<code>h2xs</code> se pasa correctamente:
-<PRE>
-lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu$ make test
-PERL_DL_NONLAZY=1 /usr/bin/perl "-MExtUtils::Command::MM" "-e" "test_harness(0, 'blib/lib', 'blib/arch')" t/*.t
-t/PL-Tutu....ok
-All tests successful.
-Files=1, Tests=1,  0 wallclock secs ( 0.08 cusr +  0.00 csys =  0.08 CPU)
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION06720070000000000000">
-Ejecución</A>
-</H4>
-  
-
-<P>
-Podemos ahora ejecutar los guiones:
-<PRE>
-lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu$ cd scripts/
-lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu/scripts$ ls -l
-total 12
--rw-r--r--  1 lhp lhp 15 2005-09-29 12:56 test01.tutu
--rwxr-xr-x  1 lhp lhp 92 2005-09-29 13:29 tutu
--rwxr-xr-x  1 lhp lhp 80 2005-09-29 12:58 tutu.pl
-lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu/scripts$ tutu test01.tutu test01.sal
-lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu/scripts$ ls -l
-total 12
--rw-r--r--  1 lhp lhp  0 2005-09-29 13:53 test01.sal
--rw-r--r--  1 lhp lhp 15 2005-09-29 12:56 test01.tutu
--rwxr-xr-x  1 lhp lhp 92 2005-09-29 13:29 tutu
--rwxr-xr-x  1 lhp lhp 80 2005-09-29 12:58 tutu.pl
-</PRE>
-
-<P>
-Veamos los contenidos del programa fuente <code>test01.tutu</code>
-que usaremos para hacer una prueba:
-<PRE>
-lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu/scripts$ cat test01.tutu
-int a,b;
-a = 4
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION06720080000000000000">
-Construcción de una Distribución</A>
-</H4>
-  
-
-<P>
-Para hacer una distribución instalable hacemos <code>make dist</code>:
-<PRE>
-lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu$ make dist
-rm -rf PL-Tutu-0.01
-/usr/bin/perl "-MExtUtils::Manifest=manicopy,maniread" \
-        -e "manicopy(maniread(),'PL-Tutu-0.01', 'best');"
-mkdir PL-Tutu-0.01
-mkdir PL-Tutu-0.01/scripts
-mkdir PL-Tutu-0.01/lib
-mkdir PL-Tutu-0.01/lib/PL
-mkdir PL-Tutu-0.01/t
-tar cvf PL-Tutu-0.01.tar PL-Tutu-0.01
-PL-Tutu-0.01/
-PL-Tutu-0.01/scripts/
-PL-Tutu-0.01/scripts/test01.tutu
-PL-Tutu-0.01/scripts/tutu
-PL-Tutu-0.01/scripts/tutu.pl
-PL-Tutu-0.01/META.yml
-PL-Tutu-0.01/Changes
-PL-Tutu-0.01/MANIFEST
-PL-Tutu-0.01/lib/
-PL-Tutu-0.01/lib/PL/
-PL-Tutu-0.01/lib/PL/Tutu.pm
-PL-Tutu-0.01/MANIFEST.SKIP
-PL-Tutu-0.01/t/
-PL-Tutu-0.01/t/PL-Tutu.t
-PL-Tutu-0.01/Makefile.PL
-PL-Tutu-0.01/README
-rm -rf PL-Tutu-0.01
-gzip --best PL-Tutu-0.01.tar
-</PRE>
-Después de esto tenemos en el directorio de trabajo
-el fichero  <code>PL-Tutu-0.01.tar.gz</code> con la distribución:
-<PRE>
-lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu$ ls -ltr
-total 72
-drwxr-xr-x  2 lhp lhp  4096 2005-09-29 12:01 t
--rw-r--r--  1 lhp lhp  1196 2005-09-29 12:01 README
-drwxr-xr-x  3 lhp lhp  4096 2005-09-29 12:01 lib
--rw-r--r--  1 lhp lhp   152 2005-09-29 12:01 Changes
--rw-r--r--  1 lhp lhp   167 2005-09-29 13:23 MANIFEST.SKIP
--rw-r--r--  1 lhp lhp     0 2005-09-29 13:23 pm_to_blib
-drwxr-xr-x  6 lhp lhp  4096 2005-09-29 13:23 blib
--rw-r--r--  1 lhp lhp   113 2005-09-29 13:23 MANIFEST.bak
-drwxr-xr-x  2 lhp lhp  4096 2005-09-29 13:29 scripts
--rw-r--r--  1 lhp lhp   616 2005-09-29 13:49 Makefile.PL
--rw-r--r--  1 lhp lhp 20509 2005-09-29 13:51 Makefile
--rw-r--r--  1 lhp lhp  3654 2005-09-29 16:34 PL-Tutu-0.01.tar.gz
--rw-r--r--  1 lhp lhp   298 2005-09-29 16:34 META.yml
--rw-r--r--  1 lhp lhp   205 2005-09-29 16:34 MANIFEST
-</PRE>
-
-<P>
-
-<H2><A NAME="SECTION06721000000000000000"></A>
-   <A NAME="12613"></A>
-  
-<A NAME="repaso:fases"></A>
-<BR>
-Repaso: Fases de un Compilador
-</H2>
-
-<OL>
-<LI>¿Que hace la declaración 
-<code>package nombredepaquete</code>?
-</LI>
-<LI>¿Cual es la función de la declaración <code>use 5.008004</code>?
-</LI>
-<LI>¿Cuál es la función de la declaración <code>use strict</code>?
-</LI>
-<LI>¿Cuál es la función de la declaración <code>use warnings</code>?
-</LI>
-<LI>¿Que diferencia hay entre <code>use warnings</code> y <code>perl -w</code>?
-</LI>
-<LI>¿Cuál es la función de la declaración <code>use Carp</code>?
-¿Que diferencia hay entre <code>croak</code> y <code>die</code>?
-</LI>
-<LI>¿Qué hace la declaración <code>our</code>? 
-</LI>
-<LI>¿Qué es una variable de paquete?
-</LI>
-<LI>¿Cuál es el nombre completo de una variable de paquete?
-</LI>
-<LI>¿En que variable especial se situán los argumentos pasados a una subrutina?
-</LI>
-<LI>¿Que hace la declaración <code>local</code>?
-</LI>
-<LI>¿Cómo se declara una variable léxica?
-</LI>
-<LI>¿Cuál es el prefijo para los hashes?
-</LI>
-<LI>¿Cómo se hace referencia a un elemento de un hash <code>%h</code> de clave <code>k</code>?
-</LI>
-<LI>¿Cómo se hace referencia a un elemento de un array <code>@a</code> de índice <code>7</code>?
-¿Que lugar ocupa ese elemento en el array?
-</LI>
-<LI>¿Cuál es el significado de <code>undef</code>?
-</LI>
-<LI>¿Cuál es el prefijo para las subrutinas?
-</LI>
-<LI>Señale la diferencia entre
-<PRE>
-my ($input) = @_;
-</PRE>
-y
-<PRE>
-my $input = @_;
-</PRE>
-Repase 
-<A HREF="#section:referencias">
-<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
- HREF="node230.html#CasianoIntroAPerl">10</A>].
-</LI>
-<LI>Toda referencia es un escalar: ¿Cierto o falso?
-</LI>
-<LI>Toda referencia es verdadera ¿Cierto o falso?
-</LI>
-<LI>¿Que diferencia hay entre <code>use</code> y <code>require</code>?
-¿La línea <code>require Exporter</code> se ejecuta en tiempo de compilación 
-o en tiempo de ejecución?
-</LI>
-<LI>¿Que hace la línea 
-<code>our @ISA = qw(Exporter)</code>?. Repáse 
-<A HREF="#section:herencia">
-<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
- HREF="node230.html#CasianoIntroAPerl">10</A>].
-
-<P>
-</LI>
-<LI>¿Que hace la línea
-<code>our @EXPORT = qw( compile compile_from_file)</code>?
-</LI>
-<LI>¿Que diferencia hay entre <code>EXPORT</code> y <code>EXPORT_OK</code>?.
-Repase <A HREF="#section:exportacion">
-<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
- HREF="node230.html#CasianoIntroAPerl">10</A>].
-</LI>
-<LI>¿Que hace la línea
-<code>our $VERSION = '0.01</code>?
-</LI>
-<LI>¿Que valor tiene una variable no incializada? ¿y si es un array?
-</LI>
-<LI>¿Que es un array anónimo? 
-(Repase <A HREF="#section:anonimos">
-<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
- HREF="node230.html#CasianoIntroAPerl">10</A>])
-</LI>
-<LI>¿Que es un hash anónimo?
-(Repase <A HREF="#section:anonimos">
-<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
- HREF="node230.html#CasianoIntroAPerl">10</A>])
-</LI>
-<LI>¿Que hace el operador <code>=&gt;</code>?.
-Repase 
-<A HREF="#subsection:flechagrande">
-<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
- HREF="node230.html#CasianoIntroAPerl">10</A>].
-</LI>
-<LI>¿En que lugar se dejan los ejecutables asociados con una distribución?
-¿Cómo se informa a Perl que se trata de ejecutables?
-</LI>
-<LI>¿Cuál es la función de <code>MANIFEST.SKIP</code>?
-¿Que hace <code>make manifest</code>?
-</LI>
-<LI>¿Que hace la opción <code>-I</code>?
-¿Porqué la primera línea de <code>tutu.pl</code> comienza:
-<BR><code>#!/usr/bin/perl -w -I../lib/</code>?
-</LI>
-<LI>¿Cómo puedo saber lo que hace el módulo <code>lib</code>?
-¿Qué hace la línea <code>use lib ('../lib')</code> en el programa <code>tutu</code>?
-</LI>
-<LI>¿Que contiene la variable <code>PERL5LIB</code>?
-</LI>
-<LI>¿Cómo se crea una distribución?
-</LI>
-<LI>¿Que devuelve <code>-r $input_name</code> en la línea 79?
-Repase 
-<A HREF="#subsection:filetests">
-<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
- HREF="node230.html#CasianoIntroAPerl">10</A>].
-</LI>
-<LI>¿Cuál es la función de la variable mágica <code>$/</code>?
-¿Que se leerá en la línea 86
-<PRE>
-85   local $/ = undef;
-86   my $input = &lt;$fhi&gt;;
-</PRE>
-</LI>
-<LI>¿Que hace el operador <code>\</code>? ¿Que relación hay entre <code>\$target</code> y <code>$target</code>?.
-</LI>
-<LI>Si <code>$targetref</code> es una referencia a la cadena que va a contener el
-código objeto, ¿Cómo se denota a la cadena referenciada por <code>$targetref</code>?
-Explique la línea 
-<PRE>
-92   $fh-&gt;print($$targetref);
-</PRE>
-</LI>
-</OL>
-
-<P>
-
-<H2><A NAME="SECTION06722000000000000000"></A>
-   <A NAME="12629"></A>
-  
-<A NAME="practica:fases"></A>
-<BR>
-Práctica: Fases de un Compilador
-</H2>
-Reproduzca los pasos explicados en la sección
-<A HREF="#section:fases">36.2</A> extendiendo el módulo <code>PL::Tutu</code>
-con las funciones de compilación y los correspondientes
-guiones de compilación.
-
-<P>
-Mejore el script <code>tutu</code> para que acepte opciones desde la línea de comandos.
-Debera soportar al menos las siguientes opciones:
-
+<LI><A NAME="tex2html4155"
+  HREF="node129.html">Las Bases</A>
 <UL>
-<LI><code>--usage</code> 
-
-<P>
-Muestra de forma concisa el comando de uso
-</LI>
-<LI><code>--help</code> 
-
-<P>
-Un resumen de cada opción disponible
-
-<P>
-</LI>
-<LI><code>--version</code>
-
-<P>
-Muestra la versión del programa
-
-<P>
-</LI>
-<LI><code>--man</code> 
-
-<P>
-Muestra la documentación
-</LI>
+<LI><A NAME="tex2html4156"
+  HREF="node129.html#SECTION06710010000000000000">Version</A>
+<LI><A NAME="tex2html4157"
+  HREF="node129.html#SECTION06710020000000000000">h2xs</A>
+<LI><A NAME="tex2html4158"
+  HREF="node129.html#SECTION06710030000000000000">Generación del Makefile</A>
+<LI><A NAME="tex2html4159"
+  HREF="node129.html#SECTION06710040000000000000">Documentación</A>
+<LI><A NAME="tex2html4160"
+  HREF="node129.html#SECTION06711000000000000000">Repaso: Las Bases</A>
+<LI><A NAME="tex2html4161"
+  HREF="node129.html#SECTION06712000000000000000">Práctica: Crear y documentar el Módulo <TT>PL::Tutu</TT></A>
 </UL>
-
-<P>
-Use para ello el módulo  <TT>Getopt::Long</TT> .
-Este módulo provee la función  <TT>GetOptions</TT>  la cual
-se atiene a los estándares de especificación
-de opciones en la línea de comandos POSIX y GNU.
-Esta función soporta el uso del guión doble <code>--</code>
-y el simple así como admitir el prefijo mas corto
-que deshace la ambiguedad entre las diferentes opciones.
-
-<P>
-La llamada a 
- <TT>GetOptions</TT>  analiza la l&#237;nea de comandos en
-<code>ARGV</code>
-inicializa la variable asociada de manera adecuada. Retorna un valor verdadero
-si la l&#237;nea de comandos pudo ser procesada con
-En caso contrario emitir&#225;
-un mensaje de error y devolver&#225; falso. Recuerde hacer
-<code>perldoc Getopt::Long</code>
-para obtener informaci&#243;n mas detallada
-
-<P>
-El siguiente ejemplo ilustra el uso de <code>Getopt::Long</code>.
-Se hace uso también del módulo (función  <TT>pod2usage</TT>  en la línea 63)
-<code>Pod::Usage</code> el cual permite la documentación empotrada.
-
-<P>
-<PRE>
-nereida:~/LEyapp/examples&gt; cat -n treereg
- 1  #!/usr/bin/perl -w
- 2  use strict;
- 3  use Parse::Eyapp::YATW;
- 4  use Parse::Eyapp::Node;
- 5  use Parse::Eyapp::Treeregexp;
- 6  use Carp;
- 7  use Getopt::Long;
- 8  use Pod::Usage;
- 9
-10  my $infile;
-11  my $outfile;
-12  my $packagename;
-13  my $prefix = '';
-14  my $syntax = 1;
-15  my $numbers = 1;
-16  my $severity = 0; # 0 = Don't  check arity. 1 = Check arity. 
-17                    # 2 = Check arity and give a warning 3 = ... and croak
-18  GetOptions(
-19    'in=s'       =&gt; \$infile,
-20    'out=s'      =&gt; \$outfile,
-21    'mod=s'      =&gt; \$packagename,
-22    'prefix=s'   =&gt; \$prefix,
-23    'severity=i' =&gt; \$severity,
-24    'syntax!'    =&gt; \$syntax,
-25    'numbers!'   =&gt; \$numbers,
-26    'version'    =&gt; \&amp;version,
-27    'usage'      =&gt; \&amp;usage,
-28    'help'       =&gt; \&amp;man,
-29  ) or croak usage();
-30
-31  # If an argument remains is the inputfile 
-32  ($infile) = @ARGV unless defined($infile);
-33  die usage() unless defined($infile);
-34
-35  my $treeparser = Parse::Eyapp::Treeregexp-&gt;new(
-36                      INFILE   =&gt; $infile,
-37                      OUTFILE  =&gt; $outfile,
-38                      PACKAGE  =&gt; $packagename,
-39                      PREFIX   =&gt; $prefix,
-40                      SYNTAX   =&gt; $syntax,
-41                      NUMBERS  =&gt; $numbers,
-42                      SEVERITY =&gt; $severity
-43                    );
-44
-45  $treeparser-&gt;generate();
-46
-47  sub version {
-48    print "Version $Parse::Eyapp::Treeregexp::VERSION\n";
-49    exit;
-50  }
-51
-52  sub usage {
-53    print &lt;&lt;"END_ERR";
-54  Supply the name of a file containing a tree grammar (.trg)
-55  Usage is:
-56  treereg [-m packagename] [[no]syntax] [[no]numbers] [-severity 0|1|2|3] \
-57          [-p treeprefix] [-o outputfile] -i filename[.trg]
-58  END_ERR
-59    exit;
-60  }
-61
-62  sub man {
-63    pod2usage(
-64      -exitval =&gt; 1,
-65      -verbose =&gt; 2
-66    );
-67  }
-68  __END__
-69
-70  =head1 SYNOPSIS
-71
-72    treereg [-m packagename] [[no]syntax] [[no]numbers] [-severity 0|1|2|3] \
-73            [-p treeprefix] [-o outputfile] -i filename[.trg]
-74    treereg [-m packagename] [[no]syntax] [[no]numbers] [-severity 0|1|2|3] \
-75            [-p treeprefix] [-o outputfile] filename[.trg]
-76 ... # Follows the documentation bla, bla, bla
-</PRE>
-
-<P>
-Ahora podemos ejecutar el guión de múltiples formas:
-<PRE>
-nereida:~/LEyapp/examples&gt; treereg -nos -nonu -se 3 -m Tutu Foldonly1.trg 
-nereida:~/LEyapp/examples&gt; treereg -nos -nonu -s 3 -m Tutu Foldonly1.trg  
-Option s is ambiguous (severity, syntax)
-nereida:~/LEyapp/examples&gt; treereg -nos -bla -nonu -m Tutu Foldonly1.trg
-Unknown option: bla
-nereida:~/LEyapp/examples&gt;
-</PRE>
-
-<P>
-La librería estandar de Perl incluye el módulo <code>Getopt::Long</code>. 
-No es el caso de <code>Pod::Usage</code>. Descarge el módulo e instalelo
-en un directorio local en el que tenga permisos. Si es preciso repase las secciones
-<A HREF="#section:instalacionamano">
-<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
- HREF="node230.html#CasianoIntroAPerl">10</A>] y <A HREF="#section:CPAN">
-<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
- HREF="node230.html#CasianoIntroAPerl">10</A>]  de los apuntes de 
-introducción a Perl.
-
-<P>
+<BR>
+<LI><A NAME="tex2html4162"
+  HREF="node130.html">Las Fases de un Compilador</A>
+<UL>
+<LI><A NAME="tex2html4163"
+  HREF="node130.html#SECTION06720010000000000000">Esquema del Compilador</A>
+<LI><A NAME="tex2html4164"
+  HREF="node130.html#SECTION06720020000000000000">Añadiendo Ejecutables</A>
+<LI><A NAME="tex2html4165"
+  HREF="node130.html#SECTION06720030000000000000">Búsqueda de Librerías en Tiempo de Desarrollo</A>
+<LI><A NAME="tex2html4166"
+  HREF="node130.html#SECTION06720040000000000000">Añadiendo Los Ejecutables al <TT>MANIFEST</TT></A>
+<LI><A NAME="tex2html4167"
+  HREF="node130.html#SECTION06720050000000000000">Indicando al Sistema de Distribución que los Ficheros son Ejecutables</A>
+<LI><A NAME="tex2html4168"
+  HREF="node130.html#SECTION06720060000000000000">Reconstrucci&#243;n de la aplicación</A>
+<LI><A NAME="tex2html4169"
+  HREF="node130.html#SECTION06720070000000000000">Ejecución</A>
+<LI><A NAME="tex2html4170"
+  HREF="node130.html#SECTION06720080000000000000">Construcción de una Distribución</A>
+<LI><A NAME="tex2html4171"
+  HREF="node130.html#SECTION06721000000000000000">Repaso: Fases de un Compilador</A>
+<LI><A NAME="tex2html4172"
+  HREF="node130.html#SECTION06722000000000000000">Práctica: Fases de un Compilador</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html4173"
+  HREF="node131.html">Análisis Léxico</A>
+<UL>
+<LI><A NAME="tex2html4174"
+  HREF="node131.html#SECTION06730010000000000000">El Operador de Binding</A>
+<LI><A NAME="tex2html4175"
+  HREF="node131.html#SECTION06730020000000000000">Casando a partir del Ültimo Emparejamiento</A>
+<LI><A NAME="tex2html4176"
+  HREF="node131.html#SECTION06730030000000000000">La opción <TT>g</TT></A>
+<LI><A NAME="tex2html4177"
+  HREF="node131.html#SECTION06730040000000000000">La opción <TT>c</TT></A>
+<LI><A NAME="tex2html4178"
+  HREF="node131.html#SECTION06730050000000000000">La opción <TT>i</TT></A>
+<LI><A NAME="tex2html4179"
+  HREF="node131.html#SECTION06730060000000000000">Código del Analizador Léxico</A>
+<LI><A NAME="tex2html4180"
+  HREF="node131.html#SECTION06730070000000000000">Relación de corutina con el Analizador Sintáctico</A>
+<LI><A NAME="tex2html4181"
+  HREF="node131.html#SECTION06730080000000000000">Manejo de Errores</A>
+<LI><A NAME="tex2html4182"
+  HREF="node131.html#SECTION06731000000000000000">Ejercicio: La opción <TT>g</TT></A>
+<LI><A NAME="tex2html4183"
+  HREF="node131.html#SECTION06732000000000000000">Ejercicio: Opciones <TT>g</TT> y <TT>c</TT> en Expresiones Regulares</A>
+<LI><A NAME="tex2html4184"
+  HREF="node131.html#SECTION06733000000000000000">Ejercicio: El orden de las expresiones regulares</A>
+<LI><A NAME="tex2html4185"
+  HREF="node131.html#SECTION06734000000000000000">Ejercicio: Regexp para cadenas</A>
+<LI><A NAME="tex2html4186"
+  HREF="node131.html#SECTION06735000000000000000">Ejercicio: El <TT>or</TT> es vago</A>
+<LI><A NAME="tex2html4187"
+  HREF="node131.html#SECTION06736000000000000000">Práctica: Números de Línea, Errores, Cadenas y Comentarios</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html4188"
+  HREF="node132.html">Pruebas para el Analizador Léxico</A>
+<UL>
+<LI><A NAME="tex2html4189"
+  HREF="node132.html#SECTION06740010000000000000">Módulo <TT>PL::Error</TT></A>
+<LI><A NAME="tex2html4190"
+  HREF="node132.html#SECTION06740020000000000000">Módulo <TT>PL::Lexical::Analysis</TT></A>
+<LI><A NAME="tex2html4191"
+  HREF="node132.html#SECTION06740030000000000000">El Programa Cliente</A>
+<LI><A NAME="tex2html4192"
+  HREF="node132.html#SECTION06740040000000000000">Actualización del MANIFEST</A>
+<LI><A NAME="tex2html4193"
+  HREF="node132.html#SECTION06741000000000000000">Comprobando el Analizador Léxico</A>
+<UL>
+<LI><A NAME="tex2html4194"
+  HREF="node132.html#SECTION06741010000000000000">Principios Básicos del Desarrollo de Pruebas</A>
+<LI><A NAME="tex2html4195"
+  HREF="node132.html#SECTION06741020000000000000">La Jerarquía de Una Aplicación</A>
+<LI><A NAME="tex2html4196"
+  HREF="node132.html#SECTION06741030000000000000">Un Ejemplo de Programa de Prueba</A>
+<LI><A NAME="tex2html4197"
+  HREF="node132.html#SECTION06741040000000000000">Ejecución de Las Pruebas</A>
+<LI><A NAME="tex2html4198"
+  HREF="node132.html#SECTION06741100000000000000">Versiones anteriores a la 5.8</A>
+</UL>
+<LI><A NAME="tex2html4199"
+  HREF="node132.html#SECTION06742000000000000000">Práctica: Pruebas en el Análisis Léxico</A>
+<LI><A NAME="tex2html4200"
+  HREF="node132.html#SECTION06743000000000000000">Repaso: Pruebas en el Análisis Léxico</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html4201"
+  HREF="node133.html">Conceptos Básicos para el Análisis Sintáctico</A>
+<UL>
+<LI><A NAME="tex2html4202"
+  HREF="node133.html#SECTION06751000000000000000">Ejercicio</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html4203"
+  HREF="node134.html">Análisis Sintáctico Predictivo Recursivo</A>
+<UL>
+<LI><A NAME="tex2html4204"
+  HREF="node134.html#SECTION06761000000000000000">Introducción</A>
+<LI><A NAME="tex2html4205"
+  HREF="node134.html#SECTION06762000000000000000">Ejercicio: Recorrido del árbol en un ADPR</A>
+<LI><A NAME="tex2html4206"
+  HREF="node134.html#SECTION06763000000000000000">Ejercicio: Factores Comunes</A>
+<LI><A NAME="tex2html4207"
+  HREF="node134.html#SECTION06764000000000000000">Derivaciones a vacío</A>
+<LI><A NAME="tex2html4208"
+  HREF="node134.html#SECTION06765000000000000000">Construcción de los conjuntos de Primeros y Siguientes</A>
+<LI><A NAME="tex2html4209"
+  HREF="node134.html#SECTION06766000000000000000">Ejercicio: Construir los <SPAN CLASS="MATH"><IMG
+ WIDTH="65" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$ FIRST$"></SPAN></A>
+<LI><A NAME="tex2html4210"
+  HREF="node134.html#SECTION06767000000000000000">Ejercicio: Calcular los <SPAN CLASS="MATH"><IMG
+ WIDTH="89" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$ FOLLOW$"></SPAN></A>
+<LI><A NAME="tex2html4211"
+  HREF="node134.html#SECTION06768000000000000000">Práctica: Construcción de los FIRST y los FOLLOW</A>
+<LI><A NAME="tex2html4212"
+  HREF="node134.html#SECTION06769000000000000000">Gramáticas LL(1)</A>
+<LI><A NAME="tex2html4213"
+  HREF="node134.html#SECTION067610000000000000000">Ejercicio: Caracterización de una gramática LL(1) </A>
+<LI><A NAME="tex2html4214"
+  HREF="node134.html#SECTION067611000000000000000">Ejercicio: Ambiguedad y LL(1)</A>
+<LI><A NAME="tex2html4215"
+  HREF="node134.html#SECTION067612000000000000000">Práctica: Un analizador APDR</A>
+<LI><A NAME="tex2html4216"
+  HREF="node134.html#SECTION067613000000000000000">Práctica: Generación Automática de Analizadores Predictivos</A>
+<UL>
+<LI><A NAME="tex2html4217"
+  HREF="node134.html#SECTION067613010000000000000">Objetivo</A>
+<LI><A NAME="tex2html4218"
+  HREF="node134.html#SECTION067613020000000000000">El Módulo <TT>Grammar</TT></A>
+<LI><A NAME="tex2html4219"
+  HREF="node134.html#SECTION067613030000000000000">Descripción del objetivo: La función <TT>gap</TT></A>
+<LI><A NAME="tex2html4220"
+  HREF="node134.html#SECTION067613040000000000000">Descripción del objetivo: La función <TT>parser</TT></A>
+<LI><A NAME="tex2html4221"
+  HREF="node134.html#SECTION067613050000000000000">Cálculo de los First y los Follow con <TT>PL::FirstFollow</TT></A>
+<LI><A NAME="tex2html4222"
+  HREF="node134.html#SECTION067613060000000000000">Uso de Templates</A>
+<LI><A NAME="tex2html4223"
+  HREF="node134.html#SECTION067613070000000000000">Concatenación y Documentos <TT>HERE</TT></A>
+<LI><A NAME="tex2html4224"
+  HREF="node134.html#SECTION067613080000000000000">Descarga de los Módulos Necesarios</A>
+</UL>
+</UL>
+<BR>
+<LI><A NAME="tex2html4225"
+  HREF="node135.html">Esquemas de Traducción</A>
+<LI><A NAME="tex2html4226"
+  HREF="node136.html">Recursión por la Izquierda</A>
+<UL>
+<LI><A NAME="tex2html4227"
+  HREF="node136.html#SECTION06781000000000000000">Eliminación de la Recursión por la Izquierda en la Gramática</A>
+<LI><A NAME="tex2html4228"
+  HREF="node136.html#SECTION06782000000000000000">Eliminación de la Recursión por la Izquierda en un Esquema de Traducción</A>
+<LI><A NAME="tex2html4229"
+  HREF="node136.html#SECTION06783000000000000000">Ejercicio</A>
+<LI><A NAME="tex2html4230"
+  HREF="node136.html#SECTION06784000000000000000">Convirtiendo el Esquema en un Analizador Predictivo</A>
+<LI><A NAME="tex2html4231"
+  HREF="node136.html#SECTION06785000000000000000">Ejercicio</A>
+<LI><A NAME="tex2html4232"
+  HREF="node136.html#SECTION06786000000000000000">Práctica: Eliminación de la Recursividad por la Izquierda</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html4233"
+  HREF="node137.html">Árbol de Análisis Abstracto</A>
+<UL>
+<LI><A NAME="tex2html4234"
+  HREF="node137.html#SECTION06791000000000000000">Lenguajes Árbol y Gramáticas Árbol</A>
+<LI><A NAME="tex2html4235"
+  HREF="node137.html#SECTION06792000000000000000">Realización del AAA para Tutu en Perl</A>
+<LI><A NAME="tex2html4236"
+  HREF="node137.html#SECTION06793000000000000000">AAA: Otros tipos de nodos</A>
+<LI><A NAME="tex2html4237"
+  HREF="node137.html#SECTION06794000000000000000">Declaraciones</A>
+<LI><A NAME="tex2html4238"
+  HREF="node137.html#SECTION06795000000000000000">Práctica: Arbol de Análisis Abstracto</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html4239"
+  HREF="node138.html">Análisis Semántico</A>
+<UL>
+<LI><A NAME="tex2html4240"
+  HREF="node138.html#SECTION067101000000000000000">Práctica: Declaraciones Automáticas</A>
+<LI><A NAME="tex2html4241"
+  HREF="node138.html#SECTION067102000000000000000">Práctica: Análisis Semántico</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html4242"
+  HREF="node139.html">Optimización Independiente de la Máquina</A>
+<UL>
+<LI><A NAME="tex2html4243"
+  HREF="node139.html#SECTION067111000000000000000">Práctica: Plegado de las Constantes</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html4244"
+  HREF="node140.html">Patrones Árbol y Transformaciones Árbol</A>
+<UL>
+<LI><A NAME="tex2html4245"
+  HREF="node140.html#SECTION067121000000000000000">Práctica: Casando y Transformando Árboles</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html4246"
+  HREF="node141.html">Asignación de Direcciones</A>
+<UL>
+<LI><A NAME="tex2html4247"
+  HREF="node141.html#SECTION067131000000000000000">Práctica: Cálculo de las Direcciones</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html4248"
+  HREF="node142.html">Generación de Código: Máquina Pila</A>
+<LI><A NAME="tex2html4249"
+  HREF="node143.html">Generación de Código: Máquina Basada en Registros</A>
+<UL>
+<LI><A NAME="tex2html4250"
+  HREF="node143.html#SECTION067151000000000000000">Práctica: Generación de Código</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html4251"
+  HREF="node144.html">Optimización de Código</A>
+<UL>
+<LI><A NAME="tex2html4252"
+  HREF="node144.html#SECTION067161000000000000000">Práctica: Optimización Peephole</A>
+</UL></UL>
+<!--End of Table of Child-Links-->
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4251"
+<A NAME="tex2html4153"
   HREF="node129.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4245"
-  HREF="node126.html">
+<A NAME="tex2html4147"
+  HREF="node74.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4239"
+<A NAME="tex2html4141"
   HREF="node127.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4247"
-  HREF="node226.html">
+<A NAME="tex2html4149"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4249"
-  HREF="node229.html">
+<A NAME="tex2html4151"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -915,17 +480,17 @@ introducción a Perl.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4252"
-  HREF="node129.html">Análisis Léxico</A>
-<B>Sup:</B> <A NAME="tex2html4246"
-  HREF="node126.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html4240"
-  HREF="node127.html">Las Bases</A>
+<B> Sig:</B> <A NAME="tex2html4154"
+  HREF="node129.html">Las Bases</A>
+<B>Sup:</B> <A NAME="tex2html4148"
+  HREF="node74.html">TERCERA PARTE: APUNTES DE</A>
+<B> Ant:</B> <A NAME="tex2html4142"
+  HREF="node127.html">Práctica: Inventando un Lenguaje:</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-06-03</I>
+2013-06-08</I>
 </ADDRESS>
 </BODY>
 </HTML>

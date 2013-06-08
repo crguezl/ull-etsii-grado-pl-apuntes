@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Acciones en Medio de una Regla y Atributos Heredados</TITLE>
-<META NAME="description" CONTENT="Acciones en Medio de una Regla y Atributos Heredados">
+<TITLE>Definición Dirigida por la Sintáxis</TITLE>
+<META NAME="description" CONTENT="Definición Dirigida por la Sintáxis">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node178.html">
 <LINK REL="previous" HREF="node176.html">
-<LINK REL="up" HREF="node163.html">
+<LINK REL="up" HREF="node165.html">
 <LINK REL="next" HREF="node178.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5139"
+<A NAME="tex2html5145"
   HREF="node178.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5133"
-  HREF="node163.html">
+<A NAME="tex2html5139"
+  HREF="node165.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5127"
+<A NAME="tex2html5133"
   HREF="node176.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5135"
-  HREF="node226.html">
+<A NAME="tex2html5141"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5137"
-  HREF="node229.html">
+<A NAME="tex2html5143"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,282 +88,200 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5140"
-  HREF="node178.html">Recuperación de Errores</A>
-<B>Sup:</B> <A NAME="tex2html5134"
-  HREF="node163.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5128"
-  HREF="node176.html">Manejo en yapp de</A>
+<B> Sig:</B> <A NAME="tex2html5146"
+  HREF="node178.html">Manejo en yapp de</A>
+<B>Sup:</B> <A NAME="tex2html5140"
+  HREF="node165.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5134"
+  HREF="node176.html">Esquemas de Traducción</A>
 <B> Con:</B> 
-<A NAME="tex2html5135"
-  HREF="node226.html">
+<A NAME="tex2html5141"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5137"
-  HREF="node229.html">
+<A NAME="tex2html5143"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION069140000000000000000"></A>
-<A NAME="section:mediaregla"></A>
-<BR>
-Acciones en Medio de una Regla y Atributos Heredados
+<H1><A NAME="SECTION069120000000000000000">
+Definición Dirigida por la Sintáxis</A>
 </H1>
-La estrategia utilizada en la sección <A HREF="node176.html#section:heredados">38.13</A> funciona
-si podemos predecir la posición del atributo en la pila del analizador.
-En el ejemplo anterior los atributos clase y tipo estaban siempre,
-cualquiera que fuera la derivación a derechas, 
-en las posiciones 0 y -1. Esto no siempre es asi. Consideremos
-la siguiente <A NAME="19424"></A><SPAN  CLASS="textbf">definición dirigida por la sintáxis</SPAN>:
+Una <A NAME="19395"></A><SPAN  CLASS="textbf">definición dirigida por la sintáxis</SPAN> es un pariente cercano
+de los esquemas de traducción. En una definición dirigida por la
+sintáxis una gramática <!-- MATH
+ $G = (V, \Sigma, P, S)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img466.png"
+ ALT="$ G = (V, \Sigma, P, S)$"></SPAN> se aumenta 
+con nuevas características:
+
+<UL>
+<LI>A cada símbolo <!-- MATH
+ $S \in V \cup \Sigma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="84" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img467.png"
+ ALT="$ S \in V \cup \Sigma$"></SPAN> de la gramática se le asocian
+cero o mas atributos. Un atributo queda caracterizado por un identificador
+o nombre y un tipo o clase. A este nivel son <A NAME="19397"></A><SPAN  CLASS="textbf">atributos formales</SPAN>,
+como los parámetros formales, en el sentido de que su realización 
+se produce cuando el nodo del árbol es creado.
+</LI>
+<LI>A cada regla de producción <!-- MATH
+ $A \rightarrow X_1 X_2 \ldots X_n \in P$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="173" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img468.png"
+ ALT="$ A \rightarrow X_1 X_2 \ldots X_n \in P$"></SPAN>
+se le asocian un conjunto de <A NAME="19399"></A><SPAN  CLASS="textbf">reglas de evaluación de los atributos</SPAN>
+o <A NAME="19401"></A><SPAN  CLASS="textbf">reglas semánticas</SPAN> que indican que el atributo en la parte
+izquierda de la regla semántica depende de los atributos que aparecen en la parte
+derecha de la regla. El atributo que aparece en la parte izquierda de la regla semántica
+puede estar asociado con un símbolo en la parte derecha de la regla de producción.
+</LI>
+<LI>Los atributos de cada símbolo de la gramática <!-- MATH
+ $X \in V \cup \Sigma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="88" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img459.png"
+ ALT="$ X \in V \cup \Sigma$"></SPAN>
+se dividen en dos grupos disjuntos: <A NAME="19403"></A><SPAN  CLASS="textbf">atributos sintetizados</SPAN>
+y <A NAME="19405"></A><SPAN  CLASS="textbf">atributos heredados</SPAN>. Un atributo de <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img460.png"
+ ALT="$ X$"></SPAN> es un <A NAME="19407"></A><SPAN  CLASS="textbf">atributo heredado</SPAN> 
+si depende de atributos de su padre y hermános en el árbol.
+Un <A NAME="19409"></A><SPAN  CLASS="textbf">atributo sintetizado</SPAN> es aquél tal que el valor del atributo depende
+de los valores de los atributos de los hijos, 
+es decir en tal caso <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img460.png"
+ ALT="$ X$"></SPAN> ha de ser una variable sintáctica
+y los atributos en la parte derecha de la regla semántica deben
+ser atributos de símbolos en la parte derecha de la regla de producción 
+asociada.
+</LI>
+<LI>Los atributos predefinidos se denominán <A NAME="19411"></A><SPAN  CLASS="textbf">atributos intrínsecos</SPAN>.
+Ejemplos de atributos intrínsecos son los atributos 
+sintetizados de los terminales, los cuáles se han
+computado durante la fase de análisis léxico. También
+son atributos intrínsecos los atributos heredados del símbolo
+de arranque, los cuales son pasados como parámetros 
+al comienzo de la computación.
+</LI>
+</UL>
 
 <P>
-<BR>
-<BR>
-<DIV ALIGN="CENTER">
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT">S <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ \rightarrow$"></SPAN> a A C</TD>
-<TD ALIGN="LEFT"><code>$C{i} = $A{s}</code></TD>
-</TR>
-<TR><TD ALIGN="LEFT">S <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ \rightarrow$"></SPAN> b A B C</TD>
-<TD ALIGN="LEFT"><code>$C{i} = $A{s}</code></TD>
-</TR>
-<TR><TD ALIGN="LEFT">C <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ \rightarrow$"></SPAN> c</TD>
-<TD ALIGN="LEFT"><code>$C{s} = $C{i}</code></TD>
-</TR>
-<TR><TD ALIGN="LEFT">A <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ \rightarrow$"></SPAN> a</TD>
-<TD ALIGN="LEFT"><code>$A{s} = "a"</code></TD>
-</TR>
-<TR><TD ALIGN="LEFT">B <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ \rightarrow$"></SPAN> b</TD>
-<TD ALIGN="LEFT"><code>$B{s} = "b"</code></TD>
-</TR>
-</TABLE>
-</DIV>
-<BR>
-<BR>
+La diferencia principal con un esquema de traducción está en que
+no se especifica el orden de ejecución de las reglas semánticas.
+Se asume que, bien de forma manual o automática, se resolverán
+las dependencias existentes entre los atributos determinadas
+por la aplicación de las reglas semánticas, de manera
+que serán evaluados primero aquellos atributos que no dependen
+de ningún otro, despues los que dependen de estos, etc. siguiendo
+un esquema de ejecución que viene guiado por las dependencias
+existentes entre los datos.
 
 <P>
-<P>
-<DIV><B>Ejercicio  <SPAN CLASS="arabic">38</SPAN>.<SPAN CLASS="arabic">14</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Determine un orden correcto de evaluación de la anterior
-definición dirigida por la sintáxis para la entrada <code>b a b c</code>.</I></DIV><P></P>
+Aunque hay muchas formas de realizar un evaluador de una definición
+dirigida por la sintáxis, conceptualmente, tal evaluador debe:
 
 <P>
-C hereda el atributo sintetizado de A. El problema es que, en la pila
-del analizador el atributo <code>$A{s}</code> puede estar en la posición 0 
-o -1 dependiendo de si la regla por la que se derivó fué
-S <!-- MATH
- $\rightarrow$
+
+<OL>
+<LI>Construir el árbol de análisis sintáctico para la gramática
+y la entrada dadas.
+</LI>
+<LI>Analizar las reglas semánticas para determinar los atributos,
+su clase y las dependencias entre los mismos.
+</LI>
+<LI>Construir el <A NAME="19413"></A><SPAN  CLASS="textbf">grafo de dependencias</SPAN> de los atributos,
+el cual tiene
+un nodo para cada ocurrencia de un atributo en el árbol de análisis
+sintáctico etiquetado con dicho atributo. El grafo tiene una arista entre dos
+nodos si existe una dependencia entre los dos atributos a través de alguna
+regla semántica. 
+</LI>
+<LI>Supuesto que el grafo de dependencias determina un <A NAME="19415"></A><SPAN  CLASS="textbf">orden parcial</SPAN>
+(esto es cumple las propiedades reflexiva, antisimétrica y transitiva) 
+construir un <A NAME="19417"></A><SPAN  CLASS="textbf">orden topológico</SPAN> compatible con el orden parcial.
+</LI>
+<LI>Evaluar las reglas semánticas de acuerdo con el orden topológico.
+</LI>
+</OL>
+
+<P>
+Una definición dirigida por la sintáxis en la que las reglas semánticas
+no tienen efectos laterales se denomina una <A NAME="19419"></A><SPAN  CLASS="textbf">gramática atribuída</SPAN>.
+
+<P>
+Si la definición dirigida por la sintáxis puede ser realizada 
+mediante un esquema de traducción se dice que es <A NAME="19421"></A><SPAN  CLASS="textbf">L-atribuída</SPAN>.
+Para que una definición dirigida por la sintáxis sea L-atribuída
+deben cumplirse que cualquiera que sea la regla de producción
+<!-- MATH
+ $A \rightarrow X_1 \ldots X_n$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ \rightarrow$"></SPAN> a A C o bien S <!-- MATH
- $\rightarrow$
- -->
+ WIDTH="117" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img469.png"
+ ALT="$ A \rightarrow X_1 \ldots X_n$"></SPAN>, los atributos heredados de
 <SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ \rightarrow$"></SPAN> b A B C. La solución
-a este tipo de problemas consiste en insertar acciones 
-intermedias de copia del atributo de manera que se garantize que el atributo
-de interés está siempre a una distancia fija. Esto es, se inserta
-una variable sintáctica intermedia auxiliar M la cual deriva a vacío
-y que tiene como acción asociada una regla de copia:
+ WIDTH="26" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img458.png"
+ ALT="$ X_j$"></SPAN> pueden depender únicamente de:
+
+<OL>
+<LI>Los atributos de los símbolos a la izquierda de <SPAN CLASS="MATH"><IMG
+ WIDTH="26" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img458.png"
+ ALT="$ X_j$"></SPAN>
+</LI>
+<LI>Los atributos heredados de <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img19.png"
+ ALT="$ A$"></SPAN>
+</LI>
+</OL>
 
 <P>
-<BR>
-<BR>
-<DIV ALIGN="CENTER">
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT">S <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ \rightarrow$"></SPAN> a A C</TD>
-<TD ALIGN="LEFT"><code>$C{i} = $A{s}</code></TD>
-</TR>
-<TR><TD ALIGN="LEFT">S <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ \rightarrow$"></SPAN> b A B M C</TD>
-<TD ALIGN="LEFT"><code>$M{i} = $A{s}; $C{i} = $M{s}</code></TD>
-</TR>
-<TR><TD ALIGN="LEFT">C <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ \rightarrow$"></SPAN> c</TD>
-<TD ALIGN="LEFT"><code>$C{s} = $C{i}</code></TD>
-</TR>
-<TR><TD ALIGN="LEFT">A <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ \rightarrow$"></SPAN> a</TD>
-<TD ALIGN="LEFT"><code>$A{s} = "a"</code></TD>
-</TR>
-<TR><TD ALIGN="LEFT">B <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ \rightarrow$"></SPAN> b</TD>
-<TD ALIGN="LEFT"><code>$B{s} = "b"</code></TD>
-</TR>
-<TR><TD ALIGN="LEFT">M <!-- MATH
- $\rightarrow \epsilon$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="34" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img163.png"
- ALT="$ \rightarrow \epsilon$"></SPAN></TD>
-<TD ALIGN="LEFT"><code>$M{s} = $M{i}</code></TD>
-</TR>
-</TABLE>
-</DIV>
-<BR>
-<BR>
+Nótese que las restricciones se refieren a los atributos heredados.
+El cálculo de los atributos sintetizados no supone 
+problema para un esquema de traducción. Si la gramática
+es LL(1), resulta fácil realizar una definición 
+L-atribuída en un analizador descendente recursivo predictivo.
 
 <P>
-El nuevo esquema de traducción puede ser implantado mediante
-un programa <code>yapp</code>:
-
-<P>
-<PRE>
-$ cat -n Inherited2.yp
-     1  %%
-     2  S : 'a' A C
-     3    | 'b' A B  { $_[2]; } C
-     4    ;
-     5
-     6  C : 'c' { print "Valor: ",$_[0]-&gt;YYSemval(0),"\n"; $_[0]-&gt;YYSemval(0) }
-     7    ;
-     8
-     9  A : 'a' { 'a' }
-    10    ;
-    11
-    12  B : 'b' { 'b' }
-    13    ;
-    14
-    15  %%
-</PRE>
-
-<P>
-La ejecución muestra como se ha propagado el valor del atributo:
-<PRE>
-$ ./useinherited2.pl '0x04'
-Entrada (En Unix, presione CTRL-D para terminar):
-b a b c
-Shift 2.  Shift 6.
-Reduce using rule 5 (A,1): Back to state 2, then state 5.
-Shift 8.
-Reduce 6 (B,1): Back to state 5, then state 9.
-Reduce 2 (@1-3,0): Back to state 9, then state 12.
-</PRE>
-
-<P>
-En este momento se esta ejecutando la acción intermedia.
-Lo podemos comprobar revisando el fichero <code>Inherited2.output</code>
-que fué generado usando la opción <code>-v</code> al llamar a <code>yapp</code>.
-La regla 2 por la que se reduce es la asociada con la acción 
-intermedia:
-
-<P>
-<PRE>
-$ cat -n Inherited2.output
-     1  Rules:
-     2  ------
-     3  0:      $start -&gt; S $end
-     4  1:      S -&gt; 'a' A C
-     5  2:      @1-3 -&gt; /* empty */
-     6  3:      S -&gt; 'b' A B @1-3 C
-     7  4:      C -&gt; 'c'
-     8  5:      A -&gt; 'a'
-     9  6:      B -&gt; 'b'
-        ...
-</PRE>
-
-<P>
-Obsérvese la notación usada por <code>yapp</code> para la 
-<A NAME="19426"></A><SPAN  CLASS="textbf">acción en medio de la regla</SPAN>: <code>@1-3</code>.
-Continuamos con la antiderivación:
-
-<P>
-<PRE>
-Shift 10.
-Reduce 4 (C,1): 
-Valor: a
-Back to state 12, then 13.
-Reduce using rule 3 (S,5): Back to state 0, then state 1.
-Shift 4.
-Accept.
-</PRE>
-
-<P>
-El método puede ser generalizado a casos en los
-que el atributo de interés este a diferentes distancias en
-diferentes reglas sin mas que introducir las correspondientes
-acciones intermedias de copia.
+Si la definición dirigida por la sintáxis sólo utiliza 
+atributos sintetizados se denomina <A NAME="19423"></A><SPAN  CLASS="textbf">S-atribuída</SPAN>. Una
+definición S-atribuída puede ser fácilmente trasladada a un programa
+<code>yapp</code>.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5139"
+<A NAME="tex2html5145"
   HREF="node178.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5133"
-  HREF="node163.html">
+<A NAME="tex2html5139"
+  HREF="node165.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5127"
+<A NAME="tex2html5133"
   HREF="node176.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5135"
-  HREF="node226.html">
+<A NAME="tex2html5141"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5137"
-  HREF="node229.html">
+<A NAME="tex2html5143"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -410,17 +328,17 @@ acciones intermedias de copia.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5140"
-  HREF="node178.html">Recuperación de Errores</A>
-<B>Sup:</B> <A NAME="tex2html5134"
-  HREF="node163.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5128"
-  HREF="node176.html">Manejo en yapp de</A>
+<B> Sig:</B> <A NAME="tex2html5146"
+  HREF="node178.html">Manejo en yapp de</A>
+<B>Sup:</B> <A NAME="tex2html5140"
+  HREF="node165.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5134"
+  HREF="node176.html">Esquemas de Traducción</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-06-03</I>
+2013-06-08</I>
 </ADDRESS>
 </BODY>
 </HTML>

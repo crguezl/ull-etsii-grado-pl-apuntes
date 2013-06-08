@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Generación interactiva de analizadores Yapp</TITLE>
-<META NAME="description" CONTENT="Generación interactiva de analizadores Yapp">
+<TITLE>Depuración en yapp</TITLE>
+<META NAME="description" CONTENT="Depuración en yapp">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node172.html">
 <LINK REL="previous" HREF="node170.html">
-<LINK REL="up" HREF="node163.html">
+<LINK REL="up" HREF="node165.html">
 <LINK REL="next" HREF="node172.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5055"
+<A NAME="tex2html5061"
   HREF="node172.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5049"
-  HREF="node163.html">
+<A NAME="tex2html5055"
+  HREF="node165.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5043"
+<A NAME="tex2html5049"
   HREF="node170.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5051"
-  HREF="node226.html">
+<A NAME="tex2html5057"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5053"
-  HREF="node229.html">
+<A NAME="tex2html5059"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,122 +88,126 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5056"
-  HREF="node172.html">Construcción del Árbol Sintáctico</A>
-<B>Sup:</B> <A NAME="tex2html5050"
-  HREF="node163.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5044"
-  HREF="node170.html">Precedencia y Asociatividad</A>
+<B> Sig:</B> <A NAME="tex2html5062"
+  HREF="node172.html">Precedencia y Asociatividad</A>
+<B>Sup:</B> <A NAME="tex2html5056"
+  HREF="node165.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5050"
+  HREF="node170.html">Algoritmo de Análisis LR</A>
 <B> Con:</B> 
-<A NAME="tex2html5051"
-  HREF="node226.html">
+<A NAME="tex2html5057"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5053"
-  HREF="node229.html">
+<A NAME="tex2html5059"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION06980000000000000000">
-Generación interactiva de analizadores <TT>Yapp</TT></A>
+<H1><A NAME="SECTION06960000000000000000"></A>
+<A NAME="section:depuracion"></A>
+<BR>
+Depuración en <TT>yapp</TT>
 </H1>
-En el siguiente código, la subrutina <TT>create_yapp_package</TT> 
-nos muestra como crear un analizador <TT>Yapp</TT> en tiempo de ejecución.
-Las dos líneas:
+Es posible añadir un parámetro en la llamada a <code>YYParse</code>
+con nombre <A NAME="19373"></A><SPAN  CLASS="textbf">yydebug</SPAN> y valor el nivel de depuración requerido.
+Ello 
+nos permite observar la conducta del analizador. Los 
+posibles valores de depuración son:
+
+<P>
+<BR>
+<BR>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">Bit</TD>
+<TD ALIGN="LEFT">Información de Depuración</TD>
+</TR>
+<TR><TD ALIGN="LEFT">0x01</TD>
+<TD ALIGN="LEFT">Lectura de los terminales</TD>
+</TR>
+<TR><TD ALIGN="LEFT">0x02</TD>
+<TD ALIGN="LEFT">Información sobre los estados</TD>
+</TR>
+<TR><TD ALIGN="LEFT">0x04</TD>
+<TD ALIGN="LEFT">Acciones (shifts, reduces, accept ...)</TD>
+</TR>
+<TR><TD ALIGN="LEFT">0x08</TD>
+<TD ALIGN="LEFT">Volcado de la pila</TD>
+</TR>
+<TR><TD ALIGN="LEFT">0x10</TD>
+<TD ALIGN="LEFT">Recuperación de errores</TD>
+</TR>
+</TABLE>
+</DIV>
+<BR>
+<BR>
+
+<P>
+Veamos un ejemplo de salida para la gramática
+ que se describe en la página 
+ <A HREF="#apendice:asb"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>
+ cuando se llama con: 
+
+<P>
+<code>$self-&gt;YYParse( yylex =&gt; \&_Lexer, yyerror =&gt; \&_Error, yydebug =&gt; 0x1F )</code>
+
+<P>
 <PRE>
-  my $p = new Parse::Yapp(input =&gt; $grammar);
-  $p = $p-&gt;Output(classname =&gt; $name);
-</PRE>
-crean una cadena en <code>$p</code> conteniendo el código de 
-la clase que implanta el analizador. Todo el truco está en hacer
-<PRE>
-  eval $p;
-</PRE>
-para tener el paquete a mano:
-<PRE>
-$ cat left.pl
-#!/usr/local/bin/perl5.8.0 -w
-#use strict;
-use Parse::Yapp;
-
-sub lex{
-    my($parser)=shift;
-
-    return('',undef) unless $parser-&gt;YYData-&gt;{INPUT};
-    for ($parser-&gt;YYData-&gt;{INPUT}) {
-        s/^\s*//;
-        s/^(.)//;
-        my $ret = $1;
-        return($ret, $ret);
-    }
-}
-
-sub yapp {
-  my $grammar = shift
-     or die "Must specify a grammar as first argument";
-  my $name = shift
-     or die "Must specify the name of the class as second argument";
-
-  my $p = new Parse::Yapp(input =&gt; $grammar) or die "Bad grammar.";
-  $p = $p-&gt;Output(classname =&gt; $name) or die "Can't generate parser.";
-
-  eval $p;
-  $@ and die "Error while compiling your parser: $@\n";
-}
-
-######## main #########
-my $grammar = q {
-%left '*'
-%%
-S:  A
-;
-
-A:  A '*' A  { "($_[1] $_[2] $_[3])" }
- |  B
-;
-
-B:  'a' | 'b' | 'c' | 'd'
-;
-
-%%
-};
-
-&amp;yapp($grammar, "Example");
-my $p = new Example(yylex =&gt; \&amp;lex, yyerror =&gt; sub {});
-
-print "Expresion: ";
-$p-&gt;YYData-&gt;{INPUT} = &lt;&gt;;
-$p-&gt;YYData-&gt;{INPUT} =~ s/\s*$//;
-
-my $out=$p-&gt;YYParse;
-print "out = $out\n";
-</PRE>
-Sigue un ejemplo de ejecución:
-<PRE>
-$ ./left.pl
-Expresion: a*b*c*d
-out = (((a * b) * c) * d)
+ 1  $ ./use_aSb.pl
+ 2  ----------------------------------------
+ 3  In state 0:
+ 4  Stack:[0]
+ 5  ab  # el usuario ha escrito esto
+ 6  Need token. Got &gt;a&lt;
+ 7  Shift and go to state 2.
+ 8  ----------------------------------------
+ 9  In state 2:
+10  Stack:[0,2]
+11  Need token. Got &gt;b&lt;
+12  Reduce using rule 1 (S,0): S -&gt; epsilon
+13  Back to state 2, then go to state 4.
+14  ----------------------------------------
+15  In state 4:
+16  Stack:[0,2,4]
+17  Shift and go to state 5.
+18  ----------------------------------------
+19  In state 5:
+20  Stack:[0,2,4,5]
+21  Don't need token.
+22  Reduce using rule 2 (S,3): S -&gt; a S b
+23  Back to state 0, then go to state 1.
+24  ----------------------------------------
+25  In state 1:
+26  Stack:[0,1]
+27  Need token. Got &gt;&lt;
+28  Shift and go to state 3.
+29  ----------------------------------------
+30  In state 3:
+31  Stack:[0,1,3]
+32  Don't need token.
+33  Accept.
 </PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5055"
+<A NAME="tex2html5061"
   HREF="node172.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5049"
-  HREF="node163.html">
+<A NAME="tex2html5055"
+  HREF="node165.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5043"
+<A NAME="tex2html5049"
   HREF="node170.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5051"
-  HREF="node226.html">
+<A NAME="tex2html5057"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5053"
-  HREF="node229.html">
+<A NAME="tex2html5059"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -250,17 +254,17 @@ out = (((a * b) * c) * d)
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5056"
-  HREF="node172.html">Construcción del Árbol Sintáctico</A>
-<B>Sup:</B> <A NAME="tex2html5050"
-  HREF="node163.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5044"
-  HREF="node170.html">Precedencia y Asociatividad</A>
+<B> Sig:</B> <A NAME="tex2html5062"
+  HREF="node172.html">Precedencia y Asociatividad</A>
+<B>Sup:</B> <A NAME="tex2html5056"
+  HREF="node165.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5050"
+  HREF="node170.html">Algoritmo de Análisis LR</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-06-03</I>
+2013-06-08</I>
 </ADDRESS>
 </BODY>
 </HTML>

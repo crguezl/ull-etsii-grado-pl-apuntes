@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Introducción a yacc</TITLE>
-<META NAME="description" CONTENT="Introducción a yacc">
+<TITLE>El Generador de Analizadores byacc</TITLE>
+<META NAME="description" CONTENT="El Generador de Analizadores byacc">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node196.html">
 <LINK REL="previous" HREF="node194.html">
-<LINK REL="up" HREF="node194.html">
+<LINK REL="up" HREF="node165.html">
 <LINK REL="next" HREF="node196.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5407"
+<A NAME="tex2html5402"
   HREF="node196.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5401"
-  HREF="node194.html">
+<A NAME="tex2html5396"
+  HREF="node165.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5395"
+<A NAME="tex2html5392"
   HREF="node194.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5403"
-  HREF="node226.html">
+<A NAME="tex2html5398"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5405"
-  HREF="node229.html">
+<A NAME="tex2html5400"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,321 +87,249 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5408"
-  HREF="node196.html">Precedencia y Asociatividad</A>
-<B>Sup:</B> <A NAME="tex2html5402"
-  HREF="node194.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5396"
-  HREF="node194.html">Análisis Sintáctico Ascendente en</A>
+<B> Sig:</B> <A NAME="tex2html5403"
+  HREF="node196.html">Análisis Sintáctico Ascendente en</A>
+<B>Sup:</B> <A NAME="tex2html5397"
+  HREF="node165.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5393"
+  HREF="node194.html">Práctica: Construcción del AST</A>
 <B> Con:</B> 
-<A NAME="tex2html5403"
-  HREF="node226.html">
+<A NAME="tex2html5398"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5405"
-  HREF="node229.html">
+<A NAME="tex2html5400"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html5409"
-  HREF="node195.html#SECTION061010010000000000000">Ejemplo: La Calculadora en <TT>yacc</TT></A>
-<LI><A NAME="tex2html5410"
-  HREF="node195.html#SECTION061010020000000000000">El Analizador Léxico</A>
-<LI><A NAME="tex2html5411"
-  HREF="node195.html#SECTION061010030000000000000">Compilación</A>
-<LI><A NAME="tex2html5412"
-  HREF="node195.html#SECTION061010040000000000000">Makefile</A>
-<LI><A NAME="tex2html5413"
-  HREF="node195.html#SECTION061010050000000000000">Ejecución</A>
-</UL></UL></UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION061010000000000000000"></A>
-<A NAME="section:introyacc"></A>
-<BR>
-Introducción a <TT>yacc</TT>
+<H1><A NAME="SECTION069300000000000000000">
+El Generador de Analizadores <TT>byacc</TT></A>
 </H1>
-Los fuentes de esta sección pueden encontrarse en
-<A NAME="tex2html458"
-  HREF="https://github.com/crguezl/yacc-examples">https://github.com/crguezl/yacc-examples</A>.
-
-<P>
-Veamos un ejemplo sencillo de analizador sintáctico escrito en  <TT>yacc</TT> .
-La gramática se especifica entre las dos líneas de <code>%%</code>. 
-Por defecto, el símbolo de arranque es el primero que aparece, en este caso
-<code>list</code>. En <code>bison</code> es posible hacer que otro variable lo sea
-utilizando la declaración <code>%start</code>:
-
-<P>
-
-<H4><A NAME="SECTION061010010000000000000">
-Ejemplo: La Calculadora en <TT>yacc</TT></A>
-</H4>
-  
-
-<P>
-<P>
-<DIV><B>Programa  <SPAN CLASS="arabic">39</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Calculadora elemental. Análizador sintáctico.
-<A NAME="prog:calc1"></A></I><PRE>
-nereida:~/src/precedencia/hoc1&gt; cat -n hoc1.y
- 1  %{
- 2  /* File: /home/pl/src/precedencia/hoc1/hoc1.y */
- 3  #define YYSTYPE double
- 4  #include &lt;stdio.h&gt;
- 5  %}
- 6  %token NUMBER
- 7  %left '+' '-'
- 8  %left '*' '/'
- 9  %%
-10  list
-11      :
-12      | list '\n'
-13      | list expr   { printf("%.8g\n",$2);}
-14      ;
-15
-16  expr
-17      : NUMBER { $$ = $1;}
-18      | expr '+' expr {$$ = $1 + $3;}
-19      | expr '-' expr {$$ = $1 - $3;}
-20      | expr '*' expr {$$ = $1 * $3;}
-21      | expr '/' expr {$$ = $1 / $3;}
-22      ;
-23
-24  %%
-25
-26  extern FILE * yyin;
-27
-28  main(int argc, char **argv) {
-29    if (argc &gt; 1) yyin = fopen(argv[1],"r");
-30    yydebug = 1;
-31    yyparse();
-32  }
-33
-34  yyerror(char *s) {
-35    printf("%s\n",s);
-36  }
-</PRE></DIV><P></P>
-La macro  <TT>YYSTYPE</TT>  (línea 3) contiene el tipo del valor semántico.
-Si no se declara se asume <code>int</code>.
-
-<P>
-El fichero  <TT>yyin</TT>  (líneas 26 y 29) es definido en el 
-fichero conteniendo el analizador léxico 
- <TT>lex.yy.c</TT> . Refiere al fichero de entrada conteniendo
-el texto a analizar.
-
-<P>
-Al poner la variable  <TT>yydebug</TT>  a 1 activamos el modo depuración.
-Para que la depuración se haga efectiva es necesario definir además
-la macro  <TT>YYDEBUG</TT> .
-
-<P>
-El analizador sintáctico proveido por <code>yacc</code> se llama  <TT>yyparse</TT>  
-(línea 31). Por defecto su declaración es <code>int yyparse ()</code>
-
-<P>
-
-<H4><A NAME="SECTION061010020000000000000">
-El Analizador Léxico</A>
-</H4>
-  
-
-<P>
-<P>
-<DIV><A NAME="program:hoc1l"><B>Programa  <SPAN CLASS="arabic">39</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">2</SPAN></B></A> &nbsp; 
-<I>Calculadora elemental.  Analizador léxico:
-</I><PRE>
-nereida:~/src/precedencia/hoc1&gt; cat -n hoc1.l
- 1  %{
- 2  #include "y.tab.h"
- 3  extern YYSTYPE yylval;
- 4  %}
- 5  number [0-9]+(\.[0-9]+)?([eE][+-]?[0-9]+)?
- 6  %%
- 7  {number} { yylval = atof(yytext); return NUMBER; }
- 8  .|\n     { return yytext[0];}
- 9  %%
-10  int yywrap() { return 1; }
-</PRE></DIV><P></P>
-
-<P>
-
-<H4><A NAME="SECTION061010030000000000000">
-Compilación</A>
-</H4>
-  
-
-<P>
-Al compilar el program <code>yacc</code> con la opción <code>-d</code>
-se produce además del fichero  <TT>y.tab.c</TT>  conteniendo el
-analizador sintáctico un fichero adicional de cabecera  <TT>y.tab.h</TT> 
-conteniendo
-las definiciones de los terminales:
+Existe una version del <code>yacc</code> de Berkeley que permite producir 
+código para Perl:
 <PRE>
-nereida:~/src/precedencia/hoc1&gt; yacc -d -v hoc1.y
-nereida:~/src/precedencia/hoc1&gt; ls -lt | head -4
-total 200
--rw-rw----  1 pl users    2857 2007-01-18 10:26 y.output
--rw-rw----  1 pl users   35936 2007-01-18 10:26 y.tab.c
--rw-rw----  1 pl users    1638 2007-01-18 10:26 y.tab.h
-nereida:~/src/precedencia/hoc1&gt; sed -ne '27,48p' y.tab.h | cat -n
- 1  #ifndef YYTOKENTYPE
- 2  # define YYTOKENTYPE
- 3     /* Put the tokens into the symbol table, so that GDB and other debuggers
- 4        know about them.  */
- 5     enum yytokentype {
- 6       NUMBER = 258
- 7     };
- 8  #endif
- 9  /* Tokens.  */
-10  #define NUMBER 258
-..  .........................................................
-15  #if ! defined (YYSTYPE) &amp;&amp; ! defined (YYSTYPE_IS_DECLARED)
-16  typedef int YYSTYPE;
-17  # define yystype YYSTYPE /* obsolescent; will be withdrawn */
-18  # define YYSTYPE_IS_DECLARED 1
-19  # define YYSTYPE_IS_TRIVIAL 1
-20  #endif
-21
-22  extern YYSTYPE yylval;
+&gt; byacc -V
+byacc: Berkeley yacc version 1.8.2 (C or perl)
 </PRE>
-La variable  <TT>yylval</TT>  (líneas 3 y 7 del listado <A HREF="#program:hoc1l">39.1.2</A>) 
-es declarada por el
-analizador sintáctico y usada por el analizador 
-léxico. El analizador léxico deja en la misma el valor semántico
-asociado con el token actual.
+Se trata por tanto de un generador de analizadores LALR.
+Es bastante compatible con <code>AT&amp;T yacc</code>. Puedes encontrar 
+una versión en formato <code>tar.gz</code> en nuestro servidor
+<A NAME="tex2html457"
+  HREF="http://nereida.deioc.ull.es/~pl/pyacc-pack.tgz">http://nereida.deioc.ull.es/&#732;pl/pyacc-pack.tgz</A>
+o también desde 
+<A NAME="tex2html458"
+  HREF="http://www.perl.com/CPAN/src/misc/">http://www.perl.com/CPAN/src/misc/</A>.
 
 <P>
-
-<H4><A NAME="SECTION061010040000000000000">
-Makefile</A>
-</H4>
-  
+El formato de llamada es:
+<PRE>
+byacc  [ -CPcdlrtv ] [ -b file_prefix ] [ -p symbol_prefix ] filename
+</PRE>
 
 <P>
-Para compilar todo el proyecto usaremos el siguiente
-fichero Makefile:
+Las opciones <code>C</code> o <code>c</code> permiten generar código C. Usando <code>-P</code>
+se genera código Perl. Las opciones <code>d</code> y <code>v</code> funcionan como es usual en 
+<code>yacc</code>. Con <code>t</code> se incorpora código para la depuración de la gramática.
+Si se especifica <code>l</code> el código del usuario no es insertado.
+La opción <code>r</code> permite generar ficheros separados para el código y las tablas. No la use
+con Perl.
+
 <P>
-<DIV><B>Programa  <SPAN CLASS="arabic">39</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">3</SPAN></B> &nbsp; 
-<I>Calculadora elemental.  Makefile:
-</I><PRE>
+Fichero conteniendo la gramática:
+<PRE>
+%{
+%}
+
+%token INT EOL
+%token LEFT_PAR RIGHT_PAR
+%left PLUS MINUS
+%left MULT DIV
+
+%%
+start:	|
+		start input
+	;
+
+input:		expr EOL	{ print $1 . "\n"; }
+	|	EOL
+	;
+
+expr:		INT		{ $p-&gt;mydebug("INT -&gt; Expr!"); $$ = $1; }
+	|	expr PLUS expr	{ $p-&gt;mydebug("PLUS -&gt; Expr!"); $$ = $1 + $3; }
+	|	expr MINUS expr	{ $p-&gt;mydebug("MINUS -&gt; Expr!"); $$ = $1 - $3; }
+	|	expr MULT expr	{ $p-&gt;mydebug("MULT -&gt; Expr!"); $$ = $1 * $3; }
+	|	expr DIV expr	{ $p-&gt;mydebug("DIV -&gt; Expr!"); $$ = $1 / $3; }
+	|	LEFT_PAR expr RIGHT_PAR { $p-&gt;mydebug("PARENS -&gt; Expr!"); $$ = $2; }
+	;
+%%
+
+sub yyerror {
+    my ($msg, $s) = @_;
+    my ($package, $filename, $line) = caller;
+    
+    die "$msg at &lt;DATA&gt; \n$package\n$filename\n$line\n";
+}
+
+sub mydebug {
+    my $p = shift;
+    my $msg = shift;
+    if ($p-&gt;{'yydebug'})
+    {
+        print "$msg\n";
+    }
+}
+</PRE>
+La compilación con <code>byacc</code> del fichero <code>calc.y</code>
+conteniendo la descripción de la gramática produce el módulo 
+Perl conteniendo el analizador.
+<PRE>
+&gt; ls -l
+total 12
+-rw-r-----    1 pl       casiano        47 Dec 29  2002 Makefile
+-rw-r-----    1 pl       casiano       823 Dec 29  2002 calc.y
+-rwxr-x--x    1 pl       casiano       627 Nov 10 15:37 tokenizer.pl
 &gt; cat Makefile
-hoc1: y.tab.c lex.yy.c
-        gcc -DYYDEBUG=1 -g -o hoc1 y.tab.c lex.yy.c
-y.tab.c y.tab.h: hoc1.y
-        yacc -d -v hoc1.y
-lex.yy.c: hoc1.l y.tab.h
-        flex -l hoc1.l
-clean:
-        - rm -f y.tab.c lex.yy.c *.o core hoc1
-</PRE></DIV><P></P>
+MyParser.pm: calc.y
+        byacc -d -P MyParser $&lt;
+
+&gt; make
+byacc -d -P MyParser calc.y
+&gt; ls -ltr
+total 28
+-rw-r-----    1 pl       casiano       823 Dec 29  2002 calc.y
+-rw-r-----    1 pl       casiano        47 Dec 29  2002 Makefile
+-rwxr-x--x    1 pl       casiano       627 Nov 10 15:37 tokenizer.pl
+-rw-rw----    1 pl       users          95 Nov 16 12:49 y.tab.ph
+-rw-rw----    1 pl       users        9790 Nov 16 12:49 MyParser.pm
+</PRE>
+Observe que la opción <code>-P</code> es la que permite producir código Perl.
+Anteriormente se usaba la opción <code>-p</code>. Esto se hizo para mantener la 
+compatibilidad con otras versiones de <code>yacc</code> en las que la opción <code>-p</code>
+se usa para cambiar el prefijo por defecto (<code>yy</code>). Ese es el significado actual
+de la opción <code>-p</code> en <code>perl-byacc</code>.
 
 <P>
+El fichero <code>y.tab.ph</code> generado contiene las definiciones de los <SPAN  CLASS="textbf">tokens</SPAN>:
+<PRE>
+ cat y.tab.ph
+$INT=257;
+$EOL=258;
+$LEFT_PAR=259;
+$RIGHT_PAR=260;
+$PLUS=261;
+$MINUS=262;
+$MULT=263;
+$DIV=264;
+</PRE>
+El programa <code>tokenizer.pl</code> contiene la llamada al analizador 
+y la definición del analizador léxico:
+<PRE>
+&gt; cat tokenizer.pl
+#!/usr/local/bin/perl5.8.0
 
-<H4><A NAME="SECTION061010050000000000000">
-Ejecución</A>
-</H4>
-  
+require 5.004;
+use strict;
+use Parse::YYLex;
+use MyParser;
 
-<P>
-<P>
-<DIV><B>Ejecución  <SPAN CLASS="arabic">39</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Para saber que esta haciendo el analizador, insertamos una
-asignación: <code>yydebug = 1;</code> justo antes de la llamada a
-<code>yyparse()</code> y ejecutamos el programa resultante:
-</I><PRE>
-$ hoc1
-yydebug: state 0, reducing by rule 1 (list :)
+print STDERR "Version $Parse::ALex::VERSION\n";
+
+my (@tokens) = ((LEFT_PAR =&gt; '\(',
+                 RIGHT_PAR =&gt; '\)',
+                 MINUS =&gt; '-',
+                 PLUS =&gt; '\+',
+                 MULT =&gt; '\*',
+                 DIV =&gt; '/',
+                 INT =&gt; '[1-9][0-9]*',
+                 EOL =&gt; '\n',
+                 ERROR =&gt; '.*'),
+                sub { die "!can\'t analyze: \"$_[1]\"\n!"; });
+
+my $lexer = Parse::YYLex-&gt;new(@tokens);
+
+sub yyerror
+{
+    die "There was an error:" . join("\n", @_). "\n";
+}
+
+my $debug = 0;
+my $parser = new MyParser($lexer-&gt;getyylex(), \&amp;MyParser::yyerror , $debug);
+$lexer-&gt;from(\*STDIN);
+$parser-&gt;yyparse(\*STDIN);
+</PRE>
+El módulo <code>Parse::YYLex</code> contiene una versión de <code>Parse::Lex</code> 
+que ha sido adaptada para funcionar con  <code>byacc</code>. Todas las versiones de <code>yacc</code> 
+esperan que el analizador léxico devuelva un <SPAN  CLASS="textbf">token</SPAN> numérico, mientras que 
+<code>Parse::Lex</code> devuelbe un objeto de la clase <SPAN  CLASS="textbf">token</SPAN>.
+Veamos un ejemplo de ejecución:
+<PRE>
+&gt; tokenizer.pl
+Version 2.15
+yydebug: state 0, reducing by rule 1 (start :)
 yydebug: after reduction, shifting from state 0 to state 1
-2.5+3.5+1
-</PRE><I>
-Introducimos la expresión <code>2.5+3.5+1</code>. Antes que incluso ocurra la entrada, el algoritmo LR reduce por la regla <!-- MATH
- $List \rightarrow \epsilon$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="71" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img508.png"
- ALT="$ List \rightarrow \epsilon$"></SPAN>.
-</I><PRE>
-yydebug: state 1, reading 257 (NUMBER)
+3*(5-9)
+yydebug: state 1, reading 257 (INT)
 yydebug: state 1, shifting to state 2
-yydebug: state 2, reducing by rule 4 (expr : NUMBER)
-yydebug: after reduction, shifting from state 1 to state 4
-yydebug: state 4, reading 43 ('+')
-yydebug: state 4, shifting to state 5
-yydebug: state 5, reading 257 (NUMBER)
-yydebug: state 5, shifting to state 2
-yydebug: state 2, reducing by rule 4 (expr : NUMBER)
-yydebug: after reduction, shifting from state 5 to state 6
-yydebug: state 6, reducing by rule 5 (expr : expr '+' expr)
-</PRE><I>
-Observe como la declaración de la asociatividad a izquierdas <code>%left '+'</code> se traduce en la reducción por la regla 5.
-</I>
-<P><PRE>
-yydebug: after reduction, shifting from state 1 to state 4
-yydebug: state 4, reading 43 ('+')
-yydebug: state 4, shifting to state 5
-yydebug: state 5, reading 257 (NUMBER)
-yydebug: state 5, shifting to state 2
-yydebug: state 2, reducing by rule 4 (expr : NUMBER)
-yydebug: after reduction, shifting from state 5 to state 6
-yydebug: state 6, reducing by rule 5 (expr : expr '+' expr)
-yydebug: after reduction, shifting from state 1 to state 4
-yydebug: state 4, reading 10 ('\n')
-yydebug: state 4, reducing by rule 3 (list : list expr)
-7
-</PRE><I>
-La reducción por la regla <!-- MATH
- $list \rightarrow list\ expr$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="125" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img509.png"
- ALT="$ list \rightarrow list expr$"></SPAN> produce la ejecución
-del <code>printf("%.8g\n",$2);</code> asociado con la regla y la salida
-del valor <code>7</code> que constituye el atributo de <SPAN CLASS="MATH"><IMG
- WIDTH="40" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img143.png"
- ALT="$ expr$"></SPAN>.
-</I><PRE>    
-yydebug: after reduction, shifting from state 0 to state 1
-yydebug: state 1, shifting to state 3
-yydebug: state 3, reducing by rule 2 (list : list '\n')
+yydebug: state 2, reducing by rule 5 (expr : INT)
+INT -&gt; Expr!
+yydebug: after reduction, shifting from state 1 to state 6
+yydebug: state 6, reading 263 (MULT)
+yydebug: state 6, shifting to state 11
+yydebug: state 11, reading 259 (LEFT_PAR)
+yydebug: state 11, shifting to state 4
+yydebug: state 4, reading 257 (INT)
+yydebug: state 4, shifting to state 2
+yydebug: state 2, reducing by rule 5 (expr : INT)
+INT -&gt; Expr!
+yydebug: after reduction, shifting from state 4 to state 7
+yydebug: state 7, reading 262 (MINUS)
+yydebug: state 7, shifting to state 10
+yydebug: state 10, reading 257 (INT)
+yydebug: state 10, shifting to state 2
+yydebug: state 2, reducing by rule 5 (expr : INT)
+INT -&gt; Expr!
+yydebug: after reduction, shifting from state 10 to state 15
+yydebug: state 15, reading 260 (RIGHT_PAR)
+yydebug: state 15, reducing by rule 7 (expr : expr MINUS expr)
+MINUS -&gt; Expr!
+yydebug: after reduction, shifting from state 4 to state 7
+yydebug: state 7, shifting to state 13
+yydebug: state 13, reducing by rule 10 (expr : LEFT_PAR expr RIGHT_PAR)
+PARENS -&gt; Expr!
+yydebug: after reduction, shifting from state 11 to state 16
+yydebug: state 16, reducing by rule 8 (expr : expr MULT expr)
+MULT -&gt; Expr!
+yydebug: after reduction, shifting from state 1 to state 6
+yydebug: state 6, reading 258 (EOL)
+yydebug: state 6, shifting to state 8
+yydebug: state 8, reducing by rule 3 (input : expr EOL)
+-12
+yydebug: after reduction, shifting from state 1 to state 5
+yydebug: state 5, reducing by rule 2 (start : start input)
 yydebug: after reduction, shifting from state 0 to state 1
 yydebug: state 1, reading 0 (end-of-file)
-$
-</PRE><I>
-En Unix la combinación de teclas CTRL-D nos permite
-generar el final de fichero.
-</I>
-<P></DIV><P></P>
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5407"
+<A NAME="tex2html5402"
   HREF="node196.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5401"
-  HREF="node194.html">
+<A NAME="tex2html5396"
+  HREF="node165.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5395"
+<A NAME="tex2html5392"
   HREF="node194.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5403"
-  HREF="node226.html">
+<A NAME="tex2html5398"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5405"
-  HREF="node229.html">
+<A NAME="tex2html5400"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -449,17 +376,17 @@ generar el final de fichero.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5408"
-  HREF="node196.html">Precedencia y Asociatividad</A>
-<B>Sup:</B> <A NAME="tex2html5402"
-  HREF="node194.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5396"
-  HREF="node194.html">Análisis Sintáctico Ascendente en</A>
+<B> Sig:</B> <A NAME="tex2html5403"
+  HREF="node196.html">Análisis Sintáctico Ascendente en</A>
+<B>Sup:</B> <A NAME="tex2html5397"
+  HREF="node165.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5393"
+  HREF="node194.html">Práctica: Construcción del AST</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-06-03</I>
+2013-06-08</I>
 </ADDRESS>
 </BODY>
 </HTML>

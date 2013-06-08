@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Práctica: Construcción del AST para el Lenguaje Simple C</TITLE>
-<META NAME="description" CONTENT="Práctica: Construcción del AST para el Lenguaje Simple C">
+<TITLE>Descripción Eyapp del Lenguaje SimpleC</TITLE>
+<META NAME="description" CONTENT="Descripción Eyapp del Lenguaje SimpleC">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node193.html">
 <LINK REL="previous" HREF="node191.html">
-<LINK REL="up" HREF="node163.html">
+<LINK REL="up" HREF="node165.html">
 <LINK REL="next" HREF="node193.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5355"
+<A NAME="tex2html5361"
   HREF="node193.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5349"
-  HREF="node163.html">
+<A NAME="tex2html5355"
+  HREF="node165.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5343"
+<A NAME="tex2html5349"
   HREF="node191.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5351"
-  HREF="node226.html">
+<A NAME="tex2html5357"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5353"
-  HREF="node229.html">
+<A NAME="tex2html5359"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,95 +88,125 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5356"
-  HREF="node193.html">El Generador de Analizadores</A>
-<B>Sup:</B> <A NAME="tex2html5350"
-  HREF="node163.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5344"
-  HREF="node191.html">Diseño de Analizadores con</A>
+<B> Sig:</B> <A NAME="tex2html5362"
+  HREF="node193.html">Diseño de Analizadores con</A>
+<B>Sup:</B> <A NAME="tex2html5356"
+  HREF="node165.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5350"
+  HREF="node191.html">Recuperacion de Errores: Visión</A>
 <B> Con:</B> 
-<A NAME="tex2html5351"
-  HREF="node226.html">
+<A NAME="tex2html5357"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5353"
-  HREF="node229.html">
+<A NAME="tex2html5359"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html5357"
-  HREF="node192.html#SECTION069290010000000000000">Analizador Léxico</A>
-</UL></UL></UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION069290000000000000000"></A>
-   <A NAME="19479"></A>
-  
-<A NAME="practica:esquemadetradsimple"></A>
+<H1><A NAME="SECTION069270000000000000000"></A>
+<A NAME="section:simplec"></A>
 <BR>
-Práctica: Construcción del AST para el Lenguaje Simple C
+Descripción Eyapp del Lenguaje  SimpleC
 </H1>
-Utilice 
-<A NAME="tex2html455"
-  HREF="Parse-Eyapp.tar.gz">Parse-Eyapp</A>.
-para construir un árbol de análisis sintáctico abstracto 
-para la gramática descrita en la sección
-<A HREF="node206.html#section:simplec">41.2</A>.
-Su analizador deberá seguir los consejos explícitados en la 
-sección <A HREF="node191.html#section:consejoseyapp">38.28</A>.
+En este capítulo usaremos  <TT>Parse::Eyapp</TT>  para desarrollar
+un compilador para el siguiente lenguaje, al que denominaremos  <TT>Simple C</TT> :
 
 <P>
+<PRE>
+program: definition+
 
-<H4><A NAME="SECTION069290010000000000000">
-Analizador Léxico</A>
-</H4>
+definition: funcDef | basictype funcDef | declaration
 
-<P>
-Además del tipo de terminal y su valor el analizador
-léxico deberá devolver el número de línea.
-El analizador léxico deberá aceptar comentarios C.
-En la gramática, el terminal <code>CHARACTER</code> se refiere a 
-caracteres entre comillas simples (por ejemplo <code>'a'</code>).
-El terminal <code>STRING</code> se refiere a 
-caracteres entre comillas dobles (por ejemplo <code>"hola"</code>).
+basictype: INT | CHAR
 
-<P>
-Se aconseja que las palabras reservadas del lenguaje
-no se traten con expresiones regulares específicas sino que se
-capturen en el patrón de identificador <code>[a-z_]\w+</code>. 
-Se mantiene para ello un hash con las palabras reservadas 
-que es inicializado al comienzo del programa. Cuando 
-el analizador léxico encuentra un identificador
-mira en primer lugar en dicho hash 
-para ver si es una palabra reservada y,
-si lo es, devuelve el terminal correspondiente.
-En caso contrario se trata de un identificador.
+funcDef: ID '('  params  ')' block
+
+params: ( basictype ID arraySpec)&lt;* ','&gt;
+
+block: '{' declaration* statement* '}'
+
+declaration: basictype declList ';'
+
+declList: (ID arraySpec) &lt;+ ','&gt;
+
+arraySpec: ( '[' INUM ']')*
+
+statement:
+    expression ';'
+  | ';'
+  | BREAK ';'
+  | CONTINUE ';'
+  | RETURN ';'
+  | RETURN expression ';'
+  | block
+  | ifPrefix statement %prec '+'
+  | ifPrefix statement 'ELSE' statement
+  | loopPrefix statement
+
+ifPrefix: IF '(' expression ')'
+
+loopPrefix: WHILE '(' expression ')'
+
+expression: binary &lt;+ ','&gt;
+
+Variable: ID ('[' binary ']') *
+
+Primary:
+    INUM
+  | CHARCONSTANT
+  | Variable
+  | '(' expression ')'
+  | function_call
+
+function_call:  ID  '(' binary &lt;* ','&gt; ')'
+
+Unary: '++' Variable | '--' Variable | Primary
+
+binary:
+    Unary
+  | binary '+' binary
+  | binary '-' binary
+  | binary '*' binary
+  | binary '/' binary
+  | binary '%' binary
+  | binary '&lt;' binary
+  | binary '&gt;' binary
+  | binary '&gt;=' binary
+  | binary '&lt;=' binary
+  | binary '==' binary
+  | binary '!=' binary
+  | binary '&amp;' binary
+  | binary '**' binary
+  | binary '|' binary
+  | Variable '=' binary
+  | Variable '+=' binary
+  | Variable '-=' binary
+  | Variable '*=' binary
+  | Variable '/=' binary
+  | Variable '%=' binary
+  | etc. etc.
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5355"
+<A NAME="tex2html5361"
   HREF="node193.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5349"
-  HREF="node163.html">
+<A NAME="tex2html5355"
+  HREF="node165.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5343"
+<A NAME="tex2html5349"
   HREF="node191.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5351"
-  HREF="node226.html">
+<A NAME="tex2html5357"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5353"
-  HREF="node229.html">
+<A NAME="tex2html5359"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -223,17 +253,17 @@ En caso contrario se trata de un identificador.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5356"
-  HREF="node193.html">El Generador de Analizadores</A>
-<B>Sup:</B> <A NAME="tex2html5350"
-  HREF="node163.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5344"
-  HREF="node191.html">Diseño de Analizadores con</A>
+<B> Sig:</B> <A NAME="tex2html5362"
+  HREF="node193.html">Diseño de Analizadores con</A>
+<B>Sup:</B> <A NAME="tex2html5356"
+  HREF="node165.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5350"
+  HREF="node191.html">Recuperacion de Errores: Visión</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-06-03</I>
+2013-06-08</I>
 </ADDRESS>
 </BODY>
 </HTML>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Pruebas para el Analizador Léxico</TITLE>
-<META NAME="description" CONTENT="Pruebas para el Analizador Léxico">
+<TITLE>Las Fases de un Compilador</TITLE>
+<META NAME="description" CONTENT="Las Fases de un Compilador">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node131.html">
 <LINK REL="previous" HREF="node129.html">
-<LINK REL="up" HREF="node126.html">
+<LINK REL="up" HREF="node128.html">
 <LINK REL="next" HREF="node131.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4303"
+<A NAME="tex2html4285"
   HREF="node131.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4297"
-  HREF="node126.html">
+<A NAME="tex2html4279"
+  HREF="node128.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4291"
+<A NAME="tex2html4273"
   HREF="node129.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4299"
-  HREF="node226.html">
+<A NAME="tex2html4281"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4301"
-  HREF="node229.html">
+<A NAME="tex2html4283"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,19 +88,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4304"
-  HREF="node131.html">Conceptos Básicos para el</A>
-<B>Sup:</B> <A NAME="tex2html4298"
-  HREF="node126.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html4292"
-  HREF="node129.html">Análisis Léxico</A>
+<B> Sig:</B> <A NAME="tex2html4286"
+  HREF="node131.html">Análisis Léxico</A>
+<B>Sup:</B> <A NAME="tex2html4280"
+  HREF="node128.html">Análisis Sintáctico Descendente en</A>
+<B> Ant:</B> <A NAME="tex2html4274"
+  HREF="node129.html">Las Bases</A>
 <B> Con:</B> 
-<A NAME="tex2html4299"
-  HREF="node226.html">
+<A NAME="tex2html4281"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4301"
-  HREF="node229.html">
+<A NAME="tex2html4283"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
@@ -111,1280 +111,764 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <UL CLASS="ChildLinks">
 <LI><UL>
 <LI><UL>
-<LI><A NAME="tex2html4305"
-  HREF="node130.html#SECTION06740010000000000000">Módulo <TT>PL::Error</TT></A>
-<LI><A NAME="tex2html4306"
-  HREF="node130.html#SECTION06740020000000000000">Módulo <TT>PL::Lexical::Analysis</TT></A>
-<LI><A NAME="tex2html4307"
-  HREF="node130.html#SECTION06740030000000000000">El Programa Cliente</A>
-<LI><A NAME="tex2html4308"
-  HREF="node130.html#SECTION06740040000000000000">Actualización del MANIFEST</A>
+<LI><A NAME="tex2html4287"
+  HREF="node130.html#SECTION06720010000000000000">Esquema del Compilador</A>
+<LI><A NAME="tex2html4288"
+  HREF="node130.html#SECTION06720020000000000000">Añadiendo Ejecutables</A>
+<LI><A NAME="tex2html4289"
+  HREF="node130.html#SECTION06720030000000000000">Búsqueda de Librerías en Tiempo de Desarrollo</A>
+<LI><A NAME="tex2html4290"
+  HREF="node130.html#SECTION06720040000000000000">Añadiendo Los Ejecutables al <TT>MANIFEST</TT></A>
+<LI><A NAME="tex2html4291"
+  HREF="node130.html#SECTION06720050000000000000">Indicando al Sistema de Distribución que los Ficheros son Ejecutables</A>
+<LI><A NAME="tex2html4292"
+  HREF="node130.html#SECTION06720060000000000000">Reconstrucci&#243;n de la aplicación</A>
+<LI><A NAME="tex2html4293"
+  HREF="node130.html#SECTION06720070000000000000">Ejecución</A>
+<LI><A NAME="tex2html4294"
+  HREF="node130.html#SECTION06720080000000000000">Construcción de una Distribución</A>
 </UL>
 </UL>
 <BR>
-<LI><A NAME="tex2html4309"
-  HREF="node130.html#SECTION06741000000000000000">Comprobando el Analizador Léxico</A>
-<UL>
-<LI><A NAME="tex2html4310"
-  HREF="node130.html#SECTION06741010000000000000">Principios Básicos del Desarrollo de Pruebas</A>
-<LI><A NAME="tex2html4311"
-  HREF="node130.html#SECTION06741020000000000000">La Jerarquía de Una Aplicación</A>
-<LI><A NAME="tex2html4312"
-  HREF="node130.html#SECTION06741030000000000000">Un Ejemplo de Programa de Prueba</A>
-<LI><A NAME="tex2html4313"
-  HREF="node130.html#SECTION06741040000000000000">Ejecución de Las Pruebas</A>
-<LI><A NAME="tex2html4314"
-  HREF="node130.html#SECTION06741100000000000000">Versiones anteriores a la 5.8</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html4315"
-  HREF="node130.html#SECTION06742000000000000000">Práctica: Pruebas en el Análisis Léxico</A>
-<LI><A NAME="tex2html4316"
-  HREF="node130.html#SECTION06743000000000000000">Repaso: Pruebas en el Análisis Léxico</A>
+<LI><A NAME="tex2html4295"
+  HREF="node130.html#SECTION06721000000000000000">Repaso: Fases de un Compilador</A>
+<LI><A NAME="tex2html4296"
+  HREF="node130.html#SECTION06722000000000000000">Práctica: Fases de un Compilador</A>
 </UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION06740000000000000000"></A>
-<A NAME="section:lexicomodular"></A>
+<H1><A NAME="SECTION06720000000000000000"></A>
+<A NAME="section:fases"></A>
 <BR>
-Pruebas para el Analizador Léxico
+Las Fases de un Compilador
 </H1>
-Queremos separar/aislar las diferentes fases
-del compilador en diferentes módulos. 
+La estructura del compilador, descompuesto en fases, queda explicitada 
+en el código de la subrutina <code>compile</code>:
 
 <P>
 
-<H4><A NAME="SECTION06740010000000000000">
-Módulo <TT>PL::Error</TT></A>
+<H4><A NAME="SECTION06720010000000000000">
+Esquema del Compilador</A>
 </H4>
   
-
-<P>
-Para ello comenzamos creando un módulo 
-conteniendo las rutinas de tratamiento de errores:
-<PRE>
-lhp@nereida:~/Lperl/src/topdown/PL0506/03lexico/PL-Tutu/lib/PL$ pwd
-/home/lhp/Lperl/src/topdown/PL0506/03lexico/PL-Tutu/lib/PL
-lhp@nereida:~/Lperl/src/topdown/PL0506/03lexico/PL-Tutu/lib/PL$ cat -n Error.pm
-   1  package Error;
-   2  use strict;
-   3  use warnings;
-   4  use Carp;
-   5
-   6  require Exporter;
-   7
-   8  our @ISA = qw(Exporter);
-   9  our @EXPORT = qw( error fatal);
-  10  our $VERSION = '0.01';
-  11
-  12  sub error {
-  13    my $msg = join " ", @_;
-  14    if (!$PL::Tutu::errorflag) {
-  15      carp("Error: $msg\n");
-  16      $PL::Tutu::errorflag = 1;
-  17    }
-  18  }
-  19
-  20  sub fatal {
-  21    my $msg = join " ", @_;
-  22    croak("Error: $msg\n");
-  23  }
-</PRE>
-Observa como accedemos a la variable <code>errorflag</code> del paquete 
-<code>PL::Tutu</code>.
-Para usar este módulo desde <code>PL::Tutu</code>, tenemos que declarar su uso:
-<PRE>
-lhp@nereida:~/Lperl/src/topdown/PL0506/03lexico/PL-Tutu/lib/PL$ cat -n Tutu.pm | head -8
-     1  package PL::Tutu;
-     2
-     3  use 5.008004;
-     4  use strict;
-     5  use warnings;
-     6  use IO::File;
-     7  use Carp;
-     8  use PL::Error;
-</PRE>
-En la línea 8 hacemos <code>use PL::Error</code> y no <code>use Error</code> ya que el módulo
-lo hemos puesto en el directorio <code>PL</code>.
-No olvides hacer <code>make manifest</code> para actualizar el fichero <code>MANIFEST</code>.
-
-<P>
-
-<H4><A NAME="SECTION06740020000000000000">
-Módulo <TT>PL::Lexical::Analysis</TT></A>
-</H4>
-  
-
-<P>
-Supongamos que además de modularizar el grupo de rutinas de tratamiento de errores
-queremos hacer lo mismo con la parte del análisis léxico. Parece lógico que el 
-fichero lo pongamos en un subdirectorio de <code>PL/</code> por lo que cambiamos 
-el nombre del módulo a <code>PL::Lexical::Analysis</code> quedando la jerarquía de ficheros
-asi:
-<PRE>
-lhp@nereida:~/Lperl/src/topdown/PL0506/03lexico/PL-Tutu/lib/PL$ tree
-.
-|-- Error.pm
-|-- Lexical
-|   `-- Analysis.pm
-`-- Tutu.pm
-</PRE>
-
-<P>
-Por supuesto debemos modificar las correspondientes líneas en <code>Tutu.pm</code>:
 
 <P>
 <PRE>
  1 package PL::Tutu;
- 2 
- 3 use 5.008004;
- 4 use strict;
- 5 use warnings;
- 6 use IO::File;
- 7 use Carp;
- 8 use PL::Error;
- 9 use PL::Lexical::Analysis;
-10 ...
-11 
-12 sub compile {
-13   my ($input) = @_;
-14   local %symbol_table = ();
-15   local $data = ""; # Contiene todas las cadenas en el programa fuente
-16   local $target = ""; # target code
-17   my @tokens = ();
-18   local $errorflag = 0;
-19   local ($lookahead, $value) = ();
-20   local $tree = undef; # abstract syntax tree
-21   local $global_address = 0;
+ 2 use 5.008004;   # Versión mínima de Perl 5.84
+ 3 use strict;     # Variables deben ser declaradas, etc.
+ 4 use warnings;   # Enviar warnings
+ 5 use IO::File;
+ 6 use Carp;       # Provee alternativas a "die" and "warn" 
+ 7 
+ 8 require Exporter;
+ 9 
+10 our @ISA = qw(Exporter);   # Heredamos los métodos de la clase Exporter
+11 our @EXPORT = qw( compile compile_from_file); # Estas funciones serán exportadas
+12 our $VERSION = '0.01';     # Variable que define la versión del módulo
+13 
+14 our %symbol_table;         # La tabla de símbolos $symbol_table{x} contiene
+15 our $data;                 # la información asociada con el objeto 'x'
+16 our $target;               # tipo, dirección, etc.
+17 our @tokens;               # La lista de terminales
+18 our $errorflag;
+19 our ($lookahead, $value);  # Token actual y su atributo
+20 our $tree;                 # referencia al objeto que contiene
+21 our $global_address;       # el árbol sintáctico
 22 
-23   
-24   ########lexical analysis
-25   @tokens = &amp;PL::Lexical::Analysis::scanner($input);
-26   print "@tokens\n";
+23 # Lexical analyzer 
+24 package Lexical::Analysis;
+25 sub scanner {
+26 }
 27 
-28   ...
-29 
-30   return \$target;
-31 }
+28 package Syntax::Analysis;
+29 sub parser {
+30 }
+31 
+32 package Machine::Independent::Optimization;
+33 sub Optimize {
+34 }
+35 
+36 package Code::Generation;
+37 sub code_generator {
+38 }
+39   
+40 package Peephole::Optimization;
+41 sub transform {
+42 }
+43 
+44 package PL::Tutu;
+45 sub compile {
+46   my ($input) = @_; # Observe el contexto!
+47   local %symbol_table = (); 
+48   local $data = ""; # Contiene todas las cadenas en el programa fuente
+49   local $target = ""; # target code
+50   local @tokens =();    # "local" salva el valor que serÃ¡ recuperado al finalizar
+51   local $errorflag = 0; # el Ã¡mbito
+52   local ($lookahead, $value) = ();
+53   local $tree = undef; # Referencia al Ã¡rbol sintÃctico abstracto 
+54   local $global_address = 0; # Usado para guardar la Ãltima direcciÃn ocupada
+55   
+56   ########lexical analysis
+57   &amp;Lexical::Analysis::scanner($input);
+58 
+59   ########syntax (and semantic) analysis
+60   $tree = &amp;Syntax::Analysis::parser;
+61 
+62   ########machine independent optimizations
+63   &amp;Machine::Independent::Optimization::Optimize;
+64 
+65   ########code generation
+66   &amp;Code::Generation::code_generator;
+67 
+68   ########peephole optimization
+69   &amp;Peephole::Optimization::transform($target);
+70 
+71   return \$target; #retornamos una referencia a $target
+72 }
+73 
+74 sub compile_from_file {
+75   my ($input_name, $output_name) = @_; # Nombres de ficheros
+76   my $fhi;                             # de entrada y de salida
+77   my $targetref;
+78   
+79   if (defined($input_name) and (-r $input_name)) {
+80     $fhi = IO::File-&gt;new("&lt; $input_name");
+81   }
+82   else { $fhi = 'STDIN'; }
+83   my $input;
+84   { # leer todo el fichero
+85     local $/ = undef; # localizamos para evitar efectos laterales
+86     $input = &lt;$fhi&gt;;
+87   }
+88   $targetref = compile($input);
+89 
+90   ########code output
+91   my $fh = defined($output_name)? IO::File-&gt;new("&gt; $output_name") : 'STDOUT';
+92   $fh-&gt;print($$targetref);
+93   $fh-&gt;close;
+94   1; # El Ãºltimo valor evaluado es el valor retornado
+95 }
+96 
+97 1;  # El 1 indica que la fase de carga termina con éxito
+98 # Sigue la documentación ...
 </PRE>
-Observe que ahora <code>PL::Lexical::Analysis::scanner</code> devuelve 
-ahora la
-lista con los terminales y que <code>@tokens</code> se ha ocultado en 
-<code>compile</code> como una variable léxica (línea 17).
-En la línea 26 mostramos el contenido de la lista de terminales.
 
 <P>
-Sigue el listado del módulo conteniendo el analizador léxico.
-Obsérve las líneas 6, 16 y 44.
-<PRE>
-lhp@nereida:~/Lperl/src/topdown/PL0506/03lexico/PL-Tutu/lib/PL/Lexical$ cat -n Analysis.pm
-     1  # Lexical analyzer
-     2  package PL::Lexical::Analysis;
-     3  use strict;
-     4  use warnings;
-     5  use Carp;
-     6  use PL::Error;
-     7
-     8  require Exporter;
-     9
-    10  our @ISA = qw(Exporter);
-    11  our @EXPORT = qw( scanner );
-    12  our $VERSION = '0.01';
-    13
-    14  sub scanner {
-    15    local $_ = shift;
-    16    my @tokens;
-    17
-    18    { # Con el redo del final hacemos un bucle "infinito"
-    19      if (m{\G\s*(\d+)}gc) {
-    20        push @tokens, 'NUM', $1;
-    21      }
-    ..      ...
-    37      elsif (m{\G\s*([+*()=;,])}gc) {
-    38        push @tokens, 'PUN', $1;
-    39      }
-    40      elsif (m{\G\s*(\S)}gc) {
-    41        Error::fatal "Caracter invalido: $1\n";
-    42      }
-    43      else {
-    44        return @tokens;
-    45      }
-    46      redo;
-    47    }
-    48  }
-</PRE>
 
-<P>
-
-<H4><A NAME="SECTION06740030000000000000">
-El Programa Cliente</A>
+<H4><A NAME="SECTION06720020000000000000">
+Añadiendo Ejecutables</A>
 </H4>
   
 
 <P>
-Puesto que en el paquete <code>PL::Lexical::Analysis</code>
-exportamos <code>scanner</code> no es necesario llamar la rutina por el nombre 
-completo desde <code>compile</code>. Podemos simplificar la línea en la
-que se llama a <code>scanner</code> que queda así:
+Vamos a añadir un <SPAN  CLASS="textbf">script</SPAN> que use el módulo
+<code>PL::Tutu</code> para asi poder ejecutar nuestro compilador:
 <PRE>
-########lexical analysis
-@tokens = &amp;scanner($input);
-print "@tokens\n";
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu/$ mkdir scripts
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu$ cd scripts/
 </PRE>
-De la misma forma, dado que <code>PL::Tutu</code> exporta la función <code>compile_from_file</code>,
-no es necesario llamarla por su nombre completo desde el guión <code>tutu</code>. Reescribimos
-la línea de llamada:
+A continuación creamos dos versiones del compilador <code>tutu.pl</code>
+y <code>tutu</code> y un programa de prueba <code>test01.tutu</code>:
+
+<P>
 <PRE>
-lhp@nereida:~/Lperl/src/topdown/PL0506/03lexico/PL-Tutu/scripts$ cat tutu
+... # despues de crear los ficheros
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu/scripts$ ls
+test01.tutu  tutu  tutu.pl
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu/scripts$ cat tutu.pl
+#!/usr/bin/perl -w -I../lib/
+use PL::Tutu;
+
+PL::Tutu::compile_from_file(@ARGV);
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION06720030000000000000">
+Búsqueda de Librerías en Tiempo de Desarrollo</A>
+</H4>
+  
+
+<P>
+El programa <code>tutu</code> ilustra otra forma de conseguir que el intérprete
+Perl busque por la librería que está siendo desarrollada, mediante el
+uso de <code>use lib</code>:
+
+<P>
+<PRE>
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu/scripts$ cat tutu
 #!/usr/bin/perl -w
 use lib ('../lib');
 use PL::Tutu;
 
-&amp;compile_from_file(@ARGV);
+&amp;PL::Tutu::compile_from_file(@ARGV);
+</PRE>
+
+<P>
+Una tercera forma (la que recomiendo):
+<PRE>
+$ export PERL5LIB=~/Lperl/src/topdown/PL0506/02fases/PL-Tutu/lib
+$ perl -MPL::Tutu -e 'PL::Tutu::compile_from_file("test01.tutu")'
 </PRE>
 
 <P>
 
-<H4><A NAME="SECTION06740040000000000000">
-Actualización del MANIFEST</A>
+<H4><A NAME="SECTION06720040000000000000">
+Añadiendo Los Ejecutables al <TT>MANIFEST</TT></A>
 </H4>
   
 
 <P>
-Como siempre que se añaden o suprimen archivos es necesario actualizar 
-<code>MANIFEST</code>:
+Ahora tenemos que añadir estos ficheros en <code>MANIFEST</code> para que formen
+parte del proyecto. En vez de eso lo que podemos hacer es crear un fichero
+<code>MANIFEST.SKIP</code>:
 <PRE>
-lhp@nereida:~/Lperl/src/topdown/PL0506/03lexico/PL-Tutu$ make manifest
-/usr/bin/perl "-MExtUtils::Manifest=mkmanifest" -e mkmanifest
-Added to MANIFEST: lib/PL/Lexical/Analysis.pm
-lhp@nereida:~/Lperl/src/topdown/PL0506/03lexico/PL-Tutu$ cat -n MANIFEST
-     1  Changes
-     2  lib/PL/Error.pm
-     3  lib/PL/Lexical/Analysis.pm
-     4  lib/PL/Tutu.pm
-     5  Makefile.PL
-     6  MANIFEST
-     7  MANIFEST.SKIP
-     8  README
-     9  scripts/test01.tutu
-    10  scripts/tutu
-    11  scripts/tutu.pl
-    12  t/PL-Tutu.t
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu$ cat MANIFEST.SKIP
+\.o$
+^\.cvsignore$
+/\.cvsignore$
+\.cvsignore$
+CVS/[^/]+$
+\.svn\b
+^Makefile$
+/Makefile$
+^blib/
+\.swp$
+\.bak$
+\.pdf$
+\.ps$
+\.sal$
+pm_to_blib
+\.pdf$
+\.tar.gz$
+\.tgz$
+^META.yml$
 </PRE>
-
-<P>
-
-<H2><A NAME="SECTION06741000000000000000"></A>
-<A NAME="subsection:tests"></A>
-<BR>
-Comprobando el Analizador Léxico
-</H2>
-Queremos comprobar si nuestro código funciona. ¿Cómo hacerlo?.
-Lo adecuado es llevar una aproximación sistemática que permita validar
-el código. 
-
-<P>
-
-<H4><A NAME="SECTION06741010000000000000">
-Principios Básicos del Desarrollo de Pruebas</A>
-</H4>
-  
-
-<P>
-En general, la filosofía aconsejable para realizar un banco
-de pruebas de nuestro módulo es la que se articula en la metodología denominada
-<A NAME="12732"></A><SPAN  CLASS="textbf">Extreme Programming</SPAN>, descrita en múltiples textos, en concreto en el 
-libro de Scott []:
-
-<UL>
-<LI>Todas las pruebas deben automatizarse
-</LI>
-<LI>Todos los fallos que se detecten deberían quedar traducidos en pruebas
-</LI>
-<LI>La aplicación debería pasar todas las pruebas después de cualquier modificación
-importante y también al final del día
-</LI>
-<LI>El desarrollo de las pruebas debe preceder el desarrollo 
-del código
-</LI>
-<LI>Todos los requerimientos deben ser expresados en forma de pruebas
-</LI>
-</UL>
-
-<P>
-
-<H4><A NAME="SECTION06741020000000000000">
-La Jerarquía de Una Aplicación</A>
-</H4>
-  
-
-<P>
-Pueden haber algunas diferencias entre el esquema que se describe aqui y su versión de Perl.
-Lea detenidamente el capítulo 
-<A NAME="tex2html386"
-  HREF="http://nereida.deioc.ull.es/~pl/cgi-bin/test_now_test_forever.pdf">Test Now, test Forever</A>
-del libro de Scott [] y el libro [<A
- HREF="node230.html#perltesting">11</A>] de Ian Langworth y chromatic.
-
-<P>
-Si usas una versión de Perl posterior  la 5.8.0, entonces tu versión del programa
-<code>h2xs</code> 
-creará un subdirectorio <code>/t</code> en el que guardar los ficheros de prueba
-Estos ficheros deberán 
-ser programas Perl de prueba con el tipo <code>.t</code>. La utilidad
-<code>h2xs</code> incluso deja un programa de prueba <code>PL-Tutu.t</code> en ese directorio.
-La jerarquía de ficheros con la que trabajamos actualmente es:
+Ahora al hacer
 <PRE>
-lhp@nereida:~/Lperl/src/topdown/PL0506/03lexico/PL-Tutu$ make veryclean
-rm -f blib/script/tutu blib/script/tutu.pl
-rm -rf ./blib Makefile.aperl ...
-mv Makefile Makefile.old &gt; /dev/null 2&gt;&amp;1
-rm -rf blib/lib/auto/PL/Tutu blib/arch/auto/PL/Tutu
-rm -rf PL-Tutu-0.01
-rm -f  blib/lib/PL/.Tutu.pm.swp ...
-rm -f *~ *.orig */*~ */*.orig
-lhp@nereida:~/Lperl/src/topdown/PL0506/03lexico/PL-Tutu$ tree
-.
-|-- .svn                # use siempre un sistema de control de versiones
-|-- Changes             # la historia de cambios
-|-- MANIFEST            # lista de ficheros que componen la distribución
-|-- MANIFEST.SKIP       # regexps para determinar que ficheros no pertenecen
-|-- META.yml            # YML no es XML
-|-- Makefile.PL         # generador del Makefle independiente de la plataforma
-|-- PL-Tutu-0.01.tar.gz
-|-- README              # instrucciones de instalacion
-|-- lib
-|   `-- PL
-|       |-- Error.pm            # rutinas de manejo de errores
-|       |-- Lexical
-|       |   `-- Analysis.pm     # modulo con el analizador lexico
-|       `-- Tutu.pm             # modulo principal
-|-- scripts
-|   |-- test01.sal   # salida del programa de prueba
-|   |-- test01.tutu  # programa de prueba
-|   |-- tutu         # compilador
-|   `-- tutu.pl      # compilador
-`-- t
-    `-- 01Lexical.t  # prueba consolidada
+make manifest
 </PRE>
+se crea un fichero <code>MANIFEST</code> que contiene los caminos 
+relativos de todos los ficheros
+en la jerarquía cuyos nombres no casan con una de las expresiones
+regulares en <code>MANIFEST.SKIP</code>.
 
 <P>
-
-<H4><A NAME="SECTION06741030000000000000">
-Un Ejemplo de Programa de Prueba</A>
-</H4>
-  
-
-<P>
-Estos son los contenidos de nuestro primer test:
-<PRE>
-lhp@nereida:~/Lperl/src/topdown/PL0506/03lexico/PL-Tutu$ cd t
-lhp@nereida:~/Lperl/src/topdown/PL0506/03lexico/PL-Tutu/t$ ls -l
-total 4
--rw-r--r--  1 lhp lhp 767 2005-10-10 11:27 01Lexical.t
-lhp@nereida:~/Lperl/src/topdown/PL0506/03lexico/PL-Tutu/t$ cat -n 01Lexical.t
- 1  # Before `make install' is performed this script should be runnable with
- 2  # `make test'. After `make install' it should work as `perl PL-Tutu.t'
- 3
- 4  #########################
- 5
- 6  # change 'tests =&gt; 1' to 'tests =&gt; last_test_to_print';
- 7
- 8  use Test::More tests =&gt; 5;
- 9  use Test::Exception;
-10
-11  BEGIN { use_ok('PL::Lexical::Analysis') };
-12  BEGIN { use_ok('PL::Tutu') };
-13
-14  #########################
-15
-16  # Insert your test code below, the Test::More module is use()ed here so read
-17  # its man page ( perldoc Test::More ) for help writing this test script.
-18
-19  can_ok('PL::Lexical::Analysis', 'scanner');
-20
-21  # Test result of call
-22  my $a = 'int a,b; string c; c = "hello"; a = 4; b = a +1; p b';
-23  my @tokens = scanner($a);
-24  my @expected_tokens = qw{
-25  INT INT
-26  ID a
-27  PUN ,
-28  ID b
-29  PUN ;
-30  STRING STRING
-31  ID c
-32  PUN ;
-33  ID c
-34  PUN =
-35  STR "hello"
-36  PUN ;
-37  ID a
-38  PUN =
-39  NUM 4
-40  PUN ;
-41  ID b
-42  PUN =
-43  ID a
-44  PUN +
-45  NUM 1
-46  PUN ;
-47  P P
-48  ID b
-49  };
-50  is(@tokens, @expected_tokens, "lexical analysis");
-51
-52  # test a lexically  erroneous program
-53  $a = 'int a,b; string c[2]; c = "hello"; a = 4; b = a +1; p b';
-54  throws_ok { scanner($a) } qr{Error: Caracter invalido:}, 'erroneous program';
-</PRE>
-
-<P>
-El nombre del fichero de prueba debe cumplir que:
-
-<UL>
-<LI>Sea significativo del tipo de prueba
-</LI>
-<LI>Que los prefijos de los nombres <code>01</code>, <code>02</code>, ...nos garanticen
-el orden de ejecución
-</LI>
-</UL>
-
-<P>
-
-<H4><A NAME="SECTION06741040000000000000">
-Ejecución de Las Pruebas</A>
-</H4>
-  
-
-<P>
-Ahora ejecutamos las pruebas:
-<PRE>
-lhp@nereida:~/Lperl/src/topdown/PL0506/03lexico/PL-Tutu$ make test
-PERL_DL_NONLAZY=1 /usr/bin/perl "-MExtUtils::Command::MM" "-e" "test_harness(0, 'blib/lib', 'blib/arch')" t/*.t
-t/01Lexical....ok 1/5Possible attempt to separate words with commas at t/01Lexical.t line 49.
-t/01Lexical....ok
-All tests successful.
-Files=1, Tests=5,  0 wallclock secs ( 0.08 cusr +  0.00 csys =  0.08 CPU)
-</PRE>
-O bien usamos <code>prove</code>:
-<PRE>
-lhp@nereida:~/Lperl/src/topdown/PL0506/03lexico/PL-Tutu/t$ prove -I../lib 01Lexical.t
-01Lexical....ok
-All tests successful.
-Files=1, Tests=2,  0 wallclock secs ( 0.03 cusr +  0.01 csys =  0.04 CPU)
-</PRE>
-También podemos añadir la opción <code>verbose</code> a <code>prove</code>:
-<PRE>
-lhp@nereida:~/Lperl/src/topdown/PL0506/03lexico/PL-Tutu/t$ prove -v 01Lexical.t
-01Lexical....1..5
-ok 1 - use PL::Lexical::Analysis;
-ok 2 - use PL::Tutu;
-ok 3 - PL::Lexical::Analysis-&gt;can('scanner')
-ok 4 - lexical analysis
-ok 5 - erroneous program
-ok
-All tests successful.
-Files=1, Tests=5,  0 wallclock secs ( 0.07 cusr +  0.01 csys =  0.08 CPU)
-</PRE>
-
-<P>
-Repáse 
-<A HREF="#subsection:laspruebas">
+Para saber mas sobre <code>MANIFEST</code> léa 
+<A HREF="#subsection:MANIFEST">
 <IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
- HREF="node230.html#CasianoIntroAPerl">10</A>] para un mejor conocimiento
-de la metodología de pruebas en Perl.
+ HREF="node232.html#CasianoIntroAPerl">10</A>].
+
+<P>
+No recomiendo el uso de <code>MANIFEST.SKIP</code>. Prefiero un control manual de los
+ficheros que integran la aplicacion.
 
 <P>
 
-<H3><A NAME="SECTION06741100000000000000">
-Versiones anteriores a la 5.8</A>
-</H3>
-En esta sección he usado la versión 5.6.1 de Perl.  
-Creeemos un subdirectorio <code>tutu_src/</code> y en él un programa de prueba
-<code>pruebalex.pl</code>:
-<PRE>
-$ pwd
-/home/lhp/projects/perl/src/tmp/PL/Tutu/tutu_src
-$ cat pruebalex.pl
-#!/usr/bin/perl -w -I..
-#use PL::Tutu;
-use Tutu;
-
-my $a = 'int a,b; string c; c = "hello"; a = 4; b = a +1; p b';
-Lexical::Analysis::scanner($a);
-print "prog = $a\ntokens = @PL::Tutu::tokens\n";
-</PRE>
-Observa como la opción <code>-I..</code> hace que se busque por las librerías en el directorio
-padre del actual.
-Cuando ejecutamos <code>pruebalex.pl</code> obtenemos la lista de terminales:
-<PRE>
-$ ./pruebalex.pl
-prog = int a,b; string c; c = "hello"; a = 4; b = a +1; p b
-tokens = INT INT ID a PUN , ID b PUN ; STRING STRING ID c PUN ; 
-ID c PUN = STR hello PUN ; ID a PUN = NUM 4 PUN ; ID b PUN = 
-ID a PUN + NUM 1 PUN ; P P ID b
-</PRE>
-La última línea ha sido partida por razones de legibilidad, pero consituye 
-una sóla línea.
-Editemos el fichero <code>test.pl</code> en el directorio del módulo.
-Sus contenidos son como sigue:
-<PRE>
-$ cat -n test.pl
- 1  # Before `make install' is performed this script should be runnable with
- 2  # `make test'. After `make install' it should work as `perl test.pl'
- 3
- 4  #########################
- 5
- 6  # change 'tests =&gt; 1' to 'tests =&gt; last_test_to_print';
- 7
- 8  use Test;
- 9  BEGIN { plan tests =&gt; 1 };
-10  use PL::Tutu;
-11  ok(1); # If we made it this far, we're ok.
-12
-13  #########################
-14
-15  # Insert your test code below, the Test module is use()ed here so read
-16  # its man page ( perldoc Test ) for help writing this test script.
-17
-</PRE>
-En la línea 9 se establece el número de pruebas a realizar. 
-La primera prueba aparece en la línea 11. Puede parecer que no es una prueba,
-¡pero lo es!. Si se ha alcanzado la línea 11 es que se pudo cargar
-el módulo <code>PL::Tutu</code> y eso ¡tiene algún mérito!.
-
-<P>
-Seguiremos el consejo de la línea 15 y escribiremos nuestra segunda
-prueba al final del fichero <code>test.pl</code>:
-<PRE>
-$ cat -n test.pl | tail -7
-16  # its man page ( perldoc Test ) for help writing this test script.
-17
-18  my $a = 'int a,b; string c; c = "hello"; a = 4; b = a +1; p b';
-19  local @PL::Tutu::tokens = ();
-20  Lexical::Analysis::scanner($a);
-21  ok("@PL::Tutu::tokens" eq
-22  'INT INT ID a PUN , ID b PUN ; STRING STRING ID c PUN ; ID c 
-     PUN = STR hello PUN ; ID a PUN = NUM 4 PUN ; ID b PUN = 
-     ID a PUN + NUM 1 PUN ; P P ID b');
-</PRE>
-La línea 22 ha sido partida por razones de legibilidad, pero constituye 
-una sóla línea.
-Ahora podemos ejecutar <code>make test</code> y comprobar que las dos
-pruebas funcionan:
-<PRE>
-$ make test
-PERL_DL_NONLAZY=1 /usr/bin/perl -Iblib/arch -Iblib/lib -I/usr/lib/perl/5.6.1 \
-                                -I/usr/share/perl/5.6.1 test.pl
-1..2
-ok 1
-ok 2
-</PRE>
-¿Recordaste cambiar la línea 9 de <code>test.pl</code>?
-¿Añadiste los nuevos ficheros a la lista en <code>MANIFEST</code>?
-
-<P>
-
-<H2><A NAME="SECTION06742000000000000000"></A>
-   <A NAME="12749"></A>
+<H4><A NAME="SECTION06720050000000000000">
+Indicando al Sistema de Distribución que los Ficheros son Ejecutables</A>
+</H4>
   
-<A NAME="practica:pruebaslexico"></A>
+
+<P>
+Es necesario indicarle a Perl que los ficheros añadidos son ejecutables.
+Esto se hace mediante el par&#225;metro <code>EXE_FILES</code> de <code>WriteMakefile</code>:
+<PRE>
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu$ cat Makefile.PL
+use 5.008004;
+use ExtUtils::MakeMaker;
+# See lib/ExtUtils/MakeMaker.pm for details of how to influence
+# the contents of the Makefile that is written.
+WriteMakefile(
+    NAME              =&gt; 'PL::Tutu',
+    VERSION_FROM      =&gt; 'lib/PL/Tutu.pm', # finds $VERSION
+    PREREQ_PM         =&gt; {}, # e.g., Module::Name =&gt; 1.1
+    EXE_FILES         =&gt; [ 'scripts/tutu.pl', 'scripts/tutu' ],
+    ($] &gt;= 5.005 ?     ## Add these new keywords supported since 5.005
+      (ABSTRACT_FROM  =&gt; 'lib/PL/Tutu.pm', # retrieve abstract from module
+       AUTHOR         =&gt; 'Lenguajes y Herramientas de Programacion &lt;lhp@&gt;') : ()),
+);
+</PRE>
+Perl utilizará esa información durante la fase de instalación
+para instalar los ejecutables en el <SPAN  CLASS="textbf">path</SPAN> de búsqueda.
+
+<P>
+
+<H4><A NAME="SECTION06720060000000000000">
+Reconstrucci&#243;n de la aplicación</A>
+</H4>
+  
+
+<P>
+A continuación hay que rehacer el <code>Makefile</code>:
+<PRE>
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu$ perl Makefile.PL
+Writing Makefile for PL::Tutu
+</PRE>
+
+<P>
+Para crear una versión funcional hacemos <code>make</code>:
+<PRE>
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu$ make
+cp scripts/tutu blib/script/tutu
+/usr/bin/perl "-MExtUtils::MY" -e "MY-&gt;fixin(shift)" blib/script/tutu
+cp scripts/tutu.pl blib/script/tutu.pl
+/usr/bin/perl "-MExtUtils::MY" -e "MY-&gt;fixin(shift)" blib/script/tutu.pl
+Manifying blib/man3/PL::Tutu.3pm
+</PRE>
+
+<P>
+Para crear el <code>MANIFEST</code> hacemos <code>make manifest</code>:
+<PRE>
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu$ make manifest
+/usr/bin/perl "-MExtUtils::Manifest=mkmanifest" -e mkmanifest
+Added to MANIFEST: scripts/tutu
+</PRE>
+
+<P>
+Comprobemos que el test de prueba generado automáticamente por
+<code>h2xs</code> se pasa correctamente:
+<PRE>
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu$ make test
+PERL_DL_NONLAZY=1 /usr/bin/perl "-MExtUtils::Command::MM" "-e" "test_harness(0, 'blib/lib', 'blib/arch')" t/*.t
+t/PL-Tutu....ok
+All tests successful.
+Files=1, Tests=1,  0 wallclock secs ( 0.08 cusr +  0.00 csys =  0.08 CPU)
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION06720070000000000000">
+Ejecución</A>
+</H4>
+  
+
+<P>
+Podemos ahora ejecutar los guiones:
+<PRE>
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu$ cd scripts/
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu/scripts$ ls -l
+total 12
+-rw-r--r--  1 lhp lhp 15 2005-09-29 12:56 test01.tutu
+-rwxr-xr-x  1 lhp lhp 92 2005-09-29 13:29 tutu
+-rwxr-xr-x  1 lhp lhp 80 2005-09-29 12:58 tutu.pl
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu/scripts$ tutu test01.tutu test01.sal
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu/scripts$ ls -l
+total 12
+-rw-r--r--  1 lhp lhp  0 2005-09-29 13:53 test01.sal
+-rw-r--r--  1 lhp lhp 15 2005-09-29 12:56 test01.tutu
+-rwxr-xr-x  1 lhp lhp 92 2005-09-29 13:29 tutu
+-rwxr-xr-x  1 lhp lhp 80 2005-09-29 12:58 tutu.pl
+</PRE>
+
+<P>
+Veamos los contenidos del programa fuente <code>test01.tutu</code>
+que usaremos para hacer una prueba:
+<PRE>
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu/scripts$ cat test01.tutu
+int a,b;
+a = 4
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION06720080000000000000">
+Construcción de una Distribución</A>
+</H4>
+  
+
+<P>
+Para hacer una distribución instalable hacemos <code>make dist</code>:
+<PRE>
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu$ make dist
+rm -rf PL-Tutu-0.01
+/usr/bin/perl "-MExtUtils::Manifest=manicopy,maniread" \
+        -e "manicopy(maniread(),'PL-Tutu-0.01', 'best');"
+mkdir PL-Tutu-0.01
+mkdir PL-Tutu-0.01/scripts
+mkdir PL-Tutu-0.01/lib
+mkdir PL-Tutu-0.01/lib/PL
+mkdir PL-Tutu-0.01/t
+tar cvf PL-Tutu-0.01.tar PL-Tutu-0.01
+PL-Tutu-0.01/
+PL-Tutu-0.01/scripts/
+PL-Tutu-0.01/scripts/test01.tutu
+PL-Tutu-0.01/scripts/tutu
+PL-Tutu-0.01/scripts/tutu.pl
+PL-Tutu-0.01/META.yml
+PL-Tutu-0.01/Changes
+PL-Tutu-0.01/MANIFEST
+PL-Tutu-0.01/lib/
+PL-Tutu-0.01/lib/PL/
+PL-Tutu-0.01/lib/PL/Tutu.pm
+PL-Tutu-0.01/MANIFEST.SKIP
+PL-Tutu-0.01/t/
+PL-Tutu-0.01/t/PL-Tutu.t
+PL-Tutu-0.01/Makefile.PL
+PL-Tutu-0.01/README
+rm -rf PL-Tutu-0.01
+gzip --best PL-Tutu-0.01.tar
+</PRE>
+Después de esto tenemos en el directorio de trabajo
+el fichero  <code>PL-Tutu-0.01.tar.gz</code> con la distribución:
+<PRE>
+lhp@nereida:~/Lperl/src/topdown/PL0506/02fases/PL-Tutu$ ls -ltr
+total 72
+drwxr-xr-x  2 lhp lhp  4096 2005-09-29 12:01 t
+-rw-r--r--  1 lhp lhp  1196 2005-09-29 12:01 README
+drwxr-xr-x  3 lhp lhp  4096 2005-09-29 12:01 lib
+-rw-r--r--  1 lhp lhp   152 2005-09-29 12:01 Changes
+-rw-r--r--  1 lhp lhp   167 2005-09-29 13:23 MANIFEST.SKIP
+-rw-r--r--  1 lhp lhp     0 2005-09-29 13:23 pm_to_blib
+drwxr-xr-x  6 lhp lhp  4096 2005-09-29 13:23 blib
+-rw-r--r--  1 lhp lhp   113 2005-09-29 13:23 MANIFEST.bak
+drwxr-xr-x  2 lhp lhp  4096 2005-09-29 13:29 scripts
+-rw-r--r--  1 lhp lhp   616 2005-09-29 13:49 Makefile.PL
+-rw-r--r--  1 lhp lhp 20509 2005-09-29 13:51 Makefile
+-rw-r--r--  1 lhp lhp  3654 2005-09-29 16:34 PL-Tutu-0.01.tar.gz
+-rw-r--r--  1 lhp lhp   298 2005-09-29 16:34 META.yml
+-rw-r--r--  1 lhp lhp   205 2005-09-29 16:34 MANIFEST
+</PRE>
+
+<P>
+
+<H2><A NAME="SECTION06721000000000000000"></A>
+   <A NAME="12627"></A>
+  
+<A NAME="repaso:fases"></A>
 <BR>
-Práctica: Pruebas en el Análisis Léxico
+Repaso: Fases de un Compilador
 </H2>
-Extienda su compilador para modularizar el analizador léxico
-tal y como se explicó en la sección
-<A HREF="#section:lexicomodular">36.4</A>.
 
 <OL>
-<LI>Lea  los siguientes documentos
+<LI>¿Que hace la declaración 
+<code>package nombredepaquete</code>?
+</LI>
+<LI>¿Cual es la función de la declaración <code>use 5.008004</code>?
+</LI>
+<LI>¿Cuál es la función de la declaración <code>use strict</code>?
+</LI>
+<LI>¿Cuál es la función de la declaración <code>use warnings</code>?
+</LI>
+<LI>¿Que diferencia hay entre <code>use warnings</code> y <code>perl -w</code>?
+</LI>
+<LI>¿Cuál es la función de la declaración <code>use Carp</code>?
+¿Que diferencia hay entre <code>croak</code> y <code>die</code>?
+</LI>
+<LI>¿Qué hace la declaración <code>our</code>? 
+</LI>
+<LI>¿Qué es una variable de paquete?
+</LI>
+<LI>¿Cuál es el nombre completo de una variable de paquete?
+</LI>
+<LI>¿En que variable especial se situán los argumentos pasados a una subrutina?
+</LI>
+<LI>¿Que hace la declaración <code>local</code>?
+</LI>
+<LI>¿Cómo se declara una variable léxica?
+</LI>
+<LI>¿Cuál es el prefijo para los hashes?
+</LI>
+<LI>¿Cómo se hace referencia a un elemento de un hash <code>%h</code> de clave <code>k</code>?
+</LI>
+<LI>¿Cómo se hace referencia a un elemento de un array <code>@a</code> de índice <code>7</code>?
+¿Que lugar ocupa ese elemento en el array?
+</LI>
+<LI>¿Cuál es el significado de <code>undef</code>?
+</LI>
+<LI>¿Cuál es el prefijo para las subrutinas?
+</LI>
+<LI>Señale la diferencia entre
+<PRE>
+my ($input) = @_;
+</PRE>
+y
+<PRE>
+my $input = @_;
+</PRE>
+Repase 
+<A HREF="#section:referencias">
+<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
+ HREF="node232.html#CasianoIntroAPerl">10</A>].
+</LI>
+<LI>Toda referencia es un escalar: ¿Cierto o falso?
+</LI>
+<LI>Toda referencia es verdadera ¿Cierto o falso?
+</LI>
+<LI>¿Que diferencia hay entre <code>use</code> y <code>require</code>?
+¿La línea <code>require Exporter</code> se ejecuta en tiempo de compilación 
+o en tiempo de ejecución?
+</LI>
+<LI>¿Que hace la línea 
+<code>our @ISA = qw(Exporter)</code>?. Repáse 
+<A HREF="#section:herencia">
+<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
+ HREF="node232.html#CasianoIntroAPerl">10</A>].
+
+<P>
+</LI>
+<LI>¿Que hace la línea
+<code>our @EXPORT = qw( compile compile_from_file)</code>?
+</LI>
+<LI>¿Que diferencia hay entre <code>EXPORT</code> y <code>EXPORT_OK</code>?.
+Repase <A HREF="#section:exportacion">
+<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
+ HREF="node232.html#CasianoIntroAPerl">10</A>].
+</LI>
+<LI>¿Que hace la línea
+<code>our $VERSION = '0.01</code>?
+</LI>
+<LI>¿Que valor tiene una variable no incializada? ¿y si es un array?
+</LI>
+<LI>¿Que es un array anónimo? 
+(Repase <A HREF="#section:anonimos">
+<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
+ HREF="node232.html#CasianoIntroAPerl">10</A>])
+</LI>
+<LI>¿Que es un hash anónimo?
+(Repase <A HREF="#section:anonimos">
+<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
+ HREF="node232.html#CasianoIntroAPerl">10</A>])
+</LI>
+<LI>¿Que hace el operador <code>=&gt;</code>?.
+Repase 
+<A HREF="#subsection:flechagrande">
+<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
+ HREF="node232.html#CasianoIntroAPerl">10</A>].
+</LI>
+<LI>¿En que lugar se dejan los ejecutables asociados con una distribución?
+¿Cómo se informa a Perl que se trata de ejecutables?
+</LI>
+<LI>¿Cuál es la función de <code>MANIFEST.SKIP</code>?
+¿Que hace <code>make manifest</code>?
+</LI>
+<LI>¿Que hace la opción <code>-I</code>?
+¿Porqué la primera línea de <code>tutu.pl</code> comienza:
+<BR><code>#!/usr/bin/perl -w -I../lib/</code>?
+</LI>
+<LI>¿Cómo puedo saber lo que hace el módulo <code>lib</code>?
+¿Qué hace la línea <code>use lib ('../lib')</code> en el programa <code>tutu</code>?
+</LI>
+<LI>¿Que contiene la variable <code>PERL5LIB</code>?
+</LI>
+<LI>¿Cómo se crea una distribución?
+</LI>
+<LI>¿Que devuelve <code>-r $input_name</code> en la línea 79?
+Repase 
+<A HREF="#subsection:filetests">
+<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
+ HREF="node232.html#CasianoIntroAPerl">10</A>].
+</LI>
+<LI>¿Cuál es la función de la variable mágica <code>$/</code>?
+¿Que se leerá en la línea 86
+<PRE>
+85   local $/ = undef;
+86   my $input = &lt;$fhi&gt;;
+</PRE>
+</LI>
+<LI>¿Que hace el operador <code>\</code>? ¿Que relación hay entre <code>\$target</code> y <code>$target</code>?.
+</LI>
+<LI>Si <code>$targetref</code> es una referencia a la cadena que va a contener el
+código objeto, ¿Cómo se denota a la cadena referenciada por <code>$targetref</code>?
+Explique la línea 
+<PRE>
+92   $fh-&gt;print($$targetref);
+</PRE>
+</LI>
+</OL>
+
+<P>
+
+<H2><A NAME="SECTION06722000000000000000"></A>
+   <A NAME="12643"></A>
+  
+<A NAME="practica:fases"></A>
+<BR>
+Práctica: Fases de un Compilador
+</H2>
+Reproduzca los pasos explicados en la sección
+<A HREF="#section:fases">37.2</A> extendiendo el módulo <code>PL::Tutu</code>
+con las funciones de compilación y los correspondientes
+guiones de compilación.
+
+<P>
+Mejore el script <code>tutu</code> para que acepte opciones desde la línea de comandos.
+Debera soportar al menos las siguientes opciones:
 
 <UL>
-<LI><TT>Test::Tutorial</TT>  
-(<A NAME="tex2html387"
-  HREF="http://search.cpan.org/~nwclark/perl-5.8.8/lib/Test/Tutorial.pod">Test::Tutorial - A tutorial about writing really basic tests</A>)
-por Michael Schwern. 
+<LI><code>--usage</code> 
+
+<P>
+Muestra de forma concisa el comando de uso
+</LI>
+<LI><code>--help</code> 
+
+<P>
+Un resumen de cada opción disponible
 
 <P>
 </LI>
-<LI><A NAME="tex2html388"
-  HREF="http://nereida.deioc.ull.es/~pl/cgi-bin/test_now_test_forever.pdf">Test Now, test Forever</A>
-'' del libro de Scott [].
+<LI><code>--version</code>
+
+<P>
+Muestra la versión del programa
 
 <P>
 </LI>
-<LI><A NAME="tex2html389"
-  HREF="perl_test_refcard.pdf">Perl Testing Reference Card</A>
-por Ian Langworth. 
+<LI><code>--man</code> 
 
 <P>
-</LI>
-<LI><A NAME="tex2html390"
-  HREF="http://www.oreilly.com/catalog/perltestingadn/chapter/ch04.pdf">Chapter 4: Distributing Your Tests (and Code)</A>
-del libro 
-<A NAME="tex2html391"
-  HREF="http://www.oreilly.com/catalog/perltestingadn/index.html">Perl Testing: A Developer's Notebook</A>
-<P>
+Muestra la documentación
 </LI>
 </UL>
 
 <P>
-</LI>
-<LI>Incluya la estrategia de pruebas de no regresión explicada en las secciones previas.
-Dado que ahora la estructura del terminal es una estructura de datos mas compleja
-<code>(token, [value, line_number])</code> no podrá usar <code>is</code>, ya que este último sólo 
-comprueba la igualdad entre escalares.
-Use <code>is_deeply</code> para comprobar que la estructura de datos devuelta por el
-analizador léxico es igual a la esperada. Sigue un ejemplo:
+Use para ello el módulo  <TT>Getopt::Long</TT> .
+Este módulo provee la función  <TT>GetOptions</TT>  la cual
+se atiene a los estándares de especificación
+de opciones en la línea de comandos POSIX y GNU.
+Esta función soporta el uso del guión doble <code>--</code>
+y el simple así como admitir el prefijo mas corto
+que deshace la ambiguedad entre las diferentes opciones.
+
+<P>
+La llamada a 
+ <TT>GetOptions</TT>  analiza la l&#237;nea de comandos en
+<code>ARGV</code>
+inicializa la variable asociada de manera adecuada. Retorna un valor verdadero
+si la l&#237;nea de comandos pudo ser procesada con
+En caso contrario emitir&#225;
+un mensaje de error y devolver&#225; falso. Recuerde hacer
+<code>perldoc Getopt::Long</code>
+para obtener informaci&#243;n mas detallada
+
+<P>
+El siguiente ejemplo ilustra el uso de <code>Getopt::Long</code>.
+Se hace uso también del módulo (función  <TT>pod2usage</TT>  en la línea 63)
+<code>Pod::Usage</code> el cual permite la documentación empotrada.
 
 <P>
 <PRE>
-nereida:~/src/perl/YappWithDefaultAction/t&gt; cat -n  15treeregswith2arrays.t
+nereida:~/LEyapp/examples&gt; cat -n treereg
  1  #!/usr/bin/perl -w
  2  use strict;
- 3  #use Test::More qw(no_plan);
- 4  use Test::More tests =&gt; 3;
- 5  use_ok qw(Parse::Eyapp) or exit;
-
-..  ..... etc., etc.
-
-84  my $expected_tree = bless( {
-85    'children' =&gt; [
-86      bless( { 'children' =&gt; [
-87          bless( { 'children' =&gt; [], 'attr' =&gt; 'a', 'token' =&gt; 'a' }, 'TERMINAL' )
-88        ]
-89      }, 'A' ),
-90      bless( { 'children' =&gt; [
-91          bless( { 'children' =&gt; [], 'attr' =&gt; 'c', 'token' =&gt; 'c' }, 'TERMINAL' )
-92        ]
-93      }, 'C' )
-94    ]
-95  }, 'ABC' );
-96  is_deeply($t, $expected_tree, "deleting node between arrays");
+ 3  use Parse::Eyapp::YATW;
+ 4  use Parse::Eyapp::Node;
+ 5  use Parse::Eyapp::Treeregexp;
+ 6  use Carp;
+ 7  use Getopt::Long;
+ 8  use Pod::Usage;
+ 9
+10  my $infile;
+11  my $outfile;
+12  my $packagename;
+13  my $prefix = '';
+14  my $syntax = 1;
+15  my $numbers = 1;
+16  my $severity = 0; # 0 = Don't  check arity. 1 = Check arity. 
+17                    # 2 = Check arity and give a warning 3 = ... and croak
+18  GetOptions(
+19    'in=s'       =&gt; \$infile,
+20    'out=s'      =&gt; \$outfile,
+21    'mod=s'      =&gt; \$packagename,
+22    'prefix=s'   =&gt; \$prefix,
+23    'severity=i' =&gt; \$severity,
+24    'syntax!'    =&gt; \$syntax,
+25    'numbers!'   =&gt; \$numbers,
+26    'version'    =&gt; \&amp;version,
+27    'usage'      =&gt; \&amp;usage,
+28    'help'       =&gt; \&amp;man,
+29  ) or croak usage();
+30
+31  # If an argument remains is the inputfile 
+32  ($infile) = @ARGV unless defined($infile);
+33  die usage() unless defined($infile);
+34
+35  my $treeparser = Parse::Eyapp::Treeregexp-&gt;new(
+36                      INFILE   =&gt; $infile,
+37                      OUTFILE  =&gt; $outfile,
+38                      PACKAGE  =&gt; $packagename,
+39                      PREFIX   =&gt; $prefix,
+40                      SYNTAX   =&gt; $syntax,
+41                      NUMBERS  =&gt; $numbers,
+42                      SEVERITY =&gt; $severity
+43                    );
+44
+45  $treeparser-&gt;generate();
+46
+47  sub version {
+48    print "Version $Parse::Eyapp::Treeregexp::VERSION\n";
+49    exit;
+50  }
+51
+52  sub usage {
+53    print &lt;&lt;"END_ERR";
+54  Supply the name of a file containing a tree grammar (.trg)
+55  Usage is:
+56  treereg [-m packagename] [[no]syntax] [[no]numbers] [-severity 0|1|2|3] \
+57          [-p treeprefix] [-o outputfile] -i filename[.trg]
+58  END_ERR
+59    exit;
+60  }
+61
+62  sub man {
+63    pod2usage(
+64      -exitval =&gt; 1,
+65      -verbose =&gt; 2
+66    );
+67  }
+68  __END__
+69
+70  =head1 SYNOPSIS
+71
+72    treereg [-m packagename] [[no]syntax] [[no]numbers] [-severity 0|1|2|3] \
+73            [-p treeprefix] [-o outputfile] -i filename[.trg]
+74    treereg [-m packagename] [[no]syntax] [[no]numbers] [-severity 0|1|2|3] \
+75            [-p treeprefix] [-o outputfile] filename[.trg]
+76 ... # Follows the documentation bla, bla, bla
 </PRE>
 
 <P>
-</LI>
-<LI>Extienda los tests con una prueba en la que la entrada contenga un carácter ilegal.
-Obsérve que, tal y como esta escrito la rutina <code>scanner</code>,
-si la entrada tiene un carácter ilegal se ejecutarán las líneas 
+Ahora podemos ejecutar el guión de múltiples formas:
 <PRE>
-26     elsif (/\G\s*(.)/gc) {
-27       Error::fatal "Caracter invalido: $1\n";
-28     }
+nereida:~/LEyapp/examples&gt; treereg -nos -nonu -se 3 -m Tutu Foldonly1.trg 
+nereida:~/LEyapp/examples&gt; treereg -nos -nonu -s 3 -m Tutu Foldonly1.trg  
+Option s is ambiguous (severity, syntax)
+nereida:~/LEyapp/examples&gt; treereg -nos -bla -nonu -m Tutu Foldonly1.trg
+Unknown option: bla
+nereida:~/LEyapp/examples&gt;
 </PRE>
-lo que causa la parada del programa 
-de prueba,
-al ejecutarse <code>fatal</code> el cuál llama a <code>croak</code>.
-<PRE>
-  sub fatal {
-    my $msg = join " ", @_;
-    croak("Error: $msg\n");
-  }
-</PRE>
-El objetivo es lograr que el programa de pruebas continúe ejecutando las subsiguientes 
-pruebas.
 
 <P>
-Para ello puede usar <code>Test::Exception</code> 
-o bien <code>eval</code> y la variable especial <code>$@</code> para controlar que el
-programa <code>.t</code> no termine prematuramente.
-Repase la sección <A HREF="#subsection:controldeerrores">
+La librería estandar de Perl incluye el módulo <code>Getopt::Long</code>. 
+No es el caso de <code>Pod::Usage</code>. Descarge el módulo e instalelo
+en un directorio local en el que tenga permisos. Si es preciso repase las secciones
+<A HREF="#section:instalacionamano">
 <IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
- HREF="node230.html#CasianoIntroAPerl">10</A>],
-el capítulo 
-<A HREF="#section:knappruebas">
-<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> y mas específicamente la sección
-<A HREF="#subsection:laspruebas">
-<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> del capítulo sobre construcción de módulos.
-</LI>
-<LI>Pruebe a dar como entrada un fichero vacío
-</LI>
-<LI>Pruebe a dar como entrada un fichero que no existe
-</LI>
-<LI>Pruebe a dar como entrada un fichero binario
-</LI>
-<LI>Si tiene sentido en su caso, llame a las subrutinas con mas argumentos (y también con menos) de los que esperan.
-</LI>
-<LI>Si tiene sentido en su caso, llame a las subrutinas con argumentos cuyo tipo no es el que se espera.
-
-<P>
-No use prototipos para lograrlo. No es una buena idea. Los prototipos en Perl
-a menudo producen un preprocesado del parámetro. Escriba código que controle que 
-la naturaleza del parámetro es la que se espera. Por ejemplo:
-
-<P>
-<PRE>
-sub tutu {
-  my $refhash = shift;
-  croak "Error" unless UNIVERSAL::isa($refhash, 'HASH');
-  ...
-}
-</PRE>
-</LI>
-<LI>Cambie los argumentos de orden (si es que se aplica a su código)
-</LI>
-<LI>Comentarios: pruebe con <code>/* * */ a = 4; /* * / */</code>. Tambien con
-comentarios anidados (debería producirse un error)
-</LI>
-<LI>Flotantes: compruebe su expresión regular con 0.0 0e0 .0 0 1.e-5 1.0e2 -2.0  . (un punto sólo)
-</LI>
-<LI>Cadenas. Pruebe con las cadenas
-<PRE>
-"" 
-"h\"a\"h" 
-"\""
-</PRE>
-Pruebe también con una cadena con varias líneas y
-otra que contenga un carácter de control en su interior.
-</LI>
-<LI>Convierta los fallos (bugs) que encontró durante el desarrollo en pruebas
-</LI>
-<LI>Compruebe la documentación usando el módulo
-<A NAME="tex2html392"
-  HREF="http://search.cpan.org/~petdance/Test-Pod-1.26/Pod.pm">Test::Pod</A>
-de Andy Lester. Instálelo si es necesario.
-
-<P>
-</LI>
-<LI>Utilice el módulo 
-<A NAME="tex2html393"
-  HREF="http://search.cpan.org/~bigj/Test-Warn-0.08/Warn.pm">Test::Warn</A>
-para comprobar que los mensajes de warning (uso de <code>warn</code> and <code>carp</code>)
-se muestran correctamente.
-
-<P>
-</LI>
-<LI>Una prueba  <TT>SKIP</TT>  declara un bloque de pruebas
-que - bajo ciertas circustancias - puede saltarse.
-Puede ser que sepamos que ciertas pruebas 
-sólo funcionan en ciertos sistemas operativos 
-o que la prueba requiera que ciertos paquetes están instalados 
-o que la máquina
-disponga de ciertos recursos (por ejemplo, acceso a internet).
-En tal caso queremos que los tests se consideren si se dan las circustancias
-favorables pero que en otro caso se descarten sin protestas.
-Consulte la documentación de los módulos <code>Test::More</code> y <code>Test::Harness</code>
-sobre pruebas tipo <TT>SKIP</TT>. El ejemplo que sigue
-declara un bloque de pruebas que pueden saltarse.
-La llamada a <code>skip</code> indica cuantos tests hay,
-bajo que condición saltarselos.
-<PRE>
- 1  SKIP: {
- 2      eval { require HTML::Lint };
- 3 
- 4      skip "HTML::Lint not installed", 2 if $@;
- 5 
- 6      my $lint = new HTML::Lint;
- 7      isa_ok( $lint, "HTML::Lint" );
- 8 
- 9      $lint-&gt;parse( $html );
-10      is( $lint-&gt;errors, 0, "No errors found in HTML" );
-11  }
-</PRE>
-Si el usuario no dispone del módulo <code>HTML::Lint</code> 
-el bloque no será ejecutado.
-El módulo <code>Test::More</code> producirá <code>ok</code>s que serán
-interpretados por  <code>Test::Harness</code> como tests <SPAN  CLASS="textbf">skipped</SPAN>
-pero <code>ok</code>.
-
-<P>
-Otra razón para usar una prueba <code>SKIP</code> es disponer de la posibilidad
-de saltarse ciertos grupos de pruebas. Por ejemplo, aquellas que llevan
-demasiado tiempo de ejecución y no son tan significativas que no se 
-pueda prescindir de ellas cuando se introducen pequeños cambios en el código.
-El siguiente código muestra como usando una variable de entorno <code>TEST_FAST</code>
-podemos controlar que pruebas se ejecutan. 
-<PRE>
-nereida:~/src/perl/YappWithDefaultAction/t&gt; cat 02Cparser.t | head -n 56 -
-#!/usr/bin/perl -w
-use strict;
-#use Test::More qw(no_plan);
-use Test::More tests =&gt; 6;
-
-use_ok qw(Parse::Eyapp) or exit;
-
-SKIP: {
-  skip "You decided to skip C grammar test (env var TEST_FAST)", 5 if $ENV{TEST_FAST} ;
-  my ($grammar, $parser);
-  $grammar=join('',&lt;DATA&gt;);
-  $parser=new Parse::Eyapp(input =&gt; $grammar, inputfile =&gt; 'DATA', firstline =&gt; 52);
-
-  #is($@, undef, "Grammar module created");
-
-  # Does not work. May I have done s.t. wrong?
-  #is(keys(%{$parser-&gt;{GRAMMAR}{NULLABLE}}), 43, "43 nullable productions");
-
-  is(keys(%{$parser-&gt;{GRAMMAR}{NTERM}}), 233, "233 syntactic variables");
-
-  is(scalar(@{$parser-&gt;{GRAMMAR}{UUTERM}}), 3, "3 UUTERM");
-
-  is(scalar(keys(%{$parser-&gt;{GRAMMAR}{TERM}})), 108, "108 terminals");
-
-  is(scalar(@{$parser-&gt;{GRAMMAR}{RULES}}), 825, "825 rules");
-
-  is(scalar(@{$parser-&gt;{STATES}}), 1611, "1611 states");
-}
-
-__DATA__
-/*
-   This grammar is a stripped form of the original C++ grammar
-   from the GNU CC compiler :
-
-   YACC parser for C++ syntax.
-   Copyright (C) 1988, 89, 93-98, 1999 Free Software Foundation, Inc.
-   Hacked by Michael Tiemann (tiemann@cygnus.com)
-
-   The full gcc compiler an the original grammar file are freely
-   available under the GPL license at :
-
-   ftp://ftp.gnu.org/gnu/gcc/
-   ...................... etc. etc.
-*/
-nereida:~/src/perl/YappWithDefaultAction&gt; echo $TEST_FAST
-1
-nereida:~/src/perl/YappWithDefaultAction&gt; make test
-PERL_DL_NONLAZY=1 /usr/bin/perl "-MExtUtils::Command::MM" "-e" "test_harness(0, 'blib/lib', 'blib/arch')" t/*.t
-t/01calc....................................ok
-t/02Cparser.................................ok
-        5/6 skipped: various reasons
-t/03newgrammar..............................ok
-t/04foldandzero.............................ok
-t/05treewithvars............................ok
-t/06meta....................................ok
-t/07translationschemetype...................ok
-t/08tschemetypestar.........................ok
-t/09ts_with_defaultaction...................ok
-t/10ts_with_treereg.........................ok
-
-etc., etc...................................ok
-
-t/28unshifttwoitems.........................ok
-t/29foldinglistsofexpressions...............ok
-t/30complextreereg..........................ok
-t/32deletenodewithwarn......................ok
-t/33moveinvariantoutofloop..................ok
-t/34moveinvariantoutofloopcomplexformula....ok
-All tests successful, 5 subtests skipped.
-Files=33, Tests=113,  5 wallclock secs ( 4.52 cusr +  0.30 csys =  4.82 CPU)
-</PRE>
-Introduzca una prueba <code>SKIP</code> similar a la anterior y otra que 
-si el módulo
-<code>Test::Pod</code> esta instalado comprueba
-que la documentación esta bien escrita.
-Estudie la documentación del módulo <code>Test::Pod</code>.
-
-<P>
-</LI>
-<LI>Introduzca pruebas 
-<code>TODO</code> (que, por tanto, deben fallar) para las funciones que están por escribir
-(<code>parser</code>, <code>Optimize</code>, <code>code_generator</code>, <code>transform</code>).
-Repáse <A HREF="#subsection:laspruebas">
+ HREF="node232.html#CasianoIntroAPerl">10</A>] y <A HREF="#section:CPAN">
 <IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
- HREF="node230.html#CasianoIntroAPerl">10</A>]. Sigue un ejemplo:
-
-<P>
-<PRE>
-42 TODO: {
-43   local $TODO = "Randomly generated problem";
-44   can_ok('Algorithm::Knap01DP', 'GenKnap'); # sub GenKnap no ha sido escrita aún
-45 }
-</PRE>
-
-<P>
-</LI>
-<LI>Cuando compruebe el funcionamiento de su módulo 
-<SPAN  CLASS="textbf">nunca descarte que el error pueda estar en
-el código de la prueba</SPAN>. En palabras de Schwern
-
-<P>
-<BLOCKQUOTE>
-<BLOCKQUOTE>
-Code has bugs. Tests are code. Ergo, tests have bugs.
-<BR></BLOCKQUOTE></BLOCKQUOTE>
-<P>
-<BLOCKQUOTE><BLOCKQUOTE>
-<DIV ALIGN="RIGHT">Michael Schwern
-
-</BLOCKQUOTE>
-</BLOCKQUOTE>
-
-<P>
-</LI>
-<LI>Instale el módulo 
-<A NAME="tex2html394"
-  HREF="http://search.cpan.org/~pjcj/Devel-Cover-0.59/lib/Devel/Cover.pm">Devel::Cover</A>.
-El módulo   <TT>Devel::Cover</TT>  ha sido
-escrito por
-<A NAME="tex2html395"
-  HREF="http://search.cpan.org/~pjcj/">Paul Johnson</A>
-y proporciona 
-estadísticas del cubrimiento alcanzado por una ejecución.
-Para usarlo siga estos pasos:
-<PRE>
-pl@nereida:~/src/perl/YappWithDefaultAction$ cover -delete
-Deleting database /home/pl/src/perl/YappWithDefaultAction/cover_db
-pl@nereida:~/src/perl/YappWithDefaultAction$ HARNESS_PERL_SWITCHES=-MDevel::Cover make test
-PERL_DL_NONLAZY=1 /usr/bin/perl "-MExtUtils::Command::MM" "-e" "test_harness(0, 'blib/lib', 'blib/arch')" t/*.t
-t/01calc....................................ok 
-t/01calc....................................ok
-t/02Cparser.................................ok
-        5/6 skipped: various reasons
-t/03newgrammar..............................ok 
-t/03newgrammar..............................ok
-t/04foldandzero.............................ok
-etc., etc. .................................ok
-t/34moveinvariantoutofloopcomplexformula....ok
-All tests successful, 5 subtests skipped.
-Files=33, Tests=113, 181 wallclock secs (177.95 cusr +  2.94 csys = 180.89 CPU)
-</PRE>
-La ejecución toma ahora mucho mas tiempo: ¡181 segundos frente a los 5 que toma la ejecución sin  <TT>cover</TT> !.
-Al ejecutar <code>cover</code> de nuevo obtenemos una tabla con las estadísticas
-de cubrimiento:
-
-<P>
-<PRE>
-pl@nereida:~/src/perl/YappWithDefaultAction$ cover
-Reading database from /home/pl/src/perl/YappWithDefaultAction/cover_db
-
----------------------------- ------ ------ ------ ------ ------ ------ ------
-File                           stmt   bran   cond    sub    pod   time  total
----------------------------- ------ ------ ------ ------ ------ ------ ------
-blib/lib/Parse/Eyapp.pm       100.0    n/a    n/a  100.0    n/a    0.2  100.0
-...lib/Parse/Eyapp/Driver.pm   72.4   63.2   50.0   64.3    0.0   21.3   64.4
-...ib/Parse/Eyapp/Grammar.pm   90.9   77.8   66.7  100.0    0.0   16.6   84.3
-blib/lib/Parse/Eyapp/Lalr.pm   91.4   72.6   78.6  100.0    0.0   48.3   85.6
-blib/lib/Parse/Eyapp/Node.pm   74.4   58.3   29.2   88.2    0.0    1.6   64.7
-...ib/Parse/Eyapp/Options.pm   86.4   50.0    n/a  100.0    0.0    2.7   72.8
-...lib/Parse/Eyapp/Output.pm   82.3   47.4   60.0   70.6    0.0    3.7   70.0
-.../lib/Parse/Eyapp/Parse.pm  100.0    n/a    n/a  100.0    n/a    0.2  100.0
-...Parse/Eyapp/Treeregexp.pm  100.0    n/a    n/a  100.0    n/a    0.1  100.0
-blib/lib/Parse/Eyapp/YATW.pm   89.4   63.9   66.7   85.7    0.0    4.8   77.6
-...app/_TreeregexpSupport.pm   73.1   33.3   50.0  100.0    0.0    0.4   60.8
-main.pm                        52.2    0.0    n/a   80.0    0.0    0.0   45.7
-Total                          83.8   64.7   60.0   84.5    0.0  100.0   75.5
----------------------------- ------ ------ ------ ------ ------ ------ ------
-
-Writing HTML output to /home/pl/src/perl/YappWithDefaultAction/cover_db/coverage.html ...
-pl@nereida:~/src/perl/YappWithDefaultAction$
-</PRE>
-El 
-<A NAME="tex2html396"
-  HREF="cover_db/coverage.html">HTML generado</A>
-nos permite tener una visión mas detallada de los niveles
-de cubrimiento.
-
-<P>
-Para mejorar el cubrimiento de tu código comienza por el informe de
-cubrimiento de subrutinas. Cualquier subrutina marcada como
-no probada es un candidato a contener errores o incluso a ser <I>código
-muerto</I>.
-
-<P>
-Para poder hacer el cubrimiento del código usando Devel::Cover, si se usa una <code>csh</code> 
-o <code>tcsh</code> se debe escribir:
-
-<P>
-<PRE>
-nereida:~/src/perl/YappWithDefaultAction&gt; setenv HARNESS_PERL_SWITCHES -MDevel::Cover
-nereida:~/src/perl/YappWithDefaultAction&gt; make test
-PERL_DL_NONLAZY=1 /usr/bin/perl "-MExtUtils::Command::MM" "-e" "test_harness(0, 'blib/lib', 'blib/arch')" t/*.t
-t/01calc....................................ok 
-t/01calc....................................ok
-t/02Cparser.................................ok
-        5/6 skipped: various reasons
-t/03newgrammar..............................ok 
-t/03newgrammar..............................ok
-t/04foldandzero.............................ok
-t/05treewithvars............................ok
-t/06meta....................................ok 
-t/06meta....................................ok
-t/07translationschemetype...................ok
-............................................ok
-t/38tspostfix_resultisarray.................ok
-t/39tspostfix...............................ok 
-All tests successful, 5 subtests skipped.
-Files=38, Tests=135, 210 wallclock secs (206.28 cusr +  3.27 csys = 209.55 CPU)
-nereida:~/src/perl/YappWithDefaultAction&gt;
-</PRE>
-Aún mas robusto - más independiente de la shell que usemos - es pasar las opciones en
-<code>HARNESS_PERL_SWITCHES</code> como parámetro a <code>make</code>:
-<PRE>
-make HARNESS_PERL_SWITCHES=-MDevel::Cover test
-</PRE>
-
-<P>
-Añade el informe de cubrimiento al <code>MANIFEST</code> para que se incluya en la distribución 
-que subas. Si lo consideras conveniente añade un directorio informes en los que vayan los informes asociados
-a esta práctica. Incluye en el <code>README</code> o en la documentación una breve descripción
-de donde están los informes.
-
-<P>
-</LI>
-<LI>Se conoce con el nombre de <A NAME="12758"></A><SPAN  CLASS="textbf">perfilado</SPAN> o <A NAME="12760"></A><SPAN  CLASS="textbf">profiling</SPAN> de
-un programa al estudio de su rendimiento mediante un programa
-(conocido como <A NAME="12762"></A><SPAN  CLASS="textbf">profiler</SPAN>) que monitoriza la ejecución del mismo
-mediante una técnica que interrumpe cada cierto tiempo el programa
-para comprobar en que punto de la ejecución se encuentra.
-Las estadísticas acumuladas se vuelcan al final de la ejecución 
-en un fichero que puede ser visualizado mediante la aplicación apropiada.
-
-<P>
-En Perl hay dos módulos que permiten realizar profiling. El mas antiguo es
- <TT>Devel::DProf</TT> . La aplicación para visualizar los resultados
-se llama  <TT>dprofpp</TT> .
-Sigue un ejemplo de uso:
-
-<P>
-<PRE>
-nereida:~/src/perl/YappWithDefaultAction/t&gt; perl -d:DProf 02Cparser.t
-1..6
-ok 1 - use Parse::Eyapp;
-ok 2 - 233 syntactic variables
-ok 3 - 3 UUTERM
-ok 4 - 108 terminals
-ok 5 - 825 rules
-ok 6 - 1611 states
-nereida:~/src/perl/YappWithDefaultAction/t&gt; dprofpp tmon.out
-Total Elapsed Time = 3.028396 Seconds
-  User+System Time = 3.008396 Seconds
-Exclusive Times
-%Time ExclSec CumulS #Calls sec/call Csec/c  Name
- 31.4   0.945  1.473   1611   0.0006 0.0009  Parse::Eyapp::Lalr::_Transitions
- 17.5   0.528  0.528   1611   0.0003 0.0003  Parse::Eyapp::Lalr::_Closures
- 16.1   0.486  0.892      1   0.4861 0.8918  Parse::Eyapp::Lalr::_ComputeFollows
- 8.04   0.242  0.391      1   0.2419 0.3906  Parse::Yapp::Driver::_Parse
- 8.04   0.242  0.242  11111   0.0000 0.0000  Parse::Eyapp::Lalr::__ANON__
- 4.59   0.138  0.138   8104   0.0000 0.0000  Parse::Eyapp::Lalr::_Preds
- 2.66   0.080  0.080      1   0.0800 0.0800  Parse::Eyapp::Lalr::_SetDefaults
- 2.66   0.080  0.972      1   0.0800 0.9718  Parse::Eyapp::Lalr::_ComputeLA
- 2.46   0.074  0.074   3741   0.0000 0.0000  Parse::Eyapp::Parse::_Lexer
- 1.89   0.057  0.074   8310   0.0000 0.0000  Parse::Eyapp::Parse::__ANON__
- 0.96   0.029  0.028      1   0.0288 0.0276  Parse::Eyapp::Lalr::_SolveConflict
-                                             s
- 0.66   0.020  0.050      6   0.0033 0.0083  Parse::Eyapp::Output::BEGIN
- 0.60   0.018  1.500      1   0.0176 1.4997  Parse::Eyapp::Lalr::_LR0
- 0.53   0.016  0.259      3   0.0054 0.0863  Parse::Eyapp::Lalr::_Digraph
- 0.33   0.010  0.010      1   0.0100 0.0100  Parse::Eyapp::Grammar::_SetNullable
-</PRE>         
-
-<P>
-Tambien es posible usar el módulo  <TT>-MDevel::Profiler</TT> :
-<PRE>
-nereida:~/src/perl/YappWithDefaultAction/examples&gt; perl -MDevel::Profiler eyapp 02Cparser.yp
-Unused terminals:
-
-        END_OF_LINE, declared line 128
-        ALL, declared line 119
-        PRE_PARSED_CLASS_DECL, declared line 120
-
-27 shift/reduce conflicts and 22 reduce/reduce conflicts
-nereida:~/src/perl/YappWithDefaultAction/examples&gt; dprofpp tmon.out
-Total Elapsed Time = 3.914144 Seconds
-  User+System Time = 3.917144 Seconds
-Exclusive Times
-%Time ExclSec CumulS #Calls sec/call Csec/c  Name
- 22.3   0.877  1.577   1611   0.0005 0.0010  Parse::Eyapp::Lalr::_Transitions
- 17.8   0.700  0.700   1611   0.0004 0.0004  Parse::Eyapp::Lalr::_Closures
- 15.6   0.614  1.185      1   0.6142 1.1854  Parse::Eyapp::Lalr::_ComputeFollow
-                                             s
- 9.60   0.376  0.545      1   0.3758 0.5453  Parse::Yapp::Driver::_Parse
- 7.99   0.313  0.313   8104   0.0000 0.0000  Parse::Eyapp::Lalr::_Preds
- 5.85   0.229  0.229      3   0.0763 0.0763  Parse::Eyapp::Lalr::_Digraph
- 4.06   0.159  0.159   3741   0.0000 0.0000  Parse::Eyapp::Parse::_Lexer
- 3.32   0.130  0.130      1   0.1300 0.1300  Parse::Eyapp::Lalr::DfaTable
- 2.27   0.089  0.089      1   0.0890 0.0890  Parse::Eyapp::Lalr::_SetDefaults
- 2.04   0.080  1.265      1   0.0800 1.2654  Parse::Eyapp::Lalr::_ComputeLA
- 1.17   0.046  0.057      1   0.0464 0.0567  Parse::Eyapp::Grammar::Rules
- 1.02   0.040  1.617      1   0.0397 1.6169  Parse::Eyapp::Lalr::_LR0
- 0.77   0.030  0.030   1185   0.0000 0.0000  Parse::Eyapp::Lalr::_FirstSfx
- 0.71   0.028  0.039      1   0.0284 0.0387  Parse::Eyapp::Grammar::RulesTable
- 0.54   0.021  0.021   1650   0.0000 0.0000  Parse::Eyapp::Grammar::classname
-</PRE>
-
-<P>
-Presente un informe del perfil de su compilador. 
-Añade el informe del perfil al <code>MANIFEST</code> para que se incluya en la distribución 
-que subas.
-
-<P>
-</LI>
-<LI>El módulo  <TT>Devel::Size</TT>  proporciona la posibilidad de
-conocer cuanto ocupa una estructura de datos. Considere el siguiente
-ejemplo:
-<PRE>
- 71 .................................... codigo omitido
- 72
- 73 use Devel::Size qw(size total_size);
- 74 use Perl6::Form;
- 75
- 76 sub sizes {
- 77   my $d = shift;
- 78   my ($ps, $ts) = (size($d), total_size($d));
- 79   my $ds = $ts-$ps;
- 80   return ($ps, $ds, $ts);
- 81 }
- 82
- 83 print form(
- 84 ' ==============================================================',
- 85 '| VARIABLE | SOLO ESTRUCTURA |     SOLO DATOS |          TOTAL |',
- 86 '|----------+-----------------+----------------+----------------|',
- 87 '| $parser  | {&gt;&gt;&gt;&gt;&gt;&gt;} bytes  | {&gt;&gt;&gt;&gt;&gt;&gt;} bytes | {&gt;&gt;&gt;&gt;&gt;&gt;} bytes |', sizes($parser),
- 88 '| $t       | {&gt;&gt;&gt;&gt;&gt;&gt;} bytes  | {&gt;&gt;&gt;&gt;&gt;&gt;} bytes | {&gt;&gt;&gt;&gt;&gt;&gt;} bytes |', sizes($t),
- 89 ' ==============================================================',
- 90 );
-</PRE>
-Al ejecutarlo se obtiene esta salida:
-
-<P>
-<PRE>
- ....... salida previa omitida
-
- ==============================================================
-| VARIABLE | SOLO ESTRUCTURA |     SOLO DATOS |          TOTAL |
-|----------+-----------------+----------------+----------------|
-| $parser  |      748 bytes  |      991 bytes |     1739 bytes |
-| $t       |       60 bytes  |     1237 bytes |     1297 bytes |
- ==============================================================
-</PRE>
-Elabore un informe con el consumo de memoria de las variables mas importantes
-de su programa.
-Añadelo el informe al <code>MANIFEST</code> para que se incluya en la distribución 
-que subas. Explica en el <code>README</code> o en la documentación el significado 
-de los ficheros de informe.
-
-<P>
-</LI>
-</OL>
-
-<P>
-
-<H2><A NAME="SECTION06743000000000000000"></A>
-   <A NAME="12769"></A>
-<BR>
-Repaso: Pruebas en el Análisis Léxico
-</H2>
-
-<OL>
-<LI>¿Cuál es la diferencia entre los operadores <code>==</code> y <code>eq</code>?
-</LI>
-<LI>¿Cuáles son los parámetros de la función <code>ok</code>?
-</LI>
-<LI>¿Cuáles son los parámetros de la función <code>is</code>?
-</LI>
-<LI>¿Porqué es conveniente nombrar las pruebas con un nombre que empiece por
-un número?
-</LI>
-<LI>¿Como puedo ejecutar los tests en modo <SPAN  CLASS="textbf">verbose</SPAN>?
-</LI>
-<LI>¿Como puedo probar un código que produce la detención del programa?
-</LI>
-<LI>¿Que contiene la variable <code>$@</code>?
-</LI>
-<LI>¿Que hace la función <code>like</code>?
-</LI>
-<LI>¿Que contiene la variable <code>$#-</code>? ¿Y <code>$+</code>?
-(Consulte <A HREF="node100.html#section:variablesmagicasereg">33.1.4</A>)
-</LI>
-<LI>¿Porqué la función <code>use_ok</code> es llamada dentro de un <code>BEGIN</code>?
-</LI>
-<LI>¿Que es una prueba <code>SKIP</code>?
-</LI>
-<LI>¿Que es una prueba <code>TODO</code>?
-</LI>
-<LI>¿Que hace la función <code>pod_file_ok</code>?
-¿A que módulo pertenece?
-</LI>
-<LI>¿Que hace el operador <code>tr</code>?
-</LI>
-<LI>¿Qué devuelve el operador <code>tr</code>?
-</LI>
-<LI>¿Que hace la opción <code>d</code> de <code>tr</code>?
-(consulte <A HREF="node105.html#section:tr">33.5</A>)
-</LI>
-<LI>Explique la conducta de la siguiente sesión con el depurador:
-<PRE>
-  DB&lt;1&gt; $a = '"Focho \"mucha\" chufa"'
-  DB&lt;2&gt; print $a
-"Focho \"mucha\" chufa"
-  DB&lt;3&gt; print $&amp; if $a =~ m{^"([^"]|\\")*"}
-"Focho \"
-  DB&lt;4&gt; print $&amp; if $a =~ m{^"(\\"||[^"])*"}
-"Focho \"mucha\" chufa"
-</PRE>
-</LI>
-<LI>Supuesto que tuvieramos el operador menos en nuestro lenguaje y
-dada la entrada <code>a = 2-3</code>, ¿Que devolverá su analizador léxico? 
-¿Devuelve <code>ID PUN NUM NUM</code> o bien <code>ID PUN NUM PUN NUM</code>?
-(hemos simplificado el flujo eliminando los atributos).
-</LI>
-<LI>¿Que hace la llamada
-<code>use Test::More qw(no_plan);</code>?
-</LI>
-<LI>¿Que hace la función <code>can_ok</code>? ¿Qué argumentos tiene?
-</LI>
-<LI>Explique las causas de la siguiente conducta del depurador:
-<PRE>
-  DB&lt;1&gt; $a='4+5'
-  DB&lt;2&gt; print "($&amp;) " while ($a =~ m/(\G\d+)/gc) or ($a =~ m/(\G\+)/gc);
-(4) (+) (5)
-  DB&lt;3&gt; $a='4+5' # inicializamos la posición de búsqueda
-  DB&lt;4&gt; print "($&amp;) " while ($a =~ m/(\G\d+)/g) or ($a =~ m/(\G\+)/g);
-(4)
-  DB&lt;5&gt; $a='4+5'
-  DB&lt;6&gt; print "($&amp;) " while ($a =~ m/\G\d+|\G\+/g)
-(4) (+) (5)
-</PRE>
-</LI>
-<LI>¿Que diferencia hay entre <code>is_deeply</code> e <code>is</code>?
-
-<P>
-</LI>
-<LI>¿Que argumentos recibe la función <code>throws_ok</code>?
-¿En que módulo se encuentra?
-
-<P>
-</LI>
-<LI>¿Que hace el comando
-<code>HARNESS_PERL_SWITCHES=-MDevel::Cover make test</code>?
-
-<P>
-</LI>
-<LI>¿Cómo se interpreta el cubrimiento de las sentencias? ¿y de las subrutinas?
-¿y de las ramas? ¿y las condiciones lógicas?
-¿En cual de estos factores es realista y deseable lograr un cubrimiento
-del %100 con nuestras pruebas?
-
-<P>
-</LI>
-<LI>¿Que pasa si después de haber desarrollado un número de pruebas
-cambio la interfaz de mi API?
-
-<P>
-</LI>
-<LI>¿Que hace el comando <code>perl -d:DProf programa</code>? ¿Para que sirve?
-</LI>
-</OL>
+ HREF="node232.html#CasianoIntroAPerl">10</A>]  de los apuntes de 
+introducción a Perl.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4303"
+<A NAME="tex2html4285"
   HREF="node131.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4297"
-  HREF="node126.html">
+<A NAME="tex2html4279"
+  HREF="node128.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4291"
+<A NAME="tex2html4273"
   HREF="node129.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4299"
-  HREF="node226.html">
+<A NAME="tex2html4281"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4301"
-  HREF="node229.html">
+<A NAME="tex2html4283"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -1431,17 +915,17 @@ cambio la interfaz de mi API?
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4304"
-  HREF="node131.html">Conceptos Básicos para el</A>
-<B>Sup:</B> <A NAME="tex2html4298"
-  HREF="node126.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html4292"
-  HREF="node129.html">Análisis Léxico</A>
+<B> Sig:</B> <A NAME="tex2html4286"
+  HREF="node131.html">Análisis Léxico</A>
+<B>Sup:</B> <A NAME="tex2html4280"
+  HREF="node128.html">Análisis Sintáctico Descendente en</A>
+<B> Ant:</B> <A NAME="tex2html4274"
+  HREF="node129.html">Las Bases</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-06-03</I>
+2013-06-08</I>
 </ADDRESS>
 </BODY>
 </HTML>

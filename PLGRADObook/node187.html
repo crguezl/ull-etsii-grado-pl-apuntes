@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Práctica: Nuevos Métodos</TITLE>
-<META NAME="description" CONTENT="Práctica: Nuevos Métodos">
+<TITLE>Práctica: El Análisis de las Acciones</TITLE>
+<META NAME="description" CONTENT="Práctica: El Análisis de las Acciones">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node188.html">
 <LINK REL="previous" HREF="node186.html">
-<LINK REL="up" HREF="node163.html">
+<LINK REL="up" HREF="node165.html">
 <LINK REL="next" HREF="node188.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5285"
+<A NAME="tex2html5291"
   HREF="node188.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5279"
-  HREF="node163.html">
+<A NAME="tex2html5285"
+  HREF="node165.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5273"
+<A NAME="tex2html5279"
   HREF="node186.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5281"
-  HREF="node226.html">
+<A NAME="tex2html5287"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5283"
-  HREF="node229.html">
+<A NAME="tex2html5289"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,108 +88,71 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5286"
-  HREF="node188.html">Práctica: Generación Automática de</A>
-<B>Sup:</B> <A NAME="tex2html5280"
-  HREF="node163.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5274"
-  HREF="node186.html">Práctica: Autoacciones</A>
+<B> Sig:</B> <A NAME="tex2html5292"
+  HREF="node188.html">Práctica: Autoacciones</A>
+<B>Sup:</B> <A NAME="tex2html5286"
+  HREF="node165.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5280"
+  HREF="node186.html">La Estructura de Datos</A>
 <B> Con:</B> 
-<A NAME="tex2html5281"
-  HREF="node226.html">
+<A NAME="tex2html5287"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5283"
-  HREF="node229.html">
+<A NAME="tex2html5289"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION069240000000000000000"></A>
-   <A NAME="19473"></A>
+<H1><A NAME="SECTION069220000000000000000"></A>
+   <A NAME="19476"></A>
 <BR>
-Práctica: Nuevos Métodos
+Práctica:  El Análisis de las Acciones
 </H1>
   
-Continuemos extendiendo <code>Yapp</code>.
-
-<UL>
-<LI>Introduzca en el módulo <code>Driver.pm</code> de <code>Yapp</code>
-un método <code>YYLhs</code> que devuelva el identificador
-de la variable sintáctica en el lado izquierdo de la regla 
-de producción por la que se está reduciendo. 
-</LI>
-<LI>Para tener disponible el lado izquierdo
-deberá modificar la conducta del analizador LALR 
-(subrutina <code>_Parse</code>) para que guarde como un atributo
-el identificador de dicho noterminal.
-</LI>
-<LI>¿Que identificador se devuelve asociado con las acciones
-intermedias?
-</LI>
-</UL>
+Modifique el código de <code>YappParse.yp</code> para que el análisis
+léxico de las secciones de código (<code>HEADCODE</code>, <code>CODE</code> y <code>TAILCODE</code>)
+se haga a través de las correspondientes rutinas proveida como parámetros 
+para el análisis por el usuario. La idea es ofrecer un primer paso
+que facilite la generación de analizadores en diferentes 
+lenguajes <code>Perl</code>, <code>C</code>, etc.
 
 <P>
-Sigue un ejemplo de como programar haciendo uso de esta y la 
-anterior extensión:
-<PRE>
-%right  '='
-%left   '-' '+'
-%left   '*' '/'
-%left   NEG
-%autoaction { my $n = $#_;  bless [@_[1..$n]], $_[0]-&gt;YYLhs }
-%%
-input:                 
-        |   input line 
-;
-line:     '\n'       { } 
-        | exp '\n'   { [ $_[1] ] } 
-        | error '\n' { }
-;
-exp:        NUM         |   VAR         |   VAR '=' exp         
-        |   exp '+' exp |   exp '-' exp |   exp '*' exp |   exp '/' exp      
-        |   '-' exp %prec NEG 
-        |   '(' exp ')' { [ $_[2] ] }     
-;
-%%
-...
-</PRE>
-Veamos la ejecución correspondiente al ejemplo anterior:
-<PRE>
-$ ./uselhs2.pl
-2+3*4
-$VAR1 = bless( 
-[
-  bless( [], 'input' ),
-  [
-    bless( [
-      bless( [ '2' ], 'exp' ),
-      '+',
-      bless( [
-        bless( [ '3' ], 'exp' ), '*', bless( [ '4' ], 'exp' ) ], 'exp' )
-    ], 'exp' )
-  ]
-], 'input' );
-</PRE>
+Estudie el módulo <code>Text::Balanced</code>. Basándose en 
+las funciones 
+
+<P>
+<code>extract_codeblock</code> y <code>extract_quotelike</code>
+
+<P>
+del módulo <code>Text::Balanced</code>, resuelva el problema del reconocimiento
+de código Perl dentro del analizador léxico de <code>Parse::Yapp</code>,
+evitando forzar al usuario en la escritura de ``llaves fantasma''.
+Compare el rendimiento de esta solución con la que provee <code>Yapp</code>.
+Para analizar el <A NAME="19477"></A><SPAN  CLASS="textbf">rendimiento</SPAN> use el módulo <A NAME="19481"></A><TT>Benchmark</TT>.
+
+<P>
+¿Cu&#225;les son sus conclusiones? ¿Qué es mejor?
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5285"
+<A NAME="tex2html5291"
   HREF="node188.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5279"
-  HREF="node163.html">
+<A NAME="tex2html5285"
+  HREF="node165.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5273"
+<A NAME="tex2html5279"
   HREF="node186.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5281"
-  HREF="node226.html">
+<A NAME="tex2html5287"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5283"
-  HREF="node229.html">
+<A NAME="tex2html5289"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -236,17 +199,17 @@ $VAR1 = bless(
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5286"
-  HREF="node188.html">Práctica: Generación Automática de</A>
-<B>Sup:</B> <A NAME="tex2html5280"
-  HREF="node163.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5274"
-  HREF="node186.html">Práctica: Autoacciones</A>
+<B> Sig:</B> <A NAME="tex2html5292"
+  HREF="node188.html">Práctica: Autoacciones</A>
+<B>Sup:</B> <A NAME="tex2html5286"
+  HREF="node165.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5280"
+  HREF="node186.html">La Estructura de Datos</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-06-03</I>
+2013-06-08</I>
 </ADDRESS>
 </BODY>
 </HTML>
