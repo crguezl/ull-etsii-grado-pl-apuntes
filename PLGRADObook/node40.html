@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Como Crear tu Propio Módulo en Node.js</TITLE>
-<META NAME="description" CONTENT="Como Crear tu Propio Módulo en Node.js">
+<TITLE>Pack y Unpack</TITLE>
+<META NAME="description" CONTENT="Pack y Unpack">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,26 +21,26 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node41.html">
 <LINK REL="previous" HREF="node39.html">
-<LINK REL="up" HREF="node31.html">
+<LINK REL="up" HREF="node33.html">
 <LINK REL="next" HREF="node41.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html2004"
+<A NAME="tex2html2687"
   HREF="node41.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1998"
-  HREF="node31.html">
+<A NAME="tex2html2681"
+  HREF="node33.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1992"
+<A NAME="tex2html2675"
   HREF="node39.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2000"
+<A NAME="tex2html2683"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2002"
+<A NAME="tex2html2685"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -88,423 +88,119 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2005"
-  HREF="node41.html">Mas sobre Node</A>
-<B>Sup:</B> <A NAME="tex2html1999"
-  HREF="node31.html">JavaScript en el Lado</A>
-<B> Ant:</B> <A NAME="tex2html1993"
-  HREF="node39.html">Modulos</A>
+<B> Sig:</B> <A NAME="tex2html2688"
+  HREF="node41.html">Práctica: Un lenguaje para</A>
+<B>Sup:</B> <A NAME="tex2html2682"
+  HREF="node33.html">Expresiones Regulares en Perl</A>
+<B> Ant:</B> <A NAME="tex2html2676"
+  HREF="node39.html">tr y split</A>
 <B> Con:</B> 
-<A NAME="tex2html2000"
+<A NAME="tex2html2683"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html2002"
+<A NAME="tex2html2685"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><A NAME="tex2html2006"
-  HREF="node40.html#SECTION041191000000000000000">Introducción</A>
-<LI><A NAME="tex2html2007"
-  HREF="node40.html#SECTION041192000000000000000">Un Fichero <TT>package.json</TT></A>
-<LI><A NAME="tex2html2008"
-  HREF="node40.html#SECTION041193000000000000000">README y otros documentos</A>
-<LI><A NAME="tex2html2009"
-  HREF="node40.html#SECTION041194000000000000000">Véase También</A>
-</UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION041190000000000000000">
-Como Crear tu Propio Módulo en Node.js</A>
+<H1><A NAME="SECTION04470000000000000000"></A>
+<A NAME="section:pack"></A>
+<BR>
+<TT>Pack</TT> y <TT>Unpack</TT>
 </H1>
-
-<P>
-
-<H2><A NAME="SECTION041191000000000000000">
-Introducción</A>
-</H2>
-
-<P>
-Cuando Node carga nuestro fichero JavaScript
-crea un nuevo ámbito. Cuando estamos en nuestro módulo, no podemos
-ver el ámbito externo lo que evita las colisiones de nombres.
-
-<P>
-
-<H2><A NAME="SECTION041192000000000000000">
-Un Fichero <TT>package.json</TT></A>
-</H2>
-
-<P>
-Creamos un fichero en la raíz de nuestro proyecto con nombre 
-<code>package.json</code>. Este fichero describe nuestro proyecto.
-Es esencial si vamos a publicar nuestro proyecto con 
-<A NAME="tex2html30"
-  HREF="https://npmjs.org/"><TT>npm</TT></A>.
-
-<P>
-Podemos especificar en este fichero:
-
-<P>
-
-<OL>
-<LI>Name, version, description, and keywords to describe your program.
-</LI>
-<LI>A homepage where users can learn more about it.
-</LI>
-<LI>Other packages that yours depends on.
-</LI>
-</OL>
-
-<P>
-Si hemos instalado <A NAME="tex2html31"
-  HREF="https://npmjs.org/"><TT>npm</TT></A> podemos usar el comando 
-<code>npm</code> <A NAME="tex2html32"
-  HREF="https://npmjs.org/doc/init.html"><TT>init</TT></A>
-para empezar.
-Véase  <code>npm help</code>
-<A NAME="tex2html33"
-  HREF="https://npmjs.org/doc/json.html"><TT>json</TT></A>
-para obtener información sobre este fichero:
-
-<P>
-La cosa mas importante a especificar 
-cuando estamos escribiendo un programa para su uso por otros,
-es el módulo <code>main</code>. Este consituirá el punto de entrada 
-a nuestro programa.
-
-<P>
-Es esencial documentar las dependencias.
-
-<P>
-El siguiente es un ejemplo de fichero <code>package.json</code> tomado
-del proyecto <A NAME="tex2html34"
-  HREF="https://github.com/zaach/ebnf-parser"><TT>ebnf-parser</TT></A>:
+El operador <code>pack</code> trabaja de forma parecida a <code>sprintf</code>.
+Su primer argumento es una cadena, seguida de una lista de valores
+a formatear y devuelve una cadena:
 <PRE>
-[~/javascript/PLgrado/ebnf-parser(master)]$ cat -n package.json 
-   1  {
-   2    "name": "ebnf-parser",
-   3    "version": "0.1.1",
-   4    "description": "A parser for BNF and EBNF grammars used by jison",
-   5    "main": "ebnf-parser.js",
-   6    "scripts": {
-   7      "test": "make test"
-   8    },
-   9    "repository": "",
-  10    "keywords": [
-  11      "bnf",
-  12      "ebnf",
-  13      "grammar",
-  14      "parser",
-  15      "jison"
-  16    ],
-  17    "author": "Zach Carter",
-  18    "license": "MIT",
-  19    "devDependencies": {
-  20      "jison": "0.4.x",
-  21      "lex-parser": "0.1.0",
-  22      "test": "*"
-  23    }
-  24  }
+pack("CCC", 65, 66, 67, 68) # empaquetamos A B C D
 </PRE>
-
-<P>
-
-<H2><A NAME="SECTION041193000000000000000">
-README y otros documentos</A>
-</H2>
-
-<P>
-Pon la información basica acerca del módulo 
-en la raíz del proyecto.
-Como ejemplo veamos el <code>README.md</code> (observa que 
-está en formato <A NAME="tex2html35"
-  HREF="http://daringfireball.net/projects/markdown/syntax"><TT>markdown</TT></A>) 
-del proyecto <A NAME="tex2html36"
-  HREF="https://github.com/zaach/ebnf-parser"><TT>ebnf-parser</TT></A>:
-
-<P>
+el inverso es el operador <code>unpack</code>
 <PRE>
-$ cat README.md 
-
-# ebnf-parser
-
-A parser for BNF and EBNF grammars used by jison.
-
-## install
-
-    npm install ebnf-parser
-
-
-## build
-
-To build the parser yourself, clone the git repo then run:
-
-    make
-
-This will generate `parser.js`, which is required by `ebnf-parser.js`.
-
-## usage
-
-The parser translates a string grammar or JSON grammar into a JSON grammar that jison can use (ENBF is transformed into BNF).
-
-    var ebnfParser = require('ebnf-parser');
-
-    // parse a bnf or ebnf string grammar
-    ebnfParser.parse("%start ... %");
-
-    // transform an ebnf JSON gramamr
-    ebnfParser.transform({"ebnf": ...});
-
-
-## example grammar
-
-The parser can parse its own BNF grammar, shown below:
-
-    %start spec
-
-    /* grammar for parsing jison grammar files */
-
-    %{
-    var transform = require('./ebnf-transform').transform;
-    var ebnf = false;
-    %}
-
-    %%
-
-    spec
-        : declaration_list '%%' grammar optional_end_block EOF
-            {$$ = $1; return extend($$, $3);}
-        | declaration_list '%%' grammar '%%' CODE EOF
-            {$$ = $1; yy.addDeclaration($$,{include:$5}); return extend($$, $3);}
-        ;
-
-    optional_end_block
-        :
-        | '%%'
-        ;
-
-    declaration_list
-        : declaration_list declaration
-            {$$ = $1; yy.addDeclaration($$, $2);}
-        |
-            {$$ = {};}
-        ;
-
-    declaration
-        : START id
-            {$$ = {start: $2};}
-        | LEX_BLOCK
-            {$$ = {lex: $1};}
-        | operator
-            {$$ = {operator: $1};}
-        | ACTION
-            {$$ = {include: $1};}
-        ;
-
-    operator
-        : associativity token_list
-            {$$ = [$1]; $$.push.apply($$, $2);}
-        ;
-
-    associativity
-        : LEFT
-            {$$ = 'left';}
-        | RIGHT
-            {$$ = 'right';}
-        | NONASSOC
-            {$$ = 'nonassoc';}
-        ;
-
-    token_list
-        : token_list symbol
-            {$$ = $1; $$.push($2);}
-        | symbol
-            {$$ = [$1];}
-        ;
-
-    grammar
-        : production_list
-            {$$ = $1;}
-        ;
-
-    production_list
-        : production_list production
-            {$$ = $1;
-              if($2[0] in $$) $$[$2[0]] = $$[$2[0]].concat($2[1]);
-              else  $$[$2[0]] = $2[1];}
-        | production
-            {$$ = {}; $$[$1[0]] = $1[1];}
-        ;
-
-    production
-        : id ':' handle_list ';'
-            {$$ = [$1, $3];}
-        ;
-
-    handle_list
-        : handle_list '|' handle_action
-            {$$ = $1; $$.push($3);}
-        | handle_action
-            {$$ = [$1];}
-        ;
-
-    handle_action
-        : handle prec action
-            {$$ = [($1.length ? $1.join(' ') : '')];
-                if($3) $$.push($3);
-                if($2) $$.push($2);
-                if ($$.length === 1) $$ = $$[0];
-            }
-        ;
-
-    handle
-        : handle expression_suffix
-            {$$ = $1; $$.push($2)}
-        |
-            {$$ = [];}
-        ;
-
-    handle_sublist
-        : handle_sublist '|' handle
-            {$$ = $1; $$.push($3.join(' '));}
-        | handle
-            {$$ = [$1.join(' ')];}
-        ;
-
-    expression_suffix
-        : expression suffix
-            {$$ = $expression + $suffix; }
-        ;
-
-    expression
-        : ID
-            {$$ = $1; }
-        | STRING
-            {$$ = ebnf ? "'"+$1+"'" : $1; }
-        | '(' handle_sublist ')'
-            {$$ = '(' + $handle_sublist.join(' | ') + ')'; }
-        ;
-
-    suffix
-        : {$$ = ''}
-        | '*'
-        | '?'
-        | '+'
-        ;
-
-    prec
-        : PREC symbol
-            {$$ = {prec: $2};}
-        |
-            {$$ = null;}
-        ;
-
-    symbol
-        : id
-            {$$ = $1;}
-        | STRING
-            {$$ = yytext;}
-        ;
-
-    id
-        : ID
-            {$$ = yytext;}
-        ;
-
-    action
-        : '{' action_body '}'
-            {$$ = $2;}
-        | ACTION
-            {$$ = $1;}
-        | ARROW_ACTION
-            {$$ = '$$ ='+$1+';';}
-        |
-            {$$ = '';}
-        ;
-
-    action_body
-        :
-            {$$ = '';}
-        | ACTION_BODY
-            {$$ = yytext;}
-        | action_body '{' action_body '}' ACTION_BODY
-            {$$ = $1+$2+$3+$4+$5;}
-        | action_body '{' action_body '}'
-            {$$ = $1+$2+$3+$4;}
-        ;
-
-    %%
-
-    // transform ebnf to bnf if necessary
-    function extend (json, grammar) {
-        json.bnf = ebnf ? transform(grammar) : grammar;
-        return json;
-    }
-
-## license
-
-MIT
+unpack("CCC", "ABCD")
 </PRE>
+La cadena de formato es una lista de especificadores que indican el
+tipo del dato que se va a empaquetar/desempaquetar. Cada especificador
+puede opcionalmente seguirse de un contador de repetición
+que indica el número de elementos a formatear. Si se pone un
+asterisco (<code>*</code>) se indica que la especificación
+se aplica a todos los elementos restantes de la lista.
 
 <P>
-En general se anima  a que uses el formato markdown. Salva el fichero como
-<code>README.md</code>.
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">Formato</TD>
+<TD ALIGN="LEFT">Descripción</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">A</TD>
+<TD ALIGN="LEFT">Una cadena completada con blancos</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">a</TD>
+<TD ALIGN="LEFT">Una cadena completada con ceros</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">B</TD>
+<TD ALIGN="LEFT">Una cadena binaria en orden descendente</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">b</TD>
+<TD ALIGN="LEFT">Una cadena binaria en orden ascendente</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">H</TD>
+<TD ALIGN="LEFT">Una cadena hexadecimal, los nibble altos primero</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">h</TD>
+<TD ALIGN="LEFT">Una cadena hexadecimal, los nibble bajos primero</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+</TABLE>
 
 <P>
-La documentación adicional se pone en un directorio <code>./docs</code>. 
-Los ficheros markdown teminan en <code>.md</code> y los html en <code>.html</code>.
-
-<P>
-
-<H2><A NAME="SECTION041194000000000000000">
-Véase También</A>
-</H2>
-
-<UL>
-<LI><A NAME="tex2html37"
-  HREF="http://howtonode.org/how-to-module">How To: Create Your Own Node.js Module</A>
-por Isaac Z. Schlueter autor de 
-<A NAME="tex2html38"
-  HREF="http://npmjs.org/">npm</A>.
-Véase también este
-<A NAME="tex2html39"
-  HREF="https://gist.github.com/isaacs/4150d972e0aa2a4060c1">gist en GitHub</A>
-</LI>
-<LI><A NAME="tex2html40"
-  HREF="http://howtonode.org/creating-custom-modules">Creating Custom Modules</A>
-</LI>
-<LI><A NAME="tex2html41"
-  HREF="http://decodize.com/javascript/build-nodejs-npm-installation-package-scratch/">How to Build a Nodejs Npm Package From Scratch.</A>
-May 2012 Decodize
-
-<P>
-</LI>
-</UL>
+Ejemplo de uso del formato <code>A</code>:
+<PRE>
+DB&lt;1&gt; $a = pack "A2A3", "Pea","rl"
+DB&lt;2&gt; p $a
+Perl
+DB&lt;3&gt; @b = unpack "A2A3", "Perl"
+DB&lt;4&gt; p "@b"
+Pe rl
+</PRE>
+La variable <code>@b</code> tiene ahora dos cadenas. Una es <code>Pe</code> la otra es <code>rl</code>.
+Veamos un ejemplo con el formato <code>B</code>:
+<PRE>
+p ord('A')
+65
+DB&lt;22&gt; $x = pack "B8", "01000001"
+DB&lt;23&gt; p $x
+A
+DB&lt;24&gt; @y = unpack "B8", "A"
+DB&lt;25&gt; p "@y"
+01000001
+DB&lt;26&gt; $x = pack "b8", "10000010"
+DB&lt;27&gt; p $x
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html2004"
+<A NAME="tex2html2687"
   HREF="node41.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1998"
-  HREF="node31.html">
+<A NAME="tex2html2681"
+  HREF="node33.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1992"
+<A NAME="tex2html2675"
   HREF="node39.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2000"
+<A NAME="tex2html2683"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2002"
+<A NAME="tex2html2685"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -552,12 +248,12 @@ May 2012 Decodize
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2005"
-  HREF="node41.html">Mas sobre Node</A>
-<B>Sup:</B> <A NAME="tex2html1999"
-  HREF="node31.html">JavaScript en el Lado</A>
-<B> Ant:</B> <A NAME="tex2html1993"
-  HREF="node39.html">Modulos</A>
+<B> Sig:</B> <A NAME="tex2html2688"
+  HREF="node41.html">Práctica: Un lenguaje para</A>
+<B>Sup:</B> <A NAME="tex2html2682"
+  HREF="node33.html">Expresiones Regulares en Perl</A>
+<B> Ant:</B> <A NAME="tex2html2676"
+  HREF="node39.html">tr y split</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

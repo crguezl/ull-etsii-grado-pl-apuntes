@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Mas sobre Node</TITLE>
-<META NAME="description" CONTENT="Mas sobre Node">
+<TITLE>Práctica: Un lenguaje para Componer Invitaciones</TITLE>
+<META NAME="description" CONTENT="Práctica: Un lenguaje para Componer Invitaciones">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,27 +19,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
+<LINK REL="next" HREF="node42.html">
 <LINK REL="previous" HREF="node40.html">
-<LINK REL="up" HREF="node31.html">
+<LINK REL="up" HREF="node33.html">
 <LINK REL="next" HREF="node42.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html2020"
+<A NAME="tex2html2701"
   HREF="node42.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2014"
-  HREF="node31.html">
+<A NAME="tex2html2695"
+  HREF="node33.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2010"
+<A NAME="tex2html2689"
   HREF="node40.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2016"
+<A NAME="tex2html2697"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2018"
+<A NAME="tex2html2699"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -87,87 +88,136 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2021"
-  HREF="node42.html">JavaScript en los Navegadores</A>
-<B>Sup:</B> <A NAME="tex2html2015"
-  HREF="node31.html">JavaScript en el Lado</A>
-<B> Ant:</B> <A NAME="tex2html2011"
-  HREF="node40.html">Como Crear tu Propio</A>
+<B> Sig:</B> <A NAME="tex2html2702"
+  HREF="node42.html">Analisis Sintáctico con Expresiones</A>
+<B>Sup:</B> <A NAME="tex2html2696"
+  HREF="node33.html">Expresiones Regulares en Perl</A>
+<B> Ant:</B> <A NAME="tex2html2690"
+  HREF="node40.html">Pack y Unpack</A>
 <B> Con:</B> 
-<A NAME="tex2html2016"
+<A NAME="tex2html2697"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html2018"
+<A NAME="tex2html2699"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION0411100000000000000000">
-Mas sobre Node</A>
+<H1><A NAME="SECTION04480000000000000000"></A>
+   <A NAME="7599"></A>
+  
+<A NAME="practica:invitaciones"></A>
+<BR>
+Práctica: Un lenguaje para Componer Invitaciones
 </H1>
 
-<OL>
-<LI>Véase el libro 'Learning Node' de S. Powers [<A
- HREF="node236.html#learningnode">2</A>].
-</LI>
-<LI><A NAME="tex2html42"
-  HREF="http://nodejs.org/">Node.js</A>
-</LI>
-<LI><A NAME="tex2html43"
-  HREF="http://docs.nodejitsu.com">docs.nodejitsu.com</A>: collection of node.js how-to articles. These articles range from basic to advanced. They provide relevant code samples and insights into the design and philosophy of node itself
+<P>
+En el capítulo 6 (sección 6.4.2.2) del libro 
+<A NAME="tex2html207"
+  HREF="http://books.google.es/books?id=B93uJGLZhAoC&amp;lpg=PP1&amp;ots=-JFhDfZPwN&amp;dq=The%20LaTEX%20web%20companion&amp;hl=en&amp;pg=PP1#v=onepage&amp;q=&amp;f=false">The LaTex Web Companion</A>
+se define un lenguaje para componer textos para enviar invitaciones.
 
 <P>
+Para escribir una invitación en ese lenguaje escribiríamos algo así:
+
+<P>
+<PRE>
+pl@nereida:~/Lpl0910/Practicas/161009/src$ cat -n invitation.xml
+ 1  &lt;?xml version="1.0"?&gt;
+ 2  &lt;!DOCTYPE invitation SYSTEM "invitation.dtd"&gt;
+ 3  &lt;invitation&gt;
+ 4  &lt;!-- ++++ The header part of the document ++++ --&gt;
+ 5  &lt;front&gt;
+ 6  &lt;to&gt;Anna, Bernard, Didier, Johanna&lt;/to&gt;
+ 7  &lt;date&gt;Next Friday Evening at 8 pm&lt;/date&gt;
+ 8  &lt;where&gt;The Web Cafe&lt;/where&gt;
+ 9  &lt;why&gt;My first XML baby&lt;/why&gt;
+10  &lt;/front&gt;
+11  &lt;!-- +++++ The main part of the document +++++ --&gt;
+12  &lt;body&gt;
+13  &lt;par&gt;
+14  I would like to invite you all to celebrate
+15  the birth of &lt;emph&gt;Invitation&lt;/emph&gt;, my
+16  first XML document child.
+17  &lt;/par&gt;
+18  &lt;par&gt;
+19  Please do your best to come and join me next Friday
+20  evening. And, do not forget to bring your friends.
+21  &lt;/par&gt;
+22  &lt;par&gt;
+23  I &lt;emph&gt;really&lt;/emph&gt; look forward to see you soon!
+24  &lt;/par&gt;
+25  &lt;/body&gt;
+26  &lt;!-- +++ The closing part of the document ++++ --&gt;
+27  &lt;back&gt;
+28  &lt;signature&gt;Michel&lt;/signature&gt;
+29  &lt;/back&gt;
+30  &lt;/invitation&gt;
+</PRE>
+
+<P>
+La sintáxis del lenguaje queda reflejada en la siguiente 
+<A NAME="7600"></A><SPAN  CLASS="textbf">Document Type Definition</SPAN> (<A NAME="7602"></A><SPAN  CLASS="textbf">DTD</SPAN>) que aparece en la sección 6.4.3
+del libro de Goosens:
+
+<P>
+<PRE>
+pl@nereida:~/Lpl0910/Practicas/161009/src$ cat -n invitation.dtd
+ 1  &lt;!-- invitation DTD   --&gt;
+ 2  &lt;!-- May 26th 1998 mg --&gt;
+ 3  &lt;!ELEMENT invitation (front, body, back) &gt;
+ 4  &lt;!ELEMENT front      (to, date, where, why?) &gt;
+ 5  &lt;!ELEMENT date       (#PCDATA) &gt;
+ 6  &lt;!ELEMENT to         (#PCDATA) &gt;
+ 7  &lt;!ELEMENT where      (#PCDATA) &gt;
+ 8  &lt;!ELEMENT why        (#PCDATA) &gt;
+ 9  &lt;!ELEMENT body       (par+) &gt;
+10  &lt;!ELEMENT par        (#PCDATA|emph)* &gt;
+11  &lt;!ELEMENT emph       (#PCDATA) &gt;
+12  &lt;!ELEMENT back       (signature) &gt;
+13  &lt;!ELEMENT signature  (#PCDATA) &gt;
+</PRE>
+
+<P>
+El  objetivo de esta práctica es escribir un programa Perl
+que usando las extensiones para expresiones regulares presentes 
+en la versión 5.10 reconozca el lenguaje anterior.
+
+<P>
+Véase también:
+
+<P>
+
+<UL>
+<LI><A NAME="tex2html208"
+  HREF="http://books.google.es/books?id=B93uJGLZhAoC&amp;lpg=PP1&amp;ots=-JFhDfZPwN&amp;dq=The%20LaTEX%20web%20companion&amp;hl=en&amp;pg=PP1#v=onepage&amp;q=&amp;f=false">The LaTex Web Companion</A>
 </LI>
-<LI><A NAME="tex2html44"
-  HREF="http://howtonode.org/">http://howtonode.org/</A>
-contiene un número creciente de tutoriales
+<LI><A NAME="tex2html209"
+  HREF="http://www.ctan.org/tex-archive/info/examples/lwc/">Examples from The LaTeX Web Companion</A>
+(véanse los subdirectorios
+correspondietnes a los capítulos 6 y 7)
 </LI>
-<LI>El manual de node.js puede encontrarse en formato pdf en el proyecto 
-<A NAME="tex2html45"
-  HREF="https://github.com/zeMirco/nodejs-pdf-docsoen">https://github.com/zeMirco/nodejs-pdf-docs</A>
-en GitHub. En concreto en este <A NAME="tex2html46"
-  HREF="https://github.com/zeMirco/nodejs-pdf-docs/blob/master/pdf/all.pdf?raw=true">enlace</A>
-</LI>
-<LI><A NAME="tex2html47"
-  HREF="http://nodeguide.com/">Guías de node.js</A>
-de
-<A NAME="tex2html48"
-  HREF="https://twitter.com/felixge">Felix Geisendörfer</A>
-</LI>
-<LI><A NAME="tex2html49"
-  HREF="http://hectorcorrea.jit.su/blog/introduction-to-node-js">Introduction to Node.js</A>
-por Hector Correa
-</LI>
-<LI><A NAME="tex2html50"
-  HREF="http://www.nodebeginner.org/index-es.html">El Libro para Principiantes en Node.js</A>
-por Manuel Kiessling  y Herman A. Junge
-</LI>
-</OL>
-Para aprender JavaScript podemos usar el libro
-<A NAME="tex2html51"
-  HREF="http://eloquentjavascript.net/">eloquent JavaScript</A>
-de Marijn Haverbeke [<A
- HREF="node236.html#eloquentjavascript">3</A>].
+</UL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html2020"
+<A NAME="tex2html2701"
   HREF="node42.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2014"
-  HREF="node31.html">
+<A NAME="tex2html2695"
+  HREF="node33.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2010"
+<A NAME="tex2html2689"
   HREF="node40.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2016"
+<A NAME="tex2html2697"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2018"
+<A NAME="tex2html2699"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -215,12 +265,12 @@ de Marijn Haverbeke [<A
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2021"
-  HREF="node42.html">JavaScript en los Navegadores</A>
-<B>Sup:</B> <A NAME="tex2html2015"
-  HREF="node31.html">JavaScript en el Lado</A>
-<B> Ant:</B> <A NAME="tex2html2011"
-  HREF="node40.html">Como Crear tu Propio</A>
+<B> Sig:</B> <A NAME="tex2html2702"
+  HREF="node42.html">Analisis Sintáctico con Expresiones</A>
+<B>Sup:</B> <A NAME="tex2html2696"
+  HREF="node33.html">Expresiones Regulares en Perl</A>
+<B> Ant:</B> <A NAME="tex2html2690"
+  HREF="node40.html">Pack y Unpack</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Transferencia de Control</TITLE>
-<META NAME="description" CONTENT="Transferencia de Control">
+<TITLE>Recuperación de Errores</TITLE>
+<META NAME="description" CONTENT="Recuperación de Errores">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,26 +21,26 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node94.html">
 <LINK REL="previous" HREF="node92.html">
-<LINK REL="up" HREF="node92.html">
+<LINK REL="up" HREF="node77.html">
 <LINK REL="next" HREF="node94.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3185"
+<A NAME="tex2html3805"
   HREF="node94.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3179"
-  HREF="node92.html">
+<A NAME="tex2html3799"
+  HREF="node77.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3173"
+<A NAME="tex2html3793"
   HREF="node92.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3181"
+<A NAME="tex2html3801"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3183"
+<A NAME="tex2html3803"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -88,72 +88,100 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3186"
-  HREF="node94.html">Inserción de Texto</A>
-<B>Sup:</B> <A NAME="tex2html3180"
-  HREF="node92.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html3174"
-  HREF="node92.html">Expresiones Regulares en sed</A>
+<B> Sig:</B> <A NAME="tex2html3806"
+  HREF="node94.html">Depuración en jison</A>
+<B>Sup:</B> <A NAME="tex2html3800"
+  HREF="node77.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html3794"
+  HREF="node92.html">Ejercicios: Casos de Estudio</A>
 <B> Con:</B> 
-<A NAME="tex2html3181"
+<A NAME="tex2html3801"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3183"
+<A NAME="tex2html3803"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION010310000000000000000">
-Transferencia de Control</A>
-</H1>
-La orden <SPAN  CLASS="textit">b</SPAN> tiene la sintáxis:
-<BR><I>[address1][,address2]b[label]</I>
+<H1><A NAME="SECTION048160000000000000000"></A>
+<A NAME="section:errores"></A>
 <BR>
-Transfiere el control a la etiqueta especificada. Si no se especifica
-la etiqueta, el control se transfiere al final del <I>script</I>, por lo que
-no se aplica ningún otro comando a la línea actual. Los dos siguientes
-ejemplos utilizan <I>b</I>:
+Recuperación de Errores
+</H1>
+
+<P>
+La recuperación de errores no parece estar implementada en Jison.
+véase 
+
+<UL>
+<LI>la sección 
+<A NAME="tex2html359"
+  HREF="http://zaach.github.io/jison/docs/">Error Recovery</A>
+de la documentación
+</LI>
+<LI><A NAME="tex2html360"
+  HREF="https://github.com/zaach/jison/pull/147">Pullreq 5 - parser built-in grammar error recovery was completely broken</A>
+</LI>
+</UL>
 <PRE>
-$ cat b.sed
-s/fish/cow/
-b
-s/cow/horse/
-$ sed -f b.sed b.test
-cow
-cow
+[~/srcPLgrado/jison/jison-aSb(error)]$ cat aSb.jison 
+%lex
+%%
+\s+             {}
+[ab]            { return yytext; }
+.               { return "INVALID"; }
+/lex
+%%
+S: /* empty */  { $$ = ''; console.log("empty"); }
+   | 'a' S 'b'  { $$ = $1 + $2 + $3; console.log("S -&gt; aSb"); }
+   | 'a' S error
+;
+%%
 </PRE>
-Utilizando <I>b</I> con una etiqueta:
+
+<P>
 <PRE>
-$ cat blabel.sed
-s/fish/cow/
-b another
-s/cow/horse/
-:another
-s/cow/cat/
-$ sed -f blabel.sed b.test
-cat
-cat
+        parse: function parse(input) {
+              var self = this,
+                  stack = [0],
+                  vstack = [null], // semantic value stack
+                  lstack = [], // location stack
+                  ...
+                  recovering = 0,
+                  TERROR = 2,
+                  EOF = 1;
+            while (true) {
+                  // retreive state number from top of stack
+                  state = stack[stack.length - 1];
+  
+                  ...
+  
+                  // handle parse error
+&gt;&gt;                _handle_error: if (typeof action === 'undefined' || !action.length || !  ...action[0]) {
+  
+                      var errStr = '';
+                      if (!recovering) {
 </PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3185"
+<A NAME="tex2html3805"
   HREF="node94.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3179"
-  HREF="node92.html">
+<A NAME="tex2html3799"
+  HREF="node77.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3173"
+<A NAME="tex2html3793"
   HREF="node92.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3181"
+<A NAME="tex2html3801"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3183"
+<A NAME="tex2html3803"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -201,12 +229,12 @@ cat
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3186"
-  HREF="node94.html">Inserción de Texto</A>
-<B>Sup:</B> <A NAME="tex2html3180"
-  HREF="node92.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html3174"
-  HREF="node92.html">Expresiones Regulares en sed</A>
+<B> Sig:</B> <A NAME="tex2html3806"
+  HREF="node94.html">Depuración en jison</A>
+<B>Sup:</B> <A NAME="tex2html3800"
+  HREF="node77.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html3794"
+  HREF="node92.html">Ejercicios: Casos de Estudio</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

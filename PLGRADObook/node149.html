@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Análisis Sintáctico Ascendente en JavaScript</TITLE>
-<META NAME="description" CONTENT="Análisis Sintáctico Ascendente en JavaScript">
+<TITLE>Práctica: Estructuras y Análisis de Ámbito</TITLE>
+<META NAME="description" CONTENT="Práctica: Estructuras y Análisis de Ámbito">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,28 +19,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node169.html">
-<LINK REL="previous" HREF="node132.html">
-<LINK REL="up" HREF="node78.html">
+<LINK REL="previous" HREF="node148.html">
+<LINK REL="up" HREF="node138.html">
 <LINK REL="next" HREF="node150.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4637"
+<A NAME="tex2html4764"
   HREF="node150.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4631"
-  HREF="node78.html">
+<A NAME="tex2html4758"
+  HREF="node138.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4625"
+<A NAME="tex2html4754"
   HREF="node148.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4633"
+<A NAME="tex2html4760"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4635"
+<A NAME="tex2html4762"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -88,175 +87,299 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4638"
-  HREF="node150.html">Conceptos Básicos para el</A>
-<B>Sup:</B> <A NAME="tex2html4632"
-  HREF="node78.html">OCTAVA PARTE: APUNTES DE</A>
-<B> Ant:</B> <A NAME="tex2html4626"
-  HREF="node148.html">Optimización de Código</A>
+<B> Sig:</B> <A NAME="tex2html4765"
+  HREF="node150.html">Análisis Semántico</A>
+<B>Sup:</B> <A NAME="tex2html4759"
+  HREF="node138.html">Análisis de Ámbito en</A>
+<B> Ant:</B> <A NAME="tex2html4755"
+  HREF="node148.html">Práctica: Establecimiento de la</A>
 <B> Con:</B> 
-<A NAME="tex2html4633"
+<A NAME="tex2html4760"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4635"
+<A NAME="tex2html4762"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION010800000000000000000">
-Análisis Sintáctico Ascendente en JavaScript</A>
+<H1><A NAME="SECTION0412110000000000000000"></A>
+   <A NAME="21924"></A>
+  
+<A NAME="practica:structsscope"></A>
+<BR>
+Práctica: Estructuras y Análisis de Ámbito
 </H1>
-<BR> <HR>
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
+Los registros o estructuras introducen espacios de nombres.
+Los selectores de campo viven en los espacios de
+nombres asociados con los registros.
+Modifique de manera apropiada la gramática de 
+<code>SimpleC</code> para introducir el tipo de datos <code>struct</code>.
+Complete el análisis sintáctico.
 
-<UL CLASS="ChildLinks">
-<LI><A NAME="tex2html4639"
-  HREF="node150.html">Conceptos Básicos para el Análisis Sintáctico</A>
+<P>
+
 <UL>
-<LI><A NAME="tex2html4640"
-  HREF="node150.html#SECTION010811000000000000000">Ejercicio</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html4641"
-  HREF="node151.html">Ejemplo Simple en Jison</A>
+<LI>Es necesario introducir nuevas variables sintácticas:
+
+<P>
+<PRE>
+type_specifier:
+     basictype
+   | struct
+;
+
+struct: 
+    'struct' ID '{' struct_decl_list '}'
+  | 'struct' ID 
+;
+
+struct_decl_list: (type_specifier declList ';') +
+;
+</PRE>
+Recuerde que:
+<PRE>
+declList: (ID arraySpec) &lt;%+ ','&gt; 
+;
+</PRE>
+
+<P>
+</LI>
+<LI>Es necesario tambien modificar algunas categorías gramáticales existentes, como
+<code>declaration</code>:
+<PRE>
+declaration:
+    %name DECLARATION
+    $type_specifier $declList ';' 
+;
+</PRE>
+También es necesario modificar <code>Variable</code>:
+<PRE>
+Variable:
+    ID 
+  | Variable ('[' binary ']') 
+  | Variable '.' ID
+;
+</PRE>
+
+<P>
+Sigue un ejemplo de derivación generando una variable de la forma
+<code>a[i].x[4].b</code>:
+
+<P>
+<PRE>
+Variable =&gt; Variable.ID =&gt; Variable[binary].ID 
+  =&gt; Variable.ID[binary].ID =&gt; Variable[binary].ID[binary].ID 
+  =&gt; ID[binary].ID[binary].ID
+</PRE>
+
+<P>
+Veamos otro ejemplo de derivación generando una variable de la forma
+<code>a[i].x[4]</code>:
+
+<P>
+<PRE>
+Variable =&gt; Variable[binary] =&gt; Variable.ID[binary] =&gt; Variable[binary].ID[binary]
+   =&gt; ID[binary].ID[binary]
+</PRE>
+
+<P>
+</LI>
+<LI>Es necesario  extender las expresiones de tipo para incluir las <code>struct</code>.
+Un registro es similar al producto cartesiano (usado en las expresiones de tipo de las funciones),
+sólo que los campos tienen nombres. Asi:
+
+<P>
+<PRE>
+struct row {
+  int address;
+  char lexeme[10];
+} table[100];
+</PRE>
+
+<P>
+la expresión de tipo para <code>struct row</code> podría ser:
+
+<P>
+<PRE>
+                    STRUCT_row(address, INT, lexeme, A_10(CHAR))
+</PRE>
+o bien:
+<PRE>
+                    STRUCT_row(X_2(address, INT), X_2(lexeme, A_10(CHAR)))
+</PRE>
+
+<P>
+Como se ve en el ejemplo el identificador de campo (<code>address</code>, <code>lexeme</code>)
+forma parte de la descripción del tipo.
+
+<P>
+</LI>
+<LI>La introducción de las <code>struct</code> produce una cierta sobrecarga de identificadores.
+El siguiente programa es correcto:
+<PRE>
+  1 struct x {
+  2   int z;
+  3   int b;
+  4 } x;
+  5
+  6 main() {
+  7   x;
+  8 }
+</PRE>
+Aqui <code>x</code> es usado como nombre de un tipo y como nombre de variable. Plantee soluciones
+al problema del almacenamiento en la tabla de símbolos. Una posibilidad es que la entrada
+en la tabla de símbolos para el tipo sea <code>struct x</code> mientras que para la variable es <code>x</code>. 
+
+<P>
+</LI>
+<LI>El cálculo de que declaración se aplica a una <code>struct</code> 
+puede hacerse de manera similar a como ha sido ilustrado en las prácticas anteriores.
+Otra cosa son los identificadores de campo.
+Por ejemplo en
+<PRE>
+                                  a[i+j].x = 4;
+</PRE>
+Es necesario calcular que <code>a[i+j]</code> tiene tipo  <code>struct</code>
+y comprobar en ese momento que dicha  <code>struct</code>
+tiene un campo <code>x</code> que es de tipo <code>int</code>. 
+Hasta que no hemos calculado el tipo asociado con la 
+expresión  <code>a[i+j]</code> no sabemos si el uso de
+<code>x</code> es legal o no. Realmente el ámbito del identificador <code>x</code> no 
+se hace en tiempo de análisis de ámbito sino en tiempo de comprobación de tipos.
+El cálculo del ámbito para estos identificadores de campo 
+se mezcla con el cálculo de tipos. En cierto modo el uso de <code>x</code> 
+en <code>a[i+j].x = 4</code> forma parte de la descripción del tipo:
+<PRE>
+                    STRUCT_point(X_2(x, INT), X_2(y, INT))
+</PRE>
+Por tanto en las reglas de <code>Variable</code>:
+<PRE>
+Variable:
+    ID 
+  | Variable ('[' binary ']') 
+  | Variable '.' ID
+;
+</PRE>
+A estas alturas solo estamos en condiciones de asociarle su definición al 
+identificador principal, esto es, al de la regla <!-- MATH
+ $Variable \rightarrow ID$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="124" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img519.png"
+ ALT="$ Variable \rightarrow ID$"></SPAN>.
+Los demás deberán esperar a la fase de análisis de tipos.
+
+<P>
+</LI>
+<LI>Hasta ahora casi lo único que guardabamos en las tablas de símbolos era el tipo y el número 
+de línea ( otros valores posibles son <code>param</code> para determinar si es un parámetro,
+o una referencia a la tabla de símbolos de la funcion en el caso de las funciones). Esto era suficiente
+porque sólo teniámos dos tipos de identificadores: los de variable y los de función. Ahora que tenemos
+tres tipos: funciones, variables y tipos es conveniente añadir un atributo <code>kind</code> que guarde 
+la clase de objeto que es.
+
+<P>
+</LI>
+<LI>C requiere que los nombres de tipo sean declarados antes de ser usados (con la
+excepción de las referencias a tipos <code>struct</code> no declarados). Por ejemplo,
+el siguiente programa:
+
+<P>
+<PRE>
+  1 struct x {
+  2   struct y z;
+  3   int b;
+  4 } w;
+  5
+  6 struct y {
+  7   int a;
+  8 };
+</PRE>
+
+<P>
+produce un mensaje de error:
+
+<P>
+<PRE>
+prueba1.c:2: error: field ‘z’ has incomplete type
+</PRE>
+Esto impide definiciones recursivas como:
+
+<P>
+<PRE>
+  1 struct x {
+  2   struct y z;
+  3   int b;
+  4 } w;
+  5
+  6 struct y {
+  7   struct x a;
+  8 };
+</PRE>
+
+<P>
+A estas alturas del análisis estamos en condiciones de 
+comprobar que no existan usos de declaraciones
+no definidas. 
+</LI>
+<LI>Para simplificar el análisis de tipos posterior, 
+las funciones en Simple C devuelven un tipo básico. 
+En C las funciones pueden devolver un <code>struct</code> aunque no pueden
+devolver un array ni una función. Si que pueden sin embargo devolver
+un punero a un array o a una función.
+
+<P>
+La restricción que imponemos de que el tipo retornado sea un tipo 
+básico  no significa 
+que necesariamente la regla sintáctica deba especificar tal condición.
+
+<P>
+</LI>
+<LI>Para simplificar la práctica consideraremos que todos los identificadores de
+tipos struct son globales. Por tanto es un error tener dos declaraciones
+de tipo struct con el mismo nombre.
+Claro está, si desea implantar ámbitos en los identificadores de tipos
+puede hacerlo.
+
+<P>
+</LI>
+<LI>Consulte las siguientes fuentes:
+
 <UL>
-<LI><A NAME="tex2html4642"
-  HREF="node151.html#SECTION010820010000000000000">Gramática</A>
-<LI><A NAME="tex2html4643"
-  HREF="node151.html#SECTION010820020000000000000">basic2_lex.jison</A>
-<LI><A NAME="tex2html4644"
-  HREF="node151.html#SECTION010820030000000000000">index.html</A>
-<LI><A NAME="tex2html4645"
-  HREF="node151.html#SECTION010820040000000000000">Rakefile</A>
-<LI><A NAME="tex2html4646"
-  HREF="node151.html#SECTION010820050000000000000">Véase También</A>
-<LI><A NAME="tex2html4647"
-  HREF="node151.html#SECTION010820060000000000000">global.css</A>
-<LI><A NAME="tex2html4648"
-  HREF="node151.html#SECTION010821000000000000000">Véase También</A>
-<LI><A NAME="tex2html4649"
-  HREF="node151.html#SECTION010822000000000000000">Práctica: Secuencia de Asignaciones Simples</A>
+<LI>Para ver una gramática de C consulte la página
+<A NAME="tex2html386"
+  HREF="Cgrammar.html">Cgrammar.html</A>.
+</LI>
+<LI>Una gramática de ANSI C se encuentra en
+<A NAME="tex2html387"
+  HREF="http://www.lysator.liu.se/c/ANSI-C-grammar-y.html">http://www.lysator.liu.se/c/ANSI-C-grammar-y.html</A>.
+</LI>
 </UL>
-<BR>
-<LI><A NAME="tex2html4650"
-  HREF="node152.html">Ejemplo en Jison: Calculadora Simple</A>
-<UL>
-<LI><A NAME="tex2html4651"
-  HREF="node152.html#SECTION010830010000000000000">calculator.jison</A>
-<LI><A NAME="tex2html4652"
-  HREF="node152.html#SECTION010830020000000000000">main.js</A>
-<LI><A NAME="tex2html4653"
-  HREF="node152.html#SECTION010830030000000000000">calculator.html</A>
-<LI><A NAME="tex2html4654"
-  HREF="node152.html#SECTION010830040000000000000">Rakefile</A>
-<LI><A NAME="tex2html4655"
-  HREF="node152.html#SECTION010830050000000000000">global.css</A>
-<LI><A NAME="tex2html4656"
-  HREF="node152.html#SECTION010830060000000000000">test/assert.html</A>
-<LI><A NAME="tex2html4657"
-  HREF="node152.html#SECTION010830070000000000000">test/test.css</A>
-<LI><A NAME="tex2html4658"
-  HREF="node152.html#SECTION010830080000000000000">test/test.html</A>
-<LI><A NAME="tex2html4659"
-  HREF="node152.html#SECTION010831000000000000000">Práctica: Calculadora con Listas de Expresiones y Variables</A>
+</LI>
 </UL>
-<BR>
-<LI><A NAME="tex2html4660"
-  HREF="node153.html">Conceptos Básicos del Análisis LR</A>
-<LI><A NAME="tex2html4661"
-  HREF="node154.html">Construcción de las Tablas para el Análisis SLR</A>
-<UL>
-<LI><A NAME="tex2html4662"
-  HREF="node154.html#SECTION010851000000000000000">Los conjuntos de Primeros y Siguientes</A>
-<LI><A NAME="tex2html4663"
-  HREF="node154.html#SECTION010852000000000000000">Construcción de las Tablas</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html4664"
-  HREF="node155.html">Práctica: Traducción de Infijo a Postfijo</A>
-<LI><A NAME="tex2html4665"
-  HREF="node156.html">Práctica: Calculadora  con Funciones</A>
-<LI><A NAME="tex2html4666"
-  HREF="node157.html">Práctica: Calculadora con Análisis de Ámbito</A>
-<LI><A NAME="tex2html4667"
-  HREF="node158.html">Algoritmo de Análisis LR</A>
-<LI><A NAME="tex2html4668"
-  HREF="node159.html">El módulo Generado por <TT>jison</TT></A>
-<UL>
-<LI><A NAME="tex2html4669"
-  HREF="node159.html#SECTION0108101000000000000000">Version</A>
-<LI><A NAME="tex2html4670"
-  HREF="node159.html#SECTION0108102000000000000000">Gramática Inicial</A>
-<LI><A NAME="tex2html4671"
-  HREF="node159.html#SECTION0108103000000000000000">Tablas</A>
-<LI><A NAME="tex2html4672"
-  HREF="node159.html#SECTION0108104000000000000000">Acciones Semánticas</A>
-<LI><A NAME="tex2html4673"
-  HREF="node159.html#SECTION0108105000000000000000">Tabla de Acciones y GOTOs</A>
-<LI><A NAME="tex2html4674"
-  HREF="node159.html#SECTION0108106000000000000000">defaultActions</A>
-<LI><A NAME="tex2html4675"
-  HREF="node159.html#SECTION0108107000000000000000">Reducciones</A>
-<LI><A NAME="tex2html4676"
-  HREF="node159.html#SECTION0108108000000000000000">Desplazamientos/Shifts</A>
-<LI><A NAME="tex2html4677"
-  HREF="node159.html#SECTION0108109000000000000000">Manejo de Errores</A>
-<LI><A NAME="tex2html4678"
-  HREF="node159.html#SECTION01081010000000000000000">Analizador Léxico</A>
-<LI><A NAME="tex2html4679"
-  HREF="node159.html#SECTION01081011000000000000000">Exportación</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html4680"
-  HREF="node160.html">Precedencia y Asociatividad</A>
-<LI><A NAME="tex2html4681"
-  HREF="node161.html">Esquemas de Traducción</A>
-<LI><A NAME="tex2html4682"
-  HREF="node162.html">Manejo en <TT>jison</TT> de Atributos Heredados</A>
-<LI><A NAME="tex2html4683"
-  HREF="node163.html">Definición Dirigida por la Sintáxis</A>
-<LI><A NAME="tex2html4684"
-  HREF="node164.html">Ejercicios: Casos de Estudio</A>
-<UL>
-<LI><A NAME="tex2html4685"
-  HREF="node164.html#SECTION0108151000000000000000">Un mal diseño</A>
-<LI><A NAME="tex2html4686"
-  HREF="node164.html#SECTION0108152000000000000000">Gramática no LR(1)</A>
-<LI><A NAME="tex2html4687"
-  HREF="node164.html#SECTION0108153000000000000000">Un Lenguaje Intrínsecamente Ambiguo</A>
-<LI><A NAME="tex2html4688"
-  HREF="node164.html#SECTION0108154000000000000000">Conflicto reduce-reduce</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html4689"
-  HREF="node165.html">Recuperación de Errores</A>
-<LI><A NAME="tex2html4690"
-  HREF="node166.html">Depuración en <TT>jison</TT></A>
-<LI><A NAME="tex2html4691"
-  HREF="node167.html">Construcción del Árbol Sintáctico</A>
-<LI><A NAME="tex2html4692"
-  HREF="node168.html">Consejos a seguir al escribir un programa <TT>jison</TT></A>
-</UL>
-<!--End of Table of Child-Links-->
+
+<P>
+
+<P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4637"
+<A NAME="tex2html4764"
   HREF="node150.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4631"
-  HREF="node78.html">
+<A NAME="tex2html4758"
+  HREF="node138.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4625"
+<A NAME="tex2html4754"
   HREF="node148.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4633"
+<A NAME="tex2html4760"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4635"
+<A NAME="tex2html4762"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -304,12 +427,12 @@ Análisis Sintáctico Ascendente en JavaScript</A>
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4638"
-  HREF="node150.html">Conceptos Básicos para el</A>
-<B>Sup:</B> <A NAME="tex2html4632"
-  HREF="node78.html">OCTAVA PARTE: APUNTES DE</A>
-<B> Ant:</B> <A NAME="tex2html4626"
-  HREF="node148.html">Optimización de Código</A>
+<B> Sig:</B> <A NAME="tex2html4765"
+  HREF="node150.html">Análisis Semántico</A>
+<B>Sup:</B> <A NAME="tex2html4759"
+  HREF="node138.html">Análisis de Ámbito en</A>
+<B> Ant:</B> <A NAME="tex2html4755"
+  HREF="node148.html">Práctica: Establecimiento de la</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

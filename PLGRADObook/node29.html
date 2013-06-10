@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Ejercicios</TITLE>
-<META NAME="description" CONTENT="Ejercicios">
+<TITLE>La orden N</TITLE>
+<META NAME="description" CONTENT="La orden N">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,27 +19,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
+<LINK REL="next" HREF="node30.html">
 <LINK REL="previous" HREF="node28.html">
-<LINK REL="up" HREF="node27.html">
+<LINK REL="up" HREF="node20.html">
 <LINK REL="next" HREF="node30.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1810"
+<A NAME="tex2html2152"
   HREF="node30.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1804"
-  HREF="node27.html">
+<A NAME="tex2html2146"
+  HREF="node20.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1800"
+<A NAME="tex2html2140"
   HREF="node28.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1806"
+<A NAME="tex2html2148"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1808"
+<A NAME="tex2html2150"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -87,153 +88,193 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1811"
-  HREF="node30.html">Subconjuntos y Extensiones de</A>
-<B>Sup:</B> <A NAME="tex2html1805"
-  HREF="node27.html">Clases y Módulos</A>
-<B> Ant:</B> <A NAME="tex2html1801"
-  HREF="node28.html">Herencia</A>
+<B> Sig:</B> <A NAME="tex2html2153"
+  HREF="node30.html">Suprimir: El Comando D</A>
+<B>Sup:</B> <A NAME="tex2html2147"
+  HREF="node20.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html2141"
+  HREF="node28.html">Del espacio de Patrones</A>
 <B> Con:</B> 
-<A NAME="tex2html1806"
+<A NAME="tex2html2148"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1808"
+<A NAME="tex2html2150"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION04920000000000000000">
-Ejercicios</A>
+<H1><A NAME="SECTION04390000000000000000">
+La orden <I>N</I></A>
 </H1>
-
-<OL>
-<LI>¿Cual es la salida?
+<I>N</I> añade la siguiente línea de entrada al espacio de
+patrones. Las dos líneas se separan mediante un retorno de
+carro. Después de su ejecución, el comando <I>N</I> pasa el control a los
+subsiguientes comandos en el <I>script</I>.
+<BR>
+El siguiente ejemplo propuesto en [<A
+ HREF="node236.html#sedawk">2</A>] muestra una
+búsqueda y sustitución multilínea. Se trata de sustituir la
+cadena ``Owner and Operator Guide'' por ``Installation Guide'', cualquiera que sea su posición en una línea o entre ellas.
+Los autores de [<A
+ HREF="node236.html#sedawk">2</A>] y [<A
+ HREF="node236.html#power">3</A>] proponen la siguiente
+solución:
 <PRE>
-&gt; String.prototype.repeat = function(times) {
-...   return new Array(times+1).join(this)
-... }
-[Function]
-&gt;  
-undefined
-&gt; "hello".repeat(3)
-
-&gt;
+$ cat multiline2.sed
+#Assume the pattern is in no more than two lines
+s/Owner and Operator Guide/Installation Guide/g
+/Owner/{
+  N
+  s/ *\n/ /g
+  s/Owner  *and  *Operator  *Guide/Installation Guide/g
+}
 </PRE>
+Veamos primero los contenidos del fichero de prueba:
+<PRE>
+$ cat multiline.test
+Dear Owner: Consult
+Section 3.1 in the Owner and
+Operator Guide for a description of the tape drives available for the Owner
+of your system.
+ 
+Consult Section 3.1 in the Owner and Operator
+Guide for a description of the tape drives
+available on your system.
+ 
+Look in the Owner and Operator Guide, we mean the Owner
+and Operator Guide shipped with your system.
+ 
+Two manuals are provided including the Owner and
+Operator Guide and the User Guide.
+ 
+The Owner and Operator Guide is shipped with your system.
+ 
+Look in the Owner
+and Operator Guide shipped with your system.
+ 
+The Owner
+and
+Operator
+Guide is shipped with your system.
+</PRE>
+La ejecución del <I>script</I> da la siguiente salida:
+<PRE>
+$ sed -f multiline2.sed multiline.test
+Dear Owner: Consult Section 3.1 in the Owner and
+Operator Guide for a description of the tape drives available for the Owner
+of your system.
+ 
+Consult Section 3.1 in the Installation Guide for a description of the tape
+drives
+available on your system.
+ 
+Look in the Installation Guide, we mean the Installation Guide shipped with
+your system.
+ 
+Two manuals are provided including the Installation Guide and the User Guide.
+ 
+The Installation Guide is shipped with your system.
+ 
+Look in the Installation Guide shipped with your system.
+ 
+The Owner and
+Operator
+Guide is shipped with your system.
+</PRE>
+Uno de los problemas, que aparece en el primer párrafo del
+ejemplo de prueba, es que la segunda línea leída debe ser
+"reciclada"
+para su uso en la siguiente búsqueda. El segundo fallo, 
+que aparece en el último párrafo, es consecuencia de la
+limitación del <I>script</I> para trabajar con  patrones partidos
+en más de dos líneas.
+<BR>
+Consideremos esta otra solución:
+<PRE>
+$ cat multiline.sed
+s/Owner and Operator Guide/Installation Guide/g
+/Owner/{
+:label
+  N
+  s/\n/ /g
+  s/Owner  *and  *Operator  *Guide/Installation Guide/g
+  /Owner *$/b label
+  /Owner  *and *$/b label
+  /Owner  *and  *Operator *$/b label
+  }
+</PRE>
+Este otro <I>script</I> hace que <TT>sed</TT> permanezca en un bucle mientras
+la línea adjuntada en segundo lugar contenga un prefijo estricto 
+de la cadena buscada. 
 
 <P>
-</LI>
-<LI>¿Cuales son los resultados?
 <PRE>
-&gt; z = Object.create({x:1, y:2})
-{}
-&gt; z.x
-
-&gt; z.y
-
-&gt; z.__proto__
-
-&gt; z.__proto__.__proto__
-
-&gt; z.__proto__.__proto__.__proto__
+$sed -f multiline.sed multiline.test
+Dear Owner: Consult Section 3.1 in the Installation Guide for \
+a description of the tape drives available for the Owner  of \
+your system.
+ 
+Consult Section 3.1 in the Installation Guide for a description of the tape drives
+available on your system.
+ 
+Look in the Installation Guide, we mean the Installation Guide \
+shipped with your system.
+ 
+Two manuals are provided including the Installation Guide and the User Guide.
+ 
+The Installation Guide is shipped with your system.
+ 
+Look in the Installation Guide shipped with your system.
+ 
+The Installation Guide is shipped with your system.
 </PRE>
-</LI>
-<LI>Describa las salidas:
+Un problema que aparece con esta aproximación es la presencia
+de líneas muy largas. Las líneas permanecen en el espacio de trabajo
+mientras terminen en un prefijo de la cadena buscada. Para
+que la salida quepa en la hoja he
+tenido que partir las líneas del fichero de salida, lo que he indicado con los
+símbolos <!-- MATH
+ $\backslash$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$ \backslash$"></SPAN>. Considere esta modificación:
 <PRE>
-&gt; obj = {x : 'something' }
-{ x: 'something' }
-&gt; w = Object.create(obj)
-{}
-&gt; w.x
-'something'
-&gt; w.x = "another thing"
-'another thing'
-&gt; w.__proto__
-
-&gt; obj == w.__proto__
+#!/bin/sed -f
+s/Owner and Operator Guide/Installation Guide/g
+/Owner/{
+:label
+  N
+  s/Owner\([ \n]*\)and\([ \n]*\)Operator\([ \n]*\)Guide/Installation\1\2Guide\3/g
+  /Owner *$/b label
+  /Owner  *and *$/b label
+  /Owner  *and  *Operator *$/b label
+  }
 </PRE>
-</LI>
-<LI>Explique la salida:
-<PRE>
-&gt; obj = {x : { y : 1} }
-{ x: { y: 1 } }
-&gt; w = Object.create(obj)
-{}
-&gt; w.x == obj.x
-true
-&gt; w.x.y = 2
-2
-&gt; obj
-{ x: { y: 2 } }
-&gt;
-</PRE>
-</LI>
-<LI>Explique las salidas:
-<PRE>
-&gt; inherit = Object.create
-[Function: create]
-&gt; o = {}
-{}
-&gt; o.x = 1
-1
-&gt; p = inherit(o)
-{}
-&gt; p.x
-1
-&gt; p.y = 2
-2
-&gt; p
-{ y: 2 }
-&gt; o
-{ x: 1 }
-&gt; o.y
-undefined
-&gt; q = inherit(p)
-{}
-&gt; q.z = 3
-3
-&gt; q
-{ z: 3 }
-&gt; s = q.toString()
-'[object Object]'
-&gt; q.x+q.y+q.z
-6
-&gt; o.x
-1
-&gt; o.x = 4
-4
-&gt; p.x
-4
-&gt; q.x
-4
-&gt; q.x = 5
-5
-&gt; p.x
-4
-&gt; o.x
-4
-</PRE>
-</LI>
-</OL>
+Es indudable la ventaja de disponer de esta
+capacidad de búsqueda multilínea no puede realizarse con 
+otras utilidades como <I>ex</I> o <I>vi</I>.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1810"
+<A NAME="tex2html2152"
   HREF="node30.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1804"
-  HREF="node27.html">
+<A NAME="tex2html2146"
+  HREF="node20.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1800"
+<A NAME="tex2html2140"
   HREF="node28.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1806"
+<A NAME="tex2html2148"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1808"
+<A NAME="tex2html2150"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -281,12 +322,12 @@ undefined
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1811"
-  HREF="node30.html">Subconjuntos y Extensiones de</A>
-<B>Sup:</B> <A NAME="tex2html1805"
-  HREF="node27.html">Clases y Módulos</A>
-<B> Ant:</B> <A NAME="tex2html1801"
-  HREF="node28.html">Herencia</A>
+<B> Sig:</B> <A NAME="tex2html2153"
+  HREF="node30.html">Suprimir: El Comando D</A>
+<B>Sup:</B> <A NAME="tex2html2147"
+  HREF="node20.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html2141"
+  HREF="node28.html">Del espacio de Patrones</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

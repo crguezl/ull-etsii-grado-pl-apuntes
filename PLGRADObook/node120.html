@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Análisis Descendente mediante Parsing Expresion Grammars en JavaScript</TITLE>
-<META NAME="description" CONTENT="Análisis Descendente mediante Parsing Expresion Grammars en JavaScript">
+<TITLE>Práctica: Autoacciones</TITLE>
+<META NAME="description" CONTENT="Práctica: Autoacciones">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,28 +19,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node132.html">
-<LINK REL="previous" HREF="node117.html">
-<LINK REL="up" HREF="node78.html">
+<LINK REL="next" HREF="node121.html">
+<LINK REL="previous" HREF="node119.html">
+<LINK REL="up" HREF="node97.html">
 <LINK REL="next" HREF="node121.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4016"
+<A NAME="tex2html4228"
   HREF="node121.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4010"
-  HREF="node78.html">
+<A NAME="tex2html4222"
+  HREF="node97.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4004"
+<A NAME="tex2html4216"
   HREF="node119.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4012"
+<A NAME="tex2html4224"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4014"
+<A NAME="tex2html4226"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -88,116 +88,147 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4017"
-  HREF="node121.html">Referencias y Documentación</A>
-<B>Sup:</B> <A NAME="tex2html4011"
-  HREF="node78.html">OCTAVA PARTE: APUNTES DE</A>
-<B> Ant:</B> <A NAME="tex2html4005"
-  HREF="node119.html">Análisis Top Down Usando</A>
+<B> Sig:</B> <A NAME="tex2html4229"
+  HREF="node121.html">Práctica: Nuevos Métodos</A>
+<B>Sup:</B> <A NAME="tex2html4223"
+  HREF="node97.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4217"
+  HREF="node119.html">Práctica: El Análisis de</A>
 <B> Con:</B> 
-<A NAME="tex2html4012"
+<A NAME="tex2html4224"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4014"
+<A NAME="tex2html4226"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION010600000000000000000">
-Análisis Descendente mediante Parsing Expresion Grammars en JavaScript</A>
+<H1><A NAME="SECTION049230000000000000000"></A>
+   <A NAME="18535"></A>
+<BR>
+Práctica:  Autoacciones
 </H1>
-  <BR> <HR>
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><A NAME="tex2html4018"
-  HREF="node121.html">Referencias y Documentación</A>
-<LI><A NAME="tex2html4019"
-  HREF="node122.html">Un Ejemplo Sencillo</A>
+<P>
+Extienda <code>Parse::Yapp</code> con una directiva <code>%autoaction CODE</code> la
+cuál cambia la acción por defecto. Cuando una regla de producción 
+no tenga una acción asociada, en vez de ejecutarse la acción
+<code>yapp</code> por defecto se ejecutará el código especificado en <code>CODE</code>. 
+La directiva podrá aparecer en la
+parte de cabecera o en el cuerpo del programa <code>yapp</code> 
+en una sóla línea aparte. Si aparece en el cuerpo no debe hacerlo
+en medio de una regla.
+
+<P>
+Sigue un ejemplo de uso:
+
+<P>
+<PRE>
+%{
+use Data::Dumper;
+my %tree_name = ('=' =&gt; 'eq', '+' =&gt; 'plus', '-' =&gt; 'minus', 
+                 '*' =&gt; 'times', '/' =&gt; 'divide');
+%}
+%right  '='
+%left   '-' '+'
+%left   '*' '/'
+%left   NEG
+%autoaction { [$tree_name{$_[2]}, $_[1], $_[3]] }
+
+%%
+input:               { undef }
+        | input line { undef } 
+;
+
+line:     '\n'         { undef }
+        | exp '\n'     { print Dumper($_[1]); }
+        | error '\n'   { $_[0]-&gt;YYErrok }
+;
+
+exp:        NUM                 { $_[1] }
+        |   VAR                 { $_[1] }
+        |   VAR '=' exp | exp '+' exp | exp '-' exp | exp '*' exp | exp '/' exp      
+        |   '-' exp %prec NEG   { ['neg', $_[2]] }
+        |   '(' exp ')'         { $_[2] }
+;
+
+%%
+</PRE>
+y un ejemplo de ejecución:
+<PRE>
+$ ./useautoaction1.pl
+2+3*4
+^D
+$VAR1 = [
+          'plus',
+          '2',
+          [ 'times', '3', '4' ]
+        ];
+</PRE>
+Analice la adecuación de los mensajes de error emitidos por
+el compilador de Perl cuando el código en la auto-acción contiene
+errores. ¿Son apropiados los números de línea?
+
+<P>
+Tenga en cuenta los siguientes consejos:
+
+<P>
+
 <UL>
-<LI><A NAME="tex2html4020"
-  HREF="node122.html#SECTION010621000000000000000">Asociación Incorrecta para la Resta y la División</A>
+<LI>Cuando compile con <code>yapp</code> su módulo use 
+una orden como: <code>yapp -m Parse::Yapp::Parse Parse.yp</code>. 
+Este es un caso en que el nombre del fichero de salida (<code>Parse.pm</code>)
+y el nómbre del package <code>Parse::Yapp::Parse</code> no coinciden. 
+Este es un caso en que el nombre del fichero de salida (<code>Parse.pm</code>)
+y el nómbre del package <code>Parse::Yapp::Parse</code> no coinciden.
+</LI>
+<LI>Ahora tiene dos versiones de <code>Parse::Yapp</code> en su ordenador.
+El compilador de Perl va a intentar cargar la instalada. 
+Para ello en su versión del script <code>yapp</code> puede incluir
+una línea que le indique al compilador que debe buscar primero
+en el lugar en el que se encuentra nuestra librería:
+<PRE>
+BEGIN { unshift @INC, '/home/lhp/Lperl/src/yapp/Parse-Yapp-Auto/lib/' }
+</PRE>
+</LI>
+<LI>¿Qué estrategia a seguir? Una posibilidad es ``hacerle creer'' al
+resto de los módulos en <code>Yapp</code> que el usuario ha escrito el 
+código de la autoacción en aquellas reglas en las que no existe 
+código explícito asociado. Es posible realizar esta práctica modificando
+sólo el fichero <code>YappParse.yp</code>. El código original 
+<code>Yapp</code> usa <code>undef</code>
+para indicar, en el campo adecuado, que una acción no fué definida.
+La idea es sustituir ese <code>undef</code> por el código asociado con la
+autoacción:
+
+<P>
+<PRE>
+my($code)= $autoaction? $autoaction:undef;
+</PRE>
+
+<P>
+</LI>
 </UL>
-<BR>
-<LI><A NAME="tex2html4021"
-  HREF="node123.html">Eliminación de la Recursividad por la Izquierda</A>
-<UL>
-<LI><A NAME="tex2html4022"
-  HREF="node123.html#SECTION010631000000000000000">Eliminación de la Recursividad por la izquierda Respetando el Orden de 
-Ejecución de las Acciones Semánticas</A>
-<LI><A NAME="tex2html4023"
-  HREF="node123.html#SECTION010632000000000000000">Eliminando la Recursividad por la Izquierda en la Calculadora</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html4024"
-  HREF="node124.html">Eliminación de la Recursividad por la Izquierda y Atributos Heredados</A>
-<UL>
-<LI><A NAME="tex2html4025"
-  HREF="node124.html#SECTION010641000000000000000">Eliminación de la Recursión por la Izquierda en la Gramática</A>
-<LI><A NAME="tex2html4026"
-  HREF="node124.html#SECTION010642000000000000000">Eliminación de la Recursión por la Izquierda en un Esquema de Traducción</A>
-<LI><A NAME="tex2html4027"
-  HREF="node124.html#SECTION010643000000000000000">Eliminación de la Recursividad por la Izquierda en PEGJS</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html4028"
-  HREF="node125.html">Asociando un else con su if mas cercano</A>
-<LI><A NAME="tex2html4029"
-  HREF="node126.html">Comentarios Anidados</A>
-<LI><A NAME="tex2html4030"
-  HREF="node127.html">Un Lenguaje Dependiente del Contexto</A>
-<LI><A NAME="tex2html4031"
-  HREF="node128.html">PegJS en los Browser</A>
-<UL>
-<LI><A NAME="tex2html4032"
-  HREF="node128.html#SECTION010680010000000000000">La opción -e de pegjs</A>
-<LI><A NAME="tex2html4033"
-  HREF="node128.html#SECTION010680020000000000000">arithmetic.pegjs</A>
-<LI><A NAME="tex2html4034"
-  HREF="node128.html#SECTION010680030000000000000">calculator.html</A>
-<LI><A NAME="tex2html4035"
-  HREF="node128.html#SECTION010680040000000000000">calculator.js</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html4036"
-  HREF="node129.html">Usando Pegjs con CoffeeScript</A>
-<UL>
-<LI><A NAME="tex2html4037"
-  HREF="node129.html#SECTION010690010000000000000">Instalación de pegjs-coffee-plugin</A>
-<LI><A NAME="tex2html4038"
-  HREF="node129.html#SECTION010690020000000000000">Ejemplo Sencillo</A>
-<LI><A NAME="tex2html4039"
-  HREF="node129.html#SECTION010690030000000000000">Véase También</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html4040"
-  HREF="node130.html">Práctica: Ambiguedad en C++</A>
-<LI><A NAME="tex2html4041"
-  HREF="node131.html">Práctica: Inventando un Lenguaje: Tortoise</A>
-<UL>
-<LI><A NAME="tex2html4042"
-  HREF="node131.html#SECTION0106110010000000000000">Recursos</A>
-</UL></UL>
-<!--End of Table of Child-Links-->
+
+<P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4016"
+<A NAME="tex2html4228"
   HREF="node121.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4010"
-  HREF="node78.html">
+<A NAME="tex2html4222"
+  HREF="node97.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4004"
+<A NAME="tex2html4216"
   HREF="node119.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4012"
+<A NAME="tex2html4224"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4014"
+<A NAME="tex2html4226"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -245,12 +276,12 @@ Ejecución de las Acciones Semánticas</A>
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4017"
-  HREF="node121.html">Referencias y Documentación</A>
-<B>Sup:</B> <A NAME="tex2html4011"
-  HREF="node78.html">OCTAVA PARTE: APUNTES DE</A>
-<B> Ant:</B> <A NAME="tex2html4005"
-  HREF="node119.html">Análisis Top Down Usando</A>
+<B> Sig:</B> <A NAME="tex2html4229"
+  HREF="node121.html">Práctica: Nuevos Métodos</A>
+<B>Sup:</B> <A NAME="tex2html4223"
+  HREF="node97.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4217"
+  HREF="node119.html">Práctica: El Análisis de</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

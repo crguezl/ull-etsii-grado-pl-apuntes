@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>La orden N</TITLE>
-<META NAME="description" CONTENT="La orden N">
+<TITLE>El módulo Generado por yapp</TITLE>
+<META NAME="description" CONTENT="El módulo Generado por yapp">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,26 +21,26 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node102.html">
 <LINK REL="previous" HREF="node100.html">
-<LINK REL="up" HREF="node92.html">
+<LINK REL="up" HREF="node97.html">
 <LINK REL="next" HREF="node102.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3297"
+<A NAME="tex2html3956"
   HREF="node102.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3291"
-  HREF="node92.html">
+<A NAME="tex2html3950"
+  HREF="node97.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3285"
+<A NAME="tex2html3944"
   HREF="node100.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3293"
+<A NAME="tex2html3952"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3295"
+<A NAME="tex2html3954"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -88,193 +88,214 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3298"
-  HREF="node102.html">Suprimir: El Comando D</A>
-<B>Sup:</B> <A NAME="tex2html3292"
-  HREF="node92.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html3286"
-  HREF="node100.html">Del espacio de Patrones</A>
+<B> Sig:</B> <A NAME="tex2html3957"
+  HREF="node102.html">Algoritmo de Análisis LR</A>
+<B>Sup:</B> <A NAME="tex2html3951"
+  HREF="node97.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html3945"
+  HREF="node100.html">Construcción de las Tablas</A>
 <B> Con:</B> 
-<A NAME="tex2html3293"
+<A NAME="tex2html3952"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3295"
+<A NAME="tex2html3954"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION010390000000000000000">
-La orden <I>N</I></A>
+<H1><A NAME="SECTION04940000000000000000"></A>
+<A NAME="section:tablas"></A>
+<BR>
+El módulo Generado por <TT>yapp</TT>
 </H1>
-<I>N</I> añade la siguiente línea de entrada al espacio de
-patrones. Las dos líneas se separan mediante un retorno de
-carro. Después de su ejecución, el comando <I>N</I> pasa el control a los
-subsiguientes comandos en el <I>script</I>.
-<BR>
-El siguiente ejemplo propuesto en [<A
- HREF="node236.html#sedawk">6</A>] muestra una
-búsqueda y sustitución multilínea. Se trata de sustituir la
-cadena ``Owner and Operator Guide'' por ``Installation Guide'', cualquiera que sea su posición en una línea o entre ellas.
-Los autores de [<A
- HREF="node236.html#sedawk">6</A>] y [<A
- HREF="node236.html#power">7</A>] proponen la siguiente
-solución:
-<PRE>
-$ cat multiline2.sed
-#Assume the pattern is in no more than two lines
-s/Owner and Operator Guide/Installation Guide/g
-/Owner/{
-  N
-  s/ *\n/ /g
-  s/Owner  *and  *Operator  *Guide/Installation Guide/g
-}
-</PRE>
-Veamos primero los contenidos del fichero de prueba:
-<PRE>
-$ cat multiline.test
-Dear Owner: Consult
-Section 3.1 in the Owner and
-Operator Guide for a description of the tape drives available for the Owner
-of your system.
- 
-Consult Section 3.1 in the Owner and Operator
-Guide for a description of the tape drives
-available on your system.
- 
-Look in the Owner and Operator Guide, we mean the Owner
-and Operator Guide shipped with your system.
- 
-Two manuals are provided including the Owner and
-Operator Guide and the User Guide.
- 
-The Owner and Operator Guide is shipped with your system.
- 
-Look in the Owner
-and Operator Guide shipped with your system.
- 
-The Owner
-and
-Operator
-Guide is shipped with your system.
-</PRE>
-La ejecución del <I>script</I> da la siguiente salida:
-<PRE>
-$ sed -f multiline2.sed multiline.test
-Dear Owner: Consult Section 3.1 in the Owner and
-Operator Guide for a description of the tape drives available for the Owner
-of your system.
- 
-Consult Section 3.1 in the Installation Guide for a description of the tape
-drives
-available on your system.
- 
-Look in the Installation Guide, we mean the Installation Guide shipped with
-your system.
- 
-Two manuals are provided including the Installation Guide and the User Guide.
- 
-The Installation Guide is shipped with your system.
- 
-Look in the Installation Guide shipped with your system.
- 
-The Owner and
-Operator
-Guide is shipped with your system.
-</PRE>
-Uno de los problemas, que aparece en el primer párrafo del
-ejemplo de prueba, es que la segunda línea leída debe ser
-"reciclada"
-para su uso en la siguiente búsqueda. El segundo fallo, 
-que aparece en el último párrafo, es consecuencia de la
-limitación del <I>script</I> para trabajar con  patrones partidos
-en más de dos líneas.
-<BR>
-Consideremos esta otra solución:
-<PRE>
-$ cat multiline.sed
-s/Owner and Operator Guide/Installation Guide/g
-/Owner/{
-:label
-  N
-  s/\n/ /g
-  s/Owner  *and  *Operator  *Guide/Installation Guide/g
-  /Owner *$/b label
-  /Owner  *and *$/b label
-  /Owner  *and  *Operator *$/b label
-  }
-</PRE>
-Este otro <I>script</I> hace que <TT>sed</TT> permanezca en un bucle mientras
-la línea adjuntada en segundo lugar contenga un prefijo estricto 
-de la cadena buscada. 
+La ejecución de la orden <code>yapp -m Calc Calc.yp</code> produce 
+como salida el módulo <code>Calc.pm</code> el cual contiene las tablas LALR(1)
+para la gramática descrita en <code>Calc.yp</code>. Estas tablas son las que
+dirigen al analizador LR. 
+Puede ver el código completo del módulo en el apéndice
+que se encuentra en la página <A HREF="#apendice:calcpm"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>.
+La  estructura del módulo <code>Calc.pm</code> es como sigue:
 
 <P>
 <PRE>
-$sed -f multiline.sed multiline.test
-Dear Owner: Consult Section 3.1 in the Installation Guide for \
-a description of the tape drives available for the Owner  of \
-your system.
- 
-Consult Section 3.1 in the Installation Guide for a description of the tape drives
-available on your system.
- 
-Look in the Installation Guide, we mean the Installation Guide \
-shipped with your system.
- 
-Two manuals are provided including the Installation Guide and the User Guide.
- 
-The Installation Guide is shipped with your system.
- 
-Look in the Installation Guide shipped with your system.
- 
-The Installation Guide is shipped with your system.
+ 1 package Calc;
+ 2 use vars qw ( @ISA );
+ 3 use strict;
+ 4 @ISA= qw ( Parse::Yapp::Driver );
+ 5 use Parse::Yapp::Driver;
+ 6 
+ 7 sub new {
+ 8    my($class)=shift;
+ 9    ref($class) and $class=ref($class);
+10 
+11     my($self)=$class-&gt;SUPER::new( 
+12        yyversion =&gt; '1.05',
+13        yystates =&gt; [ 
+..          ...
+32        ], # estados
+33        yyrules  =&gt; [
+..       	# ... mas reglas
+70        ], # final de las reglas
+71        @_); # argumentos pasados
+72   bless($self,$class);
+73 }
 </PRE>
-Un problema que aparece con esta aproximación es la presencia
-de líneas muy largas. Las líneas permanecen en el espacio de trabajo
-mientras terminen en un prefijo de la cadena buscada. Para
-que la salida quepa en la hoja he
-tenido que partir las líneas del fichero de salida, lo que he indicado con los
-símbolos <!-- MATH
- $\backslash$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="14" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img10.png"
- ALT="$ \backslash$"></SPAN>. Considere esta modificación:
+
+<P>
+La clase <code>Calc</code> hereda de <code>Parse::Yapp::Driver</code>, pero el objeto creado
+será bendecido en la clase <code>Calc</code> (Línea 4, véanse también 
+la figura <A HREF="node117.html#fig:yappinheritance">9.3</A> 
+y la línea 72 del fuente). 
+Por tanto, el constructor llamado en la línea 11 es el de <code>Parse::Yapp::Driver</code>.
+Se utiliza la estrategia de llamada con parámetros con nombre. 
+El valor para la clave <code>yystates</code> es una referencia anónima 
+al array de estados y el valor para la clave <code>yyrules</code> 
+es una referencia anónima a las reglas.
 <PRE>
-#!/bin/sed -f
-s/Owner and Operator Guide/Installation Guide/g
-/Owner/{
-:label
-  N
-  s/Owner\([ \n]*\)and\([ \n]*\)Operator\([ \n]*\)Guide/Installation\1\2Guide\3/g
-  /Owner *$/b label
-  /Owner  *and *$/b label
-  /Owner  *and  *Operator *$/b label
-  }
+10 
+11     my($self)=$class-&gt;SUPER::new( 
+12        yyversion =&gt; '1.05',
+13        yystates =&gt; [
+14         {#State 0
+15           DEFAULT =&gt; -1, GOTOS =&gt; { 'input' =&gt; 1 }
+16         },
+17         {#State 1
+18           ACTIONS =&gt; {
+19             'NUM' =&gt; 6, '' =&gt; 4, "-" =&gt; 2, "(" =&gt; 7,
+20             'VAR' =&gt; 8, "\n" =&gt; 5, 'error' =&gt; 9
+21           },
+22           GOTOS =&gt; { 'exp' =&gt; 3, 'line' =&gt; 10 }
+23         },
+24         # ...  mas estados
+25         {#State 27
+26           ACTIONS =&gt; {
+27             "-" =&gt; 12, "+" =&gt; 13, "/" =&gt; 15, "^" =&gt; 16,
+28             "*" =&gt; 17
+29           },
+30           DEFAULT =&gt; -8
+31         }
+32        ], # estados
 </PRE>
-Es indudable la ventaja de disponer de esta
-capacidad de búsqueda multilínea no puede realizarse con 
-otras utilidades como <I>ex</I> o <I>vi</I>.
+Se ve que un estado se pasa como un hash anónimo indexado en las acciones
+y los saltos. 
+
+<P>
+Para consultar los números asociados con las reglas de producción
+vea el apéndice en la página <A HREF="#apendice:calcouput"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>
+conteniendo el fichero <code>Calc.output</code>.
+
+<P>
+A continuación vienen las reglas:
+<PRE>
+33        yyrules  =&gt; [
+34        [#Rule 0
+35              '$start', 2, undef ],
+36        [#Rule 1
+37              'input', 0, undef ],
+38        [#Rule 2
+39              'input', 2, sub
+40 #line 17 "Calc.yp"
+41              { push(@{$_[1]},$_[2]); $_[1] }
+42        ],
+43        [#Rule 3
+44              'line', 1, sub
+45 #line 20 "Calc.yp"
+46              { $_[1] }
+47        ],
+48        [#Rule 4
+49              'line', 2, sub
+50 #line 21 "Calc.yp"
+51              { print "$_[1]\n" }
+52        ],
+53   # ... mas reglas
+54     [#Rule 11
+55             'exp', 3, sub
+56 #line 30 "Calc.yp"
+57 { $_[1] * $_[3] }
+58    ],
+59   [#Rule 12
+60             'exp', 3, sub
+61 #line 31 "Calc.yp"
+62   {
+63     $_[3] and return($_[1] / $_[3]);
+64     $_[0]-&gt;YYData-&gt;{ERRMSG} =   "Illegal division by zero.\n";
+65     $_[0]-&gt;YYError;
+66     undef
+67   }
+68     ],
+69   # ... mas reglas
+70   ], # final de las reglas
+</PRE>
+Las reglas son arrays anónimos conteniendo el nombre de la regla o
+variable sintáctica (<code>exp</code>), el número de símbolos en la parte
+derecha y la subrutina anónima con el código asociado.
+
+<P>
+Vemos como la acción es convertida en una subrutina anónima. 
+Los argumentos de dicha subrutina son los atributos semánticos
+asociados con los símbolos en la parte derecha de la regla de 
+producción. El valor retornado por la acción/subrutina
+es el valor asociado con la reducción.
+
+<P>
+Para hacer que 
+el compilador Perl diagnostique los errores relativos al fuente 
+<code>Calc.yp</code> se usa una directiva <code>#line</code>.
+
+<P>
+<PRE>
+71   @_);
+72   bless($self,$class);
+73 }
+74
+</PRE>
+
+<P>
+la bendición con dos argumentos hace que el objeto pertenezca a la
+clase <code>Calc</code>. A continuación siguen las subrutinas de soporte:
+<PRE>
+75 #line 44 "Calc.yp" 
+76 
+77 
+78 sub _Error {
+79   # ...
+80 }
+81 
+82 sub _Lexer {
+83   my($parser)=shift;
+84   # ...
+85 }
+86 
+87 sub Run {
+88     my($self)=shift;
+89     $self-&gt;YYParse( yylex =&gt; \&amp;_Lexer, yyerror =&gt; \&amp;_Error );
+90 }
+91 
+92 my($calc)=new Calc;
+93 $calc-&gt;Run;
+94 
+95 1;
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3297"
+<A NAME="tex2html3956"
   HREF="node102.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3291"
-  HREF="node92.html">
+<A NAME="tex2html3950"
+  HREF="node97.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3285"
+<A NAME="tex2html3944"
   HREF="node100.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3293"
+<A NAME="tex2html3952"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3295"
+<A NAME="tex2html3954"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -322,12 +343,12 @@ otras utilidades como <I>ex</I> o <I>vi</I>.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3298"
-  HREF="node102.html">Suprimir: El Comando D</A>
-<B>Sup:</B> <A NAME="tex2html3292"
-  HREF="node92.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html3286"
-  HREF="node100.html">Del espacio de Patrones</A>
+<B> Sig:</B> <A NAME="tex2html3957"
+  HREF="node102.html">Algoritmo de Análisis LR</A>
+<B>Sup:</B> <A NAME="tex2html3951"
+  HREF="node97.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html3945"
+  HREF="node100.html">Construcción de las Tablas</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

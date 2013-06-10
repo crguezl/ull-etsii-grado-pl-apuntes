@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Descripción Eyapp del Lenguaje SimpleC</TITLE>
-<META NAME="description" CONTENT="Descripción Eyapp del Lenguaje SimpleC">
+<TITLE>Multimedia y Gráficos</TITLE>
+<META NAME="description" CONTENT="Multimedia y Gráficos">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,26 +21,26 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node197.html">
 <LINK REL="previous" HREF="node195.html">
-<LINK REL="up" HREF="node169.html">
+<LINK REL="up" HREF="node154.html">
 <LINK REL="next" HREF="node197.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5429"
+<A NAME="tex2html5553"
   HREF="node197.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5423"
-  HREF="node169.html">
+<A NAME="tex2html5547"
+  HREF="node154.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5417"
+<A NAME="tex2html5541"
   HREF="node195.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5425"
+<A NAME="tex2html5549"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5427"
+<A NAME="tex2html5551"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -88,124 +88,44 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5430"
-  HREF="node197.html">Diseño de Analizadores con</A>
-<B>Sup:</B> <A NAME="tex2html5424"
-  HREF="node169.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5418"
-  HREF="node195.html">Recuperacion de Errores: Visión</A>
+<B> Sig:</B> <A NAME="tex2html5554"
+  HREF="node197.html">HTTP</A>
+<B>Sup:</B> <A NAME="tex2html5548"
+  HREF="node154.html">SEGUNDA PARTE: APUNTES DE</A>
+<B> Ant:</B> <A NAME="tex2html5542"
+  HREF="node195.html">Almacenamiento en el Cliente</A>
 <B> Con:</B> 
-<A NAME="tex2html5425"
+<A NAME="tex2html5549"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5427"
+<A NAME="tex2html5551"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION0109270000000000000000"></A>
-<A NAME="section:simplec"></A>
-<BR>
-Descripción Eyapp del Lenguaje  SimpleC
+<H1><A NAME="SECTION051800000000000000000">
+Multimedia y Gráficos</A>
 </H1>
-En este capítulo usaremos  <TT>Parse::Eyapp</TT>  para desarrollar
-un compilador para el siguiente lenguaje, al que denominaremos  <TT>Simple C</TT> :
-
-<P>
-<PRE>
-program: definition+
-
-definition: funcDef | basictype funcDef | declaration
-
-basictype: INT | CHAR
-
-funcDef: ID '('  params  ')' block
-
-params: ( basictype ID arraySpec)&lt;* ','&gt;
-
-block: '{' declaration* statement* '}'
-
-declaration: basictype declList ';'
-
-declList: (ID arraySpec) &lt;+ ','&gt;
-
-arraySpec: ( '[' INUM ']')*
-
-statement:
-    expression ';'
-  | ';'
-  | BREAK ';'
-  | CONTINUE ';'
-  | RETURN ';'
-  | RETURN expression ';'
-  | block
-  | ifPrefix statement %prec '+'
-  | ifPrefix statement 'ELSE' statement
-  | loopPrefix statement
-
-ifPrefix: IF '(' expression ')'
-
-loopPrefix: WHILE '(' expression ')'
-
-expression: binary &lt;+ ','&gt;
-
-Variable: ID ('[' binary ']') *
-
-Primary:
-    INUM
-  | CHARCONSTANT
-  | Variable
-  | '(' expression ')'
-  | function_call
-
-function_call:  ID  '(' binary &lt;* ','&gt; ')'
-
-Unary: '++' Variable | '--' Variable | Primary
-
-binary:
-    Unary
-  | binary '+' binary
-  | binary '-' binary
-  | binary '*' binary
-  | binary '/' binary
-  | binary '%' binary
-  | binary '&lt;' binary
-  | binary '&gt;' binary
-  | binary '&gt;=' binary
-  | binary '&lt;=' binary
-  | binary '==' binary
-  | binary '!=' binary
-  | binary '&amp;' binary
-  | binary '**' binary
-  | binary '|' binary
-  | Variable '=' binary
-  | Variable '+=' binary
-  | Variable '-=' binary
-  | Variable '*=' binary
-  | Variable '/=' binary
-  | Variable '%=' binary
-  | etc. etc.
-</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5429"
+<A NAME="tex2html5553"
   HREF="node197.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5423"
-  HREF="node169.html">
+<A NAME="tex2html5547"
+  HREF="node154.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5417"
+<A NAME="tex2html5541"
   HREF="node195.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5425"
+<A NAME="tex2html5549"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5427"
+<A NAME="tex2html5551"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -253,12 +173,12 @@ binary:
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5430"
-  HREF="node197.html">Diseño de Analizadores con</A>
-<B>Sup:</B> <A NAME="tex2html5424"
-  HREF="node169.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5418"
-  HREF="node195.html">Recuperacion de Errores: Visión</A>
+<B> Sig:</B> <A NAME="tex2html5554"
+  HREF="node197.html">HTTP</A>
+<B>Sup:</B> <A NAME="tex2html5548"
+  HREF="node154.html">SEGUNDA PARTE: APUNTES DE</A>
+<B> Ant:</B> <A NAME="tex2html5542"
+  HREF="node195.html">Almacenamiento en el Cliente</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

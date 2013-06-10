@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Funciones como Espacios de Nombres</TITLE>
-<META NAME="description" CONTENT="Funciones como Espacios de Nombres">
+<TITLE>Trasferencia de Control Condicional</TITLE>
+<META NAME="description" CONTENT="Trasferencia de Control Condicional">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,26 +21,26 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node24.html">
 <LINK REL="previous" HREF="node22.html">
-<LINK REL="up" HREF="node18.html">
+<LINK REL="up" HREF="node20.html">
 <LINK REL="next" HREF="node24.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1725"
+<A NAME="tex2html2068"
   HREF="node24.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1719"
-  HREF="node18.html">
+<A NAME="tex2html2062"
+  HREF="node20.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1713"
+<A NAME="tex2html2056"
   HREF="node22.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1721"
+<A NAME="tex2html2064"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1723"
+<A NAME="tex2html2066"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -88,44 +88,125 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1726"
-  HREF="node24.html">Clausuras</A>
-<B>Sup:</B> <A NAME="tex2html1720"
-  HREF="node18.html">Funciones</A>
-<B> Ant:</B> <A NAME="tex2html1714"
-  HREF="node22.html">Funciones como Valores</A>
+<B> Sig:</B> <A NAME="tex2html2069"
+  HREF="node24.html">Rangos</A>
+<B>Sup:</B> <A NAME="tex2html2063"
+  HREF="node20.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html2057"
+  HREF="node22.html">Inserción de Texto</A>
 <B> Con:</B> 
-<A NAME="tex2html1721"
+<A NAME="tex2html2064"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1723"
+<A NAME="tex2html2066"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION04850000000000000000">
-Funciones como Espacios de Nombres</A>
+<H1><A NAME="SECTION04330000000000000000">
+Trasferencia de Control Condicional</A>
 </H1>
+La sintaxis de la orden <I>t</I> es:
+<DIV ALIGN="CENTER">
+<I>[address1][,address2]t[label]</I> 
+</DIV>
+Si la sustitución tiene éxito, se bifurca a <I>label</I>, Si la etiqueta no se especifica, 
+se salta al final del <I>script</I>.
+<BR>
+Consideremos el siguiente fichero de entrada:
+<PRE>
+$ cat t.test
+name: "fulano de tal" address: "Leganitos,4" phone: "342255"
+name: "fulano de cual"
+name: "fulano de alli" address: "Legitos,4"
+name: "zutano de tal"  address: "Leg,8"  phone: "342255"
+</PRE>
+Se asume que siempre que figura el teléfono se ha puesto la dirección y que si está
+la dirección se ha escrito el nombre. Se pretenden rellenar las líneas con un campo por defecto:
+<PRE>
+$ cat t.sed
+/name:/{
+s/.*name:[ ]*".*"[ ]*address:[ ]*".*"[ ].*phone:[ ]*".*".*/&amp;/
+t
+s/.*name:[ ]*".*"[ ]*address:[ ]*".*"/&amp; phone: "????"/
+t
+s/.*name:[ ]*".*"/&amp; address: "???? ????" phone: "????"/
+}
+</PRE>
+Esta es la llamada al script y la salida generada:
+<PRE>
+$ sed -f t.sed t.test
+name: "fulano de tal" address: "Leganitos,4" phone: "342255"
+name: "fulano de cual" address: "???? ????" phone: "????"
+name: "fulano de alli" address: "Legitos,4" phone: "????"
+name: "zutano de tal"  address: "Leg,8"  phone: "342255"
+$
+</PRE>
+
+<P>
+<SPAN  CLASS="textit">Ejemplo:</SPAN>
+
+<P>
+El fichero de entrada es un <SPAN  CLASS="textit">folder</SPAN> de 
+
+...
+<PRE>
+01_NAME: XXX
+02_SURNAME: XXX
+03_TITLE: SISTEMAS
+04_OtherTitle:
+05_BIRTHDAY: XXX
+06_BIRTHMONTH: XXX
+07_BIRTHYEAR: XXX
+08_ADDRESSFAMILY: XXX
+09_ADDRESSACTUAL: XXX
+10_POSTALCODE: XXX
+11_EMAIL: XXX@csi.ull.es
+12_TELEPHONE: XXX
+13_FAX: XXX
+14_LABGROUP: xxx
+15_COMMENTS:
+</PRE>
+...
+
+<P>
+Se trata de escribir un script que produzca como salida los <SPAN  CLASS="textit">emails</SPAN>
+de los diferentes alumnos. Esta es una solución (suponemos que el <SPAN  CLASS="textit">script</SPAN> se llama con la opción <PRE>
+#!/bin/sed -f
+/^11_EMAIL:/{
+s/11_EMAIL: *\([a-zA-Z0-9]*@[a-zA-Z0-9.]*\)/\1/
+t print
+s/11_EMAIL: *\([a-zA-Z0-9]*\)/\1@csi.ull.es/
+:print
+p
+}
+</PRE>
+
+<P>
+Una característica no comentada y observada en algunos <code>sed</code>, incluyendo 
+la versión Linux, es que, si existen varias sustituciones consecutivas antes de la
+sentencia de transferencia de control, basta con que una tenga éxito para que el salto
+se realice. 
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1725"
+<A NAME="tex2html2068"
   HREF="node24.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1719"
-  HREF="node18.html">
+<A NAME="tex2html2062"
+  HREF="node20.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1713"
+<A NAME="tex2html2056"
   HREF="node22.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1721"
+<A NAME="tex2html2064"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1723"
+<A NAME="tex2html2066"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -173,12 +254,12 @@ Funciones como Espacios de Nombres</A>
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1726"
-  HREF="node24.html">Clausuras</A>
-<B>Sup:</B> <A NAME="tex2html1720"
-  HREF="node18.html">Funciones</A>
-<B> Ant:</B> <A NAME="tex2html1714"
-  HREF="node22.html">Funciones como Valores</A>
+<B> Sig:</B> <A NAME="tex2html2069"
+  HREF="node24.html">Rangos</A>
+<B>Sup:</B> <A NAME="tex2html2063"
+  HREF="node20.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html2057"
+  HREF="node22.html">Inserción de Texto</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

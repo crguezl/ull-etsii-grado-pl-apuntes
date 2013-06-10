@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Backbone</TITLE>
-<META NAME="description" CONTENT="Backbone">
+<TITLE>Asociando un else con su if mas cercano</TITLE>
+<META NAME="description" CONTENT="Asociando un else con su if mas cercano">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,26 +21,26 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node54.html">
 <LINK REL="previous" HREF="node52.html">
-<LINK REL="up" HREF="node6.html">
+<LINK REL="up" HREF="node48.html">
 <LINK REL="next" HREF="node54.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html2188"
+<A NAME="tex2html2972"
   HREF="node54.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2182"
-  HREF="node6.html">
+<A NAME="tex2html2966"
+  HREF="node48.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2176"
+<A NAME="tex2html2960"
   HREF="node52.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2184"
+<A NAME="tex2html2968"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2186"
+<A NAME="tex2html2970"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -88,50 +88,77 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2189"
-  HREF="node54.html">Closure Tools</A>
-<B>Sup:</B> <A NAME="tex2html2183"
-  HREF="node6.html">PRIMERA PARTE: APUNTES DE</A>
-<B> Ant:</B> <A NAME="tex2html2177"
-  HREF="node52.html">XML</A>
+<B> Sig:</B> <A NAME="tex2html2973"
+  HREF="node54.html">Comentarios Anidados</A>
+<B>Sup:</B> <A NAME="tex2html2967"
+  HREF="node48.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html2961"
+  HREF="node52.html">Eliminación de la Recursividad</A>
 <B> Con:</B> 
-<A NAME="tex2html2184"
+<A NAME="tex2html2968"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html2186"
+<A NAME="tex2html2970"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION042300000000000000000">
-Backbone</A>
+<H1><A NAME="SECTION04650000000000000000">
+Asociando un else con su if mas cercano</A>
 </H1>
 
-<OL>
-<LI><A NAME="tex2html54"
-  HREF="http://addyosmani.github.com/backbone-fundamentals/">Developing Backbone.js Applications</A>
-</LI>
-</OL>
+<P>
+<PRE>
+$ cat danglingelse.pegjs 
+/*
+S ← 'if' C 'then' S 'else' S / 'if' C 'then' S
+*/
+
+S =   if C:C then S1:S else S2:S { return [ 'ifthenelse', C, S1, S2 ]; }
+    / if C:C then S:S            { return [ 'ifthen', C, S]; }
+    / O                          { return 'O'; }
+_ = ' '*
+C = _'c'_                        { return 'c'; }
+O = _'o'_                        { return 'o'; }
+else = _'else'_                 
+if = _'if'_
+then = _'then'_
+</PRE>
+
+<P>
+<PRE>
+$ cat use_danglingelse.js 
+var PEG = require("./danglingelse.js");
+var r = PEG.parse("if c then if c then o else o");
+console.log(r);
+</PRE>
+
+<P>
+<PRE>
+$ ../bin/pegjs danglingelse.pegjs 
+$ node use_danglingelse.js 
+[ 'ifthen', 'c', [ 'ifthenelse', 'c', 'O', 'O' ] ]
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html2188"
+<A NAME="tex2html2972"
   HREF="node54.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2182"
-  HREF="node6.html">
+<A NAME="tex2html2966"
+  HREF="node48.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2176"
+<A NAME="tex2html2960"
   HREF="node52.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2184"
+<A NAME="tex2html2968"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2186"
+<A NAME="tex2html2970"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -179,12 +206,12 @@ Backbone</A>
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2189"
-  HREF="node54.html">Closure Tools</A>
-<B>Sup:</B> <A NAME="tex2html2183"
-  HREF="node6.html">PRIMERA PARTE: APUNTES DE</A>
-<B> Ant:</B> <A NAME="tex2html2177"
-  HREF="node52.html">XML</A>
+<B> Sig:</B> <A NAME="tex2html2973"
+  HREF="node54.html">Comentarios Anidados</A>
+<B>Sup:</B> <A NAME="tex2html2967"
+  HREF="node48.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html2961"
+  HREF="node52.html">Eliminación de la Recursividad</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

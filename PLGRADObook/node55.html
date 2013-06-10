@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Véase También</TITLE>
-<META NAME="description" CONTENT="Véase También">
+<TITLE>Un Lenguaje Dependiente del Contexto</TITLE>
+<META NAME="description" CONTENT="Un Lenguaje Dependiente del Contexto">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,27 +19,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
+<LINK REL="next" HREF="node56.html">
 <LINK REL="previous" HREF="node54.html">
-<LINK REL="up" HREF="node54.html">
+<LINK REL="up" HREF="node48.html">
 <LINK REL="next" HREF="node56.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html2215"
+<A NAME="tex2html3000"
   HREF="node56.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2209"
-  HREF="node54.html">
+<A NAME="tex2html2994"
+  HREF="node48.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2205"
+<A NAME="tex2html2988"
   HREF="node54.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2211"
+<A NAME="tex2html2996"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2213"
+<A NAME="tex2html2998"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -87,79 +88,109 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2216"
-  HREF="node56.html">Pruebas</A>
-<B>Sup:</B> <A NAME="tex2html2210"
-  HREF="node54.html">Closure Tools</A>
-<B> Ant:</B> <A NAME="tex2html2206"
-  HREF="node54.html">Closure Tools</A>
+<B> Sig:</B> <A NAME="tex2html3001"
+  HREF="node56.html">PegJS en los Browser</A>
+<B>Sup:</B> <A NAME="tex2html2995"
+  HREF="node48.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html2989"
+  HREF="node54.html">Comentarios Anidados</A>
 <B> Con:</B> 
-<A NAME="tex2html2211"
+<A NAME="tex2html2996"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html2213"
+<A NAME="tex2html2998"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION042410000000000000000">
-Véase También</A>
+<H1><A NAME="SECTION04670000000000000000">
+Un Lenguaje Dependiente del Contexto</A>
 </H1>
 
-<OL>
-<LI><A NAME="tex2html55"
-  HREF="http://youtu.be/M3uWx-fhjUc">Google I/O 2011: JavaScript Programming in the Large with Closure Tools</A>
-(YouTube)
-</LI>
-<LI><A NAME="tex2html56"
-  HREF="https://developers.google.com/closure/?hl=es">The Closure Tools project is an effort by Google to open source the tools used in many of Google's sites and web applications</A>
-</LI>
-<LI>Herramientas:
+<P>
+El lenguaje <!-- MATH
+ $\{ a^n b^n c^n / n \in \mathcal{N} \}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="131" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.png"
+ ALT="$ \{ a^n b^n c^n / n \in \mathcal{N} \}$"></SPAN> no puede ser 
+expresado mediante una gramática independiente del contexto.
 
-<OL>
-<LI><A NAME="tex2html57"
-  HREF="https://code.google.com/p/closure-compiler/">Closure Compiler</A>
-en Google-Code
-</LI>
-<LI><A NAME="tex2html58"
-  HREF="https://code.google.com/p/closure-library/">Closure Library</A>
-en Google-Code
-</LI>
-<LI><A NAME="tex2html59"
-  HREF="https://code.google.com/p/closure-templates/">Closure Template</A>
-en Google-Code
-</LI>
-<LI><A NAME="tex2html60"
-  HREF="https://code.google.com/p/closure-linter/">Closure Linter</A>
-en Google-Code
-</LI>
-</OL>
-</LI>
-<LI><A NAME="tex2html61"
-  HREF="https://developers.google.com/closure/library/docs/gettingstarted?hl=es">Getting Started with the Closure Library</A>
-(Hello World!)
-</LI>
-</OL>
+<P>
+<PRE>
+[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat anbncn.pegjs 
+/*
+  The following parsing expression grammar describes the classic 
+  non-context-free language : 
+               { a^nb^nc^n / n &gt;= 1 }
+
+            S ← &amp;(A 'c') 'a'+ B !('a'/'b'/'c')
+            A ← 'a' A? 'b'
+            B ← 'b' B? 'c'
+*/
+
+S = &amp;(A 'c') 'a'+ B !('a'/'b'/'c')
+A = 'a' A? 'b'
+B = 'b' B? 'c'
+</PRE>
+
+<P>
+Este ejemplo puede ser obtenido desde GitHub:
+<PRE>
+[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ git remote -v
+dmajda  https://github.com/dmajda/pegjs.git (fetch)
+dmajda  https://github.com/dmajda/pegjs.git (push)
+origin  git@github.com:crguezl/pegjs.git (fetch)
+origin  git@github.com:crguezl/pegjs.git (push)
+</PRE>
+
+<P>
+Veamos un ejemplo de uso:
+<PRE>
+[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat use_anbncn.js 
+var PEG = require("./anbncn.js");
+var r = PEG.parse("aabbcc");
+console.log(r);
+
+try {
+  r = PEG.parse("aabbc");
+  console.log(r);
+}
+catch (e) {
+  console.log("Grr...."+e);
+}
+</PRE>
+
+<P>
+Ejecución:
+<PRE>
+[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ ../bin/pegjs anbncn.pegjs 
+
+[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ node use_anbncn.js 
+[ '', [ 'a', 'a' ], [ 'b', [ 'b', '', 'c' ], 'c' ], '' ]
+Grr....SyntaxError: Expected "c" but end of input found.
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html2215"
+<A NAME="tex2html3000"
   HREF="node56.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2209"
-  HREF="node54.html">
+<A NAME="tex2html2994"
+  HREF="node48.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2205"
+<A NAME="tex2html2988"
   HREF="node54.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2211"
+<A NAME="tex2html2996"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2213"
+<A NAME="tex2html2998"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -207,12 +238,12 @@ en Google-Code
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2216"
-  HREF="node56.html">Pruebas</A>
-<B>Sup:</B> <A NAME="tex2html2210"
-  HREF="node54.html">Closure Tools</A>
-<B> Ant:</B> <A NAME="tex2html2206"
-  HREF="node54.html">Closure Tools</A>
+<B> Sig:</B> <A NAME="tex2html3001"
+  HREF="node56.html">PegJS en los Browser</A>
+<B>Sup:</B> <A NAME="tex2html2995"
+  HREF="node48.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html2989"
+  HREF="node54.html">Comentarios Anidados</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

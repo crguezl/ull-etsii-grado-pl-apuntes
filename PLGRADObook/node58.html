@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Unit Testing, TDD y BDD con Jasmine</TITLE>
-<META NAME="description" CONTENT="Unit Testing, TDD y BDD con Jasmine">
+<TITLE>Práctica: Ambiguedad en C++</TITLE>
+<META NAME="description" CONTENT="Práctica: Ambiguedad en C++">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,27 +19,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
+<LINK REL="next" HREF="node59.html">
 <LINK REL="previous" HREF="node57.html">
-<LINK REL="up" HREF="node56.html">
+<LINK REL="up" HREF="node48.html">
 <LINK REL="next" HREF="node59.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html2257"
+<A NAME="tex2html3049"
   HREF="node59.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2251"
-  HREF="node56.html">
+<A NAME="tex2html3043"
+  HREF="node48.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2247"
+<A NAME="tex2html3037"
   HREF="node57.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2253"
+<A NAME="tex2html3045"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2255"
+<A NAME="tex2html3047"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -87,80 +88,204 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2258"
-  HREF="node59.html">Buenas Prácticas y Patrones</A>
-<B>Sup:</B> <A NAME="tex2html2252"
-  HREF="node56.html">Pruebas</A>
-<B> Ant:</B> <A NAME="tex2html2248"
-  HREF="node57.html">Testing en JavaScript: Fácil</A>
+<B> Sig:</B> <A NAME="tex2html3050"
+  HREF="node59.html">Práctica: Inventando un Lenguaje:</A>
+<B>Sup:</B> <A NAME="tex2html3044"
+  HREF="node48.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html3038"
+  HREF="node57.html">Usando Pegjs con CoffeeScript</A>
 <B> Con:</B> 
-<A NAME="tex2html2253"
+<A NAME="tex2html3045"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html2255"
+<A NAME="tex2html3047"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION042520000000000000000">
-Unit Testing, TDD y BDD con Jasmine</A>
+<H1><A NAME="SECTION046100000000000000000"></A>
+   <A NAME="9872"></A>
+<BR>
+Práctica: Ambiguedad en C++
 </H1>
+  
+This lab illustrates a problem 
+that arises in C++.
+The C++ syntax does not disambiguate between expression
+statements (<code>stmt</code>) and declaration statements (<code>decl</code>). 
+The ambiguity arises when an expression
+statement has a function-style cast as its left-most subexpression.
+Since C does not support function-style casts, this ambiguity does not occur
+in C programs.
+For example, the phrase 
 
-<OL>
-<LI><A NAME="tex2html64"
-  HREF="http://youtu.be/nH1Amt_JHLg">Jasmine: BDD Style JavaScript Testing Hello World</A>
-por Chris McNabb (YouTube Sep. 2012)
-</LI>
-<LI><A NAME="tex2html65"
-  HREF="https://github.com/pivotal/jasmine/downloads">Download Jasmine</A>
-</LI>
-<LI><A NAME="tex2html66"
-  HREF="http://net.tutsplus.com/tutorials/javascript-ajax/testing-your-javascript-with-jasmine/?search_index=3">Testing Your JavaScript with Jasmine
-Andrew Burgess on Aug 4th 2011</A>
-</LI>
-<LI><A NAME="tex2html67"
-  HREF="http://youtu.be/eVpXkyN0zOE">Unit Testing in JavaScript via Jasmine</A>
-(Youtube)
-</LI>
-<LI><A NAME="tex2html68"
-  HREF="http://pivotal.github.com/jasmine/">Jasmine</A>
-en GitHub
-</LI>
-<LI><A NAME="tex2html69"
-  HREF="http://youtu.be/KdCQFFHUpi4">Behavior Driven Testing with Jasmine</A>
-(YouTube, Davis Frank de Pivotal Labs, Contiene una introducción a BDD)
-</LI>
-<LI><A NAME="tex2html70"
-  HREF="https://github.com/pivotal/jasmine/wiki">Jasmine Wiki</A>
-</LI>
-<LI><A NAME="tex2html71"
-  HREF="http://net.tutsplus.com/tutorials/javascript-ajax/make-javascript-testing-fun-with-testem">Testem</A>
-tutorial en net.tutplus (trabaja sobre Jasmine y sobre Coffee)
-</LI>
-<LI>Jasmine Matchers: <A NAME="tex2html72"
-  HREF="http://pivotal.github.com/jasmine/jsdoc/symbols/jasmine.Matchers.html">Class jasmine.Matchers</A>
-</LI>
-</OL>
+<P>
+<code>int (x) = y+z;</code> 
+
+<P>
+parses as either a <TT>decl</TT> or a <TT>stmt</TT>.
+
+<P>
+The disambiguation rule used in C++ is that <I>if the statement can be interpreted both as a declaration and
+as an expression, the statement is interpreted as a declaration statement.
+</I>
+
+<P>
+The following examples  disambiguate into <I>expression</I> statements when the
+potential <I>declarator</I> is followed by an operator different from equal 
+or semicolon (<TT>type_spec</TT> stands for a type specifier):
+
+<P>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=99>expr</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=128>dec</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=99><PRE>
+type_spec(i)++;      
+type_spec(i,3)&lt;&lt;d;  
+type_spec(i)-&gt;l=24;
+</PRE></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=128><PRE>
+type_spec(*i)(int); 
+type_spec(j)[5];   
+type_spec(m) = { 1, 2 }; 
+type_spec(a);              
+type_spec(*b)();          
+type_spec(c)=23;         
+type_spec(d),e,f,g=0;   
+type_spec(h)(e,3);
+</PRE></TD>
+</TR>
+</TABLE>
+</DIV>
+
+<P>
+Regarding to this problem, Bjarne Stroustrup remarks:<BLOCKQUOTE><I>Consider analyzing a statement consisting of
+a sequence of tokens as follows:
+</I></BLOCKQUOTE><PRE>
+              type_spec (dec_or_exp) tail
+</PRE><BLOCKQUOTE><I>
+Here <code>dec_or_exp</code> must be a declarator, an expression, 
+or both for the statement to be legal. This implies that <code>tail</code>
+must be a semicolon, something that can follow a 
+parenthesized declarator or something that can follow
+a parenthesized expression, that is, an initializer, <code>const</code>,
+<code>volatile</code>, <code>(</code>, <code>[</code>, or a postfix or infix operator.
+The general cases cannot be resolved without backtracking, nested grammars
+or similar advanced parsing strategies. In particular,
+the lookahead needed to disambiguate this case is not limited.
+</I>
+</BLOCKQUOTE>
+
+<P>
+The following grammar 
+depicts 
+an oversimplified version of the C++ ambiguity:
+
+<P>
+<PRE>
+$ cat CplusplusNested.y 
+%token ID INT NUM
+
+%right '='
+%left '+'
+
+%%
+prog:
+    /* empty */
+  | prog stmt
+;
+
+stmt: 
+    expr ';' 
+  | decl    
+;
+
+expr:
+    ID 
+  | NUM
+  | INT '(' expr ')' /* typecast */ 
+  | expr '+' expr
+  | expr '=' expr
+;
+
+decl:
+    INT declarator ';'
+  | INT declarator '=' expr ';'
+;
+
+declarator:
+    ID 
+  | '(' declarator ')'
+;
+
+%%
+</PRE>
+
+<P>
+Escriba un programa PegJS en CoffeeScript que distinga correctamente entre declaraciones
+y sentencias. Este es un ejemplo de un programa que usa una solución al problema:
+<PRE>
+[~/Dropbox/src/javascript/PLgrado/pegjs-coffee-plugin/examples(master)]$ cat use_cplusplus.coffee 
+PEG = require("./cplusplus.js")
+input = "int (a); int c = int (b);"
+
+r = PEG.parse(input)
+console.log("input = '#{input}'\noutput="+JSON.stringify r)
+
+input = "int b = 4+2  ;  "
+r = PEG.parse(input)
+console.log("input = '#{input}'\noutput="+JSON.stringify r)
+
+input = "bum = caf = 4-1;\n"
+r = PEG.parse(input)
+console.log("input = '#{input}'\noutput="+JSON.stringify r)
+
+input = "b2 = int(4);"
+r = PEG.parse(input)
+console.log("input = '#{input}'\noutput="+JSON.stringify r)
+
+input = "int(4);"
+r = PEG.parse(input)
+console.log("input = '#{input}'\noutput="+JSON.stringify r)
+</PRE>
+Y este un ejemplo de salida:
+<PRE>
+$ pegcoffee cplusplus.pegjs 
+$ coffee use_cplusplus.coffee 
+input = 'int (a); int c = int (b);'
+output=["decl","decl"]
+input = 'int b = 4+2  ;  '
+output=["decl"]
+input = 'bum = caf = 4-1;
+'
+output=["stmt"]
+input = 'b2 = int(4);'
+output=["stmt"]
+input = 'int(4);'
+output=["stmt"]
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html2257"
+<A NAME="tex2html3049"
   HREF="node59.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2251"
-  HREF="node56.html">
+<A NAME="tex2html3043"
+  HREF="node48.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2247"
+<A NAME="tex2html3037"
   HREF="node57.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2253"
+<A NAME="tex2html3045"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2255"
+<A NAME="tex2html3047"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -208,12 +333,12 @@ tutorial en net.tutplus (trabaja sobre Jasmine y sobre Coffee)
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2258"
-  HREF="node59.html">Buenas Prácticas y Patrones</A>
-<B>Sup:</B> <A NAME="tex2html2252"
-  HREF="node56.html">Pruebas</A>
-<B> Ant:</B> <A NAME="tex2html2248"
-  HREF="node57.html">Testing en JavaScript: Fácil</A>
+<B> Sig:</B> <A NAME="tex2html3050"
+  HREF="node59.html">Práctica: Inventando un Lenguaje:</A>
+<B>Sup:</B> <A NAME="tex2html3044"
+  HREF="node48.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html3038"
+  HREF="node57.html">Usando Pegjs con CoffeeScript</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

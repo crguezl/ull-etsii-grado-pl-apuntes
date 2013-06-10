@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Comentarios Anidados</TITLE>
-<META NAME="description" CONTENT="Comentarios Anidados">
+<TITLE>Práctica: Construcción del AST para el Lenguaje Simple C</TITLE>
+<META NAME="description" CONTENT="Práctica: Construcción del AST para el Lenguaje Simple C">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,26 +21,26 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node127.html">
 <LINK REL="previous" HREF="node125.html">
-<LINK REL="up" HREF="node120.html">
+<LINK REL="up" HREF="node97.html">
 <LINK REL="next" HREF="node127.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4131"
+<A NAME="tex2html4312"
   HREF="node127.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4125"
-  HREF="node120.html">
+<A NAME="tex2html4306"
+  HREF="node97.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4119"
+<A NAME="tex2html4300"
   HREF="node125.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4127"
+<A NAME="tex2html4308"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4129"
+<A NAME="tex2html4310"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -88,81 +88,94 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4132"
-  HREF="node127.html">Un Lenguaje Dependiente del</A>
-<B>Sup:</B> <A NAME="tex2html4126"
-  HREF="node120.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html4120"
-  HREF="node125.html">Asociando un else con</A>
+<B> Sig:</B> <A NAME="tex2html4313"
+  HREF="node127.html">El Generador de Analizadores</A>
+<B>Sup:</B> <A NAME="tex2html4307"
+  HREF="node97.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4301"
+  HREF="node125.html">Diseño de Analizadores con</A>
 <B> Con:</B> 
-<A NAME="tex2html4127"
+<A NAME="tex2html4308"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4129"
+<A NAME="tex2html4310"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<H1><A NAME="SECTION010660000000000000000">
-Comentarios Anidados</A>
+<UL CLASS="ChildLinks">
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html4314"
+  HREF="node126.html#SECTION049290010000000000000">Analizador Léxico</A>
+</UL></UL></UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION049290000000000000000"></A>
+   <A NAME="18543"></A>
+  
+<A NAME="practica:esquemadetradsimple"></A>
+<BR>
+Práctica: Construcción del AST para el Lenguaje Simple C
 </H1>
+Utilice 
+<A NAME="tex2html370"
+  HREF="Parse-Eyapp.tar.gz">Parse-Eyapp</A>.
+para construir un árbol de análisis sintáctico abstracto 
+para la gramática descrita en la sección
+<A HREF="node140.html#section:simplec">12.2</A>.
+Su analizador deberá seguir los consejos explícitados en la 
+sección <A HREF="node125.html#section:consejoseyapp">9.28</A>.
 
 <P>
-<PRE>
-$ cat pascal_comments.pegjs 
-/* Pascal nested comments */
 
-P     =   prog:N+                          { return prog; }
-N     =   chars:$(!Begin ANY)+             { return chars;}
-        / C
-C     = Begin chars:T* End                 { return chars.join(''); }
-T     =   C 
-        / (!Begin !End char:ANY)           { return char;}
-Begin = '(*'
-End   = '*)'
-ANY   =   'z'    /* any character */       { return 'z';  }
-        / char:[^z]                        { return char; }
-</PRE>
+<H4><A NAME="SECTION049290010000000000000">
+Analizador Léxico</A>
+</H4>
 
 <P>
-<PRE>
-$ cat use_pascal_comments.js 
-var PEG = require("./pascal_comments.js");
-var r = PEG.parse(
-  "not bla bla (* pascal (* nested *) comment *)"+
-  " pum pum (* another comment *)");
-console.log(r);
-</PRE>
+Además del tipo de terminal y su valor el analizador
+léxico deberá devolver el número de línea.
+El analizador léxico deberá aceptar comentarios C.
+En la gramática, el terminal <code>CHARACTER</code> se refiere a 
+caracteres entre comillas simples (por ejemplo <code>'a'</code>).
+El terminal <code>STRING</code> se refiere a 
+caracteres entre comillas dobles (por ejemplo <code>"hola"</code>).
 
 <P>
-<PRE>
-$ ../bin/pegjs pascal_comments.pegjs 
-$ node use_pascal_comments.js 
-[ 'not bla bla ',
-  ' pascal  nested  comment ',
-  ' pum pum ',
-  ' another comment ' ]
-</PRE>
+Se aconseja que las palabras reservadas del lenguaje
+no se traten con expresiones regulares específicas sino que se
+capturen en el patrón de identificador <code>[a-z_]\w+</code>. 
+Se mantiene para ello un hash con las palabras reservadas 
+que es inicializado al comienzo del programa. Cuando 
+el analizador léxico encuentra un identificador
+mira en primer lugar en dicho hash 
+para ver si es una palabra reservada y,
+si lo es, devuelve el terminal correspondiente.
+En caso contrario se trata de un identificador.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4131"
+<A NAME="tex2html4312"
   HREF="node127.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4125"
-  HREF="node120.html">
+<A NAME="tex2html4306"
+  HREF="node97.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4119"
+<A NAME="tex2html4300"
   HREF="node125.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4127"
+<A NAME="tex2html4308"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4129"
+<A NAME="tex2html4310"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -210,12 +223,12 @@ $ node use_pascal_comments.js
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4132"
-  HREF="node127.html">Un Lenguaje Dependiente del</A>
-<B>Sup:</B> <A NAME="tex2html4126"
-  HREF="node120.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html4120"
-  HREF="node125.html">Asociando un else con</A>
+<B> Sig:</B> <A NAME="tex2html4313"
+  HREF="node127.html">El Generador de Analizadores</A>
+<B>Sup:</B> <A NAME="tex2html4307"
+  HREF="node97.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4301"
+  HREF="node125.html">Diseño de Analizadores con</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

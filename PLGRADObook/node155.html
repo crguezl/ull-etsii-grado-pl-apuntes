@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Práctica: Traducción de Infijo a Postfijo</TITLE>
-<META NAME="description" CONTENT="Práctica: Traducción de Infijo a Postfijo">
+<TITLE>Introducción</TITLE>
+<META NAME="description" CONTENT="Introducción">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,26 +21,26 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node156.html">
 <LINK REL="previous" HREF="node154.html">
-<LINK REL="up" HREF="node149.html">
+<LINK REL="up" HREF="node154.html">
 <LINK REL="next" HREF="node156.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4795"
+<A NAME="tex2html4923"
   HREF="node156.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4789"
-  HREF="node149.html">
+<A NAME="tex2html4917"
+  HREF="node154.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4783"
+<A NAME="tex2html4911"
   HREF="node154.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4791"
+<A NAME="tex2html4919"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4793"
+<A NAME="tex2html4921"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -88,168 +88,44 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4796"
-  HREF="node156.html">Práctica: Calculadora con Funciones</A>
-<B>Sup:</B> <A NAME="tex2html4790"
-  HREF="node149.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4784"
-  HREF="node154.html">Construcción de las Tablas</A>
+<B> Sig:</B> <A NAME="tex2html4924"
+  HREF="node156.html">Estructura Léxica</A>
+<B>Sup:</B> <A NAME="tex2html4918"
+  HREF="node154.html">SEGUNDA PARTE: APUNTES DE</A>
+<B> Ant:</B> <A NAME="tex2html4912"
+  HREF="node154.html">SEGUNDA PARTE: APUNTES DE</A>
 <B> Con:</B> 
-<A NAME="tex2html4791"
+<A NAME="tex2html4919"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4793"
+<A NAME="tex2html4921"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION010860000000000000000"></A>
-   <A NAME="16675"></A>
-  
-<A NAME="section:calculadoraampliada"></A>
-<BR>
-Práctica: Traducción de Infijo a Postfijo
+<H1><A NAME="SECTION05100000000000000000">
+Introducción</A>
 </H1>
-Modifique el programa Jison realizado en la práctica 
-<A HREF="node152.html#subsectionpractica:calculadora">38.3.1</A>
-para traducir de infijo a postfijo. 
-Añada los operadores de comparación e igualdad.
-Por ejemplo
-
-<P>
-<DIV ALIGN="CENTER">
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170>Infijo</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170>Postfijo</TD>
-</TR>
-<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><code>a = 3+2*4</code></TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><code> 3 2 4 * + &amp;a = </code></TD>
-</TR>
-<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><code>b = a == 11</code></TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><code> a 11 == &amp;b = </code></TD>
-</TR>
-</TABLE>
-</DIV>
-En estas traducciones la notación 
-<code>&amp;a</code> indica la dirección de la variable <code>a</code>
-y <code>a</code> indica el valor almacenado en la variable <code>a</code>.
-
-<P>
-Añada sentencias 
-<code>if</code> ...
-<code>then</code> e <code>if</code> ... <code>then</code> ... <code>else</code>
-
-<P>
-Para realizar la traducción de estas sentencias
-añada 
-instrucciones <code>jmp label</code> y <code>jmpz label</code> (por <I>jump if zero</I>)
-y etiquetas:
-
-<P>
-<DIV ALIGN="CENTER">
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>Infijo</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170>Postfijo</TD>
-</TR>
-<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227><PRE>
-a = (2+5)*3;
-if a == 0 then b = 5 else b = 3;
-c = b + 1;
-</PRE></TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><PRE>
-        2
-        5
-        +
-        3
-        *
-        &amp;a
-        =
-        a
-        0
-        ==
-        jmpz else1
-        5
-        &amp;b
-        =
-        jmp endif0
-:else1
-        3
-        &amp;b
-        =
-:endif0
-        b
-        1
-        +
-        &amp;c
-        =
-</PRE></TD>
-</TR>
-</TABLE>
-</DIV>
-Introduzca pruebas unitarias como las descritas en 
-la sección <A HREF="node57.html#section:tstingfacil">25.1</A> (<I><A NAME="tex2html441"
-  HREF="http://net.tutsplus.com/tutorials/javascript-ajax/quick-tip-quick-and-easy-javascript-testing-with-assert/">Quick Tip: Quick and Easy JavaScript Testing with “Assert”</A></I>)
-
-<P>
-<PRE>
-[~/srcPLgrado/jisoninfix2postfix(master)]$ cat test/test.html 
-&lt;!DOCTYPE HTML&gt;
-&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;title&gt;Testing Our Simple Translator&lt;/title&gt;
-    &lt;link rel="stylesheet" href="test.css" /&gt;
-    &lt;script type="text/javascript" src="../calculator.js"&gt;&lt;/script&gt;
-
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;h1&gt;Testing Our Simple Translator
-    &lt;/h1&gt;
-    
-    &lt;ul id="output"&gt;&lt;/ul&gt;
-    &lt;script type="text/javascript" src="assert.js"&gt;&lt;/script&gt;
-    
-    &lt;script type="text/javascript"&gt;
-
-      var r = calculator.parse("a = 4*8");
-      assert( /4\s*8\s*[*]\s*a\s*=\s*/.exec(r), "a is 4*8");
-      
-      r = calculator.parse("a=4;b=a+1");
-      r = r.replace(/\s+/g,'');
-      var expected = "4a=a1+b=";
-      assert( r == expected, "a = 4;\nb=a+1 translated");
-
-
-      var r = calculator.parse("if a &gt; 0 then b = 1 else b = 2");
-      r = r.replace(/\s+/g,'');
-      expected = "a 0 &gt; jmpz else1 1 b = jmp endif0 :else1 2 b = :endif0".
-                 replace(/\s+/g,'');
-      assert( r == expected, "'if a &gt; 0 then b = 1 else b = 2' translated");
-    &lt;/script&gt;
-      See the NetTuts+ tutorial at &lt;a href="http://net.tutsplus.com/tutorials/javascript-ajax/quick-tip-quick-and-easy-javascript-testing-with-assert/"&gt;Quick and Easy JavaScript Testing&lt;/a&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4795"
+<A NAME="tex2html4923"
   HREF="node156.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4789"
-  HREF="node149.html">
+<A NAME="tex2html4917"
+  HREF="node154.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4783"
+<A NAME="tex2html4911"
   HREF="node154.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4791"
+<A NAME="tex2html4919"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4793"
+<A NAME="tex2html4921"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -297,12 +173,12 @@ la sección <A HREF="node57.html#section:tstingfacil">25.1</A> (<I><A NAME="tex2
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4796"
-  HREF="node156.html">Práctica: Calculadora con Funciones</A>
-<B>Sup:</B> <A NAME="tex2html4790"
-  HREF="node149.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4784"
-  HREF="node154.html">Construcción de las Tablas</A>
+<B> Sig:</B> <A NAME="tex2html4924"
+  HREF="node156.html">Estructura Léxica</A>
+<B>Sup:</B> <A NAME="tex2html4918"
+  HREF="node154.html">SEGUNDA PARTE: APUNTES DE</A>
+<B> Ant:</B> <A NAME="tex2html4912"
+  HREF="node154.html">SEGUNDA PARTE: APUNTES DE</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

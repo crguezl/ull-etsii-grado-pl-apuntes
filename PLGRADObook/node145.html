@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Asignación de Direcciones</TITLE>
-<META NAME="description" CONTENT="Asignación de Direcciones">
+<TITLE>Resultado del Análisis de Ámbito</TITLE>
+<META NAME="description" CONTENT="Resultado del Análisis de Ámbito">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,26 +21,26 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node146.html">
 <LINK REL="previous" HREF="node144.html">
-<LINK REL="up" HREF="node132.html">
+<LINK REL="up" HREF="node138.html">
 <LINK REL="next" HREF="node146.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4580"
+<A NAME="tex2html4699"
   HREF="node146.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4574"
-  HREF="node132.html">
+<A NAME="tex2html4693"
+  HREF="node138.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4568"
+<A NAME="tex2html4687"
   HREF="node144.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4576"
+<A NAME="tex2html4695"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4578"
+<A NAME="tex2html4697"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -88,18 +88,18 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4581"
-  HREF="node146.html">Generación de Código: Máquina</A>
-<B>Sup:</B> <A NAME="tex2html4575"
-  HREF="node132.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html4569"
-  HREF="node144.html">Patrones Árbol y Transformaciones</A>
+<B> Sig:</B> <A NAME="tex2html4700"
+  HREF="node146.html">Usando el Método str</A>
+<B>Sup:</B> <A NAME="tex2html4694"
+  HREF="node138.html">Análisis de Ámbito en</A>
+<B> Ant:</B> <A NAME="tex2html4688"
+  HREF="node144.html">Análisis de Ámbito con</A>
 <B> Con:</B> 
-<A NAME="tex2html4576"
+<A NAME="tex2html4695"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4578"
+<A NAME="tex2html4697"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
@@ -109,317 +109,340 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html4582"
-  HREF="node145.html#SECTION0107131000000000000000">Práctica: Cálculo de las Direcciones</A>
-</UL>
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html4701"
+  HREF="node145.html#SECTION041270010000000000000">Código de Apoyo a la Visualización</A>
+<LI><A NAME="tex2html4702"
+  HREF="node145.html#SECTION041270020000000000000">Un Ejemplo con Errores de Ámbito</A>
+<LI><A NAME="tex2html4703"
+  HREF="node145.html#SECTION041270030000000000000">Mostrando el Resultado del Análisis de Ámbito</A>
+</UL></UL></UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION0107130000000000000000">
-Asignación de Direcciones</A>
-</H1>
-Esta suele ser considerada  la primera de las fases de síntesis.
-Las anteriores lo eran de análisis. La fase de análisis
-es una transformación <!-- MATH
- $texto\ fuente \rightarrow arbol$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="169" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img341.png"
- ALT="$ texto fuente \rightarrow arbol$"></SPAN>, mientras
-que la fase síntesis es una transformación inversa
-<!-- MATH
- $arbol \rightarrow texto\ objeto$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="163" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img342.png"
- ALT="$ arbol \rightarrow texto objeto$"></SPAN> que produce una ``linealización''
-del árbol. En general, se ubican en la fase de síntesis todas
-las tareas que dependan del lenguaje objeto.
-
-<P>
-La asignación de direcciones depende de la máquina objetivo en cuanto
-conlleva consideraciones sobre la longitud de palabra, las unidades
-de memoria direccionables, la compactación de objetos pequeños (por ejemplo,
-valores lógicos), el alineamiento a fronteras de palabra, etc.
-
-<P>
-En nuestro caso debemos distinguir entre las cadenas y las variables enteras.
-
-<P>
-Las constantes literales (como <code>"hola"</code>) se almacenan 
-concatenadas en orden de aparición textual.
-Una variable de tipo cadena ocupa dos palabras, una dando su dirección 
-y otra dando su longitud.
-
-<P>
-<PRE>
-sub factor() {
-  my ($e, $id, $str, $num);
-
-  if ($lookahead eq 'NUM') { ... }
-  elsif ($lookahead eq 'ID') { ... }
-  elsif ($lookahead eq 'STR') {
-    $str = $value;
-    my ($offset, $length) = Address::Assignment::str($str);
-    match('STR');
-    return STR-&gt;new(OFFSET =&gt; $offset, LENGTH =&gt; $length, TYPE =&gt; $string_type);
-  }
-  elsif ($lookahead eq '(') { ... }
-  else { Error::fatal("Se esperaba (, NUM o ID"); }
-}
-</PRE>
-
-<P>
-El código de la subrutina <code>Address::Assignment::str</code> es:
-<PRE>
-  sub str {
-    my $str = shift;
-    my $len = length($str);
-    my $offset = length($data);
-    $data .= $str;
-    return ($offset, $len);
-  }
-</PRE>
-Una posible mejora es la que se describe en 
-el punto
-<A HREF="#item:norepetidas">2</A>
-de la práctica
-<A HREF="#practica:calculodelasdirecciones">37.13.1</A>.
-
-<P>
-Hemos supuesto que las variables enteras y las referencias ocupan una palabra.
-Cada vez que una variable es declarada, se le computa su dirección relativa:
-
-<P>
-<PRE>
-# declaration -&gt; type idlist
-# type        -&gt; INT | STRING
-sub declaration() {
-  my ($t, $decl, @il);
-
-  if (($lookahead eq 'INT') or ($lookahead eq 'STRING')) {
-    $t = &amp;type(); @il = &amp;idlist();
-    &amp;Semantic::Analysis::set_types($t, @il);
-    &amp;Address::Assignment::compute_address($t, @il);
-    $decl = [$t, \@il];
-    return bless $decl, 'DECL';
-  }
-  else { Error::fatal('Se esperaba un tipo'); }
-}
-</PRE>
-
-<P>
-Se usa una variable <code>$global_address</code> para llevar la cuenta de la última 
-dirección utilizada y se introduce un atributo <code>ADDRESS</code> en 
-la tabla de símbolos:
-
-<P>
-<PRE>
-  sub compute_address {
-    my $type = shift;
-    my @id_list = @_;
-
-    for my $i (@id_list) {
-      $symbol_table{$i}-&gt;{ADDRESS} = $global_address;
-      $global_address += $type-&gt;LENGTH;
-    }
-  }
-</PRE>
-
-<P>
-Por último situamos todas las cadenas después de las variables
-del programa fuente:
-
-<P>
-<PRE>
-  ... 
-  ##### En compile, despues de haber calculado las direcciones
-  Tree::Transform::match_and_transform_list(
-    NODES =&gt; $tree-&gt;{STS},
-    PATTERN =&gt; sub { 
-      $_[0]-&gt;isa('STR')
-    },
-    ACTION =&gt; sub { $_[0]-&gt;{OFFSET} += $global_address; }
-  );
-</PRE>
-
-<P>
-Esta aproximación es bastante simplista en cuanto que usa una palabra
-por carácter. 
-El punto
-<A HREF="#item:compacta">3</A>
-de la práctica
-<A HREF="#practica:calculodelasdirecciones">37.13.1</A> propone una mejora.
-
-<P>
-
-<H2><A NAME="SECTION0107131000000000000000"></A>
-   <A NAME="12932"></A>
-  
-<A NAME="practica:calculodelasdirecciones"></A>
+<H1><A NAME="SECTION041270000000000000000"></A>
+<A NAME="section:resultadosambito"></A>
 <BR>
-Práctica: Cálculo de las Direcciones
-</H2>
-Modifique el cálculo de las direcciones para la gramática de Tutu
-extendida con sentencias compuestas que fué presentada en 
-la sección 
-<A HREF="node142.html#practica:analisis_semantico">37.10.2</A>.
+Resultado del Análisis de Ámbito
+</H1>
+Como se ha comentado en la sección 
+<A HREF="node143.html#section:limitacionesdedumper">12.5</A> el volcado de 
+los AST con <code>Data::Dumper</code> es insuficiente.
+Para la visualización utilizaremos el método
+ <TT>str</TT>  presentado en la sección
+<A HREF="node146.html#section:str">12.8</A>.
 
 <P>
 
-<OL>
-<LI>Resuelva el problema de calcular las direcciones de las variables
-declaradas en los bloques. La memoria ocupada por dichas variables
-se libera al terminar el bloque. Por tanto la variable <code>$global_address</code>
-disminuye al final de cada bloque.
-</LI>
-<LI><A NAME="item:norepetidas"></A>En el código de la subrutina <code>Address::Assignment::str</code> 
+<H4><A NAME="SECTION041270010000000000000">
+Código de Apoyo a la Visualización</A>
+</H4>
+  
+
+<P>
+Sigue el código de apoyo a la visualización:
+<PRE>
+pl@nereida:~/Lbook/code/Simple-Scope/lib/Simple$ sed -ne '845,$p' Scope.eyp | cat -n
+ 1  ############## Debugging and Display
+ 2  sub show_trees {
+ 3   my ($t) = @_;
+ 4
+ 5   print Dumper $t if $debug &gt; 1;
+ 6   $Parse::Eyapp::Node::INDENT = 2;
+ 7   $Data::Dumper::Indent = 1;
+ 8   print $t-&gt;str."\n";
+ 9  }
+10
+11  $Parse::Eyapp::Node::INDENT = 1;
+12  sub TERMINAL::info {
+13    my @a = join ':', @{$_[0]-&gt;{attr}};
+14    return "@a"
+15  }
+16
+17  sub PROGRAM::footnote {
+18    return "Types:\n"
+19           .Dumper($_[0]-&gt;{types}).
+20           "Symbol Table of the Main Program:\n"
+21           .Dumper($_[0]-&gt;{symboltable})
+22  }
+23
+24  sub FUNCTION::info {
+25    return $_[0]-&gt;{function_name}[0]
+26  }
+27
+28  sub FUNCTION::footnote {
+29    my $text = '';
+30    $text .= "Symbol Table of $_[0]-&gt;{function_name}[0]\n" if $_[0]-&gt;type eq 'FUNCTION';
+31    $text .= "Symbol Table of block at line $_[0]-&gt;{line}\n" if $_[0]-&gt;type eq 'BLOCK';
+32    $text .= Dumper($_[0]-&gt;{symboltable});
+33    return $text;
+34  }
+35
+36  sub BLOCK::info {
+37    my $info = "$_[0]-&gt;{line}:$_[0]-&gt;{depth}";
+38    my $fatherblock = $_[0]-&gt;{fatherblock};
+39      $info .= ":".$fatherblock-&gt;info
+40    if defined($fatherblock) and UNIVERSAL::can($fatherblock, 'info');
+41    return $info;
+42  }
+43
+44  *BLOCK::footnote = \&amp;FUNCTION::footnote;
+45
+46  sub VAR::info {
+47    return $_[0]-&gt;{type} if defined $_[0]-&gt;{type};
+48    return "No declarado!";
+49  }
+50
+51  *FUNCTIONCALL::info = *VARARRAY::info = \&amp;VAR::info;
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION041270020000000000000">
+Un Ejemplo con Errores de Ámbito</A>
+</H4>
+  
+
+<P>
+Utilizando este código 
+obtenemos una descripción completa y concisa 
+del árbol anotado. Si hay errores de ámbito se mostrarán.
 
 <P>
 <PRE>
-  sub str {
-    my $str = shift;
-    my $len = length($str);
-    my $offset = length($data);
-    $data .= $str;
-    return ($offset, $len);
+pl@nereida:~/Lbook/code/Simple-Scope/script$ usescope.pl prueba27.c 2
+
+   1 int a,b;
+   2
+   3 int f(char c) {
+   4  a[2] = 4;
+   5  {
+   6    int d;
+   7    d = a + b;
+   8  }
+   9  c = d * 2;
+  10  return g(c);
+  11 }
+Identifier d not declared at line 9
+Identifier g not declared at line 10
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION041270030000000000000">
+Mostrando el Resultado del Análisis de Ámbito</A>
+</H4>
+  
+
+<P>
+Si no hay errores se obtiene un listado enumerado del programa fuente,
+el árbol, la tabla de tipos y las tablas de símbolos:
+
+<P>
+<PRE>
+pl@nereida:~/Lbook/code/Simple-Scope/script$  usescope.pl prueba25.c 2
+
+   1 int a[20],b,e[10];
+   2
+   3 g() {}
+   4
+   5 int f(char c) {
+   6 char d;
+   7  c = 'X';
+   8  e[b] = 'A'+c;
+   9  {
+  10    int d;
+  11    d = d + b;
+  12  }
+  13  c = d * 2;
+  14  return c;
+  15 }
+  16
+  17
+PROGRAM^{0}(
+  FUNCTION[g]^{1},
+  FUNCTION[f]^{2}(
+    ASSIGN(
+      VAR[CHAR](
+        TERMINAL[c:7]
+      ),
+      CHARCONSTANT(
+        TERMINAL['X':7]
+      )
+    ) # ASSIGN,
+    ASSIGN(
+      VARARRAY[A_10(INT)](
+        TERMINAL[e:8],
+        INDEXSPEC(
+          VAR[INT](
+            TERMINAL[b:8]
+          )
+        ) # INDEXSPEC
+      ) # VARARRAY,
+      PLUS(
+        CHARCONSTANT(
+          TERMINAL['A':8]
+        ),
+        VAR[CHAR](
+          TERMINAL[c:8]
+        )
+      ) # PLUS
+    ) # ASSIGN,
+    BLOCK[9:3:f]^{3}(
+      ASSIGN(
+        VAR[INT](
+          TERMINAL[d:11]
+        ),
+        PLUS(
+          VAR[INT](
+            TERMINAL[d:11]
+          ),
+          VAR[INT](
+            TERMINAL[b:11]
+          )
+        ) # PLUS
+      ) # ASSIGN
+    ) # BLOCK,
+    ASSIGN(
+      VAR[CHAR](
+        TERMINAL[c:13]
+      ),
+      TIMES(
+        VAR[CHAR](
+          TERMINAL[d:13]
+        ),
+        INUM(
+          TERMINAL[2:13]
+        )
+      ) # TIMES
+    ) # ASSIGN,
+    RETURN(
+      VAR[CHAR](
+        TERMINAL[c:14]
+      )
+    ) # RETURN
+  ) # FUNCTION
+) # PROGRAM
+---------------------------
+0)
+Types:
+$VAR1 = {
+  'A_10(INT)' =&gt; bless( {
+    'children' =&gt; [
+      bless( {
+        'children' =&gt; []
+      }, 'INT' )
+    ]
+  }, 'A_10' ),
+  'F(X_1(CHAR),INT)' =&gt; bless( {
+    'children' =&gt; [
+      bless( {
+        'children' =&gt; [
+          bless( {
+            'children' =&gt; []
+          }, 'CHAR' )
+        ]
+      }, 'X_1' ),
+      $VAR1-&gt;{'A_10(INT)'}{'children'}[0]
+    ]
+  }, 'F' ),
+  'CHAR' =&gt; $VAR1-&gt;{'F(X_1(CHAR),INT)'}{'children'}[0]{'children'}[0],
+  'VOID' =&gt; bless( {
+    'children' =&gt; []
+  }, 'VOID' ),
+  'INT' =&gt; $VAR1-&gt;{'A_10(INT)'}{'children'}[0],
+  'A_20(INT)' =&gt; bless( {
+    'children' =&gt; [
+      $VAR1-&gt;{'A_10(INT)'}{'children'}[0]
+    ]
+  }, 'A_20' ),
+  'F(X_0(),INT)' =&gt; bless( {
+    'children' =&gt; [
+      bless( {
+        'children' =&gt; []
+      }, 'X_0' ),
+      $VAR1-&gt;{'A_10(INT)'}{'children'}[0]
+    ]
+  }, 'F' )
+};
+Symbol Table of the Main Program:
+$VAR1 = {
+  'e' =&gt; {
+    'type' =&gt; 'A_10(INT)',
+    'line' =&gt; 1
+  },
+  'a' =&gt; {
+    'type' =&gt; 'A_20(INT)',
+    'line' =&gt; 1
+  },
+  'b' =&gt; {
+    'type' =&gt; 'INT',
+    'line' =&gt; 1
+  },
+  'g' =&gt; {
+    'type' =&gt; 'F(X_0(),INT)',
+    'line' =&gt; 3
+  },
+  'f' =&gt; {
+    'type' =&gt; 'F(X_1(CHAR),INT)',
+    'line' =&gt; 5
   }
+};
+
+---------------------------
+1)
+Symbol Table of g
+$VAR1 = {};
+
+---------------------------
+2)
+Symbol Table of f
+$VAR1 = {
+  'c' =&gt; {
+    'type' =&gt; 'CHAR',
+    'param' =&gt; 1,
+    'line' =&gt; 5
+  },
+  'd' =&gt; {
+    'type' =&gt; 'CHAR',
+    'line' =&gt; 6
+  }
+};
+
+---------------------------
+3)
+Symbol Table of block at line 9
+$VAR1 = {
+  'd' =&gt; {
+    'type' =&gt; 'INT',
+    'line' =&gt; 10
+  }
+};
+
+pl@nereida:~/Lbook/code/Simple-Scope/script$
 </PRE>
 
 <P>
-no se comprueba si la cadena <code>$str</code> ya está en <code>$data</code>. 
-Es natural que si ya está no la insertemos de nuevo. Introduzca esa 
-mejora. Para ello use la función <code>pos</code>,
-la cual devuelve el desplazamiento en <code>$data</code> donde
-quedó la última búsqueda <code>$data =~ m/regexp/g</code>.
- El siguiente ejemplo con
-el depurador le muestra como trabaja. Escriba <code>perldoc -f pos</code>
-para obtener mas información sobre la función <code>pos</code>.
-Vea un ejemplo de uso:
-
-<P>
-<PRE>
-DB&lt;1&gt; $str = "world"
-#              012345678901234567890123456789012
-DB&lt;2&gt; $data = "hello worldjust another statement"
-DB&lt;3&gt; $res = $data =~ m{$str}g
-DB&lt;4&gt; x pos($data) # la siguiente busqueda comienza en la 11
-0  11
-DB&lt;5&gt; $s = "hello"
-DB&lt;6&gt; $res = $data =~ m{$s}g
-DB&lt;7&gt; x pos($data) # No hay "hello" despues de world en $data
-0  undef
-DB&lt;8&gt; $res = $data =~ m{$str}g # Repetimos ...
-DB&lt;9&gt; x pos($data)
-0  11
-DB&lt;10&gt; pos($data) = 0  # Podemos reiniciar pos!
-DB&lt;11&gt; $res = $data =~ m{$s}g
-DB&lt;12&gt; x pos($data) # Ahora si se encuentra "hello"
-0  5
-</PRE>
-
-<P>
-</LI>
-<LI><A NAME="item:compacta"></A>Empaquete las cadenas asumiendo que cada carácter ocupa un octeto o byte.
-Una posible solución al problema de alineamiento que se produce es
-rellenar con ceros los bytes que faltan hasta completar la última palabra
-ocupada por la cadena. Por ejemplo, si la longitud de palabra de la 
-máquina objeto es de 4 
-bytes, la palabra <SPAN  CLASS="textbf">procesador</SPAN> se cargaría asi:
-
-<P>
-<DIV ALIGN="CENTER">
-</DIV><PRE>
-   0    |    1    |    2      
-0 1 2 3 | 4 5 6 7 | 8 9 10  11
-p r o c | e s a d | o r \0  \0
-</PRE>
-<DIV ALIGN="CENTER">
-</DIV>
-
-<P>
-Existen dos posibles formas de hacer esta empaquetado.
-Por ejemplo, si tenemos las cadenas
-<code>lucas</code> y <code>pedro</code> las podemos introducir en 
-la cadena <code>$data</code> asi:
-
-<P>
-<DIV ALIGN="CENTER">
-</DIV><PRE>
-   0    |     1      |    2      |    3
-0 1 2 3 | 4  5  6  7 | 8 9 10 11 | 12 13 14 15
-l u c a | s \0 \0 \0 | p e  d  r |  o \0 \0 \0
-</PRE>
-<DIV ALIGN="CENTER">
-</DIV>
-
-<P>
-o bien:
-
-<P>
-<DIV ALIGN="CENTER">
-</DIV><PRE>
-   0    |    1    |    2     
-0 1 2 3 | 4 5 6 7 | 8 9 10 11
-l u c a | s p e d | r o \0 \0
-</PRE>
-<DIV ALIGN="CENTER">
-</DIV>
-
-<P>
-La segunda forma aunque compacta más tiene la desventaja de hacer luego mas 
-lento el código para el 
-direccionamiento de las cadenas, ya que no empiezan en frontera de palabra. 
-Utilice el primer modo.
-
-<P>
-Observe que este empaquetado introduce un efecto en lo que 
-se considera un éxito en la búsqueda de una cadena 
-<code>$str</code> en <code>$data</code>. ¿Que ocurre si <code>$str</code>
-aparece en <code>$data</code> como subcadena de una cadena
-previamente empaquetada ocupando una posición que no es frontera de palabra?
-
-<P>
-Cuando rellene con <code>\0</code> la cadena use el operador <code>x</code> (letra equis)
-para multiplicar número por cadena:
-
-<P>
-<PRE>
-DB&lt;1&gt; $x = "hola"x4
-DB&lt;2&gt; p $x
-holaholaholahola
-</PRE>
-
-<P>
-esto le evitará escribir un bucle.
-</LI>
-<LI>Mantega atributos distintos en el nodo <code>STR</code>
-para el desplazamiento y longitud 
-de <code>$str</code> en <code>$data</code> (en caracteres)
-y su dirección y tamaño final en memoria (en palabras).
-
-<P>
-</LI>
-</OL>
+Observe como se anotan las referencias a pie de árbol usando la notación
+<code>^{#}</code>. La salida se completa con las <A NAME="21861"></A><SPAN  CLASS="textbf">notas a pie de árbol</SPAN>.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4580"
+<A NAME="tex2html4699"
   HREF="node146.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4574"
-  HREF="node132.html">
+<A NAME="tex2html4693"
+  HREF="node138.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4568"
+<A NAME="tex2html4687"
   HREF="node144.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4576"
+<A NAME="tex2html4695"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4578"
+<A NAME="tex2html4697"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -467,12 +490,12 @@ y su dirección y tamaño final en memoria (en palabras).
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4581"
-  HREF="node146.html">Generación de Código: Máquina</A>
-<B>Sup:</B> <A NAME="tex2html4575"
-  HREF="node132.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html4569"
-  HREF="node144.html">Patrones Árbol y Transformaciones</A>
+<B> Sig:</B> <A NAME="tex2html4700"
+  HREF="node146.html">Usando el Método str</A>
+<B>Sup:</B> <A NAME="tex2html4694"
+  HREF="node138.html">Análisis de Ámbito en</A>
+<B> Ant:</B> <A NAME="tex2html4688"
+  HREF="node144.html">Análisis de Ámbito con</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

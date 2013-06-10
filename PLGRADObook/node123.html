@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Eliminación de la Recursividad por la Izquierda</TITLE>
-<META NAME="description" CONTENT="Eliminación de la Recursividad por la Izquierda">
+<TITLE>Recuperacion de Errores: Visión Detallada</TITLE>
+<META NAME="description" CONTENT="Recuperacion de Errores: Visión Detallada">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,26 +21,26 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node124.html">
 <LINK REL="previous" HREF="node122.html">
-<LINK REL="up" HREF="node120.html">
+<LINK REL="up" HREF="node97.html">
 <LINK REL="next" HREF="node124.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4084"
+<A NAME="tex2html4270"
   HREF="node124.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4078"
-  HREF="node120.html">
+<A NAME="tex2html4264"
+  HREF="node97.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4072"
+<A NAME="tex2html4258"
   HREF="node122.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4080"
+<A NAME="tex2html4266"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4082"
+<A NAME="tex2html4268"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -88,257 +88,194 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4085"
-  HREF="node124.html">Eliminación de la Recursividad</A>
-<B>Sup:</B> <A NAME="tex2html4079"
-  HREF="node120.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html4073"
-  HREF="node122.html">Un Ejemplo Sencillo</A>
+<B> Sig:</B> <A NAME="tex2html4271"
+  HREF="node124.html">Descripción Eyapp del Lenguaje</A>
+<B>Sup:</B> <A NAME="tex2html4265"
+  HREF="node97.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4259"
+  HREF="node122.html">Práctica: Generación Automática de</A>
 <B> Con:</B> 
-<A NAME="tex2html4080"
+<A NAME="tex2html4266"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4082"
+<A NAME="tex2html4268"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><A NAME="tex2html4086"
-  HREF="node123.html#SECTION010631000000000000000">Eliminación de la Recursividad por la izquierda Respetando el Orden de 
-Ejecución de las Acciones Semánticas</A>
-<LI><A NAME="tex2html4087"
-  HREF="node123.html#SECTION010632000000000000000">Eliminando la Recursividad por la Izquierda en la Calculadora</A>
-</UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION010630000000000000000">
-Eliminación de la Recursividad por la Izquierda</A>
+<H1><A NAME="SECTION049260000000000000000">
+Recuperacion de Errores: Visión Detallada</A>
 </H1>
-
-<P>
-Es posible modificar la gramática para eliminar la recursión por 
-la izquierda. En este apartado nos limitaremos al caso de recursión 
-por la izquierda directa. 
-La generalización al caso de recursión por la izquierda no-directa
-se reduce a la iteración de la solución propuesta 
-para el caso directo.
-
-<P>
-Consideremos una variable <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img19.png"
- ALT="$ A$"></SPAN> con dos producciones:
-
-<P>
-<BR>
-<BR>
-<DIV ALIGN="CENTER">
-<!-- MATH
- $A   \rightarrow A \alpha |\ \beta$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="91" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img20.png"
- ALT="$ A \rightarrow A \alpha \vert \beta$"></SPAN> 
-
-</DIV>
-
-<P>
-donde <!-- MATH
- $\alpha, \beta \in (V \cup \Sigma)^*$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="123" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img21.png"
- ALT="$ \alpha, \beta \in (V \cup \Sigma)^*$"></SPAN> no comienzan por <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img19.png"
- ALT="$ A$"></SPAN>.
-Estas dos producciones pueden ser sustituidas por:
-
-<P>
-<BR>
-<BR>
-<DIV ALIGN="CENTER">
-<!-- MATH
- $A   \rightarrow \beta \alpha *$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="76" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img22.png"
- ALT="$ A \rightarrow \beta \alpha * $"></SPAN>
-</DIV>
-
-<P>
-eliminando así la recursión por la izquierda.
-
-<P>
-
-<H2><A NAME="SECTION010631000000000000000">
-Eliminación de la Recursividad por la izquierda Respetando el Orden de 
-Ejecución de las Acciones Semánticas</A>
-</H2>
-
-<P>
+La subrutina <code>_Parse</code> contiene el algoritmo de
+análisis LR genérico. En esta sección 
+nos concentraremos en la forma en la que se ha implantado en
+<code>yapp</code> la recuperación de errores.
 <PRE>
-[~/pegjs-coffee-remove-left(master)]$ cat -n remove_left_recursive.pegjs 
-     1  /*
-     2  
-     3  Exercise: Find a PEG equivalent to the following left-recursive
-     4  grammar:
-     5  
-     6  A : A 'x' { $$ = do_x($1, $2); } | 'y' { $$ = do_y($1); }
-     7  
-     8  */
-     9  
-    10  {
-    11    @do_y = (y)   -&gt; console.log("do_y(#{y})"); y
-    12    @do_x = (a, x)-&gt; console.log("do_x(#{a}, #{x})"); a+x
-    13  }
-    14  
-    15  A = y:'y' xs:('x'*) 
-    16       {
-    17          a = @do_y(y)
-    18          for x in xs
-    19            a = @do_x(a, x)
-    20          a
-    21       }
+ 1 sub _Parse {
+ 2   my($self)=shift;
+ 3   ... 
+ 4   $$errstatus=0; $$nberror=0;
 </PRE>
-
-<P>
-<PRE>
-[~/pegjs-coffee-remove-left(master)]$ pegcoffee remove_left_recursive.pegjs 
-[~/pegjs-coffee-remove-left(master)]$ ls -ltr | tail -1
--rw-rw-r--  1 casiano  staff   8919  3 jun 10:42 remove_left_recursive.js
+ La variable <code>$$errstatus</code> nos indica la situación con respecto a la recuperación
+ de errores. La variable <code>$$nberror</code> contiene el número total de errores.
+ <PRE>
+ 5   ($$token,$$value)=(undef,undef);
+ 6   @$stack=( [ 0, undef ] ); $$check='';
+ 7   while(1) {
+ 8     my($actions,$act,$stateno);
+ 9     $stateno=$$stack[-1][0];
+10     $actions=$$states[$stateno];
+11 
+12     if  (exists($$actions{ACTIONS})) { 
+13       defined($$token) or  do { ($$token,$$value)=&amp;$lex($self); };
+14       ...
+15     }
+16     else { $act=$$actions{DEFAULT}; }
 </PRE>
-
-<P>
+Si <code>$act</code> no esta definida es que ha ocurrido un 
+error. En tal caso no se entra a estudiar
+si la acción es de desplazamiento o reducción.
 <PRE>
-[~/pegjs-coffee-remove-left(master)]$ cat use_remove_left.coffee 
-PEG = require("./remove_left_recursive.js")
-inputs = [
-           "yxx"
-           "y"
-           "yxxx"
-         ]
-
-for input in inputs 
-  console.log("input = #{input}")
-  r = PEG.parse input
-  console.log("result = #{r}\n")
+17     defined($act) and do { 
+18       $act &gt; 0 and do { #shift
+19           $$errstatus and  do { --$$errstatus; };
+20           ...
+21           next;
+22       };
+23       #reduce
+24       ....
+25       $$check eq 'ERROR' or  do {
+26         push(@$stack, [ $$states[$$stack[-1][0]]{GOTOS}{$lhs}, $semval ]);
+27         $$check='';
+28         next;
+29       };
+30       $$check='';
+31     };
 </PRE>
-
-<P>
+Si <code>$$errstatus</code> es cero es que estamos
+ante un nuevo error:
 <PRE>
-[~/pegjs-coffee-remove-left(master)]$ coffee use_remove_left.coffee 
-input = yxx
-do_y(y)
-do_x(y, x)
-do_x(yx, x)
-result = yxx
-
-input = y
-do_y(y)
-result = y
-
-input = yxxx
-do_y(y)
-do_x(y, x)
-do_x(yx, x)
-do_x(yxx, x)
-result = yxxx
+32     #Error
+33     $$errstatus or   do {
+34       $$errstatus = 1;
+35       &amp;$error($self);
+36       $$errstatus # if 0, then YYErrok has been called
+37       or  next;   # so continue parsing
+38       ++$$nberror;
+39     };
 </PRE>
+Como el error es ``nuevo'' se llama a la subrutina de 
+tratamiento de errores <code>&amp;$error</code>. Obsérvese que no
+se volverá a llamar a la rutina de manejo de errores
+hasta que <code>$$errstatus</code> vuelva a alcanzar 
+el valor cero. Puesto que <code>&amp;$error</code> ha sido
+escrita por el usuario, es posible que este haya llamado
+al método <code>YYErrok</code>. Si ese es el caso, es que el
+programador prefiere que el análisis continúe como
+si la recuperación de errores se hubiera completado.
 
 <P>
-
-<H2><A NAME="SECTION010632000000000000000">
-Eliminando la Recursividad por la Izquierda en la Calculadora</A>
-</H2>
+Ahora se pone <code>$$errstatus</code> a 3:
 <PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat simple.pegjs 
-/* From the Wikipedia
-Value   ← [0-9]+ / '(' Expr ')'
-Product ← Value (('*' / '/') Value)*
-Sum     ← Product (('+' / '-') Product)*
-Expr    ← Sum
-*/
-{ 
-  function reduce(left, right) {
-    var sum = left;
-    // console.log("sum = "+sum);
-    for(var i = 0; i &lt; right.length;i++) {
-      var t = right[i];
-      var op = t[0];
-      var num = t[1];
-      switch(op) {
-        case '+' : sum += num; break;
-        case '-' : sum -= num; break;
-        case '*' : sum *= num; break;
-        case '/' : sum /= num; break;
-        default : console.log("Error! "+op);
-      }
-      // console.log("sum = "+sum);
-    }
-    return sum;
-  }
+47     $$errstatus=3;
+</PRE>
+Cada vez que se logre un desplazamiento con éxito <code>$$errstatus</code>
+será decrementado (línea 19).
+
+<P>
+A continuación se retiran estados de la pila hasta
+que se encuentre alguno que pueda transitar ante el 
+terminale especial <code>error</code>:
+<PRE>
+48     while(@$stack
+49         and (not exists($$states[$$stack[-1][0]]{ACTIONS})
+50         or  not exists($$states[$$stack[-1][0]]{ACTIONS}{error})
+51         or  $$states[$$stack[-1][0]]{ACTIONS}{error} &lt;= 0)) {
+52       pop(@$stack);
+53     }
+54     @$stack or do {
+55       return(undef);
+56     };
+</PRE>
+Si la pila quedó vacía se devuelve <code>undef</code>. En caso contrario
+es que el programador escribió alguna regla para la
+recuperación de errores. En ese caso, se transita al estado
+correspondiente:
+<PRE>
+57     #shift the error token
+58     push(@$stack, [ $$states[$$stack[-1][0]]{ACTIONS}{error}, undef ]);
+59   }
+60   #never reached
+61   croak("Error in driver logic. Please, report it as a BUG");
+62 }#_Parse
+</PRE>
+Un poco antes tenemos el siguiente código:
+<PRE>
+41     $$errstatus == 3  #The next token is not valid: discard it
+42     and  do {
+43       $$token eq ''  # End of input: no hope
+44       and  do { return(undef); }; 
+45       $$token=$$value=undef;
+46     };
+</PRE>
+Si hemos alcanzado el final de la entrada en una situación de error
+se abandona devolviendo <code>undef</code>.
+<P>
+<DIV><B>Ejercicio  <SPAN CLASS="arabic">9</SPAN>.<SPAN CLASS="arabic">26</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Explique la razón para el comentario de la línea
+41. Si <code>$$errstatus</code> es 3, el último
+terminal no ha producido un desplazamiento correcto. ¿Porqué?</I></DIV><P></P>
+A continuación aparecen los códigos de los métodos implicados en 
+la recuperación de errores:
+<PRE>
+sub YYErrok {
+  my($self)=shift;
+
+  ${$$self{ERRST}}=0;
+    undef;
+}
+</PRE>
+El método <code>YYErrok</code> cambia el valor referenciado por <code>$errstatus</code>.
+De esta forma se le da al programador <code>yapp</code> la oportunidad de anunciar
+que es muy probable que la fase de recuperación de errores se haya completado.
+
+<P>
+Los dos siguientes métodos devuelven el número de errores hasta el momento
+(<code>YYNberr</code>)
+y si nos encontramos o no en fase de recuperación de errores (<code>YYRecovering</code>):
+<PRE>
+sub YYNberr {
+  my($self)=shift;
+
+  ${$$self{NBERR}};
 }
 
-sum   = left:product right:($[+-] product)* { return reduce(left, right); }
-product = left:value right:($[*/] value)*   { return reduce(left, right); }
-value   = number:$[0-9]+                    { return parseInt(number,10); }
-        / '(' sum:sum ')'                   { return sum; }
-</PRE>
+sub YYRecovering {
+  my($self)=shift;
 
-<P>
-Es posible especificar mediante llaves  un código 
-que este disponible dentro de las acciones semánticas.
-
-<P>
-Ejecución:
-<PRE>
-[~/pegjs/examples(master)]$ cat use_simple.js 
-var PEG = require("./simple.js");
-var r = PEG.parse("2-3-4");
-console.log(r);
-
-[~/pegjs/examples(master)]$ node use_simple.js 
--5
-</PRE>
-Veamos otra ejecución:
-<PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat use_simple.js 
-var PEG = require("./simple.js");
-var r = PEG.parse("2+3*(2+1)-10/2");
-console.log(r);
-
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ ../bin/pegjs simple.pegjs 
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ node use_simple.js 
-6
+  ${$$self{ERRST}} != 0;
+}
 </PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4084"
+<A NAME="tex2html4270"
   HREF="node124.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4078"
-  HREF="node120.html">
+<A NAME="tex2html4264"
+  HREF="node97.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4072"
+<A NAME="tex2html4258"
   HREF="node122.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4080"
+<A NAME="tex2html4266"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4082"
+<A NAME="tex2html4268"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -386,12 +323,12 @@ console.log(r);
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4085"
-  HREF="node124.html">Eliminación de la Recursividad</A>
-<B>Sup:</B> <A NAME="tex2html4079"
-  HREF="node120.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html4073"
-  HREF="node122.html">Un Ejemplo Sencillo</A>
+<B> Sig:</B> <A NAME="tex2html4271"
+  HREF="node124.html">Descripción Eyapp del Lenguaje</A>
+<B>Sup:</B> <A NAME="tex2html4265"
+  HREF="node97.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4259"
+  HREF="node122.html">Práctica: Generación Automática de</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

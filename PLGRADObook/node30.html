@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Subconjuntos y Extensiones de JavaScript</TITLE>
-<META NAME="description" CONTENT="Subconjuntos y Extensiones de JavaScript">
+<TITLE>Suprimir: El Comando D</TITLE>
+<META NAME="description" CONTENT="Suprimir: El Comando D">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -20,27 +20,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
 <LINK REL="next" HREF="node31.html">
-<LINK REL="previous" HREF="node27.html">
-<LINK REL="up" HREF="node6.html">
+<LINK REL="previous" HREF="node29.html">
+<LINK REL="up" HREF="node20.html">
 <LINK REL="next" HREF="node31.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1824"
+<A NAME="tex2html2166"
   HREF="node31.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1818"
-  HREF="node6.html">
+<A NAME="tex2html2160"
+  HREF="node20.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1812"
+<A NAME="tex2html2154"
   HREF="node29.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1820"
+<A NAME="tex2html2162"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1822"
+<A NAME="tex2html2164"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -88,44 +88,103 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1825"
-  HREF="node31.html">JavaScript en el Lado</A>
-<B>Sup:</B> <A NAME="tex2html1819"
-  HREF="node6.html">PRIMERA PARTE: APUNTES DE</A>
-<B> Ant:</B> <A NAME="tex2html1813"
-  HREF="node29.html">Ejercicios</A>
+<B> Sig:</B> <A NAME="tex2html2167"
+  HREF="node31.html">Búsqueda entre líneas</A>
+<B>Sup:</B> <A NAME="tex2html2161"
+  HREF="node20.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html2155"
+  HREF="node29.html">La orden N</A>
 <B> Con:</B> 
-<A NAME="tex2html1820"
+<A NAME="tex2html2162"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1822"
+<A NAME="tex2html2164"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION041000000000000000000">
-Subconjuntos y Extensiones de JavaScript</A>
+<H1><A NAME="SECTION043100000000000000000">
+Suprimir: El Comando <I>D</I></A>
 </H1>
+El comando <I>D</I> suprime la primera parte (hasta el retorno de
+carro empotrado) en un espacio de patrones multilínea y bifurca al
+primer comando en el <I>script</I>. El retorno de carro empotrado puede
+describirse mediante la secuencia de escape el espacio de patrones quede vacío como consecuencia de la supresión,
+se lee una nueva línea.
+
+<P>
+El siguiente ejemplo compacta una secuencia de líneas vacías en una sóla línea vacía.
+<PRE>
+1 &gt; cat N.sed
+2 /^$/{
+3 N
+4 /^\n$/D
+5 }
+</PRE>
+Si la línea  es vacía se lee la línea siguiente. Si esta también es vacía el espacio de patrones contiene
+(sin que se lea una nueva línea).
+Por tanto nada ha sido impreso, no se ejecuta el comnado final <code>p</code> que actúa por defecto.
+Como el espacio de trabajo contiene con el patrón especificado en línea 2
+y se lee la siguiente línea. Si esta nueva línea es no vacía, no se ejecutará la orden
+vacía y la nueva línea no vacía.
+
+<P>
+Al ejecutar este ``<I>script</I>'' sobre un fichero conteniendo una secuencia de líneas en blanco:
+
+<P>
+<PRE>
+&gt; cat N.test
+one empty
+ 
+two empty lines
+ 
+ 
+three empty lines
+ 
+ 
+ 
+end of file
+</PRE>
+Se obtiene el resultado:
+<PRE>
+&gt; sed -f N.sed N.test
+one empty
+ 
+two empty lines
+ 
+three empty lines
+ 
+end of file
+</PRE>
+Un buen ejercicio es intentar predecir la conducta de esta otra solución alternativa,
+en la que la supresión <SPAN  CLASS="textit">D</SPAN>  es sustituida por la <SPAN  CLASS="textit">d</SPAN>:
+<PRE>
+/^$/{
+N
+/^\n$/d
+}
+</PRE>
+¿Qué ocurrirá? ¿Es correcta esta segunda solución? 
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1824"
+<A NAME="tex2html2166"
   HREF="node31.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1818"
-  HREF="node6.html">
+<A NAME="tex2html2160"
+  HREF="node20.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1812"
+<A NAME="tex2html2154"
   HREF="node29.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1820"
+<A NAME="tex2html2162"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1822"
+<A NAME="tex2html2164"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -173,12 +232,12 @@ Subconjuntos y Extensiones de JavaScript</A>
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1825"
-  HREF="node31.html">JavaScript en el Lado</A>
-<B>Sup:</B> <A NAME="tex2html1819"
-  HREF="node6.html">PRIMERA PARTE: APUNTES DE</A>
-<B> Ant:</B> <A NAME="tex2html1813"
-  HREF="node29.html">Ejercicios</A>
+<B> Sig:</B> <A NAME="tex2html2167"
+  HREF="node31.html">Búsqueda entre líneas</A>
+<B>Sup:</B> <A NAME="tex2html2161"
+  HREF="node20.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html2155"
+  HREF="node29.html">La orden N</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

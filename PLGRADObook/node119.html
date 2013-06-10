@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Análisis Top Down Usando Precedencia de Operadores</TITLE>
-<META NAME="description" CONTENT="Análisis Top Down Usando Precedencia de Operadores">
+<TITLE>Práctica: El Análisis de las Acciones</TITLE>
+<META NAME="description" CONTENT="Práctica: El Análisis de las Acciones">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,27 +19,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
+<LINK REL="next" HREF="node120.html">
 <LINK REL="previous" HREF="node118.html">
-<LINK REL="up" HREF="node117.html">
+<LINK REL="up" HREF="node97.html">
 <LINK REL="next" HREF="node120.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4001"
+<A NAME="tex2html4214"
   HREF="node120.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3995"
-  HREF="node117.html">
+<A NAME="tex2html4208"
+  HREF="node97.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3991"
+<A NAME="tex2html4202"
   HREF="node118.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3997"
+<A NAME="tex2html4210"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3999"
+<A NAME="tex2html4212"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -87,115 +88,70 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4002"
-  HREF="node120.html">Análisis Descendente mediante Parsing</A>
-<B>Sup:</B> <A NAME="tex2html3996"
-  HREF="node117.html">Análisis Sintáctico Mediante Precedencia</A>
-<B> Ant:</B> <A NAME="tex2html3992"
-  HREF="node118.html">Ejemplo Simple de Intérprete:</A>
+<B> Sig:</B> <A NAME="tex2html4215"
+  HREF="node120.html">Práctica: Autoacciones</A>
+<B>Sup:</B> <A NAME="tex2html4209"
+  HREF="node97.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4203"
+  HREF="node118.html">La Estructura de Datos</A>
 <B> Con:</B> 
-<A NAME="tex2html3997"
+<A NAME="tex2html4210"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3999"
+<A NAME="tex2html4212"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><A NAME="tex2html4003"
-  HREF="node119.html#SECTION010521000000000000000">Gramática de JavaScript</A>
-</UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION010520000000000000000">
-Análisis Top Down Usando Precedencia de Operadores</A>
+<H1><A NAME="SECTION049220000000000000000"></A>
+   <A NAME="18526"></A>
+<BR>
+Práctica:  El Análisis de las Acciones
 </H1>
-
-<OL>
-<LI>Véase el libro [<A
- HREF="node236.html#wilson2008beautiful">9</A>] <A NAME="tex2html353"
-  HREF="http://books.google.es/books?id=gJrmszNHQV4C">Beautiful Code: Leading Programmers Explain How They Think</A>, Capítulo 9.
-</LI>
-<LI><A NAME="tex2html354"
-  HREF="http://javascript.crockford.com/tdop/tdop.html">Top Down Operator Precedence</A>
-por Douglas Crockford
-</LI>
-<LI><A NAME="tex2html355"
-  HREF="http://javascript.crockford.com/tdop/">Top Down Operator Precedence demo</A>
-por Douglas Crockford
-</LI>
-<LI><A NAME="tex2html356"
-  HREF="http://www.jslint.com/lint.html">jslint</A>
-</LI>
-<LI><A NAME="tex2html357"
-  HREF="http://youtu.be/iPC6ArcGyL8">David Majda - Easy parsing with PEG.js</A>
-</LI>
-</OL>
+  
+Modifique el código de <code>YappParse.yp</code> para que el análisis
+léxico de las secciones de código (<code>HEADCODE</code>, <code>CODE</code> y <code>TAILCODE</code>)
+se haga a través de las correspondientes rutinas proveida como parámetros 
+para el análisis por el usuario. La idea es ofrecer un primer paso
+que facilite la generación de analizadores en diferentes 
+lenguajes <code>Perl</code>, <code>C</code>, etc.
 
 <P>
+Estudie el módulo <code>Text::Balanced</code>. Basándose en 
+las funciones 
 
-<H2><A NAME="SECTION010521000000000000000">
-Gramática de JavaScript</A>
-</H2>
-
-<OL>
-<LI><A NAME="tex2html358"
-  HREF="http://hepunx.rl.ac.uk/~adye/jsspec11/jsrefspe.htm">Especificación de JavaScript</A>
-1997
-</LI>
-<LI><A NAME="tex2html359"
-  HREF="http://hepunx.rl.ac.uk/~adye/jsspec11/llr.htm">NQLL(1) grammar (Not Quite LL(1)) for JavaScrip</A>
-1997
-</LI>
-<LI><A NAME="tex2html360"
-  HREF="http://hepunx.rl.ac.uk/~adye/jsspec11/jsspec.ps.gz">Postscript con la especificación de JavaScript</A>
-1997
-</LI>
-<LI>Mozilla <A NAME="tex2html361"
-  HREF="https://developer.mozilla.org/en-US/docs/JavaScript/Language_Resources?redirectlocale=en-US&amp;redirectslug=JavaScript_Language_Resources">JavaScript Language Resources</A>
-</LI>
-<LI><A NAME="tex2html362"
-  HREF="http://www-archive.mozilla.org/js/language/grammar14.html">JavaScript 1.4 LR(1) Grammar</A>
-1999.
-</LI>
-<LI><A NAME="tex2html363"
-  HREF="http://www.opensource.apple.com/source/JavaScriptCore/">Apple JavaScript Core Specifications</A>
 <P>
-</LI>
-<LI><A NAME="tex2html364"
-  HREF="http://cjihrig.com/blog/creating-a-javascript-parser/">Creating a JavaScript Parser</A>
-Una implementación de ECAMScript 5.1 usando Jison 
-disponible 
-en GitHub
- en
-<A NAME="tex2html365"
-  HREF="https://github.com/cjihrig/jsparser">https://github.com/cjihrig/jsparser</A>.
-</LI>
-</OL>
+<code>extract_codeblock</code> y <code>extract_quotelike</code>
+
+<P>
+del módulo <code>Text::Balanced</code>, resuelva el problema del reconocimiento
+de código Perl dentro del analizador léxico de <code>Parse::Yapp</code>,
+evitando forzar al usuario en la escritura de ``llaves fantasma''.
+Compare el rendimiento de esta solución con la que provee <code>Yapp</code>.
+Para analizar el <A NAME="18527"></A><SPAN  CLASS="textbf">rendimiento</SPAN> use el módulo <A NAME="18531"></A><TT>Benchmark</TT>.
+
+<P>
+¿Cu&#225;les son sus conclusiones? ¿Qué es mejor?
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4001"
+<A NAME="tex2html4214"
   HREF="node120.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3995"
-  HREF="node117.html">
+<A NAME="tex2html4208"
+  HREF="node97.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3991"
+<A NAME="tex2html4202"
   HREF="node118.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3997"
+<A NAME="tex2html4210"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3999"
+<A NAME="tex2html4212"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -243,12 +199,12 @@ en GitHub
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4002"
-  HREF="node120.html">Análisis Descendente mediante Parsing</A>
-<B>Sup:</B> <A NAME="tex2html3996"
-  HREF="node117.html">Análisis Sintáctico Mediante Precedencia</A>
-<B> Ant:</B> <A NAME="tex2html3992"
-  HREF="node118.html">Ejemplo Simple de Intérprete:</A>
+<B> Sig:</B> <A NAME="tex2html4215"
+  HREF="node120.html">Práctica: Autoacciones</A>
+<B>Sup:</B> <A NAME="tex2html4209"
+  HREF="node97.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4203"
+  HREF="node118.html">La Estructura de Datos</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

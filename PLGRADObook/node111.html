@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>tr y split</TITLE>
-<META NAME="description" CONTENT="tr y split">
+<TITLE>Acciones en Medio de una Regla y Atributos Heredados</TITLE>
+<META NAME="description" CONTENT="Acciones en Medio de una Regla y Atributos Heredados">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,26 +21,26 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node112.html">
 <LINK REL="previous" HREF="node110.html">
-<LINK REL="up" HREF="node105.html">
+<LINK REL="up" HREF="node97.html">
 <LINK REL="next" HREF="node112.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3818"
+<A NAME="tex2html4096"
   HREF="node112.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3812"
-  HREF="node105.html">
+<A NAME="tex2html4090"
+  HREF="node97.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3806"
+<A NAME="tex2html4084"
   HREF="node110.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3814"
+<A NAME="tex2html4092"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3816"
+<A NAME="tex2html4094"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -88,212 +88,281 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3819"
-  HREF="node112.html">Pack y Unpack</A>
-<B>Sup:</B> <A NAME="tex2html3813"
-  HREF="node105.html">Expresiones Regulares en Perl</A>
-<B> Ant:</B> <A NAME="tex2html3807"
-  HREF="node110.html">Casos de Estudio</A>
+<B> Sig:</B> <A NAME="tex2html4097"
+  HREF="node112.html">Recuperación de Errores</A>
+<B>Sup:</B> <A NAME="tex2html4091"
+  HREF="node97.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4085"
+  HREF="node110.html">Manejo en yapp de</A>
 <B> Con:</B> 
-<A NAME="tex2html3814"
+<A NAME="tex2html4092"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3816"
+<A NAME="tex2html4094"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION010460000000000000000"></A>
-<A NAME="section:tr"></A>
+<H1><A NAME="SECTION049140000000000000000"></A>
+<A NAME="section:mediaregla"></A>
 <BR>
-tr y split
+Acciones en Medio de una Regla y Atributos Heredados
 </H1>
-El operador de traducción permite la conversión de unos caracteres por otros. 
-Tiene la sintáxis:
+La estrategia utilizada en la sección <A HREF="node110.html#section:heredados">9.13</A> funciona
+si podemos predecir la posición del atributo en la pila del analizador.
+En el ejemplo anterior los atributos clase y tipo estaban siempre,
+cualquiera que fuera la derivación a derechas, 
+en las posiciones 0 y -1. Esto no siempre es asi. Consideremos
+la siguiente <A NAME="18488"></A><SPAN  CLASS="textbf">definición dirigida por la sintáxis</SPAN>:
 
 <P>
-<TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><code>tr/SEARCHLIST/REPLACEMENTLIST/cds</code></TD>
+<BR>
+<BR>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">S <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN> a A C</TD>
+<TD ALIGN="LEFT"><code>$C{i} = $A{s}</code></TD>
 </TR>
-<TR><TD ALIGN="LEFT"><code>y/SEARCHLIST/REPLACEMENTLIST/cds</code></TD>
+<TR><TD ALIGN="LEFT">S <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN> b A B C</TD>
+<TD ALIGN="LEFT"><code>$C{i} = $A{s}</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT">C <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN> c</TD>
+<TD ALIGN="LEFT"><code>$C{s} = $C{i}</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT">A <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN> a</TD>
+<TD ALIGN="LEFT"><code>$A{s} = "a"</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT">B <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN> b</TD>
+<TD ALIGN="LEFT"><code>$B{s} = "b"</code></TD>
 </TR>
 </TABLE>
+</DIV>
+<BR>
+<BR>
 
 <P>
-El operador permite el reemplazo carácter a carácter, por ejemplo:
-<PRE>
-$ perl -de 0
-  DB&lt;1&gt; $a = 'fiboncacci'
-  DB&lt;2&gt; $a =~ tr/aeiou/AEIOU/
-  DB&lt;3&gt; print $a
-fIbOncAccI
-  DB&lt;4&gt; $a =~ y/fbnc/FBNC/
-  DB&lt;5&gt; print $a
-FIBONCACCI
-</PRE>
-El operador devuelve el número de carácteres reeemplazados
-o suprimidos. 
-<PRE>
-$cnt = $sky =~ tr/*/*/; # count the stars in $sky
-</PRE>
+<P>
+<DIV><B>Ejercicio  <SPAN CLASS="arabic">9</SPAN>.<SPAN CLASS="arabic">14</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Determine un orden correcto de evaluación de la anterior
+definición dirigida por la sintáxis para la entrada <code>b a b c</code>.</I></DIV><P></P>
 
 <P>
-Si se especifica el modificador <code>/d</code>, cualquier carácter en  <code>SEARCHLIST</code>
-que no figure en <code>REPLACEMENTLIST</code> es eliminado.
-<PRE>
-  DB&lt;6&gt; print $a
-FIBONCACCI
-  DB&lt;7&gt; $a =~ y/OA//d
-  DB&lt;8&gt; print $a
-FIBNCCCI
-</PRE>
+C hereda el atributo sintetizado de A. El problema es que, en la pila
+del analizador el atributo <code>$A{s}</code> puede estar en la posición 0 
+o -1 dependiendo de si la regla por la que se derivó fué
+S <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN> a A C o bien S <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN> b A B C. La solución
+a este tipo de problemas consiste en insertar acciones 
+intermedias de copia del atributo de manera que se garantize que el atributo
+de interés está siempre a una distancia fija. Esto es, se inserta
+una variable sintáctica intermedia auxiliar M la cual deriva a vacío
+y que tiene como acción asociada una regla de copia:
 
 <P>
-Si se especifica el modificador <code>/s</code>, las secuencias de carácteres
-consecutivos que serían traducidas al mismo carácter son comprimidas a una sola:
+<BR>
+<BR>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">S <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN> a A C</TD>
+<TD ALIGN="LEFT"><code>$C{i} = $A{s}</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT">S <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN> b A B M C</TD>
+<TD ALIGN="LEFT"><code>$M{i} = $A{s}; $C{i} = $M{s}</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT">C <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN> c</TD>
+<TD ALIGN="LEFT"><code>$C{s} = $C{i}</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT">A <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN> a</TD>
+<TD ALIGN="LEFT"><code>$A{s} = "a"</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT">B <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN> b</TD>
+<TD ALIGN="LEFT"><code>$B{s} = "b"</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT">M <!-- MATH
+ $\rightarrow \epsilon$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="34" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img161.png"
+ ALT="$ \rightarrow \epsilon$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>$M{s} = $M{i}</code></TD>
+</TR>
+</TABLE>
+</DIV>
+<BR>
+<BR>
 
 <P>
-<PRE>
-  DB&lt;1&gt; $b = 'aaghhh!'
-  DB&lt;2&gt; $b =~ tr/ah//s
-  DB&lt;3&gt; p $b
-agh!
-</PRE>
-
-<P>
-Observa que si la cadena <code>REPLACEMENTLIST</code> es vacía,
-no se introduce ninguna modificación.
-
-<P>
-Si se especifica el modificador <code>/c</code>, se complementa <code>SEARCHLIST</code>;
-esto es, se buscan los caracteres que no están en <code>SEARCHLIST</code>.
-
-<P>
-<PRE>
-tr/a-zA-Z/ /cs; # change non-alphas to single space
-</PRE>
-
-<P>
-Cuando se dan múltiples traducciones para un mismo carácter, solo la primera es utilizada:
-
-<P>
-<PRE>
-tr/AAA/XYZ/
-</PRE>
-
-<P>
-traducirá <code>A</code> por <code>X</code>.
-
-<P>
-El siguiente <SPAN  CLASS="textbf">script</SPAN> busca una expresión regular en el fichero de <code>passwords</code>
-e imprime los <SPAN  CLASS="textbf">login</SPAN> de los usuarios que casan con dicha cadena.
-Para evitar posibles confusiones con las vocales acentuadas
-se usa el operador <code>tr</code>.
-
-<P>
-<PRE>
-   1 #!/usr/bin/perl -w
-   2 $search = shift(@ARGV) or die("you must provide a regexpr\n");
-   3 $search =~ y/ÁÉÍÓÚáéíóú/AEIOUaeiou/;
-   4 open(FILE,"/etc/passwd");
-   5 while ($line = &lt;FILE&gt;) {
-   6   $line =~ y/ÁÉÍÓÚáéíóú/AEIOUaeiou/;
-   7   if ($line =~ /$search/io) {
-   8     @fields = split(":",$line);
-   9     $login = $fields[0];
-  10     if ($line !~ /^#/) {
-  11       print "$login\n";
-  12     }
-  13     else {
-  14       print "#$login\n";
-  15     }
-  16   }
-  17 }
-  18
-</PRE>
-
-<P>
-Ejecución (suponemos que el nombre del fichero anterior es <code>split.pl</code>):
-<PRE>
-&gt; split.pl Rodriguez
-##direccion
-call
-casiano
-alu5
-alu6
-##doctorado
-paco
-falmeida
-##ihiu07
-</PRE>
-
-<P>
-Para familiarizarte con este operador, codifica y prueba el siguiente
-código:
+El nuevo esquema de traducción puede ser implantado mediante
+un programa <code>yapp</code>:
 
 <P>
 <PRE>
-   1 #!/usr/bin/perl -w
-   2 $searchlist = shift @ARGV;
-   3 $replacelist = shift @ARGV;
-   4 $option = "";
-   5 $option = shift @ARGV if @ARGV;
-   6 
-   7 while (&lt;&gt;) {
-   8   $num = eval "tr/$searchlist/$replacelist/$option";
-   9   die $@ if $@;
-  10   print "$num: $_";
-  11 }
+$ cat -n Inherited2.yp
+     1  %%
+     2  S : 'a' A C
+     3    | 'b' A B  { $_[2]; } C
+     4    ;
+     5
+     6  C : 'c' { print "Valor: ",$_[0]-&gt;YYSemval(0),"\n"; $_[0]-&gt;YYSemval(0) }
+     7    ;
+     8
+     9  A : 'a' { 'a' }
+    10    ;
+    11
+    12  B : 'b' { 'b' }
+    13    ;
+    14
+    15  %%
 </PRE>
 
 <P>
-Perl construye la tabla de traducción en ``tiempo de compilación''. Por ello
-ni <code>SEARCHLIST</code> ni <code>REPLACEMENTLIST</code> son susceptibles de 
-ser interpolados. Esto significa que si queremos usar variables tenemos
-que recurrir a la función <code>eval</code>.
+La ejecución muestra como se ha propagado el valor del atributo:
+<PRE>
+$ ./useinherited2.pl '0x04'
+Entrada (En Unix, presione CTRL-D para terminar):
+b a b c
+Shift 2.  Shift 6.
+Reduce using rule 5 (A,1): Back to state 2, then state 5.
+Shift 8.
+Reduce 6 (B,1): Back to state 5, then state 9.
+Reduce 2 (@1-3,0): Back to state 9, then state 12.
+</PRE>
 
 <P>
-La expresión pasada como parámetro a <code>eval</code> en la línea 8 es analizada y ejecutada como si 
-se tratara de un pequeño programa Perl. Cualquier asignación a variables permanece
-después del <code>eval</code>, asi como cualquier definición de subrutina. 
-El código dentro de <code>eval</code> se trata como si fuera un bloque, de manera
-que cualesquiera variables locales (declaradas con <code>my</code>) desaparecen
-al final del bloque.
-
-<P>
-La variable <code>$@</code> contiene el mensaje de error asociado con la
-última ejecución del comando <code>eval</code>. Si es nula es que el último comando
-se ejecuto correctamente.
-Aqui tienes un ejemplo de llamada:
+En este momento se esta ejecutando la acción intermedia.
+Lo podemos comprobar revisando el fichero <code>Inherited2.output</code>
+que fué generado usando la opción <code>-v</code> al llamar a <code>yapp</code>.
+La regla 2 por la que se reduce es la asociada con la acción 
+intermedia:
 
 <P>
 <PRE>
-&gt; tr.pl 'a-z' 'A-Z' s
-jose hernandez
-13: JOSE HERNANDEZ
-joosee hernnandez
-16: JOSE HERNANDEZ
+$ cat -n Inherited2.output
+     1  Rules:
+     2  ------
+     3  0:      $start -&gt; S $end
+     4  1:      S -&gt; 'a' A C
+     5  2:      @1-3 -&gt; /* empty */
+     6  3:      S -&gt; 'b' A B @1-3 C
+     7  4:      C -&gt; 'c'
+     8  5:      A -&gt; 'a'
+     9  6:      B -&gt; 'b'
+        ...
 </PRE>
+
+<P>
+Obsérvese la notación usada por <code>yapp</code> para la 
+<A NAME="18490"></A><SPAN  CLASS="textbf">acción en medio de la regla</SPAN>: <code>@1-3</code>.
+Continuamos con la antiderivación:
+
+<P>
+<PRE>
+Shift 10.
+Reduce 4 (C,1): 
+Valor: a
+Back to state 12, then 13.
+Reduce using rule 3 (S,5): Back to state 0, then state 1.
+Shift 4.
+Accept.
+</PRE>
+
+<P>
+El método puede ser generalizado a casos en los
+que el atributo de interés este a diferentes distancias en
+diferentes reglas sin mas que introducir las correspondientes
+acciones intermedias de copia.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3818"
+<A NAME="tex2html4096"
   HREF="node112.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3812"
-  HREF="node105.html">
+<A NAME="tex2html4090"
+  HREF="node97.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3806"
+<A NAME="tex2html4084"
   HREF="node110.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3814"
+<A NAME="tex2html4092"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3816"
+<A NAME="tex2html4094"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -341,12 +410,12 @@ joosee hernnandez
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3819"
-  HREF="node112.html">Pack y Unpack</A>
-<B>Sup:</B> <A NAME="tex2html3813"
-  HREF="node105.html">Expresiones Regulares en Perl</A>
-<B> Ant:</B> <A NAME="tex2html3807"
-  HREF="node110.html">Casos de Estudio</A>
+<B> Sig:</B> <A NAME="tex2html4097"
+  HREF="node112.html">Recuperación de Errores</A>
+<B>Sup:</B> <A NAME="tex2html4091"
+  HREF="node97.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4085"
+  HREF="node110.html">Manejo en yapp de</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

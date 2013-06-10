@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Siguiente Línea: La orden n</TITLE>
-<META NAME="description" CONTENT="Siguiente Línea: La orden n">
+<TITLE>Análisis Sintáctico Ascendente en Perl</TITLE>
+<META NAME="description" CONTENT="Análisis Sintáctico Ascendente en Perl">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,28 +19,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node98.html">
-<LINK REL="previous" HREF="node96.html">
-<LINK REL="up" HREF="node92.html">
+<LINK REL="next" HREF="node128.html">
+<LINK REL="previous" HREF="node77.html">
+<LINK REL="up" HREF="node6.html">
 <LINK REL="next" HREF="node98.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3241"
+<A NAME="tex2html3859"
   HREF="node98.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3235"
-  HREF="node92.html">
+<A NAME="tex2html3853"
+  HREF="node6.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3229"
+<A NAME="tex2html3847"
   HREF="node96.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3237"
+<A NAME="tex2html3855"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3239"
+<A NAME="tex2html3857"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -88,114 +88,136 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3242"
-  HREF="node98.html">Manipulando tablas numéricas</A>
-<B>Sup:</B> <A NAME="tex2html3236"
-  HREF="node92.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html3230"
-  HREF="node96.html">Rangos</A>
+<B> Sig:</B> <A NAME="tex2html3860"
+  HREF="node98.html">Parse::Yapp: Ejemplo de Uso</A>
+<B>Sup:</B> <A NAME="tex2html3854"
+  HREF="node6.html">PRIMERA PARTE: APUNTES DE</A>
+<B> Ant:</B> <A NAME="tex2html3848"
+  HREF="node96.html">Consejos a seguir al</A>
 <B> Con:</B> 
-<A NAME="tex2html3237"
+<A NAME="tex2html3855"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3239"
+<A NAME="tex2html3857"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION010350000000000000000">
-Siguiente Línea: La orden <I>n</I></A>
+<H1><A NAME="SECTION04900000000000000000">
+Análisis Sintáctico Ascendente en Perl</A>
 </H1>
-Mediante la orden <I>n</I> podemos reemplazar el espacio de
-patrones actual por la siguiente línea. Si no se ha utilizado
-la opción <code>-n</code> en la ejecución de <code>sed</code>, el contenido del espacio
-de patrones se imprimirá antes de ser eliminada. El control
-pasa al comando siguiendo al comando <I>n</I> y no al primer
-comando del <I>script</I>. Se trata, por tanto, de una orden que
-altera la conducta habitual de <code>sed</code>: Lo común es que, cuando se lee una nueva
-línea, se ejecute el primer comando del guión.
+<BR> <HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<P>
-El siguiente ejemplo extrae los comentarios de un programa <I>C</I>.
-Se asume que, aunque los comentarios se pueden extender sobre
-varias líneas, no existe mas de un comentario por línea.
-<PRE>
-$ cat n.sed
-# run it with: sed -n -f n.sed n.test
-# write commented lines in a C program
-#If current line matches /* ...
-/\/\*/{
-# Comienzo de comentario, aseguremonos que la línea no casa con un cierre
-# de comentario.
-:loop
-/\*\//!{
-p
-n
-b loop
-}
-p
-}
-</PRE>
-Supongamos el siguiente programa de prueba:
-<PRE>
-$ cat n.test
-#include &lt;stdio.h&gt;
- 
-fact(int n) { /* recursive function */
-if(n == 0) return 1;
-else(return n*fact(n-1));
-}
- 
-void toto(id) { /* This function */ /* is
-                   still empty */
-}
- 
-main() {
-  toto();
-  printf("Hello world! factorial of 4 = %d\n",fact(4)); /* the
-         comment takes two lines */
-  toto();
-  /* and here is
-     a comment
-     extended on 3 lines
-  */
-}
-</PRE>
-La salida al ejecutar el programa es la siguiente:
-<PRE>
-$ sed -n -f n.sed n.test
-fact(int n) { /* recursive function */
-void toto(id) { /* This function */ /* is
-  printf("Hello world! factorial of 4 = %d\n",fact(4)); /* the
-         comment takes two lines */
-  /* and here is
-     a comment
-     extended on 3 lines
-  */
-</PRE>
-Observe la desaparición de la línea `` still empty */'' 
-debido a la existencia de dos comentarios, uno de ellos inacabado 
-en la línea anterior. 
-
-<P>
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html3861"
+  HREF="node98.html"><TT>Parse::Yapp</TT>: Ejemplo de Uso</A>
+<LI><A NAME="tex2html3862"
+  HREF="node99.html">Conceptos Básicos</A>
+<LI><A NAME="tex2html3863"
+  HREF="node100.html">Construcción de las Tablas para el Análisis SLR</A>
+<UL>
+<LI><A NAME="tex2html3864"
+  HREF="node100.html#SECTION04931000000000000000">Los conjuntos de Primeros y Siguientes</A>
+<LI><A NAME="tex2html3865"
+  HREF="node100.html#SECTION04932000000000000000">Construcción de las Tablas</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html3866"
+  HREF="node101.html">El módulo Generado por <TT>yapp</TT></A>
+<LI><A NAME="tex2html3867"
+  HREF="node102.html">Algoritmo de Análisis LR</A>
+<LI><A NAME="tex2html3868"
+  HREF="node103.html">Depuración en <TT>yapp</TT></A>
+<LI><A NAME="tex2html3869"
+  HREF="node104.html">Precedencia y Asociatividad</A>
+<LI><A NAME="tex2html3870"
+  HREF="node105.html">Generación interactiva de analizadores <TT>Yapp</TT></A>
+<LI><A NAME="tex2html3871"
+  HREF="node106.html">Construcción del Árbol Sintáctico</A>
+<LI><A NAME="tex2html3872"
+  HREF="node107.html">Acciones en Medio de una Regla</A>
+<LI><A NAME="tex2html3873"
+  HREF="node108.html">Esquemas de Traducción</A>
+<LI><A NAME="tex2html3874"
+  HREF="node109.html">Definición Dirigida por la Sintáxis</A>
+<LI><A NAME="tex2html3875"
+  HREF="node110.html">Manejo en <TT>yapp</TT> de Atributos Heredados</A>
+<LI><A NAME="tex2html3876"
+  HREF="node111.html">Acciones en Medio de una Regla y Atributos Heredados</A>
+<LI><A NAME="tex2html3877"
+  HREF="node112.html">Recuperación de Errores</A>
+<LI><A NAME="tex2html3878"
+  HREF="node113.html">Recuperación de Errores en Listas</A>
+<LI><A NAME="tex2html3879"
+  HREF="node114.html">Consejos a seguir al escribir un programa <TT>yapp</TT></A>
+<LI><A NAME="tex2html3880"
+  HREF="node115.html">Práctica: Un C simplificado</A>
+<LI><A NAME="tex2html3881"
+  HREF="node116.html">La Gramática de <TT>yapp</TT> / <TT>yacc</TT></A>
+<UL>
+<LI><A NAME="tex2html3882"
+  HREF="node116.html#SECTION049191000000000000000">La Cabecera</A>
+<LI><A NAME="tex2html3883"
+  HREF="node116.html#SECTION049192000000000000000">La Cabecera: Diferencias entre <TT>yacc</TT> y <TT>yapp</TT></A>
+<LI><A NAME="tex2html3884"
+  HREF="node116.html#SECTION049193000000000000000">El Cuerpo</A>
+<LI><A NAME="tex2html3885"
+  HREF="node116.html#SECTION049194000000000000000">La Cola: Diferencias entre <TT>yacc</TT> y <TT>yapp</TT></A>
+<LI><A NAME="tex2html3886"
+  HREF="node116.html#SECTION049195000000000000000">El Análisis Léxico en <TT>yacc</TT>: <TT>flex</TT></A>
+<LI><A NAME="tex2html3887"
+  HREF="node116.html#SECTION049196000000000000000">Práctica: Uso de <TT>Yacc</TT> y <TT>Lex</TT></A>
+</UL>
+<BR>
+<LI><A NAME="tex2html3888"
+  HREF="node117.html">El Analizador Ascendente  <TT>Parse::Yapp</TT></A>
+<LI><A NAME="tex2html3889"
+  HREF="node118.html">La Estructura de Datos Generada por <TT>YappParse.yp</TT></A>
+<LI><A NAME="tex2html3890"
+  HREF="node119.html">Práctica:  El Análisis de las Acciones</A>
+<LI><A NAME="tex2html3891"
+  HREF="node120.html">Práctica:  Autoacciones</A>
+<LI><A NAME="tex2html3892"
+  HREF="node121.html">Práctica: Nuevos Métodos</A>
+<LI><A NAME="tex2html3893"
+  HREF="node122.html">Práctica: Generación Automática de Árboles</A>
+<LI><A NAME="tex2html3894"
+  HREF="node123.html">Recuperacion de Errores: Visión Detallada</A>
+<LI><A NAME="tex2html3895"
+  HREF="node124.html">Descripción Eyapp del Lenguaje  SimpleC</A>
+<LI><A NAME="tex2html3896"
+  HREF="node125.html">Diseño de Analizadores con <TT>Parse::Eyapp</TT></A>
+<LI><A NAME="tex2html3897"
+  HREF="node126.html">Práctica: Construcción del AST para el Lenguaje Simple C</A>
+<UL>
+<LI><A NAME="tex2html3898"
+  HREF="node126.html#SECTION049290010000000000000">Analizador Léxico</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html3899"
+  HREF="node127.html">El Generador de Analizadores <TT>byacc</TT></A>
+</UL>
+<!--End of Table of Child-Links-->
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3241"
+<A NAME="tex2html3859"
   HREF="node98.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3235"
-  HREF="node92.html">
+<A NAME="tex2html3853"
+  HREF="node6.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3229"
+<A NAME="tex2html3847"
   HREF="node96.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3237"
+<A NAME="tex2html3855"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3239"
+<A NAME="tex2html3857"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -243,12 +265,12 @@ en la línea anterior.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3242"
-  HREF="node98.html">Manipulando tablas numéricas</A>
-<B>Sup:</B> <A NAME="tex2html3236"
-  HREF="node92.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html3230"
-  HREF="node96.html">Rangos</A>
+<B> Sig:</B> <A NAME="tex2html3860"
+  HREF="node98.html">Parse::Yapp: Ejemplo de Uso</A>
+<B>Sup:</B> <A NAME="tex2html3854"
+  HREF="node6.html">PRIMERA PARTE: APUNTES DE</A>
+<B> Ant:</B> <A NAME="tex2html3848"
+  HREF="node96.html">Consejos a seguir al</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Closure Tools</TITLE>
-<META NAME="description" CONTENT="Closure Tools">
+<TITLE>Comentarios Anidados</TITLE>
+<META NAME="description" CONTENT="Comentarios Anidados">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,28 +19,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node56.html">
+<LINK REL="next" HREF="node55.html">
 <LINK REL="previous" HREF="node53.html">
-<LINK REL="up" HREF="node6.html">
+<LINK REL="up" HREF="node48.html">
 <LINK REL="next" HREF="node55.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html2202"
+<A NAME="tex2html2986"
   HREF="node55.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2196"
-  HREF="node6.html">
+<A NAME="tex2html2980"
+  HREF="node48.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2190"
+<A NAME="tex2html2974"
   HREF="node53.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2198"
+<A NAME="tex2html2982"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2200"
+<A NAME="tex2html2984"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -88,53 +88,81 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2203"
-  HREF="node55.html">Véase También</A>
-<B>Sup:</B> <A NAME="tex2html2197"
-  HREF="node6.html">PRIMERA PARTE: APUNTES DE</A>
-<B> Ant:</B> <A NAME="tex2html2191"
-  HREF="node53.html">Backbone</A>
+<B> Sig:</B> <A NAME="tex2html2987"
+  HREF="node55.html">Un Lenguaje Dependiente del</A>
+<B>Sup:</B> <A NAME="tex2html2981"
+  HREF="node48.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html2975"
+  HREF="node53.html">Asociando un else con</A>
 <B> Con:</B> 
-<A NAME="tex2html2198"
+<A NAME="tex2html2982"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html2200"
+<A NAME="tex2html2984"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION042400000000000000000">
-Closure Tools</A>
+<H1><A NAME="SECTION04660000000000000000">
+Comentarios Anidados</A>
 </H1>
 
 <P>
-<BR> <HR>
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
+<PRE>
+$ cat pascal_comments.pegjs 
+/* Pascal nested comments */
 
-<UL CLASS="ChildLinks">
-<LI><A NAME="tex2html2204"
-  HREF="node55.html">Véase También</A>
-</UL>
-<!--End of Table of Child-Links-->
+P     =   prog:N+                          { return prog; }
+N     =   chars:$(!Begin ANY)+             { return chars;}
+        / C
+C     = Begin chars:T* End                 { return chars.join(''); }
+T     =   C 
+        / (!Begin !End char:ANY)           { return char;}
+Begin = '(*'
+End   = '*)'
+ANY   =   'z'    /* any character */       { return 'z';  }
+        / char:[^z]                        { return char; }
+</PRE>
+
+<P>
+<PRE>
+$ cat use_pascal_comments.js 
+var PEG = require("./pascal_comments.js");
+var r = PEG.parse(
+  "not bla bla (* pascal (* nested *) comment *)"+
+  " pum pum (* another comment *)");
+console.log(r);
+</PRE>
+
+<P>
+<PRE>
+$ ../bin/pegjs pascal_comments.pegjs 
+$ node use_pascal_comments.js 
+[ 'not bla bla ',
+  ' pascal  nested  comment ',
+  ' pum pum ',
+  ' another comment ' ]
+</PRE>
+
+<P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html2202"
+<A NAME="tex2html2986"
   HREF="node55.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2196"
-  HREF="node6.html">
+<A NAME="tex2html2980"
+  HREF="node48.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2190"
+<A NAME="tex2html2974"
   HREF="node53.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2198"
+<A NAME="tex2html2982"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2200"
+<A NAME="tex2html2984"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -182,12 +210,12 @@ Closure Tools</A>
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2203"
-  HREF="node55.html">Véase También</A>
-<B>Sup:</B> <A NAME="tex2html2197"
-  HREF="node6.html">PRIMERA PARTE: APUNTES DE</A>
-<B> Ant:</B> <A NAME="tex2html2191"
-  HREF="node53.html">Backbone</A>
+<B> Sig:</B> <A NAME="tex2html2987"
+  HREF="node55.html">Un Lenguaje Dependiente del</A>
+<B>Sup:</B> <A NAME="tex2html2981"
+  HREF="node48.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html2975"
+  HREF="node53.html">Asociando un else con</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

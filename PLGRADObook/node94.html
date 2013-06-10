@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Inserción de Texto</TITLE>
-<META NAME="description" CONTENT="Inserción de Texto">
+<TITLE>Depuración en jison</TITLE>
+<META NAME="description" CONTENT="Depuración en jison">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,26 +21,26 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node95.html">
 <LINK REL="previous" HREF="node93.html">
-<LINK REL="up" HREF="node92.html">
+<LINK REL="up" HREF="node77.html">
 <LINK REL="next" HREF="node95.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3199"
+<A NAME="tex2html3819"
   HREF="node95.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3193"
-  HREF="node92.html">
+<A NAME="tex2html3813"
+  HREF="node77.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3187"
+<A NAME="tex2html3807"
   HREF="node93.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3195"
+<A NAME="tex2html3815"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3197"
+<A NAME="tex2html3817"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -88,112 +88,46 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3200"
-  HREF="node95.html">Trasferencia de Control Condicional</A>
-<B>Sup:</B> <A NAME="tex2html3194"
-  HREF="node92.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html3188"
-  HREF="node93.html">Transferencia de Control</A>
+<B> Sig:</B> <A NAME="tex2html3820"
+  HREF="node95.html">Construcción del Árbol Sintáctico</A>
+<B>Sup:</B> <A NAME="tex2html3814"
+  HREF="node77.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html3808"
+  HREF="node93.html">Recuperación de Errores</A>
 <B> Con:</B> 
-<A NAME="tex2html3195"
+<A NAME="tex2html3815"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3197"
+<A NAME="tex2html3817"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION010320000000000000000">
-Inserción de Texto</A>
-</H1>
-El uso de llaves {, } permite  ejecutar los comandos en la lista entre llaves
-a las líneas seleccionadas. La llave que cierra debe estar en su propia línea aparte.
-Las llaves nos permiten, como se ve en el ejemplo, anidar selecciones
-y expresar condiciones del tipo ``si esta entre estos dos patrones y además 
-está entre estos otros dos ...''.
+<H1><A NAME="SECTION048170000000000000000"></A>
+<A NAME="section:depuracion"></A>
 <BR>
-<P>
-Los comandos <I>a</I> e <I>i</I> tienen una sintaxis parecida:
-<BR><TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="CENTER"><I>
-	[address]a<!-- MATH
- $\backslash$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="14" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img10.png"
- ALT="$ \backslash$"></SPAN> </I></TD>
-<TD ALIGN="CENTER"><I> [address]i<!-- MATH
- $\backslash$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="14" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img10.png"
- ALT="$ \backslash$"></SPAN></I></TD>
-</TR>
-<TR><TD ALIGN="CENTER"><I>  
-        text                   </I></TD>
-<TD ALIGN="CENTER"><I> text</I></TD>
-</TR>
-</TABLE><I>
-<BR></I>
-<I>a</I> añade (<I>i</I> inserta) el texto en cada línea que
-casa con la dirección especificada.
-El <I>text</I> no queda disponible en el ``<I>pattern space</I>'',
-de manera que los subsiguientes comandos no le afectan. El
-siguiente ejemplo convierte un fichero <I>ascii</I> a <I>html</I>:
-<PRE>
-$ cat aandi.sed
-1{
-i\
-&lt;html&gt;\
-&lt;head&gt;\
-&lt;title&gt;
-p
-i\
-&lt;/title&gt;\
-&lt;/head&gt;\
-&lt;body bgcolor=white&gt;
-}
-$a\
-&lt;/pre&gt;\
-&lt;/body&gt;\
-&lt;/html&gt;
-$ cat aandi.test
-hello.world!
-$ sed -f aandi.sed aandi.test
-&lt;html&gt;
-&lt;head&gt;
-&lt;title&gt;
-hello.world!
-&lt;/title&gt;
-&lt;/head&gt;
-&lt;body bgcolor=white&gt;
-hello.world!
-&lt;/pre&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</PRE>
+Depuración en <TT>jison</TT>
+</H1>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3199"
+<A NAME="tex2html3819"
   HREF="node95.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3193"
-  HREF="node92.html">
+<A NAME="tex2html3813"
+  HREF="node77.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3187"
+<A NAME="tex2html3807"
   HREF="node93.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3195"
+<A NAME="tex2html3815"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3197"
+<A NAME="tex2html3817"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -241,12 +175,12 @@ hello.world!
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3200"
-  HREF="node95.html">Trasferencia de Control Condicional</A>
-<B>Sup:</B> <A NAME="tex2html3194"
-  HREF="node92.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html3188"
-  HREF="node93.html">Transferencia de Control</A>
+<B> Sig:</B> <A NAME="tex2html3820"
+  HREF="node95.html">Construcción del Árbol Sintáctico</A>
+<B>Sup:</B> <A NAME="tex2html3814"
+  HREF="node77.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html3808"
+  HREF="node93.html">Recuperación de Errores</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Clausuras</TITLE>
-<META NAME="description" CONTENT="Clausuras">
+<TITLE>Rangos</TITLE>
+<META NAME="description" CONTENT="Rangos">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,26 +21,26 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node25.html">
 <LINK REL="previous" HREF="node23.html">
-<LINK REL="up" HREF="node18.html">
+<LINK REL="up" HREF="node20.html">
 <LINK REL="next" HREF="node25.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1739"
+<A NAME="tex2html2082"
   HREF="node25.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1733"
-  HREF="node18.html">
+<A NAME="tex2html2076"
+  HREF="node20.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1727"
+<A NAME="tex2html2070"
   HREF="node23.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1735"
+<A NAME="tex2html2078"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1737"
+<A NAME="tex2html2080"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -88,44 +88,149 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1740"
-  HREF="node25.html">Propiedades, Métodos y Constructor</A>
-<B>Sup:</B> <A NAME="tex2html1734"
-  HREF="node18.html">Funciones</A>
-<B> Ant:</B> <A NAME="tex2html1728"
-  HREF="node23.html">Funciones como Espacios de</A>
+<B> Sig:</B> <A NAME="tex2html2083"
+  HREF="node25.html">Siguiente Línea: La orden</A>
+<B>Sup:</B> <A NAME="tex2html2077"
+  HREF="node20.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html2071"
+  HREF="node23.html">Trasferencia de Control Condicional</A>
 <B> Con:</B> 
-<A NAME="tex2html1735"
+<A NAME="tex2html2078"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1737"
+<A NAME="tex2html2080"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION04860000000000000000">
-Clausuras</A>
+<H1><A NAME="SECTION04340000000000000000">
+Rangos</A>
 </H1>
+Cuando se usan dos direcciones separadas por una coma, el rango que
+representan se extiende desde la primera línea que casa con el patrón
+hasta la siguiente línea que casa con el segundo patrón.
+El siguiente <I>script</I> muestra las tablas que aparecen en un fichero <SPAN CLASS="logo,LaTeX">L<SUP><SMALL>A</SMALL></SUP>T<SMALL>E</SMALL>X</SPAN>:
+<PRE>
+$ cat tables.sed
+#Imprime las tablas en un fichero tex
+/\\begin{tabular}/,/end{tabular}/p
+$ sed -n -f tables.sed *.tex
+\begin{tabular}{c|c}
+        [address]a$\backslash$ &amp; [address]i$\backslash$\\
+        text                   &amp; text\\
+\end{tabular}\\
+\begin{tabular}{c|c}
+        [address]a$\backslash$ &amp; [address]i$\backslash$\\
+        text                   &amp; text\\
+\end{tabular}\\
+</PRE>
+
+<P>
+La siguiente selección para un rango comienza después de la
+última línea del rango previo; esto es, si el rango es /A/,/B/,
+el primer conjunto de líneas que casa va desde la primera
+aparicion de /A/ hasta la siguiente aparición de /B/. Asi,
+el número mínimo de líneas seleccionadas (si no es cero)
+es dos. Sólo en el caso en que la primera dirección es una
+expresión regular y la segunda un número de línea que viene
+antes de la línea que casa, es que sólo se selecciona una
+línea de emparejamiento.  No hay por tanto solapes entre dos
+casamientos en un misma rango de direcciones.  
+El siguiente ejemplo ilustra la forma en la que <code>sed</code> interpreta
+los rangos de direcciones. Es una aproximación al problema de escribir
+los comentarios de un programa <I>C</I>.
+<PRE>
+$ cat scope.sed
+#execute: sed -n -f scope.sed scope.test
+/\/\*/,/\*\//p
+</PRE>
+Este <I>script</I> puede funcionar con programas cuyos
+comentarios (no anidados) empiecen y terminen en líneas 
+diferentes, como el del ejemplo:
+<PRE>
+$ cat scope2.test
+#file scope2.test
+#include &lt;stdio.h&gt;
+ 
+fact(int n) { /* recursive function
+if(n == 0) return 1;
+else(return n*fact(n-1));*/
+}
+ 
+void toto(id) {
+}
+ 
+main() {
+  toto();
+  printf("Hello world! factorial of 4 = %d\n",fact(4)); /* the
+         comment takes two lines */
+}
+</PRE>
+La ejecución del script selecciona los dos grupos de líneas
+que contienen comentarios:
+<PRE>
+$ sed -n -f scope.sed scope2.test
+fact(int n) { /* recursive function
+if(n == 0) return 1;
+else(return n*fact(n-1));*/
+  printf("Hello world! factorial of 4 = %d\n",fact(4)); /* the
+         comment takes two lines */
+</PRE>
+Sin embargo, el script fallará en este otro ejemplo:
+<PRE>
+$ cat scope.test
+#include &lt;stdio.h&gt;
+ 
+fact(int n) { /* recursive function */
+if(n == 0) return 1;
+else(return n*fact(n-1));
+}
+ 
+void toto(id) {
+}
+ 
+main() {
+  toto();
+  printf("Hello world! factorial of 4 = %d\n",fact(4)); /* the
+         comment takes two lines */
+}
+</PRE>
+La ejecución del programa da como resultado:
+<PRE>
+$ sed -n -f scope.sed scope.test
+fact(int n) { /* recursive function */
+if(n == 0) return 1;
+else(return n*fact(n-1));
+}
+ 
+void toto(id) {
+}
+ 
+main() {
+  toto();
+  printf("Hello world! factorial of 4 = %d\n",fact(4)); /* the
+         comment takes two lines */
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1739"
+<A NAME="tex2html2082"
   HREF="node25.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1733"
-  HREF="node18.html">
+<A NAME="tex2html2076"
+  HREF="node20.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1727"
+<A NAME="tex2html2070"
   HREF="node23.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1735"
+<A NAME="tex2html2078"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1737"
+<A NAME="tex2html2080"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -173,12 +278,12 @@ Clausuras</A>
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1740"
-  HREF="node25.html">Propiedades, Métodos y Constructor</A>
-<B>Sup:</B> <A NAME="tex2html1734"
-  HREF="node18.html">Funciones</A>
-<B> Ant:</B> <A NAME="tex2html1728"
-  HREF="node23.html">Funciones como Espacios de</A>
+<B> Sig:</B> <A NAME="tex2html2083"
+  HREF="node25.html">Siguiente Línea: La orden</A>
+<B>Sup:</B> <A NAME="tex2html2077"
+  HREF="node20.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html2071"
+  HREF="node23.html">Trasferencia de Control Condicional</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

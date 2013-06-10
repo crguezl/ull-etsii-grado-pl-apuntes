@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Generación interactiva de analizadores Yapp</TITLE>
-<META NAME="description" CONTENT="Generación interactiva de analizadores Yapp">
+<TITLE>Ejercicios</TITLE>
+<META NAME="description" CONTENT="Ejercicios">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,28 +19,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node178.html">
 <LINK REL="previous" HREF="node176.html">
-<LINK REL="up" HREF="node169.html">
+<LINK REL="up" HREF="node175.html">
 <LINK REL="next" HREF="node178.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5157"
+<A NAME="tex2html5245"
   HREF="node178.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5151"
-  HREF="node169.html">
+<A NAME="tex2html5239"
+  HREF="node175.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5145"
+<A NAME="tex2html5235"
   HREF="node176.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5153"
+<A NAME="tex2html5241"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5155"
+<A NAME="tex2html5243"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -88,121 +87,153 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5158"
-  HREF="node178.html">Construcción del Árbol Sintáctico</A>
-<B>Sup:</B> <A NAME="tex2html5152"
-  HREF="node169.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5146"
-  HREF="node176.html">Precedencia y Asociatividad</A>
+<B> Sig:</B> <A NAME="tex2html5246"
+  HREF="node178.html">Subconjuntos y Extensiones de</A>
+<B>Sup:</B> <A NAME="tex2html5240"
+  HREF="node175.html">Clases y Módulos</A>
+<B> Ant:</B> <A NAME="tex2html5236"
+  HREF="node176.html">Herencia</A>
 <B> Con:</B> 
-<A NAME="tex2html5153"
+<A NAME="tex2html5241"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5155"
+<A NAME="tex2html5243"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION010980000000000000000">
-Generación interactiva de analizadores <TT>Yapp</TT></A>
+<H1><A NAME="SECTION05920000000000000000">
+Ejercicios</A>
 </H1>
-En el siguiente código, la subrutina <TT>create_yapp_package</TT> 
-nos muestra como crear un analizador <TT>Yapp</TT> en tiempo de ejecución.
-Las dos líneas:
+
+<OL>
+<LI>¿Cual es la salida?
 <PRE>
-  my $p = new Parse::Yapp(input =&gt; $grammar);
-  $p = $p-&gt;Output(classname =&gt; $name);
+&gt; String.prototype.repeat = function(times) {
+...   return new Array(times+1).join(this)
+... }
+[Function]
+&gt;  
+undefined
+&gt; "hello".repeat(3)
+
+&gt;
 </PRE>
-crean una cadena en <code>$p</code> conteniendo el código de 
-la clase que implanta el analizador. Todo el truco está en hacer
+
+<P>
+</LI>
+<LI>¿Cuales son los resultados?
 <PRE>
-  eval $p;
+&gt; z = Object.create({x:1, y:2})
+{}
+&gt; z.x
+
+&gt; z.y
+
+&gt; z.__proto__
+
+&gt; z.__proto__.__proto__
+
+&gt; z.__proto__.__proto__.__proto__
 </PRE>
-para tener el paquete a mano:
+</LI>
+<LI>Describa las salidas:
 <PRE>
-$ cat left.pl
-#!/usr/local/bin/perl5.8.0 -w
-#use strict;
-use Parse::Yapp;
+&gt; obj = {x : 'something' }
+{ x: 'something' }
+&gt; w = Object.create(obj)
+{}
+&gt; w.x
+'something'
+&gt; w.x = "another thing"
+'another thing'
+&gt; w.__proto__
 
-sub lex{
-    my($parser)=shift;
-
-    return('',undef) unless $parser-&gt;YYData-&gt;{INPUT};
-    for ($parser-&gt;YYData-&gt;{INPUT}) {
-        s/^\s*//;
-        s/^(.)//;
-        my $ret = $1;
-        return($ret, $ret);
-    }
-}
-
-sub yapp {
-  my $grammar = shift
-     or die "Must specify a grammar as first argument";
-  my $name = shift
-     or die "Must specify the name of the class as second argument";
-
-  my $p = new Parse::Yapp(input =&gt; $grammar) or die "Bad grammar.";
-  $p = $p-&gt;Output(classname =&gt; $name) or die "Can't generate parser.";
-
-  eval $p;
-  $@ and die "Error while compiling your parser: $@\n";
-}
-
-######## main #########
-my $grammar = q {
-%left '*'
-%%
-S:  A
-;
-
-A:  A '*' A  { "($_[1] $_[2] $_[3])" }
- |  B
-;
-
-B:  'a' | 'b' | 'c' | 'd'
-;
-
-%%
-};
-
-&amp;yapp($grammar, "Example");
-my $p = new Example(yylex =&gt; \&amp;lex, yyerror =&gt; sub {});
-
-print "Expresion: ";
-$p-&gt;YYData-&gt;{INPUT} = &lt;&gt;;
-$p-&gt;YYData-&gt;{INPUT} =~ s/\s*$//;
-
-my $out=$p-&gt;YYParse;
-print "out = $out\n";
+&gt; obj == w.__proto__
 </PRE>
-Sigue un ejemplo de ejecución:
+</LI>
+<LI>Explique la salida:
 <PRE>
-$ ./left.pl
-Expresion: a*b*c*d
-out = (((a * b) * c) * d)
+&gt; obj = {x : { y : 1} }
+{ x: { y: 1 } }
+&gt; w = Object.create(obj)
+{}
+&gt; w.x == obj.x
+true
+&gt; w.x.y = 2
+2
+&gt; obj
+{ x: { y: 2 } }
+&gt;
 </PRE>
+</LI>
+<LI>Explique las salidas:
+<PRE>
+&gt; inherit = Object.create
+[Function: create]
+&gt; o = {}
+{}
+&gt; o.x = 1
+1
+&gt; p = inherit(o)
+{}
+&gt; p.x
+1
+&gt; p.y = 2
+2
+&gt; p
+{ y: 2 }
+&gt; o
+{ x: 1 }
+&gt; o.y
+undefined
+&gt; q = inherit(p)
+{}
+&gt; q.z = 3
+3
+&gt; q
+{ z: 3 }
+&gt; s = q.toString()
+'[object Object]'
+&gt; q.x+q.y+q.z
+6
+&gt; o.x
+1
+&gt; o.x = 4
+4
+&gt; p.x
+4
+&gt; q.x
+4
+&gt; q.x = 5
+5
+&gt; p.x
+4
+&gt; o.x
+4
+</PRE>
+</LI>
+</OL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5157"
+<A NAME="tex2html5245"
   HREF="node178.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5151"
-  HREF="node169.html">
+<A NAME="tex2html5239"
+  HREF="node175.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5145"
+<A NAME="tex2html5235"
   HREF="node176.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5153"
+<A NAME="tex2html5241"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5155"
+<A NAME="tex2html5243"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -250,12 +281,12 @@ out = (((a * b) * c) * d)
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5158"
-  HREF="node178.html">Construcción del Árbol Sintáctico</A>
-<B>Sup:</B> <A NAME="tex2html5152"
-  HREF="node169.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5146"
-  HREF="node176.html">Precedencia y Asociatividad</A>
+<B> Sig:</B> <A NAME="tex2html5246"
+  HREF="node178.html">Subconjuntos y Extensiones de</A>
+<B>Sup:</B> <A NAME="tex2html5240"
+  HREF="node175.html">Clases y Módulos</A>
+<B> Ant:</B> <A NAME="tex2html5236"
+  HREF="node176.html">Herencia</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

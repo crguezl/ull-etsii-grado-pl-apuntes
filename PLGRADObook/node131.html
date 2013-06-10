@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Práctica: Inventando un Lenguaje: Tortoise</TITLE>
-<META NAME="description" CONTENT="Práctica: Inventando un Lenguaje: Tortoise">
+<TITLE>Uso de union y type</TITLE>
+<META NAME="description" CONTENT="Uso de union y type">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,27 +19,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
+<LINK REL="next" HREF="node132.html">
 <LINK REL="previous" HREF="node130.html">
-<LINK REL="up" HREF="node120.html">
+<LINK REL="up" HREF="node128.html">
 <LINK REL="next" HREF="node132.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4206"
+<A NAME="tex2html4397"
   HREF="node132.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4200"
-  HREF="node120.html">
+<A NAME="tex2html4391"
+  HREF="node128.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4196"
+<A NAME="tex2html4385"
   HREF="node130.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4202"
+<A NAME="tex2html4393"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4204"
+<A NAME="tex2html4395"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -87,139 +88,134 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4207"
-  HREF="node132.html">Análisis Sintáctico Descendente en</A>
-<B>Sup:</B> <A NAME="tex2html4201"
-  HREF="node120.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html4197"
-  HREF="node130.html">Práctica: Ambiguedad en C++</A>
+<B> Sig:</B> <A NAME="tex2html4398"
+  HREF="node132.html">Acciones en medio de</A>
+<B>Sup:</B> <A NAME="tex2html4392"
+  HREF="node128.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4386"
+  HREF="node130.html">Precedencia y Asociatividad</A>
 <B> Con:</B> 
-<A NAME="tex2html4202"
+<A NAME="tex2html4393"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4204"
+<A NAME="tex2html4395"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html4208"
-  HREF="node131.html#SECTION0106110010000000000000">Recursos</A>
-</UL></UL></UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION0106110000000000000000"></A>
-   <A NAME="10839"></A>
+<H1><A NAME="SECTION041030000000000000000"></A>
+<A NAME="section:union"></A>
 <BR>
-Práctica: Inventando un Lenguaje: Tortoise
+Uso de union y type
 </H1>
+En general, los atributos asociados con las diferentes variables sintácticas y terminales tendrán tipos de datos distintos. Para ello, <code>yacc</code> provee
+la declaración <code>%union</code>.
 
 <P>
-El objetivo de esta práctica es crear un lenguaje de programación 
-imperativa sencillo de estilo <A NAME="tex2html374"
-  HREF="http://en.wikipedia.org/wiki/Logo_programming_language">LOGO</A>.
-Para ello lea el capítulo
-<A NAME="tex2html375"
-  HREF="http://nathansuniversity.com/turtle.html">Inventing a Language - Tortoise</A>
-del 
-<A NAME="tex2html376"
-  HREF="http://nathansuniversity.com/turtle.html">curso PL101: Create Your Own Programming Language</A>
-de 
-<A NAME="tex2html377"
-  HREF="http://nathansjslessons.appspot.com/">Nathan Whitehead</A>.
-Haga todos los ejercicios e implemente el lenguaje descrito.
+La declaración <code>%union</code> especifica la colección de posibles tipos de datos de <code>yylval</code> y de los atributos <code>$1</code>, <code>$2</code>, ...
 
 <P>
-Puede encontrar una solución a la práctica en GitHub en el repositorio
-<A NAME="tex2html378"
-  HREF="https://github.com/dingram/pl101">pl101</A>
-de 
-<A NAME="tex2html379"
-  HREF="http://www.dmi.me.uk/blog/">Dave Ingram</A>. Usela como guía cuando se sienta desorientado.
+He aqui un ejemplo:
 
 <P>
-
-<H4><A NAME="SECTION0106110010000000000000">
-Recursos</A>
-</H4>
-  
-
-<UL>
-<LI><A NAME="tex2html380"
-  HREF="http://nathansuniversity.com/turtle.html">Inventing a Language - Tortoise</A>
-por Nathan Whitehead
-</LI>
-<LI>Repositorio
-<A NAME="tex2html381"
-  HREF="https://github.com/dingram/pl101">dingram / pl101 en GitHub</A>
-con las soluciones a esta práctica. 
-
-<P>
-
-<UL>
-<LI>Blog de <A NAME="tex2html382"
-  HREF="http://www.dmi.me.uk/blog/">dingram (Dave Ingram)</A>
-</LI>
-</UL>
-</LI>
-<LI>Repositorio
-<A NAME="tex2html383"
-  HREF="https://github.com/PatrixCR/PL101">PatrixCR / PL101 en GitHub</A>
-con las soluciones a esta práctica. 
+<PRE>
+%union {
+  double val;
+  int index;
+}
+</PRE>
+Esto dice que los dos tipos de alternativas son <code>double</code> y <code>int </code>. Se les han dado los nombres <code>val</code> y <code>index</code>.
+<PRE>
+%token &lt;val&gt;   NUMBER
+%token &lt;index&gt; VAR
+%type  &lt;val&gt;   expr
+%right '='
+%left '+' '-'
+%left '*' '/'
+</PRE>
 
 <P>
-</LI>
-<LI>Repositorio
-<A NAME="tex2html384"
-  HREF="https://github.com/cndreisbach/PL101">Clinton N. Dreisbach/ PL101 en GitHub</A>
-con contenidos del curso PL101
+Estos nombres <code>&lt;val&gt;</code> e <code>&lt;index&gt;</code> se utilizan en las declaraciones de <code>%token</code> y <code>%type</code> para definir el tipo del correspondiente atributo asociado.
 
 <P>
-</LI>
-<LI><A NAME="tex2html385"
-  HREF="http://nathansuniversity.com/vanilla/discussion/79/lesson-6-inventing-a-language-for-turtle-graphics/p1">Foro</A>
+Dentro de las acciones, se puede especificar el tipo de un símbolo insertando <code>&lt;tipo&gt;</code> despues del <code>$</code> que referencia al atributo. En el ejemplo anterior podríamos escribir <code>$&lt;val&gt;1</code> para indicar que manipulamos el atributo
+del primer símbolo de la parte derecha de la regla como si fuera un <code>double</code>.
+
 <P>
-</LI>
-<LI>Sobre Nathan Whitehead
-  
-<UL>
-<LI><A NAME="tex2html386"
-  HREF="http://nathansjslessons.appspot.com/">Nathan's Lessons</A>
-</LI>
-<LI><A NAME="tex2html387"
-  HREF="https://github.com/nwhitehead">Nathan Whitehead en GitHub</A>
-</LI>
-<LI><A NAME="tex2html388"
-  HREF="http://www.youtube.com/user/NathanWhitehead">Nathan in YouTube</A>
-</LI>
-</UL>
-</LI>
-</UL>
+La información que provee la declaración <code>%union</code> es utilizada por  <code>yacc</code>
+para realizar la sustitución de las referencias textuales/formales
+(<code>$$</code>, <code>$1</code>, ...<code>$</code><SPAN CLASS="MATH"><IMG
+ WIDTH="26" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img508.png"
+ ALT="$ \vert\alpha\vert$"></SPAN>) a los  atributos de
+los símbolos que conforman la regla (que pueden verse como parámetros
+formales de las acciones) por las referencias a las zonas de memoria
+en las que se guardan (que están asociadas con los correspondientes
+estados de la pila) cuando tiene lugar la reducción en el algoritmo de
+análisis LR:
+
+<P>
+<DIV ALIGN="LEFT">
+<code>    case "reduce A </code><!-- MATH
+ $\rightarrow \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="38" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img509.png"
+ ALT="$ \rightarrow \alpha$"></SPAN><code>" : </code>
+
+<BR><code>      execute("reduce A </code><!-- MATH
+ $\rightarrow \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="38" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img509.png"
+ ALT="$ \rightarrow \alpha$"></SPAN><code>", top(</code><SPAN CLASS="MATH"><IMG
+ WIDTH="26" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img508.png"
+ ALT="$ \vert\alpha\vert$"></SPAN><code>-1), </code><SPAN CLASS="MATH"><IMG
+ WIDTH="28" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img510.png"
+ ALT="$ \cdots$"></SPAN><code> , top(0));</code> 
+
+<BR><code>      pop(</code><SPAN CLASS="MATH"><IMG
+ WIDTH="26" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img508.png"
+ ALT="$ \vert\alpha\vert$"></SPAN><code>);</code> 
+
+<BR><code>      push(goto[top(0)][A];</code> 
+
+<BR><code>      break;</code>
+
+</DIV>
+
+<P>
+Asi, <code>yacc</code> es capaz de insertar 
+el código de ahormado de tipos correcto.
+Ello puede hacerse porque se conocen los tipos 
+asociados con los símbolos en la parte derecha de 
+una regla, ya que han sido proveídos en  
+las declaraciones <code>%union</code>, <code>%token</code> y <code>%type</code>.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4206"
+<A NAME="tex2html4397"
   HREF="node132.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4200"
-  HREF="node120.html">
+<A NAME="tex2html4391"
+  HREF="node128.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4196"
+<A NAME="tex2html4385"
   HREF="node130.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4202"
+<A NAME="tex2html4393"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4204"
+<A NAME="tex2html4395"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -267,12 +263,12 @@ con contenidos del curso PL101
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4207"
-  HREF="node132.html">Análisis Sintáctico Descendente en</A>
-<B>Sup:</B> <A NAME="tex2html4201"
-  HREF="node120.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html4197"
-  HREF="node130.html">Práctica: Ambiguedad en C++</A>
+<B> Sig:</B> <A NAME="tex2html4398"
+  HREF="node132.html">Acciones en medio de</A>
+<B>Sup:</B> <A NAME="tex2html4392"
+  HREF="node128.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4386"
+  HREF="node130.html">Precedencia y Asociatividad</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

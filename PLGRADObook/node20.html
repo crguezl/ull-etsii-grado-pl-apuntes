@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Invocando Funciones</TITLE>
-<META NAME="description" CONTENT="Invocando Funciones">
+<TITLE>Expresiones Regulares en sed</TITLE>
+<META NAME="description" CONTENT="Expresiones Regulares en sed">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,28 +19,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node21.html">
-<LINK REL="previous" HREF="node19.html">
-<LINK REL="up" HREF="node18.html">
+<LINK REL="next" HREF="node33.html">
+<LINK REL="previous" HREF="node17.html">
+<LINK REL="up" HREF="node6.html">
 <LINK REL="next" HREF="node21.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1683"
+<A NAME="tex2html2014"
   HREF="node21.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1677"
-  HREF="node18.html">
+<A NAME="tex2html2008"
+  HREF="node6.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1671"
+<A NAME="tex2html2002"
   HREF="node19.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1679"
+<A NAME="tex2html2010"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1681"
+<A NAME="tex2html2012"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -88,44 +88,114 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1684"
-  HREF="node21.html">Argumentos y Parámetros</A>
-<B>Sup:</B> <A NAME="tex2html1678"
-  HREF="node18.html">Funciones</A>
-<B> Ant:</B> <A NAME="tex2html1672"
-  HREF="node19.html">Definiendo Funciones</A>
+<B> Sig:</B> <A NAME="tex2html2015"
+  HREF="node21.html">Transferencia de Control</A>
+<B>Sup:</B> <A NAME="tex2html2009"
+  HREF="node6.html">PRIMERA PARTE: APUNTES DE</A>
+<B> Ant:</B> <A NAME="tex2html2003"
+  HREF="node19.html">Expresiones Regulares en Flex</A>
 <B> Con:</B> 
-<A NAME="tex2html1679"
+<A NAME="tex2html2010"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1681"
+<A NAME="tex2html2012"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION04820000000000000000">
-Invocando Funciones</A>
-</H1>
+<H1><A NAME="SECTION04300000000000000000">
+Expresiones Regulares en sed</A>
+</H1>·
+El editor <code>sed</code> es un editor no interactivo que actúa
+ejecutando los comandos (similares a los de <code>ex</code>) que
+figuran en el guión <code>sed</code> (<A NAME="2460"></A><SPAN  CLASS="textit">script sed</SPAN>) 
+sobre los ficheros de entrada y escribiendo el resultado en la salida estandar.
+Normalmente se llama en una de estas dos formas:
+<PRE>
+sed [opciones] 'comando' fichero(s)
+sed [opciones] -f guion fichero(s)
+</PRE>
+Si no se especifican ficheros de entrada, <code>sed</code> lee su entrada 
+desde la entrada estandar.
 
 <P>
+Todos los comandos en el guión son ejecutados sobre todas las líneas de la
+entrada, salvo que las condiciones en el ámbito del comando indiquen lo contrario.
+
+<P>
+<PRE>
+nereida:~/sed&gt; cat b.without.sed
+#example of succesive replacements
+s/fish/cow/
+s/cow/horse/
+nereida:~/sed&gt; cat b.test
+fish
+cow
+nereida:~/sed&gt; sed -f b.without.sed b.test
+horse
+horse
+</PRE>
+como se ve en el ejemplo, si un comando cambia la entrada, los siguientes 
+comandos se aplican a la línea modificada (denominada <A NAME="2462"></A><SPAN  CLASS="textit">pattern space</SPAN>).
+
+<P>
+Los comandos <code>sed</code> tienen el formato:
+
+<P>
+<PRE>
+[direccion1][,direccion2][!]comando[argumentos]
+</PRE>
+
+<P>
+<BR> <HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html2016"
+  HREF="node21.html">Transferencia de Control</A>
+<LI><A NAME="tex2html2017"
+  HREF="node22.html">Inserción de Texto</A>
+<LI><A NAME="tex2html2018"
+  HREF="node23.html">Trasferencia de Control Condicional</A>
+<LI><A NAME="tex2html2019"
+  HREF="node24.html">Rangos</A>
+<LI><A NAME="tex2html2020"
+  HREF="node25.html">Siguiente Línea: La orden <I>n</I></A>
+<LI><A NAME="tex2html2021"
+  HREF="node26.html">Manipulando tablas numéricas</A>
+<LI><A NAME="tex2html2022"
+  HREF="node27.html">Traducción entre Tablas</A>
+<LI><A NAME="tex2html2023"
+  HREF="node28.html">Del espacio de Patrones al de Mantenimiento</A>
+<LI><A NAME="tex2html2024"
+  HREF="node29.html">La orden <I>N</I></A>
+<LI><A NAME="tex2html2025"
+  HREF="node30.html">Suprimir: El Comando <I>D</I></A>
+<LI><A NAME="tex2html2026"
+  HREF="node31.html">Búsqueda entre líneas</A>
+<LI><A NAME="tex2html2027"
+  HREF="node32.html">Seleccionando Items en un Registro Multilínea</A>
+</UL>
+<!--End of Table of Child-Links-->
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1683"
+<A NAME="tex2html2014"
   HREF="node21.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1677"
-  HREF="node18.html">
+<A NAME="tex2html2008"
+  HREF="node6.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1671"
+<A NAME="tex2html2002"
   HREF="node19.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1679"
+<A NAME="tex2html2010"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1681"
+<A NAME="tex2html2012"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -173,12 +243,12 @@ Invocando Funciones</A>
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1684"
-  HREF="node21.html">Argumentos y Parámetros</A>
-<B>Sup:</B> <A NAME="tex2html1678"
-  HREF="node18.html">Funciones</A>
-<B> Ant:</B> <A NAME="tex2html1672"
-  HREF="node19.html">Definiendo Funciones</A>
+<B> Sig:</B> <A NAME="tex2html2015"
+  HREF="node21.html">Transferencia de Control</A>
+<B>Sup:</B> <A NAME="tex2html2009"
+  HREF="node6.html">PRIMERA PARTE: APUNTES DE</A>
+<B> Ant:</B> <A NAME="tex2html2003"
+  HREF="node19.html">Expresiones Regulares en Flex</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

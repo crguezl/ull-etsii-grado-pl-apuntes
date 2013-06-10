@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Algoritmo de Análisis LR</TITLE>
-<META NAME="description" CONTENT="Algoritmo de Análisis LR">
+<TITLE>Expresiones y Operadores</TITLE>
+<META NAME="description" CONTENT="Expresiones y Operadores">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,26 +21,26 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node159.html">
 <LINK REL="previous" HREF="node157.html">
-<LINK REL="up" HREF="node149.html">
+<LINK REL="up" HREF="node154.html">
 <LINK REL="next" HREF="node159.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4837"
+<A NAME="tex2html4965"
   HREF="node159.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4831"
-  HREF="node149.html">
+<A NAME="tex2html4959"
+  HREF="node154.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4825"
+<A NAME="tex2html4953"
   HREF="node157.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4833"
+<A NAME="tex2html4961"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4835"
+<A NAME="tex2html4963"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -88,133 +88,44 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4838"
-  HREF="node159.html">El módulo Generado por</A>
-<B>Sup:</B> <A NAME="tex2html4832"
-  HREF="node149.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4826"
-  HREF="node157.html">Práctica: Calculadora con Análisis</A>
+<B> Sig:</B> <A NAME="tex2html4966"
+  HREF="node159.html">Sentencias</A>
+<B>Sup:</B> <A NAME="tex2html4960"
+  HREF="node154.html">SEGUNDA PARTE: APUNTES DE</A>
+<B> Ant:</B> <A NAME="tex2html4954"
+  HREF="node157.html">Tipos, Valores y Variables</A>
 <B> Con:</B> 
-<A NAME="tex2html4833"
+<A NAME="tex2html4961"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4835"
+<A NAME="tex2html4963"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION010890000000000000000"></A>
-<A NAME="section:algoritmoLR"></A>
-<BR>
-Algoritmo de Análisis LR
+<H1><A NAME="SECTION05400000000000000000">
+Expresiones y Operadores</A>
 </H1>
-Asi  pues la tabla de transiciones del autómata nos genera dos tablas:
-la tabla de acciones y la de saltos.
-El  algoritmo  de análisis sintáctico <SPAN  CLASS="textbf">LR</SPAN> en el  que 
-se basa <SPAN  CLASS="textbf">jison</SPAN> utiliza una pila y dos tablas 
-para analizar la entrada. Como se ha visto, la tabla  de acciones contiene cuatro tipo de acciones: 
-
-<OL>
-<LI>Desplazar (<SPAN  CLASS="textbf">shift</SPAN>)
-</LI>
-<LI>Reducir (<SPAN  CLASS="textbf">reduce</SPAN>)
-</LI>
-<LI>Aceptar
-</LI>
-<LI>Error
-</LI>
-</OL>
-El algoritmo utiliza una pila en la que se guardan los estados
-del autómata. De este modo se evita tener que ``comenzar'' 
-el procesado de la forma sentencial derecha resultante
-después de una reducción (antiderivación).
-<P>
-<DIV><A NAME="alg:parser"><B>Algoritmo  <SPAN CLASS="arabic">38</SPAN>.<SPAN CLASS="arabic">9</SPAN>.<SPAN CLASS="arabic">1</SPAN></B></A> &nbsp; 
-<I>Análizador LR
-</I><PRE>
- push(s0);
- b = yylex();
- for( ; ; ;) {
-   s = top(0); a = b;
-   switch (action[s][a]) {
-     case "shift t" : 
-       t.attr = a.attr;
-       push(t); 
-       b = yylex();
-       break;
-     case "reduce A -&gt;alpha" : 
-       eval(Sem{A -&gt; alpha}(top(|alpha|-1).attr, ... , top(0).attr)); 
-       pop(|alpha|); 
-       push(goto[top(0)][A]); 
-       break;
-     case "accept" : return (1); 
-     default : yyerror("syntax error");
-   }
- }
-</PRE></DIV><P></P>
-
-<UL>
-<LI>Como es habitual, <SPAN CLASS="MATH"><IMG
- WIDTH="24" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img452.png"
- ALT="$ \vert x\vert$"></SPAN> denota la longitud de la cadena <SPAN CLASS="MATH"><IMG
- WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img71.png"
- ALT="$ x$"></SPAN>.
-</LI>
-<LI>La función <code>top(k)</code> devuelve el elemento que ocupa la 
-posición <code>k</code> desde el <SPAN  CLASS="textbf">top</SPAN> de la pila (esto es, está a profundidad <code>k</code>).
-</LI>
-<LI>La función <code>pop(k)</code> extrae <code>k</code> elementos de la pila.
-</LI>
-<LI>La notación <code>state.attr</code> hace referencia al atributo
-asociado con cada estado, el cual desde el punto de vista del programador
-esta asociado con el correspondiente símbolo de la parte derecha de la regla. 
-Nótese que cada estado que está en la pila es el resultado de una transición con
-un símbolo. El atributo de ese símbolo es guardado en el objeto estado
-cada vez que ocurre una transición.
-
-<P>
-</LI>
-<LI>Denotamos por <code>Sem {reduce A -&gt; alpha}</code>
-el código de la acción semántica asociada con la regla <!-- MATH
- $A \rightarrow \alpha$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img51.png"
- ALT="$ A \rightarrow \alpha$"></SPAN>.
-</LI>
-</UL>
-
-<P>
-Todos los analizadores LR comparten, salvo pequeñas
-exepciones, el mismo algoritmo
-de análisis. Lo que más los diferencia es la forma en 
-la que construyen las tablas.
-En <code>jison</code>
-la construcción de las tablas de <SPAN  CLASS="textbf">acciones</SPAN> y <SPAN  CLASS="textbf">gotos</SPAN>
-se realiza  por defecto mediante el algoritmo <SPAN  CLASS="textbf">LALR</SPAN>.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4837"
+<A NAME="tex2html4965"
   HREF="node159.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4831"
-  HREF="node149.html">
+<A NAME="tex2html4959"
+  HREF="node154.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4825"
+<A NAME="tex2html4953"
   HREF="node157.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4833"
+<A NAME="tex2html4961"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4835"
+<A NAME="tex2html4963"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -262,12 +173,12 @@ se realiza  por defecto mediante el algoritmo <SPAN  CLASS="textbf">LALR</SPAN>.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4838"
-  HREF="node159.html">El módulo Generado por</A>
-<B>Sup:</B> <A NAME="tex2html4832"
-  HREF="node149.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4826"
-  HREF="node157.html">Práctica: Calculadora con Análisis</A>
+<B> Sig:</B> <A NAME="tex2html4966"
+  HREF="node159.html">Sentencias</A>
+<B>Sup:</B> <A NAME="tex2html4960"
+  HREF="node154.html">SEGUNDA PARTE: APUNTES DE</A>
+<B> Ant:</B> <A NAME="tex2html4954"
+  HREF="node157.html">Tipos, Valores y Variables</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

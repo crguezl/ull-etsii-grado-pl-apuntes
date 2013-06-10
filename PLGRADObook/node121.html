@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Referencias y Documentación</TITLE>
-<META NAME="description" CONTENT="Referencias y Documentación">
+<TITLE>Práctica: Nuevos Métodos</TITLE>
+<META NAME="description" CONTENT="Práctica: Nuevos Métodos">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,26 +21,26 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node122.html">
 <LINK REL="previous" HREF="node120.html">
-<LINK REL="up" HREF="node120.html">
+<LINK REL="up" HREF="node97.html">
 <LINK REL="next" HREF="node122.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4055"
+<A NAME="tex2html4242"
   HREF="node122.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4049"
-  HREF="node120.html">
+<A NAME="tex2html4236"
+  HREF="node97.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4043"
+<A NAME="tex2html4230"
   HREF="node120.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4051"
+<A NAME="tex2html4238"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4053"
+<A NAME="tex2html4240"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -88,70 +88,107 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4056"
-  HREF="node122.html">Un Ejemplo Sencillo</A>
-<B>Sup:</B> <A NAME="tex2html4050"
-  HREF="node120.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html4044"
-  HREF="node120.html">Análisis Descendente mediante Parsing</A>
+<B> Sig:</B> <A NAME="tex2html4243"
+  HREF="node122.html">Práctica: Generación Automática de</A>
+<B>Sup:</B> <A NAME="tex2html4237"
+  HREF="node97.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4231"
+  HREF="node120.html">Práctica: Autoacciones</A>
 <B> Con:</B> 
-<A NAME="tex2html4051"
+<A NAME="tex2html4238"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4053"
+<A NAME="tex2html4240"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION010610000000000000000">
-Referencias y Documentación</A>
+<H1><A NAME="SECTION049240000000000000000"></A>
+   <A NAME="18537"></A>
+<BR>
+Práctica: Nuevos Métodos
 </H1>
+  
+Continuemos extendiendo <code>Yapp</code>.
 
 <UL>
-<LI>Véase <A NAME="tex2html366"
-  HREF="http://en.wikipedia.org/wiki/Parsing_expression_grammar">Parsing Expression Grammar</A>
+<LI>Introduzca en el módulo <code>Driver.pm</code> de <code>Yapp</code>
+un método <code>YYLhs</code> que devuelva el identificador
+de la variable sintáctica en el lado izquierdo de la regla 
+de producción por la que se está reduciendo. 
 </LI>
-<LI><A NAME="tex2html367"
-  HREF="http://pegjs.majda.cz/documentation">PEG.js documentation</A>
+<LI>Para tener disponible el lado izquierdo
+deberá modificar la conducta del analizador LALR 
+(subrutina <code>_Parse</code>) para que guarde como un atributo
+el identificador de dicho noterminal.
 </LI>
-<LI><A NAME="tex2html368"
-  HREF="http://pegjs.majda.cz/online">Testing PEG.js Online</A>
-</LI>
-<LI>Michael's Blog: <A NAME="tex2html369"
-  HREF="http://blog.mi-ernst.de/2012/05/14/javascript-parser-generators/">JavaScript Parser Generators</A>.
-The PEG.js Tutorial
-</LI>
-<LI><A NAME="tex2html370"
-  HREF="http://bford.info/packrat/">The Packrat Parsing and 
-Parsing Expression Grammars Page</A>
-</LI>
-<LI><A NAME="tex2html371"
-  HREF="http://nathansuniversity.com/">PL101: Create Your Own Programming Language</A>
-</LI>
-<LI><A NAME="tex2html372"
-  HREF="http://nathansuniversity.com/pegs.html">PL101: Create Your Own Programming Language: Parsing</A>
+<LI>¿Que identificador se devuelve asociado con las acciones
+intermedias?
 </LI>
 </UL>
 
 <P>
+Sigue un ejemplo de como programar haciendo uso de esta y la 
+anterior extensión:
+<PRE>
+%right  '='
+%left   '-' '+'
+%left   '*' '/'
+%left   NEG
+%autoaction { my $n = $#_;  bless [@_[1..$n]], $_[0]-&gt;YYLhs }
+%%
+input:                 
+        |   input line 
+;
+line:     '\n'       { } 
+        | exp '\n'   { [ $_[1] ] } 
+        | error '\n' { }
+;
+exp:        NUM         |   VAR         |   VAR '=' exp         
+        |   exp '+' exp |   exp '-' exp |   exp '*' exp |   exp '/' exp      
+        |   '-' exp %prec NEG 
+        |   '(' exp ')' { [ $_[2] ] }     
+;
+%%
+...
+</PRE>
+Veamos la ejecución correspondiente al ejemplo anterior:
+<PRE>
+$ ./uselhs2.pl
+2+3*4
+$VAR1 = bless( 
+[
+  bless( [], 'input' ),
+  [
+    bless( [
+      bless( [ '2' ], 'exp' ),
+      '+',
+      bless( [
+        bless( [ '3' ], 'exp' ), '*', bless( [ '4' ], 'exp' ) ], 'exp' )
+    ], 'exp' )
+  ]
+], 'input' );
+</PRE>
+
+<P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4055"
+<A NAME="tex2html4242"
   HREF="node122.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4049"
-  HREF="node120.html">
+<A NAME="tex2html4236"
+  HREF="node97.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4043"
+<A NAME="tex2html4230"
   HREF="node120.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4051"
+<A NAME="tex2html4238"
   HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4053"
+<A NAME="tex2html4240"
   HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -199,12 +236,12 @@ Parsing Expression Grammars Page</A>
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4056"
-  HREF="node122.html">Un Ejemplo Sencillo</A>
-<B>Sup:</B> <A NAME="tex2html4050"
-  HREF="node120.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html4044"
-  HREF="node120.html">Análisis Descendente mediante Parsing</A>
+<B> Sig:</B> <A NAME="tex2html4243"
+  HREF="node122.html">Práctica: Generación Automática de</A>
+<B>Sup:</B> <A NAME="tex2html4237"
+  HREF="node97.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html4231"
+  HREF="node120.html">Práctica: Autoacciones</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
