@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Resultado del Análisis de Ámbito</TITLE>
-<META NAME="description" CONTENT="Resultado del Análisis de Ámbito">
+<TITLE>Práctica: Construcción del AST para el Lenguaje Simple C</TITLE>
+<META NAME="description" CONTENT="Práctica: Construcción del AST para el Lenguaje Simple C">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node214.html">
 <LINK REL="previous" HREF="node212.html">
-<LINK REL="up" HREF="node206.html">
+<LINK REL="up" HREF="node210.html">
 <LINK REL="next" HREF="node214.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5778"
+<A NAME="tex2html5765"
   HREF="node214.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5772"
-  HREF="node206.html">
+<A NAME="tex2html5759"
+  HREF="node210.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5766"
+<A NAME="tex2html5753"
   HREF="node212.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5774"
-  HREF="node228.html">
+<A NAME="tex2html5761"
+  HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5776"
-  HREF="node231.html">
+<A NAME="tex2html5763"
+  HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,362 +88,52 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5779"
-  HREF="node214.html">Usando el Método str</A>
-<B>Sup:</B> <A NAME="tex2html5773"
-  HREF="node206.html">Análisis de Ámbito en</A>
-<B> Ant:</B> <A NAME="tex2html5767"
-  HREF="node212.html">Análisis de Ámbito con</A>
+<B> Sig:</B> <A NAME="tex2html5766"
+  HREF="node214.html">Práctica: Análisis de Ámbito</A>
+<B>Sup:</B> <A NAME="tex2html5760"
+  HREF="node210.html">Análisis de Ámbito en</A>
+<B> Ant:</B> <A NAME="tex2html5754"
+  HREF="node212.html">Descripción Eyapp del Lenguaje</A>
 <B> Con:</B> 
-<A NAME="tex2html5774"
-  HREF="node228.html">
+<A NAME="tex2html5761"
+  HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5776"
-  HREF="node231.html">
+<A NAME="tex2html5763"
+  HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html5780"
-  HREF="node213.html#SECTION061270010000000000000">Código de Apoyo a la Visualización</A>
-<LI><A NAME="tex2html5781"
-  HREF="node213.html#SECTION061270020000000000000">Un Ejemplo con Errores de Ámbito</A>
-<LI><A NAME="tex2html5782"
-  HREF="node213.html#SECTION061270030000000000000">Mostrando el Resultado del Análisis de Ámbito</A>
-</UL></UL></UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION061270000000000000000"></A>
-<A NAME="section:resultadosambito"></A>
+<H1><A NAME="SECTION0101230000000000000000"></A>
+   <A NAME="22699"></A>
+  
+<A NAME="practica:esquemadetradsimple"></A>
 <BR>
-Resultado del Análisis de Ámbito
+Práctica: Construcción del AST para el Lenguaje Simple C
 </H1>
-Como se ha comentado en la sección 
-<A HREF="node211.html#section:limitacionesdedumper">42.5</A> el volcado de 
-los AST con <code>Data::Dumper</code> es insuficiente.
-Para la visualización utilizaremos el método
- <TT>str</TT>  presentado en la sección
-<A HREF="node214.html#section:str">42.8</A>.
-
-<P>
-
-<H4><A NAME="SECTION061270010000000000000">
-Código de Apoyo a la Visualización</A>
-</H4>
-  
-
-<P>
-Sigue el código de apoyo a la visualización:
-<PRE>
-pl@nereida:~/Lbook/code/Simple-Scope/lib/Simple$ sed -ne '845,$p' Scope.eyp | cat -n
- 1  ############## Debugging and Display
- 2  sub show_trees {
- 3   my ($t) = @_;
- 4
- 5   print Dumper $t if $debug &gt; 1;
- 6   $Parse::Eyapp::Node::INDENT = 2;
- 7   $Data::Dumper::Indent = 1;
- 8   print $t-&gt;str."\n";
- 9  }
-10
-11  $Parse::Eyapp::Node::INDENT = 1;
-12  sub TERMINAL::info {
-13    my @a = join ':', @{$_[0]-&gt;{attr}};
-14    return "@a"
-15  }
-16
-17  sub PROGRAM::footnote {
-18    return "Types:\n"
-19           .Dumper($_[0]-&gt;{types}).
-20           "Symbol Table of the Main Program:\n"
-21           .Dumper($_[0]-&gt;{symboltable})
-22  }
-23
-24  sub FUNCTION::info {
-25    return $_[0]-&gt;{function_name}[0]
-26  }
-27
-28  sub FUNCTION::footnote {
-29    my $text = '';
-30    $text .= "Symbol Table of $_[0]-&gt;{function_name}[0]\n" if $_[0]-&gt;type eq 'FUNCTION';
-31    $text .= "Symbol Table of block at line $_[0]-&gt;{line}\n" if $_[0]-&gt;type eq 'BLOCK';
-32    $text .= Dumper($_[0]-&gt;{symboltable});
-33    return $text;
-34  }
-35
-36  sub BLOCK::info {
-37    my $info = "$_[0]-&gt;{line}:$_[0]-&gt;{depth}";
-38    my $fatherblock = $_[0]-&gt;{fatherblock};
-39      $info .= ":".$fatherblock-&gt;info
-40    if defined($fatherblock) and UNIVERSAL::can($fatherblock, 'info');
-41    return $info;
-42  }
-43
-44  *BLOCK::footnote = \&amp;FUNCTION::footnote;
-45
-46  sub VAR::info {
-47    return $_[0]-&gt;{type} if defined $_[0]-&gt;{type};
-48    return "No declarado!";
-49  }
-50
-51  *FUNCTIONCALL::info = *VARARRAY::info = \&amp;VAR::info;
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION061270020000000000000">
-Un Ejemplo con Errores de Ámbito</A>
-</H4>
-  
-
-<P>
-Utilizando este código 
-obtenemos una descripción completa y concisa 
-del árbol anotado. Si hay errores de ámbito se mostrarán.
-
-<P>
-<PRE>
-pl@nereida:~/Lbook/code/Simple-Scope/script$ usescope.pl prueba27.c 2
-
-   1 int a,b;
-   2
-   3 int f(char c) {
-   4  a[2] = 4;
-   5  {
-   6    int d;
-   7    d = a + b;
-   8  }
-   9  c = d * 2;
-  10  return g(c);
-  11 }
-Identifier d not declared at line 9
-Identifier g not declared at line 10
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION061270030000000000000">
-Mostrando el Resultado del Análisis de Ámbito</A>
-</H4>
-  
-
-<P>
-Si no hay errores se obtiene un listado enumerado del programa fuente,
-el árbol, la tabla de tipos y las tablas de símbolos:
-
-<P>
-<PRE>
-pl@nereida:~/Lbook/code/Simple-Scope/script$  usescope.pl prueba25.c 2
-
-   1 int a[20],b,e[10];
-   2
-   3 g() {}
-   4
-   5 int f(char c) {
-   6 char d;
-   7  c = 'X';
-   8  e[b] = 'A'+c;
-   9  {
-  10    int d;
-  11    d = d + b;
-  12  }
-  13  c = d * 2;
-  14  return c;
-  15 }
-  16
-  17
-PROGRAM^{0}(
-  FUNCTION[g]^{1},
-  FUNCTION[f]^{2}(
-    ASSIGN(
-      VAR[CHAR](
-        TERMINAL[c:7]
-      ),
-      CHARCONSTANT(
-        TERMINAL['X':7]
-      )
-    ) # ASSIGN,
-    ASSIGN(
-      VARARRAY[A_10(INT)](
-        TERMINAL[e:8],
-        INDEXSPEC(
-          VAR[INT](
-            TERMINAL[b:8]
-          )
-        ) # INDEXSPEC
-      ) # VARARRAY,
-      PLUS(
-        CHARCONSTANT(
-          TERMINAL['A':8]
-        ),
-        VAR[CHAR](
-          TERMINAL[c:8]
-        )
-      ) # PLUS
-    ) # ASSIGN,
-    BLOCK[9:3:f]^{3}(
-      ASSIGN(
-        VAR[INT](
-          TERMINAL[d:11]
-        ),
-        PLUS(
-          VAR[INT](
-            TERMINAL[d:11]
-          ),
-          VAR[INT](
-            TERMINAL[b:11]
-          )
-        ) # PLUS
-      ) # ASSIGN
-    ) # BLOCK,
-    ASSIGN(
-      VAR[CHAR](
-        TERMINAL[c:13]
-      ),
-      TIMES(
-        VAR[CHAR](
-          TERMINAL[d:13]
-        ),
-        INUM(
-          TERMINAL[2:13]
-        )
-      ) # TIMES
-    ) # ASSIGN,
-    RETURN(
-      VAR[CHAR](
-        TERMINAL[c:14]
-      )
-    ) # RETURN
-  ) # FUNCTION
-) # PROGRAM
----------------------------
-0)
-Types:
-$VAR1 = {
-  'A_10(INT)' =&gt; bless( {
-    'children' =&gt; [
-      bless( {
-        'children' =&gt; []
-      }, 'INT' )
-    ]
-  }, 'A_10' ),
-  'F(X_1(CHAR),INT)' =&gt; bless( {
-    'children' =&gt; [
-      bless( {
-        'children' =&gt; [
-          bless( {
-            'children' =&gt; []
-          }, 'CHAR' )
-        ]
-      }, 'X_1' ),
-      $VAR1-&gt;{'A_10(INT)'}{'children'}[0]
-    ]
-  }, 'F' ),
-  'CHAR' =&gt; $VAR1-&gt;{'F(X_1(CHAR),INT)'}{'children'}[0]{'children'}[0],
-  'VOID' =&gt; bless( {
-    'children' =&gt; []
-  }, 'VOID' ),
-  'INT' =&gt; $VAR1-&gt;{'A_10(INT)'}{'children'}[0],
-  'A_20(INT)' =&gt; bless( {
-    'children' =&gt; [
-      $VAR1-&gt;{'A_10(INT)'}{'children'}[0]
-    ]
-  }, 'A_20' ),
-  'F(X_0(),INT)' =&gt; bless( {
-    'children' =&gt; [
-      bless( {
-        'children' =&gt; []
-      }, 'X_0' ),
-      $VAR1-&gt;{'A_10(INT)'}{'children'}[0]
-    ]
-  }, 'F' )
-};
-Symbol Table of the Main Program:
-$VAR1 = {
-  'e' =&gt; {
-    'type' =&gt; 'A_10(INT)',
-    'line' =&gt; 1
-  },
-  'a' =&gt; {
-    'type' =&gt; 'A_20(INT)',
-    'line' =&gt; 1
-  },
-  'b' =&gt; {
-    'type' =&gt; 'INT',
-    'line' =&gt; 1
-  },
-  'g' =&gt; {
-    'type' =&gt; 'F(X_0(),INT)',
-    'line' =&gt; 3
-  },
-  'f' =&gt; {
-    'type' =&gt; 'F(X_1(CHAR),INT)',
-    'line' =&gt; 5
-  }
-};
-
----------------------------
-1)
-Symbol Table of g
-$VAR1 = {};
-
----------------------------
-2)
-Symbol Table of f
-$VAR1 = {
-  'c' =&gt; {
-    'type' =&gt; 'CHAR',
-    'param' =&gt; 1,
-    'line' =&gt; 5
-  },
-  'd' =&gt; {
-    'type' =&gt; 'CHAR',
-    'line' =&gt; 6
-  }
-};
-
----------------------------
-3)
-Symbol Table of block at line 9
-$VAR1 = {
-  'd' =&gt; {
-    'type' =&gt; 'INT',
-    'line' =&gt; 10
-  }
-};
-
-pl@nereida:~/Lbook/code/Simple-Scope/script$
-</PRE>
-
-<P>
-Observe como se anotan las referencias a pie de árbol usando la notación
-<code>^{#}</code>. La salida se completa con las <A NAME="22815"></A><SPAN  CLASS="textbf">notas a pie de árbol</SPAN>.
+Reproduzca el analizador sintáctico para el lenguaje SimpleC introducido en la
+sección 
+<A HREF="node212.html#section:simplec">42.2</A>.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5778"
+<A NAME="tex2html5765"
   HREF="node214.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5772"
-  HREF="node206.html">
+<A NAME="tex2html5759"
+  HREF="node210.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5766"
+<A NAME="tex2html5753"
   HREF="node212.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5774"
-  HREF="node228.html">
+<A NAME="tex2html5761"
+  HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5776"
-  HREF="node231.html">
+<A NAME="tex2html5763"
+  HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -490,17 +180,17 @@ Observe como se anotan las referencias a pie de árbol usando la notación
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5779"
-  HREF="node214.html">Usando el Método str</A>
-<B>Sup:</B> <A NAME="tex2html5773"
-  HREF="node206.html">Análisis de Ámbito en</A>
-<B> Ant:</B> <A NAME="tex2html5767"
-  HREF="node212.html">Análisis de Ámbito con</A>
+<B> Sig:</B> <A NAME="tex2html5766"
+  HREF="node214.html">Práctica: Análisis de Ámbito</A>
+<B>Sup:</B> <A NAME="tex2html5760"
+  HREF="node210.html">Análisis de Ámbito en</A>
+<B> Ant:</B> <A NAME="tex2html5754"
+  HREF="node212.html">Descripción Eyapp del Lenguaje</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-06-08</I>
+2013-06-10</I>
 </ADDRESS>
 </BODY>
 </HTML>

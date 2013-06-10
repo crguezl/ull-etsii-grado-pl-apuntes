@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Patrones Árbol y Transformaciones Árbol</TITLE>
-<META NAME="description" CONTENT="Patrones Árbol y Transformaciones Árbol">
+<TITLE>Recursión por la Izquierda</TITLE>
+<META NAME="description" CONTENT="Recursión por la Izquierda">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node141.html">
 <LINK REL="previous" HREF="node139.html">
-<LINK REL="up" HREF="node128.html">
+<LINK REL="up" HREF="node132.html">
 <LINK REL="next" HREF="node141.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4499"
+<A NAME="tex2html4495"
   HREF="node141.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4493"
-  HREF="node128.html">
+<A NAME="tex2html4489"
+  HREF="node132.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4487"
+<A NAME="tex2html4483"
   HREF="node139.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4495"
-  HREF="node228.html">
+<A NAME="tex2html4491"
+  HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4497"
-  HREF="node231.html">
+<A NAME="tex2html4493"
+  HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,19 +88,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4500"
-  HREF="node141.html">Asignación de Direcciones</A>
-<B>Sup:</B> <A NAME="tex2html4494"
-  HREF="node128.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html4488"
-  HREF="node139.html">Optimización Independiente de la</A>
+<B> Sig:</B> <A NAME="tex2html4496"
+  HREF="node141.html">Árbol de Análisis Abstracto</A>
+<B>Sup:</B> <A NAME="tex2html4490"
+  HREF="node132.html">Análisis Sintáctico Descendente en</A>
+<B> Ant:</B> <A NAME="tex2html4484"
+  HREF="node139.html">Esquemas de Traducción</A>
 <B> Con:</B> 
-<A NAME="tex2html4495"
-  HREF="node228.html">
+<A NAME="tex2html4491"
+  HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4497"
-  HREF="node231.html">
+<A NAME="tex2html4493"
+  HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
@@ -109,1124 +109,1024 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
 <UL CLASS="ChildLinks">
+<LI><A NAME="tex2html4497"
+  HREF="node140.html#SECTION010781000000000000000">Eliminación de la Recursión por la Izquierda en la Gramática</A>
+<LI><A NAME="tex2html4498"
+  HREF="node140.html#SECTION010782000000000000000">Eliminación de la Recursión por la Izquierda en un Esquema de Traducción</A>
+<LI><A NAME="tex2html4499"
+  HREF="node140.html#SECTION010783000000000000000">Ejercicio</A>
+<LI><A NAME="tex2html4500"
+  HREF="node140.html#SECTION010784000000000000000">Convirtiendo el Esquema en un Analizador Predictivo</A>
 <LI><A NAME="tex2html4501"
-  HREF="node140.html#SECTION067121000000000000000">Práctica: Casando y Transformando Árboles</A>
+  HREF="node140.html#SECTION010785000000000000000">Ejercicio</A>
+<LI><A NAME="tex2html4502"
+  HREF="node140.html#SECTION010786000000000000000">Práctica: Eliminación de la Recursividad por la Izquierda</A>
 </UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION067120000000000000000"></A>
-<A NAME="section:patronesarbol"></A>
+<H1><A NAME="SECTION010780000000000000000"></A>
+<A NAME="section:recursionizquierda"></A>
 <BR>
-Patrones Árbol y Transformaciones Árbol
+Recursión por la Izquierda
 </H1>
-En la fase de optimización presentada en la sección
-<A HREF="node139.html#section:optimizacion">37.11</A> transformabamos el programa 
-en su representación intermedia, como un AAA
-decorado, para obtener otro AAA decorado.
 
 <P>
-Una transformación de un programa puede ser descrita
-como un conjunto de <A NAME="12886"></A><SPAN  CLASS="textbf">reglas de transformación</SPAN> 
-o <A NAME="12888"></A><SPAN  CLASS="textbf">esquema de traducción árbol</SPAN>
-sobre el árbol abstracto que representa el programa.
-
 <P>
-Antes de seguir, es conveniente que repase los conceptos
-en la sección 
-<A HREF="node137.html#subsection:lenguajesarbol">37.9.1</A>
-sobre lenguajes y gramáticas árbol.
-
-<P>
-En su forma mas sencilla, estas reglas de transformación
-vienen definidas
-por ternas <!-- MATH
- $(p, e, action)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="99" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img272.png"
- ALT="$ (p, e, action)$"></SPAN>, donde la primera componente de la
-terna <SPAN CLASS="MATH"><IMG
- WIDTH="14" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img198.png"
- ALT="$ p$"></SPAN> es un <A NAME="12890"></A><SPAN  CLASS="textbf">patrón árbol</SPAN> que dice que árboles
-deben ser seleccionados. La segunda componente 
-<SPAN CLASS="MATH"><IMG
- WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img273.png"
- ALT="$ e$"></SPAN> dice cómo debe transformarse el árbol que casa con el patrón
-<SPAN CLASS="MATH"><IMG
- WIDTH="14" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img198.png"
- ALT="$ p$"></SPAN>. La acción <SPAN CLASS="MATH"><IMG
- WIDTH="53" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img274.png"
- ALT="$ action$"></SPAN> indica como deben
-computarse los atributos del árbol transformado
-a partir de los atributos 
-del árbol que casa con el patrón <SPAN CLASS="MATH"><IMG
- WIDTH="14" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img198.png"
- ALT="$ p$"></SPAN>.
-Una forma de representar este esquema sería:
-
-<P>
-<DIV ALIGN="CENTER">
+<DIV><B>Definición  <SPAN CLASS="arabic">37</SPAN>.<SPAN CLASS="arabic">8</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Una <A NAME="12841"></A><SPAN  CLASS="textbf">gramática es recursiva por la izquierda</SPAN> cuando existe una derivación
 <!-- MATH
- $p \Longrightarrow e$
+ $A \stackrel{*}{\Longrightarrow} A \alpha$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="59" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img275.png"
- ALT="$ p \Longrightarrow e$"></SPAN> <code>{ action }</code>
+ WIDTH="80" HEIGHT="24" ALIGN="BOTTOM" BORDER="0"
+ SRC="img17.png"
+ ALT="$ A \stackrel{*}{\Longrightarrow} A \alpha$"></SPAN>. 
+</I>
+<P>
+<I>En particular, es recursiva por la izquierda si contiene
+una regla de producción de la forma <!-- MATH
+ $A \rightarrow A \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="69" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.png"
+ ALT="$ A \rightarrow A \alpha$"></SPAN>. 
+En este caso se dice que la recursión por la izquierda es directa.</I></DIV><P></P>
 
+<P>
+Cuando la gramática es <A NAME="12843"></A><SPAN  CLASS="textbf">recursiva por la izquierda</SPAN>, 
+el método 
+de análisis recursivo descendente predictivo no funciona. 
+En ese caso, el procedimiento
+<code>A</code> asociado con <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img19.png"
+ ALT="$ A$"></SPAN> ciclaría para siempre sin llegar a consumir ningún 
+terminal. 
+
+<P>
+
+<H2><A NAME="SECTION010781000000000000000"></A>
+<A NAME="subsection:eliminaleftrec"></A>
+<BR>
+Eliminación de la Recursión por la Izquierda en la Gramática
+</H2>
+Es posible modificar la gramática para eliminar la recursión por 
+la izquierda. En este apartado nos limitaremos al caso de recursión 
+por la izquierda directa. 
+La generalización al caso de recursión por la izquierda no-directa
+se reduce a la iteración de la solución propuesta 
+para el caso directo.
+
+<P>
+Consideremos una variable <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img19.png"
+ ALT="$ A$"></SPAN> con dos producciones:
+
+<P>
+<BR>
+<BR>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $A   \rightarrow A \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="69" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.png"
+ ALT="$ A \rightarrow A \alpha$"></SPAN></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><IMG
+ WIDTH="26" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img150.png"
+ ALT="$ \vert \beta$"></SPAN></TD>
+</TR>
+</TABLE>
 </DIV>
 
 <P>
-Por ejemplo:
-
-<P>
-<BR>
-<BR>
-<!-- MATH
- $PLUS(NUM_1, NUM_2) \Longrightarrow NUM_3$
+donde <!-- MATH
+ $\alpha, \beta \in (V \cup \Sigma)^*$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="277" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img276.png"
- ALT="$ PLUS(NUM_1, NUM_2) \Longrightarrow NUM_3$"></SPAN> <code>{ $NUM_3{VAL} = $NUM_1{VAL} + $NUM_2{VAL} }</code>
-<BR>
-<BR>
-
-<P>
-cuyo significado es que dondequiera que haya un nódo del AAA que case 
-con el <A NAME="12892"></A><SPAN  CLASS="textbf">patrón de entrada</SPAN> <!-- MATH
- $PLUS(NUM, NUM)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="173" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img277.png"
- ALT="$ PLUS(NUM, NUM)$"></SPAN> deberá sustituirse
-el subárbol <!-- MATH
- $PLUS(NUM, NUM)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="173" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img277.png"
- ALT="$ PLUS(NUM, NUM)$"></SPAN> por el subárbol <SPAN CLASS="MATH"><IMG
- WIDTH="53" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img142.png"
- ALT="$ NUM$"></SPAN>. Al igual que en los 
-esquemas de traducción, enumeramos las apariciones de los símbolos,
-para distinguirlos en la parte semántica. La acción indica 
-como deben recomputarse los atributos para el nuevo árbol:
-El atributo <code>VAL</code> del árbol resultante es la suma de los atributos
-<code>VAL</code> de los operandos en el árbol que ha casado.
-La transformación se repite hasta que se produce la <A NAME="12894"></A><SPAN  CLASS="textbf">normalización del árbol</SPAN>.
-
-<P>
-Las reglas de ``casamiento''  de árboles pueden ser mas complejas, 
-haciendo alusión a propiedades de los atributos, por ejemplo
+ WIDTH="123" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.png"
+ ALT="$ \alpha, \beta \in (V \cup \Sigma)^*$"></SPAN> no comienzan por <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img19.png"
+ ALT="$ A$"></SPAN>.
+Estas dos producciones pueden ser sustituidas por:
 
 <P>
 <BR>
 <BR>
-<!-- MATH
- $ASSIGN(LEFTVALUE, x)\ and$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="264" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img278.png"
- ALT="$ ASSIGN(LEFTVALUE, x) and$"></SPAN> <code>{ notlive($LEFTVALUE{VAL}) }</code> <!-- MATH
- $\Longrightarrow NIL$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="75" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img279.png"
- ALT="$ \Longrightarrow NIL$"></SPAN>
-<BR>
-<BR>
-
-<P>
-indica que se pueden eliminar aquellos árboles de tipo asignación
-en los cuáles la variable asociada con el nodo <SPAN CLASS="MATH"><IMG
- WIDTH="123" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img233.png"
- ALT="$ LEFTVALUE$"></SPAN>
-no se usa posteriormente. 
-
-<P>
-Otros ejemplos con variables <SPAN CLASS="MATH"><IMG
- WIDTH="23" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img280.png"
- ALT="$ S_1$"></SPAN> y <SPAN CLASS="MATH"><IMG
- WIDTH="23" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img281.png"
- ALT="$ S_2$"></SPAN>:
-
-<P>
 <DIV ALIGN="CENTER">
-<!-- MATH
- $IFELSE(NUM, S_1, S_2)$
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $A   \rightarrow \beta R$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="192" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img282.png"
- ALT="$ IFELSE(NUM, S_1, S_2)$"></SPAN> and <code>{ $NUM{VAL} != 0 }</code> <!-- MATH
- $\Longrightarrow S_1$
+ WIDTH="69" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img23.png"
+ ALT="$ A \rightarrow \beta R$"></SPAN></TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $R   \rightarrow  \alpha R$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="56" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img283.png"
- ALT="$ \Longrightarrow S_1$"></SPAN>
-<BR><!-- MATH
- $IFELSE(NUM, S_1, S_2)$
+ WIDTH="70" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img25.png"
+ ALT="$ R \rightarrow \alpha R$"></SPAN></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $|\ \epsilon$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="192" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img282.png"
- ALT="$ IFELSE(NUM, S_1, S_2)$"></SPAN> and <code>{ $NUM{VAL} == 0 }</code> <!-- MATH
- $\Longrightarrow S_2$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="56" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img284.png"
- ALT="$ \Longrightarrow S_2$"></SPAN>
+ WIDTH="23" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img130.png"
+ ALT="$ \vert \epsilon$"></SPAN></TD>
+</TR>
+</TABLE>
 </DIV>
 
 <P>
-Observe que en el patrón de entrada <!-- MATH
- $ASSIGN(LEFTVALUE, x)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="230" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img285.png"
- ALT="$ ASSIGN(LEFTVALUE, x)$"></SPAN> aparece un
-``comodín'': la variable-árbol <SPAN CLASS="MATH"><IMG
- WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img71.png"
- ALT="$ x$"></SPAN>, que hace que el árbol
-patrón <!-- MATH
- $ASSIGN(LEFTVALUE, x)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="230" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img285.png"
- ALT="$ ASSIGN(LEFTVALUE, x)$"></SPAN> case con cualquier árbol de asignación,
-independientemente de la forma que tenga su subárbol derecho.
-
-<P>
-Las siguientes definiciones formalizan una aproximación simplificada 
-al significado de los conceptos <A NAME="12896"></A><SPAN  CLASS="textbf">patrones árbol</SPAN> y
-<A NAME="12898"></A><SPAN  CLASS="textbf">casamiento de árboles</SPAN>.
+eliminando así la recursión por la izquierda.
 
 <P>
 <P>
-<DIV><B>Definición  <SPAN CLASS="arabic">37</SPAN>.<SPAN CLASS="arabic">12</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Sea <!-- MATH
- $(\Sigma, \rho)$
+<DIV><B>Definición  <SPAN CLASS="arabic">37</SPAN>.<SPAN CLASS="arabic">8</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
+<I>La producción <!-- MATH
+ $R   \rightarrow  \alpha R$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="48" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img164.png"
- ALT="$ (\Sigma, \rho)$"></SPAN> un alfabeto con función de aridad
-y un conjunto (puede ser infinito) 
-de variables <!-- MATH
- $V =\{ x_1, x_2, \ldots \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="130" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img286.png"
- ALT="$ V =\{ x_1, x_2, \ldots \}$"></SPAN>. 
-Las variables tienen
-aridad cero: 
+ WIDTH="70" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img25.png"
+ ALT="$ R \rightarrow \alpha R$"></SPAN> se dice <A NAME="12845"></A><SPAN  CLASS="textbf">recursiva por la derecha</SPAN>.</I></DIV><P></P>
+
+<P>
+Las producciones recursivas por la derecha dan lugar a árboles
+que se hunden hacia la derecha. Es mas difícil traducir desde esta clase
+de árboles operadores como el menos, que son asociativos a izquierdas.
+
+<P>
+<P>
+<DIV><B>Ejercicio  <SPAN CLASS="arabic">37</SPAN>.<SPAN CLASS="arabic">8</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Elimine la recursión por la izquierda de la gramática 
 </I>
 <P>
-<DIV ALIGN="CENTER"><I><!-- MATH
- $\rho(x) = 0\ \forall x \in V$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="130" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img287.png"
- ALT="$ \rho(x) = 0 \forall x \in V$"></SPAN>. 
-</I></DIV>
-<P>
-<I>Un elemento de <!-- MATH
- $B(V \cup \Sigma)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="78" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img288.png"
- ALT="$ B(V \cup \Sigma)$"></SPAN>
-se denomina <A NAME="12900"></A><SPAN  CLASS="textbf">patrón</SPAN> sobre <SPAN CLASS="MATH"><IMG
- WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img47.png"
- ALT="$ \Sigma$"></SPAN>.</I></DIV><P></P>
-
-<P>
-<P>
-<DIV><B>Definición  <SPAN CLASS="arabic">37</SPAN>.<SPAN CLASS="arabic">12</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
-<I>Se dice que un
-patrón es un <A NAME="12902"></A><SPAN  CLASS="textbf">patrón lineal</SPAN> si ninguna variable se repite.</I></DIV><P></P>
-
-<P>
-<P>
-<DIV><B>Definición  <SPAN CLASS="arabic">37</SPAN>.<SPAN CLASS="arabic">12</SPAN>.<SPAN CLASS="arabic">3</SPAN></B> &nbsp; 
-<I>Se dice que un patrón es de tipo <!-- MATH
- $(x_1, \ldots x_k)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="85" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img289.png"
- ALT="$ (x_1, \ldots x_k)$"></SPAN> si las variables
-que aparecen en el patrón leidas de izquierda a derecha en el árbol
-son <!-- MATH
- $x_1, \ldots x_k$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="71" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img290.png"
- ALT="$ x_1, \ldots x_k$"></SPAN>.</I></DIV><P></P>
-
-<P>
-<P>
-<DIV><B>Ejemplo  <SPAN CLASS="arabic">37</SPAN>.<SPAN CLASS="arabic">12</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Sea <!-- MATH
- $\Sigma = \{A, CONS, NIL \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="178" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img174.png"
- ALT="$ \Sigma = \{A, CONS, NIL \}$"></SPAN> con <!-- MATH
- $\rho(A) = \rho(NIL) = 0, \rho(CONS) = 2$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="272" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img175.png"
- ALT="$ \rho(A) = \rho(NIL) = 0, \rho(CONS) = 2$"></SPAN>
-y sea <!-- MATH
- $V = \{ x \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="69" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img291.png"
- ALT="$ V = \{ x \}$"></SPAN>. Los siguientes árboles son ejemplos de 
-patrones sobre <SPAN CLASS="MATH"><IMG
- WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img47.png"
- ALT="$ \Sigma$"></SPAN>:
-</I>
-<P>
-<DIV ALIGN="CENTER"><I>{ <!-- MATH
- $x, CONS(A, x), CONS(A, CONS(x, NIL)), \ldots \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="379" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img292.png"
- ALT="$ x, CONS(A, x), CONS(A, CONS(x, NIL)), \ldots \}$"></SPAN></I></DIV>
-<P>
-<I>El patrón <!-- MATH
- $CONS(x, CONS(x, NIL))$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="214" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img293.png"
- ALT="$ CONS(x, CONS(x, NIL))$"></SPAN> es un ejemplo de patrón no lineal.
-La idea es que un patrón lineal como éste ``fuerza'' a que los árboles <SPAN CLASS="MATH"><IMG
- WIDTH="11" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img193.png"
- ALT="$ t$"></SPAN>
-que casen con el patrón deben tener iguales los dos correspondientes
-subárboles <SPAN CLASS="MATH"><IMG
- WIDTH="29" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img294.png"
- ALT="$ t/1$"></SPAN> y <!-- MATH
- $t/2 \ldotp 1$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="45" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img250.png"
- ALT="$ t/2\ldotp1$"></SPAN> situados en las posiciones de las variables
-<A NAME="tex2html410"
-  HREF="footnode.html#foot12441"><SUP><SPAN CLASS="arabic">37</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A></I>
-<P></DIV><P></P>
-
-<P>
-<P>
-<DIV><B>Ejercicio  <SPAN CLASS="arabic">37</SPAN>.<SPAN CLASS="arabic">12</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Dado la gramática árbol:
-</I>
-<P>
-<DIV ALIGN="CENTER"><I><!-- MATH
- $S \rightarrow S_1(a, S, b)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="118" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img295.png"
- ALT="$ S \rightarrow S_1(a, S, b)$"></SPAN>
-<BR><!-- MATH
- $S \rightarrow S_2(NIL)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="112" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img296.png"
- ALT="$ S \rightarrow S_2(NIL)$"></SPAN></I></DIV>
-<P>
-<I>la cuál genera los árboles concretos para la gramática
-</I>
-<P>
-<DIV ALIGN="CENTER"><I><!-- MATH
- $S \rightarrow aSb$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="72" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img297.png"
- ALT="$ S \rightarrow aSb$"></SPAN> <SPAN CLASS="MATH"><IMG
- WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img73.png"
- ALT="$ \vert$"></SPAN> <SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img44.png"
- ALT="$ \epsilon$"></SPAN></I></DIV>
-<P>
-<I>¿Es <!-- MATH
- $S_1(a, X(NIL), b)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="135" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img298.png"
- ALT="$ S_1(a, X(NIL), b)$"></SPAN> un patrón árbol sobre el conjunto de variables <SPAN CLASS="MATH"><IMG
- WIDTH="59" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img299.png"
- ALT="$ \{X, Y\}$"></SPAN>?
-¿Lo es <!-- MATH
- $S_1(X, Y, a)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="87" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img300.png"
- ALT="$ S_1(X, Y, a)$"></SPAN>? ¿Es <!-- MATH
- $S_1(X, Y, Y)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="92" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img301.png"
- ALT="$ S_1(X, Y, Y)$"></SPAN> un patrón árbol?</I></DIV><P></P>
-
-<P>
-<P>
-<DIV><B>Ejemplo  <SPAN CLASS="arabic">37</SPAN>.<SPAN CLASS="arabic">12</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
-<I>Ejemplos de patrones para el AAA definido en el ejemplo
-<A HREF="node137.html#example:tutuast">37.9.2</A> para el lenguaje Tutu son:
-</I>
-<P>
-<DIV ALIGN="CENTER"><I><!-- MATH
- $x, y, PLUS(x, y), ASSIGN(x, TIMES(y,ID)), PRINT(y) \ldots$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="483" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img302.png"
- ALT="$ x, y, PLUS(x, y), ASSIGN(x, TIMES(y,ID)), PRINT(y) \ldots$"></SPAN></I></DIV>
-<P>
-<I>considerando el conjunto de variables <!-- MATH
- $V = \{ x, y \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="86" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img303.png"
- ALT="$ V = \{ x, y \}$"></SPAN>. El patrón 
-<!-- MATH
- $ASSIGN(x, TIMES(y,ID))$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="232" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img304.png"
- ALT="$ ASSIGN(x, TIMES(y,ID))$"></SPAN> es del tipo <SPAN CLASS="MATH"><IMG
- WIDTH="45" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img305.png"
- ALT="$ (x, y)$"></SPAN>.</I></DIV><P></P>
-
-<P>
-<P>
-<DIV><B>Definición  <SPAN CLASS="arabic">37</SPAN>.<SPAN CLASS="arabic">12</SPAN>.<SPAN CLASS="arabic">4</SPAN></B> &nbsp; 
-<I>Una <A NAME="12904"></A><SPAN  CLASS="textbf">sustitución</SPAN> es una aplicación <SPAN CLASS="MATH"><IMG
- WIDTH="13" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img306.png"
- ALT="$ \theta$"></SPAN> que asigna variables
-a patrones <!-- MATH
- $\theta: V \rightarrow B(V \cup \Sigma)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="143" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img307.png"
- ALT="$ \theta: V \rightarrow B(V \cup \Sigma)$"></SPAN>.
-</I>
-<P>
-<I>Tal función puede ser naturalmente extendida de las variables
-a los árboles: los nodos (hoja) etiquetados con dichas variables son sustituidos
-por los correspondientes subárboles.
-</I>
-<P>
-<DIV ALIGN="CENTER"><TABLE CELLPADDING=3>
+<I>
+<BR>
+<BR>
+</I><TABLE CELLPADDING=3>
 <TR><TD ALIGN="LEFT"><I>
 <!-- MATH
- $\theta : B(V \cup \Sigma) \rightarrow B(V \cup \Sigma)$
+ $expr   \rightarrow expr  -  NUM$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="202" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img308.png"
- ALT="$ \theta : B(V \cup \Sigma) \rightarrow B(V \cup \Sigma)$"></SPAN></I></TD>
+ WIDTH="172" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.png"
+ ALT="$ expr \rightarrow expr - NUM$"></SPAN> </I></TD>
 </TR>
 <TR><TD ALIGN="LEFT"><I> 
 <!-- MATH
- $t \theta = \left \{ \begin{array}{ll}
-                         x \theta & \mbox{si $t = x \in V$}\\
-                         a(t_1  \theta, \ldots, t_k \theta) & \mbox{si $t = a(t_1, \ldots, t_k)$} 
-                      \end{array}
-             \right.$
+ $expr   \rightarrow NUM$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="334" HEIGHT="62" ALIGN="MIDDLE" BORDER="0"
- SRC="img309.png"
- ALT="$ t \theta = \left \{ \begin{array}{ll}
-x \theta &amp; \mbox{si $t = x \in V$}\\
-...
-...ldots, t_k \theta) &amp; \mbox{si $t = a(t_1, \ldots, t_k)$}
-\end{array} \right. $"></SPAN></I></TD>
+ WIDTH="116" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img27.png"
+ ALT="$ expr \rightarrow NUM$"></SPAN> 
+</I></TD>
 </TR>
-</TABLE></DIV>
-<P>
-<I>Obsérvese que, al revés de lo que es costumbre, la aplicación 
-de la sustitución <SPAN CLASS="MATH"><IMG
- WIDTH="13" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img306.png"
- ALT="$ \theta$"></SPAN> al patrón se escribe por detrás: <SPAN CLASS="MATH"><IMG
- WIDTH="20" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img310.png"
- ALT="$ t \theta$"></SPAN>.
-</I>
-<P>
-<I>También se escribe <!-- MATH
- $t \theta = t\{x_1/x_1 \theta, \ldots x_k/x_k \theta\}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="204" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img311.png"
- ALT="$ t \theta = t\{x_1/x_1 \theta, \ldots x_k/x_k \theta\}$"></SPAN> si las variables
-que aparecen en <SPAN CLASS="MATH"><IMG
- WIDTH="11" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img193.png"
- ALT="$ t$"></SPAN> de izquierda a derecha son <!-- MATH
- $x_1, \ldots x_k$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="71" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img290.png"
- ALT="$ x_1, \ldots x_k$"></SPAN>.</I></DIV><P></P>
-
-<P>
-<P>
-<DIV><B>Ejemplo  <SPAN CLASS="arabic">37</SPAN>.<SPAN CLASS="arabic">12</SPAN>.<SPAN CLASS="arabic">3</SPAN></B> &nbsp; 
-<I>Si aplicamos la sustitución  <!-- MATH
- $\theta = \{x/A, y/CONS(A, NIL)\}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="237" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img312.png"
- ALT="$ \theta = \{x/A, y/CONS(A, NIL)\}$"></SPAN>
-al patrón <!-- MATH
- $CONS(x, y)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="100" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img313.png"
- ALT="$ CONS(x, y)$"></SPAN> obtenemos el árbol <!-- MATH
- $CONS(A, CONS(A, NIL))$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="220" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img217.png"
- ALT="$ CONS(A, CONS(A,NIL))$"></SPAN>.
-En efecto:
-</I>
-<P>
-<DIV ALIGN="CENTER"><I><!-- MATH
- $CONS(x, y)\theta = CONS(x\theta, y\theta) = CONS(A, CONS(A, NIL))$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="484" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img314.png"
- ALT="$ CONS(x, y)\theta = CONS(x\theta, y\theta) = CONS(A, CONS(A, NIL))$"></SPAN></I></DIV>
-<P></DIV><P></P>
-
-<P>
-<P>
-<DIV><B>Ejemplo  <SPAN CLASS="arabic">37</SPAN>.<SPAN CLASS="arabic">12</SPAN>.<SPAN CLASS="arabic">4</SPAN></B> &nbsp; 
-<I>Si aplicamos la sustitución  <!-- MATH
- $\theta = \{x/PLUS(NUM, x), y/TIMES(ID, NUM)\}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="388" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img315.png"
- ALT="$ \theta = \{x/PLUS(NUM, x), y/TIMES(ID, NUM)\}$"></SPAN>
-al patrón <!-- MATH
- $PLUS(x, y)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="96" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img316.png"
- ALT="$ PLUS(x, y)$"></SPAN> obtenemos el árbol <!-- MATH
- $PLUS(PLUS(NUM,x), TIMES(ID, NUM))$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="367" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img317.png"
- ALT="$ PLUS(PLUS(NUM,x), TIMES(ID, NUM))$"></SPAN>:
-</I>
-<P>
-<DIV ALIGN="CENTER"><I><!-- MATH
- $PLUS(x, y)\theta = PLUS(x\theta, y\theta) = PLUS(PLUS(NUM,x), TIMES(ID, NUM))$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="622" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img318.png"
- ALT="$ PLUS(x, y)\theta = PLUS(x\theta, y\theta) = PLUS(PLUS(NUM,x), TIMES(ID, NUM))$"></SPAN></I></DIV>
-<P></DIV><P></P>
-
-<P>
-<P>
-<DIV><B>Definición  <SPAN CLASS="arabic">37</SPAN>.<SPAN CLASS="arabic">12</SPAN>.<SPAN CLASS="arabic">5</SPAN></B> &nbsp; 
-<I>Se dice que un patrón <!-- MATH
- $\tau \in B(V \cup \Sigma)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="109" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img319.png"
- ALT="$ \tau \in B(V \cup \Sigma)$"></SPAN> con variables
-<!-- MATH
- $x_1, \ldots x_k$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="71" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img290.png"
- ALT="$ x_1, \ldots x_k$"></SPAN> <A NAME="12906"></A><SPAN  CLASS="textbf">casa con un árbol</SPAN>
-<!-- MATH
- $t \in B(\Sigma)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="73" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img241.png"
- ALT="$ t \in B(\Sigma)$"></SPAN> si existe una sustitución de <SPAN CLASS="MATH"><IMG
- WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img320.png"
- ALT="$ \tau$"></SPAN> que produce <SPAN CLASS="MATH"><IMG
- WIDTH="11" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img193.png"
- ALT="$ t$"></SPAN>, esto
-es, si existen <!-- MATH
- $t_1, \ldots t_k \in B(\Sigma)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img321.png"
- ALT="$ t_1, \ldots t_k \in B(\Sigma)$"></SPAN> tales que 
-<!-- MATH
- $t = \tau \{x_1/t_1, \ldots x_k/t_k\}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="174" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img322.png"
- ALT="$ t = \tau \{x_1/t_1, \ldots x_k/t_k\}$"></SPAN>. 
-También se dice que <SPAN CLASS="MATH"><IMG
- WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img320.png"
- ALT="$ \tau$"></SPAN> <A NAME="12908"></A><SPAN  CLASS="textbf">casa con la sustitución</SPAN>
-<!-- MATH
- $\{x_1/t_1, \ldots x_k/t_k\}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="135" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img323.png"
- ALT="$ \{x_1/t_1, \ldots x_k/t_k\}$"></SPAN>.</I></DIV><P></P>
-
-<P>
-<P>
-<DIV><B>Ejemplo  <SPAN CLASS="arabic">37</SPAN>.<SPAN CLASS="arabic">12</SPAN>.<SPAN CLASS="arabic">5</SPAN></B> &nbsp; 
-<I>El patrón <!-- MATH
- $\tau = CONS(x, NIL)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="161" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img324.png"
- ALT="$ \tau = CONS(x, NIL)$"></SPAN> casa con el árbol <!-- MATH
- $t = CONS(CONS(A,NIL),NIL)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="274" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img325.png"
- ALT="$ t = CONS(CONS(A,NIL),NIL)$"></SPAN> 
-y con el subárbol  <!-- MATH
- $t \ldotp 1$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="28" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img326.png"
- ALT="$ t \ldotp 1$"></SPAN>. Las respectivas sustituciones son <!-- MATH
- $t\{x/CONS(A,NIL)\}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="173" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img327.png"
- ALT="$ t\{x/CONS(A,NIL)\}$"></SPAN> y 
-<!-- MATH
- $t \ldotp 1 \{x/A\}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="76" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img328.png"
- ALT="$ t \ldotp 1 \{x/A\}$"></SPAN>.
-</I>
-<P>
-<DIV ALIGN="CENTER"><I><!-- MATH
- $t = \tau \{x/CONS(A,NIL)\}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="206" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img329.png"
- ALT="$ t = \tau \{x/CONS(A,NIL)\}$"></SPAN>
-<BR><!-- MATH
- $t \ldotp 1 = \tau \{x/A\}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="109" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img330.png"
- ALT="$ t \ldotp 1 = \tau \{x/A\}$"></SPAN></I></DIV>
-<P></DIV><P></P>
-
-<P>
-<P>
-<DIV><B>Ejercicio  <SPAN CLASS="arabic">37</SPAN>.<SPAN CLASS="arabic">12</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
-<I>Sea <!-- MATH
- $\tau = PLUS(x, y)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="129" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img331.png"
- ALT="$ \tau = PLUS(x, y)$"></SPAN> y <!-- MATH
- $t = TIMES(PLUS(NUM, NUM), TIMES(ID, ID))$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="425" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img332.png"
- ALT="$ t = TIMES(PLUS(NUM, NUM), TIMES(ID, ID))$"></SPAN>.
-Calcule los subárboles <SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
- SRC="img202.png"
- ALT="$ t'$"></SPAN> de <SPAN CLASS="MATH"><IMG
- WIDTH="11" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img193.png"
- ALT="$ t$"></SPAN> y las sustituciones <!-- MATH
- $\{x/t_1, y/t_2\}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="94" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img333.png"
- ALT="$ \{x/t_1, y/t_2\}$"></SPAN> 
-que hacen que <SPAN CLASS="MATH"><IMG
- WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img320.png"
- ALT="$ \tau$"></SPAN> case con <SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
- SRC="img202.png"
- ALT="$ t'$"></SPAN>.  
-</I>
-<P>
-<I>Por ejemplo es obvio que para el árbol raíz <!-- MATH
- $t/\epsilon$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="27" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img248.png"
- ALT="$ t/\epsilon$"></SPAN> no existe sustitución
-posible:
-</I>
-<P>
-<I><!-- MATH
- $t = TIMES(PLUS(NUM, NUM), TIMES(ID, ID)) = \tau\{x/t_1, y/t_2\} =
-PLUS(x, y)\{x/t_1, y/t_2\}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="749" HEIGHT="35" ALIGN="MIDDLE" BORDER="0"
- SRC="img334.png"
- ALT="$ t = TIMES(PLUS(NUM, NUM), TIMES(ID, ID)) = \tau\{x/t_1, y/t_2\} =
-PLUS(x, y)\{x/t_1, y/t_2\}$"></SPAN>
-</I>
-<P>
-<I>ya que un término con raíz <SPAN CLASS="MATH"><IMG
- WIDTH="71" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img236.png"
- ALT="$ TIMES$"></SPAN> nunca podrá ser igual a un término con raíz 
-<SPAN CLASS="MATH"><IMG
- WIDTH="56" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img234.png"
- ALT="$ PLUS$"></SPAN>.</I></DIV><P></P>
-
-<P>
-El problema aquí es equivalente al de las expresiones regulares
-en el caso de los lenguajes lineales. En aquellos, los autómatas finitos 
-nos proveen con un mecanismo para reconocer si una determinada cadena
-``casa''' o no con la expresión regular. Existe un concepto análogo,
-el de <A NAME="12910"></A><SPAN  CLASS="textbf">autómata árbol</SPAN> que resuelve el problema del ``casamiento''
-de patrones árbol. Al igual que el concepto de autómata permite 
-la construcción de software para la búsqueda de cadenas y su 
-posterior modificación, el concepto de autómata árbol 
-permite la construcción de software para la búsqueda de los
-subárboles que casan con un patrón árbol dado.
-
-<P>
-Estamos ahora en condiciones de plantear una segunda aproximación
-al problema de la optimización independiente de la máquina
-utilizando una subrutina que busque por aquellos
-árboles que queremos optimizar (en el caso del plegado 
-los árboles de tipo operación) y los transforme 
-adecuadamente. 
-
-<P>
-La función
-<code>match_and_transform_list</code> recibe una lista
-de árboles los cuales recorre sometiéndolos 
-a las transformaciones especificadas. La llamada para
-producir el plegado sería:
-
-<P>
-<PRE>
-  Tree::Transform::match_and_transform_list(
-    NODES =&gt; $tree-&gt;{STS}, # lista de sentencias
-    PATTERN =&gt; sub {
-       $_[0]-&gt;is_operation and $_[0]-&gt;LEFT-&gt;isa("NUM") 
-       and $_[0]-&gt;RIGHT-&gt;isa("NUM") 
-    },
-    ACTION =&gt; sub { 
-      $_[0] = Machine::Independent::Optimization::reduce_children($_[0]) 
-    }
-  );
-</PRE>
-Además de la lista de nodos le pasamos como argumentos una
-referencia a la subrutina encargada de reconocer los patrónes
-árbol (clave <code>PATTERN</code>) y una referencia a la
-subrutina que describe la acción que se ejecutará  (clave <code>ACTION</code>) sobre 
-el árbol que ha casado. Ambas subrutinas 
-asumen que el primer argumento que se les pasa 
-es la referencia a la raíz del árbol que está siendo explorado.
-
-<P>
-Los métodos <A NAME="12912"></A><SPAN  CLASS="textbf">isa</SPAN>, <A NAME="12914"></A><SPAN  CLASS="textbf">can</SPAN> y <A NAME="12916"></A><SPAN  CLASS="textbf">VERSION</SPAN> 
-son proporcionados por una clase especial denominada clase <code>UNIVERSAL</code>,
-de la cual implícitamente hereda toda clase. 
-El método <code>isa</code>  nos permite saber si una clase hereda de otra.
-
-<P>
-La subrutina <code>match_and_transform_list</code>
-recibe los argumentos y da valores por defecto a los mismos
-en el caso de que no hayan sido establecidos.
-Finalmente, llama a <code>match_and_transform</code>
-sobre cada uno de los nodos ``sentencia'' del programa.
-
-<P>
-<PRE>
-sub match_and_transform_list {
-  my %arg = @_;
-  my @statements = @{$arg{NODES}} or 
-   Error::fatal("Internal error. match_and_transform_list ".
-   "espera una lista anónima de nodos");
-  local $pattern = ($arg{PATTERN} or sub { 1 });
-  local @pattern_args = @{$arg{PATTERN_ARGS}} if defined $arg{PATTERN_ARGS};
-  local $action = ($arg{ACTION} or sub { print ref($_[0]),"\n" }); 
-  local @action_args = @{$arg{ACTION_ARGS}} if defined $arg{ACTION_ARGS};
-
-  for (@statements) {
-    match_and_transform($_);
-  }
-}
-</PRE>
-
-<P>
-La subrutina <code>match_and_transform</code>
-utiliza el método <code>can</code> para comprobar que el 
-nodo actual dispone de un método
-para calcular la lista con los hijos del nodo.
-Una vez transformados los subárboles del nodo actual
-procede a comprobar que el nodo casa con el patrón
-y si es el caso le aplica la acción definida:
-
-<P>
-<PRE>
-package Tree::Transform;
-
-our $pattern;
-our @pattern_args;
-our $action;
-our @action_args;
-our @statements;
-
-sub match_and_transform {
-  my $node = $_[0] or Error::fatal("Error interno. match_and_transform necesita un nodo");
-  Error::fatal("Error interno. El nodo de la clase",ref($node),
-               " no dispone de método 'children'") unless $node-&gt;can("children");
-  
-  my %children = $node-&gt;children;
-
-  for my $k (keys %children) {
-    $node-&gt;{$k} = match_and_transform($children{$k});
-  }
-
-  if ($pattern-&gt;($node, @pattern_args)) {
-    $action-&gt;( $node, @action_args); 
-  }
-  return $node;
-}
-</PRE>
-
-<P>
-Recordemos el esquema de herencia que presentamos en la sección anterior.
-Las clases <code>Leaf</code> y <code>Binary</code> proveen versiones del método <code>children</code>.
-Teníamos:
-<PRE>
-package Node;
-
-sub is_operation {
-  my $node = shift;
-
-  return ref($node) =~ /^(TIMES)|(PLUS)$/;
-}
-
-package Leaf; # hoja del AAA
-our @ISA = ("Node");
-sub children {
-  return ();
-}
-
-package Binary;
-our @ISA = ("Node");
-sub children {
-  my $self = shift;
-
-  return (LEFT =&gt; $self-&gt;{LEFT}, RIGHT =&gt; $self-&gt;{RIGHT});
-}
-</PRE>
-Los objetos de la clase <code>Leaf</code> tienen acceso 
-al método <code>is_operation</code>.
-
-<P>
-Las clases <code>PLUS</code> y <code>TIMES</code> 
-heredan de la clase <code>BINARY</code>:
-<PRE>
-package PLUS;
-our @ISA = ("Binary");
-
-sub operator {
-  my $self = shift;
-
-  $_[0]+$_[1];
-}
-
-....
-
-package TIMES;
-our @ISA = ("Binary");
-
-sub operator {
-  my $self = shift;
-
-  $_[0]*$_[1];
-}
-
-....
-</PRE>
-
-<P>
-La subrutina <code>reduce_children</code> introducida en la
-sección 
-<A HREF="node139.html#section:optimizacion">37.11</A>
-es la encargada 
-de crear el nuevo nodo con el resultado de operar los
-hijos izquierdo y derecho:
-
-<P>
-<PRE>
-1 sub reduce_children {
-2   my ($node) = @_;
-3 
-4   my $value = $node-&gt;operator($node-&gt;LEFT-&gt;VAL, $node-&gt;RIGHT-&gt;VAL);
-5   NUM-&gt;new(VAL =&gt; $value, TYPE =&gt; $PL::Tutu::int_type);
-6 }
-</PRE>
-
-<P>
-En la línea 4 se usa el método <code>operator</code> asociado 
-con un nodo operación. 
-
-<P>
-
-<H2><A NAME="SECTION067121000000000000000"></A>
-   <A NAME="12919"></A>
-  
-<A NAME="practica:casandoytransformando"></A>
+</TABLE><I>
 <BR>
-Práctica: Casando y Transformando Árboles
-</H2>
-Complete su proyecto para el compilador de Tutu completando
-las subrutinas <code>match_and_transform</code> tal y como se explicó en la sección
-<A HREF="#section:patronesarbol">37.12</A>.
+<BR>
+</I>
+<P></DIV><P></P>
 
 <P>
-Ademas del plegado
-de constantes use las nuevas subrutinas 
-para aplicar simultáneamente 
-las siguientes transformaciones algebraicas:
+<P>
+<DIV><B>Ejercicio  <SPAN CLASS="arabic">37</SPAN>.<SPAN CLASS="arabic">8</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
+<I>¿Que hay de erróneo en este esquema de traducción?
+</I>
+<P>
+<I>
+<BR>
+<BR>
+</I><TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><I>
+<!-- MATH
+ $expr   \rightarrow NUM - expr_1$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="179" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img151.png"
+ ALT="$ expr \rightarrow NUM - expr_1$"></SPAN> </I></TD>
+<TD ALIGN="LEFT"><I> <code>{ $expr{T} = $NUM{VAL}." ".$expr[1]{T}." - "}</code> </I></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I> 
+<!-- MATH
+ $expr   \rightarrow NUM$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="116" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img27.png"
+ ALT="$ expr \rightarrow NUM$"></SPAN> </I></TD>
+<TD ALIGN="LEFT"><I> <code>{ $expr{T} = $NUM{VAL} }</code>
+</I></TD>
+</TR>
+</TABLE><I>
+<BR>
+<BR></I></DIV><P></P>
+
+<P>
+<P>
+<DIV><B>Ejercicio  <SPAN CLASS="arabic">37</SPAN>.<SPAN CLASS="arabic">8</SPAN>.<SPAN CLASS="arabic">3</SPAN></B> &nbsp; 
+<I>Dado el esquema de traducción:
+</I>
+<P>
+<I>
+<BR>
+<BR>
+</I><TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><I>
+<!-- MATH
+ $e   \rightarrow\ NUM\ r$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="109" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img152.png"
+ ALT="$ e \rightarrow NUM r$"></SPAN> </I></TD>
+<TD ALIGN="LEFT"><I> <code>{ $e{TRA} = $NUM{VAL}." ".$r{TRA} }</code> </I></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I> 
+<!-- MATH
+ $r   \rightarrow - e$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="62" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img153.png"
+ ALT="$ r \rightarrow - e$"></SPAN> </I></TD>
+<TD ALIGN="LEFT"><I> <code>{ $r{TRA} = $e{TRA}." - " }</code></I></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I> 
+<!-- MATH
+ $r   \rightarrow \epsilon$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="47" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img39.png"
+ ALT="$ r \rightarrow \epsilon$"></SPAN> </I></TD>
+<TD ALIGN="LEFT"><I> <code>{ $r{TRA} = "" }</code>
+</I></TD>
+</TR>
+</TABLE><I>
+<BR>
+<BR>
+</I>
+<P>
+<I>¿Cuál es el lenguaje generado por la gramática? ¿Puede el lenguaje
+ser analizado por un APDR?
+¿Cual es la traducción de 4-5-6? ¿Es un esquema de traducción adecuado 
+para traducir de infijo a postfijo?
+¿Cuál es la traducción si cambiamos el anterior esquema por este otro?:
+</I>
+<P>
+<I>
+<BR>
+<BR>
+</I><TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><I>
+<!-- MATH
+ $e   \rightarrow NUM\  r$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="109" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img152.png"
+ ALT="$ e \rightarrow NUM r$"></SPAN> </I></TD>
+<TD ALIGN="LEFT"><I> <code>{ $e{TRA} = $NUM{VAL}." ".$r{TRA} }</code> </I></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I> 
+<!-- MATH
+ $r   \rightarrow - e$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="62" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img153.png"
+ ALT="$ r \rightarrow - e$"></SPAN> </I></TD>
+<TD ALIGN="LEFT"><I> <code>{ $r{TRA} = " - ".$e{TRA} }</code></I></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I> 
+<!-- MATH
+ $r   \rightarrow \epsilon$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="47" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img39.png"
+ ALT="$ r \rightarrow \epsilon$"></SPAN> </I></TD>
+<TD ALIGN="LEFT"><I> <code>{ $r{TRA} = "" }</code>
+</I></TD>
+</TR>
+</TABLE><I>
+<BR>
+<BR></I></DIV><P></P>
+
+<P>
+
+<H2><A NAME="SECTION010782000000000000000"></A>
+<A NAME="subsection:eliminarecesquem"></A>
+<BR>
+Eliminación de la Recursión por la Izquierda en un Esquema de Traducción
+</H2>
+La eliminación de la recursión por la izquierda es sólo un paso: debe 
+ser extendida a esquemas de traducción, 
+de manera que no sólo se preserve el lenguaje
+sino la secuencia de acciones. Supongamos que tenemos un esquema de
+traducción de la forma:
 
 <P>
 <BR>
 <BR>
 <TABLE CELLPADDING=3>
 <TR><TD ALIGN="LEFT"><!-- MATH
- $PLUS(NUM, x)$
+ $A   \rightarrow A \alpha$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="135" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img335.png"
- ALT="$ PLUS(NUM, x)$"></SPAN></TD>
-<TD ALIGN="LEFT"><SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img336.png"
- ALT="$ \wedge$"></SPAN> <code>{ $NUM{VAL} == 0 }</code></TD>
-<TD ALIGN="LEFT"><!-- MATH
- $\Longrightarrow x$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="48" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img337.png"
- ALT="$ \Longrightarrow x$"></SPAN></TD>
+ WIDTH="69" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.png"
+ ALT="$ A \rightarrow A \alpha$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ alpha_action }</code></TD>
 </TR>
 <TR><TD ALIGN="LEFT"><!-- MATH
- $PLUS(x, NUM)$
+ $A   \rightarrow A \beta$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="136" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img338.png"
- ALT="$ PLUS(x, NUM)$"></SPAN></TD>
-<TD ALIGN="LEFT"><SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img336.png"
- ALT="$ \wedge$"></SPAN> <code>{ $NUM{VAL} == 0 }</code></TD>
-<TD ALIGN="LEFT"><!-- MATH
- $\Longrightarrow x$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="48" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img337.png"
- ALT="$ \Longrightarrow x$"></SPAN></TD>
+ WIDTH="69" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$ A \rightarrow A \beta$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ beta_action }</code></TD>
 </TR>
 <TR><TD ALIGN="LEFT"><!-- MATH
- $TIMES(NUM, x)$
+ $A   \rightarrow \gamma$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="150" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img339.png"
- ALT="$ TIMES(NUM, x)$"></SPAN></TD>
-<TD ALIGN="LEFT"><SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img336.png"
- ALT="$ \wedge$"></SPAN> <code>{ $NUM{VAL} == 1 }</code></TD>
-<TD ALIGN="LEFT"><!-- MATH
- $\Longrightarrow x$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="48" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img337.png"
- ALT="$ \Longrightarrow x$"></SPAN></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $TIMES(x, NUM)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="151" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img340.png"
- ALT="$ TIMES(x, NUM)$"></SPAN></TD>
-<TD ALIGN="LEFT"><SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img336.png"
- ALT="$ \wedge$"></SPAN> <code>{ $NUM{VAL} == 1 }</code></TD>
-<TD ALIGN="LEFT"><!-- MATH
- $\Longrightarrow x$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="48" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img337.png"
- ALT="$ \Longrightarrow x$"></SPAN></TD>
+ WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img29.png"
+ ALT="$ A \rightarrow \gamma$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ gamma_action }</code></TD>
 </TR>
 </TABLE>
 <BR>
 <BR>
 
 <P>
+para una sentencia como <!-- MATH
+ $\gamma \beta \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="37" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img30.png"
+ ALT="$ \gamma \beta \alpha$"></SPAN> la secuencia de
+acciones será: 
 
-<OL>
-<LI>Dado un programa como
+<P>
+<DIV ALIGN="CENTER">
+<code>gamma_action  beta_action alpha_action</code>
+
+</DIV>
+
+<P>
+¿Cómo construir un esquema de traducción para la gramática resultante
+de eliminar la recursión por la izquierda que ejecute las acciones
+asociadas en el mismo orden?. Supongamos para simplificar,
+que las acciones no dependen
+de atributos ni computan atributos, sino que actúan sobre
+variables globales. En tal caso, la siguiente
+ubicación de las acciones da lugar a que se ejecuten en el mismo
+orden:
+
+<P>
+<BR>
+<BR>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $A   \rightarrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img29.png"
+ ALT="$ A \rightarrow \gamma$"></SPAN> <code>{ gamma_action }</code> <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img31.png"
+ ALT="$ R$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $R   \rightarrow \beta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="56" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.png"
+ ALT="$ R \rightarrow \beta$"></SPAN> <code> { beta_action }</code> <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img31.png"
+ ALT="$ R$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $R   \rightarrow \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="57" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img33.png"
+ ALT="$ R \rightarrow \alpha$"></SPAN> <code> { alpha_action }</code> <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img31.png"
+ ALT="$ R$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $R   \rightarrow \epsilon$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="52" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.png"
+ ALT="$ R \rightarrow \epsilon$"></SPAN></TD>
+</TR>
+</TABLE>
+
+<P>
+Si hay atributos en juego, la estrategia para construir un
+esquema de traducción equivalente para la gramática resultante
+de eliminar la recursividad por la izquierda se complica.
+Consideremos de nuevo el esquema de traducción de infijo a
+postfijo de expresiones aritméticas de restas:
+
+<P>
+<BR>
+<BR>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $expr   \rightarrow expr_1  -  NUM$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="179" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img35.png"
+ ALT="$ expr \rightarrow expr_1 - NUM$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ $expr{T} = $expr[1]{T}." ".$NUM{VAL}." - "}</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $expr   \rightarrow NUM$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="116" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img27.png"
+ ALT="$ expr \rightarrow NUM$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ $expr{T} = $NUM{VAL} }</code></TD>
+</TR>
+</TABLE>
+<BR>
+<BR>
+
+<P>
+En este caso introducimos un atributo <code>H</code> para los nodos de la clase
+<SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img36.png"
+ ALT="$ r$"></SPAN> el cuál 
+acumula la traducción a postfijo hasta el momento. Observe como
+este atributo se computa en un nodo <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img36.png"
+ ALT="$ r$"></SPAN> a partir del
+correspondiente atributo del el padre y/o de los hermanos del nodo:
+
+<P>
+<BR>
+<BR>
+
+<!-- MATH
+ $expr   \rightarrow NUM$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="116" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img27.png"
+ ALT="$ expr \rightarrow NUM$"></SPAN> <code>{ $r{H} = $NUM{VAL} }</code>  <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img36.png"
+ ALT="$ r$"></SPAN> <code>{ $expr{T} = $r{T} }</code> 
+<BR><!-- MATH
+ $r   \rightarrow - NUM$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="102" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img37.png"
+ ALT="$ r \rightarrow - NUM$"></SPAN> <code>{ $r_1{H} = $r{H}." ".$NUM{VAL}." - " }</code> <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.png"
+ ALT="$ r_1$"></SPAN> <code>{ $r{T} = $r_1{T} }</code>
+<BR><!-- MATH
+ $r \rightarrow \epsilon$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="47" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img39.png"
+ ALT="$ r \rightarrow \epsilon$"></SPAN> <code>{ $r{T} = $r{H} }</code>
+<BR>
+<BR>
+
+<P>
+El atributo <code>H</code> es un ejemplo de atributo heredado.
+
+<P>
+
+<H2><A NAME="SECTION010783000000000000000">
+Ejercicio</A>
+</H2>
+Calcule los valores de los atributos
+cuando se aplica el esquema de traducción anterior
+a la frase <code>4 - 5 - 7</code>. 
+
+<P>
+
+<H2><A NAME="SECTION010784000000000000000">
+Convirtiendo el Esquema en un Analizador Predictivo</A>
+</H2>
+A partir del esquema propuesto, que se basa en una fase de
+descenso con un atributo heredado y una de ascenso con un atributo
+sintetizado:
+
+<P>
+<BR>
+<BR>
+
+<!-- MATH
+ $expr   \rightarrow NUM$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="116" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img27.png"
+ ALT="$ expr \rightarrow NUM$"></SPAN> <code>{ $r{H} = $NUM{VAL} }</code>  <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img36.png"
+ ALT="$ r$"></SPAN> <code>{ $expr{T} = $r{T} }</code> 
+<BR><!-- MATH
+ $r   \rightarrow - NUM$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="102" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img37.png"
+ ALT="$ r \rightarrow - NUM$"></SPAN> <code>{ $r_1{H} = $r{H}." ".$NUM{VAL}." - " }</code> <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.png"
+ ALT="$ r_1$"></SPAN> <code>{ $r{T} = $r_1{T} }</code>
+<BR><!-- MATH
+ $r \rightarrow \epsilon$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="47" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img39.png"
+ ALT="$ r \rightarrow \epsilon$"></SPAN> <code>{ $r{T} = $r{H} }</code>
+<BR>
+<BR>
+
+<P>
+es posible construir un APDR que ejecuta las acciones semánticas
+en los puntos indicados por el esquema de traducción. El atributo heredado
+se convierte en un parámetro de entrada a la subrutina asociada con la variable
+sintáctica:
 
 <P>
 <PRE>
-int a; a = a * 4 * 5;
+sub expression() {
+  my $r = $value." "; #accion intermedia
+  match('NUM'); 
+  return rest($r); # accion final $expr{T} = $r{T}
+}
+
+sub rest($) {
+  my $v = shift;
+
+  if ($lookahead eq '-') {
+    match('-');
+    my $r = "$v $value -"; # accion intermedia
+    match('NUM');
+    return rest($r); # accion final $r{t} = $r_1{t}
+  }
+  elsif ($lookahead ne 'EOI') {
+    error("Se esperaba un operador");
+  }
+  else { return $v; } # r -&gt; epsilon { $r{t} = $r{h} }
+}
 </PRE>
-¿Será plegado el <code>4 * 5</code>?
-Sin embargo si que se pliega si el programa es de la forma:
-<PRE>
-int a; a = a * (4 * 5);
-</PRE>
-No intente en esta práctica que programas como el primero  o como
-<code>4*a*5*b</code> sean plegados.
-Para lograrlo sería necesario introducir transformaciones adicionales
-y esto no se requiere en esta práctica.
-</LI>
-<LI>¿Existe un orden óptimo en el que ejecutar las transformaciones?
-</LI>
-<LI>Ponga un ejemplo en el que sea beneficioso ejecutar el plegado primero.
-</LI>
-<LI>Ponga otro ejemplo en el que sea beneficioso ejecutar el plegado después.
-</LI>
-<LI>¿Es necesario  aplicar las transformaciones reiteradamente? 
-</LI>
-<LI><A NAME="item:parada"></A>¿Cuál es la condición de parada?
-</LI>
-<LI>Como es habitual la pregunta 
-<A HREF="#item:parada">6</A> tiene 
-una respuesta TIMTOWTDI: 
-una posibilidad la da el módulo 
-<A NAME="tex2html411"
-  HREF="http://search.cpan.org/~dcantrell/Data-Compare-0.13/lib/Data/Compare.pm">Data::Compare</A>
-el cual puede obtenerse desde CPAN y que permite comparar estructuras de datos, 
-pero existe una solución mas sencilla. ¿Cuál?
-</LI>
-</OL>
+
+<P>
+
+<H2><A NAME="SECTION010785000000000000000">
+Ejercicio</A>
+</H2>
+Generalize la estrategia anterior 
+para eliminar la recursividad por la izquierda al siguiente esquema de 
+traducción genérico recursivo por la izquierda y
+con un atributo sintetizado <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img154.png"
+ ALT="$ A^s$"></SPAN>:
+
+<P>
+<BR>
+<BR>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $A   \rightarrow A_1 X_1 X_2 X_3$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="132" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img155.png"
+ ALT="$ A \rightarrow A_1 X_1 X_2 X_3$"></SPAN></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\{ A^s = f_X(A^s_1, X_1^s, X_2^s, X_3^s) \}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="213" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img156.png"
+ ALT="$ \{ A^s = f_X(A^s_1, X_1^s, X_2^s, X_3^s) \}$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $A   \rightarrow A_1 Y_1 Y_2 Y_3$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="119" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img157.png"
+ ALT="$ A \rightarrow A_1 Y_1 Y_2 Y_3$"></SPAN></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\{ A^s = f_Y(A^s_1, Y_1^s, Y_2^s, Y_3^s) \}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="206" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img158.png"
+ ALT="$ \{ A^s = f_Y(A^s_1, Y_1^s, Y_2^s, Y_3^s) \}$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $A   \rightarrow Z_1 Z_2 Z_3$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="103" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img159.png"
+ ALT="$ A \rightarrow Z_1 Z_2 Z_3$"></SPAN></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $\{ A^s = f_Z(Z_1^s, Z_2^s, Z_3^s) \}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="175" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img160.png"
+ ALT="$ \{ A^s = f_Z(Z_1^s, Z_2^s, Z_3^s) \}$"></SPAN></TD>
+</TR>
+</TABLE>
+<BR>
+<BR>
+
+<P>
+donde <SPAN CLASS="MATH"><IMG
+ WIDTH="54" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img161.png"
+ ALT="$ f_X, f_Y$"></SPAN> y <SPAN CLASS="MATH"><IMG
+ WIDTH="24" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img162.png"
+ ALT="$ f_Z$"></SPAN> son funciones cualesquiera.
+
+<P>
+
+<H2><A NAME="SECTION010786000000000000000"></A>
+   <A NAME="12848"></A>
+  
+<A NAME="practica:recizq"></A>
+<BR>
+Práctica: Eliminación de la Recursividad por la Izquierda
+</H2>
+En esta práctica  vamos a 
+extender las fases de análisis léxico y sintáctico del 
+compilador del lenguaje Tutu cuya gramática se definió
+en el ejercicio <A HREF="node150.html#ejercicio:tutugrammar">38.1.1</A> 
+con expresiones que incluyen diferencias 
+y divisiones. Además construiremos una representación
+del árbol sintáctico concreto.
+Para ello consideremos el siguiente esquema de traducción
+recursivo por la izquierda (en concreto las reglas recursivas
+por la izquierda son las 10, 11, 13 y 14):
+
+<P>
+<BR>
+<BR>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL">
+0 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> p  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> ds  ss     </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $p{t}  = { n =&gt; 0, ds =&gt; $ds{t}, ss =&gt; $ss{t} } }</code></SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+1 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> p  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> ss         </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $p{t}  = { n =&gt; 1, ss =&gt; $ss{t} } }</code></SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+2 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> ds <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> d  ';'  ds  </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $ds{t} = { n =&gt; 2, d =&gt; $d{t}, ; =&gt; ';', ds =&gt; $ds{t} } }</code></SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+3 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> ds <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> d ';'      </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $ds{t} = { n =&gt; 3, d =&gt; $d{t} ; =&gt; ';' } }</code></SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+4 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> d  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> INT  il     </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $d{t}  = { n =&gt; 4, INT =&gt; 'INT', il &gt;$il{t} } }</code></SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+5 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> d  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> STRING  il </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $d{t}  = { n =&gt; 5, STRING =&gt; 'STRING', il &gt;$il{t} } }</code></SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+6 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> ss <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> s  ';'  ss  </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $ss{t} = { n =&gt; 6, s =&gt; $s{t}, ; =&gt; ';' ss =&gt; $ss{t} } }</code></SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+7 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> ss <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> s          </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $ss{t} = { n =&gt; 7, s =&gt; $s{t} } }</code></SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+8 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> s  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> ID '=' e    </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $s{t}  = { n =&gt; 8, ID =&gt; $ID{v}, = =&gt; '=', e =&gt; $e{t} } }</code></SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+9 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> s  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> P  e       </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $s{t}  = { n =&gt; 9, P =&gt; 'P', e =&gt; $e{t} } }</code></SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+10 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> e <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> e1 '+' t    </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $e{t}  = { n =&gt; 10, e =&gt; $e1{t}, + =&gt; '+', t =&gt; $t{t} } }</code></SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+11 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> e <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> e1 '-' t    </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $e{t}  = { n =&gt; 11, e =&gt; $e1{t}, - =&gt; '-', t =&gt; $t{t} } }</code></SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+12 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> e <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> t           </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $e{t}  = { n =&gt; 12, t =&gt; $t{t} } }</code></SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+13 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> t <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> t1 '*' f    </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $t{t}  = { n =&gt; 13, t =&gt; $t1{t}, * =&gt; '*', f =&gt; $f{t} } }</code></SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+14 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> t <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> t '/' f     </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $t{t}  = { n =&gt; 14, t =&gt; $t1{t}, / =&gt; '/', f =&gt; $f{t} } }</code></SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+15 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> t <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> f           </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $t{t}  = { n =&gt; 15, f =&gt; $f{t} } }</code></SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+16 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> f <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> '(' e ')'   </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $f{t}  = { n =&gt; 16, ( =&gt; '(', e =&gt; $e{t}, ) =&gt; ')' } }</code></SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+17 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> f <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> ID         </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $f{t}  = { n =&gt; 17, ID =&gt; $ID{v} } }</code></SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+18 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> f <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> NUM        </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $f{t}  = { n =&gt; 18, NUM =&gt; $NUM{v} } }</code></SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+19 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> f <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> STR        </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $f{t}  = { n =&gt; 19, STR =&gt; $STR{v} } }</code></SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+20 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> il <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> ID ',' il  </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $il{t} = { n =&gt; 20, ID =&gt; $ID{v}, ',' =&gt; ',', il =&gt; $il{t} } }</code></SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL">  
+
+21 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> il <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> ID         </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> <code>{ $il{t} = { n =&gt; 21, ID =&gt; $ID{v} } }</code></SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+22 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL"> s <!-- MATH
+ $\rightarrow \epsilon$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="34" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img163.png"
+ ALT="$ \rightarrow \epsilon$"></SPAN> </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  <code>{ $s{t} = { n =&gt; 22, s =&gt; '' }}</code></SMALL></TD>
+</TR>
+</TABLE>
+<BR>
+<BR>
+
+<P>
+Por razones de espacio hemos abreviado los nombres de las variables.
+El atributo <code>t</code> (por <SPAN  CLASS="textbf">tree</SPAN>) es una referencia a un hash.
+La entrada <code>n</code> contiene el número de la regla en juego.
+Hay una entrada por símbolo en la parte derecha. El atributo <code>v</code> de 
+<code>ID</code> es la cadena asociada con el identificador. 
+El atributo <code>v</code> de <code>NUM</code> es el valor numérico asociado con el terminal.
+Se trata de, siguiendo la metodología explicada en la sección anterior,
+construir un analizador descendente predictivo recursivo que sea equivalente
+al esquema anterior. Elimine la recursión por la izquierda. Traslade las acciones a los
+lugares convenientes en el nuevo esquema e introduzca los atributos heredados que sean necesarios.
+Genere pruebas siguiendo la metodología 
+explicada en la sección <A HREF="node136.html#subsection:tests">37.4.1</A>. ¡Note que el árbol que debe producir 
+es el de la gramática inicial, ¡No el de la gramática transformada!
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4499"
+<A NAME="tex2html4495"
   HREF="node141.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4493"
-  HREF="node128.html">
+<A NAME="tex2html4489"
+  HREF="node132.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4487"
+<A NAME="tex2html4483"
   HREF="node139.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4495"
-  HREF="node228.html">
+<A NAME="tex2html4491"
+  HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4497"
-  HREF="node231.html">
+<A NAME="tex2html4493"
+  HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -1273,17 +1173,17 @@ pero existe una solución mas sencilla. ¿Cuál?
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4500"
-  HREF="node141.html">Asignación de Direcciones</A>
-<B>Sup:</B> <A NAME="tex2html4494"
-  HREF="node128.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html4488"
-  HREF="node139.html">Optimización Independiente de la</A>
+<B> Sig:</B> <A NAME="tex2html4496"
+  HREF="node141.html">Árbol de Análisis Abstracto</A>
+<B>Sup:</B> <A NAME="tex2html4490"
+  HREF="node132.html">Análisis Sintáctico Descendente en</A>
+<B> Ant:</B> <A NAME="tex2html4484"
+  HREF="node139.html">Esquemas de Traducción</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-06-08</I>
+2013-06-10</I>
 </ADDRESS>
 </BODY>
 </HTML>

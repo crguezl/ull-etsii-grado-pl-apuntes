@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>PegJS en los Browser</TITLE>
-<META NAME="description" CONTENT="PegJS en los Browser">
+<TITLE>Eliminación de la Recursividad por la Izquierda y Atributos Heredados</TITLE>
+<META NAME="description" CONTENT="Eliminación de la Recursividad por la Izquierda y Atributos Heredados">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node125.html">
 <LINK REL="previous" HREF="node123.html">
-<LINK REL="up" HREF="node116.html">
+<LINK REL="up" HREF="node120.html">
 <LINK REL="next" HREF="node125.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4093"
+<A NAME="tex2html4100"
   HREF="node125.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4087"
-  HREF="node116.html">
+<A NAME="tex2html4094"
+  HREF="node120.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4081"
+<A NAME="tex2html4088"
   HREF="node123.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4089"
-  HREF="node228.html">
+<A NAME="tex2html4096"
+  HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4091"
-  HREF="node231.html">
+<A NAME="tex2html4098"
+  HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,19 +88,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4094"
-  HREF="node125.html">Usando Pegjs con CoffeeScript</A>
-<B>Sup:</B> <A NAME="tex2html4088"
-  HREF="node116.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html4082"
-  HREF="node123.html">Un Lenguaje Dependiente del</A>
+<B> Sig:</B> <A NAME="tex2html4101"
+  HREF="node125.html">Asociando un else con</A>
+<B>Sup:</B> <A NAME="tex2html4095"
+  HREF="node120.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html4089"
+  HREF="node123.html">Eliminación de la Recursividad</A>
 <B> Con:</B> 
-<A NAME="tex2html4089"
-  HREF="node228.html">
+<A NAME="tex2html4096"
+  HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4091"
-  HREF="node231.html">
+<A NAME="tex2html4098"
+  HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
@@ -109,205 +109,435 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html4095"
-  HREF="node124.html#SECTION06680010000000000000">La opción -e de pegjs</A>
-<LI><A NAME="tex2html4096"
-  HREF="node124.html#SECTION06680020000000000000">arithmetic.pegjs</A>
-<LI><A NAME="tex2html4097"
-  HREF="node124.html#SECTION06680030000000000000">calculator.html</A>
-<LI><A NAME="tex2html4098"
-  HREF="node124.html#SECTION06680040000000000000">calculator.js</A>
-</UL></UL></UL>
+<LI><A NAME="tex2html4102"
+  HREF="node124.html#SECTION010641000000000000000">Eliminación de la Recursión por la Izquierda en la Gramática</A>
+<LI><A NAME="tex2html4103"
+  HREF="node124.html#SECTION010642000000000000000">Eliminación de la Recursión por la Izquierda en un Esquema de Traducción</A>
+<LI><A NAME="tex2html4104"
+  HREF="node124.html#SECTION010643000000000000000">Eliminación de la Recursividad por la Izquierda en PEGJS</A>
+</UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION06680000000000000000">
-PegJS en los Browser</A>
+<H1><A NAME="SECTION010640000000000000000">
+Eliminación de la Recursividad por la Izquierda y Atributos Heredados</A>
 </H1>
+La sección anterior da una forma sencilla de resolver el problema respetando la semántica.
+Si no se dispone de operadores de repetición la cosa se vuelve mas complicada.
+Las siguientes secciones muestran una solución para transformar un esquema de traducción
+recursivo por la izquierda en otro no recursivo por la izquierda
+respetando el orden en el que se ejecutan las acciones semánticas.
+Por último se ilustra como se puede aplicar esta técnica en <code>pegjs</code> (aunque 
+obviamente es mucho mejor
+usar la ilustrada anteriormente).
 
 <P>
 
-<H4><A NAME="SECTION06680010000000000000">
-La opción -e de pegjs</A>
-</H4>
-  
+<H2><A NAME="SECTION010641000000000000000"></A>
+<A NAME="subsection:eliminaleftrec"></A>
+<BR>
+Eliminación de la Recursión por la Izquierda en la Gramática
+</H2>
+Es posible modificar la gramática para eliminar la recursión por 
+la izquierda. En este apartado nos limitaremos al caso de recursión 
+por la izquierda directa. 
+La generalización al caso de recursión por la izquierda no-directa
+se reduce a la iteración de la solución propuesta 
+para el caso directo.
 
-<PRE>
-[~/Dropbox/src/javascript/PLgrado/jison]$ pegjs --help
-Usage: pegjs [options] [--] [&lt;input_file&gt;] [&lt;output_file&gt;]
+<P>
+Consideremos una variable <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img19.png"
+ ALT="$ A$"></SPAN> con dos producciones:
 
-Generates a parser from the PEG grammar specified in the &lt;input_file&gt; and
-writes it to the &lt;output_file&gt;.
+<P>
+<BR>
+<BR>
+<DIV ALIGN="CENTER">
+<!-- MATH
+ $A   \rightarrow A \alpha |\ \beta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="91" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.png"
+ ALT="$ A \rightarrow A \alpha \vert \beta$"></SPAN> 
 
-If the &lt;output_file&gt; is omitted, its name is generated by changing the
-&lt;input_file&gt; extension to ".js". If both &lt;input_file&gt; and &lt;output_file&gt; are
-omitted, standard input and output are used.
+</DIV>
 
-Options:
-  -e, --export-var &lt;variable&gt;  name of the variable where the parser object
-                               will be stored (default: "module.exports")
-      --cache                  make generated parser cache results
-      --track-line-and-column  make generated parser track line and column
-  -v, --version                print version information and exit
-  -h, --help                   print help and exit
-</PRE>
+<P>
+donde <!-- MATH
+ $\alpha, \beta \in (V \cup \Sigma)^*$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="123" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.png"
+ ALT="$ \alpha, \beta \in (V \cup \Sigma)^*$"></SPAN> no comienzan por <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img19.png"
+ ALT="$ A$"></SPAN>.
+Estas dos producciones pueden ser sustituidas por:
+
+<P>
+<BR>
+<BR>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $A   \rightarrow \beta R$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="69" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img23.png"
+ ALT="$ A \rightarrow \beta R$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $R   \rightarrow  \alpha R\ |\ \epsilon$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="93" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.png"
+ ALT="$ R \rightarrow \alpha R \vert \epsilon$"></SPAN></TD>
+</TR>
+</TABLE>
+</DIV>
+
+<P>
+eliminando así la recursión por la izquierda.
+
+<P>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">36</SPAN>.<SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>La producción <!-- MATH
+ $R   \rightarrow  \alpha R$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="70" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img25.png"
+ ALT="$ R \rightarrow \alpha R$"></SPAN> se dice <A NAME="10806"></A><SPAN  CLASS="textbf">recursiva por la derecha</SPAN>.</I></DIV><P></P>
+
+<P>
+Las producciones recursivas por la derecha dan lugar a árboles
+que se hunden hacia la derecha. Es mas difícil traducir desde esta clase
+de árboles operadores como el menos, que son asociativos a izquierdas.
+
+<P>
+<P>
+<DIV><B>Ejercicio  <SPAN CLASS="arabic">36</SPAN>.<SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Elimine la recursión por la izquierda de la gramática 
+</I>
+<P>
+<I>
+<BR>
+<BR>
+</I><TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><I>
+<!-- MATH
+ $expr   \rightarrow expr  -  NUM$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="172" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.png"
+ ALT="$ expr \rightarrow expr - NUM$"></SPAN> </I></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I> 
+<!-- MATH
+ $expr   \rightarrow NUM$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="116" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img27.png"
+ ALT="$ expr \rightarrow NUM$"></SPAN> 
+</I></TD>
+</TR>
+</TABLE><I>
+<BR>
+<BR>
+</I>
+<P></DIV><P></P>
+
+<P>
+
+<H2><A NAME="SECTION010642000000000000000"></A>
+<A NAME="subsection:eliminarecesquem"></A>
+<BR>
+Eliminación de la Recursión por la Izquierda en un Esquema de Traducción
+</H2>
+La eliminación de la recursión por la izquierda es sólo un paso: debe 
+ser extendida a esquemas de traducción, 
+de manera que no sólo se preserve el lenguaje
+sino la secuencia de acciones. Supongamos que tenemos un esquema de
+traducción de la forma:
+
+<P>
+<BR>
+<BR>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $A   \rightarrow A \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="69" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.png"
+ ALT="$ A \rightarrow A \alpha$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ alpha_action }</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $A   \rightarrow A \beta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="69" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$ A \rightarrow A \beta$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ beta_action }</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $A   \rightarrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img29.png"
+ ALT="$ A \rightarrow \gamma$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ gamma_action }</code></TD>
+</TR>
+</TABLE>
+<BR>
+<BR>
+
+<P>
+para una sentencia como <!-- MATH
+ $\gamma \beta \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="37" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img30.png"
+ ALT="$ \gamma \beta \alpha$"></SPAN> la secuencia de
+acciones será: 
+
+<P>
+<DIV ALIGN="CENTER">
+<code>gamma_action  beta_action alpha_action</code>
+
+</DIV>
+
+<P>
+¿Cómo construir un esquema de traducción para la gramática resultante
+de eliminar la recursión por la izquierda que ejecute las acciones
+asociadas en el mismo orden?. Supongamos para simplificar,
+que las acciones no dependen
+de atributos ni computan atributos, sino que actúan sobre
+variables globales. En tal caso, la siguiente
+ubicación de las acciones da lugar a que se ejecuten en el mismo
+orden:
+
+<P>
+<BR>
+<BR>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $A   \rightarrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img29.png"
+ ALT="$ A \rightarrow \gamma$"></SPAN> <code>{ gamma_action }</code> <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img31.png"
+ ALT="$ R$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $R   \rightarrow \beta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="56" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.png"
+ ALT="$ R \rightarrow \beta$"></SPAN> <code> { beta_action }</code> <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img31.png"
+ ALT="$ R$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $R   \rightarrow \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="57" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img33.png"
+ ALT="$ R \rightarrow \alpha$"></SPAN> <code> { alpha_action }</code> <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img31.png"
+ ALT="$ R$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $R   \rightarrow \epsilon$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="52" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.png"
+ ALT="$ R \rightarrow \epsilon$"></SPAN></TD>
+</TR>
+</TABLE>
+
+<P>
+Si hay atributos en juego, la estrategia para construir un
+esquema de traducción equivalente para la gramática resultante
+de eliminar la recursividad por la izquierda se complica.
+Consideremos de nuevo el esquema de traducción de infijo a
+postfijo de expresiones aritméticas de restas:
+
+<P>
+<BR>
+<BR>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $expr   \rightarrow expr_1  -  NUM$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="179" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img35.png"
+ ALT="$ expr \rightarrow expr_1 - NUM$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ $expr{T} = $expr[1]{T}." ".$NUM{VAL}." - "}</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $expr   \rightarrow NUM$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="116" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img27.png"
+ ALT="$ expr \rightarrow NUM$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ $expr{T} = $NUM{VAL} }</code></TD>
+</TR>
+</TABLE>
+<BR>
+<BR>
+
+<P>
+En este caso introducimos un atributo <code>H</code> para los nodos de la clase
+<SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img36.png"
+ ALT="$ r$"></SPAN> el cuál 
+acumula la traducción a postfijo hasta el momento. Observe como
+este atributo se computa en un nodo <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img36.png"
+ ALT="$ r$"></SPAN> a partir del
+correspondiente atributo del el padre y/o de los hermanos del nodo:
+
+<P>
+<BR>
+<BR>
+
+<!-- MATH
+ $expr   \rightarrow NUM$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="116" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img27.png"
+ ALT="$ expr \rightarrow NUM$"></SPAN> <code>{ $r{H} = $NUM{VAL} }</code>  <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img36.png"
+ ALT="$ r$"></SPAN> <code>{ $expr{T} = $r{T} }</code> 
+<BR><!-- MATH
+ $r   \rightarrow - NUM$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="102" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img37.png"
+ ALT="$ r \rightarrow - NUM$"></SPAN> <code>{ $r_1{H} = $r{H}." ".$NUM{VAL}." - " }</code> <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.png"
+ ALT="$ r_1$"></SPAN> <code>{ $r{T} = $r_1{T} }</code>
+<BR><!-- MATH
+ $r \rightarrow \epsilon$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="47" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img39.png"
+ ALT="$ r \rightarrow \epsilon$"></SPAN> <code>{ $r{T} = $r{H} }</code>
+<BR>
+<BR>
+
+<P>
+El atributo <code>H</code> es un ejemplo de atributo heredado.
+
+<P>
+
+<H2><A NAME="SECTION010643000000000000000">
+Eliminación de la Recursividad por la Izquierda en PEGJS</A>
+</H2>
+
+<P>
+PegJS no permite acciones intermedias. Tampoco se puede acceder al atributo 
+de la parte izquierda.
+Por eso, a la hora de implantar la solución anterior debemos introducir variables 
+sintácticas temporales que produzcan la palabra vacía y que vayan acompañadas de la acción semántica
+correspondiente.
+
+<P>
+Además nos obliga a usar variables visibles por todas las reglas semánticas para emular el acceso
+a los atributos de la parte izquierda de una regla de proudcción.
+
+<P>
+El siguiente ejemplo ilustra como eliminar la reucrusión por la izquierda respetando la asociatividad de la oepración de diferencia:
 
 <P>
 <PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ rake web
-../bin/pegjs -e calculator arithmetics.pegjs
-</PRE>
+[~/pegjs/examples(master)]$ cat inherited.pegjs 
+{
+  var h = 0, number = 0;
+}
+e = NUMBER aux1 r         { return h; }
+aux1 = /* empty */        { h = number; } 
 
-<P>
+r =   '-' NUMBER  aux2 r  { return h; }
+    / /* empty */
+aux2 = /* empty */        { h -= number; }
 
-<H4><A NAME="SECTION06680020000000000000">
-arithmetic.pegjs</A>
-</H4>
-  
-
-<PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat arithmetics.pegjs 
-/*
- * Classic example grammar, which recognizes simple arithmetic expressions like
- * "2*(3+4)". The parser generated from this grammar then computes their value.
- */
-
-start
-  = additive
-
-additive
-  = left:multiplicative PLUS right:additive { return left + right; }
-  / left:multiplicative MINUS right:additive { return left - right; }
-  / multiplicative
-
-multiplicative
-  = left:primary MULT right:multiplicative { return left * right; }
-  / left:primary DIV right:multiplicative { return left / right; }
-  / primary
-
-primary
-  = integer
-  / LEFTPAR additive:additive RIGHTPAR { return additive; }
-
-integer "integer"
-  = NUMBER
+NUMBER = _ digits:$[0-9]+ _  { number = parseInt(digits, 10); return number; }
 
 _ = $[ \t\n\r]*
-
-PLUS = _"+"_
-MINUS = _"-"_
-MULT = _"*"_
-DIV = _"/"_
-LEFTPAR = _"("_
-RIGHTPAR = _")"_
-NUMBER = _ digits:$[0-9]+ _ { return parseInt(digits, 10); }
 </PRE>
 
 <P>
-
-<H4><A NAME="SECTION06680030000000000000">
-calculator.html</A>
-</H4>
-  
-
 <PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat calculator.html 
-&lt;!DOCTYPE HTML&gt;
-&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;meta charset="utf-8"&gt;
-    &lt;title&gt;pegjs&lt;/title&gt;
-    &lt;link rel="stylesheet" href="global.css" type="text/css" media="screen" charset="utf-8" /&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;h1&gt;pegjs&lt;/h1&gt;
-    &lt;div id="content"&gt;
-      &lt;script src="jquery/jquery.js"&gt;&lt;/script&gt; 
-      &lt;script src="arithmetics.js"&gt;&lt;/script&gt;
-      &lt;script src="calculator.js"&gt;&lt;/script&gt;
+[~/pegjs/examples(master)]$ cat use_inherited.js 
+var PEG = require("./inherited.js");
+var r = PEG.parse("2-1-1");
+console.log(r);
 
-      &lt;p&gt;
-      Load an example:
-      &lt;input type="file" id="examples" /&gt;
-      &lt;/p&gt;
+var r = PEG.parse("4-2-1");
+console.log(r);
 
-      &lt;p&gt;
-      &lt;table&gt;
-        &lt;tr&gt;
-          &lt;td&gt;
-            &lt;textarea id="input" autofocus cols = "40" rows = "4"&gt;2+3*4&lt;/textarea&gt; 
-          &lt;/td&gt;
-          &lt;td class="output"&gt;
-            &lt;pre&gt;
-&lt;span id="output"&gt;
-&lt;/span&gt; &lt;!-- Output goes here! --&gt;
-            &lt;/pre&gt;
-          &lt;/td&gt;
-          &lt;td&gt;&lt;button id="eval" type="button"&gt;eval&lt;/button&gt;&lt;/td&gt;
-        &lt;/tr&gt;
-      &lt;/table&gt;
-      &lt;/p&gt;
-    &lt;/div&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-</PRE>
+var r = PEG.parse("2-3-1");
+console.log(r);
 
-<P>
 
-<img src="pegjs.png">
-
-<P>
-
-<H4><A NAME="SECTION06680040000000000000">
-calculator.js</A>
-</H4>
-  
-
-<PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat calculator.js 
-$(document).ready(function() {
-  $('#eval').click(function() {
-    try {
-      var result = calculator.parse($('#input').val());
-      $('#output').html(result);
-    } catch (e) {
-      $('#output').html('&lt;div class="error"&gt;&lt;pre&gt;\n' + String(e) + '\n&lt;/pre&gt;&lt;/div&gt;');
-    }
-  });
-
-  $("#examples").change(function(ev) {
-    var f = ev.target.files[0]; 
-    var r = new FileReader();
-    r.onload = function(e) { 
-      var contents = e.target.result;
-      
-      input.innerHTML = contents;
-    }
-    r.readAsText(f);
-  });
-
-});
+[~/pegjs/examples(master)]$ pegjs inherited.pegjs 
+Referenced rule "$" does not exist.
+[~/pegjs/examples(master)]$ ../bin/pegjs inherited.pegjs 
+[~/pegjs/examples(master)]$ node use_inherited.js 
+0
+1
+-2
 </PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4093"
+<A NAME="tex2html4100"
   HREF="node125.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4087"
-  HREF="node116.html">
+<A NAME="tex2html4094"
+  HREF="node120.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4081"
+<A NAME="tex2html4088"
   HREF="node123.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4089"
-  HREF="node228.html">
+<A NAME="tex2html4096"
+  HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4091"
-  HREF="node231.html">
+<A NAME="tex2html4098"
+  HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -354,17 +584,17 @@ $(document).ready(function() {
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4094"
-  HREF="node125.html">Usando Pegjs con CoffeeScript</A>
-<B>Sup:</B> <A NAME="tex2html4088"
-  HREF="node116.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html4082"
-  HREF="node123.html">Un Lenguaje Dependiente del</A>
+<B> Sig:</B> <A NAME="tex2html4101"
+  HREF="node125.html">Asociando un else con</A>
+<B>Sup:</B> <A NAME="tex2html4095"
+  HREF="node120.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html4089"
+  HREF="node123.html">Eliminación de la Recursividad</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-06-08</I>
+2013-06-10</I>
 </ADDRESS>
 </BODY>
 </HTML>

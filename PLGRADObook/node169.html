@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>El módulo Generado por yapp</TITLE>
-<META NAME="description" CONTENT="El módulo Generado por yapp">
+<TITLE>Análisis Sintáctico Ascendente en Perl</TITLE>
+<META NAME="description" CONTENT="Análisis Sintáctico Ascendente en Perl">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node170.html">
-<LINK REL="previous" HREF="node168.html">
-<LINK REL="up" HREF="node165.html">
+<LINK REL="next" HREF="node200.html">
+<LINK REL="previous" HREF="node149.html">
+<LINK REL="up" HREF="node78.html">
 <LINK REL="next" HREF="node170.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5035"
+<A NAME="tex2html5004"
   HREF="node170.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5029"
-  HREF="node165.html">
+<A NAME="tex2html4998"
+  HREF="node78.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5023"
+<A NAME="tex2html4992"
   HREF="node168.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5031"
-  HREF="node228.html">
+<A NAME="tex2html5000"
+  HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5033"
-  HREF="node231.html">
+<A NAME="tex2html5002"
+  HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,215 +88,137 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5036"
-  HREF="node170.html">Algoritmo de Análisis LR</A>
-<B>Sup:</B> <A NAME="tex2html5030"
-  HREF="node165.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5024"
-  HREF="node168.html">Construcción de las Tablas</A>
+<B> Sig:</B> <A NAME="tex2html5005"
+  HREF="node170.html">Parse::Yapp: Ejemplo de Uso</A>
+<B>Sup:</B> <A NAME="tex2html4999"
+  HREF="node78.html">OCTAVA PARTE: APUNTES DE</A>
+<B> Ant:</B> <A NAME="tex2html4993"
+  HREF="node168.html">Consejos a seguir al</A>
 <B> Con:</B> 
-<A NAME="tex2html5031"
-  HREF="node228.html">
+<A NAME="tex2html5000"
+  HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5033"
-  HREF="node231.html">
+<A NAME="tex2html5002"
+  HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION06940000000000000000"></A>
-<A NAME="section:tablas"></A>
-<BR>
-El módulo Generado por <TT>yapp</TT>
+<H1><A NAME="SECTION010900000000000000000">
+Análisis Sintáctico Ascendente en Perl</A>
 </H1>
-La ejecución de la orden <code>yapp -m Calc Calc.yp</code> produce 
-como salida el módulo <code>Calc.pm</code> el cual contiene las tablas LALR(1)
-para la gramática descrita en <code>Calc.yp</code>. Estas tablas son las que
-dirigen al analizador LR. 
-Puede ver el código completo del módulo en el apéndice
-que se encuentra en la página <A HREF="#apendice:calcpm"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>.
-La  estructura del módulo <code>Calc.pm</code> es como sigue:
+<BR> <HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<P>
-<PRE>
- 1 package Calc;
- 2 use vars qw ( @ISA );
- 3 use strict;
- 4 @ISA= qw ( Parse::Yapp::Driver );
- 5 use Parse::Yapp::Driver;
- 6 
- 7 sub new {
- 8    my($class)=shift;
- 9    ref($class) and $class=ref($class);
-10 
-11     my($self)=$class-&gt;SUPER::new( 
-12        yyversion =&gt; '1.05',
-13        yystates =&gt; [ 
-..          ...
-32        ], # estados
-33        yyrules  =&gt; [
-..       	# ... mas reglas
-70        ], # final de las reglas
-71        @_); # argumentos pasados
-72   bless($self,$class);
-73 }
-</PRE>
-
-<P>
-La clase <code>Calc</code> hereda de <code>Parse::Yapp::Driver</code>, pero el objeto creado
-será bendecido en la clase <code>Calc</code> (Línea 4, véanse también 
-la figura <A HREF="node185.html#fig:yappinheritance">39.3</A> 
-y la línea 72 del fuente). 
-Por tanto, el constructor llamado en la línea 11 es el de <code>Parse::Yapp::Driver</code>.
-Se utiliza la estrategia de llamada con parámetros con nombre. 
-El valor para la clave <code>yystates</code> es una referencia anónima 
-al array de estados y el valor para la clave <code>yyrules</code> 
-es una referencia anónima a las reglas.
-<PRE>
-10 
-11     my($self)=$class-&gt;SUPER::new( 
-12        yyversion =&gt; '1.05',
-13        yystates =&gt; [
-14         {#State 0
-15           DEFAULT =&gt; -1, GOTOS =&gt; { 'input' =&gt; 1 }
-16         },
-17         {#State 1
-18           ACTIONS =&gt; {
-19             'NUM' =&gt; 6, '' =&gt; 4, "-" =&gt; 2, "(" =&gt; 7,
-20             'VAR' =&gt; 8, "\n" =&gt; 5, 'error' =&gt; 9
-21           },
-22           GOTOS =&gt; { 'exp' =&gt; 3, 'line' =&gt; 10 }
-23         },
-24         # ...  mas estados
-25         {#State 27
-26           ACTIONS =&gt; {
-27             "-" =&gt; 12, "+" =&gt; 13, "/" =&gt; 15, "^" =&gt; 16,
-28             "*" =&gt; 17
-29           },
-30           DEFAULT =&gt; -8
-31         }
-32        ], # estados
-</PRE>
-Se ve que un estado se pasa como un hash anónimo indexado en las acciones
-y los saltos. 
-
-<P>
-Para consultar los números asociados con las reglas de producción
-vea el apéndice en la página <A HREF="#apendice:calcouput"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>
-conteniendo el fichero <code>Calc.output</code>.
-
-<P>
-A continuación vienen las reglas:
-<PRE>
-33        yyrules  =&gt; [
-34        [#Rule 0
-35              '$start', 2, undef ],
-36        [#Rule 1
-37              'input', 0, undef ],
-38        [#Rule 2
-39              'input', 2, sub
-40 #line 17 "Calc.yp"
-41              { push(@{$_[1]},$_[2]); $_[1] }
-42        ],
-43        [#Rule 3
-44              'line', 1, sub
-45 #line 20 "Calc.yp"
-46              { $_[1] }
-47        ],
-48        [#Rule 4
-49              'line', 2, sub
-50 #line 21 "Calc.yp"
-51              { print "$_[1]\n" }
-52        ],
-53   # ... mas reglas
-54     [#Rule 11
-55             'exp', 3, sub
-56 #line 30 "Calc.yp"
-57 { $_[1] * $_[3] }
-58    ],
-59   [#Rule 12
-60             'exp', 3, sub
-61 #line 31 "Calc.yp"
-62   {
-63     $_[3] and return($_[1] / $_[3]);
-64     $_[0]-&gt;YYData-&gt;{ERRMSG} =   "Illegal division by zero.\n";
-65     $_[0]-&gt;YYError;
-66     undef
-67   }
-68     ],
-69   # ... mas reglas
-70   ], # final de las reglas
-</PRE>
-Las reglas son arrays anónimos conteniendo el nombre de la regla o
-variable sintáctica (<code>exp</code>), el número de símbolos en la parte
-derecha y la subrutina anónima con el código asociado.
-
-<P>
-Vemos como la acción es convertida en una subrutina anónima. 
-Los argumentos de dicha subrutina son los atributos semánticos
-asociados con los símbolos en la parte derecha de la regla de 
-producción. El valor retornado por la acción/subrutina
-es el valor asociado con la reducción.
-
-<P>
-Para hacer que 
-el compilador Perl diagnostique los errores relativos al fuente 
-<code>Calc.yp</code> se usa una directiva <code>#line</code>.
-
-<P>
-<PRE>
-71   @_);
-72   bless($self,$class);
-73 }
-74
-</PRE>
-
-<P>
-la bendición con dos argumentos hace que el objeto pertenezca a la
-clase <code>Calc</code>. A continuación siguen las subrutinas de soporte:
-<PRE>
-75 #line 44 "Calc.yp" 
-76 
-77 
-78 sub _Error {
-79   # ...
-80 }
-81 
-82 sub _Lexer {
-83   my($parser)=shift;
-84   # ...
-85 }
-86 
-87 sub Run {
-88     my($self)=shift;
-89     $self-&gt;YYParse( yylex =&gt; \&amp;_Lexer, yyerror =&gt; \&amp;_Error );
-90 }
-91 
-92 my($calc)=new Calc;
-93 $calc-&gt;Run;
-94 
-95 1;
-</PRE>
-
-<P>
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html5006"
+  HREF="node170.html"><TT>Parse::Yapp</TT>: Ejemplo de Uso</A>
+<LI><A NAME="tex2html5007"
+  HREF="node171.html">Conceptos Básicos</A>
+<LI><A NAME="tex2html5008"
+  HREF="node172.html">Construcción de las Tablas para el Análisis SLR</A>
+<UL>
+<LI><A NAME="tex2html5009"
+  HREF="node172.html#SECTION010931000000000000000">Los conjuntos de Primeros y Siguientes</A>
+<LI><A NAME="tex2html5010"
+  HREF="node172.html#SECTION010932000000000000000">Construcción de las Tablas</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html5011"
+  HREF="node173.html">El módulo Generado por <TT>yapp</TT></A>
+<LI><A NAME="tex2html5012"
+  HREF="node174.html">Algoritmo de Análisis LR</A>
+<LI><A NAME="tex2html5013"
+  HREF="node175.html">Depuración en <TT>yapp</TT></A>
+<LI><A NAME="tex2html5014"
+  HREF="node176.html">Precedencia y Asociatividad</A>
+<LI><A NAME="tex2html5015"
+  HREF="node177.html">Generación interactiva de analizadores <TT>Yapp</TT></A>
+<LI><A NAME="tex2html5016"
+  HREF="node178.html">Construcción del Árbol Sintáctico</A>
+<LI><A NAME="tex2html5017"
+  HREF="node179.html">Acciones en Medio de una Regla</A>
+<LI><A NAME="tex2html5018"
+  HREF="node180.html">Esquemas de Traducción</A>
+<LI><A NAME="tex2html5019"
+  HREF="node181.html">Definición Dirigida por la Sintáxis</A>
+<LI><A NAME="tex2html5020"
+  HREF="node182.html">Manejo en <TT>yapp</TT> de Atributos Heredados</A>
+<LI><A NAME="tex2html5021"
+  HREF="node183.html">Acciones en Medio de una Regla y Atributos Heredados</A>
+<LI><A NAME="tex2html5022"
+  HREF="node184.html">Recuperación de Errores</A>
+<LI><A NAME="tex2html5023"
+  HREF="node185.html">Recuperación de Errores en Listas</A>
+<LI><A NAME="tex2html5024"
+  HREF="node186.html">Consejos a seguir al escribir un programa <TT>yapp</TT></A>
+<LI><A NAME="tex2html5025"
+  HREF="node187.html">Práctica: Un C simplificado</A>
+<LI><A NAME="tex2html5026"
+  HREF="node188.html">La Gramática de <TT>yapp</TT> / <TT>yacc</TT></A>
+<UL>
+<LI><A NAME="tex2html5027"
+  HREF="node188.html#SECTION0109191000000000000000">La Cabecera</A>
+<LI><A NAME="tex2html5028"
+  HREF="node188.html#SECTION0109192000000000000000">La Cabecera: Diferencias entre <TT>yacc</TT> y <TT>yapp</TT></A>
+<LI><A NAME="tex2html5029"
+  HREF="node188.html#SECTION0109193000000000000000">El Cuerpo</A>
+<LI><A NAME="tex2html5030"
+  HREF="node188.html#SECTION0109194000000000000000">La Cola: Diferencias entre <TT>yacc</TT> y <TT>yapp</TT></A>
+<LI><A NAME="tex2html5031"
+  HREF="node188.html#SECTION0109195000000000000000">El Análisis Léxico en <TT>yacc</TT>: <TT>flex</TT></A>
+<LI><A NAME="tex2html5032"
+  HREF="node188.html#SECTION0109196000000000000000">Práctica: Uso de <TT>Yacc</TT> y <TT>Lex</TT></A>
+</UL>
+<BR>
+<LI><A NAME="tex2html5033"
+  HREF="node189.html">El Analizador Ascendente  <TT>Parse::Yapp</TT></A>
+<LI><A NAME="tex2html5034"
+  HREF="node190.html">La Estructura de Datos Generada por <TT>YappParse.yp</TT></A>
+<LI><A NAME="tex2html5035"
+  HREF="node191.html">Práctica:  El Análisis de las Acciones</A>
+<LI><A NAME="tex2html5036"
+  HREF="node192.html">Práctica:  Autoacciones</A>
+<LI><A NAME="tex2html5037"
+  HREF="node193.html">Práctica: Nuevos Métodos</A>
+<LI><A NAME="tex2html5038"
+  HREF="node194.html">Práctica: Generación Automática de Árboles</A>
+<LI><A NAME="tex2html5039"
+  HREF="node195.html">Recuperacion de Errores: Visión Detallada</A>
+<LI><A NAME="tex2html5040"
+  HREF="node196.html">Descripción Eyapp del Lenguaje  SimpleC</A>
+<LI><A NAME="tex2html5041"
+  HREF="node197.html">Diseño de Analizadores con <TT>Parse::Eyapp</TT></A>
+<LI><A NAME="tex2html5042"
+  HREF="node198.html">Práctica: Construcción del AST para el Lenguaje Simple C</A>
+<UL>
+<LI><A NAME="tex2html5043"
+  HREF="node198.html#SECTION0109290010000000000000">Analizador Léxico</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html5044"
+  HREF="node199.html">El Generador de Analizadores <TT>byacc</TT></A>
+</UL>
+<!--End of Table of Child-Links-->
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5035"
+<A NAME="tex2html5004"
   HREF="node170.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5029"
-  HREF="node165.html">
+<A NAME="tex2html4998"
+  HREF="node78.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5023"
+<A NAME="tex2html4992"
   HREF="node168.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5031"
-  HREF="node228.html">
+<A NAME="tex2html5000"
+  HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5033"
-  HREF="node231.html">
+<A NAME="tex2html5002"
+  HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -343,17 +265,17 @@ clase <code>Calc</code>. A continuación siguen las subrutinas de soporte:
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5036"
-  HREF="node170.html">Algoritmo de Análisis LR</A>
-<B>Sup:</B> <A NAME="tex2html5030"
-  HREF="node165.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5024"
-  HREF="node168.html">Construcción de las Tablas</A>
+<B> Sig:</B> <A NAME="tex2html5005"
+  HREF="node170.html">Parse::Yapp: Ejemplo de Uso</A>
+<B>Sup:</B> <A NAME="tex2html4999"
+  HREF="node78.html">OCTAVA PARTE: APUNTES DE</A>
+<B> Ant:</B> <A NAME="tex2html4993"
+  HREF="node168.html">Consejos a seguir al</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-06-08</I>
+2013-06-10</I>
 </ADDRESS>
 </BODY>
 </HTML>

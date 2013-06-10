@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>El Generador de Analizadores byacc</TITLE>
-<META NAME="description" CONTENT="El Generador de Analizadores byacc">
+<TITLE>Recuperacion de Errores: Visión Detallada</TITLE>
+<META NAME="description" CONTENT="Recuperacion de Errores: Visión Detallada">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,28 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
+<LINK REL="next" HREF="node196.html">
 <LINK REL="previous" HREF="node194.html">
-<LINK REL="up" HREF="node165.html">
+<LINK REL="up" HREF="node169.html">
 <LINK REL="next" HREF="node196.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5404"
+<A NAME="tex2html5415"
   HREF="node196.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5398"
-  HREF="node165.html">
+<A NAME="tex2html5409"
+  HREF="node169.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5394"
+<A NAME="tex2html5403"
   HREF="node194.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5400"
-  HREF="node228.html">
+<A NAME="tex2html5411"
+  HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5402"
-  HREF="node231.html">
+<A NAME="tex2html5413"
+  HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -87,249 +88,195 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5405"
-  HREF="node196.html">Análisis Sintáctico Ascendente en</A>
-<B>Sup:</B> <A NAME="tex2html5399"
-  HREF="node165.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5395"
-  HREF="node194.html">Práctica: Construcción del AST</A>
+<B> Sig:</B> <A NAME="tex2html5416"
+  HREF="node196.html">Descripción Eyapp del Lenguaje</A>
+<B>Sup:</B> <A NAME="tex2html5410"
+  HREF="node169.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5404"
+  HREF="node194.html">Práctica: Generación Automática de</A>
 <B> Con:</B> 
-<A NAME="tex2html5400"
-  HREF="node228.html">
+<A NAME="tex2html5411"
+  HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5402"
-  HREF="node231.html">
+<A NAME="tex2html5413"
+  HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION069300000000000000000">
-El Generador de Analizadores <TT>byacc</TT></A>
+<H1><A NAME="SECTION0109260000000000000000">
+Recuperacion de Errores: Visión Detallada</A>
 </H1>
-Existe una version del <code>yacc</code> de Berkeley que permite producir 
-código para Perl:
+La subrutina <code>_Parse</code> contiene el algoritmo de
+análisis LR genérico. En esta sección 
+nos concentraremos en la forma en la que se ha implantado en
+<code>yapp</code> la recuperación de errores.
 <PRE>
-&gt; byacc -V
-byacc: Berkeley yacc version 1.8.2 (C or perl)
+ 1 sub _Parse {
+ 2   my($self)=shift;
+ 3   ... 
+ 4   $$errstatus=0; $$nberror=0;
 </PRE>
-Se trata por tanto de un generador de analizadores LALR.
-Es bastante compatible con <code>AT&amp;T yacc</code>. Puedes encontrar 
-una versión en formato <code>tar.gz</code> en nuestro servidor
-<A NAME="tex2html459"
-  HREF="http://nereida.deioc.ull.es/~pl/pyacc-pack.tgz">http://nereida.deioc.ull.es/&#732;pl/pyacc-pack.tgz</A>
-o también desde 
-<A NAME="tex2html460"
-  HREF="http://www.perl.com/CPAN/src/misc/">http://www.perl.com/CPAN/src/misc/</A>.
-
-<P>
-El formato de llamada es:
-<PRE>
-byacc  [ -CPcdlrtv ] [ -b file_prefix ] [ -p symbol_prefix ] filename
+ La variable <code>$$errstatus</code> nos indica la situación con respecto a la recuperación
+ de errores. La variable <code>$$nberror</code> contiene el número total de errores.
+ <PRE>
+ 5   ($$token,$$value)=(undef,undef);
+ 6   @$stack=( [ 0, undef ] ); $$check='';
+ 7   while(1) {
+ 8     my($actions,$act,$stateno);
+ 9     $stateno=$$stack[-1][0];
+10     $actions=$$states[$stateno];
+11 
+12     if  (exists($$actions{ACTIONS})) { 
+13       defined($$token) or  do { ($$token,$$value)=&amp;$lex($self); };
+14       ...
+15     }
+16     else { $act=$$actions{DEFAULT}; }
 </PRE>
-
-<P>
-Las opciones <code>C</code> o <code>c</code> permiten generar código C. Usando <code>-P</code>
-se genera código Perl. Las opciones <code>d</code> y <code>v</code> funcionan como es usual en 
-<code>yacc</code>. Con <code>t</code> se incorpora código para la depuración de la gramática.
-Si se especifica <code>l</code> el código del usuario no es insertado.
-La opción <code>r</code> permite generar ficheros separados para el código y las tablas. No la use
-con Perl.
-
-<P>
-Fichero conteniendo la gramática:
+Si <code>$act</code> no esta definida es que ha ocurrido un 
+error. En tal caso no se entra a estudiar
+si la acción es de desplazamiento o reducción.
 <PRE>
-%{
-%}
+17     defined($act) and do { 
+18       $act &gt; 0 and do { #shift
+19           $$errstatus and  do { --$$errstatus; };
+20           ...
+21           next;
+22       };
+23       #reduce
+24       ....
+25       $$check eq 'ERROR' or  do {
+26         push(@$stack, [ $$states[$$stack[-1][0]]{GOTOS}{$lhs}, $semval ]);
+27         $$check='';
+28         next;
+29       };
+30       $$check='';
+31     };
+</PRE>
+Si <code>$$errstatus</code> es cero es que estamos
+ante un nuevo error:
+<PRE>
+32     #Error
+33     $$errstatus or   do {
+34       $$errstatus = 1;
+35       &amp;$error($self);
+36       $$errstatus # if 0, then YYErrok has been called
+37       or  next;   # so continue parsing
+38       ++$$nberror;
+39     };
+</PRE>
+Como el error es ``nuevo'' se llama a la subrutina de 
+tratamiento de errores <code>&amp;$error</code>. Obsérvese que no
+se volverá a llamar a la rutina de manejo de errores
+hasta que <code>$$errstatus</code> vuelva a alcanzar 
+el valor cero. Puesto que <code>&amp;$error</code> ha sido
+escrita por el usuario, es posible que este haya llamado
+al método <code>YYErrok</code>. Si ese es el caso, es que el
+programador prefiere que el análisis continúe como
+si la recuperación de errores se hubiera completado.
 
-%token INT EOL
-%token LEFT_PAR RIGHT_PAR
-%left PLUS MINUS
-%left MULT DIV
+<P>
+Ahora se pone <code>$$errstatus</code> a 3:
+<PRE>
+47     $$errstatus=3;
+</PRE>
+Cada vez que se logre un desplazamiento con éxito <code>$$errstatus</code>
+será decrementado (línea 19).
 
-%%
-start:	|
-		start input
-	;
+<P>
+A continuación se retiran estados de la pila hasta
+que se encuentre alguno que pueda transitar ante el 
+terminale especial <code>error</code>:
+<PRE>
+48     while(@$stack
+49         and (not exists($$states[$$stack[-1][0]]{ACTIONS})
+50         or  not exists($$states[$$stack[-1][0]]{ACTIONS}{error})
+51         or  $$states[$$stack[-1][0]]{ACTIONS}{error} &lt;= 0)) {
+52       pop(@$stack);
+53     }
+54     @$stack or do {
+55       return(undef);
+56     };
+</PRE>
+Si la pila quedó vacía se devuelve <code>undef</code>. En caso contrario
+es que el programador escribió alguna regla para la
+recuperación de errores. En ese caso, se transita al estado
+correspondiente:
+<PRE>
+57     #shift the error token
+58     push(@$stack, [ $$states[$$stack[-1][0]]{ACTIONS}{error}, undef ]);
+59   }
+60   #never reached
+61   croak("Error in driver logic. Please, report it as a BUG");
+62 }#_Parse
+</PRE>
+Un poco antes tenemos el siguiente código:
+<PRE>
+41     $$errstatus == 3  #The next token is not valid: discard it
+42     and  do {
+43       $$token eq ''  # End of input: no hope
+44       and  do { return(undef); }; 
+45       $$token=$$value=undef;
+46     };
+</PRE>
+Si hemos alcanzado el final de la entrada en una situación de error
+se abandona devolviendo <code>undef</code>.
+<P>
+<DIV><B>Ejercicio  <SPAN CLASS="arabic">39</SPAN>.<SPAN CLASS="arabic">26</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Explique la razón para el comentario de la línea
+41. Si <code>$$errstatus</code> es 3, el último
+terminal no ha producido un desplazamiento correcto. ¿Porqué?</I></DIV><P></P>
+A continuación aparecen los códigos de los métodos implicados en 
+la recuperación de errores:
+<PRE>
+sub YYErrok {
+  my($self)=shift;
 
-input:		expr EOL	{ print $1 . "\n"; }
-	|	EOL
-	;
+  ${$$self{ERRST}}=0;
+    undef;
+}
+</PRE>
+El método <code>YYErrok</code> cambia el valor referenciado por <code>$errstatus</code>.
+De esta forma se le da al programador <code>yapp</code> la oportunidad de anunciar
+que es muy probable que la fase de recuperación de errores se haya completado.
 
-expr:		INT		{ $p-&gt;mydebug("INT -&gt; Expr!"); $$ = $1; }
-	|	expr PLUS expr	{ $p-&gt;mydebug("PLUS -&gt; Expr!"); $$ = $1 + $3; }
-	|	expr MINUS expr	{ $p-&gt;mydebug("MINUS -&gt; Expr!"); $$ = $1 - $3; }
-	|	expr MULT expr	{ $p-&gt;mydebug("MULT -&gt; Expr!"); $$ = $1 * $3; }
-	|	expr DIV expr	{ $p-&gt;mydebug("DIV -&gt; Expr!"); $$ = $1 / $3; }
-	|	LEFT_PAR expr RIGHT_PAR { $p-&gt;mydebug("PARENS -&gt; Expr!"); $$ = $2; }
-	;
-%%
+<P>
+Los dos siguientes métodos devuelven el número de errores hasta el momento
+(<code>YYNberr</code>)
+y si nos encontramos o no en fase de recuperación de errores (<code>YYRecovering</code>):
+<PRE>
+sub YYNberr {
+  my($self)=shift;
 
-sub yyerror {
-    my ($msg, $s) = @_;
-    my ($package, $filename, $line) = caller;
-    
-    die "$msg at &lt;DATA&gt; \n$package\n$filename\n$line\n";
+  ${$$self{NBERR}};
 }
 
-sub mydebug {
-    my $p = shift;
-    my $msg = shift;
-    if ($p-&gt;{'yydebug'})
-    {
-        print "$msg\n";
-    }
+sub YYRecovering {
+  my($self)=shift;
+
+  ${$$self{ERRST}} != 0;
 }
-</PRE>
-La compilación con <code>byacc</code> del fichero <code>calc.y</code>
-conteniendo la descripción de la gramática produce el módulo 
-Perl conteniendo el analizador.
-<PRE>
-&gt; ls -l
-total 12
--rw-r-----    1 pl       casiano        47 Dec 29  2002 Makefile
--rw-r-----    1 pl       casiano       823 Dec 29  2002 calc.y
--rwxr-x--x    1 pl       casiano       627 Nov 10 15:37 tokenizer.pl
-&gt; cat Makefile
-MyParser.pm: calc.y
-        byacc -d -P MyParser $&lt;
-
-&gt; make
-byacc -d -P MyParser calc.y
-&gt; ls -ltr
-total 28
--rw-r-----    1 pl       casiano       823 Dec 29  2002 calc.y
--rw-r-----    1 pl       casiano        47 Dec 29  2002 Makefile
--rwxr-x--x    1 pl       casiano       627 Nov 10 15:37 tokenizer.pl
--rw-rw----    1 pl       users          95 Nov 16 12:49 y.tab.ph
--rw-rw----    1 pl       users        9790 Nov 16 12:49 MyParser.pm
-</PRE>
-Observe que la opción <code>-P</code> es la que permite producir código Perl.
-Anteriormente se usaba la opción <code>-p</code>. Esto se hizo para mantener la 
-compatibilidad con otras versiones de <code>yacc</code> en las que la opción <code>-p</code>
-se usa para cambiar el prefijo por defecto (<code>yy</code>). Ese es el significado actual
-de la opción <code>-p</code> en <code>perl-byacc</code>.
-
-<P>
-El fichero <code>y.tab.ph</code> generado contiene las definiciones de los <SPAN  CLASS="textbf">tokens</SPAN>:
-<PRE>
- cat y.tab.ph
-$INT=257;
-$EOL=258;
-$LEFT_PAR=259;
-$RIGHT_PAR=260;
-$PLUS=261;
-$MINUS=262;
-$MULT=263;
-$DIV=264;
-</PRE>
-El programa <code>tokenizer.pl</code> contiene la llamada al analizador 
-y la definición del analizador léxico:
-<PRE>
-&gt; cat tokenizer.pl
-#!/usr/local/bin/perl5.8.0
-
-require 5.004;
-use strict;
-use Parse::YYLex;
-use MyParser;
-
-print STDERR "Version $Parse::ALex::VERSION\n";
-
-my (@tokens) = ((LEFT_PAR =&gt; '\(',
-                 RIGHT_PAR =&gt; '\)',
-                 MINUS =&gt; '-',
-                 PLUS =&gt; '\+',
-                 MULT =&gt; '\*',
-                 DIV =&gt; '/',
-                 INT =&gt; '[1-9][0-9]*',
-                 EOL =&gt; '\n',
-                 ERROR =&gt; '.*'),
-                sub { die "!can\'t analyze: \"$_[1]\"\n!"; });
-
-my $lexer = Parse::YYLex-&gt;new(@tokens);
-
-sub yyerror
-{
-    die "There was an error:" . join("\n", @_). "\n";
-}
-
-my $debug = 0;
-my $parser = new MyParser($lexer-&gt;getyylex(), \&amp;MyParser::yyerror , $debug);
-$lexer-&gt;from(\*STDIN);
-$parser-&gt;yyparse(\*STDIN);
-</PRE>
-El módulo <code>Parse::YYLex</code> contiene una versión de <code>Parse::Lex</code> 
-que ha sido adaptada para funcionar con  <code>byacc</code>. Todas las versiones de <code>yacc</code> 
-esperan que el analizador léxico devuelva un <SPAN  CLASS="textbf">token</SPAN> numérico, mientras que 
-<code>Parse::Lex</code> devuelbe un objeto de la clase <SPAN  CLASS="textbf">token</SPAN>.
-Veamos un ejemplo de ejecución:
-<PRE>
-&gt; tokenizer.pl
-Version 2.15
-yydebug: state 0, reducing by rule 1 (start :)
-yydebug: after reduction, shifting from state 0 to state 1
-3*(5-9)
-yydebug: state 1, reading 257 (INT)
-yydebug: state 1, shifting to state 2
-yydebug: state 2, reducing by rule 5 (expr : INT)
-INT -&gt; Expr!
-yydebug: after reduction, shifting from state 1 to state 6
-yydebug: state 6, reading 263 (MULT)
-yydebug: state 6, shifting to state 11
-yydebug: state 11, reading 259 (LEFT_PAR)
-yydebug: state 11, shifting to state 4
-yydebug: state 4, reading 257 (INT)
-yydebug: state 4, shifting to state 2
-yydebug: state 2, reducing by rule 5 (expr : INT)
-INT -&gt; Expr!
-yydebug: after reduction, shifting from state 4 to state 7
-yydebug: state 7, reading 262 (MINUS)
-yydebug: state 7, shifting to state 10
-yydebug: state 10, reading 257 (INT)
-yydebug: state 10, shifting to state 2
-yydebug: state 2, reducing by rule 5 (expr : INT)
-INT -&gt; Expr!
-yydebug: after reduction, shifting from state 10 to state 15
-yydebug: state 15, reading 260 (RIGHT_PAR)
-yydebug: state 15, reducing by rule 7 (expr : expr MINUS expr)
-MINUS -&gt; Expr!
-yydebug: after reduction, shifting from state 4 to state 7
-yydebug: state 7, shifting to state 13
-yydebug: state 13, reducing by rule 10 (expr : LEFT_PAR expr RIGHT_PAR)
-PARENS -&gt; Expr!
-yydebug: after reduction, shifting from state 11 to state 16
-yydebug: state 16, reducing by rule 8 (expr : expr MULT expr)
-MULT -&gt; Expr!
-yydebug: after reduction, shifting from state 1 to state 6
-yydebug: state 6, reading 258 (EOL)
-yydebug: state 6, shifting to state 8
-yydebug: state 8, reducing by rule 3 (input : expr EOL)
--12
-yydebug: after reduction, shifting from state 1 to state 5
-yydebug: state 5, reducing by rule 2 (start : start input)
-yydebug: after reduction, shifting from state 0 to state 1
-yydebug: state 1, reading 0 (end-of-file)
 </PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5404"
+<A NAME="tex2html5415"
   HREF="node196.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5398"
-  HREF="node165.html">
+<A NAME="tex2html5409"
+  HREF="node169.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5394"
+<A NAME="tex2html5403"
   HREF="node194.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5400"
-  HREF="node228.html">
+<A NAME="tex2html5411"
+  HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5402"
-  HREF="node231.html">
+<A NAME="tex2html5413"
+  HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -376,17 +323,17 @@ yydebug: state 1, reading 0 (end-of-file)
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5405"
-  HREF="node196.html">Análisis Sintáctico Ascendente en</A>
-<B>Sup:</B> <A NAME="tex2html5399"
-  HREF="node165.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5395"
-  HREF="node194.html">Práctica: Construcción del AST</A>
+<B> Sig:</B> <A NAME="tex2html5416"
+  HREF="node196.html">Descripción Eyapp del Lenguaje</A>
+<B>Sup:</B> <A NAME="tex2html5410"
+  HREF="node169.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5404"
+  HREF="node194.html">Práctica: Generación Automática de</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-06-08</I>
+2013-06-10</I>
 </ADDRESS>
 </BODY>
 </HTML>

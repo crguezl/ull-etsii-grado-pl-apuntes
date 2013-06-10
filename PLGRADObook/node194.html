@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Práctica: Construcción del AST para el Lenguaje Simple C</TITLE>
-<META NAME="description" CONTENT="Práctica: Construcción del AST para el Lenguaje Simple C">
+<TITLE>Práctica: Generación Automática de Árboles</TITLE>
+<META NAME="description" CONTENT="Práctica: Generación Automática de Árboles">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node195.html">
 <LINK REL="previous" HREF="node193.html">
-<LINK REL="up" HREF="node165.html">
+<LINK REL="up" HREF="node169.html">
 <LINK REL="next" HREF="node195.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5391"
+<A NAME="tex2html5401"
   HREF="node195.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5385"
-  HREF="node165.html">
+<A NAME="tex2html5395"
+  HREF="node169.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5379"
+<A NAME="tex2html5389"
   HREF="node193.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5387"
-  HREF="node228.html">
+<A NAME="tex2html5397"
+  HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5389"
-  HREF="node231.html">
+<A NAME="tex2html5399"
+  HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -88,95 +88,56 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5392"
-  HREF="node195.html">El Generador de Analizadores</A>
-<B>Sup:</B> <A NAME="tex2html5386"
-  HREF="node165.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5380"
-  HREF="node193.html">Diseño de Analizadores con</A>
+<B> Sig:</B> <A NAME="tex2html5402"
+  HREF="node195.html">Recuperacion de Errores: Visión</A>
+<B>Sup:</B> <A NAME="tex2html5396"
+  HREF="node169.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5390"
+  HREF="node193.html">Práctica: Nuevos Métodos</A>
 <B> Con:</B> 
-<A NAME="tex2html5387"
-  HREF="node228.html">
+<A NAME="tex2html5397"
+  HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5389"
-  HREF="node231.html">
+<A NAME="tex2html5399"
+  HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html5393"
-  HREF="node194.html#SECTION069290010000000000000">Analizador Léxico</A>
-</UL></UL></UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION069290000000000000000"></A>
-   <A NAME="19497"></A>
-  
-<A NAME="practica:esquemadetradsimple"></A>
+<H1><A NAME="SECTION0109250000000000000000"></A>
+   <A NAME="19504"></A>
 <BR>
-Práctica: Construcción del AST para el Lenguaje Simple C
+Práctica: Generación Automática de Árboles
 </H1>
-Utilice 
-<A NAME="tex2html458"
-  HREF="Parse-Eyapp.tar.gz">Parse-Eyapp</A>.
-para construir un árbol de análisis sintáctico abstracto 
-para la gramática descrita en la sección
-<A HREF="node208.html#section:simplec">42.2</A>.
-Su analizador deberá seguir los consejos explícitados en la 
-sección <A HREF="node193.html#section:consejoseyapp">39.28</A>.
-
-<P>
-
-<H4><A NAME="SECTION069290010000000000000">
-Analizador Léxico</A>
-</H4>
-
-<P>
-Además del tipo de terminal y su valor el analizador
-léxico deberá devolver el número de línea.
-El analizador léxico deberá aceptar comentarios C.
-En la gramática, el terminal <code>CHARACTER</code> se refiere a 
-caracteres entre comillas simples (por ejemplo <code>'a'</code>).
-El terminal <code>STRING</code> se refiere a 
-caracteres entre comillas dobles (por ejemplo <code>"hola"</code>).
-
-<P>
-Se aconseja que las palabras reservadas del lenguaje
-no se traten con expresiones regulares específicas sino que se
-capturen en el patrón de identificador <code>[a-z_]\w+</code>. 
-Se mantiene para ello un hash con las palabras reservadas 
-que es inicializado al comienzo del programa. Cuando 
-el analizador léxico encuentra un identificador
-mira en primer lugar en dicho hash 
-para ver si es una palabra reservada y,
-si lo es, devuelve el terminal correspondiente.
-En caso contrario se trata de un identificador.
+  
+Partiendo de la práctica anterior, introduzca una directiva
+<code>%autotree</code> que de lugar a la construcción del árbol de análisis
+concreto. La acción de construcción del árbol:
+<PRE>
+{ my $n = $#_;  bless [@_[1..$n]], $_[0]-&gt;YYLhs }
+</PRE>
+se ejecutará para cualquier regla que no tenga una acción
+explícita asociada.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5391"
+<A NAME="tex2html5401"
   HREF="node195.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5385"
-  HREF="node165.html">
+<A NAME="tex2html5395"
+  HREF="node169.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5379"
+<A NAME="tex2html5389"
   HREF="node193.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5387"
-  HREF="node228.html">
+<A NAME="tex2html5397"
+  HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5389"
-  HREF="node231.html">
+<A NAME="tex2html5399"
+  HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -223,17 +184,17 @@ En caso contrario se trata de un identificador.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5392"
-  HREF="node195.html">El Generador de Analizadores</A>
-<B>Sup:</B> <A NAME="tex2html5386"
-  HREF="node165.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5380"
-  HREF="node193.html">Diseño de Analizadores con</A>
+<B> Sig:</B> <A NAME="tex2html5402"
+  HREF="node195.html">Recuperacion de Errores: Visión</A>
+<B>Sup:</B> <A NAME="tex2html5396"
+  HREF="node169.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5390"
+  HREF="node193.html">Práctica: Nuevos Métodos</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-06-08</I>
+2013-06-10</I>
 </ADDRESS>
 </BODY>
 </HTML>

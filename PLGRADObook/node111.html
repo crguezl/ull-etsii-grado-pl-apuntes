@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Práctica: Traducción de invitation a HTML</TITLE>
-<META NAME="description" CONTENT="Práctica: Traducción de invitation a HTML">
+<TITLE>tr y split</TITLE>
+<META NAME="description" CONTENT="tr y split">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,7 +21,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node112.html">
 <LINK REL="previous" HREF="node110.html">
-<LINK REL="up" HREF="node101.html">
+<LINK REL="up" HREF="node105.html">
 <LINK REL="next" HREF="node112.html">
 </HEAD>
 
@@ -32,16 +32,16 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   HREF="node112.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
 <A NAME="tex2html3812"
-  HREF="node101.html">
+  HREF="node105.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
 <A NAME="tex2html3806"
   HREF="node110.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
 <A NAME="tex2html3814"
-  HREF="node228.html">
+  HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
 <A NAME="tex2html3816"
-  HREF="node231.html">
+  HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -89,181 +89,194 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  ALT="pcgull"></A>
 <BR>
 <B> Sig:</B> <A NAME="tex2html3819"
-  HREF="node112.html">Análisis Sintáctico con Regexp::Grammars</A>
+  HREF="node112.html">Pack y Unpack</A>
 <B>Sup:</B> <A NAME="tex2html3813"
-  HREF="node101.html">Expresiones Regulares en Perl</A>
+  HREF="node105.html">Expresiones Regulares en Perl</A>
 <B> Ant:</B> <A NAME="tex2html3807"
-  HREF="node110.html">Analisis Sintáctico con Expresiones</A>
+  HREF="node110.html">Casos de Estudio</A>
 <B> Con:</B> 
 <A NAME="tex2html3814"
-  HREF="node228.html">
+  HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
 <A NAME="tex2html3816"
-  HREF="node231.html">
+  HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION064100000000000000000">
-Práctica: Traducción de <TT>invitation</TT> a <TT>HTML</TT></A>
+<H1><A NAME="SECTION010460000000000000000"></A>
+<A NAME="section:tr"></A>
+<BR>
+tr y split
 </H1>
-   <A NAME="8622"></A>
+El operador de traducción permite la conversión de unos caracteres por otros. 
+Tiene la sintáxis:
 
 <P>
-Esta práctica es continuación
-de la práctica <I>un lenguaje para componer invitaciones</I>
-especificada en la sección
-<A HREF="node109.html#practica:invitaciones">34.7</A>.
-
-<P>
-El objetivo es traducir la entrada escrita en el lenguaje de invitaciones
-a HTML. La traducción del ejemplo anterior debería ser parecida a esta:
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=340><PRE>
-pl@nereida:~/Lpl0910/Practicas/161009/src$ cat -n invitation.xml
- 1  &lt;?xml version="1.0"?&gt;
- 2  &lt;!DOCTYPE invitation SYSTEM "invitation.dtd"&gt;
- 3  &lt;invitation&gt;
- 4  &lt;!-- ++++ The header part of the document ++++ --&gt;
- 5  &lt;front&gt;
- 6  &lt;to&gt;Anna, Bernard, Didier, Johanna&lt;/to&gt;
- 7  &lt;date&gt;Next Friday Evening at 8 pm&lt;/date&gt;
- 8  &lt;where&gt;The Web Cafe&lt;/where&gt;
- 9  &lt;why&gt;My first XML baby&lt;/why&gt;
-10  &lt;/front&gt;
-11  &lt;!-- +++++ The main part of the document +++++ --&gt;
-12  &lt;body&gt;
-13  &lt;par&gt;
-14  I would like to invite you all to celebrate
-15  the birth of &lt;emph&gt;Invitation&lt;/emph&gt;, my
-16  first XML document child.
-17  &lt;/par&gt;
-18  &lt;par&gt;
-19  Please do your best to come and join me next Friday
-20  evening. And, do not forget to bring your friends.
-21  &lt;/par&gt;
-22  &lt;par&gt;
-23  I &lt;emph&gt;really&lt;/emph&gt; look forward to see you soon!
-24  &lt;/par&gt;
-25  &lt;/body&gt;
-26  &lt;!-- +++ The closing part of the document ++++ --&gt;
-27  &lt;back&gt;
-28  &lt;signature&gt;Michel&lt;/signature&gt;
-29  &lt;/back&gt;
-30  &lt;/invitation&gt;
-</PRE></TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=340><PRE>
-pl@nereida:~/Lpl0910/Practicas/161009/src$ cat invcss.html.save
-&lt;HTML&gt;
-&lt;HEAD&gt;
-&lt;TITLE&gt; Invitation (sgmlpl/CSS formatting) &lt;/TITLE&gt;
-&lt;LINK href="invit.css" rel="style-sheet" type="text/css"&gt;
-&lt;!-- 24 August 1998 mg --&gt;
-&lt;/HEAD&gt;
-&lt;BODY&gt;
-&lt;H1&gt;INVITATION&lt;/H1&gt;
-&lt;P&gt;&lt;TABLE&gt;
-&lt;TBODY&gt;
-&lt;TR&gt;&lt;TD class="front"&gt;To: &lt;/TD&gt;
-&lt;TD&gt;Anna, Bernard, Didier, Johanna&lt;/TD&gt;&lt;/TR&gt;
-&lt;TR&gt;&lt;TD class="front"&gt;When: &lt;/TD&gt;
-&lt;TD&gt;Next Friday Evening at 8 pm&lt;/TD&gt;&lt;/TR&gt;
-&lt;TR&gt;&lt;TD class="front"&gt;Venue: &lt;/TD&gt;
-&lt;TD&gt;The Web Cafe&lt;/TD&gt;&lt;/TR&gt;
-&lt;TR&gt;&lt;TD class="front"&gt;Occasion: &lt;/TD&gt;
-&lt;TD&gt;My first XML baby&lt;/TD&gt;&lt;/TR&gt;
-&lt;/TBODY&gt;
-&lt;/TABLE&gt;
-&lt;P&gt;
-I would like to invite you all to celebrate
-the birth of &lt;EM&gt;Invitation&lt;/EM&gt;, my
-first XML document child.
-&lt;/P&gt;
-&lt;P&gt;
-Please do your best to come and join me next Friday
-evening. And, do not forget to bring your friends.
-&lt;/P&gt;
-&lt;P&gt;
-I &lt;EM&gt;really&lt;/EM&gt; look forward to see you soon!
-&lt;/P&gt;
-&lt;P CLASS="signature"&gt;Michel&lt;/P&gt;
-&lt;/BODY&gt;
-&lt;/HTML&gt;
-</PRE></TD>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><code>tr/SEARCHLIST/REPLACEMENTLIST/cds</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>y/SEARCHLIST/REPLACEMENTLIST/cds</code></TD>
 </TR>
 </TABLE>
-Para ver el resultado en su navegador visite el fichero
-<A NAME="tex2html307"
-  HREF="invitation.html">invitation.html</A>
-<P>
-Su programa deberá producir un Abstract Syntax Tree.
-Los nodos serán objetos. Cada clase (<code>FRONT</code>, <code>TO</code>, etc.)
-deberá de disponer de un método <code>translate</code>.
 
 <P>
-Para simplificar el proceso de traducción a <code>HTML</code> se sugiere  utilizar una 
-hoja de estilo parecida a la siguiente (tomada de la seción 7.4.4 del citado libro de Goosens):
+El operador permite el reemplazo carácter a carácter, por ejemplo:
 <PRE>
-pl@nereida:~/Lpl0910/Practicas/161009/src$ cat -n invit.css
- 1  /* CSS stylesheet for invitation1 in HTML */
- 2  BODY {margin-top: 1em;     /* global page parameters */
- 3        margin-bottom: 1em;
- 4        margin-left: 1em;
- 5        margin-right: 1em;
- 6        font-family: serif;
- 7        line-height: 1.1;
- 8        color: black;
- 9  }
-10  H1   {text-align: center;  /* for global title   */
-11        font-size: x-large;
-12  }
-13  P    {text-align: justify; /* paragraphs in body */
-14        margin-top: 1em;
-15  }
-16  TABLE { border-width: 0pt }
-17  TBODY { border-width: 0pt }
-18  TD[class="front"] {        /* table data in front matter */
-19        text-align: left;
-20        font-weight: bold;
-21  }
-22  TD.front {        /* table data in front matter */
-23        text-align: left;
-24        font-weight: bold;
-25  }
-26  EM   {font-style: italic;  /* emphasis in body   */
-27  }
-28  P.signature {     /* signature          */
-29        text-align: right;
-30        font-weight: bold;
-31  }
+$ perl -de 0
+  DB&lt;1&gt; $a = 'fiboncacci'
+  DB&lt;2&gt; $a =~ tr/aeiou/AEIOU/
+  DB&lt;3&gt; print $a
+fIbOncAccI
+  DB&lt;4&gt; $a =~ y/fbnc/FBNC/
+  DB&lt;5&gt; print $a
+FIBONCACCI
+</PRE>
+El operador devuelve el número de carácteres reeemplazados
+o suprimidos. 
+<PRE>
+$cnt = $sky =~ tr/*/*/; # count the stars in $sky
 </PRE>
 
 <P>
-Véase también:
+Si se especifica el modificador <code>/d</code>, cualquier carácter en  <code>SEARCHLIST</code>
+que no figure en <code>REPLACEMENTLIST</code> es eliminado.
+<PRE>
+  DB&lt;6&gt; print $a
+FIBONCACCI
+  DB&lt;7&gt; $a =~ y/OA//d
+  DB&lt;8&gt; print $a
+FIBNCCCI
+</PRE>
 
 <P>
+Si se especifica el modificador <code>/s</code>, las secuencias de carácteres
+consecutivos que serían traducidas al mismo carácter son comprimidas a una sola:
 
-<UL>
-<LI><A NAME="tex2html308"
-  HREF="http://books.google.es/books?id=B93uJGLZhAoC&amp;lpg=PP1&amp;ots=-JFhDfZPwN&amp;dq=The%20LaTEX%20web%20companion&amp;hl=en&amp;pg=PP1#v=onepage&amp;q=&amp;f=false">The LaTex Web Companion</A>
-</LI>
-<LI><A NAME="tex2html309"
-  HREF="http://www.ctan.org/tex-archive/info/examples/lwc/">Examples from The LaTeX Web Companion</A>
-(véanse los subdirectorios
-correspondietnes a los capítulos 6 y 7)
-</LI>
-<LI><A NAME="tex2html310"
-  HREF="http://www.w3schools.com/css/">CSS Tutorial</A>
-</LI>
-<LI><A NAME="tex2html311"
-  HREF="http://www.psicobyte.com/html/index.html">Edición extremadamente simple de HTML</A>
-</LI>
-<LI><A NAME="tex2html312"
-  HREF="http://perl-xml.sourceforge.net/faq/">Perl-XML Frequently Asked Questions</A>
-</LI>
-</UL>
+<P>
+<PRE>
+  DB&lt;1&gt; $b = 'aaghhh!'
+  DB&lt;2&gt; $b =~ tr/ah//s
+  DB&lt;3&gt; p $b
+agh!
+</PRE>
+
+<P>
+Observa que si la cadena <code>REPLACEMENTLIST</code> es vacía,
+no se introduce ninguna modificación.
+
+<P>
+Si se especifica el modificador <code>/c</code>, se complementa <code>SEARCHLIST</code>;
+esto es, se buscan los caracteres que no están en <code>SEARCHLIST</code>.
+
+<P>
+<PRE>
+tr/a-zA-Z/ /cs; # change non-alphas to single space
+</PRE>
+
+<P>
+Cuando se dan múltiples traducciones para un mismo carácter, solo la primera es utilizada:
+
+<P>
+<PRE>
+tr/AAA/XYZ/
+</PRE>
+
+<P>
+traducirá <code>A</code> por <code>X</code>.
+
+<P>
+El siguiente <SPAN  CLASS="textbf">script</SPAN> busca una expresión regular en el fichero de <code>passwords</code>
+e imprime los <SPAN  CLASS="textbf">login</SPAN> de los usuarios que casan con dicha cadena.
+Para evitar posibles confusiones con las vocales acentuadas
+se usa el operador <code>tr</code>.
+
+<P>
+<PRE>
+   1 #!/usr/bin/perl -w
+   2 $search = shift(@ARGV) or die("you must provide a regexpr\n");
+   3 $search =~ y/ÁÉÍÓÚáéíóú/AEIOUaeiou/;
+   4 open(FILE,"/etc/passwd");
+   5 while ($line = &lt;FILE&gt;) {
+   6   $line =~ y/ÁÉÍÓÚáéíóú/AEIOUaeiou/;
+   7   if ($line =~ /$search/io) {
+   8     @fields = split(":",$line);
+   9     $login = $fields[0];
+  10     if ($line !~ /^#/) {
+  11       print "$login\n";
+  12     }
+  13     else {
+  14       print "#$login\n";
+  15     }
+  16   }
+  17 }
+  18
+</PRE>
+
+<P>
+Ejecución (suponemos que el nombre del fichero anterior es <code>split.pl</code>):
+<PRE>
+&gt; split.pl Rodriguez
+##direccion
+call
+casiano
+alu5
+alu6
+##doctorado
+paco
+falmeida
+##ihiu07
+</PRE>
+
+<P>
+Para familiarizarte con este operador, codifica y prueba el siguiente
+código:
+
+<P>
+<PRE>
+   1 #!/usr/bin/perl -w
+   2 $searchlist = shift @ARGV;
+   3 $replacelist = shift @ARGV;
+   4 $option = "";
+   5 $option = shift @ARGV if @ARGV;
+   6 
+   7 while (&lt;&gt;) {
+   8   $num = eval "tr/$searchlist/$replacelist/$option";
+   9   die $@ if $@;
+  10   print "$num: $_";
+  11 }
+</PRE>
+
+<P>
+Perl construye la tabla de traducción en ``tiempo de compilación''. Por ello
+ni <code>SEARCHLIST</code> ni <code>REPLACEMENTLIST</code> son susceptibles de 
+ser interpolados. Esto significa que si queremos usar variables tenemos
+que recurrir a la función <code>eval</code>.
+
+<P>
+La expresión pasada como parámetro a <code>eval</code> en la línea 8 es analizada y ejecutada como si 
+se tratara de un pequeño programa Perl. Cualquier asignación a variables permanece
+después del <code>eval</code>, asi como cualquier definición de subrutina. 
+El código dentro de <code>eval</code> se trata como si fuera un bloque, de manera
+que cualesquiera variables locales (declaradas con <code>my</code>) desaparecen
+al final del bloque.
+
+<P>
+La variable <code>$@</code> contiene el mensaje de error asociado con la
+última ejecución del comando <code>eval</code>. Si es nula es que el último comando
+se ejecuto correctamente.
+Aqui tienes un ejemplo de llamada:
+
+<P>
+<PRE>
+&gt; tr.pl 'a-z' 'A-Z' s
+jose hernandez
+13: JOSE HERNANDEZ
+joosee hernnandez
+16: JOSE HERNANDEZ
+</PRE>
 
 <P>
 
@@ -272,16 +285,16 @@ correspondietnes a los capítulos 6 y 7)
   HREF="node112.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
 <A NAME="tex2html3812"
-  HREF="node101.html">
+  HREF="node105.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
 <A NAME="tex2html3806"
   HREF="node110.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
 <A NAME="tex2html3814"
-  HREF="node228.html">
+  HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
 <A NAME="tex2html3816"
-  HREF="node231.html">
+  HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -329,16 +342,16 @@ correspondietnes a los capítulos 6 y 7)
  ALT="pcgull"></A>
 <BR>
 <B> Sig:</B> <A NAME="tex2html3819"
-  HREF="node112.html">Análisis Sintáctico con Regexp::Grammars</A>
+  HREF="node112.html">Pack y Unpack</A>
 <B>Sup:</B> <A NAME="tex2html3813"
-  HREF="node101.html">Expresiones Regulares en Perl</A>
+  HREF="node105.html">Expresiones Regulares en Perl</A>
 <B> Ant:</B> <A NAME="tex2html3807"
-  HREF="node110.html">Analisis Sintáctico con Expresiones</A>
+  HREF="node110.html">Casos de Estudio</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-06-08</I>
+2013-06-10</I>
 </ADDRESS>
 </BODY>
 </HTML>

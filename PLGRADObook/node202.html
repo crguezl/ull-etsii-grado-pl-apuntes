@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Recuperación de Errores en Listas</TITLE>
-<META NAME="description" CONTENT="Recuperación de Errores en Listas">
+<TITLE>Precedencia y Asociatividad</TITLE>
+<META NAME="description" CONTENT="Precedencia y Asociatividad">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,28 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
+<LINK REL="next" HREF="node203.html">
 <LINK REL="previous" HREF="node201.html">
-<LINK REL="up" HREF="node196.html">
+<LINK REL="up" HREF="node200.html">
 <LINK REL="next" HREF="node203.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5516"
+<A NAME="tex2html5528"
   HREF="node203.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5510"
-  HREF="node196.html">
+<A NAME="tex2html5522"
+  HREF="node200.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5506"
+<A NAME="tex2html5516"
   HREF="node201.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5512"
-  HREF="node228.html">
+<A NAME="tex2html5524"
+  HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5514"
-  HREF="node231.html">
+<A NAME="tex2html5526"
+  HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -87,136 +88,126 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5517"
-  HREF="node203.html">Análisis Sintáctico Ascendente en</A>
-<B>Sup:</B> <A NAME="tex2html5511"
-  HREF="node196.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5507"
-  HREF="node201.html">Recuperación de Errores</A>
+<B> Sig:</B> <A NAME="tex2html5529"
+  HREF="node203.html">Uso de union y</A>
+<B>Sup:</B> <A NAME="tex2html5523"
+  HREF="node200.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5517"
+  HREF="node201.html">Introducción a yacc</A>
 <B> Con:</B> 
-<A NAME="tex2html5512"
-  HREF="node228.html">
+<A NAME="tex2html5524"
+  HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5514"
-  HREF="node231.html">
+<A NAME="tex2html5526"
+  HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION061060000000000000000"></A>
-<A NAME="section:recuperryacclistas"></A>
+<H1><A NAME="SECTION0101020000000000000000"></A>
+<A NAME="section:precandascoyacc"></A>
 <BR>
-Recuperación de Errores en Listas
+Precedencia y Asociatividad
 </H1>
-Aunque no existe un método exacto para decidir como ubicar
-las reglas de recuperación de errores, 
-en general, los s&#305;mbolos de error deben ubicarse intentado 
-satisfacer las siguientes reglas:
+En caso de que no existan indicaciones específicas <SPAN  CLASS="textbf">yacc</SPAN> resuelve
+los conflictos que aparecen en la construcción de la tabla utilizando las siguientes reglas:
+
+<OL>
+<LI>Un conflicto <SPAN  CLASS="textbf">reduce-reduce</SPAN> se resuelve eligiendo la producción que se listó primero en la especificación de la gramática.
+</LI>
+<LI>Un conflicto <SPAN  CLASS="textbf">shift-reduce</SPAN> se resuelve siempre en favor del <SPAN  CLASS="textbf">shift</SPAN>
+</LI>
+</OL>
+La precedencia se utiliza para modificar estos criterios. Para 
+ello se define:
 
 <P>
 
-<UL>
-<LI>Tan cerca como sea posible del s&#305;mbolo de arranque.
+<OL>
+<LI>La precedencia de los <SPAN  CLASS="textbf">tokens</SPAN> es determinada según el orden de 
+declaración. La declaración de <SPAN  CLASS="textbf">tokens</SPAN> mediante la palabra reservada <code>token</code> no modifica la precedencia. Si lo hacen las declaraciones realizadas usando las palabras <code>left</code>, <code>right</code> y <code>nonassoc</code>. Los <SPAN  CLASS="textbf">tokens</SPAN> declarados  en la misma línea
+tienen igual precedencia. La precedencia es mayor cuanto mas abajo en
+el texto. Así, en el ejemplo que sigue, el <SPAN  CLASS="textbf">token</SPAN> <code>*</code> tiene 
+mayor precedencia que <code>+</code> pero la misma que <code>/</code>.
 </LI>
-<LI>Tan cerca como sea posible de los s&#305;mbolos terminales.
-</LI>
-<LI>Sin introducir nuevos conflictos.
-</LI>
-</UL>
-
-<P>
-<P>
-<DIV><A NAME="scheme:errinlists"><B>Esquema  <SPAN CLASS="arabic">40</SPAN>.<SPAN CLASS="arabic">6</SPAN>.<SPAN CLASS="arabic">1</SPAN></B></A> &nbsp; 
-<I>En el caso particular de las listas, se recomienda seguir el
-siguiente esquema:
-</I>
-<P><!-- MATH
- \begin{math}
-\begin{array}{lll}
-Construct         & EBNF & yacc\ input\\
-\hline
-optional\ sequence & x:\{y\}   & \verb|x : /* null */             |\\
-                   &           & \verb|  | x y  { yyerrok; }      |\\
-                   &           & \verb|  | x error                |\\
-\hline
-sequence          & x:y\{y\}  & \verb|x : y                      |\\
-                  &           & \verb|  | xy   { yyerrok; }      |\\
-                &           & \verb|  | error                  |\\
-                &           & \verb|  | x error                |\\
-\hline
-list              & x:y\{Ty\} & \verb|x : y                       |\\
-                  &           & \verb|  | x T y { yyerrok; }      |\\
-                &           & \verb|  | error                   |\\
-                &           & \verb|  | x error                 |\\
-                &           & \verb|  | x error y { yyerrok; }  |\\
-                &           & \verb|  | x  T error              |\\
-\hline
-\end{array}
-\end{math}
+<LI>La precedencia de una regla <!-- MATH
+ $A \rightarrow \alpha$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="516" HEIGHT="323" BORDER="0"
- SRC="img520.png"
- ALT="\begin{displaymath}
-\begin{array}{lll}
-Construct &amp; EBNF &amp; yacc input\\
-\hline
-...
-...\\
-&amp; &amp; \verb\vert \vert x T error \vert\\
-\hline
-\end{array}\end{displaymath}"></SPAN></DIV><P></P>
+ WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img51.png"
+ ALT="$ A \rightarrow \alpha$"></SPAN> se
+define como la del terminal mas a la derecha que aparece en
+<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img79.png"
+ ALT="$ \alpha$"></SPAN>. En el ejemplo, la producción 
+
+<P>
+<DIV ALIGN="CENTER">
+<code> expr : expr '+' expr</code> 
+
+</DIV>
+
+<P>
+tiene la precedencia del <SPAN  CLASS="textbf">token</SPAN> <code>+</code>.
+</LI>
+<LI>Para decidir en un conflicto <SPAN  CLASS="textbf">shift-reduce</SPAN> se comparan la precedencia 
+de la regla con la del terminal que va a ser desplazado. Si la de la regla es mayor se reduce
+si la del <SPAN  CLASS="textbf">token</SPAN> es mayor, se desplaza.
+</LI>
+<LI>Si en un conflicto <SPAN  CLASS="textbf">shift-reduce</SPAN> ambos la regla y el terminal que va a ser desplazado
+tiene la misma precedencia <SPAN  CLASS="textbf">yacc</SPAN> considera la asociatividad, si es asociativa a izquierdas,
+reduce y si es asociativa a derechas desplaza. Si no es asociativa, genera un mensaje de error.
+<BR>
+Obsérvese que, en esta situación, la asociatividad de la regla y la del <SPAN  CLASS="textbf">token</SPAN> han de ser por fuerza, las mismas. 
+Ello es así, porque en <SPAN  CLASS="textbf">yacc</SPAN> los <SPAN  CLASS="textbf">tokens</SPAN> con la misma 
+precedencia se declaran en la misma línea. 
+
+<P>
+<SPAN  CLASS="textbf"> Por tanto es imposible declarar dos <SPAN  CLASS="textbf">tokens</SPAN> con diferente asociatividad y la misma precedencia</SPAN>.
+</LI>
+<LI>Es posible modificar la precedencia ``natural'' de una regla, calificándola con un <SPAN  CLASS="textbf">token</SPAN> específico.
+para ello se escribe a la derecha de la regla <code>prec token</code>, donde <code>token</code> es un <SPAN  CLASS="textbf">token</SPAN>
+con la precedencia que deseamos. Vea el uso del <SPAN  CLASS="textbf">token</SPAN> <code>dummy</code> en el siguiente ejercicio.
+</LI>
+</OL>
 
 <P>
 <P>
-<DIV><B>Programa  <SPAN CLASS="arabic">40</SPAN>.<SPAN CLASS="arabic">6</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Para comprobar el funcionamiento y la validez de la metodología 
-esquematizada en el esquema <A HREF="#scheme:errinlists">40.6.1</A>, 
-consideremos los contenidos del fichero <code>error.y</code>.
-En el se muestra el tercer caso x:y{Ty} con 
-x = <TT>list</TT>, T = <TT>,</TT> e y = <TT>NUMBER</TT>:
-</I><PRE>
+<DIV><B>Programa  <SPAN CLASS="arabic">40</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Este programa muestra el manejo de las reglas de precedencia.
+<A NAME="prog:prec"></A></I><PRE>
 %{
+#define YYSTYPE double
 #include &lt;stdio.h&gt;
-void put(double x);
-void err(int code); 
 %}
-
-%union { 
-  double val; 
-}
-%token &lt;val&gt;NUMBER
+%token NUMBER
+%left '@' 
+%right '&amp;'  dummy
 %%
-command 
-  : 
-  | command list '\n' { yyerrok; } 
-  ;
-
 list 
-    : NUMBER            { put($1); }
-    | list ',' NUMBER   { put($3); yyerrok; }
-    | error             { err(1); }
-    | list error        { err(2); }
-    | list error NUMBER { err(3); put($3); yyerrok; }
-    | list ',' error    { err(4); }
+    :
+    | list '\n'  
+    | list e 
     ;
-    
-%%    
-void put(double x) {   
-  printf("%2.1lf\n",x);
-}
 
-void err(int code) {
-  printf("err %d\n",code);
-}
+e : NUMBER  
+  | e '&amp;' e 
+  | e '@' e %prec dummy
+    ;
 
-main() {
+%%
+extern FILE * yyin;
+ 
+main(int argc, char **argv) {
+  if (argc &gt; 1) yyin = fopen(argv[1],"r");
   yydebug = 1;
   yyparse();
 }
-
+ 
 yyerror(char *s) {
   printf("%s\n",s);
 }
@@ -224,219 +215,224 @@ yyerror(char *s) {
 
 <P>
 <P>
-<DIV><B>Listado  <SPAN CLASS="arabic">40</SPAN>.<SPAN CLASS="arabic">6</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>La compilación con <code>yacc</code> da lugar a una tabla ligeramente diferente
-de la producida por <code>bison</code>.
-El fichero <code>y.output</code> contiene la tabla:
-</I><PRE>
-   0  $accept : command $end
+<DIV><B>Ejercicio  <SPAN CLASS="arabic">40</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Dado el programa <code>yacc</code> <A HREF="#prog:prec">40.2.1</A>
+Responda a las siguientes cuestiones:
+</I>
+<OL>
+<LI>Construya las tablas SLR de acciones y <SPAN  CLASS="textbf">gotos</SPAN>.
+</LI>
+<LI>Determine el árbol construido para las frases:
+<code>4@3@5</code>, <code>4&amp;3&amp;5</code>, <code>4@3&amp;5</code>, <code>4&amp;3@5</code>.
+</LI>
+<LI>¿Cuál es la asociatividad final de la regla <code>e : e '@' e</code>?
+</LI>
+</OL></DIV><P></P>
 
-   1  command :
-   2          | command list '\n'
+<P>
+<P>
+<DIV><B>Listado  <SPAN CLASS="arabic">40</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Fichero <SPAN  CLASS="textbf">y.output</SPAN>:
+<BR></I><PRE>
+   0  $accept : list $end
 
-   3  list : NUMBER
-   4       | list ',' NUMBER
-   5       | error
-   6       | list error
-   7       | list error NUMBER
-   8       | list ',' error
+   1  list :
+   2       | list '\n'
+   3       | list e
 
+   4  e : NUMBER
+   5    | e '&amp;' e
+   6    | e '@' e
+</PRE>
+<P><TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><PRE>
 state 0
-	$accept : . command $end  (0)
-	command : .  (1)
+	$accept : . list $end  (0)
+	list : .  (1)
 
 	.  reduce 1
 
-	command  goto 1
+	list  goto 1
 
 
 state 1
-	$accept : command . $end  (0)
-	command : command . list '\n'  (2)
+	$accept : list . $end  (0)
+	list : list . '\n'  (2)
+	list : list . e  (3)
 
 	$end  accept
-	error  shift 2
-	NUMBER  shift 3
+	NUMBER  shift 2
+	'\n'  shift 3
 	.  error
 
-	list  goto 4
+	e  goto 4
 
 
 state 2
-	list : error .  (5)
-
-	.  reduce 5
-
-
-state 3
-	list : NUMBER .  (3)
-
-	.  reduce 3
-
-
-state 4
-	command : command list . '\n'  (2)
-	list : list . ',' NUMBER  (4)
-	list : list . error  (6)
-	list : list . error NUMBER  (7)
-	list : list . ',' error  (8)
-
-	error  shift 5
-	'\n'  shift 6
-	','  shift 7
-	.  error
-
-
-state 5
-	list : list error .  (6)
-	list : list error . NUMBER  (7)
-
-	NUMBER  shift 8
-	error  reduce 6
-	'\n'  reduce 6
-	','  reduce 6
-
-
-state 6
-	command : command list '\n' .  (2)
-
-	.  reduce 2
-
-
-state 7
-	list : list ',' . NUMBER  (4)
-	list : list ',' . error  (8)
-
-	error  shift 9
-	NUMBER  shift 10
-	.  error
-
-
-state 8
-	list : list error NUMBER .  (7)
-
-	.  reduce 7
-
-
-state 9
-	list : list ',' error .  (8)
-
-	.  reduce 8
-
-
-state 10
-	list : list ',' NUMBER .  (4)
+	e : NUMBER .  (4)
 
 	.  reduce 4
 
 
-5 terminals, 3 nonterminals
-9 grammar rules, 11 states
+state 3
+	list : list '\n' .  (2)
+
+	.  reduce 2
+
+
+state 4
+	list : list e .  (3)
+	e : e . '&amp;' e  (5)
+	e : e . '@' e  (6)
+
+	'@'  shift 5
+	'&amp;'  shift 6
+	$end  reduce 3
+	NUMBER  reduce 3
+	'\n'  reduce 3
+</PRE></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><PRE>
+state 5
+	e : e '@' . e  (6)
+
+	NUMBER  shift 2
+	.  error
+
+	e  goto 7
+
+
+state 6
+	e : e '&amp;' . e  (5)
+
+	NUMBER  shift 2
+	.  error
+
+	e  goto 8
+
+
+state 7
+	e : e . '&amp;' e  (5)
+	e : e . '@' e  (6)
+	e : e '@' e .  (6)
+
+	'&amp;'  shift 6
+	$end  reduce 6
+	NUMBER  reduce 6
+	'@'  reduce 6
+	'\n'  reduce 6
+
+state 8
+	e : e . '&amp;' e  (5)
+	e : e '&amp;' e .  (5)
+	e : e . '@' e  (6)
+
+	'&amp;'  shift 6
+	$end  reduce 5
+	NUMBER  reduce 5
+	'@'  reduce 5
+	'\n'  reduce 5
+</PRE></TD>
+</TR>
+</TABLE>
+<P><PRE>
+7 terminals, 3 nonterminals
+7 grammar rules, 9 states
 </PRE></DIV><P></P>
 
 <P>
-<DIV><B>Ejecución  <SPAN CLASS="arabic">40</SPAN>.<SPAN CLASS="arabic">6</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>La ejecución del programa generado por <TT>yacc</TT> es como sigue:
-</I><PRE>
-&gt; error
-yydebug: state 0, reducing by rule 1 (command :)
+<P>
+<DIV><B>Ejemplo  <SPAN CLASS="arabic">40</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Contrasta tu respuesta con la traza seguida por el programa anterior
+ante la entrada <code>1@2&amp;3</code>, al establecer la variable <code>yydebug = 1</code>
+y definir la macro <code>YYDEBUG</code>:
+</I><P>
+<DIV><B>Ejecución  <SPAN CLASS="arabic">40</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; <PRE>
+$ hocprec
+yydebug: state 0, reducing by rule 1 (list :)
 yydebug: after reduction, shifting from state 0 to state 1
-10 20
+1@2&amp;3
 yydebug: state 1, reading 257 (NUMBER)
-yydebug: state 1, shifting to state 3
-yydebug: state 3, reducing by rule 3 (list : NUMBER)
-10.0
+yydebug: state 1, shifting to state 2
+yydebug: state 2, reducing by rule 4 (e : NUMBER)
 yydebug: after reduction, shifting from state 1 to state 4
-yydebug: state 4, reading 257 (NUMBER)
-syntax error
-yydebug: state 4, error recovery shifting to state 5
-yydebug: state 5, shifting to state 8
-yydebug: state 8, reducing by rule 7 (list : list error NUMBER)
-err 3
-20.0
-yydebug: after reduction, shifting from state 1 to state 4
-yydebug: state 4, reading 10 ('\n')
-yydebug: state 4, shifting to state 6
-yydebug: state 6, reducing by rule 2 (command : command list '\n')
-yydebug: after reduction, shifting from state 0 to state 1
-10;20 30
-yydebug: state 1, reading 257 (NUMBER)
-yydebug: state 1, shifting to state 3
-yydebug: state 3, reducing by rule 3 (list : NUMBER)
-10.0
-yydebug: after reduction, shifting from state 1 to state 4
-yydebug: state 4, reading 59 (illegal-symbol)
-syntax error
-yydebug: state 4, error recovery shifting to state 5
-yydebug: state 5, error recovery discards token 59 (illegal-symbol)
+yydebug: state 4, reading 64 ('@')
+yydebug: state 4, shifting to state 5
 yydebug: state 5, reading 257 (NUMBER)
-yydebug: state 5, shifting to state 8
-yydebug: state 8, reducing by rule 7 (list : list error NUMBER)
-err 3
-20.0
-yydebug: after reduction, shifting from state 1 to state 4
-yydebug: state 4, reading 257 (NUMBER)
-syntax error
-yydebug: state 4, error recovery shifting to state 5
-yydebug: state 5, shifting to state 8
-yydebug: state 8, reducing by rule 7 (list : list error NUMBER)
-err 3
-30.0
-yydebug: after reduction, shifting from state 1 to state 4
-yydebug: state 4, reading 10 ('\n')
-yydebug: state 4, shifting to state 6
-yydebug: state 6, reducing by rule 2 (command : command list '\n')
-yydebug: after reduction, shifting from state 0 to state 1
-3,
-yydebug: state 1, reading 257 (NUMBER)
-yydebug: state 1, shifting to state 3
-yydebug: state 3, reducing by rule 3 (list : NUMBER)
-3.0
-yydebug: after reduction, shifting from state 1 to state 4
-yydebug: state 4, reading 44 (',')
-yydebug: state 4, shifting to state 7
-yydebug: state 7, reading 10 ('\n')
-syntax error
-yydebug: state 7, error recovery shifting to state 9
-yydebug: state 9, reducing by rule 8 (list : list ',' error)
-err 4
-yydebug: after reduction, shifting from state 1 to state 4
-yydebug: state 4, shifting to state 6
-yydebug: state 6, reducing by rule 2 (command : command list '\n')
-yydebug: after reduction, shifting from state 0 to state 1
-#
-yydebug: state 1, reading 35 (illegal-symbol)
-syntax error
-yydebug: state 1, error recovery shifting to state 2
-yydebug: state 2, reducing by rule 5 (list : error)
-err 1
-yydebug: after reduction, shifting from state 1 to state 4
-yydebug: state 4, error recovery discards token 35 (illegal-symbol)
-yydebug: state 4, reading 10 ('\n')
-yydebug: state 4, shifting to state 6
-yydebug: state 6, reducing by rule 2 (command : command list '\n')
-yydebug: after reduction, shifting from state 0 to state 1
-yydebug: state 1, reading 0 (end-of-file)
+yydebug: state 5, shifting to state 2
+yydebug: state 2, reducing by rule 4 (e : NUMBER)
+yydebug: after reduction, shifting from state 5 to state 7
+yydebug: state 7, reading 38 ('&amp;')
+yydebug: state 7, shifting to state 6
 </PRE></DIV><P></P>
+<I>
+¿Por  que se desplaza? ¿No va eso en contra de la declaración 
+<code>%left '@'</code>?.  ¿O quizá es porque la precedencia de <code>@</code>
+es menor que la de <code>&amp;</code>? La respuesta es que la precedencia
+asignada por la declaración 
+</I>
+<DIV ALIGN="CENTER"><I><code>e : e '@' e %prec dummy</code>
+</I></DIV><I>
+cambio la asociatividad de la regla. Ahora la regla se
+``enfrenta'' a un <SPAN  CLASS="textbf">token</SPAN>, <code>&amp;</code> con su misma precedencia.
+Al pasar a ser asociativa a derechas (debido a que
+<code>dummy</code> lo es), se debe desplazar y no reducir.</I></DIV><P></P>
 
+<P>
+<P>
+<DIV><B>Ejemplo  <SPAN CLASS="arabic">40</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
+<I>Otra ejecución, esta vez con entrada <code>1&amp;2@3</code>. Compara tus predicciones con los resultados. 
+</I>
+<P><P>
+<DIV><B>Ejecución  <SPAN CLASS="arabic">40</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; <PRE>
+$ hocprec
+yydebug: state 0, reducing by rule 1 (list :)
+yydebug: after reduction, shifting from state 0 to state 1
+1&amp;2@3
+yydebug: state 1, reading 257 (NUMBER)
+yydebug: state 1, shifting to state 2
+yydebug: state 2, reducing by rule 4 (e : NUMBER)
+yydebug: after reduction, shifting from state 1 to state 4
+yydebug: state 4, reading 38 ('&amp;')
+yydebug: state 4, shifting to state 6
+yydebug: state 6, reading 257 (NUMBER)
+yydebug: state 6, shifting to state 2
+yydebug: state 2, reducing by rule 4 (e : NUMBER)
+yydebug: after reduction, shifting from state 6 to state 8
+yydebug: state 8, reading 64 ('@')
+yydebug: state 8, reducing by rule 5 (e : e '&amp;' e)
+</PRE></DIV><P></P>
+<I>
+En este caso se comparan la producción :
+</I>
+<DIV ALIGN="CENTER"><I><code>e</code> <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> <code>e &amp; e</code> 
+</I></DIV><I>
+con el <SPAN  CLASS="textbf">token</SPAN> <code>@</code>. La regla tiene mayor  precedencia
+que el <SPAN  CLASS="textbf">token</SPAN>,dado que la precedencia de la regla es la de 
+<code>&amp;</code>. </I></DIV><P></P>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5516"
+<A NAME="tex2html5528"
   HREF="node203.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5510"
-  HREF="node196.html">
+<A NAME="tex2html5522"
+  HREF="node200.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5506"
+<A NAME="tex2html5516"
   HREF="node201.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5512"
-  HREF="node228.html">
+<A NAME="tex2html5524"
+  HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5514"
-  HREF="node231.html">
+<A NAME="tex2html5526"
+  HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -483,17 +479,17 @@ yydebug: state 1, reading 0 (end-of-file)
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5517"
-  HREF="node203.html">Análisis Sintáctico Ascendente en</A>
-<B>Sup:</B> <A NAME="tex2html5511"
-  HREF="node196.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5507"
-  HREF="node201.html">Recuperación de Errores</A>
+<B> Sig:</B> <A NAME="tex2html5529"
+  HREF="node203.html">Uso de union y</A>
+<B>Sup:</B> <A NAME="tex2html5523"
+  HREF="node200.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5517"
+  HREF="node201.html">Introducción a yacc</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-06-08</I>
+2013-06-10</I>
 </ADDRESS>
 </BODY>
 </HTML>

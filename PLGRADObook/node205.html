@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Véase También</TITLE>
-<META NAME="description" CONTENT="Véase También">
+<TITLE>Recuperación de Errores</TITLE>
+<META NAME="description" CONTENT="Recuperación de Errores">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,28 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
+<LINK REL="next" HREF="node206.html">
 <LINK REL="previous" HREF="node204.html">
-<LINK REL="up" HREF="node203.html">
+<LINK REL="up" HREF="node200.html">
 <LINK REL="next" HREF="node206.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5574"
+<A NAME="tex2html5570"
   HREF="node206.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5568"
-  HREF="node203.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
 <A NAME="tex2html5564"
+  HREF="node200.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html5558"
   HREF="node204.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5570"
-  HREF="node228.html">
+<A NAME="tex2html5566"
+  HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5572"
-  HREF="node231.html">
+<A NAME="tex2html5568"
+  HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -87,62 +88,285 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5575"
-  HREF="node206.html">Análisis de Ámbito en</A>
-<B>Sup:</B> <A NAME="tex2html5569"
-  HREF="node203.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5565"
-  HREF="node204.html">La Calculadora</A>
+<B> Sig:</B> <A NAME="tex2html5571"
+  HREF="node206.html">Recuperación de Errores en</A>
+<B>Sup:</B> <A NAME="tex2html5565"
+  HREF="node200.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5559"
+  HREF="node204.html">Acciones en medio de</A>
 <B> Con:</B> 
-<A NAME="tex2html5570"
-  HREF="node228.html">
+<A NAME="tex2html5566"
+  HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5572"
-  HREF="node231.html">
+<A NAME="tex2html5568"
+  HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION061120000000000000000">
-Véase También</A>
+<H1><A NAME="SECTION0101050000000000000000"></A>
+<A NAME="section:recuperryacc"></A>
+<BR>
+Recuperación de Errores
 </H1>
+Las entradas de un traductor pueden contener errores. 
+El lenguaje <code>yacc</code> proporciona un <SPAN  CLASS="textbf">token</SPAN> especial,
+<code>error</code>, que puede ser utilizado en el programa fuente
+para extender el traductor con producciones de error 
+que lo doten de cierta capacidad para 
+recuperase de  una entrada errónea y poder continuar 
+analizando el resto de la entrada.
+<P>
+<DIV><B>Ejecución  <SPAN CLASS="arabic">40</SPAN>.<SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Consideremos lo que ocurre al ejecutar el programa <code>yacc</code>
+<A HREF="node201.html#prog:calc1">40.1.1</A> con una entrada errónea:
+</I><PRE>
+$ hoc1
+yydebug: state 0, reducing by rule 1 (list :)
+yydebug: after reduction, shifting from state 0 to state 1
+3--2
+yydebug: state 1, reading 257 (NUMBER)
+yydebug: state 1, shifting to state 2
+yydebug: state 2, reducing by rule 4 (expr : NUMBER)
+yydebug: after reduction, shifting from state 1 to state 4
+yydebug: state 4, reading 45 (illegal-symbol)
+syntax error
+yydebug: error recovery discarding state 4
+yydebug: error recovery discarding state 1
+yydebug: error recovery discarding state 0
+</PRE></DIV><P></P>
 
 <P>
+Después de detectar el mensaje <code>yacc</code> emite el mensaje 
+<code>syntax error</code> y comienza a sacar estados de la pìla hasta que esta se vacía.
 
-<UL>
-<LI><A NAME="tex2html462"
-  HREF="https://github.com/tenderlove/racc">Racc en GitHub</A>
+<P>
+<P>
+<DIV><A NAME="prog:calc1err"><B>Programa  <SPAN CLASS="arabic">40</SPAN>.<SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">1</SPAN></B></A> &nbsp; 
+<I>La conducta anterior puede modificarse si se introducen ``reglas de 
+recuperación de errores'' como en la siguiente modificación
+del programa <A HREF="node201.html#prog:calc1">40.1.1</A>:
+</I><PRE>
+%{
+#define YYSTYPE double
+#define YYDEBUG 1
+#include &lt;stdio.h&gt;
+%}
+%token NUMBER
+%left '-'
+%%
+list 
+    :
+    | list '\n'  
+    | list error '\n'  { yyerrok; }
+    | list expr   { printf("%.8g\n",$2);}
+    ;
+
+expr 
+    : NUMBER { $$ = $1;} 
+    | expr '-' expr {$$ = $1 - $3;}
+    ;
+
+%%
+</PRE></DIV><P></P>
+La regla <code>list </code><!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> <code>list error '\n'</code> es una producción de
+error. La idea general de uso es que, a traves de la misma, el programador 
+le indica a <code>yacc</code> que, cuando se produce un error
+dentro de una expresión, descarte todos los <SPAN  CLASS="textbf">tokens</SPAN> hasta llegar al
+retorno del carro y prosiga con el análisis. 
+Además, mediante la llamada a  la macro <code>yyerrok</code> el programador
+anuncia que, si se alcanza este punto, la recuperación puede considerarse ``completa''  y que 
+<code>yacc</code> puede emitir a partir de ese moemnto mensajes de error
+con la seguridad de que no son consecuencia de un comportamiento inestable
+provocado por el primer error.
+
+<P>
+<P>
+<DIV><A NAME="alg:errorrecovery1"><B>Algoritmo  <SPAN CLASS="arabic">40</SPAN>.<SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">1</SPAN></B></A> &nbsp; 
+<I>El esquema general del algoritmo de recuperación de errores usado 
+por la versión actual de <code>yacc</code> es el siguiente:
+</I>
+<P>
+<OL>
+<LI>Cuando se encuentra ante una acción de error, el analizador genera un 
+<SPAN  CLASS="textbf">token</SPAN> <code>error</code>.
+
+<P>
 </LI>
-<LI><A NAME="tex2html463"
-  HREF="http://i.loveruby.net/en/projects/racc/doc/">Racc User's Manual</A>
+<LI>A continuación pasa a retirar estados de la pila hasta que descubre un estado capaz de transitar ante 
+el <SPAN  CLASS="textbf">token</SPAN> <code>error</code>. 
+
+<P>
 </LI>
-<LI><A NAME="tex2html464"
-  HREF="http://martinfowler.com/bliki/HelloRacc.html">Martin Fowler Hello Racc</A>
+<LI>En este punto transita al estado correspondiente a desplazar el 
+<SPAN  CLASS="textbf">token</SPAN> <code>error</code>. 
+
+<P>
 </LI>
-<LI><A NAME="tex2html465"
-  HREF="https://github.com/tenderlove/rexical">Rexical en GitHub</A>
+<LI>Entonces lee <SPAN  CLASS="textbf">tokens</SPAN> y los descarta hasta encontrar
+uno que sea aceptable. 
+
+<P>
 </LI>
-</UL>
+<LI>Sólo se envían nuevos mensajes de error una vez asimilados (desplazados) tres símbolos terminales. De este modos se intenta evitar la aparición masiva de mensajes de error.
+</LI>
+</OL></DIV><P></P>
+
+<P>
+<P>
+<DIV><B>Algoritmo  <SPAN CLASS="arabic">40</SPAN>.<SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
+<I>El cuerpo principal del analizador LR permanece
+sin demasiados cambios:
+</I><PRE>
+goodtoken = 3; b = yylex();
+for( ; ; ;) {
+  s = top(); a = b;
+  switch (action[s][a])) {
+    case "shift t" : push(t); b = yylex(); goodtoken++; break;
+    case "reduce A -&gt; alpha" : 
+            pop(strlen(alpha));
+            push(goto[top()][A]; 
+          break; 
+    case "accept" : return (1); 
+    default : if (errorrecovery("syntax error")) return (ERROR);
+  }
+}
+</PRE></DIV><P></P>
+
+<P>
+<DIV><B>Algoritmo  <SPAN CLASS="arabic">40</SPAN>.<SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">3</SPAN></B> &nbsp; 
+<I>El siguiente seudocódigo es una reescritura mas detallada del algoritmo <A HREF="#alg:errorrecovery1">40.5.1</A>. Asumimos que las funciones <code>pop()</code> y <code>popstate()</code>
+comprueban que hay suficientes elementos en
+la pila para retirar. En caso contrario se emitirá un mensaje de error y 
+se terminará el análisis. 
+</I>
+<P><PRE>
+errorrecovery(char * s) {
+ if (goodtoken &gt; 2) { 
+   yyerror(s); goodtoken = 0; 
+ }
+ while (action[s][error] != shift)
+   popstate(s);
+ push(goto[s][error]);
+ s = top();
+ while (action[s][a] == reduce A -&gt; alpha) {
+   pop(strlen(|alpha|)); 
+   push(goto[top()][A]; 
+   s = top(); 
+ }
+ switch (action[s][a])) {
+   case "shift t" : 
+     push(t); 
+     b = yylex(); 
+     goodtoken++; 
+     RETURN RECOVERING;
+   case "accept" : return (ERROR); 
+   default : 
+     do b = yylex(); 
+     while ((b != EOF)&amp;&amp;(action[s][b] == error); 
+     if (b == EOF) 
+       return (ERROR); 
+     else 
+       RETURN RECOVERING
+}
+</PRE></DIV><P></P>
+Parecen existir diferencias en la forma en la que <SPAN  CLASS="textbf">bison</SPAN> y <SPAN  CLASS="textbf">yacc</SPAN> se recuperan de los errores.
+
+<P>
+<P>
+<DIV><B>Ejecución  <SPAN CLASS="arabic">40</SPAN>.<SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
+<I>Ejecutemos el programa <A HREF="#prog:calc1err">40.5.1</A> con <code>yacc</code>.
+</I><PRE>
+$ yacc -d hoc1.y; flex -l hoc1.l; gcc y.tab.c lex.yy.c; a.out
+yydebug: state 0, reducing by rule 1 (list :)
+yydebug: after reduction, shifting from state 0 to state 1
+2--3-1
+yydebug: state 1, reading 257 (NUMBER)
+yydebug: state 1, shifting to state 3
+yydebug: state 3, reducing by rule 5 (expr : NUMBER)
+yydebug: after reduction, shifting from state 1 to state 5
+yydebug: state 5, reading 45 ('-')
+yydebug: state 5, shifting to state 7
+yydebug: state 7, reading 45 ('-')
+syntax error
+</PRE><I>
+Puesto que es el primer error, se cumple que 
+<code>(goodtoken &gt; 2)</code>, emitiéndose el mensaje de error.
+Ahora comienzan a ejecutarse las líneas:
+</I>
+<P>
+<DIV ALIGN="CENTER"><I><code>while (!(action[s][error] != shift)) popstate(s);</code>
+</I></DIV>
+<P>
+<I>que descartan los estados, hasta encontrar el estado
+que contiene el item 
+</I>
+<P>
+<I><code>list</code> <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ \rightarrow$"></SPAN> <code> list</code> <SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img519.png"
+ ALT="$ \uparrow$"></SPAN> <code> error '\n'</code>  
+</I><PRE>
+yydebug: error recovery discarding state 7
+yydebug: error recovery discarding state 5
+yydebug: state 1, error recovery shifting to state 2
+</PRE><I>
+Una vez en ese estado, transitamos con el token <code>error</code>,
+</I><PRE>
+yydebug: state 2, error recovery discards token 45 ('-')
+yydebug: state 2, reading 257 (NUMBER)
+yydebug: state 2, error recovery discards token 257 (NUMBER)
+yydebug: state 2, reading 45 ('-')
+yydebug: state 2, error recovery discards token 45 ('-')
+yydebug: state 2, reading 257 (NUMBER)
+yydebug: state 2, error recovery discards token 257 (NUMBER)
+</PRE><I>
+Se ha procedido a descartar <SPAN  CLASS="textbf">tokens</SPAN> hasta encontrar el retorno
+de carro, ejecutando las líneas:
+</I>
+<DIV ALIGN="CENTER"><I><code>b = yylex(); while ((b != EOF)&amp;&amp;(action[s][b] == error);</code>
+</I></DIV>
+<P><PRE>
+yydebug: state 2, reading 10 ('\n')
+yydebug: state 2, shifting to state 6
+yydebug: state 6, reducing by rule 3 (list : list error '\n')
+yydebug: after reduction, shifting from state 0 to state 1
+</PRE><I>
+Al reducir por la regla de error, se ejecuta <code>yyerrok</code>
+y <code>yacc</code> reestablece el valor de <code>goodtoken</code>.
+Si se producen nuevos errores serán señalados.</I></DIV><P></P>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5574"
+<A NAME="tex2html5570"
   HREF="node206.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5568"
-  HREF="node203.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
 <A NAME="tex2html5564"
+  HREF="node200.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html5558"
   HREF="node204.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5570"
-  HREF="node228.html">
+<A NAME="tex2html5566"
+  HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5572"
-  HREF="node231.html">
+<A NAME="tex2html5568"
+  HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -189,17 +413,17 @@ Véase También</A>
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5575"
-  HREF="node206.html">Análisis de Ámbito en</A>
-<B>Sup:</B> <A NAME="tex2html5569"
-  HREF="node203.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html5565"
-  HREF="node204.html">La Calculadora</A>
+<B> Sig:</B> <A NAME="tex2html5571"
+  HREF="node206.html">Recuperación de Errores en</A>
+<B>Sup:</B> <A NAME="tex2html5565"
+  HREF="node200.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html5559"
+  HREF="node204.html">Acciones en medio de</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-06-08</I>
+2013-06-10</I>
 </ADDRESS>
 </BODY>
 </HTML>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Práctica: Estructuras y Análisis de Ámbito</TITLE>
-<META NAME="description" CONTENT="Práctica: Estructuras y Análisis de Ámbito">
+<TITLE>Resultado del Análisis de Ámbito</TITLE>
+<META NAME="description" CONTENT="Resultado del Análisis de Ámbito">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,28 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
+<LINK REL="next" HREF="node218.html">
 <LINK REL="previous" HREF="node216.html">
-<LINK REL="up" HREF="node206.html">
+<LINK REL="up" HREF="node210.html">
 <LINK REL="next" HREF="node218.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5843"
+<A NAME="tex2html5844"
   HREF="node218.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5837"
-  HREF="node206.html">
+<A NAME="tex2html5838"
+  HREF="node210.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5833"
+<A NAME="tex2html5832"
   HREF="node216.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5839"
-  HREF="node228.html">
+<A NAME="tex2html5840"
+  HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5841"
-  HREF="node231.html">
+<A NAME="tex2html5842"
+  HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -87,300 +88,362 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5844"
-  HREF="node218.html">Análisis Semántico</A>
-<B>Sup:</B> <A NAME="tex2html5838"
-  HREF="node206.html">Análisis de Ámbito en</A>
-<B> Ant:</B> <A NAME="tex2html5834"
-  HREF="node216.html">Práctica: Establecimiento de la</A>
+<B> Sig:</B> <A NAME="tex2html5845"
+  HREF="node218.html">Usando el Método str</A>
+<B>Sup:</B> <A NAME="tex2html5839"
+  HREF="node210.html">Análisis de Ámbito en</A>
+<B> Ant:</B> <A NAME="tex2html5833"
+  HREF="node216.html">Análisis de Ámbito con</A>
 <B> Con:</B> 
-<A NAME="tex2html5839"
-  HREF="node228.html">
+<A NAME="tex2html5840"
+  HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5841"
-  HREF="node231.html">
+<A NAME="tex2html5842"
+  HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<H1><A NAME="SECTION0612110000000000000000"></A>
-   <A NAME="22878"></A>
-  
-<A NAME="practica:structsscope"></A>
+<UL CLASS="ChildLinks">
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html5846"
+  HREF="node217.html#SECTION0101270010000000000000">Código de Apoyo a la Visualización</A>
+<LI><A NAME="tex2html5847"
+  HREF="node217.html#SECTION0101270020000000000000">Un Ejemplo con Errores de Ámbito</A>
+<LI><A NAME="tex2html5848"
+  HREF="node217.html#SECTION0101270030000000000000">Mostrando el Resultado del Análisis de Ámbito</A>
+</UL></UL></UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION0101270000000000000000"></A>
+<A NAME="section:resultadosambito"></A>
 <BR>
-Práctica: Estructuras y Análisis de Ámbito
+Resultado del Análisis de Ámbito
 </H1>
-Los registros o estructuras introducen espacios de nombres.
-Los selectores de campo viven en los espacios de
-nombres asociados con los registros.
-Modifique de manera apropiada la gramática de 
-<code>SimpleC</code> para introducir el tipo de datos <code>struct</code>.
-Complete el análisis sintáctico.
+Como se ha comentado en la sección 
+<A HREF="node215.html#section:limitacionesdedumper">42.5</A> el volcado de 
+los AST con <code>Data::Dumper</code> es insuficiente.
+Para la visualización utilizaremos el método
+ <TT>str</TT>  presentado en la sección
+<A HREF="node218.html#section:str">42.8</A>.
 
 <P>
 
-<UL>
-<LI>Es necesario introducir nuevas variables sintácticas:
+<H4><A NAME="SECTION0101270010000000000000">
+Código de Apoyo a la Visualización</A>
+</H4>
+  
 
 <P>
+Sigue el código de apoyo a la visualización:
 <PRE>
-type_specifier:
-     basictype
-   | struct
-;
-
-struct: 
-    'struct' ID '{' struct_decl_list '}'
-  | 'struct' ID 
-;
-
-struct_decl_list: (type_specifier declList ';') +
-;
-</PRE>
-Recuerde que:
-<PRE>
-declList: (ID arraySpec) &lt;%+ ','&gt; 
-;
-</PRE>
-
-<P>
-</LI>
-<LI>Es necesario tambien modificar algunas categorías gramáticales existentes, como
-<code>declaration</code>:
-<PRE>
-declaration:
-    %name DECLARATION
-    $type_specifier $declList ';' 
-;
-</PRE>
-También es necesario modificar <code>Variable</code>:
-<PRE>
-Variable:
-    ID 
-  | Variable ('[' binary ']') 
-  | Variable '.' ID
-;
-</PRE>
-
-<P>
-Sigue un ejemplo de derivación generando una variable de la forma
-<code>a[i].x[4].b</code>:
-
-<P>
-<PRE>
-Variable =&gt; Variable.ID =&gt; Variable[binary].ID 
-  =&gt; Variable.ID[binary].ID =&gt; Variable[binary].ID[binary].ID 
-  =&gt; ID[binary].ID[binary].ID
-</PRE>
-
-<P>
-Veamos otro ejemplo de derivación generando una variable de la forma
-<code>a[i].x[4]</code>:
-
-<P>
-<PRE>
-Variable =&gt; Variable[binary] =&gt; Variable.ID[binary] =&gt; Variable[binary].ID[binary]
-   =&gt; ID[binary].ID[binary]
+pl@nereida:~/Lbook/code/Simple-Scope/lib/Simple$ sed -ne '845,$p' Scope.eyp | cat -n
+ 1  ############## Debugging and Display
+ 2  sub show_trees {
+ 3   my ($t) = @_;
+ 4
+ 5   print Dumper $t if $debug &gt; 1;
+ 6   $Parse::Eyapp::Node::INDENT = 2;
+ 7   $Data::Dumper::Indent = 1;
+ 8   print $t-&gt;str."\n";
+ 9  }
+10
+11  $Parse::Eyapp::Node::INDENT = 1;
+12  sub TERMINAL::info {
+13    my @a = join ':', @{$_[0]-&gt;{attr}};
+14    return "@a"
+15  }
+16
+17  sub PROGRAM::footnote {
+18    return "Types:\n"
+19           .Dumper($_[0]-&gt;{types}).
+20           "Symbol Table of the Main Program:\n"
+21           .Dumper($_[0]-&gt;{symboltable})
+22  }
+23
+24  sub FUNCTION::info {
+25    return $_[0]-&gt;{function_name}[0]
+26  }
+27
+28  sub FUNCTION::footnote {
+29    my $text = '';
+30    $text .= "Symbol Table of $_[0]-&gt;{function_name}[0]\n" if $_[0]-&gt;type eq 'FUNCTION';
+31    $text .= "Symbol Table of block at line $_[0]-&gt;{line}\n" if $_[0]-&gt;type eq 'BLOCK';
+32    $text .= Dumper($_[0]-&gt;{symboltable});
+33    return $text;
+34  }
+35
+36  sub BLOCK::info {
+37    my $info = "$_[0]-&gt;{line}:$_[0]-&gt;{depth}";
+38    my $fatherblock = $_[0]-&gt;{fatherblock};
+39      $info .= ":".$fatherblock-&gt;info
+40    if defined($fatherblock) and UNIVERSAL::can($fatherblock, 'info');
+41    return $info;
+42  }
+43
+44  *BLOCK::footnote = \&amp;FUNCTION::footnote;
+45
+46  sub VAR::info {
+47    return $_[0]-&gt;{type} if defined $_[0]-&gt;{type};
+48    return "No declarado!";
+49  }
+50
+51  *FUNCTIONCALL::info = *VARARRAY::info = \&amp;VAR::info;
 </PRE>
 
 <P>
-</LI>
-<LI>Es necesario  extender las expresiones de tipo para incluir las <code>struct</code>.
-Un registro es similar al producto cartesiano (usado en las expresiones de tipo de las funciones),
-sólo que los campos tienen nombres. Asi:
+
+<H4><A NAME="SECTION0101270020000000000000">
+Un Ejemplo con Errores de Ámbito</A>
+</H4>
+  
+
+<P>
+Utilizando este código 
+obtenemos una descripción completa y concisa 
+del árbol anotado. Si hay errores de ámbito se mostrarán.
 
 <P>
 <PRE>
-struct row {
-  int address;
-  char lexeme[10];
-} table[100];
+pl@nereida:~/Lbook/code/Simple-Scope/script$ usescope.pl prueba27.c 2
+
+   1 int a,b;
+   2
+   3 int f(char c) {
+   4  a[2] = 4;
+   5  {
+   6    int d;
+   7    d = a + b;
+   8  }
+   9  c = d * 2;
+  10  return g(c);
+  11 }
+Identifier d not declared at line 9
+Identifier g not declared at line 10
 </PRE>
 
 <P>
-la expresión de tipo para <code>struct row</code> podría ser:
+
+<H4><A NAME="SECTION0101270030000000000000">
+Mostrando el Resultado del Análisis de Ámbito</A>
+</H4>
+  
+
+<P>
+Si no hay errores se obtiene un listado enumerado del programa fuente,
+el árbol, la tabla de tipos y las tablas de símbolos:
 
 <P>
 <PRE>
-                    STRUCT_row(address, INT, lexeme, A_10(CHAR))
+pl@nereida:~/Lbook/code/Simple-Scope/script$  usescope.pl prueba25.c 2
+
+   1 int a[20],b,e[10];
+   2
+   3 g() {}
+   4
+   5 int f(char c) {
+   6 char d;
+   7  c = 'X';
+   8  e[b] = 'A'+c;
+   9  {
+  10    int d;
+  11    d = d + b;
+  12  }
+  13  c = d * 2;
+  14  return c;
+  15 }
+  16
+  17
+PROGRAM^{0}(
+  FUNCTION[g]^{1},
+  FUNCTION[f]^{2}(
+    ASSIGN(
+      VAR[CHAR](
+        TERMINAL[c:7]
+      ),
+      CHARCONSTANT(
+        TERMINAL['X':7]
+      )
+    ) # ASSIGN,
+    ASSIGN(
+      VARARRAY[A_10(INT)](
+        TERMINAL[e:8],
+        INDEXSPEC(
+          VAR[INT](
+            TERMINAL[b:8]
+          )
+        ) # INDEXSPEC
+      ) # VARARRAY,
+      PLUS(
+        CHARCONSTANT(
+          TERMINAL['A':8]
+        ),
+        VAR[CHAR](
+          TERMINAL[c:8]
+        )
+      ) # PLUS
+    ) # ASSIGN,
+    BLOCK[9:3:f]^{3}(
+      ASSIGN(
+        VAR[INT](
+          TERMINAL[d:11]
+        ),
+        PLUS(
+          VAR[INT](
+            TERMINAL[d:11]
+          ),
+          VAR[INT](
+            TERMINAL[b:11]
+          )
+        ) # PLUS
+      ) # ASSIGN
+    ) # BLOCK,
+    ASSIGN(
+      VAR[CHAR](
+        TERMINAL[c:13]
+      ),
+      TIMES(
+        VAR[CHAR](
+          TERMINAL[d:13]
+        ),
+        INUM(
+          TERMINAL[2:13]
+        )
+      ) # TIMES
+    ) # ASSIGN,
+    RETURN(
+      VAR[CHAR](
+        TERMINAL[c:14]
+      )
+    ) # RETURN
+  ) # FUNCTION
+) # PROGRAM
+---------------------------
+0)
+Types:
+$VAR1 = {
+  'A_10(INT)' =&gt; bless( {
+    'children' =&gt; [
+      bless( {
+        'children' =&gt; []
+      }, 'INT' )
+    ]
+  }, 'A_10' ),
+  'F(X_1(CHAR),INT)' =&gt; bless( {
+    'children' =&gt; [
+      bless( {
+        'children' =&gt; [
+          bless( {
+            'children' =&gt; []
+          }, 'CHAR' )
+        ]
+      }, 'X_1' ),
+      $VAR1-&gt;{'A_10(INT)'}{'children'}[0]
+    ]
+  }, 'F' ),
+  'CHAR' =&gt; $VAR1-&gt;{'F(X_1(CHAR),INT)'}{'children'}[0]{'children'}[0],
+  'VOID' =&gt; bless( {
+    'children' =&gt; []
+  }, 'VOID' ),
+  'INT' =&gt; $VAR1-&gt;{'A_10(INT)'}{'children'}[0],
+  'A_20(INT)' =&gt; bless( {
+    'children' =&gt; [
+      $VAR1-&gt;{'A_10(INT)'}{'children'}[0]
+    ]
+  }, 'A_20' ),
+  'F(X_0(),INT)' =&gt; bless( {
+    'children' =&gt; [
+      bless( {
+        'children' =&gt; []
+      }, 'X_0' ),
+      $VAR1-&gt;{'A_10(INT)'}{'children'}[0]
+    ]
+  }, 'F' )
+};
+Symbol Table of the Main Program:
+$VAR1 = {
+  'e' =&gt; {
+    'type' =&gt; 'A_10(INT)',
+    'line' =&gt; 1
+  },
+  'a' =&gt; {
+    'type' =&gt; 'A_20(INT)',
+    'line' =&gt; 1
+  },
+  'b' =&gt; {
+    'type' =&gt; 'INT',
+    'line' =&gt; 1
+  },
+  'g' =&gt; {
+    'type' =&gt; 'F(X_0(),INT)',
+    'line' =&gt; 3
+  },
+  'f' =&gt; {
+    'type' =&gt; 'F(X_1(CHAR),INT)',
+    'line' =&gt; 5
+  }
+};
+
+---------------------------
+1)
+Symbol Table of g
+$VAR1 = {};
+
+---------------------------
+2)
+Symbol Table of f
+$VAR1 = {
+  'c' =&gt; {
+    'type' =&gt; 'CHAR',
+    'param' =&gt; 1,
+    'line' =&gt; 5
+  },
+  'd' =&gt; {
+    'type' =&gt; 'CHAR',
+    'line' =&gt; 6
+  }
+};
+
+---------------------------
+3)
+Symbol Table of block at line 9
+$VAR1 = {
+  'd' =&gt; {
+    'type' =&gt; 'INT',
+    'line' =&gt; 10
+  }
+};
+
+pl@nereida:~/Lbook/code/Simple-Scope/script$
 </PRE>
-o bien:
-<PRE>
-                    STRUCT_row(X_2(address, INT), X_2(lexeme, A_10(CHAR)))
-</PRE>
 
 <P>
-Como se ve en el ejemplo el identificador de campo (<code>address</code>, <code>lexeme</code>)
-forma parte de la descripción del tipo.
-
-<P>
-</LI>
-<LI>La introducción de las <code>struct</code> produce una cierta sobrecarga de identificadores.
-El siguiente programa es correcto:
-<PRE>
-  1 struct x {
-  2   int z;
-  3   int b;
-  4 } x;
-  5
-  6 main() {
-  7   x;
-  8 }
-</PRE>
-Aqui <code>x</code> es usado como nombre de un tipo y como nombre de variable. Plantee soluciones
-al problema del almacenamiento en la tabla de símbolos. Una posibilidad es que la entrada
-en la tabla de símbolos para el tipo sea <code>struct x</code> mientras que para la variable es <code>x</code>. 
-
-<P>
-</LI>
-<LI>El cálculo de que declaración se aplica a una <code>struct</code> 
-puede hacerse de manera similar a como ha sido ilustrado en las prácticas anteriores.
-Otra cosa son los identificadores de campo.
-Por ejemplo en
-<PRE>
-                                  a[i+j].x = 4;
-</PRE>
-Es necesario calcular que <code>a[i+j]</code> tiene tipo  <code>struct</code>
-y comprobar en ese momento que dicha  <code>struct</code>
-tiene un campo <code>x</code> que es de tipo <code>int</code>. 
-Hasta que no hemos calculado el tipo asociado con la 
-expresión  <code>a[i+j]</code> no sabemos si el uso de
-<code>x</code> es legal o no. Realmente el ámbito del identificador <code>x</code> no 
-se hace en tiempo de análisis de ámbito sino en tiempo de comprobación de tipos.
-El cálculo del ámbito para estos identificadores de campo 
-se mezcla con el cálculo de tipos. En cierto modo el uso de <code>x</code> 
-en <code>a[i+j].x = 4</code> forma parte de la descripción del tipo:
-<PRE>
-                    STRUCT_point(X_2(x, INT), X_2(y, INT))
-</PRE>
-Por tanto en las reglas de <code>Variable</code>:
-<PRE>
-Variable:
-    ID 
-  | Variable ('[' binary ']') 
-  | Variable '.' ID
-;
-</PRE>
-A estas alturas solo estamos en condiciones de asociarle su definición al 
-identificador principal, esto es, al de la regla <!-- MATH
- $Variable \rightarrow ID$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="124" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img521.png"
- ALT="$ Variable \rightarrow ID$"></SPAN>.
-Los demás deberán esperar a la fase de análisis de tipos.
-
-<P>
-</LI>
-<LI>Hasta ahora casi lo único que guardabamos en las tablas de símbolos era el tipo y el número 
-de línea ( otros valores posibles son <code>param</code> para determinar si es un parámetro,
-o una referencia a la tabla de símbolos de la funcion en el caso de las funciones). Esto era suficiente
-porque sólo teniámos dos tipos de identificadores: los de variable y los de función. Ahora que tenemos
-tres tipos: funciones, variables y tipos es conveniente añadir un atributo <code>kind</code> que guarde 
-la clase de objeto que es.
-
-<P>
-</LI>
-<LI>C requiere que los nombres de tipo sean declarados antes de ser usados (con la
-excepción de las referencias a tipos <code>struct</code> no declarados). Por ejemplo,
-el siguiente programa:
-
-<P>
-<PRE>
-  1 struct x {
-  2   struct y z;
-  3   int b;
-  4 } w;
-  5
-  6 struct y {
-  7   int a;
-  8 };
-</PRE>
-
-<P>
-produce un mensaje de error:
-
-<P>
-<PRE>
-prueba1.c:2: error: field ‘z’ has incomplete type
-</PRE>
-Esto impide definiciones recursivas como:
-
-<P>
-<PRE>
-  1 struct x {
-  2   struct y z;
-  3   int b;
-  4 } w;
-  5
-  6 struct y {
-  7   struct x a;
-  8 };
-</PRE>
-
-<P>
-A estas alturas del análisis estamos en condiciones de 
-comprobar que no existan usos de declaraciones
-no definidas. 
-</LI>
-<LI>Para simplificar el análisis de tipos posterior, 
-las funciones en Simple C devuelven un tipo básico. 
-En C las funciones pueden devolver un <code>struct</code> aunque no pueden
-devolver un array ni una función. Si que pueden sin embargo devolver
-un punero a un array o a una función.
-
-<P>
-La restricción que imponemos de que el tipo retornado sea un tipo 
-básico  no significa 
-que necesariamente la regla sintáctica deba especificar tal condición.
-
-<P>
-</LI>
-<LI>Para simplificar la práctica consideraremos que todos los identificadores de
-tipos struct son globales. Por tanto es un error tener dos declaraciones
-de tipo struct con el mismo nombre.
-Claro está, si desea implantar ámbitos en los identificadores de tipos
-puede hacerlo.
-
-<P>
-</LI>
-<LI>Consulte las siguientes fuentes:
-
-<UL>
-<LI>Para ver una gramática de C consulte la página
-<A NAME="tex2html474"
-  HREF="Cgrammar.html">Cgrammar.html</A>.
-</LI>
-<LI>Una gramática de ANSI C se encuentra en
-<A NAME="tex2html475"
-  HREF="http://www.lysator.liu.se/c/ANSI-C-grammar-y.html">http://www.lysator.liu.se/c/ANSI-C-grammar-y.html</A>.
-</LI>
-</UL>
-</LI>
-</UL>
-
-<P>
+Observe como se anotan las referencias a pie de árbol usando la notación
+<code>^{#}</code>. La salida se completa con las <A NAME="22826"></A><SPAN  CLASS="textbf">notas a pie de árbol</SPAN>.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5843"
+<A NAME="tex2html5844"
   HREF="node218.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5837"
-  HREF="node206.html">
+<A NAME="tex2html5838"
+  HREF="node210.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5833"
+<A NAME="tex2html5832"
   HREF="node216.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5839"
-  HREF="node228.html">
+<A NAME="tex2html5840"
+  HREF="node232.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5841"
-  HREF="node231.html">
+<A NAME="tex2html5842"
+  HREF="node235.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -427,17 +490,17 @@ puede hacerlo.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5844"
-  HREF="node218.html">Análisis Semántico</A>
-<B>Sup:</B> <A NAME="tex2html5838"
-  HREF="node206.html">Análisis de Ámbito en</A>
-<B> Ant:</B> <A NAME="tex2html5834"
-  HREF="node216.html">Práctica: Establecimiento de la</A>
+<B> Sig:</B> <A NAME="tex2html5845"
+  HREF="node218.html">Usando el Método str</A>
+<B>Sup:</B> <A NAME="tex2html5839"
+  HREF="node210.html">Análisis de Ámbito en</A>
+<B> Ant:</B> <A NAME="tex2html5833"
+  HREF="node216.html">Análisis de Ámbito con</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2013-06-08</I>
+2013-06-10</I>
 </ADDRESS>
 </BODY>
 </HTML>
