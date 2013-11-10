@@ -1,0 +1,234 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Herencia</TITLE>
+<META NAME="description" CONTENT="Herencia">
+<META NAME="keywords" CONTENT="javascriptexamples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="mystyle.css">
+
+<LINK REL="next" HREF="node177.html">
+<LINK REL="previous" HREF="node175.html">
+<LINK REL="up" HREF="node175.html">
+<LINK REL="next" HREF="node177.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation">
+<A NAME="tex2html5243"
+  HREF="node177.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html5237"
+  HREF="node175.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html5231"
+  HREF="node175.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html5239"
+  HREF="node234.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html5241"
+  HREF="node237.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
+  HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="logoLPP.png"
+ ALT="PL"></A><A NAME="tex2html3"
+  HREF="http://campusvirtual.ull.es/1213m2/course/view.php?id=271"><IMG
+  WIDTH="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="moodleLHPlogo.jpeg"
+ ALT="PL moodle"></A><A NAME="tex2html4"
+  HREF="javascriptexamples.pdf"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="gv.jpeg"
+ ALT="ps"></A><A NAME="tex2html5"
+  HREF="https://dl.dropbox.com/u/14539152/PLgrado/PLgradoBOOK/index.html"><IMG
+  WIDTH="60" ALIGN="BOTTOM" BORDER="0"
+ SRC="lupa.gif"
+ ALT="ruby gems"></A><A NAME="tex2html6"
+  HREF="https://developer.mozilla.org/es/docs/JavaScript"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="perlonion.jpeg"
+ ALT="perldoc"></A><A NAME="tex2html7"
+  HREF="http://github.com"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="google-code-project-hosting.jpeg"
+ ALT="google code project hosting"></A><A NAME="tex2html8"
+  HREF="http://jquery.com/"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="perl6.jpg"
+ ALT="blogs"></A><A NAME="tex2html9"
+  HREF="http://www.google.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ggoogle.gif"
+ ALT="google"></A><A NAME="tex2html10"
+  HREF="http://www.ull.es/view/centros/etsii/Grado/es"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="etsii.png"
+ ALT="etsii"></A><A NAME="tex2html11"
+  HREF="http://www.ull.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ull.gif"
+ ALT="ull"></A><A NAME="tex2html12"
+  HREF="http://crondinosaur.blogspot.com/"><IMG
+  WIDTH="32" ALIGN="BOTTOM" BORDER="0"
+ SRC="logopcgull.gif"
+ ALT="pcgull"></A>
+<BR>
+<B> Sig:</B> <A NAME="tex2html5244"
+  HREF="node177.html">Ejercicios</A>
+<B>Sup:</B> <A NAME="tex2html5238"
+  HREF="node175.html">Clases y Módulos</A>
+<B> Ant:</B> <A NAME="tex2html5232"
+  HREF="node175.html">Clases y Módulos</A>
+<B> Con:</B> 
+<A NAME="tex2html5239"
+  HREF="node234.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
+<B> Ind:</B> 
+<A NAME="tex2html5241"
+  HREF="node237.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
+<BR> <P>
+</DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION05910000000000000000">
+Herencia</A>
+</H1>
+
+<P>
+<PRE>
+[~/Dropbox/src/javascript/inheritance]$ cat inh1.js 
+//Shape - superclass
+function Shape() {
+  this.x = 0;
+  this.y = 0;
+}
+ 
+Shape.prototype.toString = function() {
+  return "("+this.x+", "+this.y+")";
+}
+
+Shape.prototype.move = function(x, y) {
+    this.x += x;
+    this.y += y;
+    console.info("Shape moved to "+this);
+};
+ 
+// Rectangle - subclass
+function Rectangle() {
+  Shape.call(this); //call super constructor.
+}
+ 
+// Rectangle inherits from Shape
+Rectangle.prototype = Object.create(Shape.prototype);
+ 
+var rect = new Rectangle();
+ 
+console.log("x = "+rect);
+console.log("rect is an instance of Rectangle? "+(rect instanceof Rectangle)) //true.
+console.log("rect is an instance of Shape? "+(rect instanceof Shape))         //true.
+ 
+rect.move(1, 2); //Outputs, "Shape moved."
+</PRE>
+
+<P>
+<PRE>
+[~/Dropbox/src/javascript/inheritance]$ node inh1.js 
+x = (0, 0)
+rect is an instance of Rectangle? true
+rect is an instance of Shape? true
+Shape moved to (1, 2)
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<A NAME="tex2html5243"
+  HREF="node177.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html5237"
+  HREF="node175.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html5231"
+  HREF="node175.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html5239"
+  HREF="node234.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html5241"
+  HREF="node237.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
+  HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="logoLPP.png"
+ ALT="PL"></A><A NAME="tex2html3"
+  HREF="http://campusvirtual.ull.es/1213m2/course/view.php?id=271"><IMG
+  WIDTH="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="moodleLHPlogo.jpeg"
+ ALT="PL moodle"></A><A NAME="tex2html4"
+  HREF="javascriptexamples.pdf"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="gv.jpeg"
+ ALT="ps"></A><A NAME="tex2html5"
+  HREF="https://dl.dropbox.com/u/14539152/PLgrado/PLgradoBOOK/index.html"><IMG
+  WIDTH="60" ALIGN="BOTTOM" BORDER="0"
+ SRC="lupa.gif"
+ ALT="ruby gems"></A><A NAME="tex2html6"
+  HREF="https://developer.mozilla.org/es/docs/JavaScript"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="perlonion.jpeg"
+ ALT="perldoc"></A><A NAME="tex2html7"
+  HREF="http://github.com"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="google-code-project-hosting.jpeg"
+ ALT="google code project hosting"></A><A NAME="tex2html8"
+  HREF="http://jquery.com/"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="perl6.jpg"
+ ALT="blogs"></A><A NAME="tex2html9"
+  HREF="http://www.google.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ggoogle.gif"
+ ALT="google"></A><A NAME="tex2html10"
+  HREF="http://www.ull.es/view/centros/etsii/Grado/es"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="etsii.png"
+ ALT="etsii"></A><A NAME="tex2html11"
+  HREF="http://www.ull.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ull.gif"
+ ALT="ull"></A><A NAME="tex2html12"
+  HREF="http://crondinosaur.blogspot.com/"><IMG
+  WIDTH="32" ALIGN="BOTTOM" BORDER="0"
+ SRC="logopcgull.gif"
+ ALT="pcgull"></A>
+<BR>
+<B> Sig:</B> <A NAME="tex2html5244"
+  HREF="node177.html">Ejercicios</A>
+<B>Sup:</B> <A NAME="tex2html5238"
+  HREF="node175.html">Clases y Módulos</A>
+<B> Ant:</B> <A NAME="tex2html5232"
+  HREF="node175.html">Clases y Módulos</A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+<I>Casiano Rodríguez León <BR>
+2013-06-14</I>
+</ADDRESS>
+</BODY>
+</HTML>

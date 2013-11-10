@@ -1,0 +1,402 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Eliminación de la Recursividad por la Izquierda</TITLE>
+<META NAME="description" CONTENT="Eliminación de la Recursividad por la Izquierda">
+<META NAME="keywords" CONTENT="javascriptexamples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="mystyle.css">
+
+<LINK REL="next" HREF="node52.html">
+<LINK REL="previous" HREF="node50.html">
+<LINK REL="up" HREF="node48.html">
+<LINK REL="next" HREF="node52.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation">
+<A NAME="tex2html2951"
+  HREF="node52.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2945"
+  HREF="node48.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2939"
+  HREF="node50.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html2947"
+  HREF="node234.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html2949"
+  HREF="node237.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
+  HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="logoLPP.png"
+ ALT="PL"></A><A NAME="tex2html3"
+  HREF="http://campusvirtual.ull.es/1213m2/course/view.php?id=271"><IMG
+  WIDTH="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="moodleLHPlogo.jpeg"
+ ALT="PL moodle"></A><A NAME="tex2html4"
+  HREF="javascriptexamples.pdf"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="gv.jpeg"
+ ALT="ps"></A><A NAME="tex2html5"
+  HREF="https://dl.dropbox.com/u/14539152/PLgrado/PLgradoBOOK/index.html"><IMG
+  WIDTH="60" ALIGN="BOTTOM" BORDER="0"
+ SRC="lupa.gif"
+ ALT="ruby gems"></A><A NAME="tex2html6"
+  HREF="https://developer.mozilla.org/es/docs/JavaScript"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="perlonion.jpeg"
+ ALT="perldoc"></A><A NAME="tex2html7"
+  HREF="http://github.com"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="google-code-project-hosting.jpeg"
+ ALT="google code project hosting"></A><A NAME="tex2html8"
+  HREF="http://jquery.com/"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="perl6.jpg"
+ ALT="blogs"></A><A NAME="tex2html9"
+  HREF="http://www.google.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ggoogle.gif"
+ ALT="google"></A><A NAME="tex2html10"
+  HREF="http://www.ull.es/view/centros/etsii/Grado/es"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="etsii.png"
+ ALT="etsii"></A><A NAME="tex2html11"
+  HREF="http://www.ull.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ull.gif"
+ ALT="ull"></A><A NAME="tex2html12"
+  HREF="http://crondinosaur.blogspot.com/"><IMG
+  WIDTH="32" ALIGN="BOTTOM" BORDER="0"
+ SRC="logopcgull.gif"
+ ALT="pcgull"></A>
+<BR>
+<B> Sig:</B> <A NAME="tex2html2952"
+  HREF="node52.html">Eliminación de la Recursividad</A>
+<B>Sup:</B> <A NAME="tex2html2946"
+  HREF="node48.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html2940"
+  HREF="node50.html">Un Ejemplo Sencillo</A>
+<B> Con:</B> 
+<A NAME="tex2html2947"
+  HREF="node234.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
+<B> Ind:</B> 
+<A NAME="tex2html2949"
+  HREF="node237.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
+<BR> <P>
+</DIV>
+<!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html2953"
+  HREF="node51.html#SECTION04631000000000000000">Eliminación de la Recursividad por la izquierda Respetando el Orden de 
+Ejecución de las Acciones Semánticas</A>
+<LI><A NAME="tex2html2954"
+  HREF="node51.html#SECTION04632000000000000000">Eliminando la Recursividad por la Izquierda en la Calculadora</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION04630000000000000000">
+Eliminación de la Recursividad por la Izquierda</A>
+</H1>
+
+<P>
+Es posible modificar la gramática para eliminar la recursión por 
+la izquierda. En este apartado nos limitaremos al caso de recursión 
+por la izquierda directa. 
+La generalización al caso de recursión por la izquierda no-directa
+se reduce a la iteración de la solución propuesta 
+para el caso directo.
+
+<P>
+Consideremos una variable <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img17.png"
+ ALT="$ A$"></SPAN> con dos producciones:
+
+<P>
+<BR>
+<BR>
+<DIV ALIGN="CENTER">
+<!-- MATH
+ $A   \rightarrow A \alpha |\ \beta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="91" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.png"
+ ALT="$ A \rightarrow A \alpha \vert \beta$"></SPAN> 
+
+</DIV>
+
+<P>
+donde <!-- MATH
+ $\alpha, \beta \in (V \cup \Sigma)^*$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="123" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.png"
+ ALT="$ \alpha, \beta \in (V \cup \Sigma)^*$"></SPAN> no comienzan por <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img17.png"
+ ALT="$ A$"></SPAN>.
+Estas dos producciones pueden ser sustituidas por:
+
+<P>
+<BR>
+<BR>
+<DIV ALIGN="CENTER">
+<!-- MATH
+ $A   \rightarrow \beta \alpha *$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="76" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.png"
+ ALT="$ A \rightarrow \beta \alpha * $"></SPAN>
+</DIV>
+
+<P>
+eliminando así la recursión por la izquierda.
+
+<P>
+
+<H2><A NAME="SECTION04631000000000000000">
+Eliminación de la Recursividad por la izquierda Respetando el Orden de 
+Ejecución de las Acciones Semánticas</A>
+</H2>
+
+<P>
+<PRE>
+[~/pegjs-coffee-remove-left(master)]$ cat -n remove_left_recursive.pegjs 
+     1  /*
+     2  
+     3  Exercise: Find a PEG equivalent to the following left-recursive
+     4  grammar:
+     5  
+     6  A : A 'x' { $$ = do_x($1, $2); } | 'y' { $$ = do_y($1); }
+     7  
+     8  */
+     9  
+    10  {
+    11    @do_y = (y)   -&gt; console.log("do_y(#{y})"); y
+    12    @do_x = (a, x)-&gt; console.log("do_x(#{a}, #{x})"); a+x
+    13  }
+    14  
+    15  A = y:'y' xs:('x'*) 
+    16       {
+    17          a = @do_y(y)
+    18          for x in xs
+    19            a = @do_x(a, x)
+    20          a
+    21       }
+</PRE>
+
+<P>
+<PRE>
+[~/pegjs-coffee-remove-left(master)]$ pegcoffee remove_left_recursive.pegjs 
+[~/pegjs-coffee-remove-left(master)]$ ls -ltr | tail -1
+-rw-rw-r--  1 casiano  staff   8919  3 jun 10:42 remove_left_recursive.js
+</PRE>
+
+<P>
+<PRE>
+[~/pegjs-coffee-remove-left(master)]$ cat use_remove_left.coffee 
+PEG = require("./remove_left_recursive.js")
+inputs = [
+           "yxx"
+           "y"
+           "yxxx"
+         ]
+
+for input in inputs 
+  console.log("input = #{input}")
+  r = PEG.parse input
+  console.log("result = #{r}\n")
+</PRE>
+
+<P>
+<PRE>
+[~/pegjs-coffee-remove-left(master)]$ coffee use_remove_left.coffee 
+input = yxx
+do_y(y)
+do_x(y, x)
+do_x(yx, x)
+result = yxx
+
+input = y
+do_y(y)
+result = y
+
+input = yxxx
+do_y(y)
+do_x(y, x)
+do_x(yx, x)
+do_x(yxx, x)
+result = yxxx
+</PRE>
+
+<P>
+
+<H2><A NAME="SECTION04632000000000000000">
+Eliminando la Recursividad por la Izquierda en la Calculadora</A>
+</H2>
+<PRE>
+[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat simple.pegjs 
+/* From the Wikipedia
+Value   ← [0-9]+ / '(' Expr ')'
+Product ← Value (('*' / '/') Value)*
+Sum     ← Product (('+' / '-') Product)*
+Expr    ← Sum
+*/
+{ 
+  function reduce(left, right) {
+    var sum = left;
+    // console.log("sum = "+sum);
+    for(var i = 0; i &lt; right.length;i++) {
+      var t = right[i];
+      var op = t[0];
+      var num = t[1];
+      switch(op) {
+        case '+' : sum += num; break;
+        case '-' : sum -= num; break;
+        case '*' : sum *= num; break;
+        case '/' : sum /= num; break;
+        default : console.log("Error! "+op);
+      }
+      // console.log("sum = "+sum);
+    }
+    return sum;
+  }
+}
+
+sum   = left:product right:($[+-] product)* { return reduce(left, right); }
+product = left:value right:($[*/] value)*   { return reduce(left, right); }
+value   = number:$[0-9]+                    { return parseInt(number,10); }
+        / '(' sum:sum ')'                   { return sum; }
+</PRE>
+
+<P>
+Es posible especificar mediante llaves  un código 
+que este disponible dentro de las acciones semánticas.
+
+<P>
+Ejecución:
+<PRE>
+[~/pegjs/examples(master)]$ cat use_simple.js 
+var PEG = require("./simple.js");
+var r = PEG.parse("2-3-4");
+console.log(r);
+
+[~/pegjs/examples(master)]$ node use_simple.js 
+-5
+</PRE>
+Veamos otra ejecución:
+<PRE>
+[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat use_simple.js 
+var PEG = require("./simple.js");
+var r = PEG.parse("2+3*(2+1)-10/2");
+console.log(r);
+
+[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ ../bin/pegjs simple.pegjs 
+[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ node use_simple.js 
+6
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<A NAME="tex2html2951"
+  HREF="node52.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2945"
+  HREF="node48.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2939"
+  HREF="node50.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html2947"
+  HREF="node234.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html2949"
+  HREF="node237.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
+  HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="logoLPP.png"
+ ALT="PL"></A><A NAME="tex2html3"
+  HREF="http://campusvirtual.ull.es/1213m2/course/view.php?id=271"><IMG
+  WIDTH="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="moodleLHPlogo.jpeg"
+ ALT="PL moodle"></A><A NAME="tex2html4"
+  HREF="javascriptexamples.pdf"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="gv.jpeg"
+ ALT="ps"></A><A NAME="tex2html5"
+  HREF="https://dl.dropbox.com/u/14539152/PLgrado/PLgradoBOOK/index.html"><IMG
+  WIDTH="60" ALIGN="BOTTOM" BORDER="0"
+ SRC="lupa.gif"
+ ALT="ruby gems"></A><A NAME="tex2html6"
+  HREF="https://developer.mozilla.org/es/docs/JavaScript"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="perlonion.jpeg"
+ ALT="perldoc"></A><A NAME="tex2html7"
+  HREF="http://github.com"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="google-code-project-hosting.jpeg"
+ ALT="google code project hosting"></A><A NAME="tex2html8"
+  HREF="http://jquery.com/"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="perl6.jpg"
+ ALT="blogs"></A><A NAME="tex2html9"
+  HREF="http://www.google.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ggoogle.gif"
+ ALT="google"></A><A NAME="tex2html10"
+  HREF="http://www.ull.es/view/centros/etsii/Grado/es"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="etsii.png"
+ ALT="etsii"></A><A NAME="tex2html11"
+  HREF="http://www.ull.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ull.gif"
+ ALT="ull"></A><A NAME="tex2html12"
+  HREF="http://crondinosaur.blogspot.com/"><IMG
+  WIDTH="32" ALIGN="BOTTOM" BORDER="0"
+ SRC="logopcgull.gif"
+ ALT="pcgull"></A>
+<BR>
+<B> Sig:</B> <A NAME="tex2html2952"
+  HREF="node52.html">Eliminación de la Recursividad</A>
+<B>Sup:</B> <A NAME="tex2html2946"
+  HREF="node48.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html2940"
+  HREF="node50.html">Un Ejemplo Sencillo</A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+<I>Casiano Rodríguez León <BR>
+2013-06-14</I>
+</ADDRESS>
+</BODY>
+</HTML>
