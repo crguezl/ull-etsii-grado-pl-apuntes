@@ -1,0 +1,359 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Del espacio de Patrones al de Mantenimiento</TITLE>
+<META NAME="description" CONTENT="Del espacio de Patrones al de Mantenimiento">
+<META NAME="keywords" CONTENT="javascriptexamples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="mystyle.css">
+
+<LINK REL="next" HREF="node29.html">
+<LINK REL="previous" HREF="node27.html">
+<LINK REL="up" HREF="node20.html">
+<LINK REL="next" HREF="node29.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation">
+<A NAME="tex2html2150"
+  HREF="node29.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2144"
+  HREF="node20.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2138"
+  HREF="node27.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html2146"
+  HREF="node234.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html2148"
+  HREF="node237.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
+  HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="logoLPP.png"
+ ALT="PL"></A><A NAME="tex2html3"
+  HREF="http://campusvirtual.ull.es/1213m2/course/view.php?id=271"><IMG
+  WIDTH="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="moodleLHPlogo.jpeg"
+ ALT="PL moodle"></A><A NAME="tex2html4"
+  HREF="javascriptexamples.pdf"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="gv.jpeg"
+ ALT="ps"></A><A NAME="tex2html5"
+  HREF="https://dl.dropbox.com/u/14539152/PLgrado/PLgradoBOOK/index.html"><IMG
+  WIDTH="60" ALIGN="BOTTOM" BORDER="0"
+ SRC="lupa.gif"
+ ALT="ruby gems"></A><A NAME="tex2html6"
+  HREF="https://developer.mozilla.org/es/docs/JavaScript"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="perlonion.jpeg"
+ ALT="perldoc"></A><A NAME="tex2html7"
+  HREF="http://github.com"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="google-code-project-hosting.jpeg"
+ ALT="google code project hosting"></A><A NAME="tex2html8"
+  HREF="http://jquery.com/"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="perl6.jpg"
+ ALT="blogs"></A><A NAME="tex2html9"
+  HREF="http://www.google.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ggoogle.gif"
+ ALT="google"></A><A NAME="tex2html10"
+  HREF="http://www.ull.es/view/centros/etsii/Grado/es"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="etsii.png"
+ ALT="etsii"></A><A NAME="tex2html11"
+  HREF="http://www.ull.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ull.gif"
+ ALT="ull"></A><A NAME="tex2html12"
+  HREF="http://crondinosaur.blogspot.com/"><IMG
+  WIDTH="32" ALIGN="BOTTOM" BORDER="0"
+ SRC="logopcgull.gif"
+ ALT="pcgull"></A>
+<BR>
+<B> Sig:</B> <A NAME="tex2html2151"
+  HREF="node29.html">La orden N</A>
+<B>Sup:</B> <A NAME="tex2html2145"
+  HREF="node20.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html2139"
+  HREF="node27.html">Traducción entre Tablas</A>
+<B> Con:</B> 
+<A NAME="tex2html2146"
+  HREF="node234.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
+<B> Ind:</B> 
+<A NAME="tex2html2148"
+  HREF="node237.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
+<BR> <P>
+</DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION04380000000000000000">
+Del espacio de Patrones al de Mantenimiento</A>
+</H1>
+En <code>sed</code> se dispone, como en muchos otros editores
+de una zona de memoria a la que se puede enviar texto ``cortado''
+o `copiado'' y desde la cual se puede recuperar el texto para 
+insertarlo en la zona de trabajo  (<I>pattern space</I>).
+en la jerga <code>sed</code> dicho espacio se conoce como <SPAN  CLASS="textit">hold space</SPAN>.
+El contenido del espacio de patrones (<I>pattern space</I>) puede moverse al espacio 
+de mantenimiento (<SPAN  CLASS="textit">hold space</SPAN>) y recíprocamente:
+
+<P>
+<BR>
+<BR>
+<BR>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT"><SPAN  CLASS="textit">Hold</SPAN></TD>
+<TD ALIGN="CENTER">h ó H</TD>
+<TD ALIGN="LEFT">Copia o añade (append) los contenidos del <I>pattern space</I> al <I>hold space</I>.</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><SPAN  CLASS="textit">Get</SPAN></TD>
+<TD ALIGN="CENTER">g ó G</TD>
+<TD ALIGN="LEFT">Copia o añade los contenidos del <I>hold space</I> al <I>pattern space</I>.</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><SPAN  CLASS="textit">Exchange</SPAN></TD>
+<TD ALIGN="CENTER">x</TD>
+<TD ALIGN="LEFT">Intercambia los contenidos del <I>hold space</I> y el <I>pattern space</I></TD>
+</TR>
+</TABLE>
+<BR>
+<BR>
+<BR>
+
+<P>
+Los comandos en minúsculas sobrescriben mientras que los que van en mayúsculas añaden.
+Asi <I>h</I> copia los contenidos del <I>pattern space</I> en el <I>hold space</I>, borrando los
+contenidos previos que estuvieran en el <I>hold space</I>. Las orden <I>G</I> añade (paste)
+los contenidos del <I>hold space</I> al espacio de patrones actual (por el final).  
+Las dos cadenas se enlazan a través de un retorno de carro.
+
+<P>
+<B>Ejemplo</B>
+Este guión intenta mediante una heurística poner la definiciones de 
+funciones C al final del fichero, suponiendo que una definición de función
+comienza en la columna 1 y que se caracterizan mediante uno o dos identificadores 
+seguidos de un paréntesis:
+<PRE>
+$ cat G.sed
+/\&lt;if\&gt;/s/.*/&amp;/
+t
+/\&lt;else\&gt;/s/.*/&amp;/
+t
+#... lo mismo para las otras palabras clave
+/^[a-zA-Z][a-zA-Z]*([A-Z]*/H
+t
+/^[a-zA-Z][a-zA-Z]*  *[a-zA-Z][a-zA-Z]*(/H
+${
+G
+}
+</PRE>
+Ejemplo de uso:
+<PRE>
+$ cat p.test
+#include &lt;stdio.h&gt;
+ 
+fact(int n) { /* recursive function */
+if(n == 0) return 1;
+else(return n*fact(n-1));
+}
+ 
+void toto(id) {
+}
+ 
+main() {
+  toto();
+  printf("Hello world! factorial of 4 = %d\n",fact(4)); /* the
+         comment takes two lines */
+}
+</PRE>
+Al ejecutar nuestro <I>script</I> obtenemos la salida:
+<PRE>
+$ sed -f G.sed p.test
+#include &lt;stdio.h&gt;
+ 
+fact(int n) { /* recursive function */
+if(n == 0) return 1;
+else(return n*fact(n-1));
+}
+ 
+void toto(id) {
+}
+ 
+main() {
+  toto();
+  printf("Hello world! factorial of 4 = %d\n",fact(4)); /* the
+         comment takes two lines */
+}
+ 
+fact(int n) { /* recursive function */
+void toto(id) {
+main() {
+</PRE>
+
+<P>
+<B>Ejemplo</B>
+El siguiente guión invierte los contenidos de un fichero:
+<PRE>
+&gt; cat reverse.sed
+$!{
+:loop
+h
+n
+G
+$!b loop
+}
+${
+p
+}
+</PRE>
+He aqui el resultado de una ejecución:
+
+<P>
+<PRE>
+&gt; cat reverse.test
+one
+two
+three
+&gt; sed -n -f reverse.sed reverse.test
+three
+two
+one
+</PRE>
+
+<P>
+<B>Ejemplo</B>
+
+<P>
+Supuesto un fichero de entrada con formato:
+<A NAME="section:alumnos"></A>...
+<PRE>
+NAME: xxx
+SURNAME: xxx
+TITLE: SISTEMAS
+OtherTitle: 
+BIRTHDAY: xxx
+BIRTHMONTH: xxx
+BIRTHYEAR: xxx
+ADDRESSFAMILY: xxx
+ADDRESSACTUAL: xxx
+POSTALCODE: xxx
+EMAIL: XXXXXXX@csi.ull.es
+TELEPHONE: xxx
+FAX: xxx
+LABGROUP: xxx
+COMMENTS:
+</PRE>
+...
+
+<P>
+Se pretenden extraer los apellidos y el nombre, concatenados con una coma. He aqui una posible solución:
+<PRE>
+#!/bin/sed -f
+/^NAME:/ {
+  s/^NAME://
+  h
+  n
+  s/^SURNAME://
+  G
+  s/\n/,/
+  y/áéíóúabcdefghijklmnñopqrstuvwxyz/ÁÉÍÓÚABCDEFGHIJKLMNÑOPQRSTUVWXYZ/
+  p
+}
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<A NAME="tex2html2150"
+  HREF="node29.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html2144"
+  HREF="node20.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2138"
+  HREF="node27.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html2146"
+  HREF="node234.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html2148"
+  HREF="node237.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
+  HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="logoLPP.png"
+ ALT="PL"></A><A NAME="tex2html3"
+  HREF="http://campusvirtual.ull.es/1213m2/course/view.php?id=271"><IMG
+  WIDTH="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="moodleLHPlogo.jpeg"
+ ALT="PL moodle"></A><A NAME="tex2html4"
+  HREF="javascriptexamples.pdf"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="gv.jpeg"
+ ALT="ps"></A><A NAME="tex2html5"
+  HREF="https://dl.dropbox.com/u/14539152/PLgrado/PLgradoBOOK/index.html"><IMG
+  WIDTH="60" ALIGN="BOTTOM" BORDER="0"
+ SRC="lupa.gif"
+ ALT="ruby gems"></A><A NAME="tex2html6"
+  HREF="https://developer.mozilla.org/es/docs/JavaScript"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="perlonion.jpeg"
+ ALT="perldoc"></A><A NAME="tex2html7"
+  HREF="http://github.com"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="google-code-project-hosting.jpeg"
+ ALT="google code project hosting"></A><A NAME="tex2html8"
+  HREF="http://jquery.com/"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="perl6.jpg"
+ ALT="blogs"></A><A NAME="tex2html9"
+  HREF="http://www.google.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ggoogle.gif"
+ ALT="google"></A><A NAME="tex2html10"
+  HREF="http://www.ull.es/view/centros/etsii/Grado/es"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="etsii.png"
+ ALT="etsii"></A><A NAME="tex2html11"
+  HREF="http://www.ull.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ull.gif"
+ ALT="ull"></A><A NAME="tex2html12"
+  HREF="http://crondinosaur.blogspot.com/"><IMG
+  WIDTH="32" ALIGN="BOTTOM" BORDER="0"
+ SRC="logopcgull.gif"
+ ALT="pcgull"></A>
+<BR>
+<B> Sig:</B> <A NAME="tex2html2151"
+  HREF="node29.html">La orden N</A>
+<B>Sup:</B> <A NAME="tex2html2145"
+  HREF="node20.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html2139"
+  HREF="node27.html">Traducción entre Tablas</A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+<I>Casiano Rodríguez León <BR>
+2013-11-10</I>
+</ADDRESS>
+</BODY>
+</HTML>

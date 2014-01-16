@@ -1,0 +1,739 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Análisis Semántico</TITLE>
+<META NAME="description" CONTENT="Análisis Semántico">
+<META NAME="keywords" CONTENT="javascriptexamples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="mystyle.css">
+
+<LINK REL="next" HREF="node71.html">
+<LINK REL="previous" HREF="node69.html">
+<LINK REL="up" HREF="node60.html">
+<LINK REL="next" HREF="node71.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation">
+<A NAME="tex2html3401"
+  HREF="node71.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3395"
+  HREF="node60.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html3389"
+  HREF="node69.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html3397"
+  HREF="node234.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html3399"
+  HREF="node237.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
+  HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="logoLPP.png"
+ ALT="PL"></A><A NAME="tex2html3"
+  HREF="http://campusvirtual.ull.es/1213m2/course/view.php?id=271"><IMG
+  WIDTH="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="moodleLHPlogo.jpeg"
+ ALT="PL moodle"></A><A NAME="tex2html4"
+  HREF="javascriptexamples.pdf"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="gv.jpeg"
+ ALT="ps"></A><A NAME="tex2html5"
+  HREF="https://dl.dropbox.com/u/14539152/PLgrado/PLgradoBOOK/index.html"><IMG
+  WIDTH="60" ALIGN="BOTTOM" BORDER="0"
+ SRC="lupa.gif"
+ ALT="ruby gems"></A><A NAME="tex2html6"
+  HREF="https://developer.mozilla.org/es/docs/JavaScript"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="perlonion.jpeg"
+ ALT="perldoc"></A><A NAME="tex2html7"
+  HREF="http://github.com"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="google-code-project-hosting.jpeg"
+ ALT="google code project hosting"></A><A NAME="tex2html8"
+  HREF="http://jquery.com/"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="perl6.jpg"
+ ALT="blogs"></A><A NAME="tex2html9"
+  HREF="http://www.google.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ggoogle.gif"
+ ALT="google"></A><A NAME="tex2html10"
+  HREF="http://www.ull.es/view/centros/etsii/Grado/es"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="etsii.png"
+ ALT="etsii"></A><A NAME="tex2html11"
+  HREF="http://www.ull.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ull.gif"
+ ALT="ull"></A><A NAME="tex2html12"
+  HREF="http://crondinosaur.blogspot.com/"><IMG
+  WIDTH="32" ALIGN="BOTTOM" BORDER="0"
+ SRC="logopcgull.gif"
+ ALT="pcgull"></A>
+<BR>
+<B> Sig:</B> <A NAME="tex2html3402"
+  HREF="node71.html">Optimización Independiente de la</A>
+<B>Sup:</B> <A NAME="tex2html3396"
+  HREF="node60.html">Análisis Sintáctico Descendente en</A>
+<B> Ant:</B> <A NAME="tex2html3390"
+  HREF="node69.html">Árbol de Análisis Abstracto</A>
+<B> Con:</B> 
+<A NAME="tex2html3397"
+  HREF="node234.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
+<B> Ind:</B> 
+<A NAME="tex2html3399"
+  HREF="node237.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
+<BR> <P>
+</DIV>
+<!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html3403"
+  HREF="node70.html#SECTION047101000000000000000">Práctica: Declaraciones Automáticas</A>
+<LI><A NAME="tex2html3404"
+  HREF="node70.html#SECTION047102000000000000000">Práctica: Análisis Semántico</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION047100000000000000000">
+Análisis Semántico</A>
+</H1>
+Hay quien dice que el análisis semántico es la determinación 
+de aquellas propiedades que, siendo dependientes del contexto, pueden ser
+computadas estáticamente en tiempo de compilación para cualquier programa
+correcto. Entre estas propiedades
+están: la comprobación de que las variables son declaradas,
+la compatibilidad de tipos
+en las expresiones, el correcto uso de las llamadas a función asi
+como el ámbito y visibilidad de las variables.
+La fase de análisis semántico puede verse como una fase de ``adornado''
+o ``etiquetado'' del AAA, en la cual los atributos de los nodos
+del AAA son computados.
+
+<P>
+Aunque la veamos como una fase separada del análisis sintáctico, puede
+en numerosas ocasiones llevarse a cabo al mismo tiempo que se construye
+el árbol. Así lo hacemos en este ejemplo: incrustamos la acción semántica
+en la correspondiente rutina de análisis sintáctico. Así, en la rutina <code>term</code>, una vez 
+que hemos obtenido los dos operandos, comprobamos que son de tipo numérico
+llamando (línea 8) a 
+
+<P>
+<DIV ALIGN="CENTER">
+<code>Semantic::Analysis::check_type_numeric_operator</code>:
+
+</DIV>
+
+<P>
+Observe como aparece un nuevo atributo <code>TYPE</code> decorando el nodo
+creado (línea 9):
+
+<P>
+<PRE>
+ 1 sub term() {
+ 2   my ($t, $t2);
+ 3 
+ 4   $t = factor;
+ 5   if ($lookahead eq '*') {
+ 6     match('*');
+ 7     $t2 = term;
+ 8     my $type = Semantic::Analysis::check_type_numeric_operator($t, $t2, '*');
+ 9     $t = TIMES-&gt;new( LEFT =&gt; $t, RIGHT =&gt; $t2, TYPE =&gt; $type);
+10   }
+11   return $t;
+12 }
+</PRE>
+
+<P>
+En el manejo de errores de tipo, un tipo especial <code>$err_type</code>
+es usado para indicar un error de tipo:
+
+<P>
+<PRE>
+  sub check_type_numeric_operator {
+    my ($op1, $op2, $operator) = @_;
+
+    my $type = numeric_compatibility($op1, $op2, $operator);
+    if ($type == $err_type) {
+      Error::fatal("Operandos incompatibles para el operador $operator") 
+    }
+    else {
+      return $type;
+    }
+  }
+</PRE>
+La subrutina <code>numeric_compatibility</code> comprueba que los
+dos operandos son de tipo numérico y devuelve el correspondiente
+tipo. Si ha ocurrido un error de tipo, intenta encontrar 
+un tipo conveniente para el operando:
+
+<P>
+<PRE>
+  sub numeric_compatibility {
+    my ($op1, $op2, $operator) = @_;
+
+    if (($op1-&gt;TYPE == $op2-&gt;TYPE) and is_numeric($op1-&gt;TYPE)) {
+      return $op1-&gt;TYPE; # correct
+    }
+    ... # código de recuperación de errores de tipo
+  }
+
+  sub is_numeric {
+    my $type = shift;
+
+    return ($type == $int_type); # añadir long, float, double, etc.
+  }
+</PRE>
+
+<P>
+Es parte del análisis semántico la declaración de tipos:
+
+<P>
+<PRE>
+sub declaration() {
+  my ($t, $class, @il);
+
+  if (($lookahead eq 'INT') or ($lookahead eq 'STRING')) {
+    $class = $lookahead;
+    $t = &amp;type();
+    @il = &amp;idlist();
+    &amp;Semantic::Analysis::set_types($t, @il);
+    &amp;Address::Assignment::compute_address($t, @il);
+    return $class-&gt;new(TYPE =&gt; $t, IDLIST =&gt; \@il);
+  }
+  else {
+    Error::fatal('Se esperaba un tipo');
+  }
+}
+</PRE>
+Para ello se utiliza una tabla de símbolos que es un hash <code>%symbol_table</code>
+indexado en los identificadores del programa:
+
+<P>
+<PRE>
+sub set_types {
+  my $type = shift;
+  my @vars = @_;
+
+  foreach my $var (@vars) {
+    if (!exists($symbol_table{$id})) { $symbol_table{$var}-&gt;{TYPE} = $type; }
+    else { Error::error("$id declarado dos veces en el mismo ámbito"); }
+  }
+}
+</PRE>
+
+<P>
+Cada vez que aparece una variable en el código, bien en un factor o en 
+una asignación, comprobamos que ha sido declarada:
+
+<P>
+<PRE>
+sub factor() {
+  my ($e, $id, $str, $num);
+
+  if ($lookahead eq 'NUM') { ... }
+  elsif ($lookahead eq 'ID') {
+    $id = $value;
+    match('ID');
+    my $type = Semantic::Analysis::check_declared($id);
+    return ID-&gt;new( VAL =&gt; $id, TYPE =&gt; $type);
+  }
+  elsif ($lookahead eq 'STR') { ... }
+  elsif ($lookahead eq '(') { ... }
+  else { Error::fatal("Se esperaba (, NUM o ID"); }
+}
+</PRE>
+
+<P>
+La función <code>check_declared</code> devuelve el atributo
+<code>TYPE</code> de la correspondiente entrada en la tabla de 
+símbolos.
+
+<P>
+<PRE>
+sub check_declared {
+  my $id = shift;
+
+  if (!exists($symbol_table{$id})) {
+    Error::error("$id no ha sido declarado!");
+    # auto-declaración de la variable a err_type
+    Semantic::Analysis::set_types($err_type, ($id));
+  }
+  return $symbol_table{$id}-&gt;{TYPE};
+}
+</PRE>
+
+<P>
+
+<H2><A NAME="SECTION047101000000000000000"></A>
+   <A NAME="12356"></A>
+<BR>
+Práctica: Declaraciones Automáticas
+</H2>
+
+<P>
+Modifique la subrutina <code>check_declared</code> para que cuando
+una variable no haya sido declarada se declare ``sobre la marcha''. 
+¿Puede utilizar 
+información dependiente del contexto para decidir cual es la mejor forma
+de declararla?
+
+<P>
+
+<H2><A NAME="SECTION047102000000000000000"></A>
+   <A NAME="12358"></A>
+  
+<A NAME="practica:analisis_semantico"></A>
+<BR>
+Práctica: Análisis Semántico
+</H2>
+Extienda el código de la práctica 
+<A HREF="node69.html#practica:AAA">7.9.5</A>
+para comprobar la compatibilidad de tipos.
+
+<P>
+<BR>
+<BR>
+
+<DIV ALIGN="CENTER"><TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL">
+1 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  p  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN>
+ b     </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+2 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  b  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN>
+ ds  ss     </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+3 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  b  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN>
+ ss         </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+4 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  ds <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN>
+ d  ';'  ds  </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+5 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  ds <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN>
+ d ';'      </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+6 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  d  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN>
+ INT  il     </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+7 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  d  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN>
+ STRING  il </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+8 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  ss <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN>
+ s  ';'  ss  </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+9 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  ss <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN>
+ s          </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+10 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  s  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN>
+ ID '=' e   </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+11 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  s  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN>
+ '{' b '}'   </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+12 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  s  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN>
+ P  e       </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+13 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  s <!-- MATH
+ $\rightarrow \epsilon$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="34" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img161.png"
+ ALT="$ \rightarrow \epsilon$"></SPAN>
+ </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+14 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  e <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN>
+ e1 '+' t    </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+15 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  e <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN>
+ e1 '-' t    </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+16 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  e <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN>
+ t           </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+17 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  t <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN>
+ t1 '*' f    </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+18 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  t <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN>
+ t '/' f     </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+19 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  t <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN>
+ f           </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+20 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  f <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN>
+ '(' e ')'   </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+21 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  f <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN>
+ ID         </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+22 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  f <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN>
+ NUM        </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+23 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  f <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN>
+ STR        </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+24 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  il <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN>
+ ID ',' il  </SMALL></TD>
+</TR>
+<TR><TD ALIGN="RIGHT"><SMALL CLASS="SMALL"> 
+
+25 </SMALL></TD>
+<TD ALIGN="LEFT"><SMALL CLASS="SMALL">  il <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \rightarrow$"></SPAN>
+ ID         </SMALL></TD>
+</TR>
+</TABLE></DIV>
+<BR>
+<BR>
+En cuanto a las sentencias de bloque,
+se pretende que el ámbito y visibilidad de las variables sea como en el lenguaje
+C, esto es, las declaraciones mas internas con el mismo identificador
+ocultan las mas externas. Así:
+
+<P>
+<PRE>
+int a;
+a = 4;
+{
+  int a;
+  a = 5;
+  p a
+}; /* el ; es necesario */
+p a
+</PRE>
+
+<P>
+Imprimiría 5 y 4. Para traducir esta sentencia es necesario 
+<SPAN  CLASS="textbf">usar una lista/pila de referencias a tablas de símbolos. Cada 
+sentencia compuesta o bloque tendrá
+su propia tabla de símbolos</SPAN>. Los identificadores se búscan
+en la lista de referencias a tablas de símbolos, primero 
+en la última tabla de símbolos insertada y sino se encuentra
+se busca en la penúltima insertada, etc.
+
+<P>
+Guarde como un atributo del identificador (<SPAN CLASS="MATH"><IMG
+ WIDTH="115" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img268.png"
+ ALT="$ SYMTABLE$"></SPAN>
+) 
+la referencia a la tabla de símbolos
+a la que pertenece. Guarde como un atributo del nodo bloque (<SPAN CLASS="MATH"><IMG
+ WIDTH="74" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img269.png"
+ ALT="$ BLOCK$"></SPAN>
+) 
+la referencia a la tabla de símbolos asociada.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<A NAME="tex2html3401"
+  HREF="node71.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3395"
+  HREF="node60.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html3389"
+  HREF="node69.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html3397"
+  HREF="node234.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html3399"
+  HREF="node237.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
+  HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="logoLPP.png"
+ ALT="PL"></A><A NAME="tex2html3"
+  HREF="http://campusvirtual.ull.es/1213m2/course/view.php?id=271"><IMG
+  WIDTH="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="moodleLHPlogo.jpeg"
+ ALT="PL moodle"></A><A NAME="tex2html4"
+  HREF="javascriptexamples.pdf"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="gv.jpeg"
+ ALT="ps"></A><A NAME="tex2html5"
+  HREF="https://dl.dropbox.com/u/14539152/PLgrado/PLgradoBOOK/index.html"><IMG
+  WIDTH="60" ALIGN="BOTTOM" BORDER="0"
+ SRC="lupa.gif"
+ ALT="ruby gems"></A><A NAME="tex2html6"
+  HREF="https://developer.mozilla.org/es/docs/JavaScript"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="perlonion.jpeg"
+ ALT="perldoc"></A><A NAME="tex2html7"
+  HREF="http://github.com"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="google-code-project-hosting.jpeg"
+ ALT="google code project hosting"></A><A NAME="tex2html8"
+  HREF="http://jquery.com/"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="perl6.jpg"
+ ALT="blogs"></A><A NAME="tex2html9"
+  HREF="http://www.google.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ggoogle.gif"
+ ALT="google"></A><A NAME="tex2html10"
+  HREF="http://www.ull.es/view/centros/etsii/Grado/es"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="etsii.png"
+ ALT="etsii"></A><A NAME="tex2html11"
+  HREF="http://www.ull.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ull.gif"
+ ALT="ull"></A><A NAME="tex2html12"
+  HREF="http://crondinosaur.blogspot.com/"><IMG
+  WIDTH="32" ALIGN="BOTTOM" BORDER="0"
+ SRC="logopcgull.gif"
+ ALT="pcgull"></A>
+<BR>
+<B> Sig:</B> <A NAME="tex2html3402"
+  HREF="node71.html">Optimización Independiente de la</A>
+<B>Sup:</B> <A NAME="tex2html3396"
+  HREF="node60.html">Análisis Sintáctico Descendente en</A>
+<B> Ant:</B> <A NAME="tex2html3390"
+  HREF="node69.html">Árbol de Análisis Abstracto</A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+<I>Casiano Rodríguez León <BR>
+2013-11-10</I>
+</ADDRESS>
+</BODY>
+</HTML>

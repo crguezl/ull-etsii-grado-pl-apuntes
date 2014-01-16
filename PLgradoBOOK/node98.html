@@ -1,0 +1,754 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parse::Yapp: Ejemplo de Uso</TITLE>
+<META NAME="description" CONTENT="Parse::Yapp: Ejemplo de Uso">
+<META NAME="keywords" CONTENT="javascriptexamples">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="mystyle.css">
+
+<LINK REL="next" HREF="node99.html">
+<LINK REL="previous" HREF="node97.html">
+<LINK REL="up" HREF="node97.html">
+<LINK REL="next" HREF="node99.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation">
+<A NAME="tex2html3924"
+  HREF="node99.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3918"
+  HREF="node97.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html3912"
+  HREF="node97.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html3920"
+  HREF="node234.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html3922"
+  HREF="node237.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
+  HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="logoLPP.png"
+ ALT="PL"></A><A NAME="tex2html3"
+  HREF="http://campusvirtual.ull.es/1213m2/course/view.php?id=271"><IMG
+  WIDTH="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="moodleLHPlogo.jpeg"
+ ALT="PL moodle"></A><A NAME="tex2html4"
+  HREF="javascriptexamples.pdf"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="gv.jpeg"
+ ALT="ps"></A><A NAME="tex2html5"
+  HREF="https://dl.dropbox.com/u/14539152/PLgrado/PLgradoBOOK/index.html"><IMG
+  WIDTH="60" ALIGN="BOTTOM" BORDER="0"
+ SRC="lupa.gif"
+ ALT="ruby gems"></A><A NAME="tex2html6"
+  HREF="https://developer.mozilla.org/es/docs/JavaScript"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="perlonion.jpeg"
+ ALT="perldoc"></A><A NAME="tex2html7"
+  HREF="http://github.com"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="google-code-project-hosting.jpeg"
+ ALT="google code project hosting"></A><A NAME="tex2html8"
+  HREF="http://jquery.com/"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="perl6.jpg"
+ ALT="blogs"></A><A NAME="tex2html9"
+  HREF="http://www.google.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ggoogle.gif"
+ ALT="google"></A><A NAME="tex2html10"
+  HREF="http://www.ull.es/view/centros/etsii/Grado/es"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="etsii.png"
+ ALT="etsii"></A><A NAME="tex2html11"
+  HREF="http://www.ull.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ull.gif"
+ ALT="ull"></A><A NAME="tex2html12"
+  HREF="http://crondinosaur.blogspot.com/"><IMG
+  WIDTH="32" ALIGN="BOTTOM" BORDER="0"
+ SRC="logopcgull.gif"
+ ALT="pcgull"></A>
+<BR>
+<B> Sig:</B> <A NAME="tex2html3925"
+  HREF="node99.html">Conceptos Básicos</A>
+<B>Sup:</B> <A NAME="tex2html3919"
+  HREF="node97.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html3913"
+  HREF="node97.html">Análisis Sintáctico Ascendente en</A>
+<B> Con:</B> 
+<A NAME="tex2html3920"
+  HREF="node234.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
+<B> Ind:</B> 
+<A NAME="tex2html3922"
+  HREF="node237.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
+<BR> <P>
+</DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION04910000000000000000"></A>
+<A NAME="section:ejemplodeuso"></A>
+<BR>
+<TT>Parse::Yapp</TT>: Ejemplo de Uso
+</H1>
+El generador de analizadores sintácticos  <TT>Parse::Yapp</TT>  es un
+analizador LALR inspirado en  <TT>yacc</TT> . El módulo
+<code>Parse::Yapp</code> no viene con la distribución de Perl, por lo que es necesario
+bajarlo desde CPAN, en la dirección 
+
+<P>
+
+<a href="http://search.cpan.org/~fdesar/Parse-Yapp-1.05/lib/Parse/Yapp.pm">http://search.cpan.org/~fdesar/Parse-Yapp-1.05/lib/Parse/Yapp.pm</a>
+
+<P>
+o bien en nuestros servidores locales,
+por ejemplo en el mismo directorio en que se guarda
+la versión HTML de estos apuntes encontrará una copia de 
+<A NAME="tex2html361"
+  HREF="Parse-Yapp-1.05.tar.gz">Parse-Yapp-1.05.tar.gz</A>.
+La versión a la que se refiere este capítulo es la 1.05.
+
+<P>
+Para ilustrar su uso veamos
+un ejemplo en el que se genera una sencilla calculadora numérica. 
+Los contenidos del programa  <TT>yapp</TT>  los hemos guardado
+en un fichero denominado <code>Calc.yp</code>
+(el código completo figura en el apéndice 
+en la página <A HREF="#apendice:calcyp"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>)
+
+<P>
+<PRE>
+ 1  #
+ 2  # Calc.yp
+ 3  # 
+ 4  # Parse::Yapp input grammar example.
+ 5  #
+ 6  # This file is PUBLIC DOMAIN 
+ 7  #
+ 8  #
+</PRE>
+Se pueden poner comentarios tipo Perl o tipo C (<code>/* ... */</code>)
+a lo largo del fichero.
+<PRE>
+ 9  %right  '='
+10  %left   '-' '+'
+11  %left   '*' '/'
+12  %left   NEG
+13  %right  '^'
+14  
+15  %%
+16  input:  #empty
+17       |   input line  { push(@{$_[1]},$_[2]); $_[1] }
+18  ;
+</PRE>
+las declaraciones  <TT>%left</TT>  y  <TT>%right</TT>  expresan la asociatividad
+y precedencia de los terminales, permitiendo decidir que árbol construir 
+en caso de  ambiguedad. 
+<SPAN  CLASS="textbf"> Los terminales declarados en líneas 
+posteriores tienen mas prioridad que los declarados en las líneas anteriores</SPAN>.
+Véase la sección <A HREF="node104.html#section:prioridades">9.7</A> para mas detalles.
+
+<P>
+Un programa <code>yapp</code> consta de tres partes: la cabeza, el cuerpo
+y la cola. Cada una de las partes va separada de las otras por el
+símbolo <code>%%</code> en una línea aparte. Así, el <code>%%</code> de la línea 15
+separa la cabeza del cuerpo. En la cabecera se colocan el
+código de inicialización, las declaraciones de terminales, las reglas
+de precedencia, etc.  El cuerpo contiene las reglas de la gramática y
+las acciones asociadas. Por último, la cola de un program <code>yapp</code>
+contiene las rutinas de soporte al código que aparece en las acciones 
+asi como, posiblemente, rutinas para el análisis léxico 
+y el tratamiento de errores.
+
+<P>
+En <code>Parse::Yapp</code> las acciones son convertidas en subrutinas
+anónimas. Mas bien en métodos anónimos. 
+Así pues el primer argumento de la subrutina se identifica con 
+una referencia al analizador (<code>$_[0]</code>).  Los restantes parámetros
+se corresponden con los <A NAME="18790"></A><SPAN  CLASS="textbf">atributos de los símbolos</SPAN>
+en la parte derecha de la regla de producción (<code>$_[1]</code> ...).
+Por ejemplo, el código en la línea 21 imprime el atributo asociado
+con la variable sintáctica <code>expr</code>, que en este caso es su valor numérico.
+
+<P>
+La línea 17 indica que el atributo asociado con la variable
+sintáctica <code>input</code> es una referencia
+a una pila y que el atributo asociado con la variable sintáctica
+<code>line</code> debe empujarse
+en la pila. De hecho, el atributo asociado con <code>line</code> es el valor
+de la expresión. Asi pues el atributo retornado por <code>input</code> es
+una referencia a una lista conteniendo los valores de las expresiones
+evaluadas.
+
+<P>
+Para saber mas sobre las estructuras internas de 
+<code>yapp</code> para la representación  de las acciones asociadas con las reglas
+véase la sección <A HREF="node101.html#section:tablas">9.4</A>.
+
+<P>
+<PRE>
+19  
+20  line:  '\n'       { 0 }
+21      |  exp '\n'   { print "$_[1]\n"; $_[1] }
+22      |  error '\n' { $_[0]-&gt;YYErrok; 0 }
+23  ;
+</PRE>
+
+<P>
+El terminal
+<code>error</code> en la línea 22 esta asociado con la aparición de un error.
+El tratamiento es el mismo que en <code>yacc</code>. Cuando se produce un error
+en el análisis, <code>yapp</code> emite un mensaje de error y
+produce ``mágicamente'' un terminal especial denominado
+<code>error</code>. A partir de ahí permanecerá silencioso,
+consumiendo terminales hasta encontrar uno de los terminales que le
+hemos indicado en las reglas de recuperación de errores,
+en este caso, cuando encuentre un retorno de carro.
+Como se ha dicho, en <code>Parse::Yapp</code> el primer argumento de la acción denota al 
+analizador sintáctico. Así pues el código <code>$_[0]-&gt;YYErrok</code>
+es una llamada al método <code>YYErrok</code> del analizador. Este método
+funciona como la macro <code>yyerrok</code> de <code>yacc</code>, indicando 
+que la presencia del retorno del carro (<code>\n</code>) la podemos considerar
+un signo seguro de que nos hemos recuperado del error. A partir
+de este momento, <code>yapp</code> volverá a emitir mensajes de error.
+Para saber más sobre la recuperación de 
+errores en <code>yapp</code> léase la sección
+<A HREF="node112.html#section:errores">9.15</A>.
+
+<P>
+<PRE>
+24  
+25  exp:        NUM
+</PRE>
+La acción por defecto es retornar <code>$_[1]</code>. 
+Por tanto, en este caso el valor retornado es el asociado a <code>NUM</code>.
+<PRE>
+26          |   VAR           { $_[0]-&gt;YYData-&gt;{VARS}{$_[1]} }
+</PRE>
+El método <code>YYData</code> provee acceso a un hash que contiene los datos 
+que están siendo analizados. En este caso creamos una entrada
+<code>VARS</code> que es una referencia a un hash en el que guardamos las
+variables. Este hash es la tabla de símbolos de la calculadora.
+<PRE>
+27          |   VAR '=' exp   { $_[0]-&gt;YYData-&gt;{VARS}{$_[1]}=$_[3] }
+28          |   exp '+' exp   { $_[1] + $_[3] }
+29          |   exp '-' exp   { $_[1] - $_[3] }
+30          |   exp '*' exp   { $_[1] * $_[3] }
+</PRE>
+Hay numerosas ambiguedades en esta gramática. Por ejemplo,
+
+<P>
+
+<UL>
+<LI>¿Como debo interpretar la expresión <code>4 - 5 - 2</code>?
+¿Como <code>(4 - 5) - 2</code>? ¿o bien <code>4 - (5 - 2)</code>?
+La respuesta la da la asignación de asociatividad a los operadores
+que hicimos en las líneas 9-13.
+Al declarar como asociativo a izquierdas al terminal <code>-</code> 
+(línea 10) hemos 
+resuelto este tipo de ambiguedad. Lo que estamos haciendo es
+indicarle al analizador que a la hora de elegir entre 
+los árboles abstractos 
+<!-- MATH
+ $-(-(4,5),2)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="101" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img473.png"
+ ALT="$ -(-(4,5),2)$"></SPAN>
+ y <!-- MATH
+ $-(4, -(5,2))$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="101" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img474.png"
+ ALT="$ -(4, -(5,2))$"></SPAN>
+ elija siempre
+el árbol que se hunde a izquierdas.
+</LI>
+<LI>¿Como debo interpretar la expresión <code>4 - 5 * 2</code>?
+¿Como <code>(4 - 5) * 2</code>? ¿o bien <code>4 - (5 * 2)</code>?
+Al declarar que <code>*</code> tiene mayor prioridad que <code>-</code> estamos
+resolviendo esta otra fuente de ambiguedad. Esto es así pues
+<code>*</code> fué declarado en la línea 11 y <code>-</code> en la 10.
+</LI>
+</UL>
+
+<P>
+<PRE>
+31          |   exp '/' exp   {
+32                              $_[3]
+33                              and return($_[1] / $_[3]);
+34                              $_[0]-&gt;YYData-&gt;{ERRMSG}
+35                                =   "Illegal division by zero.\n";
+36                              $_[0]-&gt;YYError;
+37                              undef
+38                            }
+</PRE>
+
+<P>
+En la regla de la división comprobamos que el divisor es 
+distinto de cero. Si es cero inicializamos el atributo 
+<code>ERRMSG</code> en la zona de datos con el mensaje de
+error apropiado. Este mensaje es aprovechado por la subrutina
+de tratamiento de errores (véase la subrutina <code>_Error</code>
+en la zona de la cola). La subrutina <code>_Error</code> es llamada
+automáticamente por <code>yapp</code> cada vez que ocurre un error
+sintáctico. Esto es asi por que en la llamada 
+al analizador se especifican quienes son las diferentes
+rutinas de apoyo:
+
+<P>
+<PRE>
+my $result = $self-&gt;YYParse( yylex =&gt; \&amp;_Lexer, 
+                             yyerror =&gt; \&amp;_Error,
+                             yydebug =&gt; 0x0 );
+</PRE>
+
+<P>
+Por defecto, <SPAN  CLASS="textbf">una regla de producción
+tiene la prioridad del último terminal que aparece
+en su parte derecha</SPAN>.
+Una regla de producción puede ir seguida de una directiva
+<code>%prec</code> la cual le da una prioridad explícita.  
+Esto puede ser de gran ayuda en ciertos casos de 
+ambiguedad.
+
+<P>
+<PRE>
+39          |   '-' exp %prec NEG   { -$_[2] }
+</PRE>
+¿Cual es la ambiguedad que surge con esta regla? 
+Una de las ambiguedad de esta regla 
+esta relacionada con el doble significado
+del menos como operador unario y binario: hay frases
+como <code>-y-z</code> que tiene dos posibles interpretaciones:
+Podemos verla como <code>(-y)-z</code> o bien como <code>-(y-z)</code>.
+Hay dos árboles posibles. El analizador, cuando este analizando
+la entrada <code>-y-z</code> y vea el
+segundo <code>-</code> deberá escoger uno de los dos árboles. 
+¿Cuál?. El conflicto puede verse como una ``lucha'' entre
+la regla <code>exp: '-' exp</code> la cual interpreta la frase como
+<code>(-y)-z</code> y la segunda aparición del terminal <code>-</code> 
+el cuál ``quiere entrar'' para que gane la regla <code>exp: exp '-' exp</code>
+y dar lugar a la interpretación <code>-(y-z)</code>.
+En este caso, las dos reglas 
+<!-- MATH
+ $E \rightarrow - E$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="73" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img475.png"
+ ALT="$ E \rightarrow - E$"></SPAN>
+ y <!-- MATH
+ $E \rightarrow E - E$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="95" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img476.png"
+ ALT="$ E \rightarrow E - E$"></SPAN>
+ tienen, en principio
+la prioridad del terminal <code>-</code>, el cual fué declarado en la
+línea 10.
+La prioridad expresada explícitamente
+para la regla por la declaración <code>%prec NEG</code> de la línea
+39 hace que la regla tenga la prioridad
+del terminal <code>NEG</code> (línea 12) y por tanto mas prioridad
+que el terminal <code>-</code>. Esto hará que <code>yapp</code> finalmente opte
+por la regla <code>exp: '-' exp</code>.
+
+<P>
+La declaración de <code>^</code> como asociativo a derechas y con un nivel
+de prioridad alto resuelve las ambiguedades relacionadas 
+con este operador:
+
+<P>
+<PRE>
+40          |   exp '^' exp         { $_[1] ** $_[3] }
+41          |   '(' exp ')'         { $_[2] }
+42  ;
+</PRE>
+
+<P>
+Después de la parte de la gramática, y separada de la anterior
+por el símbolo <code>%%</code>, sigue la parte en la que se 
+suelen poner las rutinas de apoyo. Hay al menos dos rutinas de apoyo que 
+el analizador sintáctico requiere le sean pasados como argumentos: 
+la de manejo de errores y la de análisis léxico. El método <code>Run</code>
+ilustra como se hace la llamada al método de análisis sintáctico 
+generado, utilizando la técnica de llamada con argumentos con nombre 
+y pasándole las referencias a las dos subrutinas (en Perl,
+es un convenio que si el nombre de una subrutina comienza
+por un guión bajo es que el autor la considera privada):
+<PRE>
+...
+
+sub Run {
+    my($self)=shift;
+    my $result = $self-&gt;YYParse( yylex =&gt; \&amp;_Lexer, 
+                                 yyerror =&gt; \&amp;_Error,
+                                 yydebug =&gt; 0x0 );
+    my @result = @$result;
+    print "@result\n";
+}
+</PRE>
+
+<P>
+La subrutina de manejo de errores <code>_Error</code> imprime 
+el mensaje de error proveído por el usuario, el cual, si existe, fué guardado en
+<code>$_[0]-&gt;YYData-&gt;{ERRMSG}</code>.
+<PRE>
+43  # rutinas de apoyo 
+44  %%
+45  
+46  sub _Error {
+47    exists $_[0]-&gt;YYData-&gt;{ERRMSG}
+48      and do {
+49          print $_[0]-&gt;YYData-&gt;{ERRMSG};
+50          delete $_[0]-&gt;YYData-&gt;{ERRMSG};
+51          return;
+52      };
+53    print "Syntax error.\n";
+54  }
+55
+</PRE>
+A continuación sigue el método que implanta
+el  análisis léxico <code>_Lexer</code>.
+En primer lugar se comprueba la existencia de
+datos en <code>parser-&gt;YYData-&gt;{INPUT}</code>. Si no es el caso, los datos
+se tomarán de la entrada estándar:
+<PRE>
+56  sub _Lexer {
+57    my($parser)=shift;
+58  
+59    defined($parser-&gt;YYData-&gt;{INPUT})
+60    or  $parser-&gt;YYData-&gt;{INPUT} = &lt;STDIN&gt;
+61    or  return('',undef);
+62
+</PRE>
+Cuando el analizador léxico alcanza el final de la entrada
+debe devolver la pareja <code>('',undef)</code>.
+
+<P>
+Eliminamos los blancos iniciales (lo que en inglés se conoce por
+<A NAME="18792"></A><SPAN  CLASS="textbf">trimming</SPAN>):
+<PRE>
+63    $parser-&gt;YYData-&gt;{INPUT}=~s/^[ \t]//;
+64
+</PRE>
+A continuación vamos detectando los números, identificadores
+y los símbolos individuales. El bucle <code>for ($parser-&gt;YYData-&gt;{INPUT})</code>
+se ejecuta mientras la cadena
+en <code>$parser-&gt;YYData-&gt;{INPUT}</code> no sea vacía, lo que ocurrirá cuando todos 
+los terminales hayan sido consumidos.
+
+<P>
+<PRE>
+65    for ($parser-&gt;YYData-&gt;{INPUT}) {
+66      s/^([0-9]+(?:\.[0-9]+)?)//
+67        and return('NUM',$1);
+68      s/^([A-Za-z][A-Za-z0-9_]*)//
+69        and return('VAR',$1);
+70      s/^(.)//s
+71        and return($1,$1);
+72    }
+73  }
+</PRE>
+
+<P>
+<P>
+<DIV><B>Ejercicio  <SPAN CLASS="arabic">9</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<OL>
+<LI>¿Quién es la variable índice en la línea 65? 
+</LI>
+<LI>¿Sobre quién ocurre el binding en las líneas 66, 68 y 70? 
+</LI>
+<LI>¿Cual es la razón por la que <code>$parser-&gt;YYData-&gt;{INPUT}</code> se 
+ve modificado si no aparece como variable para el binding en las líneas 66, 68 y 70?
+</LI>
+</OL></DIV><P></P>
+
+<P>
+Construimos el módulo <code>Calc.pm</code> a partir del fichero <code>Calc.yp</code>
+especificando la gramática, usando un fichero <code>Makefile</code>:
+<PRE>
+&gt; cat Makefile
+Calc.pm: Calc.yp
+        yapp -m Calc Calc.yp
+&gt; make
+yapp -m Calc Calc.yp
+</PRE>
+Esta compilación genera el fichero <code>Calc.pm</code> conteniendo el
+analizador:
+<PRE>
+&gt; ls -ltr
+total 96
+-rw-r-----    1 pl       users        1959 Oct 20  1999 Calc.yp
+-rw-r-----    1 pl       users          39 Nov 16 12:26 Makefile
+-rwxrwx--x    1 pl       users          78 Nov 16 12:30 usecalc.pl
+-rw-rw----    1 pl       users        5254 Nov 16 12:35 Calc.pm
+</PRE>
+
+<P>
+El script <code>yapp</code> es un <SPAN  CLASS="textbf">frontend</SPAN> al módulo <code>Parse::Yapp</code>.
+Admite diversas formas de uso:
+
+<P>
+
+<UL>
+<LI><TT>yapp [options] <SPAN  CLASS="textit">grammar</SPAN>[.yp]</TT>
+
+<P>
+El sufijo <TT>.yp</TT> es opcional.
+</LI>
+<LI><TT>yapp <SPAN  CLASS="textit">-V</SPAN></TT>
+
+<P>
+Nos muestra la versión:
+<PRE>
+$ yapp -V
+This is Parse::Yapp version 1.05.
+</PRE>
+
+<P>
+</LI>
+<LI><TT>yapp <SPAN  CLASS="textit">-h</SPAN></TT>
+
+<P>
+Nos muestra la ayuda:
+
+<P>
+<PRE>
+$ yapp -h
+
+Usage:  yapp [options] grammar[.yp]
+  or    yapp -V
+  or    yapp -h
+
+    -m module   Give your parser module the name &lt;module&gt;
+                default is &lt;grammar&gt;
+    -v          Create a file &lt;grammar&gt;.output describing your parser
+    -s          Create a standalone module in which the driver is included
+    -n          Disable source file line numbering embedded in your parser
+    -o outfile  Create the file &lt;outfile&gt; for your parser module
+                Default is &lt;grammar&gt;.pm or, if -m A::Module::Name is
+                specified, Name.pm
+    -t filename Uses the file &lt;filename&gt; as a template for creating the parser
+                module file.  Default is to use internal template defined
+                in Parse::Yapp::Output
+    -b shebang  Adds '#!&lt;shebang&gt;' as the very first line of the output file
+
+    grammar     The grammar file. If no suffix is given, and the file
+                does not exists, .yp is added
+
+    -V          Display current version of Parse::Yapp and gracefully exits
+    -h          Display this help screen
+</PRE>
+
+<P>
+</LI>
+</UL>
+
+<P>
+La opción <SPAN  CLASS="textit">-m module</SPAN> 
+da el nombre  al paquete o espacio de nombres o clase encapsulando el
+analizador. Por defecto toma el nombre de la gramática.  En el ejemplo
+podría haberse omitido.
+
+<P>
+La opción <SPAN  CLASS="textit">-o outfile</SPAN> 
+da el nombre del fichero de salida. Por defecto toma el nombre de la gramática,
+seguido del sufijo <code>.pm</code>. sin embargo, si hemos especificado la opción
+<SPAN  CLASS="textit">-m A::Module::Name</SPAN> el valor por defecto será  <SPAN  CLASS="textbf">Name.pm</SPAN>.
+
+<P>
+Veamos los contenidos del ejecutable <code>usecalc.pl</code> el cuál
+utiliza el módulo generado por <code>yapp</code>:
+<PRE>
+&gt; cat usecalc.pl
+#!/usr/local/bin/perl5.8.0 -w
+
+use Calc;
+
+$parser = new Calc();
+$parser-&gt;Run;
+</PRE>
+Al ejecutar obtenemos:
+<PRE>
+$ ./usecalc3.pl
+2+3
+5
+4*8
+32
+^D
+5 32
+</PRE>
+Pulsamos al final <code>Ctrl-D</code> para generar el final de fichero.
+El analizador devuelve la lista de valores computados la cual es 
+finalmente impresa.
+
+<P>
+¿En que orden ejecuta <code>YYParse</code> las acciones? 
+La respuesta es que el analizador generado por 
+<code>yapp</code> construye una derivación a derechas 
+inversa y ejecuta las acciones asociadas a las reglas de producción
+que se han aplicado. Así, para la frase <code>3+2</code> la antiderivación es:
+
+<P>
+<DIV ALIGN="CENTER">
+</DIV><!-- MATH
+ \begin{math}
+NUM + NUM \stackrel{NUM \leftarrow E}{\Longleftarrow} E + NUM \stackrel{NUM \leftarrow E}{\Longleftarrow} E + E \stackrel{E +E \leftarrow E}{\Longleftarrow} E
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="477" HEIGHT="49" ALIGN="MIDDLE" BORDER="0"
+ SRC="img477.png"
+ ALT="$ NUM + NUM \stackrel{NUM \leftarrow E}{\Longleftarrow} E + NUM \stackrel{NUM \leftarrow E}{\Longleftarrow} E + E \stackrel{E +E \leftarrow E}{\Longleftarrow} E
+$"></SPAN>
+<DIV ALIGN="CENTER">
+</DIV>
+
+<P>
+por tanto las acciones ejecutadas son las asociadas con las correspondientes reglas 
+de producción:
+
+<OL>
+<LI>La acción de la línea 25:
+<PRE>
+25  exp:        NUM { $_[1]; } # acción por defecto
+</PRE>
+Esta instancia de <code>exp</code> tiene ahora como atributo <code>3</code>.
+</LI>
+<LI>De nuevo la acción de la línea 25:
+<PRE>
+25  exp:        NUM { $_[1]; } # acción por defecto
+</PRE>
+Esta nueva instancia de <code>exp</code> tiene como atributo <code>2</code>.
+</LI>
+<LI>La acción asociada con <!-- MATH
+ $E \rightarrow E + E$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="95" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img478.png"
+ ALT="$ E \rightarrow E + E$"></SPAN>
+, en la línea 28:
+<PRE>
+28          |   exp '+' exp   { $_[1] + $_[3] }
+</PRE>
+La nueva instancia (nodo) <code>exp</code> tiene como atributo <code>5 = 3 + 2</code>. 
+</LI>
+</OL>
+Obsérvese que la antiderivación a derechas da lugar a un
+recorrido ascendente y a izquierdas del árbol:
+
+<P>
+<PRE>
+                         E(3)
+                       / | \
+                    (1)E + E(2)
+                      /     \ 
+                    NUM     NUM
+</PRE>
+
+<P>
+Los números entre paréntesis indican el orden de visita de las producciones.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<A NAME="tex2html3924"
+  HREF="node99.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html3918"
+  HREF="node97.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html3912"
+  HREF="node97.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
+<A NAME="tex2html3920"
+  HREF="node234.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html3922"
+  HREF="node237.html">
+<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
+  HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="logoLPP.png"
+ ALT="PL"></A><A NAME="tex2html3"
+  HREF="http://campusvirtual.ull.es/1213m2/course/view.php?id=271"><IMG
+  WIDTH="50" ALIGN="BOTTOM" BORDER="0"
+ SRC="moodleLHPlogo.jpeg"
+ ALT="PL moodle"></A><A NAME="tex2html4"
+  HREF="javascriptexamples.pdf"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="gv.jpeg"
+ ALT="ps"></A><A NAME="tex2html5"
+  HREF="https://dl.dropbox.com/u/14539152/PLgrado/PLgradoBOOK/index.html"><IMG
+  WIDTH="60" ALIGN="BOTTOM" BORDER="0"
+ SRC="lupa.gif"
+ ALT="ruby gems"></A><A NAME="tex2html6"
+  HREF="https://developer.mozilla.org/es/docs/JavaScript"><IMG
+  WIDTH="30" ALIGN="BOTTOM" BORDER="0"
+ SRC="perlonion.jpeg"
+ ALT="perldoc"></A><A NAME="tex2html7"
+  HREF="http://github.com"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="google-code-project-hosting.jpeg"
+ ALT="google code project hosting"></A><A NAME="tex2html8"
+  HREF="http://jquery.com/"><IMG
+  WIDTH="27" ALIGN="BOTTOM" BORDER="0"
+ SRC="perl6.jpg"
+ ALT="blogs"></A><A NAME="tex2html9"
+  HREF="http://www.google.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ggoogle.gif"
+ ALT="google"></A><A NAME="tex2html10"
+  HREF="http://www.ull.es/view/centros/etsii/Grado/es"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="etsii.png"
+ ALT="etsii"></A><A NAME="tex2html11"
+  HREF="http://www.ull.es/"><IMG
+  WIDTH="35" ALIGN="BOTTOM" BORDER="0"
+ SRC="ull.gif"
+ ALT="ull"></A><A NAME="tex2html12"
+  HREF="http://crondinosaur.blogspot.com/"><IMG
+  WIDTH="32" ALIGN="BOTTOM" BORDER="0"
+ SRC="logopcgull.gif"
+ ALT="pcgull"></A>
+<BR>
+<B> Sig:</B> <A NAME="tex2html3925"
+  HREF="node99.html">Conceptos Básicos</A>
+<B>Sup:</B> <A NAME="tex2html3919"
+  HREF="node97.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html3913"
+  HREF="node97.html">Análisis Sintáctico Ascendente en</A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+<I>Casiano Rodríguez León <BR>
+2013-11-10</I>
+</ADDRESS>
+</BODY>
+</HTML>
