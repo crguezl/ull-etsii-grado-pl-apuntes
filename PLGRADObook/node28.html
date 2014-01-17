@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Del espacio de Patrones al de Mantenimiento</TITLE>
-<META NAME="description" CONTENT="Del espacio de Patrones al de Mantenimiento">
+<TITLE>PegJS en los Browser</TITLE>
+<META NAME="description" CONTENT="PegJS en los Browser">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -28,20 +28,20 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html2151"
+<A NAME="tex2html896"
   HREF="node29.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2145"
+<A NAME="tex2html890"
   HREF="node20.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2139"
+<A NAME="tex2html884"
   HREF="node27.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2147"
-  HREF="node234.html">
+<A NAME="tex2html892"
+  HREF="node61.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2149"
-  HREF="node237.html">
+<A NAME="tex2html894"
+  HREF="node64.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,215 +92,226 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2152"
-  HREF="node29.html">La orden N</A>
-<B>Sup:</B> <A NAME="tex2html2146"
-  HREF="node20.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html2140"
-  HREF="node27.html">Traducción entre Tablas</A>
+<B> Sig:</B> <A NAME="tex2html897"
+  HREF="node29.html">Usando Pegjs con CoffeeScript</A>
+<B>Sup:</B> <A NAME="tex2html891"
+  HREF="node20.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html885"
+  HREF="node27.html">Un Lenguaje Dependiente del</A>
 <B> Con:</B> 
-<A NAME="tex2html2147"
-  HREF="node234.html">
+<A NAME="tex2html892"
+  HREF="node61.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html2149"
-  HREF="node237.html">
+<A NAME="tex2html894"
+  HREF="node64.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html898"
+  HREF="node28.html#SECTION04380010000000000000">La opción -e de pegjs</A>
+<LI><A NAME="tex2html899"
+  HREF="node28.html#SECTION04380020000000000000">arithmetic.pegjs</A>
+<LI><A NAME="tex2html900"
+  HREF="node28.html#SECTION04380030000000000000">calculator.html</A>
+<LI><A NAME="tex2html901"
+  HREF="node28.html#SECTION04380040000000000000">calculator.js</A>
+</UL></UL></UL>
+<!--End of Table of Child-Links-->
+<HR>
 
 <H1><A NAME="SECTION04380000000000000000">
-Del espacio de Patrones al de Mantenimiento</A>
+PegJS en los Browser</A>
 </H1>
-En <code>sed</code> se dispone, como en muchos otros editores
-de una zona de memoria a la que se puede enviar texto ``cortado''
-o `copiado'' y desde la cual se puede recuperar el texto para 
-insertarlo en la zona de trabajo  (<I>pattern space</I>).
-en la jerga <code>sed</code> dicho espacio se conoce como <SPAN  CLASS="textit">hold space</SPAN>.
-El contenido del espacio de patrones (<I>pattern space</I>) puede moverse al espacio 
-de mantenimiento (<SPAN  CLASS="textit">hold space</SPAN>) y recíprocamente:
 
 <P>
-<BR>
-<BR>
-<BR>
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT"><SPAN  CLASS="textit">Hold</SPAN></TD>
-<TD ALIGN="CENTER">h ó H</TD>
-<TD ALIGN="LEFT">Copia o añade (append) los contenidos del <I>pattern space</I> al <I>hold space</I>.</TD>
-</TR>
-<TR><TD ALIGN="LEFT"><SPAN  CLASS="textit">Get</SPAN></TD>
-<TD ALIGN="CENTER">g ó G</TD>
-<TD ALIGN="LEFT">Copia o añade los contenidos del <I>hold space</I> al <I>pattern space</I>.</TD>
-</TR>
-<TR><TD ALIGN="LEFT"><SPAN  CLASS="textit">Exchange</SPAN></TD>
-<TD ALIGN="CENTER">x</TD>
-<TD ALIGN="LEFT">Intercambia los contenidos del <I>hold space</I> y el <I>pattern space</I></TD>
-</TR>
-</TABLE>
-<BR>
-<BR>
-<BR>
 
-<P>
-Los comandos en minúsculas sobrescriben mientras que los que van en mayúsculas añaden.
-Asi <I>h</I> copia los contenidos del <I>pattern space</I> en el <I>hold space</I>, borrando los
-contenidos previos que estuvieran en el <I>hold space</I>. Las orden <I>G</I> añade (paste)
-los contenidos del <I>hold space</I> al espacio de patrones actual (por el final).  
-Las dos cadenas se enlazan a través de un retorno de carro.
+<H4><A NAME="SECTION04380010000000000000">
+La opción -e de pegjs</A>
+</H4>
+  
 
-<P>
-<B>Ejemplo</B>
-Este guión intenta mediante una heurística poner la definiciones de 
-funciones C al final del fichero, suponiendo que una definición de función
-comienza en la columna 1 y que se caracterizan mediante uno o dos identificadores 
-seguidos de un paréntesis:
 <PRE>
-$ cat G.sed
-/\&lt;if\&gt;/s/.*/&amp;/
-t
-/\&lt;else\&gt;/s/.*/&amp;/
-t
-#... lo mismo para las otras palabras clave
-/^[a-zA-Z][a-zA-Z]*([A-Z]*/H
-t
-/^[a-zA-Z][a-zA-Z]*  *[a-zA-Z][a-zA-Z]*(/H
-${
-G
-}
-</PRE>
-Ejemplo de uso:
-<PRE>
-$ cat p.test
-#include &lt;stdio.h&gt;
- 
-fact(int n) { /* recursive function */
-if(n == 0) return 1;
-else(return n*fact(n-1));
-}
- 
-void toto(id) {
-}
- 
-main() {
-  toto();
-  printf("Hello world! factorial of 4 = %d\n",fact(4)); /* the
-         comment takes two lines */
-}
-</PRE>
-Al ejecutar nuestro <I>script</I> obtenemos la salida:
-<PRE>
-$ sed -f G.sed p.test
-#include &lt;stdio.h&gt;
- 
-fact(int n) { /* recursive function */
-if(n == 0) return 1;
-else(return n*fact(n-1));
-}
- 
-void toto(id) {
-}
- 
-main() {
-  toto();
-  printf("Hello world! factorial of 4 = %d\n",fact(4)); /* the
-         comment takes two lines */
-}
- 
-fact(int n) { /* recursive function */
-void toto(id) {
-main() {
+[~/Dropbox/src/javascript/PLgrado/jison]$ pegjs --help
+Usage: pegjs [options] [--] [&lt;input_file&gt;] [&lt;output_file&gt;]
+
+Generates a parser from the PEG grammar specified in the &lt;input_file&gt; and
+writes it to the &lt;output_file&gt;.
+
+If the &lt;output_file&gt; is omitted, its name is generated by changing the
+&lt;input_file&gt; extension to ".js". If both &lt;input_file&gt; and &lt;output_file&gt; are
+omitted, standard input and output are used.
+
+Options:
+  -e, --export-var &lt;variable&gt;  name of the variable where the parser object
+                               will be stored (default: "module.exports")
+      --cache                  make generated parser cache results
+      --track-line-and-column  make generated parser track line and column
+  -v, --version                print version information and exit
+  -h, --help                   print help and exit
 </PRE>
 
 <P>
-<B>Ejemplo</B>
-El siguiente guión invierte los contenidos de un fichero:
 <PRE>
-&gt; cat reverse.sed
-$!{
-:loop
-h
-n
-G
-$!b loop
-}
-${
-p
-}
-</PRE>
-He aqui el resultado de una ejecución:
-
-<P>
-<PRE>
-&gt; cat reverse.test
-one
-two
-three
-&gt; sed -n -f reverse.sed reverse.test
-three
-two
-one
+[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ rake web
+../bin/pegjs -e calculator arithmetics.pegjs
 </PRE>
 
 <P>
-<B>Ejemplo</B>
 
-<P>
-Supuesto un fichero de entrada con formato:
-<A NAME="section:alumnos"></A>...
+<H4><A NAME="SECTION04380020000000000000">
+arithmetic.pegjs</A>
+</H4>
+  
+
 <PRE>
-NAME: xxx
-SURNAME: xxx
-TITLE: SISTEMAS
-OtherTitle: 
-BIRTHDAY: xxx
-BIRTHMONTH: xxx
-BIRTHYEAR: xxx
-ADDRESSFAMILY: xxx
-ADDRESSACTUAL: xxx
-POSTALCODE: xxx
-EMAIL: XXXXXXX@csi.ull.es
-TELEPHONE: xxx
-FAX: xxx
-LABGROUP: xxx
-COMMENTS:
+[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat arithmetics.pegjs 
+/*
+ * Classic example grammar, which recognizes simple arithmetic expressions like
+ * "2*(3+4)". The parser generated from this grammar then computes their value.
+ */
+
+start
+  = additive
+
+additive
+  = left:multiplicative PLUS right:additive { return left + right; }
+  / left:multiplicative MINUS right:additive { return left - right; }
+  / multiplicative
+
+multiplicative
+  = left:primary MULT right:multiplicative { return left * right; }
+  / left:primary DIV right:multiplicative { return left / right; }
+  / primary
+
+primary
+  = integer
+  / LEFTPAR additive:additive RIGHTPAR { return additive; }
+
+integer "integer"
+  = NUMBER
+
+_ = $[ \t\n\r]*
+
+PLUS = _"+"_
+MINUS = _"-"_
+MULT = _"*"_
+DIV = _"/"_
+LEFTPAR = _"("_
+RIGHTPAR = _")"_
+NUMBER = _ digits:$[0-9]+ _ { return parseInt(digits, 10); }
 </PRE>
-...
 
 <P>
-Se pretenden extraer los apellidos y el nombre, concatenados con una coma. He aqui una posible solución:
+
+<H4><A NAME="SECTION04380030000000000000">
+calculator.html</A>
+</H4>
+  
+
 <PRE>
-#!/bin/sed -f
-/^NAME:/ {
-  s/^NAME://
-  h
-  n
-  s/^SURNAME://
-  G
-  s/\n/,/
-  y/áéíóúabcdefghijklmnñopqrstuvwxyz/ÁÉÍÓÚABCDEFGHIJKLMNÑOPQRSTUVWXYZ/
-  p
-}
+[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat calculator.html 
+&lt;!DOCTYPE HTML&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;title&gt;pegjs&lt;/title&gt;
+    &lt;link rel="stylesheet" href="global.css" type="text/css" media="screen" charset="utf-8" /&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;pegjs&lt;/h1&gt;
+    &lt;div id="content"&gt;
+      &lt;script src="jquery/jquery.js"&gt;&lt;/script&gt; 
+      &lt;script src="arithmetics.js"&gt;&lt;/script&gt;
+      &lt;script src="calculator.js"&gt;&lt;/script&gt;
+
+      &lt;p&gt;
+      Load an example:
+      &lt;input type="file" id="examples" /&gt;
+      &lt;/p&gt;
+
+      &lt;p&gt;
+      &lt;table&gt;
+        &lt;tr&gt;
+          &lt;td&gt;
+            &lt;textarea id="input" autofocus cols = "40" rows = "4"&gt;2+3*4&lt;/textarea&gt; 
+          &lt;/td&gt;
+          &lt;td class="output"&gt;
+            &lt;pre&gt;
+&lt;span id="output"&gt;
+&lt;/span&gt; &lt;!-- Output goes here! --&gt;
+            &lt;/pre&gt;
+          &lt;/td&gt;
+          &lt;td&gt;&lt;button id="eval" type="button"&gt;eval&lt;/button&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/table&gt;
+      &lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</PRE>
+
+<P>
+
+<img src="pegjs.png">
+
+<P>
+
+<H4><A NAME="SECTION04380040000000000000">
+calculator.js</A>
+</H4>
+  
+
+<PRE>
+[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat calculator.js 
+$(document).ready(function() {
+  $('#eval').click(function() {
+    try {
+      var result = calculator.parse($('#input').val());
+      $('#output').html(result);
+    } catch (e) {
+      $('#output').html('&lt;div class="error"&gt;&lt;pre&gt;\n' + String(e) + '\n&lt;/pre&gt;&lt;/div&gt;');
+    }
+  });
+
+  $("#examples").change(function(ev) {
+    var f = ev.target.files[0]; 
+    var r = new FileReader();
+    r.onload = function(e) { 
+      var contents = e.target.result;
+      
+      input.innerHTML = contents;
+    }
+    r.readAsText(f);
+  });
+
+});
 </PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html2151"
+<A NAME="tex2html896"
   HREF="node29.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2145"
+<A NAME="tex2html890"
   HREF="node20.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2139"
+<A NAME="tex2html884"
   HREF="node27.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2147"
-  HREF="node234.html">
+<A NAME="tex2html892"
+  HREF="node61.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2149"
-  HREF="node237.html">
+<A NAME="tex2html894"
+  HREF="node64.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -351,12 +362,12 @@ Se pretenden extraer los apellidos y el nombre, concatenados con una coma. He aq
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2152"
-  HREF="node29.html">La orden N</A>
-<B>Sup:</B> <A NAME="tex2html2146"
-  HREF="node20.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html2140"
-  HREF="node27.html">Traducción entre Tablas</A>
+<B> Sig:</B> <A NAME="tex2html897"
+  HREF="node29.html">Usando Pegjs con CoffeeScript</A>
+<B>Sup:</B> <A NAME="tex2html891"
+  HREF="node20.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html885"
+  HREF="node27.html">Un Lenguaje Dependiente del</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

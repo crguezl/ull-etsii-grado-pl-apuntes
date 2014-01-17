@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Manipulando tablas numéricas</TITLE>
-<META NAME="description" CONTENT="Manipulando tablas numéricas">
+<TITLE>Comentarios Anidados</TITLE>
+<META NAME="description" CONTENT="Comentarios Anidados">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -28,20 +28,20 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html2123"
+<A NAME="tex2html868"
   HREF="node27.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2117"
+<A NAME="tex2html862"
   HREF="node20.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2111"
+<A NAME="tex2html856"
   HREF="node25.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2119"
-  HREF="node234.html">
+<A NAME="tex2html864"
+  HREF="node61.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2121"
-  HREF="node237.html">
+<A NAME="tex2html866"
+  HREF="node64.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,130 +92,82 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2124"
-  HREF="node27.html">Traducción entre Tablas</A>
-<B>Sup:</B> <A NAME="tex2html2118"
-  HREF="node20.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html2112"
-  HREF="node25.html">Siguiente Línea: La orden</A>
+<B> Sig:</B> <A NAME="tex2html869"
+  HREF="node27.html">Un Lenguaje Dependiente del</A>
+<B>Sup:</B> <A NAME="tex2html863"
+  HREF="node20.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html857"
+  HREF="node25.html">Asociando un else con</A>
 <B> Con:</B> 
-<A NAME="tex2html2119"
-  HREF="node234.html">
+<A NAME="tex2html864"
+  HREF="node61.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html2121"
-  HREF="node237.html">
+<A NAME="tex2html866"
+  HREF="node64.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
 <H1><A NAME="SECTION04360000000000000000">
-Manipulando tablas numéricas</A>
+Comentarios Anidados</A>
 </H1>
-El siguiente ejemplo intercambia la primera y ultima columnas
-de un fichero como el que sigue:
-<PRE>
-$ cat columns.test
-11111 22222 33333 44444 55555
-  111    22    33  4444  5555
-11111 22222 33333 44444 55555
-   11    22     3   444  5555
-</PRE>
-La parte mas complicada es preservar el sangrado.
-El truco reside, en parte, en el patrón central <!-- MATH
- $\backslash$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="14" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img8.png"
- ALT="$ \backslash$"></SPAN>2, que 
-memoriza los blancos después de la primera columna y un sólo blanco 
-antes de la última.
-<PRE>
-$ cat columns.sed
-s/^\( *[0-9][0-9]*\)\( .*[0-9] \)\( *[0-9][0-9]*\)$/\3\2\1/
-$ sed -f columns.sed columns.test
-55555 22222 33333 44444 11111
- 5555    22    33  4444   111
-55555 22222 33333 44444 11111
- 5555    22     3   444    11
-</PRE>
-El siguiente ejemplo utiliza
-una opción del operador de sustitución que permite decidir que aparición
-del patrón deseamos sustituir. Asi,
-
-<P>
-<code>s/A/B/3</code>
-
-<P>
-sustituirá la 3 aparición de <code>A</code> por <code>B</code>, obviando las otras.
-
-<P>
-El ejemplo selecciona la columna dos del fichero:
-<PRE>
-$ cat col2.sed
-#extracts the second column
-s/^  *//
-s/\&lt;[0-9][0-9]*\&gt;//1
-s/\&lt;[0-9][0-9]*\&gt;//2
-s/\&lt;[0-9][0-9]*\&gt;//2
-s/\&lt;[0-9][0-9]*\&gt;//2
-s/  *$//
-$ sed -f col2.sed columns.test
- 22222
-    22
- 22222
-    22
-</PRE>
-Mas general que el anterior, el siguiente ejemplo elimina 
-un número de columnas arbitrario <code>$1</code> por la izquierda y otro 
-número <code>$2</code> por la derecha.
-Para lograrlo, es necesario utilizar un un guión para la <code>shell</code> 
-que llama al correspondiente guión <code>sed</code>. Los parámetros 
-son introducidos en el guión <code>sed</code> mediante el uso apropiado
-de las comillas dobles y simples:
 
 <P>
 <PRE>
-&gt; cat colbranch.sh
-#!/bin/bash
-sed -e '
-s/^\( *[0-9]\+\)\{'"$1"'\}//
-s/\( *[0-9]\+\)\{'"$2"'\}$//
-'
+$ cat pascal_comments.pegjs 
+/* Pascal nested comments */
+
+P     =   prog:N+                          { return prog; }
+N     =   chars:$(!Begin ANY)+             { return chars;}
+        / C
+C     = Begin chars:T* End                 { return chars.join(''); }
+T     =   C 
+        / (!Begin !End char:ANY)           { return char;}
+Begin = '(*'
+End   = '*)'
+ANY   =   'z'    /* any character */       { return 'z';  }
+        / char:[^z]                        { return char; }
 </PRE>
-Veamos un ejemplo de uso:
+
+<P>
 <PRE>
-&gt; cat columns.test
-11111 22222 33333 44444 55555
-  111    22    33  4444  5555
-11111 22222 33333 44444 55555
-   11    22     3   444  5555
-&gt; colbranch.sh 2 1 &lt; columns.test
- 33333 44444
-    33  4444
- 33333 44444
-     3   444
+$ cat use_pascal_comments.js 
+var PEG = require("./pascal_comments.js");
+var r = PEG.parse(
+  "not bla bla (* pascal (* nested *) comment *)"+
+  " pum pum (* another comment *)");
+console.log(r);
+</PRE>
+
+<P>
+<PRE>
+$ ../bin/pegjs pascal_comments.pegjs 
+$ node use_pascal_comments.js 
+[ 'not bla bla ',
+  ' pascal  nested  comment ',
+  ' pum pum ',
+  ' another comment ' ]
 </PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html2123"
+<A NAME="tex2html868"
   HREF="node27.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2117"
+<A NAME="tex2html862"
   HREF="node20.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2111"
+<A NAME="tex2html856"
   HREF="node25.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2119"
-  HREF="node234.html">
+<A NAME="tex2html864"
+  HREF="node61.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2121"
-  HREF="node237.html">
+<A NAME="tex2html866"
+  HREF="node64.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -266,12 +218,12 @@ Veamos un ejemplo de uso:
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2124"
-  HREF="node27.html">Traducción entre Tablas</A>
-<B>Sup:</B> <A NAME="tex2html2118"
-  HREF="node20.html">Expresiones Regulares en sed</A>
-<B> Ant:</B> <A NAME="tex2html2112"
-  HREF="node25.html">Siguiente Línea: La orden</A>
+<B> Sig:</B> <A NAME="tex2html869"
+  HREF="node27.html">Un Lenguaje Dependiente del</A>
+<B>Sup:</B> <A NAME="tex2html863"
+  HREF="node20.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html857"
+  HREF="node25.html">Asociando un else con</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

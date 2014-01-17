@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Un Lenguaje Dependiente del Contexto</TITLE>
-<META NAME="description" CONTENT="Un Lenguaje Dependiente del Contexto">
+<TITLE>OCTAVA PARTE: BITÁCORA DEL CURSO</TITLE>
+<META NAME="description" CONTENT="OCTAVA PARTE: BITÁCORA DEL CURSO">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node56.html">
-<LINK REL="previous" HREF="node54.html">
-<LINK REL="up" HREF="node48.html">
+<LINK REL="next" HREF="node61.html">
+<LINK REL="previous" HREF="node6.html">
+<LINK REL="up" HREF="javascriptexamples.html">
 <LINK REL="next" HREF="node56.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3013"
+<A NAME="tex2html1381"
   HREF="node56.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3007"
-  HREF="node48.html">
+<A NAME="tex2html1375"
+  HREF="javascriptexamples.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3001"
+<A NAME="tex2html1369"
   HREF="node54.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3009"
-  HREF="node234.html">
+<A NAME="tex2html1377"
+  HREF="node61.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3011"
-  HREF="node237.html">
+<A NAME="tex2html1379"
+  HREF="node64.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,110 +92,78 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3014"
-  HREF="node56.html">PegJS en los Browser</A>
-<B>Sup:</B> <A NAME="tex2html3008"
-  HREF="node48.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html3002"
-  HREF="node54.html">Comentarios Anidados</A>
+<B> Sig:</B> <A NAME="tex2html1382"
+  HREF="node56.html">2013</A>
+<B>Sup:</B> <A NAME="tex2html1376"
+  HREF="javascriptexamples.html">Apuntes de la Asignatura</A>
+<B> Ant:</B> <A NAME="tex2html1370"
+  HREF="node54.html">Véase También</A>
 <B> Con:</B> 
-<A NAME="tex2html3009"
-  HREF="node234.html">
+<A NAME="tex2html1377"
+  HREF="node61.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3011"
-  HREF="node237.html">
+<A NAME="tex2html1379"
+  HREF="node64.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION04670000000000000000">
-Un Lenguaje Dependiente del Contexto</A>
+<H1><A NAME="SECTION05000000000000000000">
+OCTAVA PARTE: BITÁCORA DEL CURSO</A>
 </H1>
+<BR> <HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<P>
-El lenguaje <!-- MATH
- $\{ a^n b^n c^n / n \in \mathcal{N} \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="131" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img38.png"
- ALT="$ \{ a^n b^n c^n / n \in \mathcal{N} \}$"></SPAN> no puede ser 
-expresado mediante una gramática independiente del contexto.
-
-<P>
-<PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat anbncn.pegjs 
-/*
-  The following parsing expression grammar describes the classic 
-  non-context-free language : 
-               { a^nb^nc^n / n &gt;= 1 }
-
-            S ← &amp;(A 'c') 'a'+ B !('a'/'b'/'c')
-            A ← 'a' A? 'b'
-            B ← 'b' B? 'c'
-*/
-
-S = &amp;(A 'c') 'a'+ B !('a'/'b'/'c')
-A = 'a' A? 'b'
-B = 'b' B? 'c'
-</PRE>
-
-<P>
-Este ejemplo puede ser obtenido desde GitHub:
-<PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ git remote -v
-dmajda  https://github.com/dmajda/pegjs.git (fetch)
-dmajda  https://github.com/dmajda/pegjs.git (push)
-origin  git@github.com:crguezl/pegjs.git (fetch)
-origin  git@github.com:crguezl/pegjs.git (push)
-</PRE>
-
-<P>
-Veamos un ejemplo de uso:
-<PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat use_anbncn.js 
-var PEG = require("./anbncn.js");
-var r = PEG.parse("aabbcc");
-console.log(r);
-
-try {
-  r = PEG.parse("aabbc");
-  console.log(r);
-}
-catch (e) {
-  console.log("Grr...."+e);
-}
-</PRE>
-
-<P>
-Ejecución:
-<PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ ../bin/pegjs anbncn.pegjs 
-
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ node use_anbncn.js 
-[ '', [ 'a', 'a' ], [ 'b', [ 'b', '', 'c' ], 'c' ], '' ]
-Grr....SyntaxError: Expected "c" but end of input found.
-</PRE>
-
-<P>
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html1383"
+  HREF="node56.html">2013</A>
+<UL>
+<LI><A NAME="tex2html1384"
+  HREF="node57.html">01</A>
+<UL>
+<LI><A NAME="tex2html1385"
+  HREF="node57.html#SECTION05111000000000000000">31/01/13</A>
+</UL>
+<LI><A NAME="tex2html1386"
+  HREF="node58.html">03</A>
+<UL>
+<LI><A NAME="tex2html1387"
+  HREF="node58.html#SECTION05121000000000000000">Repaso 07/03/13</A>
+</UL>
+<LI><A NAME="tex2html1388"
+  HREF="node59.html">04</A>
+<UL>
+<LI><A NAME="tex2html1389"
+  HREF="node59.html#SECTION05131000000000000000">Repaso 18/04/13</A>
+<LI><A NAME="tex2html1390"
+  HREF="node59.html#SECTION05132000000000000000">Proyecto: Diseña e Implementa un Lenguaje de Dominio Específico</A>
+</UL>
+<LI><A NAME="tex2html1391"
+  HREF="node60.html">05</A>
+<UL>
+<LI><A NAME="tex2html1392"
+  HREF="node60.html#SECTION05141000000000000000">Repaso 16/05/13</A>
+</UL></UL></UL>
+<!--End of Table of Child-Links-->
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3013"
+<A NAME="tex2html1381"
   HREF="node56.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3007"
-  HREF="node48.html">
+<A NAME="tex2html1375"
+  HREF="javascriptexamples.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3001"
+<A NAME="tex2html1369"
   HREF="node54.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3009"
-  HREF="node234.html">
+<A NAME="tex2html1377"
+  HREF="node61.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3011"
-  HREF="node237.html">
+<A NAME="tex2html1379"
+  HREF="node64.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -246,12 +214,12 @@ Grr....SyntaxError: Expected "c" but end of input found.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3014"
-  HREF="node56.html">PegJS en los Browser</A>
-<B>Sup:</B> <A NAME="tex2html3008"
-  HREF="node48.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html3002"
-  HREF="node54.html">Comentarios Anidados</A>
+<B> Sig:</B> <A NAME="tex2html1382"
+  HREF="node56.html">2013</A>
+<B>Sup:</B> <A NAME="tex2html1376"
+  HREF="javascriptexamples.html">Apuntes de la Asignatura</A>
+<B> Ant:</B> <A NAME="tex2html1370"
+  HREF="node54.html">Véase También</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
