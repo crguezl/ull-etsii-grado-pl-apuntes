@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Asignación de Direcciones</TITLE>
-<META NAME="description" CONTENT="Asignación de Direcciones">
+<TITLE>&#205;ndice de Materias</TITLE>
+<META NAME="description" CONTENT="&#205;ndice de Materias">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,28 +21,25 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node74.html">
 <LINK REL="previous" HREF="node72.html">
-<LINK REL="up" HREF="node60.html">
+<LINK REL="up" HREF="javascriptexamples.html">
 <LINK REL="next" HREF="node74.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3448"
+<A NAME="tex2html1778"
   HREF="node74.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3442"
-  HREF="node60.html">
+<A NAME="tex2html1774"
+  HREF="javascriptexamples.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3436"
+<A NAME="tex2html1768"
   HREF="node72.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3444"
-  HREF="node234.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3446"
-  HREF="node237.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
+<A NAME="tex2html1776"
+  HREF="node70.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>  <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
  SRC="logoLPP.png"
@@ -92,340 +89,197 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3449"
-  HREF="node74.html">Generación de Código: Máquina</A>
-<B>Sup:</B> <A NAME="tex2html3443"
-  HREF="node60.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html3437"
-  HREF="node72.html">Patrones Árbol y Transformaciones</A>
+<B> Sig:</B> <A NAME="tex2html1779"
+  HREF="node74.html">Bibliograf&#237;a</A>
+<B>Sup:</B> <A NAME="tex2html1775"
+  HREF="javascriptexamples.html">Apuntes de la Asignatura</A>
+<B> Ant:</B> <A NAME="tex2html1769"
+  HREF="node72.html">&#205;ndice de Tablas</A>
 <B> Con:</B> 
-<A NAME="tex2html3444"
-  HREF="node234.html">
+<A NAME="tex2html1776"
+  HREF="node70.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
-<B> Ind:</B> 
-<A NAME="tex2html3446"
-  HREF="node237.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
-
-<UL CLASS="ChildLinks">
-<LI><A NAME="tex2html3450"
-  HREF="node73.html#SECTION047131000000000000000">Práctica: Cálculo de las Direcciones</A>
-</UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION047130000000000000000">
-Asignación de Direcciones</A>
-</H1>
-Esta suele ser considerada  la primera de las fases de síntesis.
-Las anteriores lo eran de análisis. La fase de análisis
-es una transformación <!-- MATH
- $texto\ fuente \rightarrow arbol$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="169" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img339.png"
- ALT="$ texto fuente \rightarrow arbol$"></SPAN>, mientras
-que la fase síntesis es una transformación inversa
-<!-- MATH
- $arbol \rightarrow texto\ objeto$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="163" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img340.png"
- ALT="$ arbol \rightarrow texto objeto$"></SPAN> que produce una ``linealización''
-del árbol. En general, se ubican en la fase de síntesis todas
-las tareas que dependan del lenguaje objeto.
-
-<P>
-La asignación de direcciones depende de la máquina objetivo en cuanto
-conlleva consideraciones sobre la longitud de palabra, las unidades
-de memoria direccionables, la compactación de objetos pequeños (por ejemplo,
-valores lógicos), el alineamiento a fronteras de palabra, etc.
-
-<P>
-En nuestro caso debemos distinguir entre las cadenas y las variables enteras.
-
-<P>
-Las constantes literales (como <code>"hola"</code>) se almacenan 
-concatenadas en orden de aparición textual.
-Una variable de tipo cadena ocupa dos palabras, una dando su dirección 
-y otra dando su longitud.
-
-<P>
-<PRE>
-sub factor() {
-  my ($e, $id, $str, $num);
-
-  if ($lookahead eq 'NUM') { ... }
-  elsif ($lookahead eq 'ID') { ... }
-  elsif ($lookahead eq 'STR') {
-    $str = $value;
-    my ($offset, $length) = Address::Assignment::str($str);
-    match('STR');
-    return STR-&gt;new(OFFSET =&gt; $offset, LENGTH =&gt; $length, TYPE =&gt; $string_type);
-  }
-  elsif ($lookahead eq '(') { ... }
-  else { Error::fatal("Se esperaba (, NUM o ID"); }
-}
-</PRE>
-
-<P>
-El código de la subrutina <code>Address::Assignment::str</code> es:
-<PRE>
-  sub str {
-    my $str = shift;
-    my $len = length($str);
-    my $offset = length($data);
-    $data .= $str;
-    return ($offset, $len);
-  }
-</PRE>
-Una posible mejora es la que se describe en 
-el punto
-<A HREF="#item:norepetidas">2</A>
-de la práctica
-<A HREF="#practica:calculodelasdirecciones">7.13.1</A>.
-
-<P>
-Hemos supuesto que las variables enteras y las referencias ocupan una palabra.
-Cada vez que una variable es declarada, se le computa su dirección relativa:
-
-<P>
-<PRE>
-# declaration -&gt; type idlist
-# type        -&gt; INT | STRING
-sub declaration() {
-  my ($t, $decl, @il);
-
-  if (($lookahead eq 'INT') or ($lookahead eq 'STRING')) {
-    $t = &amp;type(); @il = &amp;idlist();
-    &amp;Semantic::Analysis::set_types($t, @il);
-    &amp;Address::Assignment::compute_address($t, @il);
-    $decl = [$t, \@il];
-    return bless $decl, 'DECL';
-  }
-  else { Error::fatal('Se esperaba un tipo'); }
-}
-</PRE>
-
-<P>
-Se usa una variable <code>$global_address</code> para llevar la cuenta de la última 
-dirección utilizada y se introduce un atributo <code>ADDRESS</code> en 
-la tabla de símbolos:
-
-<P>
-<PRE>
-  sub compute_address {
-    my $type = shift;
-    my @id_list = @_;
-
-    for my $i (@id_list) {
-      $symbol_table{$i}-&gt;{ADDRESS} = $global_address;
-      $global_address += $type-&gt;LENGTH;
-    }
-  }
-</PRE>
-
-<P>
-Por último situamos todas las cadenas después de las variables
-del programa fuente:
-
-<P>
-<PRE>
-  ... 
-  ##### En compile, despues de haber calculado las direcciones
-  Tree::Transform::match_and_transform_list(
-    NODES =&gt; $tree-&gt;{STS},
-    PATTERN =&gt; sub { 
-      $_[0]-&gt;isa('STR')
-    },
-    ACTION =&gt; sub { $_[0]-&gt;{OFFSET} += $global_address; }
-  );
-</PRE>
-
-<P>
-Esta aproximación es bastante simplista en cuanto que usa una palabra
-por carácter. 
-El punto
-<A HREF="#item:compacta">3</A>
-de la práctica
-<A HREF="#practica:calculodelasdirecciones">7.13.1</A> propone una mejora.
-
-<P>
-
-<H2><A NAME="SECTION047131000000000000000"></A>
-   <A NAME="12548"></A>
-  
-<A NAME="practica:calculodelasdirecciones"></A>
 <BR>
-Práctica: Cálculo de las Direcciones
-</H2>
-Modifique el cálculo de las direcciones para la gramática de Tutu
-extendida con sentencias compuestas que fué presentada en 
-la sección 
-<A HREF="node70.html#practica:analisis_semantico">7.10.2</A>.
 
-<P>
+<H2><A NAME="SECTION010000000000000000000">
+&#205;ndice de Materias</A>
+</H2><DL COMPACT>
+<DT><STRONG>access link</STRONG>
+<DD><A HREF="node40.html#3515">Práctica: Calculadora con Análisis</A>
+<DT><STRONG>acciones de desplazamiento</STRONG>
+<DD><A HREF="node37.html#3485">Construcción de las Tablas</A>
+<DT><STRONG>acciones shift</STRONG>
+<DD><A HREF="node37.html#3487">Construcción de las Tablas</A>
+<DT><STRONG>acción de reducción</STRONG>
+<DD><A HREF="node37.html#3489">Construcción de las Tablas</A>
+<DT><STRONG>algoritmo de construcción del subconjunto</STRONG>
+<DD><A HREF="node37.html#3467">Construcción de las Tablas</A>
+<DT><STRONG>antiderivación</STRONG>
+<DD><A HREF="node36.html#3439">Conceptos Básicos del Análisis</A>
+<DT><STRONG>atributo heredado</STRONG>
+<DD><A HREF="node44.html#4690">Esquemas de Traducción</A>
+ | <A HREF="node46.html#4708">Definición Dirigida por la</A>
+<DT><STRONG>atributo sintetizado</STRONG>
+<DD><A HREF="node44.html#4692">Esquemas de Traducción</A>
+ | <A HREF="node46.html#4710">Definición Dirigida por la</A>
+<DT><STRONG>atributos formales</STRONG>
+<DD><A HREF="node46.html#4698">Definición Dirigida por la</A>
+<DT><STRONG>atributos heredados</STRONG>
+<DD><A HREF="node44.html#4688">Esquemas de Traducción</A>
+ | <A HREF="node45.html#4694">Manejo en <TT>jison</TT> de</A>
+ | <A HREF="node46.html#4706">Definición Dirigida por la</A>
+<DT><STRONG>atributos intrínsecos</STRONG>
+<DD><A HREF="node46.html#4712">Definición Dirigida por la</A>
+<DT><STRONG>atributos sintetizados</STRONG>
+<DD><A HREF="node44.html#4686">Esquemas de Traducción</A>
+ | <A HREF="node46.html#4704">Definición Dirigida por la</A>
+<DT><STRONG>autómata finito determinista</STRONG>
+<DD><A HREF="node37.html#3463">Construcción de las Tablas</A>
+<DT><STRONG>clausura</STRONG>
+<DD><A HREF="node37.html#3469">Construcción de las Tablas</A>
+<DT><STRONG>conflicto de desplazamiento-reducción</STRONG>
+<DD><A HREF="node37.html#3497">Construcción de las Tablas</A>
+ | <A HREF="node43.html#4670">Precedencia y Asociatividad</A>
+<DT><STRONG>conflicto reduce-reduce</STRONG>
+<DD><A HREF="node37.html#3499">Construcción de las Tablas</A>
+ | <A HREF="node43.html#4672">Precedencia y Asociatividad</A>
+<DT><STRONG>conflicto shift-reduce</STRONG>
+<DD><A HREF="node37.html#3495">Construcción de las Tablas</A>
+ | <A HREF="node43.html#4668">Precedencia y Asociatividad</A>
+<DT><STRONG>definición dirigida por la sintáxis</STRONG>
+<DD><A HREF="node46.html#4696">Definición Dirigida por la</A>
+<DT><STRONG>DFA</STRONG>
+<DD><A HREF="node37.html#3465">Construcción de las Tablas</A>
+<DT><STRONG>esquema de traducción</STRONG>
+<DD><A HREF="node44.html#4684">Esquemas de Traducción</A>
+<DT><STRONG>evaluation stack</STRONG>
+<DD><A HREF="node40.html#3525">Práctica: Calculadora con Análisis</A>
+<DT><STRONG>función de transición del autómata</STRONG>
+<DD><A HREF="node37.html#3471">Construcción de las Tablas</A>
+<DT><STRONG>goto</STRONG>
+<DD><A HREF="node37.html#3479">Construcción de las Tablas</A>
+<DT><STRONG>grafo de dependencias</STRONG>
+<DD><A HREF="node46.html#4714">Definición Dirigida por la</A>
+<DT><STRONG>gramática atribuída</STRONG>
+<DD><A HREF="node46.html#4720">Definición Dirigida por la</A>
+<DT><STRONG>gramática es recursiva por la izquierda</STRONG>
+<DD><A HREF="node22.html#2448">Asociación Incorrecta para la</A>
+<DT><STRONG>handle</STRONG>
+<DD><A HREF="node36.html#3453">Conceptos Básicos del Análisis</A>
+ | <A HREF="node36.html#3445">Conceptos Básicos del Análisis</A>
+<DT><STRONG>INI</STRONG>
+<DD><A HREF="node13.html#1996">Ejercicios</A>
+<DT><STRONG>items núcleo</STRONG>
+<DD><A HREF="node37.html#3505">Construcción de las Tablas</A>
+<DT><STRONG>L-atribuída</STRONG>
+<DD><A HREF="node46.html#4722">Definición Dirigida por la</A>
+<DT><STRONG>LALR</STRONG>
+<DD><A HREF="node37.html#3503">Construcción de las Tablas</A>
+<DT><STRONG>lenguaje de las formas sentenciales a rderechas</STRONG>
+<DD><A HREF="node36.html#3443">Conceptos Básicos del Análisis</A>
+<DT><STRONG>LR</STRONG>
+<DD><A HREF="node36.html#3437">Conceptos Básicos del Análisis</A>
+<DT><STRONG>manecilla</STRONG>
+<DD><A HREF="node36.html#3449">Conceptos Básicos del Análisis</A>
+<DT><STRONG>mango</STRONG>
+<DD><A HREF="node36.html#3451">Conceptos Básicos del Análisis</A>
+ | <A HREF="node36.html#3447">Conceptos Básicos del Análisis</A>
+<DT><STRONG>NFA</STRONG>
+<DD><A HREF="node36.html#3457">Conceptos Básicos del Análisis</A>
+<DT><STRONG>orden parcial</STRONG>
+<DD><A HREF="node46.html#4716">Definición Dirigida por la</A>
+<DT><STRONG>orden topológico</STRONG>
+<DD><A HREF="node46.html#4718">Definición Dirigida por la</A>
+<DT><STRONG>Primeros</STRONG>
+<DD><A HREF="node37.html#3459">Los conjuntos de Primeros</A>
+<DT><STRONG>Práctica</STRONG>
+<DD><DL COMPACT>
+<DT><STRONG>Ambiguedad en C++</STRONG>
+<DD><A HREF="node30.html#2483">Práctica: Ambiguedad en C++</A>
+<DT><STRONG>Analizador Léxico para Un Subconjunto de JavaScript</STRONG>
+<DD><A HREF="node16.html#2019">Práctica: Analizador Léxico para</A>
+<DT><STRONG>Calculadora  con Funciones</STRONG>
+<DD><A HREF="node39.html#3510">Práctica: Calculadora con Funciones</A>
+<DT><STRONG>Calculadora con Análisis de Ámbito</STRONG>
+<DD><A HREF="node40.html#3512">Práctica: Calculadora con Análisis</A>
+<DT><STRONG>Calculadora con Listas de Expresiones y Variables</STRONG>
+<DD><A HREF="node35.html#3436">Práctica: Calculadora con Listas</A>
+<DT><STRONG>Comma Separated Values</STRONG>
+<DD><A HREF="node10.html#1941">Práctica: Comma Separated Values</A>
+<DT><STRONG>Conversor de Temperaturas</STRONG>
+<DD><A HREF="node9.html#1927">Práctica: Conversor de Temperaturas</A>
+<DT><STRONG>Ficheros INI</STRONG>
+<DD><A HREF="node15.html#2001">Práctica: Ficheros INI</A>
+<DT><STRONG>Inventando un Lenguaje: Tortoise</STRONG>
+<DD><A HREF="node31.html#2485">Práctica: Inventando un Lenguaje:</A>
+<DT><STRONG>Palabras Repetidas</STRONG>
+<DD><A HREF="node12.html#1971">Práctica: Palabras Repetidas</A>
+<DT><STRONG>Secuencia de Asignaciones Simples</STRONG>
+<DD><A HREF="node34.html#3402">Práctica: Secuencia de Asignaciones</A>
+<DT><STRONG>Traducción de Infijo a Postfijo</STRONG>
+<DD><A HREF="node38.html#3508">Práctica: Traducción de Infijo</A>
+</DL>
+<DT><STRONG>recursion</STRONG>
+<DD><A HREF="node40.html#3521">Práctica: Calculadora con Análisis</A>
+<DT><STRONG>recursiva por la derecha</STRONG>
+<DD><A HREF="node24.html#2452">Eliminación de la Recursión</A>
+<DT><STRONG>recursiva por la izquierda</STRONG>
+<DD><A HREF="node22.html#2450">Asociación Incorrecta para la</A>
+<DT><STRONG>reducción por defecto</STRONG>
+<DD><A HREF="node42.html#4666">defaultActions</A>
+<DT><STRONG>reducción-reducción</STRONG>
+<DD><A HREF="node37.html#3501">Construcción de las Tablas</A>
+ | <A HREF="node43.html#4674">Precedencia y Asociatividad</A>
+<DT><STRONG>reentrant</STRONG>
+<DD><A HREF="node40.html#3519">Práctica: Calculadora con Análisis</A>
+<DT><STRONG>register spilling</STRONG>
+<DD><A HREF="node40.html#3523">Práctica: Calculadora con Análisis</A>
+<DT><STRONG>reglas de evaluación de los atributos</STRONG>
+<DD><A HREF="node46.html#4700">Definición Dirigida por la</A>
+<DT><STRONG>reglas semánticas</STRONG>
+<DD><A HREF="node46.html#4702">Definición Dirigida por la</A>
+<DT><STRONG>rightmost derivation</STRONG>
+<DD><A HREF="node36.html#3441">Conceptos Básicos del Análisis</A>
+<DT><STRONG>S-atribuída</STRONG>
+<DD><A HREF="node46.html#4724">Definición Dirigida por la</A>
+<DT><STRONG>siguientes</STRONG>
+<DD><A HREF="node37.html#3461">Los conjuntos de Primeros</A>
+<DT><STRONG>SLR</STRONG>
+<DD><A HREF="node37.html#3491">Construcción de las Tablas</A>
+ | <A HREF="node37.html#3493">Construcción de las Tablas</A>
+ | <A HREF="node37.html#3481">Construcción de las Tablas</A>
+<DT><STRONG>static link</STRONG>
+<DD><A HREF="node40.html#3517">Práctica: Calculadora con Análisis</A>
+<DT><STRONG>tabla de acciones</STRONG>
+<DD><A HREF="node37.html#3477">Construcción de las Tablas</A>
+ | <A HREF="node37.html#3483">Construcción de las Tablas</A>
+<DT><STRONG>tabla de gotos</STRONG>
+<DD><A HREF="node37.html#3475">Construcción de las Tablas</A>
+<DT><STRONG>tabla de saltos</STRONG>
+<DD><A HREF="node37.html#3473">Construcción de las Tablas</A>
+<DT><STRONG>árbol sintáctico concreto</STRONG>
+<DD><A HREF="node33.html#3375">Conceptos Básicos para el</A>
 
-<OL>
-<LI>Resuelva el problema de calcular las direcciones de las variables
-declaradas en los bloques. La memoria ocupada por dichas variables
-se libera al terminar el bloque. Por tanto la variable <code>$global_address</code>
-disminuye al final de cada bloque.
-</LI>
-<LI><A NAME="item:norepetidas"></A>En el código de la subrutina <code>Address::Assignment::str</code> 
-
-<P>
-<PRE>
-  sub str {
-    my $str = shift;
-    my $len = length($str);
-    my $offset = length($data);
-    $data .= $str;
-    return ($offset, $len);
-  }
-</PRE>
-
-<P>
-no se comprueba si la cadena <code>$str</code> ya está en <code>$data</code>. 
-Es natural que si ya está no la insertemos de nuevo. Introduzca esa 
-mejora. Para ello use la función <code>pos</code>,
-la cual devuelve el desplazamiento en <code>$data</code> donde
-quedó la última búsqueda <code>$data =~ m/regexp/g</code>.
- El siguiente ejemplo con
-el depurador le muestra como trabaja. Escriba <code>perldoc -f pos</code>
-para obtener mas información sobre la función <code>pos</code>.
-Vea un ejemplo de uso:
-
-<P>
-<PRE>
-DB&lt;1&gt; $str = "world"
-#              012345678901234567890123456789012
-DB&lt;2&gt; $data = "hello worldjust another statement"
-DB&lt;3&gt; $res = $data =~ m{$str}g
-DB&lt;4&gt; x pos($data) # la siguiente busqueda comienza en la 11
-0  11
-DB&lt;5&gt; $s = "hello"
-DB&lt;6&gt; $res = $data =~ m{$s}g
-DB&lt;7&gt; x pos($data) # No hay "hello" despues de world en $data
-0  undef
-DB&lt;8&gt; $res = $data =~ m{$str}g # Repetimos ...
-DB&lt;9&gt; x pos($data)
-0  11
-DB&lt;10&gt; pos($data) = 0  # Podemos reiniciar pos!
-DB&lt;11&gt; $res = $data =~ m{$s}g
-DB&lt;12&gt; x pos($data) # Ahora si se encuentra "hello"
-0  5
-</PRE>
-
-<P>
-</LI>
-<LI><A NAME="item:compacta"></A>Empaquete las cadenas asumiendo que cada carácter ocupa un octeto o byte.
-Una posible solución al problema de alineamiento que se produce es
-rellenar con ceros los bytes que faltan hasta completar la última palabra
-ocupada por la cadena. Por ejemplo, si la longitud de palabra de la 
-máquina objeto es de 4 
-bytes, la palabra <SPAN  CLASS="textbf">procesador</SPAN> se cargaría asi:
-
-<P>
-<DIV ALIGN="CENTER">
-</DIV><PRE>
-   0    |    1    |    2      
-0 1 2 3 | 4 5 6 7 | 8 9 10  11
-p r o c | e s a d | o r \0  \0
-</PRE>
-<DIV ALIGN="CENTER">
-</DIV>
-
-<P>
-Existen dos posibles formas de hacer esta empaquetado.
-Por ejemplo, si tenemos las cadenas
-<code>lucas</code> y <code>pedro</code> las podemos introducir en 
-la cadena <code>$data</code> asi:
-
-<P>
-<DIV ALIGN="CENTER">
-</DIV><PRE>
-   0    |     1      |    2      |    3
-0 1 2 3 | 4  5  6  7 | 8 9 10 11 | 12 13 14 15
-l u c a | s \0 \0 \0 | p e  d  r |  o \0 \0 \0
-</PRE>
-<DIV ALIGN="CENTER">
-</DIV>
-
-<P>
-o bien:
-
-<P>
-<DIV ALIGN="CENTER">
-</DIV><PRE>
-   0    |    1    |    2     
-0 1 2 3 | 4 5 6 7 | 8 9 10 11
-l u c a | s p e d | r o \0 \0
-</PRE>
-<DIV ALIGN="CENTER">
-</DIV>
-
-<P>
-La segunda forma aunque compacta más tiene la desventaja de hacer luego mas 
-lento el código para el 
-direccionamiento de las cadenas, ya que no empiezan en frontera de palabra. 
-Utilice el primer modo.
-
-<P>
-Observe que este empaquetado introduce un efecto en lo que 
-se considera un éxito en la búsqueda de una cadena 
-<code>$str</code> en <code>$data</code>. ¿Que ocurre si <code>$str</code>
-aparece en <code>$data</code> como subcadena de una cadena
-previamente empaquetada ocupando una posición que no es frontera de palabra?
-
-<P>
-Cuando rellene con <code>\0</code> la cadena use el operador <code>x</code> (letra equis)
-para multiplicar número por cadena:
-
-<P>
-<PRE>
-DB&lt;1&gt; $x = "hola"x4
-DB&lt;2&gt; p $x
-holaholaholahola
-</PRE>
-
-<P>
-esto le evitará escribir un bucle.
-</LI>
-<LI>Mantega atributos distintos en el nodo <code>STR</code>
-para el desplazamiento y longitud 
-de <code>$str</code> en <code>$data</code> (en caracteres)
-y su dirección y tamaño final en memoria (en palabras).
-
-<P>
-</LI>
-</OL>
+</DL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3448"
+<A NAME="tex2html1778"
   HREF="node74.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3442"
-  HREF="node60.html">
+<A NAME="tex2html1774"
+  HREF="javascriptexamples.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3436"
+<A NAME="tex2html1768"
   HREF="node72.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3444"
-  HREF="node234.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3446"
-  HREF="node237.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
+<A NAME="tex2html1776"
+  HREF="node70.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>  <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
  SRC="logoLPP.png"
@@ -475,17 +329,17 @@ y su dirección y tamaño final en memoria (en palabras).
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3449"
-  HREF="node74.html">Generación de Código: Máquina</A>
-<B>Sup:</B> <A NAME="tex2html3443"
-  HREF="node60.html">Análisis Sintáctico Descendente en</A>
-<B> Ant:</B> <A NAME="tex2html3437"
-  HREF="node72.html">Patrones Árbol y Transformaciones</A>
+<B> Sig:</B> <A NAME="tex2html1779"
+  HREF="node74.html">Bibliograf&#237;a</A>
+<B>Sup:</B> <A NAME="tex2html1775"
+  HREF="javascriptexamples.html">Apuntes de la Asignatura</A>
+<B> Ant:</B> <A NAME="tex2html1769"
+  HREF="node72.html">&#205;ndice de Tablas</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-01-17</I>
+2014-01-20</I>
 </ADDRESS>
 </BODY>
 </HTML>
