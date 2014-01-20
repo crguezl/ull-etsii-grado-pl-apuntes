@@ -27,19 +27,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1563"
+<A NAME="tex2html1566"
   HREF="node65.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1557"
+<A NAME="tex2html1560"
   HREF="node60.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1553"
+<A NAME="tex2html1556"
   HREF="node63.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1559"
+<A NAME="tex2html1562"
   HREF="node70.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1561"
+<A NAME="tex2html1564"
   HREF="node73.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -91,18 +91,18 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1564"
+<B> Sig:</B> <A NAME="tex2html1567"
   HREF="node65.html">Functions and all that</A>
-<B>Sup:</B> <A NAME="tex2html1558"
+<B>Sup:</B> <A NAME="tex2html1561"
   HREF="node60.html">Scheem Interpreter</A>
-<B> Ant:</B> <A NAME="tex2html1554"
+<B> Ant:</B> <A NAME="tex2html1557"
   HREF="node63.html">Setting Values</A>
 <B> Con:</B> 
-<A NAME="tex2html1559"
+<A NAME="tex2html1562"
   HREF="node70.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1561"
+<A NAME="tex2html1564"
   HREF="node73.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
@@ -112,16 +112,21 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html1565"
+<LI><A NAME="tex2html1568"
   HREF="node64.html#SECTION05441000000000000000">Unit Testing: Mocha</A>
-<LI><A NAME="tex2html1566"
+<LI><A NAME="tex2html1569"
   HREF="node64.html#SECTION05442000000000000000">Karma</A>
-<LI><A NAME="tex2html1567"
+<LI><A NAME="tex2html1570"
   HREF="node64.html#SECTION05443000000000000000">Grunt</A>
 <UL>
-<LI><A NAME="tex2html1568"
+<LI><A NAME="tex2html1571"
   HREF="node64.html#SECTION05443100000000000000">package.json</A>
-</UL></UL>
+<LI><A NAME="tex2html1572"
+  HREF="node64.html#SECTION05443200000000000000">Gruntfile</A>
+<UL>
+<LI><A NAME="tex2html1573"
+  HREF="node64.html#SECTION05443210000000000000">An example Gruntfile</A>
+</UL></UL></UL>
 <!--End of Table of Child-Links-->
 <HR>
 
@@ -258,7 +263,7 @@ Karma</A>
 <P>
 
 <UL>
-<LI><A NAME="5340"></A><SPAN  CLASS="textbf">Karma</SPAN> is essentially a tool which spawns a web server that executes source
+<LI><A NAME="5346"></A><SPAN  CLASS="textbf">Karma</SPAN> is essentially a tool which spawns a web server that executes source
 code against test code for each of the browsers connected. 
 
 <P>
@@ -524,7 +529,7 @@ A typical setup will involve adding two files to your project: <code>package.jso
 to store metadata for projects published as <code>npm</code> modules. 
 
 <P>
-You will list grunt and the Grunt plugins your project needs as <A NAME="5342"></A><SPAN  CLASS="textbf">devDependencies</SPAN> 
+You will list grunt and the Grunt plugins your project needs as <A NAME="5348"></A><SPAN  CLASS="textbf">devDependencies</SPAN> 
 in this file.
 
 <P>
@@ -582,20 +587,98 @@ will install the correct version of each dependency listed therein.
 
 <P>
 
+<H3><A NAME="SECTION05443200000000000000">
+Gruntfile</A>
+</H3>
+
+<P>
+The Gruntfile.js or Gruntfile.coffee file is a valid JavaScript or
+CoffeeScript file that belongs in the root directory of your project,
+next to the package.json file, and should be committed with your project
+source.
+
+<P>
+A Gruntfile is comprised of the following parts:
+
+<P>
+
+<UL>
+<LI>The "wrapper" function
+</LI>
+<LI>Project and task configuration
+</LI>
+<LI>Loading Grunt plugins and tasks
+</LI>
+<LI>Custom tasks
+</LI>
+</UL>
+
+<P>
+
+<H4><A NAME="SECTION05443210000000000000">
+An example Gruntfile</A>
+</H4>
+  
+
+<P>
+In the following Gruntfile, project metadata is imported into the Grunt
+config from the project's <code>package.json</code> file and the 
+
+<P>
+grunt-contrib-uglify
+
+<P>
+plugin's uglify task is configured to minify a source file and generate
+a banner comment dynamically using that metadata. 
+
+<P>
+When grunt is run on
+the command line, the uglify task will be run by default.
+
+<P>
+<PRE>
+module.exports = function(grunt) {
+
+  // Project configuration.
+  grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
+    uglify: {
+      options: {
+        banner: '/*! &lt;%= pkg.name %&gt; &lt;%= grunt.template.today("yyyy-mm-dd") %&gt; */\n'
+      },
+      build: {
+        src: 'src/&lt;%= pkg.name %&gt;.js',
+        dest: 'build/&lt;%= pkg.name %&gt;.min.js'
+      }
+    }
+  });
+
+  // Load the plugin that provides the "uglify" task.
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+
+  // Default task(s).
+  grunt.registerTask('default', ['uglify']);
+
+};
+</PRE>
+Now that you've seen the whole Gruntfile, let's look at its component parts.
+
+<P>
+
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1563"
+<A NAME="tex2html1566"
   HREF="node65.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1557"
+<A NAME="tex2html1560"
   HREF="node60.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1553"
+<A NAME="tex2html1556"
   HREF="node63.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1559"
+<A NAME="tex2html1562"
   HREF="node70.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1561"
+<A NAME="tex2html1564"
   HREF="node73.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -647,11 +730,11 @@ will install the correct version of each dependency listed therein.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1564"
+<B> Sig:</B> <A NAME="tex2html1567"
   HREF="node65.html">Functions and all that</A>
-<B>Sup:</B> <A NAME="tex2html1558"
+<B>Sup:</B> <A NAME="tex2html1561"
   HREF="node60.html">Scheem Interpreter</A>
-<B> Ant:</B> <A NAME="tex2html1554"
+<B> Ant:</B> <A NAME="tex2html1557"
   HREF="node63.html">Setting Values</A>
 </DIV>
 <!--End of Navigation Panel-->
