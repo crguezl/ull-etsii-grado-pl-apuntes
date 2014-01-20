@@ -267,7 +267,7 @@ Karma</A>
 <P>
 
 <UL>
-<LI><A NAME="5352"></A><SPAN  CLASS="textbf">Karma</SPAN> is essentially a tool which spawns a web server that executes source
+<LI><A NAME="5362"></A><SPAN  CLASS="textbf">Karma</SPAN> is essentially a tool which spawns a web server that executes source
 code against test code for each of the browsers connected. 
 
 <P>
@@ -533,7 +533,7 @@ A typical setup will involve adding two files to your project: <code>package.jso
 to store metadata for projects published as <code>npm</code> modules. 
 
 <P>
-You will list grunt and the Grunt plugins your project needs as <A NAME="5354"></A><SPAN  CLASS="textbf">devDependencies</SPAN> 
+You will list grunt and the Grunt plugins your project needs as <A NAME="5364"></A><SPAN  CLASS="textbf">devDependencies</SPAN> 
 in this file.
 
 <P>
@@ -730,6 +730,105 @@ grunt.initConfig({
     }
   }
 });
+</PRE>
+
+<P>
+<PRE>
+[~/srcPLgrado/grunt-simple-example(master)]$ pwd
+/Users/casiano/srcPLgrado/grunt-simple-example
+[~/srcPLgrado/grunt-simple-example(master)]$ git remote -v
+origin  git@github.com:UWMadisonUcomm/grunt-simple-example.git (fetch)
+origin  git@github.com:UWMadisonUcomm/grunt-simple-example.git (push)
+[~/srcPLgrado/grunt-simple-example(master)]$ ls
+Gruntfile.js Readme.md    assets       index.html   node_modules package.json src
+</PRE>
+
+<P>
+<PRE>
+[~/srcPLgrado/grunt-simple-example(master)]$ cat Gruntfile.js 
+module.exports = function(grunt){
+  grunt.initConfig({
+    uglify: {
+      main: {
+        files: {
+          'assets/app.min.js': [
+            'src/javascripts/jquery-1.10.2.min.js',
+            'src/javascripts/bootstrap.js',
+            'src/javascripts/application.js'
+          ]
+        }
+      }
+    },
+    less: {
+      application: {
+        options: {
+          yuicompress: true
+        },
+        files: {
+          "assets/app.min.css": "src/stylesheets/application.less"
+        }
+      }
+    },
+    watch: {
+      javascripts: {
+        files: ['src/javascripts/**/*'],
+        tasks: ['uglify']
+      },
+      stylesheets: {
+        files: ['src/stylesheets/**/*'],
+        tasks: ['less']
+      }
+    }
+  });
+
+  // Load plugins
+  grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+
+  // Register tasks
+  grunt.registerTask('default', ['uglify', 'less']);
+}
+</PRE>
+
+<P>
+<PRE>
+[~/srcPLgrado/grunt-simple-example(master)]$ cat package.json 
+{
+  "name": "grunt-simple-example",
+  "version": "0.0.1",
+  "main": "index.js",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-cssmin": "~0.6.2",
+    "grunt-contrib-less": "~0.7.0",
+    "grunt-contrib-uglify": "~0.2.4",
+    "grunt-contrib-watch": "~0.5.3"
+  },
+  "author": "Bryan Shelton",
+  "license": "BSD-2-Clause"
+}
+</PRE>
+
+<P>
+<PRE>
+[~/srcPLgrado/grunt-simple-example(master)]$ npm install
+npm WARN package.json grunt-simple-example@0.0.1 No repository field.
+[~/srcPLgrado/grunt-simple-example(master)]$
+</PRE>
+
+<P>
+<PRE>
+[~/srcPLgrado/grunt-simple-example(master)]$ grunt watch
+Running "watch" task
+Waiting...OK
+&gt;&gt; File "src/javascripts/application.js" changed.
+
+Running "uglify:main" (uglify) task
+File "assets/app.min.js" created.
+
+Done, without errors.
+Completed in 3.897s at Mon Jan 20 2014 19:02:03 GMT+0000 (WET) - Waiting...
 </PRE>
 
 <P>
