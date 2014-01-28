@@ -28,19 +28,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html631"
+<A NAME="tex2html635"
   HREF="node10.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html625"
+<A NAME="tex2html629"
   HREF="node7.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html619"
+<A NAME="tex2html623"
   HREF="node8.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html627"
+<A NAME="tex2html631"
   HREF="node70.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html629"
+<A NAME="tex2html633"
   HREF="node73.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -92,18 +92,18 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html632"
+<B> Sig:</B> <A NAME="tex2html636"
   HREF="node10.html">Práctica: Comma Separated Values</A>
-<B>Sup:</B> <A NAME="tex2html626"
+<B>Sup:</B> <A NAME="tex2html630"
   HREF="node7.html">Expresiones Regulares y Análisis</A>
-<B> Ant:</B> <A NAME="tex2html620"
+<B> Ant:</B> <A NAME="tex2html624"
   HREF="node8.html">Mozilla Developer Network: Documentación</A>
 <B> Con:</B> 
-<A NAME="tex2html627"
+<A NAME="tex2html631"
   HREF="node70.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html629"
+<A NAME="tex2html633"
   HREF="node73.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
@@ -115,18 +115,26 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <UL CLASS="ChildLinks">
 <LI><UL>
 <LI><UL>
-<LI><A NAME="tex2html633"
+<LI><A NAME="tex2html637"
   HREF="node9.html#SECTION04120010000000000000">index.html</A>
-<LI><A NAME="tex2html634"
+<LI><A NAME="tex2html638"
   HREF="node9.html#SECTION04120020000000000000">global.css</A>
-<LI><A NAME="tex2html635"
+<LI><A NAME="tex2html639"
   HREF="node9.html#SECTION04120030000000000000">temperature.js</A>
+<LI><A NAME="tex2html640"
+  HREF="node9.html#SECTION04120040000000000000">Despliegue</A>
+<LI><A NAME="tex2html641"
+  HREF="node9.html#SECTION04120050000000000000">Pruebas: Estructura</A>
+<LI><A NAME="tex2html642"
+  HREF="node9.html#SECTION04120060000000000000">Pruebas: <TT>index.html</TT></A>
+<LI><A NAME="tex2html643"
+  HREF="node9.html#SECTION04120070000000000000">Pruebas: Añadir los tests</A>
 </UL></UL></UL>
 <!--End of Table of Child-Links-->
 <HR>
 
 <H1><A NAME="SECTION04120000000000000000"></A>
-   <A NAME="1946"></A>
+   <A NAME="1965"></A>
   
 <A NAME="sectionpractica:conversordetemperaturas"></A>
 <BR>
@@ -239,6 +247,11 @@ temperature.js</A>
 
 <P>
 
+<H4><A NAME="SECTION04120040000000000000">
+Despliegue</A>
+</H4>
+  
+
 <UL>
 <LI>Deberá desplegar la aplicación en GitHub Pages como página de proyecto.
 Vea la sección <I>GitHub Project Pages</I> <A HREF="node64.html#subsection:githubprojectpages">9.4.4</A>.
@@ -247,20 +260,141 @@ Vea la sección <I>GitHub Project Pages</I> <A HREF="node64.html#subsection:gith
 
 <P>
 
+<H4><A NAME="SECTION04120050000000000000">
+Pruebas: Estructura</A>
+</H4>
+  
+
+<P>
+<PRE>
+mocha init tests
+</PRE>
+
+<P>
+<PRE>
+$ mocha init tests
+$ tree tests
+tests
+|-- index.html
+|-- mocha.css
+|-- mocha.js
+`-- tests.js
+</PRE>
+
+<P>
+Añadimos <code>chai.js</code>
+<PRE>
+[~/srcPLgrado/temperature(master)]$ tree tests/
+tests/
+|-- chai.js
+|-- index.html
+|-- mocha.css
+|-- mocha.js
+`-- tests.js
+
+0 directories, 5 files
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION04120060000000000000">
+Pruebas: <TT>index.html</TT></A>
+</H4>
+  
+
+<P>
+Modificamos <code>index.html</code> para 
+
+<UL>
+<LI>Cargar <code>chai.js</code>
+</LI>
+<LI>Cargar <code>temperature.js</code>
+</LI>
+<LI>Usar el estilo <code>mocha.setup('tdd')</code>:
+</LI>
+<LI>Imitar la página <code>index.html</code> con los correspondientes <code>input</code> y 
+<code>span</code>:
+<PRE>
+    &lt;input id="original" placeholder="32F" size="50"&gt;
+    &lt;span class="output" id="converted"&gt;&lt;/span&gt;
+</PRE>
+</LI>
+</UL>
+<PRE>
+[~/srcPLgrado/temperature(master)]$ cat tests/index.html 
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Mocha&lt;/title&gt;
+    &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;link rel="stylesheet" href="mocha.css" /&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div id="mocha"&gt;&lt;/div&gt;
+    &lt;input id="original" placeholder="32F" size="50"&gt;
+    &lt;span class="output" id="converted"&gt;&lt;/span&gt;
+
+    &lt;script src="chai.js"&gt;&lt;/script&gt;
+    &lt;script src="mocha.js"&gt;&lt;/script&gt;
+    &lt;script src="../temperature.js"&gt;&lt;/script&gt;
+    &lt;script&gt;mocha.setup('tdd')&lt;/script&gt;
+    &lt;script src="tests.js"&gt;&lt;/script&gt;
+
+    &lt;script&gt;
+      mocha.run();
+    &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION04120070000000000000">
+Pruebas: Añadir los tests</A>
+</H4>
+  
+
+<P>
+<PRE>
+[~/srcPLgrado/temperature(master)]$ cat tests/tests.js 
+var assert = chai.assert;
+
+suite('temperature', function() {
+    test('32F = 0C', function() {
+        original.value = "32F";
+        calculate();
+        assert.deepEqual(converted.innerHTML, "0.0 Celsius");
+    });
+    test('45C = 113.0 Farenheit', function() {
+        original.value = "45C";
+        calculate();
+        assert.deepEqual(converted.innerHTML, "113.0 Farenheit");
+    });
+    test('5X = error', function() {
+        original.value = "5X";
+        calculate();
+        assert.match(converted.innerHTML, /ERROR/);
+    });
+});
+</PRE>
+
+<P>
+
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html631"
+<A NAME="tex2html635"
   HREF="node10.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html625"
+<A NAME="tex2html629"
   HREF="node7.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html619"
+<A NAME="tex2html623"
   HREF="node8.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html627"
+<A NAME="tex2html631"
   HREF="node70.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html629"
+<A NAME="tex2html633"
   HREF="node73.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -312,11 +446,11 @@ Vea la sección <I>GitHub Project Pages</I> <A HREF="node64.html#subsection:gith
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html632"
+<B> Sig:</B> <A NAME="tex2html636"
   HREF="node10.html">Práctica: Comma Separated Values</A>
-<B>Sup:</B> <A NAME="tex2html626"
+<B>Sup:</B> <A NAME="tex2html630"
   HREF="node7.html">Expresiones Regulares y Análisis</A>
-<B> Ant:</B> <A NAME="tex2html620"
+<B> Ant:</B> <A NAME="tex2html624"
   HREF="node8.html">Mozilla Developer Network: Documentación</A>
 </DIV>
 <!--End of Navigation Panel-->
