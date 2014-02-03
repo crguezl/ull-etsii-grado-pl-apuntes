@@ -136,7 +136,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <HR>
 
 <H1><A NAME="SECTION04130000000000000000"></A>
-   <A NAME="2055"></A>
+   <A NAME="2065"></A>
 <BR>
 Práctica: Comma Separated Values. CSV
 </H1>
@@ -323,7 +323,7 @@ index.html</A>
   HREF="http://jquery.com/download/">Descarga la librería</A>)
 
 <P>
-<A NAME="2078"></A><SPAN  CLASS="textit">jQuery</SPAN> is a cross-platform JavaScript library designed to simplify
+<A NAME="2088"></A><SPAN  CLASS="textit">jQuery</SPAN> is a cross-platform JavaScript library designed to simplify
 the client-side scripting of HTML. 
 
 <P>
@@ -426,7 +426,7 @@ Google provee también un servicio CDN para los desarrolladores en
 The <code>&lt;textarea&gt;</code> tag defines a multi-line text input control.
 
 <P>
-A <A NAME="2080"></A><SPAN  CLASS="textit">text area</SPAN> can hold an unlimited number of characters, and the text
+A <A NAME="2090"></A><SPAN  CLASS="textit">text area</SPAN> can hold an unlimited number of characters, and the text
 renders in a fixed-width font (usually Courier).
 
 <P>
@@ -535,7 +535,7 @@ basándonos en el lenguaje o que tipo de etiqueta no son
 <LI><A NAME="tex2html39"
   HREF="http://www.w3.org/TR/CSS2/selector.html#pattern-matching">CSS pattern matching</A>
 <P>
-In CSS, <A NAME="2086"></A><SPAN  CLASS="textit">pattern matching</SPAN> rules determine which style rules apply
+In CSS, <A NAME="2096"></A><SPAN  CLASS="textit">pattern matching</SPAN> rules determine which style rules apply
 to elements in the document tree. 
 These patterns, called selectors,
 may range from simple element names to rich contextual patterns. If all
@@ -677,6 +677,104 @@ csv.js</A>
 </LI>
 <LI><A NAME="tex2html44"
   HREF="http://underscorejs.org/#template">Underscore: template</A>
+<P>
+<code>_.template(templateString, [data], [settings])</code>
+
+<P>
+Compiles JavaScript templates into functions that can be evaluated for
+rendering. Useful for rendering complicated bits of HTML from JSON data
+sources. 
+
+<P>
+Template functions can both interpolate variables, using 
+<code>&lt;%= … %&gt;</code>, as well as execute arbitrary JavaScript code, with 
+<code>&lt;% … %&gt;</code>. 
+
+<P>
+If
+you wish to interpolate a value, and have it be HTML-escaped, use 
+<code>&lt;%- … %&gt;</code> 
+
+<P>
+When you evaluate a template function, pass in a data object
+that has properties corresponding to the template's free variables. 
+
+<P>
+If
+you're writing a one-off, you can pass the data object as the second
+parameter to template in order to render immediately instead of returning
+a template function. 
+
+<P>
+The settings argument should be a hash containing
+any <code>_.templateSettings</code> that should be overridden.
+
+<P>
+<PRE>
+var compiled = _.template("hello: &lt;%= name %&gt;");
+compiled({name: 'moe'});
+=&gt; "hello: moe"
+
+var list = "&lt;% _.each(people, function(name) { %&gt; &lt;li&gt;&lt;%= name %&gt;&lt;/li&gt; &lt;% }); %&gt;";
+_.template(list, {people: ['moe', 'curly', 'larry']});
+=&gt; "&lt;li&gt;moe&lt;/li&gt;&lt;li&gt;curly&lt;/li&gt;&lt;li&gt;larry&lt;/li&gt;"
+
+var template = _.template("&lt;b&gt;&lt;%- value %&gt;&lt;/b&gt;");
+template({value: '&lt;script&gt;'});
+=&gt; "&lt;b&gt;&amp;lt;script&amp;gt;&lt;/b&gt;"
+</PRE>
+You can also use <code>print</code> from within JavaScript code. This is sometimes
+more convenient than using <code>&lt;%= ... %&gt;</code>.
+
+<P>
+<PRE>
+var compiled = _.template("&lt;% print('Hello ' + epithet); %&gt;");
+compiled({epithet: "stooge"});
+=&gt; "Hello stooge"
+</PRE>
+If ERB-style delimiters aren't your cup of tea, you can change
+Underscore's template settings to use different symbols to set off
+interpolated code. Define an interpolate regex to match expressions that
+should be interpolated verbatim, an escape regex to match expressions
+that should be inserted after being HTML escaped, and an evaluate regex
+to match expressions that should be evaluated without insertion into
+the resulting string. You may define or omit any combination of the
+three. For example, to perform <code>Mustache.js</code> style templating:
+
+<P>
+<PRE>
+_.templateSettings = {
+  interpolate: /\{\{(.+?)\}\}/g
+};
+
+var template = _.template("Hello {{ name }}!");
+template({name: "Mustache"});
+=&gt; "Hello Mustache!"
+</PRE>
+By default, template places the values from your data in the local scope
+via the with statement. However, you can specify a single variable name
+with the variable setting. This can significantly improve the speed at
+which a template is able to render.
+
+<P>
+<PRE>
+_.template("Using 'with': &lt;%= data.answer %&gt;", {answer: 'no'}, {variable: 'data'});
+=&gt; "Using 'with': no"
+</PRE>
+Precompiling your templates can be a big help when debugging errors you
+can't reproduce. This is because precompiled templates can provide line
+numbers and a stack trace, something that is not possible when compiling
+templates on the client. The source property is available on the compiled
+template function for easy precompilation.
+
+<P>
+<PRE>
+&lt;script&gt;
+  JST.project = &lt;%= _.template(jstText).source %&gt;;
+&lt;/script&gt;
+</PRE>
+
+<P>
 </LI>
 <LI><A NAME="tex2html45"
   HREF="http://stackoverflow.com/questions/4778881/how-to-use-underscore-js-as-a-template-engine">Stackoverflow::how to use Underscore template</A>
