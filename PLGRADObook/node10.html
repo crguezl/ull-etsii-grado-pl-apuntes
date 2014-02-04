@@ -704,42 +704,6 @@ they wait to execute until their parent finishes or some event occurs.
 <P>
 Meanwhile, the
 browser can be executing other functions or doing all sorts of other work.
-
-<P>
-To use callbacks, it is important to know how to pass them into their parent function.
-
-<P>
-Executing callbacks with arguments can be tricky.
-
-<P>
-This code example will not work:
-
-<P>
-<PRE>
-$.get( "myhtmlpage.html", myCallBack( param1, param2 ) );
-</PRE>
-The reason this fails is that the code executes 
-
-<P>
-<PRE>
-myCallBack( param1, param2)
-</PRE>
-
-<P>
-immediately and then passes <code>myCallBack()</code>'s return value as the second
-parameter to <code>$.get()</code>. 
-
-<P>
-We actually want to pass the function <code>myCallBack</code>,
-not <code>myCallBack( param1, param2 )</code>'s return value (which might or might not
-be a function). 
-
-<P>
-So, how to pass in <code>myCallBack()</code> and include arguments?
-
-<P>
-To defer executing <code>myCallBack()</code> with its parameters, you can use
-an anonymous function as a wrapper.
 <PRE>
 [~/javascript/jquery(master)]$ cat app.rb
 require 'sinatra'
@@ -791,6 +755,42 @@ __END__
 @@tutu
   &lt;h1&gt;Not an Ajax Request!&lt;/h1&gt;
 </PRE>
+
+<P>
+To use callbacks, it is important to know how to pass them into their parent function.
+
+<P>
+Executing callbacks with arguments can be tricky.
+
+<P>
+This code example will not work:
+
+<P>
+<PRE>
+$.get( "myhtmlpage.html", myCallBack( param1, param2 ) );
+</PRE>
+The reason this fails is that the code executes 
+
+<P>
+<PRE>
+myCallBack( param1, param2)
+</PRE>
+
+<P>
+immediately and then passes <code>myCallBack()</code>'s return value as the second
+parameter to <code>$.get()</code>. 
+
+<P>
+We actually want to pass the function <code>myCallBack</code>,
+not <code>myCallBack( param1, param2 )</code>'s return value (which might or might not
+be a function). 
+
+<P>
+So, how to pass in <code>myCallBack()</code> and include arguments?
+
+<P>
+To defer executing <code>myCallBack()</code> with its parameters, you can use
+an anonymous function as a wrapper.
 
 <P>
 <PRE>
