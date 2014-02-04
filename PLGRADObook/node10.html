@@ -146,7 +146,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <HR>
 
 <H1><A NAME="SECTION04130000000000000000"></A>
-   <A NAME="2148"></A>
+   <A NAME="2150"></A>
   
 <A NAME="sectionpractica:csv"></A>
 <BR>
@@ -531,7 +531,7 @@ jQuery</A>
   HREF="http://jquery.com/download/">Descarga la librería</A>)
 
 <P>
-<A NAME="2175"></A><SPAN  CLASS="textit">jQuery</SPAN> is a cross-platform JavaScript library designed to simplify
+<A NAME="2177"></A><SPAN  CLASS="textit">jQuery</SPAN> is a cross-platform JavaScript library designed to simplify
 the client-side scripting of HTML. 
 
 <P>
@@ -692,7 +692,7 @@ Query also provides some handy effects.
 
 <P>
 JavaScript enables you to freely
-pass functions around to be executed at a later time. A <A NAME="2177"></A><SPAN  CLASS="textit">callback</SPAN> is a
+pass functions around to be executed at a later time. A <A NAME="2179"></A><SPAN  CLASS="textit">callback</SPAN> is a
 function that is passed as an argument to another function and is usually 
 executed
 after its parent function has completed. 
@@ -707,6 +707,59 @@ browser can be executing other functions or doing all sorts of other work.
 
 <P>
 To use callbacks, it is important to know how to pass them into their parent function.
+
+<P>
+<PRE>
+[~/javascript/jquery(master)]$ cat app.rb
+require 'sinatra'
+
+set :public_folder, File.dirname(__FILE__) + '/starterkit'
+
+get '/' do
+  erb :index
+end
+
+get '/chuchu' do
+  if request.xhr?
+    "hello world!"
+  else 
+    erb :tutu
+  end
+end
+
+__END__
+
+@@layout
+  &lt;!DOCTYPE html&gt;
+  &lt;html&gt;
+    &lt;head&gt;
+        &lt;meta charset="utf-8" /&gt;
+        &lt;title&gt;Demo&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;a href="http://jquery.com/"&gt;jQuery&lt;/a&gt;
+        &lt;div class="result"&gt;&lt;/div&gt;
+        &lt;script src="jquery.js"&gt;&lt;/script&gt;
+        &lt;%= yield %&gt;
+    &lt;/body&gt;
+  &lt;/html&gt;
+
+@@index
+  &lt;script&gt;
+  $( document ).ready(function() {
+      $( "a" ).click(function( event ) {
+          event.preventDefault();
+          $.get( "/chuchu", function( data ) {
+            $( ".result" ).html( data );
+            alert( "Load was performed." );
+          });
+      });
+  });
+  &lt;/script&gt;
+
+@@tutu
+  &lt;h1&gt;Not an Ajax Request!&lt;/h1&gt;
+</PRE>
 
 <P>
 
@@ -1000,7 +1053,7 @@ textarea, autofocus y button</A>
 The <code>&lt;textarea&gt;</code> tag defines a multi-line text input control.
 
 <P>
-A <A NAME="2195"></A><SPAN  CLASS="textit">text area</SPAN> can hold an unlimited number of characters, and the text
+A <A NAME="2197"></A><SPAN  CLASS="textit">text area</SPAN> can hold an unlimited number of characters, and the text
 renders in a fixed-width font (usually Courier).
 
 <P>
@@ -1109,7 +1162,7 @@ basándonos en el lenguaje o que tipo de etiqueta no son
 <LI><A NAME="tex2html49"
   HREF="http://www.w3.org/TR/CSS2/selector.html#pattern-matching">CSS pattern matching</A>
 <P>
-In CSS, <A NAME="2201"></A><SPAN  CLASS="textit">pattern matching</SPAN> rules determine which style rules apply
+In CSS, <A NAME="2203"></A><SPAN  CLASS="textit">pattern matching</SPAN> rules determine which style rules apply
 to elements in the document tree. 
 These patterns, called selectors,
 may range from simple element names to rich contextual patterns. If all
