@@ -1211,6 +1211,21 @@ programming languages).
 <code>&lt;%= … %&gt;</code>, 
 
 <P>
+<PRE>
+&gt; compiled = uu.template("hello: &lt;%= name %&gt;")
+{ [Function]
+  source: 'function(obj){
+    var __t,__p=\'\', __j=Array.prototype.join, i
+        print=function(){__p+=__j.call(arguments,\'\');};
+    with(obj||{}){
+      __p+=\'hello: \'+ ((__t=( name ))==null?\'\':__t)+ \'\';
+    }
+    return __p;
+  }' 
+}
+&gt; compiled({name: 'moe'})
+'hello: moe'
+</PRE>
 </LI>
 <LI>as well as execute arbitrary JavaScript code, with 
 <code>&lt;% … %&gt;</code>. 
@@ -1241,29 +1256,6 @@ you wish to interpolate a value, and have it be HTML-escaped, use
 
 <P>
 <PRE>
-&gt; compiled = uu.template("hello: &lt;%= name %&gt;")
-{ [Function]
-  source: 'function(obj){
-    var __t,__p=\'\', __j=Array.prototype.join, i
-        print=function(){__p+=__j.call(arguments,\'\');};
-    with(obj||{}){
-      __p+=\'hello: \'+ ((__t=( name ))==null?\'\':__t)+ \'\';
-    }
-    return __p;
-  }' 
-}
-&gt; compiled({name: 'moe'})
-'hello: moe'
-</PRE>
-</LI>
-</UL>
-
-<P>
-The settings argument should be a hash containing
-any <code>_.templateSettings</code> that should be overridden.
-
-<P>
-<PRE>
 &gt; template = uu.template("&lt;b&gt;&lt;%- value %&gt;&lt;/b&gt;")
 { [Function]
   source: 'function(obj){
@@ -1279,6 +1271,14 @@ any <code>_.templateSettings</code> that should be overridden.
 &gt; template({value: '&lt;script&gt;'})
 '&lt;b&gt;&amp;lt;script&amp;gt;&lt;/b&gt;'
 </PRE>
+</LI>
+</UL>
+
+<P>
+The settings argument should be a hash containing
+any <code>_.templateSettings</code> that should be overridden.
+
+<P>
 You can also use <code>print</code> from within JavaScript code. This is sometimes
 more convenient than using <code>&lt;%= ... %&gt;</code>.
 
