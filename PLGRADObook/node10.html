@@ -1209,6 +1209,23 @@ programming languages).
 <UL>
 <LI>Template functions can both interpolate variables, using 
 <code>&lt;%= … %&gt;</code>, 
+
+<P>
+<PRE>
+&gt; compiled = uu.template("hello: &lt;%= name %&gt;")
+{ [Function]
+  source: 'function(obj){
+    var __t,__p=\'\', __j=Array.prototype.join, i
+        print=function(){__p+=__j.call(arguments,\'\');};
+    with(obj||{}){
+      __p+=\'hello: \'+ ((__t=( name ))==null?\'\':__t)+ \'\';
+    }
+    return __p;
+  }' 
+}
+&gt; compiled({name: 'moe'})
+'hello: moe'
+</PRE>
 </LI>
 <LI>as well as execute arbitrary JavaScript code, with 
 <code>&lt;% … %&gt;</code>. 
@@ -1231,23 +1248,6 @@ a template function.
 <P>
 The settings argument should be a hash containing
 any <code>_.templateSettings</code> that should be overridden.
-
-<P>
-<PRE>
-&gt; compiled = uu.template("hello: &lt;%= name %&gt;")
-{ [Function]
-  source: 'function(obj){
-    var __t,__p=\'\', __j=Array.prototype.join, i
-        print=function(){__p+=__j.call(arguments,\'\');};
-    with(obj||{}){
-      __p+=\'hello: \'+ ((__t=( name ))==null?\'\':__t)+ \'\';
-    }
-    return __p;
-  }' 
-}
-&gt; compiled({name: 'moe'})
-'hello: moe'
-</PRE>
 
 <P>
 <PRE>
