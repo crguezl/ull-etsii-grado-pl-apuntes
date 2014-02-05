@@ -524,19 +524,23 @@ For example, if <code>/(\a+)(\b+)/</code>, was given, p1 is the match for
 
 <P>
 <PRE>
-&gt; function f2c(x)
-... {
-...   function convert(str, p1, offset, s)
-...   { return ((p1-32) * 5/9) + "C"; }
-...   var s = String(x);
-...   var test = /(\d+(?:\.\d*)?)F\b/g;
-...   return s.replace(test, convert);
-... }
-undefined
-&gt; f2c("32F")
-'0C'
-&gt; f2c("40F")
-'4.444444444444445C'
+[~/javascript/learning]$ pwd -P
+/Users/casiano/local/src/javascript/learning
+[~/javascript/learning]$ cat f2c.js 
+function f2c(x)
+{
+  function convert(str, p1, offset, s)
+  {
+    return ((p1-32) * 5/9) + "C";
+  }
+  var s = String(x);
+  var test = /(\d+(?:\.\d*)?)F\b/g;
+  return s.replace(test, convert);
+}
+
+console.log(f2c("32F"));
+[~/javascript/learning]$ node f2c.js 
+0C
 </PRE>
 </LI>
 </OL>
