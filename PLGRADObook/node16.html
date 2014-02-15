@@ -250,6 +250,18 @@ o bien en:
   
 <UL>
 <LI><code>stopPropagation</code> stops the event from bubbling up the event chain.
+
+<P>
+Suppose you have a table and within that table you have an anchor
+      tag. Both the table and the anchor tag have code to handle mouse
+      clicks. When the user clicks on the anchor tag, which HTML element should
+      process the event first? Should it be the table then the anchor tag or
+      vice versa?
+
+<P>
+Formally, the event path is broken into three phases. In the capture phase, the event starts at the top of the DOM tree, and propagates through to the parent of the target. In the target phase, the event object arrives at its target. This is generally where you will write your event-handling code. In the bubble phase, the event will move back up through the tree until it reaches the top. Bubble phase propagation happens in reverse order to the capture phase, with an event starting at the parent of the target and ending up back at the top of the DOM tree. These days, there’s a choice to register an event in either the capture phase or the bubble phase. If you register an event in the capture phase, the parent element will process the event before the child element. In the above example, the table would process the event before the anchor.
+
+<P>
 </LI>
 <LI><code>preventDefault</code> prevents the default action the browser makes on that event.
   
