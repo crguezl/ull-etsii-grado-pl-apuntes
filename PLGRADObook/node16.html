@@ -136,7 +136,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <HR>
 
 <H1><A NAME="SECTION04190000000000000000"></A>
-   <A NAME="2470"></A>
+   <A NAME="2472"></A>
 <BR>
 Práctica: Ficheros INI
 </H1>
@@ -298,14 +298,14 @@ Suppose you have a table and within that table you have an anchor
 Formally, the event path is broken into three phases. 
       
 <UL>
-<LI>In the <A NAME="2483"></A><SPAN  CLASS="textit">capture phase</SPAN>, the event starts at the top of the DOM tree, and propagates through
+<LI>In the <A NAME="2485"></A><SPAN  CLASS="textit">capture phase</SPAN>, the event starts at the top of the DOM tree, and propagates through
       to the parent of the target. 
 </LI>
-<LI>In the <A NAME="2485"></A><SPAN  CLASS="textit">target phase</SPAN>, the event object arrives
+<LI>In the <A NAME="2487"></A><SPAN  CLASS="textit">target phase</SPAN>, the event object arrives
       at its target. This is generally where you will write your event-handling
       code. 
 </LI>
-<LI>In the <A NAME="2487"></A><SPAN  CLASS="textit">bubble phase</SPAN>, the event will move back up through the tree
+<LI>In the <A NAME="2489"></A><SPAN  CLASS="textit">bubble phase</SPAN>, the event will move back up through the tree
       until it reaches the top. Bubble phase propagation happens in reverse
       order to the capture phase, with an event starting at the parent of
       the target and ending up back at the top of the DOM tree. 
@@ -580,6 +580,52 @@ Tareas</A>
 <LI>Escriba las pruebas
 </LI>
 <LI>Use templates externos <code>underscore</code> para estructurar la salida
+</LI>
+<LI>Añada soporte para multilíneas como en el siguiente ejemplo 
+en el que se usa <code>inifile</code> (Ruby). Un <code>\</code> indicará que la línea continúa en la siguiente:
+<PRE>
+[~/javascript/PLgrado/inifile(master)]$ cat test/data/good.ini 
+[section_one]
+one = 1
+two = 2
+
+[section_two]
+three =         3
+multi = multiline \
+support
+
+; comments should be ignored
+[section three]
+four   =4
+five=5
+six =6
+
+[section_four]
+   [section_five]
+ seven and eight= 7 &amp; 8
+
+[~/javascript/PLgrado/inifile(master)]$ pry
+[2] pry(main)&gt; require 'inifile'
+=&gt; true
+[3] pry(main)&gt; p = IniFile.new(:filename =&gt; 'test/data/good.ini')
+=&gt; #&lt;IniFile:0x007fba2f41a500
+ @_line=" seven and eight= 7 &amp; 8",
+ @_section={"seven and eight"=&gt;"7 &amp; 8"},
+ @comment=";#",
+ @content=
+  "[section_one]\none = 1\ntwo = 2\n\n[section_two]\nthree =         3\nmulti = multiline \\\nsupport\n\n; comments should be ignored\n[section three]\nfour   =4\nfive=5\nsix =6\n\n[section_four]\n   [section_five]\n seven and eight= 7 &amp; 8\n\n",
+ @default="global",
+ @encoding=nil,
+ @escape=true,
+ @filename="test/data/good.ini",
+ @ini=
+  {"section_one"=&gt;{"one"=&gt;"1", "two"=&gt;"2"},
+   "section_two"=&gt;{"three"=&gt;"3", "multi"=&gt;"multiline support"},
+   "section three"=&gt;{"four"=&gt;"4", "five"=&gt;"5", "six"=&gt;"6"},
+   "section_four"=&gt;{},
+   "section_five"=&gt;{"seven and eight"=&gt;"7 &amp; 8"}},
+ @param="="&gt;
+</PRE>
 </LI>
 </UL>
 
