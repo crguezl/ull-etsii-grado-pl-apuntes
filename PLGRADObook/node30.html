@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Usando Pegjs con CoffeeScript</TITLE>
-<META NAME="description" CONTENT="Usando Pegjs con CoffeeScript">
+<TITLE>La orden N</TITLE>
+<META NAME="description" CONTENT="La orden N">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -28,20 +28,20 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1150"
+<A NAME="tex2html1703"
   HREF="node31.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1144"
+<A NAME="tex2html1697"
   HREF="node21.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1138"
+<A NAME="tex2html1691"
   HREF="node29.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1146"
-  HREF="node82.html">
+<A NAME="tex2html1699"
+  HREF="node110.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1148"
-  HREF="node85.html">
+<A NAME="tex2html1701"
+  HREF="node113.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,145 +92,194 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1151"
-  HREF="node31.html">Práctica: Ambiguedad en C++</A>
-<B>Sup:</B> <A NAME="tex2html1145"
-  HREF="node21.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html1139"
-  HREF="node29.html">PegJS en los Browser</A>
+<B> Sig:</B> <A NAME="tex2html1704"
+  HREF="node31.html">Suprimir: El Comando D</A>
+<B>Sup:</B> <A NAME="tex2html1698"
+  HREF="node21.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html1692"
+  HREF="node29.html">Del espacio de Patrones</A>
 <B> Con:</B> 
-<A NAME="tex2html1146"
-  HREF="node82.html">
+<A NAME="tex2html1699"
+  HREF="node110.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1148"
-  HREF="node85.html">
+<A NAME="tex2html1701"
+  HREF="node113.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
-
-<UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html1152"
-  HREF="node30.html#SECTION04390010000000000000">Instalación de pegjs-coffee-plugin</A>
-<LI><A NAME="tex2html1153"
-  HREF="node30.html#SECTION04390020000000000000">Ejemplo Sencillo</A>
-<LI><A NAME="tex2html1154"
-  HREF="node30.html#SECTION04390030000000000000">Véase También</A>
-</UL></UL></UL>
-<!--End of Table of Child-Links-->
-<HR>
 
 <H1><A NAME="SECTION04390000000000000000">
-Usando Pegjs con CoffeeScript</A>
+La orden <I>N</I></A>
 </H1>
-
-<P>
-
-<H4><A NAME="SECTION04390010000000000000">
-Instalación de pegjs-coffee-plugin</A>
-</H4>
-  
-
+<I>N</I> añade la siguiente línea de entrada al espacio de
+patrones. Las dos líneas se separan mediante un retorno de
+carro. Después de su ejecución, el comando <I>N</I> pasa el control a los
+subsiguientes comandos en el <I>script</I>.
+<BR>
+El siguiente ejemplo propuesto en [<A
+ HREF="node114.html#sedawk">2</A>] muestra una
+búsqueda y sustitución multilínea. Se trata de sustituir la
+cadena ``Owner and Operator Guide'' por ``Installation Guide'', cualquiera que sea su posición en una línea o entre ellas.
+Los autores de [<A
+ HREF="node114.html#sedawk">2</A>] y [<A
+ HREF="node114.html#power">3</A>] proponen la siguiente
+solución:
 <PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ sudo  npm install -g pegjs-coffee-plugin
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION04390020000000000000">
-Ejemplo Sencillo</A>
-</H4>
-  
-
-<PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs-coffee-plugin/examples(master)]$ cat simple.pegjs 
-{ 
-  @reduce = (left, right)-&gt;  
-    sum = left
-    for t in right
-      op = t[0]
-      num = t[1]
-      switch op 
-        when '+' then sum += num; break
-        when '-' then sum -= num; break
-        when '*' then sum *= num; break
-        when '/' then sum /= num; break
-        else console.log("Error! "+op)
-    sum
-  
+$ cat multiline2.sed
+#Assume the pattern is in no more than two lines
+s/Owner and Operator Guide/Installation Guide/g
+/Owner/{
+  N
+  s/ *\n/ /g
+  s/Owner  *and  *Operator  *Guide/Installation Guide/g
 }
-sum   = left:product right:([+-] product)* { @reduce(left, right); }
-product = left:value right:([*/] value)*   { @reduce(left, right); }
-value   = number:[0-9]+                    { parseInt(number.join(''),10) }
-        / '(' sum:sum ')'                  { sum }
 </PRE>
+Veamos primero los contenidos del fichero de prueba:
+<PRE>
+$ cat multiline.test
+Dear Owner: Consult
+Section 3.1 in the Owner and
+Operator Guide for a description of the tape drives available for the Owner
+of your system.
+ 
+Consult Section 3.1 in the Owner and Operator
+Guide for a description of the tape drives
+available on your system.
+ 
+Look in the Owner and Operator Guide, we mean the Owner
+and Operator Guide shipped with your system.
+ 
+Two manuals are provided including the Owner and
+Operator Guide and the User Guide.
+ 
+The Owner and Operator Guide is shipped with your system.
+ 
+Look in the Owner
+and Operator Guide shipped with your system.
+ 
+The Owner
+and
+Operator
+Guide is shipped with your system.
+</PRE>
+La ejecución del <I>script</I> da la siguiente salida:
+<PRE>
+$ sed -f multiline2.sed multiline.test
+Dear Owner: Consult Section 3.1 in the Owner and
+Operator Guide for a description of the tape drives available for the Owner
+of your system.
+ 
+Consult Section 3.1 in the Installation Guide for a description of the tape
+drives
+available on your system.
+ 
+Look in the Installation Guide, we mean the Installation Guide shipped with
+your system.
+ 
+Two manuals are provided including the Installation Guide and the User Guide.
+ 
+The Installation Guide is shipped with your system.
+ 
+Look in the Installation Guide shipped with your system.
+ 
+The Owner and
+Operator
+Guide is shipped with your system.
+</PRE>
+Uno de los problemas, que aparece en el primer párrafo del
+ejemplo de prueba, es que la segunda línea leída debe ser
+"reciclada"
+para su uso en la siguiente búsqueda. El segundo fallo, 
+que aparece en el último párrafo, es consecuencia de la
+limitación del <I>script</I> para trabajar con  patrones partidos
+en más de dos líneas.
+<BR>
+Consideremos esta otra solución:
+<PRE>
+$ cat multiline.sed
+s/Owner and Operator Guide/Installation Guide/g
+/Owner/{
+:label
+  N
+  s/\n/ /g
+  s/Owner  *and  *Operator  *Guide/Installation Guide/g
+  /Owner *$/b label
+  /Owner  *and *$/b label
+  /Owner  *and  *Operator *$/b label
+  }
+</PRE>
+Este otro <I>script</I> hace que <TT>sed</TT> permanezca en un bucle mientras
+la línea adjuntada en segundo lugar contenga un prefijo estricto 
+de la cadena buscada. 
 
 <P>
 <PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs-coffee-plugin/examples(master)]$  cat use_simple.coffee 
-PEG = require("./simple.js")
-r = PEG.parse("2+3*(2+1)-10/2")
-console.log(r)
+$sed -f multiline.sed multiline.test
+Dear Owner: Consult Section 3.1 in the Installation Guide for \
+a description of the tape drives available for the Owner  of \
+your system.
+ 
+Consult Section 3.1 in the Installation Guide for a description of the tape drives
+available on your system.
+ 
+Look in the Installation Guide, we mean the Installation Guide \
+shipped with your system.
+ 
+Two manuals are provided including the Installation Guide and the User Guide.
+ 
+The Installation Guide is shipped with your system.
+ 
+Look in the Installation Guide shipped with your system.
+ 
+The Installation Guide is shipped with your system.
 </PRE>
-
-<P>
+Un problema que aparece con esta aproximación es la presencia
+de líneas muy largas. Las líneas permanecen en el espacio de trabajo
+mientras terminen en un prefijo de la cadena buscada. Para
+que la salida quepa en la hoja he
+tenido que partir las líneas del fichero de salida, lo que he indicado con los
+símbolos <!-- MATH
+ $\backslash$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$ \backslash$"></SPAN>. Considere esta modificación:
 <PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs-coffee-plugin/examples(master)]$ cat Rakefile 
-
-task :default do 
-  sh "pegcoffee simple.pegjs"
-end
-
-task :run do
-  sh "coffee use_simple.coffee"
-end
+#!/bin/sed -f
+s/Owner and Operator Guide/Installation Guide/g
+/Owner/{
+:label
+  N
+  s/Owner\([ \n]*\)and\([ \n]*\)Operator\([ \n]*\)Guide/Installation\1\2Guide\3/g
+  /Owner *$/b label
+  /Owner  *and *$/b label
+  /Owner  *and  *Operator *$/b label
+  }
 </PRE>
-
-<P>
-<PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs-coffee-plugin/examples(master)]$ rake
-pegcoffee simple.pegjs
-[~/Dropbox/src/javascript/PLgrado/pegjs-coffee-plugin/examples(master)]$ rake run
-coffee use_simple.coffee
-6
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION04390030000000000000">
-Véase También</A>
-</H4>
-  
-
-<UL>
-<LI><A NAME="tex2html152"
-  HREF="https://github.com/Dignifiedquire/pegjs-coffee-plugin">pegjs-coffee-plugin</A>
-en GitHub
-</LI>
-</UL>
+Es indudable la ventaja de disponer de esta
+capacidad de búsqueda multilínea no puede realizarse con 
+otras utilidades como <I>ex</I> o <I>vi</I>.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1150"
+<A NAME="tex2html1703"
   HREF="node31.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1144"
+<A NAME="tex2html1697"
   HREF="node21.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1138"
+<A NAME="tex2html1691"
   HREF="node29.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1146"
-  HREF="node82.html">
+<A NAME="tex2html1699"
+  HREF="node110.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1148"
-  HREF="node85.html">
+<A NAME="tex2html1701"
+  HREF="node113.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -281,12 +330,12 @@ en GitHub
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1151"
-  HREF="node31.html">Práctica: Ambiguedad en C++</A>
-<B>Sup:</B> <A NAME="tex2html1145"
-  HREF="node21.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html1139"
-  HREF="node29.html">PegJS en los Browser</A>
+<B> Sig:</B> <A NAME="tex2html1704"
+  HREF="node31.html">Suprimir: El Comando D</A>
+<B>Sup:</B> <A NAME="tex2html1698"
+  HREF="node21.html">Expresiones Regulares en sed</A>
+<B> Ant:</B> <A NAME="tex2html1692"
+  HREF="node29.html">Del espacio de Patrones</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

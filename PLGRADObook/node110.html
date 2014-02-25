@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Manejo en yapp de Atributos Heredados</TITLE>
-<META NAME="description" CONTENT="Manejo en yapp de Atributos Heredados">
+<TITLE>&#205;ndice General</TITLE>
+<META NAME="description" CONTENT="&#205;ndice General">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -20,28 +20,25 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
 <LINK REL="next" HREF="node111.html">
-<LINK REL="previous" HREF="node109.html">
-<LINK REL="up" HREF="node97.html">
+<LINK REL="previous" HREF="node105.html">
+<LINK REL="up" HREF="javascriptexamples.html">
 <LINK REL="next" HREF="node111.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4095"
+<A NAME="tex2html3545"
   HREF="node111.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4089"
-  HREF="node97.html">
+<A NAME="tex2html3541"
+  HREF="javascriptexamples.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4083"
+<A NAME="tex2html3535"
   HREF="node109.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4091"
-  HREF="node234.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4093"
-  HREF="node237.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>  
+<A NAME="tex2html3543"
+  HREF="node113.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,597 +89,557 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4096"
-  HREF="node111.html">Acciones en Medio de</A>
-<B>Sup:</B> <A NAME="tex2html4090"
-  HREF="node97.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4084"
-  HREF="node109.html">Definición Dirigida por la</A>
-<B> Con:</B> 
-<A NAME="tex2html4091"
-  HREF="node234.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
+<B> Sig:</B> <A NAME="tex2html3546"
+  HREF="node111.html">&#205;ndice de Figuras</A>
+<B>Sup:</B> <A NAME="tex2html3542"
+  HREF="javascriptexamples.html">Apuntes de la Asignatura</A>
+<B> Ant:</B> <A NAME="tex2html3536"
+  HREF="node109.html">Proyecto: Diseña e Implementa</A>
 <B> Ind:</B> 
-<A NAME="tex2html4093"
-  HREF="node237.html">
+<A NAME="tex2html3543"
+  HREF="node113.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-
-<H1><A NAME="SECTION049130000000000000000"></A>
-<A NAME="section:heredados"></A>
-<BR>
-Manejo en <TT>yapp</TT> de Atributos Heredados
-</H1>
-Supongamos  que <code>yapp</code> esta inmerso 
-en la construcción de la antiderivación a derechas y que la forma sentencial
-derecha en ese momento es:
-
-<P>
-<DIV ALIGN="CENTER">
-<!-- MATH
- $X_m \ldots X_1 X_0 Y_1 \ldots  Y_n a_1 \ldots a_0$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="225" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img459.png"
- ALT="$ X_m \ldots X_1 X_0 Y_1 \ldots Y_n a_1 \ldots a_0$"></SPAN>
-</DIV>
-
-<P>
-y que el mango es <!-- MATH
- $B \rightarrow Y_1 \ldots  Y_n$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="109" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img460.png"
- ALT="$ B \rightarrow Y_1 \ldots Y_n$"></SPAN> y en la entrada quedan por 
-procesar <!-- MATH
- $a_1 \ldots a_0$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="65" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img461.png"
- ALT="$ a_1 \ldots a_0$"></SPAN>.
-
-<P>
-Es posible acceder en <code>yapp</code> a los valores de los atributos de los estados en la pila
-del analizador que se encuentran ``por debajo'' o si se quiere
-``a la izquierda'' de los estados asociados
-con la regla por la que se reduce. Para ello se usa una llamada al método
-<A NAME="19059"></A><SPAN  CLASS="textbf"><TT>YYSemval</TT></SPAN>. La llamada es de la forma 
-<code>$_[0]-&gt;YYSemval( index )</code>, donde <code>index</code> es un entero.
-Cuando se usan los valores <code>1</code> ...<code>n</code> devuelve lo mismo
-que <code>$_[1]</code>, ...<code>$_[n]</code>. Esto es 
-<code>$_[1]</code> es el atributo asociado con <SPAN CLASS="MATH"><IMG
- WIDTH="23" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img490.png"
- ALT="$ Y_1$"></SPAN> y <code>$_[n]</code> es el atributo
-asociado con <SPAN CLASS="MATH"><IMG
- WIDTH="24" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img491.png"
- ALT="$ Y_n$"></SPAN>.  Cuando se usa con el valor
-0 devolverá el valor del atributo asociado con el símbolo que esta a la izquierda 
-del mango actual, esto es el atributo asociado con <SPAN CLASS="MATH"><IMG
- WIDTH="27" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img492.png"
- ALT="$ X_0$"></SPAN>, 
-si se llama con -1 el que está dos unidades a la izquierda de la variable actual, 
-esto es, el asociado con <SPAN CLASS="MATH"><IMG
- WIDTH="27" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img493.png"
- ALT="$ X_1$"></SPAN> etc. Así <code>$_[-m]</code> denota el atributo
-de <SPAN CLASS="MATH"><IMG
- WIDTH="32" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img494.png"
- ALT="$ X_m$"></SPAN>.
-
-<P>
-Esta forma de acceder a los atributos es especialmente útil cuando se 
-trabaja con <A NAME="19063"></A><SPAN  CLASS="textbf">atributos heredados</SPAN>. Esto es, cuando un atributo
-de un nodo del árbol sintáctico se computa en términos
-de valores de atributos de su padre y/o sus hermanos.
-Ejemplos de atributos heredados son la clase y tipo en la declaración
-de variables. Supongamos que tenemos el siguiente 
-<A NAME="19065"></A><SPAN  CLASS="textbf">esquema de traducción</SPAN> para calcular la clase (C) y tipo (T) en 
-las declaraciones (D) de listas (L) de identificadores:
-
-<P>
-<BR>
-<BR>
-<DIV ALIGN="CENTER">
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT">D <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img70.png"
- ALT="$ \rightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT">C T <code>{ $L{c} = $C{c}; $L{t} = $T{t} }</code> L</TD>
-</TR>
-<TR><TD ALIGN="LEFT">C <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img70.png"
- ALT="$ \rightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT">global   <code>{ $C{c} = "global" }</code></TD>
-</TR>
-<TR><TD ALIGN="LEFT">C <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img70.png"
- ALT="$ \rightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT">local    <code>{ $C{c} = "local" }</code></TD>
-</TR>
-<TR><TD ALIGN="LEFT">T <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img70.png"
- ALT="$ \rightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT">integer  <code>{ $T{t} = "integer" }</code></TD>
-</TR>
-<TR><TD ALIGN="LEFT">T <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img70.png"
- ALT="$ \rightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT">float    <code>{ $T{t} = "float" }</code></TD>
-</TR>
-<TR><TD ALIGN="LEFT">L <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img70.png"
- ALT="$ \rightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT"><code>{ $L</code><SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img452.png"
- ALT="$ _1$"></SPAN><code>{t} = $L{t}; $L</code><SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img452.png"
- ALT="$ _1$"></SPAN><code>{c} = $L{c}; }</code> L<SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img452.png"
- ALT="$ _1$"></SPAN> ','</TD>
-</TR>
-<TR><TD ALIGN="LEFT">&nbsp;</TD>
-<TD ALIGN="LEFT">id <code>{ set_class($id{v}, $L{c}); set_type($id{v}, $L{t}); }</code></TD>
-</TR>
-<TR><TD ALIGN="LEFT">L <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img70.png"
- ALT="$ \rightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT">id   <code>{ set_class($id{v}, $L{c}); set_type($id{v}, $L{t}); }</code></TD>
-</TR>
-</TABLE>
-</DIV>
-<BR>
 <BR>
 
-<P>
-Los atributos <code>c</code> y <code>t</code> denotan respectivamente
-la clase y el tipo. 
+<H2><A NAME="SECTION08000000000000000000">
+&#205;ndice General</A>
+</H2>
+<!--Table of Contents-->
 
-<P>
-<P>
-<DIV><B>Ejercicio  <SPAN CLASS="arabic">9</SPAN>.<SPAN CLASS="arabic">13</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Evalúe el esquema de traducción para la entrada
-<code>global float x,y</code>. Represente el árbol de análisis, las
-acciones incrustadas y determine el orden de ejecución.
-</I>
-<P>
-<I>Olvide por un momento la notación usada en las acciones y 
-suponga que se tratara de acciones <code>yapp</code>. ¿En que orden
-construye <code>yapp</code> el árbol y en que orden ejecutará las
-acciones?</I></DIV><P></P>
-
-<P>
-A la hora de transformar este esquema de traducción en un programa
-<code>yapp</code> es importante darse cuenta que en cualquier derivación a derechas
-desde D, cuando se reduce por una de las reglas 
-
-<P>
-<DIV ALIGN="CENTER">
-L <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img70.png"
- ALT="$ \rightarrow$"></SPAN> id <SPAN CLASS="MATH"><IMG
- WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img71.png"
- ALT="$ \vert$"></SPAN> L<SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img452.png"
- ALT="$ _1$"></SPAN> ',' id
-
-</DIV>
-
-<P>
-el símbolo a la izquierda de L es T y el que esta a la izquierda de T es C.
-Considere, por ejemplo la derivación a derechas:
-
-<P>
-<DIV ALIGN="CENTER">
-D <!-- MATH
- $\Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img462.png"
- ALT="$ \Longrightarrow$"></SPAN> C T L <!-- MATH
- $\Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img462.png"
- ALT="$ \Longrightarrow$"></SPAN> C T L, id <!-- MATH
- $\Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img462.png"
- ALT="$ \Longrightarrow$"></SPAN> C T L, id, id
-<!-- MATH
- $\Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img462.png"
- ALT="$ \Longrightarrow$"></SPAN> C T id, id, id <!-- MATH
- $\Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img462.png"
- ALT="$ \Longrightarrow$"></SPAN> 
-<BR><!-- MATH
- $\Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img462.png"
- ALT="$ \Longrightarrow$"></SPAN> C float id, id, id <!-- MATH
- $\Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img462.png"
- ALT="$ \Longrightarrow$"></SPAN> local float id, id, id
-
-</DIV>
-
-<P>
-Observe que el orden de recorrido de <code>yapp</code> es:
-<DIV ALIGN="CENTER">
-local float id, id, id <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img463.png"
- ALT="$ \Longleftarrow$"></SPAN> C float id, id <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img463.png"
- ALT="$ \Longleftarrow$"></SPAN>
-C T id, id, id <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img463.png"
- ALT="$ \Longleftarrow$"></SPAN>
-<BR><!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img463.png"
- ALT="$ \Longleftarrow$"></SPAN> C T L, id, id <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img463.png"
- ALT="$ \Longleftarrow$"></SPAN> C T L, id <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img463.png"
- ALT="$ \Longleftarrow$"></SPAN> C T L <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img463.png"
- ALT="$ \Longleftarrow$"></SPAN> D
-
-</DIV>
-
-<P>
-en la antiderivación, cuando el mango es una de las dos reglas 
-para listas de identificadores, L <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img70.png"
- ALT="$ \rightarrow$"></SPAN> id y L <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img70.png"
- ALT="$ \rightarrow$"></SPAN> L, id 
-es decir durante las tres ultimas antiderivaciones:
-
-<P>
-<DIV ALIGN="CENTER">
-C T L, id, id <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img463.png"
- ALT="$ \Longleftarrow$"></SPAN> C T L, id <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img463.png"
- ALT="$ \Longleftarrow$"></SPAN> C T L <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img463.png"
- ALT="$ \Longleftarrow$"></SPAN> D
-
-</DIV>
-
-<P>
-las variables a la izquierda del mango son
-T y C. Esto ocurre siempre. 
-Estas observaciones nos conducen al siguiente
-programa <code>yapp</code>: 
-
-<P>
-<PRE>
-$ cat -n Inherited.yp
- 1  %token FLOAT INTEGER
- 2  %token GLOBAL
- 3  %token LOCAL
- 4  %token NAME
- 5
- 6  %%
- 7  declarationlist
- 8    : # vacio
- 9    | declaration ';' declarationlist
-10    ;
-11
-12  declaration
-13    : class type namelist { ; }
-14    ;
-15
-16  class
-17    : GLOBAL
-18    | LOCAL
-19    ;
-20
-21  type
-22    : FLOAT
-23    | INTEGER
-24    ;
-25
-26  namelist
-27    : NAME
-28       { printf("%s de clase %s, tipo %s\n",
-29               $_[1], $_[0]-&gt;YYSemval(-1),$_[0]-&gt;YYSemval(0)); }
-30    | namelist ',' NAME
-31        { printf("%s de clase %s, tipo %s\n",
-32                 $_[3], $_[0]-&gt;YYSemval(-1),$_[0]-&gt;YYSemval(0)); }
-33    ;
-34  %%
-</PRE>
-
-<P>
-A continuación escribimos el programa que usa 
-el módulo generado por <code>yapp</code>:
-
-<P>
-<PRE>
-$ cat -n useinherited.pl
- 1  #!/usr/bin/perl -w
- 2  use strict;
- 3  use Inherited;
- 4
- 5  sub Error {
- 6    exists $_[0]-&gt;YYData-&gt;{ERRMSG}
- 7    and do {
- 8      print $_[0]-&gt;YYData-&gt;{ERRMSG};
- 9      delete $_[0]-&gt;YYData-&gt;{ERRMSG};
-10      return;
-11    };
-12    print "Error sintáctico\n";
-13  }
-14
-15  { # hagamos una clausura con la entrada
-16    my $input;
-17    local $/ = undef;
-18    print "Entrada (En Unix, presione CTRL-D para terminar):\n";
-19    $input = &lt;stdin&gt;;
-20
-21    sub scanner {
-22
-23      { # Con el redo del final hacemos un bucle "infinito"
-24        if ($input =~ m|\G\s*INTEGER\b|igc) {
-25          return ('INTEGER', 'INTEGER');
-26        }
-27        elsif ($input =~ m|\G\s*FLOAT\b|igc) {
-28          return ('FLOAT', 'FLOAT');
-29        }
-30        elsif ($input =~ m|\G\s*LOCAL\b|igc) {
-31          return ('LOCAL', 'LOCAL');
-32        }
-33        elsif ($input =~ m|\G\s*GLOBAL\b|igc) {
-34          return ('GLOBAL', 'GLOBAL');
-35        }
-36        elsif ($input =~ m|\G\s*([a-z_]\w*)\b|igc) {
-37          return ('NAME', $1);
-38        }
-39        elsif ($input =~ m/\G\s*([,;])/gc) {
-40          return ($1, $1);
-41        }
-42        elsif ($input =~ m/\G\s*(.)/gc) {
-43          die "Caracter invalido: $1\n";
-44        }
-45        else {
-46          return ('', undef); # end of file
-47        }
-48        redo;
-49      }
-50    }
-51  }
-52
-53  my $debug_level = (@ARGV)? oct(shift @ARGV): 0x1F;
-54  my $parser = Inherited-&gt;new();
-55  $parser-&gt;YYParse( yylex =&gt; \&amp;scanner, yyerror =&gt; \&amp;Error, yydebug =&gt; $debug_level );
-</PRE>
-En las líneas de la 15 a la 51 esta nuestro analizador léxico.
-La entrada se lee en una variable local cuyo valor permanece
-entre llamadas: hemos creado una clausura con la variable
-<code>$input</code> (véase la sección <A HREF="#section:clausura">
-<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
- HREF="node238.html#CasianoIntroAPerl">6</A>] para mas detalles
-sobre el uso de clausuras en Perl). Aunque la variable <code>$input</code>
-queda inaccesible desde fuera de la clausura, persiste entre llamadas
-como consecuencia de que la subrutina <code>scanner</code> la utiliza.
-
-<P>
-A continuación sigue un ejemplo de ejecución:
-
-<P>
-<PRE>
-$ ./useinherited.pl 0
-Entrada (En Unix, presione CTRL-D para terminar):
-global integer x, y, z;
-local float a,b;
-x de clase GLOBAL, tipo INTEGER
-y de clase GLOBAL, tipo INTEGER
-z de clase GLOBAL, tipo INTEGER
-a de clase LOCAL, tipo FLOAT
-b de clase LOCAL, tipo FLOAT
-</PRE>
-
-<P>
-<P>
-<DIV><B>Ejercicio  <SPAN CLASS="arabic">9</SPAN>.<SPAN CLASS="arabic">13</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
-<I>El siguiente programa <code>yapp</code> calcula 
-un árbol de análisis abstracto para la gramática
-del ejemplo anterior:
-</I><PRE>
-%token FLOAT INTEGER 
-%token GLOBAL 
-%token LOCAL 
-%token NAME
-
-%%
-declarationlist 
-  : /* vacio */                     { bless [], 'declarationlist' } 
-  | declaration ';' declarationlist { push @{$_[3]}, $_[1]; $_[3] }
-  ;
-
-declaration
-  : class type namelist 
-      { 
-        bless {class =&gt; $_[1], type =&gt; $_[2], namelist =&gt; $_[3]}, 'declaration'; 
-      }
-  ;
-
-class
-  : GLOBAL  { bless { GLOBAL =&gt; 0}, 'class' } 
-  | LOCAL   { bless { LOCAL =&gt; 1}, 'class' }
-  ;
-
-type
-  : FLOAT   { bless { FLOAT =&gt; 2}, 'type' } 
-  | INTEGER { bless { INTEGER =&gt; 3}, 'type' }
-  ;
-
-namelist
-  : NAME  
-     { bless [ $_[1]], 'namelist' }
-  | namelist ',' NAME 
-      { push @{$_[1]}, $_[3]; $_[1] }
-  ;
-%%
-</PRE><I>
-sigue un ejemplo de ejecución:
-</I><PRE>
-$ ./useinherited3.pl
-Entrada (En Unix, presione CTRL-D para terminar):
-global float x,y;
-$VAR1 = bless( [
-  bless( {
-    'namelist' =&gt; bless( [ 'x', 'y' ], 'namelist' ),
-    'type' =&gt; bless( { 'FLOAT' =&gt; 2 }, 'type' ),
-    'class' =&gt; bless( { 'GLOBAL' =&gt; 0 }, 'class' )
-  }, 'declaration' )
-], 'declarationlist' );
-</PRE>
-<P>
-<I>Extienda el programa del ejemplo para que la gramática 
-incluya las acciones del esquema de traducción.
-Las acciones se tratarán como un terminal <code>CODE</code>
-y serán devueltas por el analizador léxico. Su atributo
-asociado es el texto del código. El programa 
-<code>yapp</code> deberá devolver el árbol abstracto
-extendido con las acciones-terminales.
-La parte mas difícil de este problema consiste en ``reconocer''
-el código Perl incrustado. La estrategia seguir consiste
-en contar el número de llaves que se abren y se cierran.
-Cuando el contador alcanza cero es que hemos llegado
-al final del código Perl incrustado. Esta estrategia
-tiene una serie de problemas. ¿Sabría decir cuáles?
-(sugerencia: repase la sección <A HREF="node116.html#subsection:elcuerpo">9.19.3</A> 
-o vea como <code>yapp</code> resuelve el problema).</I></DIV><P></P>
-
-<P>
-
+<UL CLASS="TofC">
+<LI><A NAME="tex2html3547"
+  HREF="node2.html">&#205;ndice de Figuras</A>
+<LI><A NAME="tex2html3548"
+  HREF="node3.html">&#205;ndice de Tablas</A>
+<LI><A NAME="tex2html3549"
+  HREF="node6.html">PRIMERA PARTE: APUNTES DE PROCESADORES DE LENGUAJES</A>
+<UL>
+<LI><A NAME="tex2html3550"
+  HREF="node7.html">Expresiones Regulares y Análisis Léxico en JavaScript</A>
+<UL>
+<LI><A NAME="tex2html3551"
+  HREF="node8.html">Mozilla Developer Network: Documentación</A>
+<LI><A NAME="tex2html3552"
+  HREF="node9.html">Práctica: Conversor de Temperaturas</A>
+<LI><A NAME="tex2html3553"
+  HREF="node10.html">Práctica: Comma Separated Values. CSV</A>
+<LI><A NAME="tex2html3554"
+  HREF="node11.html">Comentarios y Consejos</A>
+<LI><A NAME="tex2html3555"
+  HREF="node12.html">Ejercicios</A>
+<LI><A NAME="tex2html3556"
+  HREF="node13.html">Práctica: Palabras Repetidas</A>
+<LI><A NAME="tex2html3557"
+  HREF="node14.html">Ejercicios</A>
+<LI><A NAME="tex2html3558"
+  HREF="node15.html">Ejercicios</A>
+<LI><A NAME="tex2html3559"
+  HREF="node16.html">Práctica: Ficheros INI</A>
+<LI><A NAME="tex2html3560"
+  HREF="node17.html">Práctica: Analizador Léxico para Un Subconjunto de JavaScript</A>
+</UL>
+<LI><A NAME="tex2html3561"
+  HREF="node18.html">Expresiones Regulares en C</A>
+<UL>
+<LI><A NAME="tex2html3562"
+  HREF="node19.html">Expresiones Regulares Posix en C</A>
+<LI><A NAME="tex2html3563"
+  HREF="node20.html">Expresiones Regulares en Flex</A>
+<UL>
+<LI><A NAME="tex2html3564"
+  HREF="node20.html#SECTION04221000000000000000">Estructura de un programa LEX</A>
+<LI><A NAME="tex2html3565"
+  HREF="node20.html#SECTION04222000000000000000">Versi&#243;n Utilizada</A>
+<LI><A NAME="tex2html3566"
+  HREF="node20.html#SECTION04223000000000000000">Espacios en blanco dentro de la expresión regular</A>
+<LI><A NAME="tex2html3567"
+  HREF="node20.html#SECTION04224000000000000000">Ejemplo Simple</A>
+<LI><A NAME="tex2html3568"
+  HREF="node20.html#SECTION04225000000000000000">Suprimir</A>
+<LI><A NAME="tex2html3569"
+  HREF="node20.html#SECTION04226000000000000000">Declaraci&#243;n de yytext</A>
+<LI><A NAME="tex2html3570"
+  HREF="node20.html#SECTION04227000000000000000">Declaraci&#243;n de yylex()</A>
+<LI><A NAME="tex2html3571"
+  HREF="node20.html#SECTION04228000000000000000">yywrap()</A>
+<LI><A NAME="tex2html3572"
+  HREF="node20.html#SECTION04229000000000000000">unput()</A>
+<LI><A NAME="tex2html3573"
+  HREF="node20.html#SECTION042210000000000000000">input()</A>
+<LI><A NAME="tex2html3574"
+  HREF="node20.html#SECTION042211000000000000000">REJECT</A>
+<LI><A NAME="tex2html3575"
+  HREF="node20.html#SECTION042212000000000000000">yymore()</A>
+<LI><A NAME="tex2html3576"
+  HREF="node20.html#SECTION042213000000000000000">yyless()</A>
+<LI><A NAME="tex2html3577"
+  HREF="node20.html#SECTION042214000000000000000">Estados</A>
+<LI><A NAME="tex2html3578"
+  HREF="node20.html#SECTION042215000000000000000">La pila de estados</A>
+<LI><A NAME="tex2html3579"
+  HREF="node20.html#SECTION042216000000000000000">Final de Fichero</A>
+<LI><A NAME="tex2html3580"
+  HREF="node20.html#SECTION042217000000000000000">Uso de Dos Analizadores</A>
+<LI><A NAME="tex2html3581"
+  HREF="node20.html#SECTION042218000000000000000">La Opción outfile</A>
+<LI><A NAME="tex2html3582"
+  HREF="node20.html#SECTION042219000000000000000">Leer desde una Cadena: YY_INPUT</A>
+<LI><A NAME="tex2html3583"
+  HREF="node20.html#SECTION042220000000000000000">El operador de ``trailing context'' o ``lookahead'' positivo</A>
+<LI><A NAME="tex2html3584"
+  HREF="node20.html#SECTION042221000000000000000">Manejo de directivas include</A>
+<LI><A NAME="tex2html3585"
+  HREF="node20.html#SECTION042222000000000000000">An&#225;lisis Léxico desde una Cadena: yy_scan_string</A>
+<LI><A NAME="tex2html3586"
+  HREF="node20.html#SECTION042223000000000000000">An&#225;lisis de la L&#305;nea de Comandos y 2 Analizadores</A>
+<LI><A NAME="tex2html3587"
+  HREF="node20.html#SECTION042224000000000000000">Declaraciones pointer y array</A>
+<LI><A NAME="tex2html3588"
+  HREF="node20.html#SECTION042225000000000000000">Las Macros YY_USER_ACTION, yy_act e YY_NUM_RULES</A>
+<LI><A NAME="tex2html3589"
+  HREF="node20.html#SECTION042226000000000000000">Las opciones interactive</A>
+<LI><A NAME="tex2html3590"
+  HREF="node20.html#SECTION042227000000000000000">La macro YY_BREAK</A>
+</UL>
+</UL>
+<LI><A NAME="tex2html3591"
+  HREF="node21.html">Expresiones Regulares en sed</A>
+<UL>
+<LI><A NAME="tex2html3592"
+  HREF="node22.html">Transferencia de Control</A>
+<LI><A NAME="tex2html3593"
+  HREF="node23.html">Inserción de Texto</A>
+<LI><A NAME="tex2html3594"
+  HREF="node24.html">Trasferencia de Control Condicional</A>
+<LI><A NAME="tex2html3595"
+  HREF="node25.html">Rangos</A>
+<LI><A NAME="tex2html3596"
+  HREF="node26.html">Siguiente Línea: La orden n</A>
+<LI><A NAME="tex2html3597"
+  HREF="node27.html">Manipulando tablas numéricas</A>
+<LI><A NAME="tex2html3598"
+  HREF="node28.html">Traducción entre Tablas</A>
+<LI><A NAME="tex2html3599"
+  HREF="node29.html">Del espacio de Patrones al de Mantenimiento</A>
+<LI><A NAME="tex2html3600"
+  HREF="node30.html">La orden N</A>
+<LI><A NAME="tex2html3601"
+  HREF="node31.html">Suprimir: El Comando D</A>
+<LI><A NAME="tex2html3602"
+  HREF="node32.html">Búsqueda entre líneas</A>
+<LI><A NAME="tex2html3603"
+  HREF="node33.html">Seleccionando Items en un Registro Multilínea</A>
+</UL>
+<LI><A NAME="tex2html3604"
+  HREF="node34.html">Expresiones Regulares en Perl</A>
+<UL>
+<LI><A NAME="tex2html3605"
+  HREF="node35.html">Introducción</A>
+<UL>
+<LI><A NAME="tex2html3606"
+  HREF="node35.html#SECTION04411000000000000000">Un ejemplo sencillo</A>
+<LI><A NAME="tex2html3607"
+  HREF="node35.html#SECTION04412000000000000000">Depuración de Expresiones Regulares</A>
+<LI><A NAME="tex2html3608"
+  HREF="node35.html#SECTION04413000000000000000">Tablas de Escapes, Metacarácteres, Cuantificadores, Clases</A>
+<LI><A NAME="tex2html3609"
+  HREF="node35.html#SECTION04414000000000000000">Variables especiales después de un emparejamiento</A>
+<LI><A NAME="tex2html3610"
+  HREF="node35.html#SECTION04415000000000000000">Ambito Automático</A>
+<LI><A NAME="tex2html3611"
+  HREF="node35.html#SECTION04416000000000000000">Opciones</A>
+</UL>
+<LI><A NAME="tex2html3612"
+  HREF="node36.html">Algunas Extensiones</A>
+<UL>
+<LI><A NAME="tex2html3613"
+  HREF="node36.html#SECTION04421000000000000000">Comentarios</A>
+<LI><A NAME="tex2html3614"
+  HREF="node36.html#SECTION04422000000000000000">Modificadores locales</A>
+<LI><A NAME="tex2html3615"
+  HREF="node36.html#SECTION04423000000000000000">Mirando hacia adetrás y hacia adelante</A>
+<LI><A NAME="tex2html3616"
+  HREF="node36.html#SECTION04424000000000000000">Definición de Nombres de Patrones</A>
+<LI><A NAME="tex2html3617"
+  HREF="node36.html#SECTION04425000000000000000">Patrones Recursivos</A>
+<LI><A NAME="tex2html3618"
+  HREF="node36.html#SECTION04426000000000000000">Cuantificadores Posesivos</A>
+<LI><A NAME="tex2html3619"
+  HREF="node36.html#SECTION04427000000000000000">Perl 5.10: Numeración de los Grupos en Alternativas</A>
+<LI><A NAME="tex2html3620"
+  HREF="node36.html#SECTION04428000000000000000">Ejecución de Código dentro de una Expresión Regular</A>
+<LI><A NAME="tex2html3621"
+  HREF="node36.html#SECTION04429000000000000000">Expresiones Regulares en tiempo de matching</A>
+<LI><A NAME="tex2html3622"
+  HREF="node36.html#SECTION044210000000000000000">Expresiones Condicionales</A>
+<LI><A NAME="tex2html3623"
+  HREF="node36.html#SECTION044211000000000000000">Verbos que controlan el retroceso</A>
+</UL>
+<LI><A NAME="tex2html3624"
+  HREF="node37.html">Unicode</A>
+<LI><A NAME="tex2html3625"
+  HREF="node38.html">Expresiones Regulares en Otros Lenguajes</A>
+<LI><A NAME="tex2html3626"
+  HREF="node39.html">Casos de Estudio</A>
+<UL>
+<LI><A NAME="tex2html3627"
+  HREF="node39.html#SECTION04451000000000000000">Secuencias de números de tamaño fijo</A>
+<LI><A NAME="tex2html3628"
+  HREF="node39.html#SECTION04452000000000000000">Palabras Repetidas</A>
+<LI><A NAME="tex2html3629"
+  HREF="node39.html#SECTION04453000000000000000">Análisis de cadenas con datos separados por comas</A>
+<LI><A NAME="tex2html3630"
+  HREF="node39.html#SECTION04454000000000000000">Las Expresiones Regulares como Exploradores de un Árbol de Soluciones</A>
+<LI><A NAME="tex2html3631"
+  HREF="node39.html#SECTION04455000000000000000">Número de substituciones realizadas</A>
+<LI><A NAME="tex2html3632"
+  HREF="node39.html#SECTION04456000000000000000">Expandiendo y comprimiendo tabs</A>
+<LI><A NAME="tex2html3633"
+  HREF="node39.html#SECTION04457000000000000000">Modificación de Múltiples Ficheros: one liner</A>
+</UL>
+<LI><A NAME="tex2html3634"
+  HREF="node40.html">tr y split</A>
+<LI><A NAME="tex2html3635"
+  HREF="node41.html">Pack y Unpack</A>
+<LI><A NAME="tex2html3636"
+  HREF="node42.html">Práctica: Un lenguaje para Componer Invitaciones</A>
+<LI><A NAME="tex2html3637"
+  HREF="node43.html">Analisis Sintáctico con Expresiones Regulares Perl</A>
+<UL>
+<LI><A NAME="tex2html3638"
+  HREF="node43.html#SECTION04491000000000000000">Introducción al Anaĺisis Sintáctico con Expresiones Regulares</A>
+<LI><A NAME="tex2html3639"
+  HREF="node43.html#SECTION04492000000000000000">Construyendo el AST con Expresiones Regulares 5.10</A>
+</UL>
+<LI><A NAME="tex2html3640"
+  HREF="node44.html">Práctica: Traducción de invitation a HTML</A>
+<LI><A NAME="tex2html3641"
+  HREF="node45.html">Análisis Sintáctico con Regexp::Grammars</A>
+<UL>
+<LI><A NAME="tex2html3642"
+  HREF="node45.html#SECTION044111000000000000000">Introducción</A>
+<LI><A NAME="tex2html3643"
+  HREF="node45.html#SECTION044112000000000000000">Objetos</A>
+<LI><A NAME="tex2html3644"
+  HREF="node45.html#SECTION044113000000000000000">Renombrando los resultados de una subregla</A>
+<LI><A NAME="tex2html3645"
+  HREF="node45.html#SECTION044114000000000000000">Listas</A>
+<LI><A NAME="tex2html3646"
+  HREF="node45.html#SECTION044115000000000000000">Pseudo sub-reglas</A>
+<LI><A NAME="tex2html3647"
+  HREF="node45.html#SECTION044116000000000000000">Llamadas a subreglas desmemoriadas</A>
+<LI><A NAME="tex2html3648"
+  HREF="node45.html#SECTION044117000000000000000">Destilación del resultado</A>
+<LI><A NAME="tex2html3649"
+  HREF="node45.html#SECTION044118000000000000000">Llamadas privadas a subreglas y subreglas privadas</A>
+<LI><A NAME="tex2html3650"
+  HREF="node45.html#SECTION044119000000000000000">Mas sobre listas</A>
+<LI><A NAME="tex2html3651"
+  HREF="node45.html#SECTION0441110000000000000000">La directiva require</A>
+<LI><A NAME="tex2html3652"
+  HREF="node45.html#SECTION0441111000000000000000">Casando con las claves de un hash</A>
+<LI><A NAME="tex2html3653"
+  HREF="node45.html#SECTION0441112000000000000000">Depuración</A>
+<LI><A NAME="tex2html3654"
+  HREF="node45.html#SECTION0441113000000000000000">Mensajes de log del usuario</A>
+<LI><A NAME="tex2html3655"
+  HREF="node45.html#SECTION0441114000000000000000">Depuración de Regexps</A>
+<LI><A NAME="tex2html3656"
+  HREF="node45.html#SECTION0441115000000000000000">Manejo y recuperación de errores</A>
+<LI><A NAME="tex2html3657"
+  HREF="node45.html#SECTION0441116000000000000000">Mensajes de Warning</A>
+<LI><A NAME="tex2html3658"
+  HREF="node45.html#SECTION0441117000000000000000">Simplificando el AST</A>
+<LI><A NAME="tex2html3659"
+  HREF="node45.html#SECTION0441118000000000000000">Reciclando una Regexp::Grammar</A>
+<LI><A NAME="tex2html3660"
+  HREF="node45.html#SECTION0441119000000000000000">Práctica: Calculadora con Regexp::Grammars</A>
+</UL>
+</UL>
+<LI><A NAME="tex2html3661"
+  HREF="node46.html">Análisis Sintáctico Mediante Precedencia de Operadores en JavaScript</A>
+<UL>
+<LI><A NAME="tex2html3662"
+  HREF="node47.html">Ejemplo Simple de Intérprete: Una Calculadora</A>
+<LI><A NAME="tex2html3663"
+  HREF="node48.html">Análisis Top Down Usando Precedencia de Operadores</A>
+<UL>
+<LI><A NAME="tex2html3664"
+  HREF="node48.html#SECTION04521000000000000000">Gramática de JavaScript</A>
+</UL>
+</UL>
+<LI><A NAME="tex2html3665"
+  HREF="node49.html">Análisis Descendente mediante Parsing Expresion Grammars en JavaScript</A>
+<UL>
+<LI><A NAME="tex2html3666"
+  HREF="node50.html">Referencias y Documentación</A>
+<LI><A NAME="tex2html3667"
+  HREF="node51.html">Un Ejemplo Sencillo</A>
+<UL>
+<LI><A NAME="tex2html3668"
+  HREF="node51.html#SECTION04621000000000000000">Asociación Incorrecta para la Resta y la División</A>
+</UL>
+<LI><A NAME="tex2html3669"
+  HREF="node52.html">Eliminación de la Recursividad por la Izquierda</A>
+<UL>
+<LI><A NAME="tex2html3670"
+  HREF="node52.html#SECTION04631000000000000000">Eliminación de la Recursividad por la izquierda Respetando el Orden de Ejecución de las Acciones Semánticas</A>
+<LI><A NAME="tex2html3671"
+  HREF="node52.html#SECTION04632000000000000000">Eliminando la Recursividad por la Izquierda en la Calculadora</A>
+</UL>
+<LI><A NAME="tex2html3672"
+  HREF="node53.html">Eliminación de la Recursividad por la Izquierda y Atributos Heredados</A>
+<UL>
+<LI><A NAME="tex2html3673"
+  HREF="node53.html#SECTION04641000000000000000">Eliminación de la Recursión por la Izquierda en la Gramática</A>
+<LI><A NAME="tex2html3674"
+  HREF="node53.html#SECTION04642000000000000000">Eliminación de la Recursión por la Izquierda en un Esquema de Traducción</A>
+<LI><A NAME="tex2html3675"
+  HREF="node53.html#SECTION04643000000000000000">Eliminación de la Recursividad por la Izquierda en PEGJS</A>
+</UL>
+<LI><A NAME="tex2html3676"
+  HREF="node54.html">Asociando un else con su if mas cercano</A>
+<LI><A NAME="tex2html3677"
+  HREF="node55.html">Comentarios Anidados</A>
+<LI><A NAME="tex2html3678"
+  HREF="node56.html">Un Lenguaje Dependiente del Contexto</A>
+<LI><A NAME="tex2html3679"
+  HREF="node57.html">PegJS en los Browser</A>
+<LI><A NAME="tex2html3680"
+  HREF="node58.html">Usando Pegjs con CoffeeScript</A>
+<LI><A NAME="tex2html3681"
+  HREF="node59.html">Práctica: Ambiguedad en C++</A>
+<LI><A NAME="tex2html3682"
+  HREF="node60.html">Práctica: Inventando un Lenguaje: Tortoise</A>
+</UL>
+<LI><A NAME="tex2html3683"
+  HREF="node61.html">Análisis Sintáctico Ascendente en JavaScript</A>
+<UL>
+<LI><A NAME="tex2html3684"
+  HREF="node62.html">Conceptos Básicos para el Análisis Sintáctico</A>
+<UL>
+<LI><A NAME="tex2html3685"
+  HREF="node62.html#SECTION04711000000000000000">Ejercicio</A>
+</UL>
+<LI><A NAME="tex2html3686"
+  HREF="node63.html">Ejemplo Simple en Jison</A>
+<UL>
+<LI><A NAME="tex2html3687"
+  HREF="node63.html#SECTION04721000000000000000">Véase También</A>
+<LI><A NAME="tex2html3688"
+  HREF="node63.html#SECTION04722000000000000000">Práctica: Secuencia de Asignaciones Simples</A>
+</UL>
+<LI><A NAME="tex2html3689"
+  HREF="node64.html">Ejemplo en Jison: Calculadora Simple</A>
+<UL>
+<LI><A NAME="tex2html3690"
+  HREF="node64.html#SECTION04731000000000000000">Práctica: Calculadora con Listas de Expresiones y Variables</A>
+</UL>
+<LI><A NAME="tex2html3691"
+  HREF="node65.html">Conceptos Básicos del Análisis LR</A>
+<LI><A NAME="tex2html3692"
+  HREF="node66.html">Construcción de las Tablas para el Análisis SLR</A>
+<UL>
+<LI><A NAME="tex2html3693"
+  HREF="node66.html#SECTION04751000000000000000">Los conjuntos de Primeros y Siguientes</A>
+<LI><A NAME="tex2html3694"
+  HREF="node66.html#SECTION04752000000000000000">Construcción de las Tablas</A>
+</UL>
+<LI><A NAME="tex2html3695"
+  HREF="node67.html">Práctica: Traducción de Infijo a Postfijo</A>
+<LI><A NAME="tex2html3696"
+  HREF="node68.html">Práctica: Calculadora con Funciones</A>
+<LI><A NAME="tex2html3697"
+  HREF="node69.html">Práctica: Calculadora con Análisis de Ámbito</A>
+<LI><A NAME="tex2html3698"
+  HREF="node70.html">Algoritmo de Análisis LR</A>
+<LI><A NAME="tex2html3699"
+  HREF="node71.html">El módulo Generado por jison</A>
+<UL>
+<LI><A NAME="tex2html3700"
+  HREF="node71.html#SECTION047101000000000000000">Version</A>
+<LI><A NAME="tex2html3701"
+  HREF="node71.html#SECTION047102000000000000000">Gramática Inicial</A>
+<LI><A NAME="tex2html3702"
+  HREF="node71.html#SECTION047103000000000000000">Tablas</A>
+<LI><A NAME="tex2html3703"
+  HREF="node71.html#SECTION047104000000000000000">Acciones Semánticas</A>
+<LI><A NAME="tex2html3704"
+  HREF="node71.html#SECTION047105000000000000000">Tabla de Acciones y GOTOs</A>
+<LI><A NAME="tex2html3705"
+  HREF="node71.html#SECTION047106000000000000000">defaultActions</A>
+<LI><A NAME="tex2html3706"
+  HREF="node71.html#SECTION047107000000000000000">Reducciones</A>
+<LI><A NAME="tex2html3707"
+  HREF="node71.html#SECTION047108000000000000000">Desplazamientos/Shifts</A>
+<LI><A NAME="tex2html3708"
+  HREF="node71.html#SECTION047109000000000000000">Manejo de Errores</A>
+<LI><A NAME="tex2html3709"
+  HREF="node71.html#SECTION0471010000000000000000">Analizador Léxico</A>
+<LI><A NAME="tex2html3710"
+  HREF="node71.html#SECTION0471011000000000000000">Exportación</A>
+</UL>
+<LI><A NAME="tex2html3711"
+  HREF="node72.html">Precedencia y Asociatividad</A>
+<LI><A NAME="tex2html3712"
+  HREF="node73.html">Esquemas de Traducción</A>
+<LI><A NAME="tex2html3713"
+  HREF="node74.html">Manejo en jison de Atributos Heredados</A>
+<LI><A NAME="tex2html3714"
+  HREF="node75.html">Definición Dirigida por la Sintáxis</A>
+<LI><A NAME="tex2html3715"
+  HREF="node76.html">Ejercicios: Casos de Estudio</A>
+<UL>
+<LI><A NAME="tex2html3716"
+  HREF="node76.html#SECTION047151000000000000000">Un mal diseño</A>
+<LI><A NAME="tex2html3717"
+  HREF="node76.html#SECTION047152000000000000000">Gramática no LR(1)</A>
+<LI><A NAME="tex2html3718"
+  HREF="node76.html#SECTION047153000000000000000">Un Lenguaje Intrínsecamente Ambiguo</A>
+<LI><A NAME="tex2html3719"
+  HREF="node76.html#SECTION047154000000000000000">Conflicto reduce-reduce</A>
+</UL>
+<LI><A NAME="tex2html3720"
+  HREF="node77.html">Recuperación de Errores</A>
+<LI><A NAME="tex2html3721"
+  HREF="node78.html">Depuración en jison</A>
+<LI><A NAME="tex2html3722"
+  HREF="node79.html">Construcción del Árbol Sintáctico</A>
+<LI><A NAME="tex2html3723"
+  HREF="node80.html">Consejos a seguir al escribir un programa jison</A>
+</UL>
+<LI><A NAME="tex2html3724"
+  HREF="node81.html">Análisis Sintáctico Ascendente en Ruby</A>
+<UL>
+<LI><A NAME="tex2html3725"
+  HREF="node82.html">La Calculadora</A>
+<UL>
+<LI><A NAME="tex2html3726"
+  HREF="node82.html#SECTION04811000000000000000">Uso desde Línea de Comandos</A>
+<LI><A NAME="tex2html3727"
+  HREF="node82.html#SECTION04812000000000000000">Análisis Léxico con rexical</A>
+<LI><A NAME="tex2html3728"
+  HREF="node82.html#SECTION04813000000000000000">Análisis Sintáctico</A>
+</UL>
+<LI><A NAME="tex2html3729"
+  HREF="node83.html">Véase También</A>
+</UL>
+</UL>
+<BR>
+<LI><A NAME="tex2html3730"
+  HREF="node84.html">PARTE: CREATE YOUR OWN PROGRAMMING LANGUAGE</A>
+<UL>
+<LI><A NAME="tex2html3731"
+  HREF="node85.html">JavaScript Review </A>
+<UL>
+<LI><A NAME="tex2html3732"
+  HREF="node86.html">Closures</A>
+</UL>
+<LI><A NAME="tex2html3733"
+  HREF="node87.html">Your First Compiler </A>
+<LI><A NAME="tex2html3734"
+  HREF="node88.html">Parsing</A>
+<LI><A NAME="tex2html3735"
+  HREF="node89.html">Scheem Interpreter</A>
+<UL>
+<LI><A NAME="tex2html3736"
+  HREF="node90.html">Scheem Interpreter</A>
+<LI><A NAME="tex2html3737"
+  HREF="node91.html">Variables</A>
+<LI><A NAME="tex2html3738"
+  HREF="node92.html">Setting Values</A>
+<LI><A NAME="tex2html3739"
+  HREF="node93.html">Putting Things Together</A>
+<UL>
+<LI><A NAME="tex2html3740"
+  HREF="node93.html#SECTION05441000000000000000">Unit Testing: Mocha</A>
+<LI><A NAME="tex2html3741"
+  HREF="node93.html#SECTION05442000000000000000">Karma</A>
+<LI><A NAME="tex2html3742"
+  HREF="node93.html#SECTION05443000000000000000">Grunt</A>
+<LI><A NAME="tex2html3743"
+  HREF="node93.html#SECTION05444000000000000000">GitHub Project Pages</A>
+</UL>
+</UL>
+<LI><A NAME="tex2html3744"
+  HREF="node94.html">Functions and all that</A>
+<LI><A NAME="tex2html3745"
+  HREF="node95.html">Inventing a language for turtle graphics</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html3746"
+  HREF="node96.html">HERRAMIENTAS</A>
+<UL>
+<LI><A NAME="tex2html3747"
+  HREF="node97.html">Heroku</A>
+<UL>
+<LI><A NAME="tex2html3748"
+  HREF="node98.html">Introducción</A>
+<LI><A NAME="tex2html3749"
+  HREF="node99.html">Logging</A>
+<LI><A NAME="tex2html3750"
+  HREF="node100.html">Troubleshooting</A>
+<LI><A NAME="tex2html3751"
+  HREF="node101.html">Configuration</A>
+<LI><A NAME="tex2html3752"
+  HREF="node102.html">Make Heroku run non-master Git branch</A>
+<LI><A NAME="tex2html3753"
+  HREF="node103.html">Account Verification and add-ons</A>
+<LI><A NAME="tex2html3754"
+  HREF="node104.html">Véase</A>
+</UL>
+</UL>
+<BR>
+<LI><A NAME="tex2html3755"
+  HREF="node105.html">PARTE: BITÁCORA DEL CURSO</A>
+<UL>
+<LI><A NAME="tex2html3756"
+  HREF="node106.html">2014</A>
+<UL>
+<LI><A NAME="tex2html3757"
+  HREF="node107.html">01</A>
+<UL>
+<LI><A NAME="tex2html3758"
+  HREF="node107.html#SECTION07111000000000000000">Semana del 27/01/14 al 01/02/2014</A>
+</UL>
+<LI><A NAME="tex2html3759"
+  HREF="node108.html">02</A>
+<UL>
+<LI><A NAME="tex2html3760"
+  HREF="node108.html#SECTION07121000000000000000">Semana del 4/02/14 al 7/02/2014</A>
+<LI><A NAME="tex2html3761"
+  HREF="node108.html#SECTION07122000000000000000">Semana del 24/02/14 al 02/03/14. Repaso para el micro-examen del 05/03/14</A>
+</UL>
+<LI><A NAME="tex2html3762"
+  HREF="node109.html">Proyecto: Diseña e Implementa un Lenguaje de Dominio Específico</A>
+</UL>
+</UL>
+<BR>
+<LI><A NAME="tex2html3763"
+  HREF="node111.html">&#205;ndice de Figuras</A>
+<LI><A NAME="tex2html3764"
+  HREF="node112.html">&#205;ndice de Tablas</A>
+<LI><A NAME="tex2html3765"
+  HREF="node113.html">&#205;ndice de Materias</A>
+<LI><A NAME="tex2html3766"
+  HREF="node114.html">Bibliograf&#237;a</A>
+</UL>
+<!--End of Table of Contents-->
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4095"
+<A NAME="tex2html3545"
   HREF="node111.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4089"
-  HREF="node97.html">
+<A NAME="tex2html3541"
+  HREF="javascriptexamples.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4083"
+<A NAME="tex2html3535"
   HREF="node109.html">
-<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4091"
-  HREF="node234.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4093"
-  HREF="node237.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>  
+<A NAME="tex2html3543"
+  HREF="node113.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -733,17 +690,17 @@ o vea como <code>yapp</code> resuelve el problema).</I></DIV><P></P>
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4096"
-  HREF="node111.html">Acciones en Medio de</A>
-<B>Sup:</B> <A NAME="tex2html4090"
-  HREF="node97.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4084"
-  HREF="node109.html">Definición Dirigida por la</A>
+<B> Sig:</B> <A NAME="tex2html3546"
+  HREF="node111.html">&#205;ndice de Figuras</A>
+<B>Sup:</B> <A NAME="tex2html3542"
+  HREF="javascriptexamples.html">Apuntes de la Asignatura</A>
+<B> Ant:</B> <A NAME="tex2html3536"
+  HREF="node109.html">Proyecto: Diseña e Implementa</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-01-17</I>
+2014-02-25</I>
 </ADDRESS>
 </BODY>
 </HTML>

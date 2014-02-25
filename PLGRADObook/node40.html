@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Práctica: Calculadora con Funciones</TITLE>
-<META NAME="description" CONTENT="Práctica: Calculadora con Funciones">
+<TITLE>tr y split</TITLE>
+<META NAME="description" CONTENT="tr y split">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node41.html">
 <LINK REL="previous" HREF="node39.html">
-<LINK REL="up" HREF="node33.html">
+<LINK REL="up" HREF="node34.html">
 <LINK REL="next" HREF="node41.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1366"
+<A NAME="tex2html2224"
   HREF="node41.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1360"
-  HREF="node33.html">
+<A NAME="tex2html2218"
+  HREF="node34.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1354"
+<A NAME="tex2html2212"
   HREF="node39.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1362"
-  HREF="node82.html">
+<A NAME="tex2html2220"
+  HREF="node110.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1364"
-  HREF="node85.html">
+<A NAME="tex2html2222"
+  HREF="node113.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,108 +92,213 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1367"
-  HREF="node41.html">Práctica: Calculadora con Análisis</A>
-<B>Sup:</B> <A NAME="tex2html1361"
-  HREF="node33.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1355"
-  HREF="node39.html">Práctica: Traducción de Infijo</A>
+<B> Sig:</B> <A NAME="tex2html2225"
+  HREF="node41.html">Pack y Unpack</A>
+<B>Sup:</B> <A NAME="tex2html2219"
+  HREF="node34.html">Expresiones Regulares en Perl</A>
+<B> Ant:</B> <A NAME="tex2html2213"
+  HREF="node39.html">Casos de Estudio</A>
 <B> Con:</B> 
-<A NAME="tex2html1362"
-  HREF="node82.html">
+<A NAME="tex2html2220"
+  HREF="node110.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1364"
-  HREF="node85.html">
+<A NAME="tex2html2222"
+  HREF="node113.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION04470000000000000000"></A>
-   <A NAME="4560"></A>
+<H1><A NAME="SECTION04460000000000000000"></A>
+<A NAME="section:tr"></A>
 <BR>
-Práctica: Calculadora  con Funciones
+tr y split
 </H1>
+El operador de traducción permite la conversión de unos caracteres por otros. 
+Tiene la sintáxis:
 
 <P>
-Añada funciones y sentencias de llamada a función a la práctica de traducción 
-de infijo a postfijo
-<A HREF="node39.html#section:calculadoraampliada">4.6</A>. Sigue un ejemplo de traducción:
-
-<P>
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><PRE>
-def f(x) { x + 1 }
-def g(a, b) { a * f(b) }
-c = 3;
-f(1+c);
-g(3, 4)
-</PRE></TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><PRE>
-f       args :x
-        $x
-        1
-        +
-        return
-:g      args :a,:b
-        $a
-        $b
-        call :f
-        *
-        return
-:main:
-        3
-        &amp;c
-        =
-        1
-        c
-        +
-        call :f
-        3
-        4
-        call :g
-</PRE></TD>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><code>tr/SEARCHLIST/REPLACEMENTLIST/cds</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>y/SEARCHLIST/REPLACEMENTLIST/cds</code></TD>
 </TR>
 </TABLE>
 
-<UL>
-<LI>Las funciones retornan la última expresión evaluada
-</LI>
-<LI>Es un error llamar a una función con un número de argumentos 
-distinto que el número de parámetros con el que fué declarada
-</LI>
-<LI>En la llamada, los argumentos se empujan en la pila.
-Después la instrucción <code>call :etiqueta</code> llama a
-la función con el nombre dado por la<code>etiqueta</code>
-</LI>
-<LI>Dentro de la función los argumentos se sitúan por encima del puntero 
-base. La pseudo-instrucción <code>args, p1, p2, ...</code> da nombre a los 
-parámetros empujados. Dentro del cuerpo de la función nos referimos a ellos
-prefijándolos con <code>$</code>.
-</LI>
-<LI>La instrucción <code>return</code> limpia la pila dejándola en su estado anterior 
-y retorna la última expresión evaluada
-</LI>
-</UL>
+<P>
+El operador permite el reemplazo carácter a carácter, por ejemplo:
+<PRE>
+$ perl -de 0
+  DB&lt;1&gt; $a = 'fiboncacci'
+  DB&lt;2&gt; $a =~ tr/aeiou/AEIOU/
+  DB&lt;3&gt; print $a
+fIbOncAccI
+  DB&lt;4&gt; $a =~ y/fbnc/FBNC/
+  DB&lt;5&gt; print $a
+FIBONCACCI
+</PRE>
+El operador devuelve el número de carácteres reeemplazados
+o suprimidos. 
+<PRE>
+$cnt = $sky =~ tr/*/*/; # count the stars in $sky
+</PRE>
+
+<P>
+Si se especifica el modificador <code>/d</code>, cualquier carácter en  <code>SEARCHLIST</code>
+que no figure en <code>REPLACEMENTLIST</code> es eliminado.
+<PRE>
+  DB&lt;6&gt; print $a
+FIBONCACCI
+  DB&lt;7&gt; $a =~ y/OA//d
+  DB&lt;8&gt; print $a
+FIBNCCCI
+</PRE>
+
+<P>
+Si se especifica el modificador <code>/s</code>, las secuencias de carácteres
+consecutivos que serían traducidas al mismo carácter son comprimidas a una sola:
+
+<P>
+<PRE>
+  DB&lt;1&gt; $b = 'aaghhh!'
+  DB&lt;2&gt; $b =~ tr/ah//s
+  DB&lt;3&gt; p $b
+agh!
+</PRE>
+
+<P>
+Observa que si la cadena <code>REPLACEMENTLIST</code> es vacía,
+no se introduce ninguna modificación.
+
+<P>
+Si se especifica el modificador <code>/c</code>, se complementa <code>SEARCHLIST</code>;
+esto es, se buscan los caracteres que no están en <code>SEARCHLIST</code>.
+
+<P>
+<PRE>
+tr/a-zA-Z/ /cs; # change non-alphas to single space
+</PRE>
+
+<P>
+Cuando se dan múltiples traducciones para un mismo carácter, solo la primera es utilizada:
+
+<P>
+<PRE>
+tr/AAA/XYZ/
+</PRE>
+
+<P>
+traducirá <code>A</code> por <code>X</code>.
+
+<P>
+El siguiente <SPAN  CLASS="textbf">script</SPAN> busca una expresión regular en el fichero de <code>passwords</code>
+e imprime los <SPAN  CLASS="textbf">login</SPAN> de los usuarios que casan con dicha cadena.
+Para evitar posibles confusiones con las vocales acentuadas
+se usa el operador <code>tr</code>.
+
+<P>
+<PRE>
+   1 #!/usr/bin/perl -w
+   2 $search = shift(@ARGV) or die("you must provide a regexpr\n");
+   3 $search =~ y/ÁÉÍÓÚáéíóú/AEIOUaeiou/;
+   4 open(FILE,"/etc/passwd");
+   5 while ($line = &lt;FILE&gt;) {
+   6   $line =~ y/ÁÉÍÓÚáéíóú/AEIOUaeiou/;
+   7   if ($line =~ /$search/io) {
+   8     @fields = split(":",$line);
+   9     $login = $fields[0];
+  10     if ($line !~ /^#/) {
+  11       print "$login\n";
+  12     }
+  13     else {
+  14       print "#$login\n";
+  15     }
+  16   }
+  17 }
+  18
+</PRE>
+
+<P>
+Ejecución (suponemos que el nombre del fichero anterior es <code>split.pl</code>):
+<PRE>
+&gt; split.pl Rodriguez
+##direccion
+call
+casiano
+alu5
+alu6
+##doctorado
+paco
+falmeida
+##ihiu07
+</PRE>
+
+<P>
+Para familiarizarte con este operador, codifica y prueba el siguiente
+código:
+
+<P>
+<PRE>
+   1 #!/usr/bin/perl -w
+   2 $searchlist = shift @ARGV;
+   3 $replacelist = shift @ARGV;
+   4 $option = "";
+   5 $option = shift @ARGV if @ARGV;
+   6 
+   7 while (&lt;&gt;) {
+   8   $num = eval "tr/$searchlist/$replacelist/$option";
+   9   die $@ if $@;
+  10   print "$num: $_";
+  11 }
+</PRE>
+
+<P>
+Perl construye la tabla de traducción en ``tiempo de compilación''. Por ello
+ni <code>SEARCHLIST</code> ni <code>REPLACEMENTLIST</code> son susceptibles de 
+ser interpolados. Esto significa que si queremos usar variables tenemos
+que recurrir a la función <code>eval</code>.
+
+<P>
+La expresión pasada como parámetro a <code>eval</code> en la línea 8 es analizada y ejecutada como si 
+se tratara de un pequeño programa Perl. Cualquier asignación a variables permanece
+después del <code>eval</code>, asi como cualquier definición de subrutina. 
+El código dentro de <code>eval</code> se trata como si fuera un bloque, de manera
+que cualesquiera variables locales (declaradas con <code>my</code>) desaparecen
+al final del bloque.
+
+<P>
+La variable <code>$@</code> contiene el mensaje de error asociado con la
+última ejecución del comando <code>eval</code>. Si es nula es que el último comando
+se ejecuto correctamente.
+Aqui tienes un ejemplo de llamada:
+
+<P>
+<PRE>
+&gt; tr.pl 'a-z' 'A-Z' s
+jose hernandez
+13: JOSE HERNANDEZ
+joosee hernnandez
+16: JOSE HERNANDEZ
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1366"
+<A NAME="tex2html2224"
   HREF="node41.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1360"
-  HREF="node33.html">
+<A NAME="tex2html2218"
+  HREF="node34.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1354"
+<A NAME="tex2html2212"
   HREF="node39.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1362"
-  HREF="node82.html">
+<A NAME="tex2html2220"
+  HREF="node110.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1364"
-  HREF="node85.html">
+<A NAME="tex2html2222"
+  HREF="node113.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -244,12 +349,12 @@ y retorna la última expresión evaluada
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1367"
-  HREF="node41.html">Práctica: Calculadora con Análisis</A>
-<B>Sup:</B> <A NAME="tex2html1361"
-  HREF="node33.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1355"
-  HREF="node39.html">Práctica: Traducción de Infijo</A>
+<B> Sig:</B> <A NAME="tex2html2225"
+  HREF="node41.html">Pack y Unpack</A>
+<B>Sup:</B> <A NAME="tex2html2219"
+  HREF="node34.html">Expresiones Regulares en Perl</A>
+<B> Ant:</B> <A NAME="tex2html2213"
+  HREF="node39.html">Casos de Estudio</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

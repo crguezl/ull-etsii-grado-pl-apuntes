@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Esquemas de Traducción</TITLE>
-<META NAME="description" CONTENT="Esquemas de Traducción">
+<TITLE>Scheem Interpreter</TITLE>
+<META NAME="description" CONTENT="Scheem Interpreter">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node90.html">
+<LINK REL="next" HREF="node94.html">
 <LINK REL="previous" HREF="node88.html">
-<LINK REL="up" HREF="node77.html">
+<LINK REL="up" HREF="node84.html">
 <LINK REL="next" HREF="node90.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3758"
+<A NAME="tex2html3136"
   HREF="node90.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3752"
-  HREF="node77.html">
+<A NAME="tex2html3130"
+  HREF="node84.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3746"
+<A NAME="tex2html3124"
   HREF="node88.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3754"
-  HREF="node234.html">
+<A NAME="tex2html3132"
+  HREF="node110.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3756"
-  HREF="node237.html">
+<A NAME="tex2html3134"
+  HREF="node113.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,174 +92,104 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3759"
-  HREF="node90.html">Manejo en jison de</A>
-<B>Sup:</B> <A NAME="tex2html3753"
-  HREF="node77.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html3747"
-  HREF="node88.html">Precedencia y Asociatividad</A>
+<B> Sig:</B> <A NAME="tex2html3137"
+  HREF="node90.html">Scheem Interpreter</A>
+<B>Sup:</B> <A NAME="tex2html3131"
+  HREF="node84.html">PARTE: CREATE YOUR OWN</A>
+<B> Ant:</B> <A NAME="tex2html3125"
+  HREF="node88.html">Parsing</A>
 <B> Con:</B> 
-<A NAME="tex2html3754"
-  HREF="node234.html">
+<A NAME="tex2html3132"
+  HREF="node110.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3756"
-  HREF="node237.html">
+<A NAME="tex2html3134"
+  HREF="node113.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION048120000000000000000">
-Esquemas de Traducción</A>
+<H1><A NAME="SECTION05400000000000000000">
+Scheem Interpreter</A>
 </H1>
-Un <A NAME="17467"></A><SPAN  CLASS="textbf">esquema de traducción</SPAN> es una gramática independiente del
-contexto en la cuál se han asociado atributos a los símbolos de la gramática.
-Un atributo queda caracterizado por un identificador
-o nombre y un tipo o clase. Además se han insertado acciones, esto es,
-código JavaScript/Perl/Python/C, ...en medio de las partes derechas.
-En ese código es posible referenciar los atributos de los
-símbolos de la gramática como variables del lenguaje subyacente.
-
+<A NAME="tex2html422"
+  HREF="http://nathansuniversity.com/scheem.html">http://nathansuniversity.com/scheem.html</A>
 <P>
-Recuerde que el orden en que se evalúan los fragmentos de código
-es el de un recorrido primero-profundo del árbol de análisis sintáctico.
-Mas específicamente, considerando a las acciones como hijos-hoja del nodo,
-el recorrido que realiza un esquema de traducción es:
+<BR> <HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<P>
-<PRE>
- 1     function esquema_de_traduccion(node) {
- 2 
- 3       for(c in node.children) { # de izquierda a derecha
- 4         child = node.children[i];
- 5         if (child.instanceof('SemanticAction') { # si es una acción semántica
- 6           child.execute;
- 7         }
- 8         else { esquema_de_traduccion(child) }
- 9       }
-10     }
-</PRE>
-
-<P>
-Obsérvese que, como el bucle recorre a los hijos
-de izquierda a derecha, se debe dar la siguiente
-condición para que un esquema  de traducción funcione:
-
-<P>
-Para cualquier regla de producción aumentada con acciones, de la forma 
-
-<P>
-<DIV ALIGN="CENTER">
-<!-- MATH
- $A \rightarrow X_1 \ldots X_j$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="115" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img451.png"
- ALT="$ A \rightarrow X_1 \ldots X_j$"></SPAN><code>{ action(A{b}, X</code><SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img452.png"
- ALT="$ _1$"></SPAN><code>{c}</code><SPAN CLASS="MATH"><IMG
- WIDTH="25" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img453.png"
- ALT="$ \ldots$"></SPAN><code> X</code><SPAN CLASS="MATH"><IMG
- WIDTH="14" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img454.png"
- ALT="$ _n$"></SPAN><code>{d})}</code><!-- MATH
- $X_{j+1} \ldots X_n$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="93" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img455.png"
- ALT="$ X_{j+1} \ldots X_n$"></SPAN>
-</DIV>
-
-<P>
-debe ocurrir que los atributos evaluados en
-la acción insertada después de <SPAN CLASS="MATH"><IMG
- WIDTH="26" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img456.png"
- ALT="$ X_j$"></SPAN> 
-dependan de atributos y variables que fueron computadas durante
-la visita de los hermanos izquierdos o de sus ancestros.
-En particular no deberían depender de atributos asociados
-con las variables <!-- MATH
- $X_{j+1} \ldots X_n$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="93" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img455.png"
- ALT="$ X_{j+1} \ldots X_n$"></SPAN>. Ello no significa que
-no sea correcto evaluar atributos de <!-- MATH
- $X_{j+1} \ldots X_n$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="93" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img455.png"
- ALT="$ X_{j+1} \ldots X_n$"></SPAN>
-en esa acción.
-
-<P>
-Por ejemplo, el siguiente esquema no satisface el requisito:
-
-<center>
-<img src="wrongtranslationscheme.png" width="50%"/>
-</center>
-
-<P>
-porque cuando vas a ejecutar la acción <code>{ console.log(A.in) }</code> 
-el atributo <code>A.in</code> no ha sido computado.
-
-<P>
-Los atributos de cada símbolo de la gramática <!-- MATH
- $X \in V \cup \Sigma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="88" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img457.png"
- ALT="$ X \in V \cup \Sigma$"></SPAN>
-se dividen en dos grupos disjuntos: <A NAME="17469"></A><SPAN  CLASS="textbf">atributos sintetizados</SPAN>
-y <A NAME="17471"></A><SPAN  CLASS="textbf">atributos heredados</SPAN>: 
-
-<P>
-
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html3138"
+  HREF="node90.html">Scheem Interpreter</A>
+<LI><A NAME="tex2html3139"
+  HREF="node91.html">Variables</A>
+<LI><A NAME="tex2html3140"
+  HREF="node92.html">Setting Values</A>
+<LI><A NAME="tex2html3141"
+  HREF="node93.html">Putting Things Together</A>
 <UL>
-<LI>Un atributo de <SPAN CLASS="MATH"><IMG
- WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img458.png"
- ALT="$ X$"></SPAN> es un <A NAME="17473"></A><SPAN  CLASS="textbf">atributo heredado</SPAN> 
-si depende de atributos de su padre y hermános en el árbol.
-</LI>
-<LI>Un <A NAME="17475"></A><SPAN  CLASS="textbf">atributo sintetizado</SPAN> es aquél tal que el valor del atributo depende
-de los valores de los atributos de los hijos, 
-es decir en tal caso <SPAN CLASS="MATH"><IMG
- WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img458.png"
- ALT="$ X$"></SPAN> ha de ser una variable sintáctica
-y los atributos en la parte derecha de la regla semántica deben
-ser atributos de símbolos en la parte derecha de la regla de producción 
-asociada.
-</LI>
+<LI><A NAME="tex2html3142"
+  HREF="node93.html#SECTION05441000000000000000">Unit Testing: Mocha</A>
+<UL>
+<LI><A NAME="tex2html3143"
+  HREF="node93.html#SECTION05441010000000000000">Introducción</A>
+<LI><A NAME="tex2html3144"
+  HREF="node93.html#SECTION05441020000000000000">mocha init</A>
+<LI><A NAME="tex2html3145"
+  HREF="node93.html#SECTION05441030000000000000">Browser support</A>
+<LI><A NAME="tex2html3146"
+  HREF="node93.html#SECTION05441040000000000000">TDD</A>
+<LI><A NAME="tex2html3147"
+  HREF="node93.html#SECTION05441050000000000000">Véase</A>
 </UL>
-
-<P>
+<LI><A NAME="tex2html3148"
+  HREF="node93.html#SECTION05442000000000000000">Karma</A>
+<UL>
+<LI><A NAME="tex2html3149"
+  HREF="node93.html#SECTION05442010000000000000">Using Karma with Mocha</A>
+<LI><A NAME="tex2html3150"
+  HREF="node93.html#SECTION05442020000000000000">Load HTML files with Karma</A>
+</UL>
+<LI><A NAME="tex2html3151"
+  HREF="node93.html#SECTION05443000000000000000">Grunt</A>
+<UL>
+<LI><A NAME="tex2html3152"
+  HREF="node93.html#SECTION05443100000000000000">package.json</A>
+<LI><A NAME="tex2html3153"
+  HREF="node93.html#SECTION05443200000000000000">Gruntfile</A>
+<UL>
+<LI><A NAME="tex2html3154"
+  HREF="node93.html#SECTION05443210000000000000">An example Gruntfile</A>
+<LI><A NAME="tex2html3155"
+  HREF="node93.html#SECTION05443220000000000000">The "wrapper" function</A>
+<LI><A NAME="tex2html3156"
+  HREF="node93.html#SECTION05443230000000000000">Project and task configuration</A>
+<LI><A NAME="tex2html3157"
+  HREF="node93.html#SECTION05443240000000000000">A simple Grunt.js example</A>
+</UL>
+</UL>
+<LI><A NAME="tex2html3158"
+  HREF="node93.html#SECTION05444000000000000000">GitHub Project Pages</A>
+</UL></UL>
+<!--End of Table of Child-Links-->
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3758"
+<A NAME="tex2html3136"
   HREF="node90.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3752"
-  HREF="node77.html">
+<A NAME="tex2html3130"
+  HREF="node84.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3746"
+<A NAME="tex2html3124"
   HREF="node88.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3754"
-  HREF="node234.html">
+<A NAME="tex2html3132"
+  HREF="node110.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3756"
-  HREF="node237.html">
+<A NAME="tex2html3134"
+  HREF="node113.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -310,17 +240,17 @@ asociada.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3759"
-  HREF="node90.html">Manejo en jison de</A>
-<B>Sup:</B> <A NAME="tex2html3753"
-  HREF="node77.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html3747"
-  HREF="node88.html">Precedencia y Asociatividad</A>
+<B> Sig:</B> <A NAME="tex2html3137"
+  HREF="node90.html">Scheem Interpreter</A>
+<B>Sup:</B> <A NAME="tex2html3131"
+  HREF="node84.html">PARTE: CREATE YOUR OWN</A>
+<B> Ant:</B> <A NAME="tex2html3125"
+  HREF="node88.html">Parsing</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-01-17</I>
+2014-02-25</I>
 </ADDRESS>
 </BODY>
 </HTML>

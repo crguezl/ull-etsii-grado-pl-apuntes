@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Recuperación de Errores en Listas</TITLE>
-<META NAME="description" CONTENT="Recuperación de Errores en Listas">
+<TITLE>&#205;ndice de Materias</TITLE>
+<META NAME="description" CONTENT="&#205;ndice de Materias">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,28 +21,25 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node114.html">
 <LINK REL="previous" HREF="node112.html">
-<LINK REL="up" HREF="node97.html">
+<LINK REL="up" HREF="javascriptexamples.html">
 <LINK REL="next" HREF="node114.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4137"
+<A NAME="tex2html3805"
   HREF="node114.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4131"
-  HREF="node97.html">
+<A NAME="tex2html3801"
+  HREF="javascriptexamples.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4125"
+<A NAME="tex2html3795"
   HREF="node112.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4133"
-  HREF="node234.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4135"
-  HREF="node237.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
+<A NAME="tex2html3803"
+  HREF="node110.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>  <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
  SRC="logoLPP.png"
@@ -92,179 +89,299 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4138"
-  HREF="node114.html">Consejos a seguir al</A>
-<B>Sup:</B> <A NAME="tex2html4132"
-  HREF="node97.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4126"
-  HREF="node112.html">Recuperación de Errores</A>
+<B> Sig:</B> <A NAME="tex2html3806"
+  HREF="node114.html">Bibliograf&#237;a</A>
+<B>Sup:</B> <A NAME="tex2html3802"
+  HREF="javascriptexamples.html">Apuntes de la Asignatura</A>
+<B> Ant:</B> <A NAME="tex2html3796"
+  HREF="node112.html">&#205;ndice de Tablas</A>
 <B> Con:</B> 
-<A NAME="tex2html4133"
-  HREF="node234.html">
+<A NAME="tex2html3803"
+  HREF="node110.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
-<B> Ind:</B> 
-<A NAME="tex2html4135"
-  HREF="node237.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-
-<H1><A NAME="SECTION049160000000000000000">
-Recuperación de Errores en Listas</A>
-</H1>
-Aunque no existe un método exacto para decidir como ubicar
-las reglas de recuperación de errores, 
-en general, los s&#305;mbolos de error deben ubicarse intentado 
-satisfacer las siguientes reglas:
-
-<P>
-
-<UL>
-<LI>Tan cerca como sea posible del s&#305;mbolo de arranque.
-</LI>
-<LI>Tan cerca como sea posible de los s&#305;mbolos terminales.
-</LI>
-<LI>Sin introducir nuevos conflictos.
-</LI>
-</UL>
-
-<P>
-En el caso particular de las listas, se recomienda seguir el
-siguiente esquema:
-
-<P>
-<BR>
-<BR>
-<BR><P></P>
-<DIV ALIGN="CENTER"><A NAME="18520"></A>
-<TABLE>
-<CAPTION><STRONG>Tabla:</STRONG>
-Recuperación de errores en listas</CAPTION>
-<TR><TD>
-<DIV ALIGN="CENTER">
-<TABLE CELLPADDING=3 BORDER="1" ALIGN="CENTER">
-<TR><TD ALIGN="LEFT">Construcción</TD>
-<TD ALIGN="LEFT">EBNF</TD>
-<TD ALIGN="LEFT">yapp</TD>
-</TR>
-<TR><TD ALIGN="LEFT">secuencia opcional</TD>
-<TD ALIGN="LEFT">x:{y}</TD>
-<TD ALIGN="LEFT"><code>x : /* null */             </code></TD>
-</TR>
-<TR><TD ALIGN="LEFT">&nbsp;</TD>
-<TD ALIGN="LEFT">&nbsp;</TD>
-<TD ALIGN="LEFT"><code>  | x y  { $_[0]-&gt;YYErrok; }      </code></TD>
-</TR>
-<TR><TD ALIGN="LEFT">&nbsp;</TD>
-<TD ALIGN="LEFT">&nbsp;</TD>
-<TD ALIGN="LEFT"><code>  | x error                </code></TD>
-</TR>
-<TR><TD ALIGN="LEFT">secuencia</TD>
-<TD ALIGN="LEFT">x:y{y}</TD>
-<TD ALIGN="LEFT"><code>x : y                      </code></TD>
-</TR>
-<TR><TD ALIGN="LEFT">&nbsp;</TD>
-<TD ALIGN="LEFT">&nbsp;</TD>
-<TD ALIGN="LEFT"><code>  | xy   { $_[0]-&gt;YYErrok; }      </code></TD>
-</TR>
-<TR><TD ALIGN="LEFT">&nbsp;</TD>
-<TD ALIGN="LEFT">&nbsp;</TD>
-<TD ALIGN="LEFT"><code>  | error                  </code></TD>
-</TR>
-<TR><TD ALIGN="LEFT">&nbsp;</TD>
-<TD ALIGN="LEFT">&nbsp;</TD>
-<TD ALIGN="LEFT"><code>  | x error                </code></TD>
-</TR>
-<TR><TD ALIGN="LEFT">lista</TD>
-<TD ALIGN="LEFT">x:y{Ty}</TD>
-<TD ALIGN="LEFT"><code>x : y                       </code></TD>
-</TR>
-<TR><TD ALIGN="LEFT">&nbsp;</TD>
-<TD ALIGN="LEFT">&nbsp;</TD>
-<TD ALIGN="LEFT"><code>  | x T y { $_[0]-&gt;YYErrok; }      </code></TD>
-</TR>
-<TR><TD ALIGN="LEFT">&nbsp;</TD>
-<TD ALIGN="LEFT">&nbsp;</TD>
-<TD ALIGN="LEFT"><code>  | error                   </code></TD>
-</TR>
-<TR><TD ALIGN="LEFT">&nbsp;</TD>
-<TD ALIGN="LEFT">&nbsp;</TD>
-<TD ALIGN="LEFT"><code>  | x error                 </code></TD>
-</TR>
-<TR><TD ALIGN="LEFT">&nbsp;</TD>
-<TD ALIGN="LEFT">&nbsp;</TD>
-<TD ALIGN="LEFT"><code>  | x error y { $_[0]-&gt;YYErrok; }  </code></TD>
-</TR>
-<TR><TD ALIGN="LEFT">&nbsp;</TD>
-<TD ALIGN="LEFT">&nbsp;</TD>
-<TD ALIGN="LEFT"><code>  | x  T error              </code></TD>
-</TR>
-</TABLE>
-</DIV>
-
-<A NAME="table:err"></A></TD></TR>
-</TABLE>
-</DIV><P></P>
-<BR>
-<BR>
 <BR>
 
-<P>
-<P>
-<DIV><B>Ejercicio  <SPAN CLASS="arabic">9</SPAN>.<SPAN CLASS="arabic">16</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Compruebe el funcionamiento de la metodología 
-para la recuperación de errores en listas presentada
-en la tabla <A HREF="#table:err">9.2</A>
-estudie el siguiente programa <code>yapp</code> siguiendo la traza de estados,
-generando entradas con todos los tipos de error posibles.
-¿Cómo se recupera el analizador en caso de existencia de un segundo
-error? ¿Que ocurre si dos errores consecutivos 
-están muy próximos?
-El programa corresponde al tercer caso de la tabla <A HREF="#table:err">9.2</A>, 
-el caso x:y{Ty} con 
-x = <TT>list</TT>, T = <TT>','</TT> e y = <TT>NUMBER</TT>:
-</I><PRE>
-%token NUMBER
-%%
-command 
-  : 
-  | command list '\n' { $_[0]-&gt;YYErrok; } 
-  ;
+<H2><A NAME="SECTION011000000000000000000">
+&#205;ndice de Materias</A>
+</H2><DL COMPACT>
+<DT><STRONG><TT>pos</TT></STRONG>
+<DD><A HREF="node35.html#5746">El Modificador <TT>/g</TT></A>
+<DT><STRONG>access link</STRONG>
+<DD><A HREF="node69.html#12537">Práctica: Calculadora con Análisis</A>
+<DT><STRONG>acciones de desplazamiento</STRONG>
+<DD><A HREF="node66.html#12507">Construcción de las Tablas</A>
+<DT><STRONG>acciones shift</STRONG>
+<DD><A HREF="node66.html#12509">Construcción de las Tablas</A>
+<DT><STRONG>acción de reducción</STRONG>
+<DD><A HREF="node66.html#12511">Construcción de las Tablas</A>
+<DT><STRONG>algoritmo de construcción del subconjunto</STRONG>
+<DD><A HREF="node66.html#12489">Construcción de las Tablas</A>
+<DT><STRONG>antiderivación</STRONG>
+<DD><A HREF="node65.html#12461">Conceptos Básicos del Análisis</A>
+<DT><STRONG>atributo heredado</STRONG>
+<DD><A HREF="node73.html#13712">Esquemas de Traducción</A>
+ | <A HREF="node75.html#13730">Definición Dirigida por la</A>
+<DT><STRONG>atributo sintetizado</STRONG>
+<DD><A HREF="node73.html#13714">Esquemas de Traducción</A>
+ | <A HREF="node75.html#13732">Definición Dirigida por la</A>
+<DT><STRONG>atributos formales</STRONG>
+<DD><A HREF="node75.html#13720">Definición Dirigida por la</A>
+<DT><STRONG>atributos heredados</STRONG>
+<DD><A HREF="node73.html#13710">Esquemas de Traducción</A>
+ | <A HREF="node74.html#13716">Manejo en <TT>jison</TT> de</A>
+ | <A HREF="node75.html#13728">Definición Dirigida por la</A>
+<DT><STRONG>atributos intrínsecos</STRONG>
+<DD><A HREF="node75.html#13734">Definición Dirigida por la</A>
+<DT><STRONG>atributos sintetizados</STRONG>
+<DD><A HREF="node73.html#13708">Esquemas de Traducción</A>
+ | <A HREF="node75.html#13726">Definición Dirigida por la</A>
+<DT><STRONG>autómata finito determinista</STRONG>
+<DD><A HREF="node66.html#12485">Construcción de las Tablas</A>
+<DT><STRONG>Basic Multilingual Plane</STRONG>
+<DD><A HREF="node37.html#9011">Introducción</A>
+<DT><STRONG>BMP</STRONG>
+<DD><A HREF="node37.html#9013">Introducción</A>
+<DT><STRONG>bubble phase</STRONG>
+<DD><A HREF="node16.html#2572">Ficheros</A>
+<DT><STRONG>callback</STRONG>
+<DD><A HREF="node10.html#2447">How JQuery Works</A>
+<DT><STRONG>capture phase</STRONG>
+<DD><A HREF="node16.html#2568">Ficheros</A>
+<DT><STRONG>clausura</STRONG>
+<DD><A HREF="node66.html#12491">Construcción de las Tablas</A>
+<DT><STRONG>code points</STRONG>
+<DD><A HREF="node37.html#8993">Introducción</A>
+ | <A HREF="node37.html#8997">Introducción</A>
+<DT><STRONG>combining character sequence</STRONG>
+<DD><A HREF="node37.html#9003">Introducción</A>
+<DT><STRONG>conflicto de desplazamiento-reducción</STRONG>
+<DD><A HREF="node66.html#12519">Construcción de las Tablas</A>
+ | <A HREF="node72.html#13692">Precedencia y Asociatividad</A>
+<DT><STRONG>conflicto reduce-reduce</STRONG>
+<DD><A HREF="node66.html#12521">Construcción de las Tablas</A>
+ | <A HREF="node72.html#13694">Precedencia y Asociatividad</A>
+<DT><STRONG>conflicto shift-reduce</STRONG>
+<DD><A HREF="node66.html#12517">Construcción de las Tablas</A>
+ | <A HREF="node72.html#13690">Precedencia y Asociatividad</A>
+<DT><STRONG>definición dirigida por la sintáxis</STRONG>
+<DD><A HREF="node75.html#13718">Definición Dirigida por la</A>
+<DT><STRONG>devDependencies</STRONG>
+<DD><A HREF="node93.html#14490">Grunt</A>
+<DT><STRONG>DFA</STRONG>
+<DD><A HREF="node66.html#12487">Construcción de las Tablas</A>
+<DT><STRONG>Document Type Definition</STRONG>
+<DD><A HREF="node42.html#9231">Práctica: Un lenguaje para</A>
+<DT><STRONG>DOM storage</STRONG>
+<DD><A HREF="node10.html#2482">Local Storage (HTML5 Web</A>
+<DT><STRONG>DTD</STRONG>
+<DD><A HREF="node42.html#9233">Práctica: Un lenguaje para</A>
+<DT><STRONG>esquema de traducción</STRONG>
+<DD><A HREF="node43.html#9269">Programa Principal: usando la</A>
+ | <A HREF="node73.html#13706">Esquemas de Traducción</A>
+<DT><STRONG>evaluation stack</STRONG>
+<DD><A HREF="node69.html#12547">Práctica: Calculadora con Análisis</A>
+<DT><STRONG>favicon</STRONG>
+<DD><A HREF="node11.html#2512">favicons y shortcut icons</A>
+<DT><STRONG>Favorite icon</STRONG>
+<DD><A HREF="node11.html#2514">favicons y shortcut icons</A>
+<DT><STRONG>función de transición del autómata</STRONG>
+<DD><A HREF="node66.html#12493">Construcción de las Tablas</A>
+<DT><STRONG>goto</STRONG>
+<DD><A HREF="node66.html#12501">Construcción de las Tablas</A>
+<DT><STRONG>grafo de dependencias</STRONG>
+<DD><A HREF="node75.html#13736">Definición Dirigida por la</A>
+<DT><STRONG>gramática atribuída</STRONG>
+<DD><A HREF="node75.html#13742">Definición Dirigida por la</A>
+<DT><STRONG>gramática es recursiva por la izquierda</STRONG>
+<DD><A HREF="node51.html#11470">Asociación Incorrecta para la</A>
+<DT><STRONG>handle</STRONG>
+<DD><A HREF="node65.html#12475">Conceptos Básicos del Análisis</A>
+ | <A HREF="node65.html#12467">Conceptos Básicos del Análisis</A>
+<DT><STRONG>INI</STRONG>
+<DD><A HREF="node14.html#2550">Ejercicios</A>
+<DT><STRONG>items núcleo</STRONG>
+<DD><A HREF="node66.html#12527">Construcción de las Tablas</A>
+<DT><STRONG>JavaScript Object Notation</STRONG>
+<DD><A HREF="node10.html#2464">Templates en Underscore</A>
+<DT><STRONG>jQuery</STRONG>
+<DD><A HREF="node10.html#2437">jQuery</A>
+<DT><STRONG>JSON</STRONG>
+<DD><A HREF="node10.html#2462">Templates en Underscore</A>
+<DT><STRONG>Karma</STRONG>
+<DD><A HREF="node93.html#14480">Karma</A>
+<DT><STRONG>L-atribuída</STRONG>
+<DD><A HREF="node75.html#13744">Definición Dirigida por la</A>
+<DT><STRONG>LALR</STRONG>
+<DD><A HREF="node66.html#12525">Construcción de las Tablas</A>
+<DT><STRONG>lenguaje de las formas sentenciales a rderechas</STRONG>
+<DD><A HREF="node65.html#12465">Conceptos Básicos del Análisis</A>
+<DT><STRONG>local storage</STRONG>
+<DD><A HREF="node10.html#2484">Local Storage (HTML5 Web</A>
+<DT><STRONG>LR</STRONG>
+<DD><A HREF="node65.html#12459">Conceptos Básicos del Análisis</A>
+<DT><STRONG>manecilla</STRONG>
+<DD><A HREF="node65.html#12471">Conceptos Básicos del Análisis</A>
+<DT><STRONG>mango</STRONG>
+<DD><A HREF="node65.html#12473">Conceptos Básicos del Análisis</A>
+ | <A HREF="node65.html#12469">Conceptos Básicos del Análisis</A>
+<DT><STRONG>miscreant grammar</STRONG>
+<DD><A HREF="node45.html#9526">Debugging grammar creation</A>
+<DT><STRONG>Mocha TDD interface</STRONG>
+<DD><A HREF="node93.html#14474">TDD</A>
+<DT><STRONG>modo byte</STRONG>
+<DD><A HREF="node37.html#9031">Operadores, <TT>STDOUT</TT> y Unicode</A>
+<DT><STRONG>modo carácter</STRONG>
+<DD><A HREF="node37.html#9033">Operadores, <TT>STDOUT</TT> y Unicode</A>
+<DT><STRONG>NFA</STRONG>
+<DD><A HREF="node65.html#12479">Conceptos Básicos del Análisis</A>
+<DT><STRONG>opciones de línea</STRONG>
+<DD><A HREF="node39.html#9218">Modificación de Múltiples Ficheros:</A>
+<DT><STRONG>Opción de perl -i</STRONG>
+<DD><A HREF="node39.html#9226">Modificación de Múltiples Ficheros:</A>
+<DT><STRONG>Opción de perl -n</STRONG>
+<DD><A HREF="node39.html#9223">Modificación de Múltiples Ficheros:</A>
+<DT><STRONG>Opción de perl -p</STRONG>
+<DD><A HREF="node39.html#9220">Modificación de Múltiples Ficheros:</A>
+<DT><STRONG>orden parcial</STRONG>
+<DD><A HREF="node75.html#13738">Definición Dirigida por la</A>
+<DT><STRONG>orden topológico</STRONG>
+<DD><A HREF="node75.html#13740">Definición Dirigida por la</A>
+<DT><STRONG>pattern matching</STRONG>
+<DD><A HREF="node10.html#2494">global.css</A>
+<DT><STRONG>pattern space</STRONG>
+<DD><A HREF="node21.html#4093">Expresiones Regulares en sed</A>
+<DT><STRONG>planes</STRONG>
+<DD><A HREF="node37.html#9015">Introducción</A>
+<DT><STRONG>postponed regular subexpression</STRONG>
+<DD><A HREF="node36.html#6022">Caveats</A>
+<DT><STRONG>precomposed characters</STRONG>
+<DD><A HREF="node37.html#9005">Introducción</A>
+<DT><STRONG>Primeros</STRONG>
+<DD><A HREF="node66.html#12481">Los conjuntos de Primeros</A>
+<DT><STRONG>Práctica</STRONG>
+<DD><DL COMPACT>
+<DT><STRONG>Ambiguedad en C++</STRONG>
+<DD><A HREF="node59.html#11505">Práctica: Ambiguedad en C++</A>
+<DT><STRONG>Analizador Léxico para Un Subconjunto de JavaScript</STRONG>
+<DD><A HREF="node17.html#2602">Práctica: Analizador Léxico para</A>
+<DT><STRONG>Calculadora  con Funciones</STRONG>
+<DD><A HREF="node68.html#12532">Práctica: Calculadora con Funciones</A>
+<DT><STRONG>Calculadora con <TT>Regexp::Grammars</TT></STRONG>
+<DD><A HREF="node45.html#9577">Práctica: Calculadora con <TT>Regexp::Grammars</TT></A>
+<DT><STRONG>Calculadora con Análisis de Ámbito</STRONG>
+<DD><A HREF="node69.html#12534">Práctica: Calculadora con Análisis</A>
+<DT><STRONG>Calculadora con Listas de Expresiones y Variables</STRONG>
+<DD><A HREF="node64.html#12458">Práctica: Calculadora con Listas</A>
+<DT><STRONG>Comma Separated Values. CSV</STRONG>
+<DD><A HREF="node10.html#2410">Práctica: Comma Separated Values.</A>
+<DT><STRONG>Conversor de Temperaturas</STRONG>
+<DD><A HREF="node9.html#2371">Práctica: Conversor de Temperaturas</A>
+<DT><STRONG>Ficheros INI</STRONG>
+<DD><A HREF="node16.html#2555">Práctica: Ficheros INI</A>
+<DT><STRONG>Inventando un Lenguaje: Tortoise</STRONG>
+<DD><A HREF="node60.html#11507">Práctica: Inventando un Lenguaje:</A>
+<DT><STRONG>Palabras Repetidas</STRONG>
+<DD><A HREF="node13.html#2521">Práctica: Palabras Repetidas</A>
+<DT><STRONG>Secuencia de Asignaciones Simples</STRONG>
+<DD><A HREF="node63.html#12424">Práctica: Secuencia de Asignaciones</A>
+<DT><STRONG>Traducción de <TT>invitation</TT> a <TT>HTML</TT></STRONG>
+<DD><A HREF="node44.html#9299">Práctica: Traducción de <TT>invitation</TT></A>
+<DT><STRONG>Traducción de Infijo a Postfijo</STRONG>
+<DD><A HREF="node67.html#12530">Práctica: Traducción de Infijo</A>
+<DT><STRONG>Un lenguaje para Componer Invitaciones</STRONG>
+<DD><A HREF="node42.html#9230">Práctica: Un lenguaje para</A>
+</DL>
+<DT><STRONG>recursion</STRONG>
+<DD><A HREF="node69.html#12543">Práctica: Calculadora con Análisis</A>
+<DT><STRONG>recursiva por la derecha</STRONG>
+<DD><A HREF="node53.html#11474">Eliminación de la Recursión</A>
+<DT><STRONG>recursiva por la izquierda</STRONG>
+<DD><A HREF="node51.html#11472">Asociación Incorrecta para la</A>
+<DT><STRONG>reducción por defecto</STRONG>
+<DD><A HREF="node71.html#13688">defaultActions</A>
+<DT><STRONG>reducción-reducción</STRONG>
+<DD><A HREF="node66.html#12523">Construcción de las Tablas</A>
+ | <A HREF="node72.html#13696">Precedencia y Asociatividad</A>
+<DT><STRONG>reentrant</STRONG>
+<DD><A HREF="node69.html#12541">Práctica: Calculadora con Análisis</A>
+<DT><STRONG>register spilling</STRONG>
+<DD><A HREF="node69.html#12545">Práctica: Calculadora con Análisis</A>
+<DT><STRONG>regla por defecto</STRONG>
+<DD><A HREF="node20.html#3616">Ejecución</A>
+<DT><STRONG>reglas de evaluación de los atributos</STRONG>
+<DD><A HREF="node75.html#13722">Definición Dirigida por la</A>
+<DT><STRONG>reglas semánticas</STRONG>
+<DD><A HREF="node75.html#13724">Definición Dirigida por la</A>
+<DT><STRONG>rightmost derivation</STRONG>
+<DD><A HREF="node65.html#12463">Conceptos Básicos del Análisis</A>
+<DT><STRONG>S-atribuída</STRONG>
+<DD><A HREF="node75.html#13746">Definición Dirigida por la</A>
+<DT><STRONG>script sed</STRONG>
+<DD><A HREF="node21.html#4091">Expresiones Regulares en sed</A>
+<DT><STRONG>secci&#243;n de c&#243;digo</STRONG>
+<DD><A HREF="node20.html#3606">Estructura de un programa</A>
+<DT><STRONG>secci&#243;n de definiciones</STRONG>
+<DD><A HREF="node20.html#3602">Estructura de un programa</A>
+<DT><STRONG>secci&#243;n de reglas</STRONG>
+<DD><A HREF="node20.html#3604">Estructura de un programa</A>
+<DT><STRONG>session storage</STRONG>
+<DD><A HREF="node10.html#2486">Local Storage (HTML5 Web</A>
+<DT><STRONG>shortcut</STRONG>
+<DD><A HREF="node11.html#2516">favicons y shortcut icons</A>
+<DT><STRONG>siguientes</STRONG>
+<DD><A HREF="node66.html#12483">Los conjuntos de Primeros</A>
+<DT><STRONG>SLR</STRONG>
+<DD><A HREF="node66.html#12513">Construcción de las Tablas</A>
+ | <A HREF="node66.html#12515">Construcción de las Tablas</A>
+ | <A HREF="node66.html#12503">Construcción de las Tablas</A>
+<DT><STRONG>static link</STRONG>
+<DD><A HREF="node69.html#12539">Práctica: Calculadora con Análisis</A>
+<DT><STRONG>tabla de acciones</STRONG>
+<DD><A HREF="node66.html#12499">Construcción de las Tablas</A>
+ | <A HREF="node66.html#12505">Construcción de las Tablas</A>
+<DT><STRONG>tabla de gotos</STRONG>
+<DD><A HREF="node66.html#12497">Construcción de las Tablas</A>
+<DT><STRONG>tabla de saltos</STRONG>
+<DD><A HREF="node66.html#12495">Construcción de las Tablas</A>
+<DT><STRONG>target phase</STRONG>
+<DD><A HREF="node16.html#2570">Ficheros</A>
+<DT><STRONG>text area</STRONG>
+<DD><A HREF="node10.html#2474">textarea, autofocus y button</A>
+<DT><STRONG>Unicode</STRONG>
+<DD><A HREF="node37.html#8991">Introducción</A>
+<DT><STRONG>Unicode character</STRONG>
+<DD><A HREF="node37.html#8995">Introducción</A>
+ | <A HREF="node37.html#9001">Introducción</A>
+<DT><STRONG>Unicode properties</STRONG>
+<DD><A HREF="node37.html#8999">Introducción</A>
+<DT><STRONG>Web storage</STRONG>
+<DD><A HREF="node10.html#2480">Local Storage (HTML5 Web</A>
+<DT><STRONG>zero-width assertions</STRONG>
+<DD><A HREF="node36.html#5767">Las zero-width assertions como</A>
+ | <A HREF="node36.html#5931">Resultado de la última</A>
+<DT><STRONG>árbol sintáctico concreto</STRONG>
+<DD><A HREF="node62.html#12397">Conceptos Básicos para el</A>
 
-list 
-    : NUMBER            { put($1); }
-    | list ',' NUMBER   { put($3); $_[0]-&gt;YYErrok; }
-    | error             { err(1); }
-    | list error        { err(2); }
-    | list error NUMBER { err(3); put($3); $_[0]-&gt;YYErrok; }
-    | list ',' error    { err(4); }
-    ;
-    
-%%    
-sub put { my $x = shift; printf("%2.1lf\n",$x); }
-sub err { my $code = shift; printf("err %d\n",$code); }
- ...
-</PRE></DIV><P></P>
+</DL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4137"
+<A NAME="tex2html3805"
   HREF="node114.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4131"
-  HREF="node97.html">
+<A NAME="tex2html3801"
+  HREF="javascriptexamples.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4125"
+<A NAME="tex2html3795"
   HREF="node112.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4133"
-  HREF="node234.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4135"
-  HREF="node237.html">
-<IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
+<A NAME="tex2html3803"
+  HREF="node110.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>  <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
  SRC="logoLPP.png"
@@ -314,17 +431,17 @@ sub err { my $code = shift; printf("err %d\n",$code); }
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4138"
-  HREF="node114.html">Consejos a seguir al</A>
-<B>Sup:</B> <A NAME="tex2html4132"
-  HREF="node97.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html4126"
-  HREF="node112.html">Recuperación de Errores</A>
+<B> Sig:</B> <A NAME="tex2html3806"
+  HREF="node114.html">Bibliograf&#237;a</A>
+<B>Sup:</B> <A NAME="tex2html3802"
+  HREF="javascriptexamples.html">Apuntes de la Asignatura</A>
+<B> Ant:</B> <A NAME="tex2html3796"
+  HREF="node112.html">&#205;ndice de Tablas</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-01-17</I>
+2014-02-25</I>
 </ADDRESS>
 </BODY>
 </HTML>
