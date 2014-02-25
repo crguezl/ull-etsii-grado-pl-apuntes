@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Eliminación de la Recursividad por la Izquierda</TITLE>
-<META NAME="description" CONTENT="Eliminación de la Recursividad por la Izquierda">
+<TITLE>Consejos a seguir al escribir un programa jison</TITLE>
+<META NAME="description" CONTENT="Consejos a seguir al escribir un programa jison">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node53.html">
 <LINK REL="previous" HREF="node51.html">
-<LINK REL="up" HREF="node49.html">
+<LINK REL="up" HREF="node33.html">
 <LINK REL="next" HREF="node53.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html2490"
+<A NAME="tex2html1547"
   HREF="node53.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2484"
-  HREF="node49.html">
+<A NAME="tex2html1541"
+  HREF="node33.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2478"
+<A NAME="tex2html1537"
   HREF="node51.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2486"
-  HREF="node110.html">
+<A NAME="tex2html1543"
+  HREF="node82.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2488"
-  HREF="node113.html">
+<A NAME="tex2html1545"
+  HREF="node85.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,258 +91,192 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2491"
-  HREF="node53.html">Eliminación de la Recursividad</A>
-<B>Sup:</B> <A NAME="tex2html2485"
-  HREF="node49.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html2479"
-  HREF="node51.html">Un Ejemplo Sencillo</A>
+<B> Sig:</B> <A NAME="tex2html1548"
+  HREF="node53.html">Análisis Sintáctico Ascendente en</A>
+<B>Sup:</B> <A NAME="tex2html1542"
+  HREF="node33.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html1538"
+  HREF="node51.html">Construcción del Árbol Sintáctico</A>
 <B> Con:</B> 
-<A NAME="tex2html2486"
-  HREF="node110.html">
+<A NAME="tex2html1543"
+  HREF="node82.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html2488"
-  HREF="node113.html">
+<A NAME="tex2html1545"
+  HREF="node85.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><A NAME="tex2html2492"
-  HREF="node52.html#SECTION04631000000000000000">Eliminación de la Recursividad por la izquierda Respetando el Orden de 
-Ejecución de las Acciones Semánticas</A>
-<LI><A NAME="tex2html2493"
-  HREF="node52.html#SECTION04632000000000000000">Eliminando la Recursividad por la Izquierda en la Calculadora</A>
-</UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION04630000000000000000">
-Eliminación de la Recursividad por la Izquierda</A>
+<H1><A NAME="SECTION044190000000000000000"></A>
+<A NAME="section:consejosjison"></A>
+<BR>
+Consejos a seguir al escribir un programa <TT>jison</TT>
 </H1>
+Cuando escriba un programa <code>jison</code> asegurese
+de seguir los siguientes consejos:
 
 <P>
-Es posible modificar la gramática para eliminar la recursión por 
-la izquierda. En este apartado nos limitaremos al caso de recursión 
-por la izquierda directa. 
-La generalización al caso de recursión por la izquierda no-directa
-se reduce a la iteración de la solución propuesta 
-para el caso directo.
+
+<OL>
+<LI>Coloque el punto y coma de separación de reglas en una línea aparte.
+Un punto y coma ``pegado'' al final de una regla puede confundirse
+con un terminal de la regla.
 
 <P>
-Consideremos una variable <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img13.png"
- ALT="$ A$"></SPAN> con dos producciones:
+</LI>
+<LI>Si hay una regla que produce vacío, coloquela en primer lugar y acompáñela de 
+un comentario resaltando ese hecho.
+</LI>
+<LI>Nunca escriba dos reglas de producción en la misma línea.
+</LI>
+<LI>Sangre convenientemente todas las partes derechas de las reglas
+de producción de una variable, de modo que queden
+alineadas.
+</LI>
+<LI>Ponga nombres representativos a sus variables sintácticas. No llame 
+<code>Z</code> a una variable que representa el concepto ``lista de parámetros'',
+llámela <code>ListaDeParametros</code>.
+</LI>
+<LI>Es conveniente que declare los terminales simbólicos, esto es, aquellos que 
+llevan un identificador asociado. Si no llevan prioridad asociada o no 
+es necesaria, use una declaración <code>%token</code>. De esta manera
+el lector de su programa se dará cuenta rápidamente que dichos identificadores
+no se corresponden con variables sintácticas. Por la misma razón,
+si se trata de terminales
+asociados con caracteres o cadenas no es tan necesario que los declare, 
+a menos que, 
+como en el ejemplo de la calculadora para <code>'+'</code> y <code>'*'</code>,
+sea necesario asociarles una
+precedencia.
+</LI>
+<LI>Es importante que use la opción <code>-v</code> para producir
+el fichero <code>.output</code> conteniendo información detallada sobre
+los conflictos y el autómata. Cuando haya un conflicto shift-reduce
+no resuelto busque en el fichero el estado implicado y 
+vea que LR(0) items <!-- MATH
+ $A \rightarrow \alpha_\uparrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="64" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img147.png"
+ ALT="$ A \rightarrow \alpha_\uparrow$"></SPAN>
+y <!-- MATH
+ $B \rightarrow \beta_\uparrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="73" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img183.png"
+ ALT="$ B \rightarrow \beta_\uparrow \gamma$"></SPAN> entran en conflicto.
 
 <P>
-<BR>
-<BR>
-<DIV ALIGN="CENTER">
+</LI>
+<LI><A NAME="item:conflictos"></A>Si según el informe de <code>jison</code>
+el conflicto se produce ante un terminal <SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img184.png"
+ ALT="$ a$"></SPAN>,
+es porque <!-- MATH
+ $a \in FOLLOW(A)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="146" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img185.png"
+ ALT="$ a \in FOLLOW(A)$"></SPAN> y
 <!-- MATH
- $A   \rightarrow A \alpha |\ \beta$
+ $a \in FIRST(\gamma)$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="91" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img14.png"
- ALT="$ A \rightarrow A \alpha \vert \beta$"></SPAN> 
-
-</DIV>
+ WIDTH="119" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img186.png"
+ ALT="$ a \in FIRST(\gamma)$"></SPAN>. Busque las causas por las que esto ocurre 
+y modifique su gramática con vistas a eliminar la presencia
+del terminal <SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img184.png"
+ ALT="$ a$"></SPAN> en uno de los dos conjuntos implicados
+o bien establezca reglas de prioridad entre los terminales
+implicados que resuelvan el conflicto.
 
 <P>
-donde <!-- MATH
- $\alpha, \beta \in (V \cup \Sigma)^*$
+</LI>
+<LI>Nótese que cuando existe un conflicto de desplazamiento 
+reducción entre <!-- MATH
+ $A \rightarrow \alpha_\uparrow$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="123" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img15.png"
- ALT="$ \alpha, \beta \in (V \cup \Sigma)^*$"></SPAN> no comienzan por <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img13.png"
- ALT="$ A$"></SPAN>.
-Estas dos producciones pueden ser sustituidas por:
-
-<P>
-<BR>
-<BR>
-<DIV ALIGN="CENTER">
+ WIDTH="64" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img147.png"
+ ALT="$ A \rightarrow \alpha_\uparrow$"></SPAN> 
+y  <!-- MATH
+ $B \rightarrow \beta_\uparrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="73" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img183.png"
+ ALT="$ B \rightarrow \beta_\uparrow \gamma$"></SPAN>, el programa
+<code>jison</code> contabiliza un error por cada terminal 
 <!-- MATH
- $A   \rightarrow \beta \alpha *$
+ $a \in FOLLOW(A) \cap FIRST(\gamma)$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="76" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img16.png"
- ALT="$ A \rightarrow \beta \alpha * $"></SPAN>
-</DIV>
+ WIDTH="249" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img187.png"
+ ALT="$ a \in FOLLOW(A) \cap FIRST(\gamma)$"></SPAN>. Por esta razón,
+si hay 16 elementos en <!-- MATH
+ $FOLLOW(A) \cap FIRST(\gamma)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="218" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img188.png"
+ ALT="$ FOLLOW(A) \cap FIRST(\gamma)$"></SPAN>,
+el analizador <code>jison</code> informará de la existencia
+de 16 conflictos <SPAN  CLASS="textbf">shift-reduce</SPAN>,
+cuando en realidad se trata de uno sólo. No desespere, 
+los conflictos ``auténticos'' suelen
+ser menos de los que <code>jison</code> anuncia.
 
 <P>
-eliminando así la recursión por la izquierda.
-
-<P>
-
-<H2><A NAME="SECTION04631000000000000000">
-Eliminación de la Recursividad por la izquierda Respetando el Orden de 
-Ejecución de las Acciones Semánticas</A>
-</H2>
-
-<P>
-<PRE>
-[~/pegjs-coffee-remove-left(master)]$ cat -n remove_left_recursive.pegjs 
-     1  /*
-     2  
-     3  Exercise: Find a PEG equivalent to the following left-recursive
-     4  grammar:
-     5  
-     6  A : A 'x' { $$ = do_x($1, $2); } | 'y' { $$ = do_y($1); }
-     7  
-     8  */
-     9  
-    10  {
-    11    @do_y = (y)   -&gt; console.log("do_y(#{y})"); y
-    12    @do_x = (a, x)-&gt; console.log("do_x(#{a}, #{x})"); a+x
-    13  }
-    14  
-    15  A = y:'y' xs:('x'*) 
-    16       {
-    17          a = @do_y(y)
-    18          for x in xs
-    19            a = @do_x(a, x)
-    20          a
-    21       }
-</PRE>
+</LI>
+<LI>Si necesita declarar variables globales, inicializaciones, etc.
+que afectan la conducta global del analizador, escriba el código 
+correspondiente en la cabecera del analizador, protegido
+por los delimitadores <code>%{</code> y <code>%}</code>. Estos delimitadores
+deberán aparecer en una línea aparte. Por ejemplo:
 
 <P>
 <PRE>
-[~/pegjs-coffee-remove-left(master)]$ pegcoffee remove_left_recursive.pegjs 
-[~/pegjs-coffee-remove-left(master)]$ ls -ltr | tail -1
--rw-rw-r--  1 casiano  staff   8919  3 jun 10:42 remove_left_recursive.js
+%{
+our contador = 0;
+%}
+
+%token NUM
+...
+%%
 </PRE>
 
 <P>
-<PRE>
-[~/pegjs-coffee-remove-left(master)]$ cat use_remove_left.coffee 
-PEG = require("./remove_left_recursive.js")
-inputs = [
-           "yxx"
-           "y"
-           "yxxx"
-         ]
-
-for input in inputs 
-  console.log("input = #{input}")
-  r = PEG.parse input
-  console.log("result = #{r}\n")
-</PRE>
-
-<P>
-<PRE>
-[~/pegjs-coffee-remove-left(master)]$ coffee use_remove_left.coffee 
-input = yxx
-do_y(y)
-do_x(y, x)
-do_x(yx, x)
-result = yxx
-
-input = y
-do_y(y)
-result = y
-
-input = yxxx
-do_y(y)
-do_x(y, x)
-do_x(yx, x)
-do_x(yxx, x)
-result = yxxx
-</PRE>
-
-<P>
-
-<H2><A NAME="SECTION04632000000000000000">
-Eliminando la Recursividad por la Izquierda en la Calculadora</A>
-</H2>
-<PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat simple.pegjs 
-/* From the Wikipedia
-Value   ← [0-9]+ / '(' Expr ')'
-Product ← Value (('*' / '/') Value)*
-Sum     ← Product (('+' / '-') Product)*
-Expr    ← Sum
-*/
-{ 
-  function reduce(left, right) {
-    var sum = left;
-    // console.log("sum = "+sum);
-    for(var i = 0; i &lt; right.length;i++) {
-      var t = right[i];
-      var op = t[0];
-      var num = t[1];
-      switch(op) {
-        case '+' : sum += num; break;
-        case '-' : sum -= num; break;
-        case '*' : sum *= num; break;
-        case '/' : sum /= num; break;
-        default : console.log("Error! "+op);
-      }
-      // console.log("sum = "+sum);
-    }
-    return sum;
-  }
-}
-
-sum   = left:product right:($[+-] product)* { return reduce(left, right); }
-product = left:value right:($[*/] value)*   { return reduce(left, right); }
-value   = number:$[0-9]+                    { return parseInt(number,10); }
-        / '(' sum:sum ')'                   { return sum; }
-</PRE>
-
-<P>
-Es posible especificar mediante llaves  un código 
-que este disponible dentro de las acciones semánticas.
-
-<P>
-Ejecución:
-<PRE>
-[~/pegjs/examples(master)]$ cat use_simple.js 
-var PEG = require("./simple.js");
-var r = PEG.parse("2-3-4");
-console.log(r);
-
-[~/pegjs/examples(master)]$ node use_simple.js 
--5
-</PRE>
-Veamos otra ejecución:
-<PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat use_simple.js 
-var PEG = require("./simple.js");
-var r = PEG.parse("2+3*(2+1)-10/2");
-console.log(r);
-
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ ../bin/pegjs simple.pegjs 
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ node use_simple.js 
-6
-</PRE>
+</LI>
+</OL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html2490"
+<A NAME="tex2html1547"
   HREF="node53.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2484"
-  HREF="node49.html">
+<A NAME="tex2html1541"
+  HREF="node33.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2478"
+<A NAME="tex2html1537"
   HREF="node51.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2486"
-  HREF="node110.html">
+<A NAME="tex2html1543"
+  HREF="node82.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2488"
-  HREF="node113.html">
+<A NAME="tex2html1545"
+  HREF="node85.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -394,12 +327,12 @@ console.log(r);
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2491"
-  HREF="node53.html">Eliminación de la Recursividad</A>
-<B>Sup:</B> <A NAME="tex2html2485"
-  HREF="node49.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html2479"
-  HREF="node51.html">Un Ejemplo Sencillo</A>
+<B> Sig:</B> <A NAME="tex2html1548"
+  HREF="node53.html">Análisis Sintáctico Ascendente en</A>
+<B>Sup:</B> <A NAME="tex2html1542"
+  HREF="node33.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html1538"
+  HREF="node51.html">Construcción del Árbol Sintáctico</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Un Ejemplo Sencillo</TITLE>
-<META NAME="description" CONTENT="Un Ejemplo Sencillo">
+<TITLE>Construcción del Árbol Sintáctico</TITLE>
+<META NAME="description" CONTENT="Construcción del Árbol Sintáctico">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node52.html">
 <LINK REL="previous" HREF="node50.html">
-<LINK REL="up" HREF="node49.html">
+<LINK REL="up" HREF="node33.html">
 <LINK REL="next" HREF="node52.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html2475"
+<A NAME="tex2html1535"
   HREF="node52.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2469"
-  HREF="node49.html">
+<A NAME="tex2html1529"
+  HREF="node33.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2463"
+<A NAME="tex2html1523"
   HREF="node50.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2471"
-  HREF="node110.html">
+<A NAME="tex2html1531"
+  HREF="node82.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2473"
-  HREF="node113.html">
+<A NAME="tex2html1533"
+  HREF="node85.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,197 +92,47 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2476"
-  HREF="node52.html">Eliminación de la Recursividad</A>
-<B>Sup:</B> <A NAME="tex2html2470"
-  HREF="node49.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html2464"
-  HREF="node50.html">Referencias y Documentación</A>
+<B> Sig:</B> <A NAME="tex2html1536"
+  HREF="node52.html">Consejos a seguir al</A>
+<B>Sup:</B> <A NAME="tex2html1530"
+  HREF="node33.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html1524"
+  HREF="node50.html">Depuración en jison</A>
 <B> Con:</B> 
-<A NAME="tex2html2471"
-  HREF="node110.html">
+<A NAME="tex2html1531"
+  HREF="node82.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html2473"
-  HREF="node113.html">
+<A NAME="tex2html1533"
+  HREF="node85.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><A NAME="tex2html2477"
-  HREF="node51.html#SECTION04621000000000000000">Asociación Incorrecta para la Resta y la División</A>
-</UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION04620000000000000000">
-Un Ejemplo Sencillo</A>
+<H1><A NAME="SECTION044180000000000000000">
+Construcción del Árbol Sintáctico</A>
 </H1>
-<PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat arithmetics.pegjs 
-/*
- * Classic example grammar, which recognizes simple arithmetic expressions like
- * "2*(3+4)". The parser generated from this grammar then computes their value.
- */
-
-start
-  = additive
-
-additive
-  = left:multiplicative PLUS right:additive { return left + right; }
-  / left:multiplicative MINUS right:additive { return left - right; }
-  / multiplicative
-
-multiplicative
-  = left:primary MULT right:multiplicative { return left * right; }
-  / left:primary DIV right:multiplicative { return left / right; }
-  / primary
-
-primary
-  = integer
-  / LEFTPAR additive:additive RIGHTPAR { return additive; }
-
-integer "integer"
-  = NUMBER
-
-_ = $[ \t\n\r]*
-
-PLUS = _"+"_
-MINUS = _"-"_
-MULT = _"*"_
-DIV = _"/"_
-LEFTPAR = _"("_
-RIGHTPAR = _")"_
-NUMBER = _ digits:$[0-9]+ _ { return parseInt(digits, 10); }
-</PRE>
-
-<P>
-<PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat main.js 
-var PEG = require("./arithmetics.js");
-var r = PEG.parse("(2+9-1)/2");
-console.log(r);
-</PRE>
-
-<P>
-<PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat Rakefile 
-PEGJS = "../bin/pegjs"
-task :default =&gt; :run
-
-desc "Compile arithmetics.pegjs"
-task :compile do
-  sh "#{PEGJS} arithmetics.pegjs"
-end
-
-desc "Run and use the parser generated from arithmetics.pegjs"
-task :run =&gt; :compile do
-  sh "node main.js"
-end
-</PRE>
-
-<P>
-<PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ rake
-../bin/pegjs arithmetics.pegjs
-node main.js
-5
-</PRE>
-
-<P>
-
-<H2><A NAME="SECTION04621000000000000000">
-Asociación Incorrecta para la Resta y la División</A>
-</H2>
-
-<P>
-<P>
-<DIV><B>Definición  <SPAN CLASS="arabic">6</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Una <A NAME="11470"></A><SPAN  CLASS="textbf">gramática es recursiva por la izquierda</SPAN> cuando existe una derivación
-<!-- MATH
- $A \stackrel{*}{\Longrightarrow} A \alpha$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="80" HEIGHT="24" ALIGN="BOTTOM" BORDER="0"
- SRC="img11.png"
- ALT="$ A \stackrel{*}{\Longrightarrow} A \alpha$"></SPAN>. 
-</I>
-<P>
-<I>En particular, es recursiva por la izquierda si contiene
-una regla de producción de la forma <!-- MATH
- $A \rightarrow A \alpha$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="69" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img12.png"
- ALT="$ A \rightarrow A \alpha$"></SPAN>. 
-En este caso se dice que la recursión por la izquierda es directa.</I></DIV><P></P>
-
-<P>
-Cuando la gramática es <A NAME="11472"></A><SPAN  CLASS="textbf">recursiva por la izquierda</SPAN>, 
-el método 
-de análisis recursivo descendente predictivo no funciona. 
-En ese caso, el procedimiento
-<code>A</code> asociado con <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img13.png"
- ALT="$ A$"></SPAN> ciclaría para siempre sin llegar a consumir ningún 
-terminal. 
-
-<P>
-Es por eso que hemos escrito las reglas de la caluladora con recursividad
-a derechas, 
-<PRE>
-additive
-  = left:multiplicative PLUS right:additive { return left + right; }
-  / left:multiplicative MINUS right:additive { return left - right; }
-  / multiplicative
-
-multiplicative
-  = left:primary MULT right:multiplicative { return left * right; }
-  / left:primary DIV right:multiplicative { return left / right; }
-  / primary
-</PRE>
-
-<P>
-pero eso da lugar a árboles hundidos hacia la derecha y a una
-aplicación de las reglas semánticas errónea:
-
-<P>
-<PRE>
-[~/pegjs/examples(master)]$ cat main.js 
-var PEG = require("./arithmetics.js");
-var r = PEG.parse("5-3-2");
-console.log(r);
-</PRE>
-
-<P>
-<PRE>
-[~/pegjs/examples(master)]$ node main.js
-4
-</PRE>
+El siguiente ejemplo usa <code>jison</code> 
+para construir el árbol sintáctico de una expresión en infijo:
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html2475"
+<A NAME="tex2html1535"
   HREF="node52.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2469"
-  HREF="node49.html">
+<A NAME="tex2html1529"
+  HREF="node33.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2463"
+<A NAME="tex2html1523"
   HREF="node50.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2471"
-  HREF="node110.html">
+<A NAME="tex2html1531"
+  HREF="node82.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2473"
-  HREF="node113.html">
+<A NAME="tex2html1533"
+  HREF="node85.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -333,12 +183,12 @@ console.log(r);
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2476"
-  HREF="node52.html">Eliminación de la Recursividad</A>
-<B>Sup:</B> <A NAME="tex2html2470"
-  HREF="node49.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html2464"
-  HREF="node50.html">Referencias y Documentación</A>
+<B> Sig:</B> <A NAME="tex2html1536"
+  HREF="node52.html">Consejos a seguir al</A>
+<B>Sup:</B> <A NAME="tex2html1530"
+  HREF="node33.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html1524"
+  HREF="node50.html">Depuración en jison</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
