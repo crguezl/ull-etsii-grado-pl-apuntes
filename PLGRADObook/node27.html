@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Comentarios Anidados</TITLE>
-<META NAME="description" CONTENT="Comentarios Anidados">
+<TITLE>Asociando un else con su if mas cercano</TITLE>
+<META NAME="description" CONTENT="Asociando un else con su if mas cercano">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -28,19 +28,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1145"
+<A NAME="tex2html1149"
   HREF="node28.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1139"
+<A NAME="tex2html1143"
   HREF="node21.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1133"
+<A NAME="tex2html1137"
   HREF="node26.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1141"
+<A NAME="tex2html1145"
   HREF="node82.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1143"
+<A NAME="tex2html1147"
   HREF="node85.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -92,18 +92,18 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1146"
-  HREF="node28.html">Un Lenguaje Dependiente del</A>
-<B>Sup:</B> <A NAME="tex2html1140"
+<B> Sig:</B> <A NAME="tex2html1150"
+  HREF="node28.html">Comentarios Anidados</A>
+<B>Sup:</B> <A NAME="tex2html1144"
   HREF="node21.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html1134"
-  HREF="node26.html">Asociando un else con</A>
+<B> Ant:</B> <A NAME="tex2html1138"
+  HREF="node26.html">Eliminación de la Recursividad</A>
 <B> Con:</B> 
-<A NAME="tex2html1141"
+<A NAME="tex2html1145"
   HREF="node82.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1143"
+<A NAME="tex2html1147"
   HREF="node85.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
@@ -111,62 +111,58 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <!--End of Navigation Panel-->
 
 <H1><A NAME="SECTION04360000000000000000">
-Comentarios Anidados</A>
+Asociando un else con su if mas cercano</A>
 </H1>
 
 <P>
 <PRE>
-$ cat pascal_comments.pegjs 
-/* Pascal nested comments */
+$ cat danglingelse.pegjs 
+/*
+S ← 'if' C 'then' S 'else' S / 'if' C 'then' S
+*/
 
-P     =   prog:N+                          { return prog; }
-N     =   chars:$(!Begin ANY)+             { return chars;}
-        / C
-C     = Begin chars:T* End                 { return chars.join(''); }
-T     =   C 
-        / (!Begin !End char:ANY)           { return char;}
-Begin = '(*'
-End   = '*)'
-ANY   =   'z'    /* any character */       { return 'z';  }
-        / char:[^z]                        { return char; }
+S =   if C:C then S1:S else S2:S { return [ 'ifthenelse', C, S1, S2 ]; }
+    / if C:C then S:S            { return [ 'ifthen', C, S]; }
+    / O                          { return 'O'; }
+_ = ' '*
+C = _'c'_                        { return 'c'; }
+O = _'o'_                        { return 'o'; }
+else = _'else'_                 
+if = _'if'_
+then = _'then'_
 </PRE>
 
 <P>
 <PRE>
-$ cat use_pascal_comments.js 
-var PEG = require("./pascal_comments.js");
-var r = PEG.parse(
-  "not bla bla (* pascal (* nested *) comment *)"+
-  " pum pum (* another comment *)");
+$ cat use_danglingelse.js 
+var PEG = require("./danglingelse.js");
+var r = PEG.parse("if c then if c then o else o");
 console.log(r);
 </PRE>
 
 <P>
 <PRE>
-$ ../bin/pegjs pascal_comments.pegjs 
-$ node use_pascal_comments.js 
-[ 'not bla bla ',
-  ' pascal  nested  comment ',
-  ' pum pum ',
-  ' another comment ' ]
+$ ../bin/pegjs danglingelse.pegjs 
+$ node use_danglingelse.js 
+[ 'ifthen', 'c', [ 'ifthenelse', 'c', 'O', 'O' ] ]
 </PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1145"
+<A NAME="tex2html1149"
   HREF="node28.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1139"
+<A NAME="tex2html1143"
   HREF="node21.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1133"
+<A NAME="tex2html1137"
   HREF="node26.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1141"
+<A NAME="tex2html1145"
   HREF="node82.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1143"
+<A NAME="tex2html1147"
   HREF="node85.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -218,12 +214,12 @@ $ node use_pascal_comments.js
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1146"
-  HREF="node28.html">Un Lenguaje Dependiente del</A>
-<B>Sup:</B> <A NAME="tex2html1140"
+<B> Sig:</B> <A NAME="tex2html1150"
+  HREF="node28.html">Comentarios Anidados</A>
+<B>Sup:</B> <A NAME="tex2html1144"
   HREF="node21.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html1134"
-  HREF="node26.html">Asociando un else con</A>
+<B> Ant:</B> <A NAME="tex2html1138"
+  HREF="node26.html">Eliminación de la Recursividad</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
