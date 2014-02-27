@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Introducción</TITLE>
-<META NAME="description" CONTENT="Introducción">
+<TITLE>Conceptos Básicos para el Análisis Sintáctico</TITLE>
+<META NAME="description" CONTENT="Conceptos Básicos para el Análisis Sintáctico">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -28,20 +28,20 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1058"
+<A NAME="tex2html1148"
   HREF="node23.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1052"
+<A NAME="tex2html1142"
   HREF="node21.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1046"
+<A NAME="tex2html1136"
   HREF="node21.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1054"
-  HREF="node82.html">
+<A NAME="tex2html1144"
+  HREF="node86.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1056"
-  HREF="node85.html">
+<A NAME="tex2html1146"
+  HREF="node89.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,19 +92,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1059"
-  HREF="node23.html">Un Ejemplo Sencillo</A>
-<B>Sup:</B> <A NAME="tex2html1053"
+<B> Sig:</B> <A NAME="tex2html1149"
+  HREF="node23.html">Análisis Sintáctico Predictivo Recursivo</A>
+<B>Sup:</B> <A NAME="tex2html1143"
   HREF="node21.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html1047"
+<B> Ant:</B> <A NAME="tex2html1137"
   HREF="node21.html">Análisis Descendente mediante Parsing</A>
 <B> Con:</B> 
-<A NAME="tex2html1054"
-  HREF="node82.html">
+<A NAME="tex2html1144"
+  HREF="node86.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1056"
-  HREF="node85.html">
+<A NAME="tex2html1146"
+  HREF="node89.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
@@ -113,394 +113,551 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html1060"
-  HREF="node22.html#SECTION04311000000000000000">Syntax</A>
-<LI><A NAME="tex2html1061"
-  HREF="node22.html#SECTION04312000000000000000">Semantics</A>
-<LI><A NAME="tex2html1062"
-  HREF="node22.html#SECTION04313000000000000000">Implementing parsers from parsing expression grammars</A>
-<LI><A NAME="tex2html1063"
-  HREF="node22.html#SECTION04314000000000000000">Lexical Analysis</A>
-<LI><A NAME="tex2html1064"
-  HREF="node22.html#SECTION04315000000000000000">Left recursion</A>
-<LI><A NAME="tex2html1065"
-  HREF="node22.html#SECTION04316000000000000000">Referencias y Documentación</A>
+<LI><A NAME="tex2html1150"
+  HREF="node22.html#SECTION04311000000000000000">Ejercicio</A>
 </UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION04310000000000000000">
-Introducción</A>
+<H1><A NAME="SECTION04310000000000000000"></A>
+<A NAME="section:conceptos"></A>
+<BR>
+Conceptos Básicos para el Análisis Sintáctico
 </H1>
+Suponemos que el lector de esta sección ha realizado con éxito
+un curso en teoría de autómatas y lenguajes formales.
+Las siguientes definiciones repasan los conceptos mas importantes.
 
 <P>
-In computer science, a <A NAME="3560"></A><SPAN  CLASS="textit">parsing expression grammar</SPAN>, or <A NAME="3562"></A><SPAN  CLASS="textit">PEG</SPAN>, is a type of
-analytic formal grammar, i.e. it describes a formal language in terms
-of a set of rules for recognizing strings in the language.
-
 <P>
-The formalism was introduced by Bryan Ford in 2004 and is closely related to the family of top-down parsing languages introduced in the early 1970s. 
-
-<P>
-Syntactically, PEGs also look similar to
-context-free grammars (CFGs), but they have a different interpretation: 
-
-<P>
-
-<UL>
-<LI>the choice operator selects the first match in PEG, while it is ambiguous in CFG. 
-</LI>
-<LI>This is closer to how string recognition tends
-to be done in practice, e.g. by a recursive descent parser.
-</LI>
-</UL>
-
-<P>
-Unlike CFGs, PEGs cannot be <SPAN ID="txt3269">ambiguous</SPAN>; 
-<I>if a string parses, it has exactly
-one valid parse tree</I>. 
-
-<P>
-It is conjectured that there exist context-free
-languages that cannot be parsed by a PEG, but this is
-not yet proven. 
-
-<P>
-
-<H2><A NAME="SECTION04311000000000000000">
-Syntax</A>
-</H2>
-Formally, a parsing expression grammar consists of:
-
-<UL>
-<LI>A finite set <SPAN CLASS="MATH"><IMG
- WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img1.png"
- ALT="$ N$"></SPAN> of nonterminal symbols.
-</LI>
-<LI>A finite set <SPAN CLASS="MATH"><IMG
- WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img2.png"
- ALT="$ \Sigma$"></SPAN> of terminal symbols that is disjoint from <SPAN CLASS="MATH"><IMG
- WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img1.png"
- ALT="$ N$"></SPAN>.
-</LI>
-<LI>A finite set <SPAN CLASS="MATH"><IMG
+<DIV><B>Definición  <SPAN CLASS="arabic">3</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Dado un conjunto <SPAN CLASS="MATH"><IMG
  WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
  SRC="img3.png"
- ALT="$ P$"></SPAN> of parsing rules.
-</LI>
-<LI>An expression <SPAN CLASS="MATH"><IMG
- WIDTH="23" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ ALT="$ A$"></SPAN>, se define <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="19" ALIGN="BOTTOM" BORDER="0"
  SRC="img4.png"
- ALT="$ e_S$"></SPAN> termed the starting expression.
-</LI>
-</UL>
-
-<P>
-Each parsing rule in <SPAN CLASS="MATH"><IMG
+ ALT="$ A^*$"></SPAN> el cierre de Kleene de <SPAN CLASS="MATH"><IMG
  WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
  SRC="img3.png"
- ALT="$ P$"></SPAN> 
-has the form <!-- MATH
- $A \leftarrow e$
+ ALT="$ A$"></SPAN> como:
+</I><!-- MATH
+ \begin{math}
+A^* = \cup_{n=0}^{\infty} A^n
+\end{math}
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="53" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ WIDTH="109" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
  SRC="img5.png"
- ALT="$ A \leftarrow e$"></SPAN>, 
-where <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ ALT="$ A^* = \cup_{n=0}^{\infty} A^n
+$"></SPAN>
+<P>
+<I>Se admite que <!-- MATH
+ $A^0 = \{ \epsilon \}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="73" HEIGHT="39" ALIGN="MIDDLE" BORDER="0"
  SRC="img6.png"
- ALT="$ A$"></SPAN> is a nonterminal symbol and <SPAN CLASS="MATH"><IMG
- WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img7.png"
- ALT="$ e$"></SPAN> is a <A NAME="3564"></A><SPAN  CLASS="textit">parsing expression</SPAN>. 
-
-<P>
-A parsing expression is a hierarchical expression similar to a regular expression, which is
-constructed in the following fashion:
-
-<OL>
-<LI>An atomic parsing expression consists of:
-
-<OL>
-<LI>any terminal symbol,
-</LI>
-<LI>any nonterminal symbol, or
-</LI>
-<LI>the empty string <SPAN CLASS="MATH"><IMG
+ ALT="$ A^0 = \{ \epsilon \}$"></SPAN>, donde <SPAN CLASS="MATH"><IMG
  WIDTH="12" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.png"
+ ALT="$ \epsilon$"></SPAN> denota la palabra vacía, esto es
+la palabra que tiene longitud cero, formada por cero símbolos del conjunto base <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$ A$"></SPAN>.</I></DIV><P></P>
+
+<P>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">3</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
+<I>Una gramática <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
  SRC="img8.png"
- ALT="$ \epsilon$"></SPAN>.
-</LI>
-</OL>
-</LI>
-<LI>Given any existing parsing expressions <SPAN CLASS="MATH"><IMG
- WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img7.png"
- ALT="$ e$"></SPAN>, <SPAN CLASS="MATH"><IMG
- WIDTH="21" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ ALT="$ G$"></SPAN> es una cuaterna <!-- MATH
+ $G =(\Sigma,V,P,S)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
  SRC="img9.png"
- ALT="$ e_1$"></SPAN>, and <SPAN CLASS="MATH"><IMG
- WIDTH="21" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ ALT="$ G =(\Sigma,V,P,S)$"></SPAN>. 
+<SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
  SRC="img10.png"
- ALT="$ e_2$"></SPAN>, 
-a new parsing
-expression can be constructed using the following operators:
-
-<OL>
-<LI>Sequence: <SPAN CLASS="MATH"><IMG
- WIDTH="38" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ ALT="$ \Sigma$"></SPAN> es el conjunto de terminales. <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
  SRC="img11.png"
- ALT="$ e1 e2$"></SPAN>
-</LI>
-<LI>Ordered choice: <SPAN CLASS="MATH"><IMG
- WIDTH="47" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ ALT="$ V$"></SPAN> es un conjunto (disjunto de <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$ \Sigma$"></SPAN>)
+que se denomina conjunto de <SPAN  CLASS="textbf">variables sintácticas</SPAN> o <SPAN  CLASS="textbf">categorías gramáticales</SPAN>,
+P es un conjunto de pares de <!-- MATH
+ $V \times (V \cup \Sigma )^*$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="107" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
  SRC="img12.png"
- ALT="$ e1 / e2$"></SPAN>
-</LI>
-<LI>Zero-or-more: <SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ ALT="$ V \times (V \cup \Sigma )^*$"></SPAN>. En vez de escribir
+un par usando la notación <!-- MATH
+ $(A, \alpha) \in P$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="85" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
  SRC="img13.png"
- ALT="$ e*$"></SPAN>
-</LI>
-<LI>One-or-more: <SPAN CLASS="MATH"><IMG
- WIDTH="27" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ ALT="$ (A, \alpha) \in P$"></SPAN> se escribe <!-- MATH
+ $A \rightarrow \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
  SRC="img14.png"
- ALT="$ e+$"></SPAN>
-</LI>
-<LI>Optional: <SPAN CLASS="MATH"><IMG
- WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img15.png"
- ALT="$ e?$"></SPAN>
-</LI>
-<LI>And-predicate: <SPAN CLASS="MATH"><IMG
- WIDTH="27" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img16.png"
- ALT="$ \&amp;e$"></SPAN>
-</LI>
-<LI>Not-predicate: <SPAN CLASS="MATH"><IMG
+ ALT="$ A \rightarrow \alpha$"></SPAN>.
+Un elemento de <SPAN CLASS="MATH"><IMG
  WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img15.png"
+ ALT="$ P$"></SPAN> se denomina producción. Por último, <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.png"
+ ALT="$ S$"></SPAN> es un símbolo del conjunto
+<SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$ V$"></SPAN> que se denomina símbolo de arranque.</I></DIV><P></P>
+
+<P>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">3</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">3</SPAN></B> &nbsp; 
+<I>Dada una gramática <!-- MATH
+ $G=(\Sigma,V,P,S)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.png"
+ ALT="$ G =(\Sigma,V,P,S)$"></SPAN> y <!-- MATH
+ $\mu = \alpha A \beta \in (V \cup \Sigma)^*$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="162" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
  SRC="img17.png"
- ALT="$ !e$"></SPAN>
-</LI>
-</OL>
-</LI>
-</OL>
+ ALT="$ \mu = \alpha A \beta \in (V \cup \Sigma)^*$"></SPAN>
+una frase formada por variables y terminales y <!-- MATH
+ $A \rightarrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.png"
+ ALT="$ A \rightarrow \gamma$"></SPAN> una producción de 
+<SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img15.png"
+ ALT="$ P$"></SPAN>, decimos que  <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.png"
+ ALT="$ \mu$"></SPAN> deriva en un paso en  <!-- MATH
+ $\alpha \gamma \beta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="37" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.png"
+ ALT="$ \alpha \gamma \beta$"></SPAN>. Esto es, derivar 
+una cadena <!-- MATH
+ $\alpha A \beta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="40" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.png"
+ ALT="$ \alpha A \beta$"></SPAN> es sustituir 
+una variable sintáctica <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$ A$"></SPAN> de <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$ V$"></SPAN> por la parte derecha <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img22.png"
+ ALT="$ \gamma$"></SPAN> de una de sus reglas de producción.
+Se dice que <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.png"
+ ALT="$ \mu$"></SPAN> deriva en <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img23.png"
+ ALT="$ n$"></SPAN> pasos en <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img24.png"
+ ALT="$ \delta$"></SPAN> si deriva en <SPAN CLASS="MATH"><IMG
+ WIDTH="45" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img25.png"
+ ALT="$ n-1$"></SPAN> pasos en una cadena
+<!-- MATH
+ $\alpha A \beta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="40" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.png"
+ ALT="$ \alpha A \beta$"></SPAN> la cual deriva en un paso en <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img24.png"
+ ALT="$ \delta$"></SPAN>. Se escribe entonces
+que <!-- MATH
+ $\mu  \stackrel{*}{\Longrightarrow}  \delta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="61" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.png"
+ ALT="$ \mu \stackrel{*}{\Longrightarrow} \delta$"></SPAN>. Una cadena deriva en 0 pasos en si misma.
+</I>
+<P></DIV><P></P>
+
+<P>
+<P>
+<DIV><A NAME="definition:lenguajegenerado"><B>Definición  <SPAN CLASS="arabic">3</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">4</SPAN></B></A> &nbsp; 
+<I>Dada una gramática <!-- MATH
+ $G=(\Sigma,V,P,S)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.png"
+ ALT="$ G =(\Sigma,V,P,S)$"></SPAN> se denota por <SPAN CLASS="MATH"><IMG
+ WIDTH="44" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img27.png"
+ ALT="$ L(G)$"></SPAN> o lenguaje
+generado por <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img8.png"
+ ALT="$ G$"></SPAN> al lenguaje:
+</I>
+<P>
+<DIV ALIGN="CENTER"><I><!-- MATH
+ $L(G) = \{ x \in \Sigma^* : S \stackrel{*}{\Longrightarrow} x \}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="210" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$ L(G) = \{ x \in \Sigma^* : S \stackrel{*}{\Longrightarrow} x \}$"></SPAN></I></DIV>
+<P>
+<I>Esto es, el lenguaje generado por la gramática <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img8.png"
+ ALT="$ G$"></SPAN> esta formado por las cadenas
+de terminales que pueden ser derivados desde el símbolo de arranque.</I></DIV><P></P>
+
+<P>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">3</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">5</SPAN></B> &nbsp; 
+<I>Una derivación que comienza en el símbolo de arranque y termina en una secuencia
+formada por sólo terminales de <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$ \Sigma$"></SPAN> se dice <SPAN  CLASS="textbf">completa</SPAN>.
+</I>
+<P>
+<I>Una derivación <!-- MATH
+ $\mu  \stackrel{*}{\Longrightarrow}  \delta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="61" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.png"
+ ALT="$ \mu \stackrel{*}{\Longrightarrow} \delta$"></SPAN> 
+en la cual en cada paso <!-- MATH
+ $\alpha A x$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="39" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img29.png"
+ ALT="$ \alpha A x$"></SPAN> la regla de producción aplicada <!-- MATH
+ $A \rightarrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.png"
+ ALT="$ A \rightarrow \gamma$"></SPAN>
+se aplica en la variable sintáctica mas a la derecha se dice <SPAN  CLASS="textbf">una derivación a derechas</SPAN>
+</I>
+<P>
+<I>Una derivación <!-- MATH
+ $\mu  \stackrel{*}{\Longrightarrow}  \delta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="61" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.png"
+ ALT="$ \mu \stackrel{*}{\Longrightarrow} \delta$"></SPAN> 
+en la cual en cada paso <!-- MATH
+ $x A \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="39" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img30.png"
+ ALT="$ x A \alpha$"></SPAN> la regla de producción aplicada <!-- MATH
+ $A \rightarrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.png"
+ ALT="$ A \rightarrow \gamma$"></SPAN>
+se aplica en la variable sintáctica mas a la izquierda se dice <SPAN  CLASS="textbf">una derivación a izquierdas</SPAN></I></DIV><P></P>
+
+<P>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">3</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">6</SPAN></B> &nbsp; 
+<I>Observe que una derivación puede ser representada como un árbol cuyos nodos
+están etiquetados en <!-- MATH
+ $V \cup \Sigma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="51" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img31.png"
+ ALT="$ V \cup \Sigma$"></SPAN>. La aplicación de la regla de 
+producción <!-- MATH
+ $A \rightarrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.png"
+ ALT="$ A \rightarrow \gamma$"></SPAN> se traduce en asignar como hijos del nodo etiquetado con <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$ A$"></SPAN>
+a los nodos etiquetados con los símbolos <!-- MATH
+ $X_1 \ldots X_n$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="76" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.png"
+ ALT="$ X_1 \ldots X_n$"></SPAN> que constituyen
+la frase <!-- MATH
+ $\gamma = X_1 \ldots X_n$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="110" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img33.png"
+ ALT="$ \gamma = X_1 \ldots X_n$"></SPAN>.  
+Este árbol se llama <A NAME="3903"></A><SPAN  CLASS="textbf">árbol sintáctico concreto</SPAN> asociado 
+con la derivación.</I></DIV><P></P>
+
+<P>
+<P>
+<DIV><A NAME="definition:arbolconcreto"><B>Definición  <SPAN CLASS="arabic">3</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">7</SPAN></B></A> &nbsp; 
+<I>Observe que, dada una frase <!-- MATH
+ $x \in L(G)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="75" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img34.png"
+ ALT="$ x \in L(G)$"></SPAN> una derivación desde el
+símbolo de arranque da lugar a  un árbol. Ese árbol tiene como raíz el 
+símbolo de arranque y como hojas los terminales 
+<!-- MATH
+ $x_1 \ldots x_n$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="67" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img35.png"
+ ALT="$ x_1 \ldots x_n$"></SPAN> que forman <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img36.png"
+ ALT="$ x$"></SPAN>. Dicho árbol se denomina <SPAN  CLASS="textbf">árbol
+de análisis sintáctico concreto</SPAN> de <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img36.png"
+ ALT="$ x$"></SPAN>. Una derivación determina
+una forma de recorrido del árbol de análisis sintáctico concreto.</I></DIV><P></P>
+
+<P>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">3</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">8</SPAN></B> &nbsp; 
+<I>Una gramática <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img8.png"
+ ALT="$ G$"></SPAN> se dice ambigua si existe alguna frase <!-- MATH
+ $x \in L(G)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="75" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img34.png"
+ ALT="$ x \in L(G)$"></SPAN>
+con al menos dos árboles sintácticos. 
+Es claro que esta definición es equivalente a afirmar que existe 
+alguna frase <!-- MATH
+ $x \in L(G)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="75" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img34.png"
+ ALT="$ x \in L(G)$"></SPAN> para la cual existen dos derivaciones a 
+izquierda (derecha) distintas.</I></DIV><P></P>
 
 <P>
 
-<H2><A NAME="SECTION04312000000000000000">
-Semantics</A>
+<H2><A NAME="SECTION04311000000000000000"></A>
+<A NAME="ejercicio:tutugrammar"></A>
+<BR>
+Ejercicio
 </H2>
+Dada la gramática con producciones:
 
 <P>
-The fundamental difference between context-free grammars and parsing
-expression grammars is that the PEG's choice operator is 
-<FONT COLOR="#ff0000"> ordered</FONT>:
+<BR>
+<BR>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">program      <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img37.png"
+ ALT="$ \rightarrow$"></SPAN> declarations  statements         <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.png"
+ ALT="$ \vert$"></SPAN> statements</TD>
+</TR>
+<TR><TD ALIGN="LEFT">declarations <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img37.png"
+ ALT="$ \rightarrow$"></SPAN> declaration  ';'  declarations    <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.png"
+ ALT="$ \vert$"></SPAN> declaration ';'</TD>
+</TR>
+<TR><TD ALIGN="LEFT">declaration  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img37.png"
+ ALT="$ \rightarrow$"></SPAN> INT  idlist                       <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.png"
+ ALT="$ \vert$"></SPAN> STRING   idlist</TD>
+</TR>
+<TR><TD ALIGN="LEFT">statements   <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img37.png"
+ ALT="$ \rightarrow$"></SPAN> statement  ';'  statements        <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.png"
+ ALT="$ \vert$"></SPAN> statement</TD>
+</TR>
+<TR><TD ALIGN="LEFT">statement    <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img37.png"
+ ALT="$ \rightarrow$"></SPAN> ID '=' expression                 <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.png"
+ ALT="$ \vert$"></SPAN> P  expression</TD>
+</TR>
+<TR><TD ALIGN="LEFT">expression   <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img37.png"
+ ALT="$ \rightarrow$"></SPAN> term '+' expression               <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.png"
+ ALT="$ \vert$"></SPAN> term</TD>
+</TR>
+<TR><TD ALIGN="LEFT">term         <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img37.png"
+ ALT="$ \rightarrow$"></SPAN> factor '*' term                   <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.png"
+ ALT="$ \vert$"></SPAN> factor</TD>
+</TR>
+<TR><TD ALIGN="LEFT">factor       <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img37.png"
+ ALT="$ \rightarrow$"></SPAN> '(' expression ')' <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.png"
+ ALT="$ \vert$"></SPAN> ID <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.png"
+ ALT="$ \vert$"></SPAN> NUM <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.png"
+ ALT="$ \vert$"></SPAN> STR</TD>
+</TR>
+<TR><TD ALIGN="LEFT">idlist       <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img37.png"
+ ALT="$ \rightarrow$"></SPAN> ID ',' idlist <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.png"
+ ALT="$ \vert$"></SPAN> ID</TD>
+</TR>
+</TABLE>
+<BR>
+<BR>
+
+<P>
+En esta gramática, <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$ \Sigma$"></SPAN> esta formado por los caracteres entre comillas simples y 
+los símbolos cuyos identificadores están en mayúsculas. Los restantes identificadores
+corresponden a elementos de <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$ V$"></SPAN>. El símbolo de arranque es <SPAN CLASS="MATH"><IMG
+ WIDTH="35" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img39.png"
+ ALT="$ S =$"></SPAN> program.
+
+<P>
+Conteste a las siguientes cuestiones:
 
 <P>
 
 <OL>
-<LI>If
-the first alternative succeeds, the second alternative is
-ignored. 
+<LI>Describa con palabras el lenguaje generado.
 </LI>
-<LI>Thus ordered choice is not commutative, unlike unordered choice as in context-free grammars.
+<LI><A NAME="ejer:arbol"></A>Construya el árbol de análisis sintáctico
+concreto para cuatro frases del lenguaje.
 </LI>
-<LI>The consequence is that if a CFG is transliterated directly to a PEG,
-any ambiguity in the former is resolved by deterministically picking
-one parse tree from the possible parses. 
+<LI>Señale a que recorridos del árbol corresponden las respectivas
+derivaciones a izquierda y a derecha en el apartado <A HREF="node38.html#ejer:arbol">2</A>.
 </LI>
-<LI>By carefully
-choosing the order in which the grammar alternatives are specified, a programmer has a great deal of control over which parse tree is selected.
-</LI>
-<LI>PEGs can 
-<FONT COLOR="#ff0000"> look ahead</FONT> into the
-input string without actually consuming it
-</LI>
-<LI>The and-predicate expression <SPAN CLASS="MATH"><IMG
- WIDTH="27" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img16.png"
- ALT="$ \&amp;e$"></SPAN> invokes the sub-expression <SPAN CLASS="MATH"><IMG
- WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img7.png"
- ALT="$ e$"></SPAN>, 
-and then succeeds if <SPAN CLASS="MATH"><IMG
- WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img7.png"
- ALT="$ e$"></SPAN> succeeds and fails if <SPAN CLASS="MATH"><IMG
- WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img7.png"
- ALT="$ e$"></SPAN> fails, 
-<I>but in either case never consumes any input</I>.
-</LI>
-<LI>The not-predicate expression <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img17.png"
- ALT="$ !e$"></SPAN> succeeds if <SPAN CLASS="MATH"><IMG
- WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img7.png"
- ALT="$ e$"></SPAN> 
-fails and fails if <SPAN CLASS="MATH"><IMG
- WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img7.png"
- ALT="$ e$"></SPAN> succeeds, <I>again consuming no input in either case</I>.
+<LI>¿Es ambigua esta gramática?. Justifique su respuesta.
 </LI>
 </OL>
-
-<P>
-
-<H2><A NAME="SECTION04313000000000000000">
-Implementing parsers from parsing expression grammars</A>
-</H2>
-
-<P>
-Any parsing expression grammar can be converted directly into a <A NAME="3566"></A><SPAN  CLASS="textit">recursive descent parser</SPAN>. 
-
-<P>
-Due to the unlimited lookahead capability that the grammar formalism
-provides, however, the resulting parser 
-<FONT COLOR="#ff0000"> could exhibit exponential time
-performance in the worst case</FONT>.
-
-<P>
-It is possible to obtain better performance for any parsing expression
-grammar by converting its recursive descent parser into 
-<FONT COLOR="#ff0000"> a packrat parser,
-which always runs in linear time</FONT>, at the cost of substantially greater
-storage space requirements. 
-
-<P>
-<I>A packrat parser is a form of parser
-similar to a recursive descent parser in construction, except that
-during the parsing process <SPAN ID="cbox3550">
-<FONT COLOR="#ee82ee"> it memoizes</FONT></SPAN>
-the intermediate results of all
-invocations of the mutually recursive parsing functions</I>, ensuring that
-each parsing function is only invoked at most once at a given input
-position. 
-
-<P>
-Because of this memoization, a packrat parser has the ability
-to parse many context-free grammars and any parsing expression grammar
-(including some that do not represent context-free languages) in linear
-time. 
-
-<P>
-Examples of memoized recursive descent parsers are known from at
-least as early as 1993. 
-
-<P>
-Note that this analysis of the performance
-of a packrat parser <B>assumes that enough memory is available to hold all
-of the memoized results</B>; in practice, if there were not enough memory,
-some parsing functions might have to be invoked more than once at the
-same input position, and consequently the parser could take more than
-linear time.
-
-<P>
-It is also possible to build LL parsers and LR parsers from parsing
-expression grammars, with better worst-case performance than a recursive
-descent parser, but the unlimited lookahead capability of the grammar
-formalism is then lost. Therefore, not all languages that can be expressed
-using parsing expression grammars can be parsed by LL or LR parsers.
-
-<P>
-
-<H2><A NAME="SECTION04314000000000000000">
-Lexical Analysis</A>
-</H2>
-
-<P>
-Parsers for languages expressed as a CFG, such as LR parsers, require a
-separate tokenization step to be done first, which breaks up the input
-based on the location of spaces, punctuation, etc. 
-
-<P>
-The tokenization is
-necessary because of the way these parsers use lookahead to parse CFGs
-that meet certain requirements in linear time. 
-
-<P>
-PEGs do
-not require tokenization to be a separate step, and tokenization rules
-can be written in the same way as any other grammar rule.
-
-<P>
-
-<H2><A NAME="SECTION04315000000000000000">
-Left recursion</A>
-</H2>
-
-<P>
-PEGs cannot express left-recursive rules where a rule refers to itself
-without moving forward in the string. 
- For example, the following left-recursive CFG rule:
-<PRE>
-string-of-a -&gt; string-of-a 'a' | 'a'
-</PRE>
-can be rewritten in a PEG using the plus operator:
-<PRE>
-string-of-a &lt;- 'a'+
-</PRE>
-The process of rewriting indirectly left-recursive rules is complex in some packrat parsers, especially when semantic actions are involved.
-
-<P>
-
-<H2><A NAME="SECTION04316000000000000000">
-Referencias y Documentación</A>
-</H2>
-
-<UL>
-<LI>Véase <A NAME="tex2html145"
-  HREF="http://en.wikipedia.org/wiki/Parsing_expression_grammar">Parsing Expression Grammar</A>
-</LI>
-<LI><A NAME="tex2html146"
-  HREF="http://pegjs.majda.cz/documentation">PEG.js documentation</A>
-</LI>
-<LI><A NAME="tex2html147"
-  HREF="http://pegjs.majda.cz/online">Testing PEG.js Online</A>
-</LI>
-<LI>Michael's Blog: <A NAME="tex2html148"
-  HREF="http://blog.mi-ernst.de/2012/05/14/javascript-parser-generators/">JavaScript Parser Generators</A>.
-The PEG.js Tutorial
-</LI>
-<LI><A NAME="tex2html149"
-  HREF="http://bford.info/packrat/">The Packrat Parsing and 
-Parsing Expression Grammars Page</A>
-</LI>
-<LI><A NAME="tex2html150"
-  HREF="http://nathansuniversity.com/">PL101: Create Your Own Programming Language</A>.
-Véanse [<A
- HREF="node86.html#nathanuniversity">3</A>] y 
-[<A
- HREF="node86.html#nathanclosures">4</A>]
-</LI>
-<LI><A NAME="tex2html151"
-  HREF="http://nathansuniversity.com/pegs.html">PL101: Create Your Own Programming Language: Parsing</A>
-</LI>
-</UL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1058"
+<A NAME="tex2html1148"
   HREF="node23.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1052"
+<A NAME="tex2html1142"
   HREF="node21.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1046"
+<A NAME="tex2html1136"
   HREF="node21.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1054"
-  HREF="node82.html">
+<A NAME="tex2html1144"
+  HREF="node86.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1056"
-  HREF="node85.html">
+<A NAME="tex2html1146"
+  HREF="node89.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -551,11 +708,11 @@ Véanse [<A
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1059"
-  HREF="node23.html">Un Ejemplo Sencillo</A>
-<B>Sup:</B> <A NAME="tex2html1053"
+<B> Sig:</B> <A NAME="tex2html1149"
+  HREF="node23.html">Análisis Sintáctico Predictivo Recursivo</A>
+<B>Sup:</B> <A NAME="tex2html1143"
   HREF="node21.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html1047"
+<B> Ant:</B> <A NAME="tex2html1137"
   HREF="node21.html">Análisis Descendente mediante Parsing</A>
 </DIV>
 <!--End of Navigation Panel-->

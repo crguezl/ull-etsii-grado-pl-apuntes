@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Eliminación de la Recursividad por la Izquierda</TITLE>
-<META NAME="description" CONTENT="Eliminación de la Recursividad por la Izquierda">
+<TITLE>Recursión por la Izquierda</TITLE>
+<META NAME="description" CONTENT="Recursión por la Izquierda">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -28,20 +28,20 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1116"
+<A NAME="tex2html1212"
   HREF="node26.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1110"
+<A NAME="tex2html1206"
   HREF="node21.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1104"
+<A NAME="tex2html1200"
   HREF="node24.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1112"
-  HREF="node82.html">
+<A NAME="tex2html1208"
+  HREF="node86.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1114"
-  HREF="node85.html">
+<A NAME="tex2html1210"
+  HREF="node89.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,258 +92,81 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1117"
-  HREF="node26.html">Eliminación de la Recursividad</A>
-<B>Sup:</B> <A NAME="tex2html1111"
+<B> Sig:</B> <A NAME="tex2html1213"
+  HREF="node26.html">Introducción</A>
+<B>Sup:</B> <A NAME="tex2html1207"
   HREF="node21.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html1105"
-  HREF="node24.html">PegJS en los Browser</A>
+<B> Ant:</B> <A NAME="tex2html1201"
+  HREF="node24.html">Esquemas de Traducción</A>
 <B> Con:</B> 
-<A NAME="tex2html1112"
-  HREF="node82.html">
+<A NAME="tex2html1208"
+  HREF="node86.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1114"
-  HREF="node85.html">
+<A NAME="tex2html1210"
+  HREF="node89.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><A NAME="tex2html1118"
-  HREF="node25.html#SECTION04341000000000000000">Eliminación de la Recursividad por la izquierda Respetando el Orden de 
-Ejecución de las Acciones Semánticas</A>
-<LI><A NAME="tex2html1119"
-  HREF="node25.html#SECTION04342000000000000000">Eliminando la Recursividad por la Izquierda en la Calculadora</A>
-</UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION04340000000000000000">
-Eliminación de la Recursividad por la Izquierda</A>
+<H1><A NAME="SECTION04340000000000000000"></A>
+<A NAME="section:recursionizquierda"></A>
+<BR>
+Recursión por la Izquierda
 </H1>
 
 <P>
-Es posible modificar la gramática para eliminar la recursión por 
-la izquierda. En este apartado nos limitaremos al caso de recursión 
-por la izquierda directa. 
-La generalización al caso de recursión por la izquierda no-directa
-se reduce a la iteración de la solución propuesta 
-para el caso directo.
-
 <P>
-Consideremos una variable <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img6.png"
- ALT="$ A$"></SPAN> con dos producciones:
-
-<P>
-<BR>
-<BR>
-<DIV ALIGN="CENTER">
+<DIV><B>Definición  <SPAN CLASS="arabic">3</SPAN>.<SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Una <A NAME="3945"></A><SPAN  CLASS="textbf">gramática es recursiva por la izquierda</SPAN> cuando existe una derivación
 <!-- MATH
- $A   \rightarrow A \alpha |\ \beta$
+ $A \stackrel{*}{\Longrightarrow} A \alpha$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="91" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img20.png"
- ALT="$ A \rightarrow A \alpha \vert \beta$"></SPAN> 
-
-</DIV>
+ WIDTH="80" HEIGHT="24" ALIGN="BOTTOM" BORDER="0"
+ SRC="img117.png"
+ ALT="$ A \stackrel{*}{\Longrightarrow} A \alpha$"></SPAN>. 
+</I>
+<P>
+<I>En particular, es recursiva por la izquierda si contiene
+una regla de producción de la forma <!-- MATH
+ $A \rightarrow A \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="69" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img118.png"
+ ALT="$ A \rightarrow A \alpha$"></SPAN>. 
+En este caso se dice que la recursión por la izquierda es directa.</I></DIV><P></P>
 
 <P>
-donde <!-- MATH
- $\alpha, \beta \in (V \cup \Sigma)^*$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="123" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img21.png"
- ALT="$ \alpha, \beta \in (V \cup \Sigma)^*$"></SPAN> no comienzan por <SPAN CLASS="MATH"><IMG
+Cuando la gramática es <A NAME="3947"></A><SPAN  CLASS="textbf">recursiva por la izquierda</SPAN>, 
+el método 
+de análisis recursivo descendente predictivo no funciona. 
+En ese caso, el procedimiento
+<code>A</code> asociado con <SPAN CLASS="MATH"><IMG
  WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img6.png"
- ALT="$ A$"></SPAN>.
-Estas dos producciones pueden ser sustituidas por:
-
-<P>
-<BR>
-<BR>
-<DIV ALIGN="CENTER">
-<!-- MATH
- $A   \rightarrow \beta \alpha *$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="76" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img22.png"
- ALT="$ A \rightarrow \beta \alpha * $"></SPAN>
-</DIV>
-
-<P>
-eliminando así la recursión por la izquierda.
-
-<P>
-
-<H2><A NAME="SECTION04341000000000000000">
-Eliminación de la Recursividad por la izquierda Respetando el Orden de 
-Ejecución de las Acciones Semánticas</A>
-</H2>
-
-<P>
-<PRE>
-[~/pegjs-coffee-remove-left(master)]$ cat -n remove_left_recursive.pegjs 
-     1  /*
-     2  
-     3  Exercise: Find a PEG equivalent to the following left-recursive
-     4  grammar:
-     5  
-     6  A : A 'x' { $$ = do_x($1, $2); } | 'y' { $$ = do_y($1); }
-     7  
-     8  */
-     9  
-    10  {
-    11    @do_y = (y)   -&gt; console.log("do_y(#{y})"); y
-    12    @do_x = (a, x)-&gt; console.log("do_x(#{a}, #{x})"); a+x
-    13  }
-    14  
-    15  A = y:'y' xs:('x'*) 
-    16       {
-    17          a = @do_y(y)
-    18          for x in xs
-    19            a = @do_x(a, x)
-    20          a
-    21       }
-</PRE>
-
-<P>
-<PRE>
-[~/pegjs-coffee-remove-left(master)]$ pegcoffee remove_left_recursive.pegjs 
-[~/pegjs-coffee-remove-left(master)]$ ls -ltr | tail -1
--rw-rw-r--  1 casiano  staff   8919  3 jun 10:42 remove_left_recursive.js
-</PRE>
-
-<P>
-<PRE>
-[~/pegjs-coffee-remove-left(master)]$ cat use_remove_left.coffee 
-PEG = require("./remove_left_recursive.js")
-inputs = [
-           "yxx"
-           "y"
-           "yxxx"
-         ]
-
-for input in inputs 
-  console.log("input = #{input}")
-  r = PEG.parse input
-  console.log("result = #{r}\n")
-</PRE>
-
-<P>
-<PRE>
-[~/pegjs-coffee-remove-left(master)]$ coffee use_remove_left.coffee 
-input = yxx
-do_y(y)
-do_x(y, x)
-do_x(yx, x)
-result = yxx
-
-input = y
-do_y(y)
-result = y
-
-input = yxxx
-do_y(y)
-do_x(y, x)
-do_x(yx, x)
-do_x(yxx, x)
-result = yxxx
-</PRE>
-
-<P>
-
-<H2><A NAME="SECTION04342000000000000000">
-Eliminando la Recursividad por la Izquierda en la Calculadora</A>
-</H2>
-<PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat simple.pegjs 
-/* From the Wikipedia
-Value   ← [0-9]+ / '(' Expr ')'
-Product ← Value (('*' / '/') Value)*
-Sum     ← Product (('+' / '-') Product)*
-Expr    ← Sum
-*/
-{ 
-  function reduce(left, right) {
-    var sum = left;
-    // console.log("sum = "+sum);
-    for(var i = 0; i &lt; right.length;i++) {
-      var t = right[i];
-      var op = t[0];
-      var num = t[1];
-      switch(op) {
-        case '+' : sum += num; break;
-        case '-' : sum -= num; break;
-        case '*' : sum *= num; break;
-        case '/' : sum /= num; break;
-        default : console.log("Error! "+op);
-      }
-      // console.log("sum = "+sum);
-    }
-    return sum;
-  }
-}
-
-sum   = left:product right:($[+-] product)* { return reduce(left, right); }
-product = left:value right:($[*/] value)*   { return reduce(left, right); }
-value   = number:$[0-9]+                    { return parseInt(number,10); }
-        / '(' sum:sum ')'                   { return sum; }
-</PRE>
-
-<P>
-Es posible especificar mediante llaves  un código 
-que este disponible dentro de las acciones semánticas.
-
-<P>
-Ejecución:
-<PRE>
-[~/pegjs/examples(master)]$ cat use_simple.js 
-var PEG = require("./simple.js");
-var r = PEG.parse("2-3-4");
-console.log(r);
-
-[~/pegjs/examples(master)]$ node use_simple.js 
--5
-</PRE>
-Veamos otra ejecución:
-<PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat use_simple.js 
-var PEG = require("./simple.js");
-var r = PEG.parse("2+3*(2+1)-10/2");
-console.log(r);
-
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ ../bin/pegjs simple.pegjs 
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ node use_simple.js 
-6
-</PRE>
+ SRC="img3.png"
+ ALT="$ A$"></SPAN> ciclaría para siempre sin llegar a consumir ningún 
+terminal. 
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1116"
+<A NAME="tex2html1212"
   HREF="node26.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1110"
+<A NAME="tex2html1206"
   HREF="node21.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1104"
+<A NAME="tex2html1200"
   HREF="node24.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1112"
-  HREF="node82.html">
+<A NAME="tex2html1208"
+  HREF="node86.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1114"
-  HREF="node85.html">
+<A NAME="tex2html1210"
+  HREF="node89.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -394,12 +217,12 @@ console.log(r);
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1117"
-  HREF="node26.html">Eliminación de la Recursividad</A>
-<B>Sup:</B> <A NAME="tex2html1111"
+<B> Sig:</B> <A NAME="tex2html1213"
+  HREF="node26.html">Introducción</A>
+<B>Sup:</B> <A NAME="tex2html1207"
   HREF="node21.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html1105"
-  HREF="node24.html">PegJS en los Browser</A>
+<B> Ant:</B> <A NAME="tex2html1201"
+  HREF="node24.html">Esquemas de Traducción</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

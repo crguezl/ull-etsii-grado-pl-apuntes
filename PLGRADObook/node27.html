@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Asociando un else con su if mas cercano</TITLE>
-<META NAME="description" CONTENT="Asociando un else con su if mas cercano">
+<TITLE>Un Ejemplo Sencillo</TITLE>
+<META NAME="description" CONTENT="Un Ejemplo Sencillo">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -28,20 +28,20 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1149"
+<A NAME="tex2html1246"
   HREF="node28.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1143"
+<A NAME="tex2html1240"
   HREF="node21.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1137"
+<A NAME="tex2html1234"
   HREF="node26.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1145"
-  HREF="node82.html">
+<A NAME="tex2html1242"
+  HREF="node86.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1147"
-  HREF="node85.html">
+<A NAME="tex2html1244"
+  HREF="node89.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,78 +92,261 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1150"
-  HREF="node28.html">Comentarios Anidados</A>
-<B>Sup:</B> <A NAME="tex2html1144"
+<B> Sig:</B> <A NAME="tex2html1247"
+  HREF="node28.html">PegJS en los Browser</A>
+<B>Sup:</B> <A NAME="tex2html1241"
   HREF="node21.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html1138"
-  HREF="node26.html">Eliminación de la Recursividad</A>
+<B> Ant:</B> <A NAME="tex2html1235"
+  HREF="node26.html">Introducción</A>
 <B> Con:</B> 
-<A NAME="tex2html1145"
-  HREF="node82.html">
+<A NAME="tex2html1242"
+  HREF="node86.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1147"
-  HREF="node85.html">
+<A NAME="tex2html1244"
+  HREF="node89.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html1248"
+  HREF="node27.html#SECTION04360010000000000000">Donde</A>
+<LI><A NAME="tex2html1249"
+  HREF="node27.html#SECTION04360020000000000000">arithmetics.pegjs</A>
+<LI><A NAME="tex2html1250"
+  HREF="node27.html#SECTION04360030000000000000">main.js</A>
+<LI><A NAME="tex2html1251"
+  HREF="node27.html#SECTION04360040000000000000">Rakefile</A>
+<LI><A NAME="tex2html1252"
+  HREF="node27.html#SECTION04360050000000000000">Compilación</A>
+</UL>
+</UL>
+<BR>
+<LI><A NAME="tex2html1253"
+  HREF="node27.html#SECTION04361000000000000000">Asociación Incorrecta para la Resta y la División</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
 
 <H1><A NAME="SECTION04360000000000000000">
-Asociando un else con su if mas cercano</A>
+Un Ejemplo Sencillo</A>
 </H1>
 
 <P>
-<PRE>
-$ cat danglingelse.pegjs 
-/*
-S ← 'if' C 'then' S 'else' S / 'if' C 'then' S
-*/
 
-S =   if C:C then S1:S else S2:S { return [ 'ifthenelse', C, S1, S2 ]; }
-    / if C:C then S:S            { return [ 'ifthen', C, S]; }
-    / O                          { return 'O'; }
-_ = ' '*
-C = _'c'_                        { return 'c'; }
-O = _'o'_                        { return 'o'; }
-else = _'else'_                 
-if = _'if'_
-then = _'then'_
+<H4><A NAME="SECTION04360010000000000000">
+Donde</A>
+</H4>
+  
+
+<PRE>
+[~/srcPLgrado/pegjs/examples(master)]$ pwd -P
+/Users/casiano/local/src/javascript/PLgrado/pegjs/examples
+[~/srcPLgrado/pegjs/examples(master)]$ git remote -v
+dmajda  https://github.com/dmajda/pegjs.git (fetch)
+dmajda  https://github.com/dmajda/pegjs.git (push)
+origin  git@github.com:crguezl/pegjs.git (fetch)
+origin  git@github.com:crguezl/pegjs.git (push)
 </PRE>
 
 <P>
+<A NAME="tex2html162"
+  HREF="https://github.com/crguezl/pegjs/blob/master/examples/arithmetics.pegjs">https://github.com/crguezl/pegjs/blob/master/examples/arithmetics.pegjs</A>
+<P>
+
+<H4><A NAME="SECTION04360020000000000000">
+arithmetics.pegjs</A>
+</H4>
+  
+
+<P>
 <PRE>
-$ cat use_danglingelse.js 
-var PEG = require("./danglingelse.js");
-var r = PEG.parse("if c then if c then o else o");
+[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat arithmetics.pegjs 
+/*
+ * Classic example grammar, which recognizes simple arithmetic expressions like
+ * "2*(3+4)". The parser generated from this grammar then computes their value.
+ */
+
+start
+  = additive
+
+additive
+  = left:multiplicative PLUS right:additive { return left + right; }
+  / left:multiplicative MINUS right:additive { return left - right; }
+  / multiplicative
+
+multiplicative
+  = left:primary MULT right:multiplicative { return left * right; }
+  / left:primary DIV right:multiplicative { return left / right; }
+  / primary
+
+primary
+  = integer
+  / LEFTPAR additive:additive RIGHTPAR { return additive; }
+
+integer "integer"
+  = NUMBER
+
+_ = $[ \t\n\r]*
+
+PLUS = _"+"_
+MINUS = _"-"_
+MULT = _"*"_
+DIV = _"/"_
+LEFTPAR = _"("_
+RIGHTPAR = _")"_
+NUMBER = _ digits:$[0-9]+ _ { return parseInt(digits, 10); }
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION04360030000000000000">
+main.js</A>
+</H4>
+  
+
+<P>
+<PRE>
+[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat main.js 
+var PEG = require("./arithmetics.js");
+var r = PEG.parse("(2+9-1)/2");
+console.log(r);
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION04360040000000000000">
+Rakefile</A>
+</H4>
+  
+
+<P>
+<PRE>
+[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat Rakefile 
+PEGJS = "../bin/pegjs"
+task :default =&gt; :run
+
+desc "Compile arithmetics.pegjs"
+task :compile do
+  sh "#{PEGJS} arithmetics.pegjs"
+end
+
+desc "Run and use the parser generated from arithmetics.pegjs"
+task :run =&gt; :compile do
+  sh "node main.js"
+end
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION04360050000000000000">
+Compilación</A>
+</H4>
+  
+
+<PRE>
+[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ rake
+../bin/pegjs arithmetics.pegjs
+node main.js
+5
+</PRE>
+
+<P>
+
+<H2><A NAME="SECTION04361000000000000000">
+Asociación Incorrecta para la Resta y la División</A>
+</H2>
+
+<P>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">3</SPAN>.<SPAN CLASS="arabic">6</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Una <A NAME="3979"></A><SPAN  CLASS="textbf">gramática es recursiva por la izquierda</SPAN> cuando existe una derivación
+<!-- MATH
+ $A \stackrel{*}{\Longrightarrow} A \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="80" HEIGHT="24" ALIGN="BOTTOM" BORDER="0"
+ SRC="img117.png"
+ ALT="$ A \stackrel{*}{\Longrightarrow} A \alpha$"></SPAN>. 
+</I>
+<P>
+<I>En particular, es recursiva por la izquierda si contiene
+una regla de producción de la forma <!-- MATH
+ $A \rightarrow A \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="69" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img118.png"
+ ALT="$ A \rightarrow A \alpha$"></SPAN>. 
+En este caso se dice que la recursión por la izquierda es directa.</I></DIV><P></P>
+
+<P>
+Cuando la gramática es <A NAME="3981"></A><SPAN  CLASS="textbf">recursiva por la izquierda</SPAN>, 
+el método 
+de análisis recursivo descendente predictivo no funciona. 
+En ese caso, el procedimiento
+<code>A</code> asociado con <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$ A$"></SPAN> ciclaría para siempre sin llegar a consumir ningún 
+terminal. 
+
+<P>
+Es por eso que hemos escrito las reglas de la caluladora con recursividad
+a derechas, 
+<PRE>
+additive
+  = left:multiplicative PLUS right:additive { return left + right; }
+  / left:multiplicative MINUS right:additive { return left - right; }
+  / multiplicative
+
+multiplicative
+  = left:primary MULT right:multiplicative { return left * right; }
+  / left:primary DIV right:multiplicative { return left / right; }
+  / primary
+</PRE>
+
+<P>
+pero eso da lugar a árboles hundidos hacia la derecha y a una
+aplicación de las reglas semánticas errónea:
+
+<P>
+<PRE>
+[~/pegjs/examples(master)]$ cat main.js 
+var PEG = require("./arithmetics.js");
+var r = PEG.parse("5-3-2");
 console.log(r);
 </PRE>
 
 <P>
 <PRE>
-$ ../bin/pegjs danglingelse.pegjs 
-$ node use_danglingelse.js 
-[ 'ifthen', 'c', [ 'ifthenelse', 'c', 'O', 'O' ] ]
+[~/pegjs/examples(master)]$ node main.js
+4
 </PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1149"
+<A NAME="tex2html1246"
   HREF="node28.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1143"
+<A NAME="tex2html1240"
   HREF="node21.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1137"
+<A NAME="tex2html1234"
   HREF="node26.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1145"
-  HREF="node82.html">
+<A NAME="tex2html1242"
+  HREF="node86.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1147"
-  HREF="node85.html">
+<A NAME="tex2html1244"
+  HREF="node89.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -214,12 +397,12 @@ $ node use_danglingelse.js
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1150"
-  HREF="node28.html">Comentarios Anidados</A>
-<B>Sup:</B> <A NAME="tex2html1144"
+<B> Sig:</B> <A NAME="tex2html1247"
+  HREF="node28.html">PegJS en los Browser</A>
+<B>Sup:</B> <A NAME="tex2html1241"
   HREF="node21.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html1138"
-  HREF="node26.html">Eliminación de la Recursividad</A>
+<B> Ant:</B> <A NAME="tex2html1235"
+  HREF="node26.html">Introducción</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

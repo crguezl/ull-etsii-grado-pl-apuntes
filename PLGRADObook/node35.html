@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Ejemplo Simple en Jison</TITLE>
-<META NAME="description" CONTENT="Ejemplo Simple en Jison">
+<TITLE>Práctica: Ambiguedad en C++</TITLE>
+<META NAME="description" CONTENT="Práctica: Ambiguedad en C++">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node36.html">
 <LINK REL="previous" HREF="node34.html">
-<LINK REL="up" HREF="node33.html">
+<LINK REL="up" HREF="node21.html">
 <LINK REL="next" HREF="node36.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1318"
+<A NAME="tex2html1376"
   HREF="node36.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1312"
-  HREF="node33.html">
+<A NAME="tex2html1370"
+  HREF="node21.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1306"
+<A NAME="tex2html1364"
   HREF="node34.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1314"
-  HREF="node82.html">
+<A NAME="tex2html1372"
+  HREF="node86.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1316"
-  HREF="node85.html">
+<A NAME="tex2html1374"
+  HREF="node89.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,362 +92,205 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1319"
-  HREF="node36.html">Ejemplo en Jison: Calculadora</A>
-<B>Sup:</B> <A NAME="tex2html1313"
-  HREF="node33.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1307"
-  HREF="node34.html">Conceptos Básicos para el</A>
+<B> Sig:</B> <A NAME="tex2html1377"
+  HREF="node36.html">Práctica: Inventando un Lenguaje:</A>
+<B>Sup:</B> <A NAME="tex2html1371"
+  HREF="node21.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html1365"
+  HREF="node34.html">Usando Pegjs con CoffeeScript</A>
 <B> Con:</B> 
-<A NAME="tex2html1314"
-  HREF="node82.html">
+<A NAME="tex2html1372"
+  HREF="node86.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1316"
-  HREF="node85.html">
+<A NAME="tex2html1374"
+  HREF="node89.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html1320"
-  HREF="node35.html#SECTION04420010000000000000">Gramática</A>
-<LI><A NAME="tex2html1321"
-  HREF="node35.html#SECTION04420020000000000000">basic2_lex.jison</A>
-<LI><A NAME="tex2html1322"
-  HREF="node35.html#SECTION04420030000000000000">index.html</A>
-<LI><A NAME="tex2html1323"
-  HREF="node35.html#SECTION04420040000000000000">Rakefile</A>
-<LI><A NAME="tex2html1324"
-  HREF="node35.html#SECTION04420050000000000000">Véase También</A>
-<LI><A NAME="tex2html1325"
-  HREF="node35.html#SECTION04420060000000000000">global.css</A>
-</UL>
-</UL>
+<H1><A NAME="SECTION043140000000000000000"></A>
+   <A NAME="4014"></A>
 <BR>
-<LI><A NAME="tex2html1326"
-  HREF="node35.html#SECTION04421000000000000000">Véase También</A>
-<LI><A NAME="tex2html1327"
-  HREF="node35.html#SECTION04422000000000000000">Práctica: Secuencia de Asignaciones Simples</A>
-</UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION04420000000000000000">
-Ejemplo Simple en Jison</A>
+Práctica: Ambiguedad en C++
 </H1>
-
-<P>
-Jison es un generador de analizadores sintácticos LALR. Otro
-analizador LALR es 
-<A NAME="tex2html169"
-  HREF="http://jscc.phorward-software.com/">JS/CC</A>.
-
-<P>
-
-<H4><A NAME="SECTION04420010000000000000">
-Gramática</A>
-</H4>
   
+This lab illustrates a problem 
+that arises in C++.
+The C++ syntax does not disambiguate between expression
+statements (<code>stmt</code>) and declaration statements (<code>decl</code>). 
+The ambiguity arises when an expression
+statement has a function-style cast as its left-most subexpression.
+Since C does not support function-style casts, this ambiguity does not occur
+in C programs.
+For example, the phrase 
+
+<P>
+<code>int (x) = y+z;</code> 
+
+<P>
+parses as either a <TT>decl</TT> or a <TT>stmt</TT>.
+
+<P>
+The disambiguation rule used in C++ is that <I>if the statement can be interpreted both as a declaration and
+as an expression, the statement is interpreted as a declaration statement.
+</I>
+
+<P>
+The following examples  disambiguate into <I>expression</I> statements when the
+potential <I>declarator</I> is followed by an operator different from equal 
+or semicolon (<TT>type_spec</TT> stands for a type specifier):
+
+<P>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=99>expr</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=128>dec</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=99><PRE>
+type_spec(i)++;      
+type_spec(i,3)&lt;&lt;d;  
+type_spec(i)-&gt;l=24;
+</PRE></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=128><PRE>
+type_spec(*i)(int); 
+type_spec(j)[5];   
+type_spec(m) = { 1, 2 }; 
+type_spec(a);              
+type_spec(*b)();          
+type_spec(c)=23;         
+type_spec(d),e,f,g=0;   
+type_spec(h)(e,3);
+</PRE></TD>
+</TR>
+</TABLE>
+</DIV>
+
+<P>
+Regarding to this problem, Bjarne Stroustrup remarks:<BLOCKQUOTE><I>Consider analyzing a statement consisting of
+a sequence of tokens as follows:
+</I></BLOCKQUOTE><PRE>
+              type_spec (dec_or_exp) tail
+</PRE><BLOCKQUOTE><I>
+Here <code>dec_or_exp</code> must be a declarator, an expression, 
+or both for the statement to be legal. This implies that <code>tail</code>
+must be a semicolon, something that can follow a 
+parenthesized declarator or something that can follow
+a parenthesized expression, that is, an initializer, <code>const</code>,
+<code>volatile</code>, <code>(</code>, <code>[</code>, or a postfix or infix operator.
+The general cases cannot be resolved without backtracking, nested grammars
+or similar advanced parsing strategies. In particular,
+the lookahead needed to disambiguate this case is not limited.
+</I>
+</BLOCKQUOTE>
+
+<P>
+The following grammar 
+depicts 
+an oversimplified version of the C++ ambiguity:
 
 <P>
 <PRE>
+$ cat CplusplusNested.y 
+%token ID INT NUM
+
+%right '='
+%left '+'
+
 %%
+prog:
+    /* empty */
+  | prog stmt
+;
 
-S   : A
-    ;
-A   : /* empty */  
-    | A x 
-    ;
-</PRE>
+stmt: 
+    expr ';' 
+  | decl    
+;
 
-<P>
+expr:
+    ID 
+  | NUM
+  | INT '(' expr ')' /* typecast */ 
+  | expr '+' expr
+  | expr '=' expr
+;
 
-<H4><A NAME="SECTION04420020000000000000">
-basic2_lex.jison</A>
-</H4>
-  
+decl:
+    INT declarator ';'
+  | INT declarator '=' expr ';'
+;
 
-<PRE>
-[~/jison/examples/basic2_lex(develop)]$ cat basic2_lex.jison 
-/* description: Basic grammar that contains a nullable A nonterminal. */
+declarator:
+    ID 
+  | '(' declarator ')'
+;
 
-%lex
 %%
-
-\s+               {/* skip whitespace */}
-[a-zA-Z_]\w*      {return 'x';}
-
-/lex
-
-%%
-
-S   : A
-           { return $1+" identifiers"; }
-    ;
-A   : /* empty */  
-           { 
-              console.log("starting"); 
-              $$ = 0; 
-           }
-    | A x  { 
-              $$ = $1 + 1;  
-              console.log($$)
-           }
-    ;
 </PRE>
 
 <P>
-
-<H4><A NAME="SECTION04420030000000000000">
-index.html</A>
-</H4>
-  
-
+Escriba un programa PegJS en CoffeeScript que distinga correctamente entre declaraciones
+y sentencias. Este es un ejemplo de un programa que usa una solución al problema:
 <PRE>
-$ cat basic2_lex.html
-&lt;!DOCTYPE HTML&gt;
-&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;meta charset="utf-8"&gt;
-    &lt;title&gt;Jison&lt;/title&gt;
-    &lt;link rel="stylesheet" href="global.css" type="text/css" media="screen" charset="utf-8" /&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;h1&gt;basic2_lex demo&lt;/h1&gt;
-    &lt;div id="content"&gt;
-      &lt;script src="jquery/jquery.js"&gt;&lt;/script&gt; 
-      &lt;script src="basic2_lex.js"&gt;&lt;/script&gt;
-      &lt;script src="main.js"&gt;&lt;/script&gt;
-      &lt;p&gt;
-        &lt;input type="text" value="x x x x" /&gt; &lt;button&gt;parse&lt;/button&gt; 
-        &lt;span id="output"&gt;&lt;/span&gt; &lt;!-- Output goes here! --&gt;
-      &lt;/p&gt;
-    &lt;/div&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
+[~/Dropbox/src/javascript/PLgrado/pegjs-coffee-plugin/examples(master)]$ cat use_cplusplus.coffee 
+PEG = require("./cplusplus.js")
+input = "int (a); int c = int (b);"
+
+r = PEG.parse(input)
+console.log("input = '#{input}'\noutput="+JSON.stringify r)
+
+input = "int b = 4+2  ;  "
+r = PEG.parse(input)
+console.log("input = '#{input}'\noutput="+JSON.stringify r)
+
+input = "bum = caf = 4-1;\n"
+r = PEG.parse(input)
+console.log("input = '#{input}'\noutput="+JSON.stringify r)
+
+input = "b2 = int(4);"
+r = PEG.parse(input)
+console.log("input = '#{input}'\noutput="+JSON.stringify r)
+
+input = "int(4);"
+r = PEG.parse(input)
+console.log("input = '#{input}'\noutput="+JSON.stringify r)
 </PRE>
-
-<P>
-
-<H4><A NAME="SECTION04420040000000000000">
-Rakefile</A>
-</H4>
-  
-
-<P>
+Y este un ejemplo de salida:
 <PRE>
-$ cat Rakefile 
-# install package:
-#     sudo npm install beautifier
-# 
-#   more about beautifier:
-#       https://github.com/rickeyski/node-beautifier
-
-dec "compile the grammar basic2_lex_ugly.jison"
-task :default =&gt; %w{basic2_lex_ugly.js} do
-  sh "mv basic2_lex.js basic2_lex_ugly.js"
-  sh "jsbeautify basic2_lex_ugly.js &gt; basic2_lex.js"
-  sh "rm -f basic2_lex_ugly.js"
-end
-
-file "basic2_lex_ugly.js" =&gt; %w{basic2_lex.jison} do
-  sh "jison basic2_lex.jison -o basic2_lex.js"
-end
+$ pegcoffee cplusplus.pegjs 
+$ coffee use_cplusplus.coffee 
+input = 'int (a); int c = int (b);'
+output=["decl","decl"]
+input = 'int b = 4+2  ;  '
+output=["decl"]
+input = 'bum = caf = 4-1;
+'
+output=["stmt"]
+input = 'b2 = int(4);'
+output=["stmt"]
+input = 'int(4);'
+output=["stmt"]
 </PRE>
-
-<P>
-
-<OL>
-<LI><A NAME="tex2html170"
-  HREF="https://github.com/rickeyski/node-beautifier">node-beautifier</A>
-</LI>
-</OL>
-
-<P>
-
-<H4><A NAME="SECTION04420050000000000000">
-Véase También</A>
-</H4>
-  
-
-<OL>
-<LI><A NAME="tex2html171"
-  HREF="http://zaach.github.com/jison/">JISON</A>
-</LI>
-<LI><A NAME="tex2html172"
-  HREF="http://zaach.github.com/jison/try/usf/">Try Jison Examples</A>
-</LI>
-<LI><A NAME="tex2html173"
-  HREF="http://www-archive.mozilla.org/js/language/grammar14.html">JavaScript 1.4 LR(1) Grammar</A>
-1999.
-</LI>
-<LI><A NAME="tex2html174"
-  HREF="http://cjihrig.com/blog/creating-a-javascript-parser/">Creating a JavaScript Parser</A>
-Una implementación de ECMAScript 5.1 usando Jison 
-disponible 
-en GitHub
- en
-<A NAME="tex2html175"
-  HREF="https://github.com/cjihrig/jsparser">https://github.com/cjihrig/jsparser</A>.
-Puede probarse en:
-<A NAME="tex2html176"
-  HREF="http://www.cjihrig.com/development/jsparser/">http://www.cjihrig.com/development/jsparser/</A>
-</LI>
-<LI><A NAME="tex2html177"
-  HREF="http://www.rolilink.com/presentations/Jison/Charla.html">Bison on JavaScript</A>
-por Rolando Perez
-</LI>
-<LI><A NAME="tex2html178"
-  HREF="http://hansineffect.github.com/Slogo/">Slogo</A>
-a language written using Jison
-</LI>
-<LI><A NAME="tex2html179"
-  HREF="https://github.com/jashkenas/coffee-script/wiki/List-of-languages-that-compile-to-JS">List of languages that compile to JS</A>
-</LI>
-<LI><A NAME="tex2html180"
-  HREF="http://blog.kalleberg.org/post/1256702765/prototype-of-a-scannerless-generalized-left-to-right">Prototype of a Scannerless, Generalized Left-to-right Rightmost (SGLR) derivation parser for JavaScript</A>
-</LI>
-</OL>
-<H4><A NAME="SECTION04420060000000000000">
-global.css</A>
-</H4>
-  
-
-<P>
-<PRE>
-[~/jison/examples/basic2_lex(develop)]$ cat global.css 
-html *
-{
-   font-size: large; 
-   /* The !important ensures that nothing can override what you've set in this style (unless it is also important). */
-   font-family: Arial;
-}
-
-.thumb {
-    height: 75px;
-    border: 1px solid #000;
-    margin: 10px 5px 0 0;
-  }
-
-h1            { text-align: center; font-size: x-large; }
-th, td        { vertical-align: top; text-align: left; }   
-/* #finaltable  * { color: white; background-color: black; }   */
-
-/* #finaltable table { border-collapse:collapse; } */
-/* #finaltable table, td { border:1px solid white; } */
-#finaltable:hover td { background-color: blue; } 
-tr:nth-child(odd)    { background-color:#eee; }
-tr:nth-child(even)    { background-color:#00FF66; }
-input        { text-align: right;  border: none;       }     /* Align input to the right  */
-textarea     { border: outset; border-color: white;       }                        
-table        { border: inset; border-color: white; }
-.hidden      { display: none; }
-.unhidden    { display: block; }
-table.center { margin-left:auto; margin-right:auto; }
-#result      { border-color: red; }
-tr.error       { background-color: red; }
-pre.output   { background-color: white; }
-span.repeated { background-color: red }
-span.header { background-color: blue }
-span.comments { background-color: orange }
-span.blanks { background-color: green }
-span.nameEqualValue { background-color: cyan }
-span.error { background-color: red }
-
-body
-{
- background-color:#b0c4de;  /* blue */
-}
-</PRE>
-
-<P>
-
-<H2><A NAME="SECTION04421000000000000000">
-Véase También</A>
-</H2>
-
-<OL>
-<LI><A NAME="tex2html181"
-  HREF="http://zaach.github.com/jison/">JISON</A>
-</LI>
-<LI><A NAME="tex2html182"
-  HREF="http://zaach.github.com/jison/try/usf/">Try Jison Examples</A>
-</LI>
-<LI><A NAME="tex2html183"
-  HREF="http://www-archive.mozilla.org/js/language/grammar14.html">JavaScript 1.4 LR(1) Grammar</A>
-1999.
-</LI>
-<LI><A NAME="tex2html184"
-  HREF="http://cjihrig.com/blog/creating-a-javascript-parser/">Creating a JavaScript Parser</A>
-Una implementación de ECAMScript 5.1 usando Jison 
-disponible 
-en GitHub
- en
-<A NAME="tex2html185"
-  HREF="https://github.com/cjihrig/jsparser">https://github.com/cjihrig/jsparser</A>.
-Puede probarse en:
-<A NAME="tex2html186"
-  HREF="http://www.cjihrig.com/development/jsparser/">http://www.cjihrig.com/development/jsparser/</A>
-</LI>
-<LI><A NAME="tex2html187"
-  HREF="http://hansineffect.github.com/Slogo/">Slogo</A>
-a language written using Jison
-</LI>
-<LI><A NAME="tex2html188"
-  HREF="https://github.com/jashkenas/coffee-script/wiki/List-of-languages-that-compile-to-JS">List of languages that compile to JS</A>
-</LI>
-<LI><A NAME="tex2html189"
-  HREF="http://blog.kalleberg.org/post/1256702765/prototype-of-a-scannerless-generalized-left-to-right">Prototype of a Scannerless, Generalized Left-to-right Rightmost (SGLR) derivation parser for JavaScript</A>
-</LI>
-</OL>
-
-<P>
-
-<H2><A NAME="SECTION04422000000000000000"></A>
-   <A NAME="4686"></A>
-<BR>
-Práctica: Secuencia de Asignaciones Simples
-</H2>
-  
-Modifique este ejemplo para que el lenguaje acepte una secuencia
-de sentencias de asignación de la forma <code>ID = NUM</code> separadas
-por puntos y comas, por ejemplo <code>a = 4; b = 4.56; c = -8.57e34</code>.
-El analizador retorna un hash/objeto 
-cuyas claves son los identificadores y cuyos valores 
-son los números.
-Clone el repositorio en
-<A NAME="tex2html190"
-  HREF="https://github.com/crguezl/jison-basic2">https://github.com/crguezl/jison-basic2</A>.
-
-<P>
-Modifique los analizadores léxico y sintáctico de forma conveniente.
-
-<P>
-Añada acciones semánticas para que el analizador devuelva una tabla de símbolos con los identificadores y sus valores.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1318"
+<A NAME="tex2html1376"
   HREF="node36.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1312"
-  HREF="node33.html">
+<A NAME="tex2html1370"
+  HREF="node21.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1306"
+<A NAME="tex2html1364"
   HREF="node34.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1314"
-  HREF="node82.html">
+<A NAME="tex2html1372"
+  HREF="node86.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1316"
-  HREF="node85.html">
+<A NAME="tex2html1374"
+  HREF="node89.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -498,12 +341,12 @@ Añada acciones semánticas para que el analizador devuelva una tabla de símbol
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1319"
-  HREF="node36.html">Ejemplo en Jison: Calculadora</A>
-<B>Sup:</B> <A NAME="tex2html1313"
-  HREF="node33.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1307"
-  HREF="node34.html">Conceptos Básicos para el</A>
+<B> Sig:</B> <A NAME="tex2html1377"
+  HREF="node36.html">Práctica: Inventando un Lenguaje:</A>
+<B>Sup:</B> <A NAME="tex2html1371"
+  HREF="node21.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html1365"
+  HREF="node34.html">Usando Pegjs con CoffeeScript</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
