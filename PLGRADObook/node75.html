@@ -135,9 +135,9 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <H1><A NAME="SECTION06120000000000000000">
 Logging</A>
-</H1>
+</H1><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
 Heroku aggregates three categories of logs for your app:
-
+</FONT></FONT>
 <OL>
 <LI>App logs - Output from your application. 
 
@@ -197,47 +197,43 @@ other developers working on your app, such as:
 2013-10-23T21:33:41.154690+00:00 heroku[api]: Release v7 created by chuchu.chachi.leon@gmail.com
 </PRE>
 </LI>
-</OL>
-
+</OL><FONT COLOR="#ff0000"></FONT>
 <P>
-Logplex is designed for collating and routing log messages, not for
+<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">Logplex is designed for collating and routing log messages, not for
 storage. It keeps the last 1,500 lines of consolidated logs. 
-
+</FONT></FONT>
 <P>
-Heroku recommends using a separate service for long-term log storage; see
+<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">Heroku recommends using a separate service for long-term log storage; see
 Syslog drains for more information.
-
+</FONT></FONT>
 <P>
-
+<FONT COLOR="#ff0000"></FONT>
 <H4><A NAME="SECTION06120010000000000000">
 Writing to your log</A>
-</H4>
-  
-
+</H4><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
+  </FONT></FONT><FONT COLOR="#ff0000"></FONT>
 <P>
-Anything written to standard out (stdout) or standard error (stderr)
+<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">Anything written to standard out (stdout) or standard error (stderr)
 is captured into your logs. This means that you can log from anywhere
 in your application code with a simple output statement:
-<PRE>
+</FONT></FONT><PRE>
 puts "Hello, logs!"
-</PRE>
+</PRE><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
 To take advantage of the realtime logging, you may need to disable
 any log buffering your application may be carrying out. For example,
 in Ruby add this to your config.ru:
-<PRE>
+</FONT></FONT><PRE>
 $stdout.sync = true
-</PRE>
+</PRE><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
 Some frameworks send log output somewhere other than stdout by
 default. 
-
+</FONT></FONT>
 <P>
-
+<FONT COLOR="#ff0000"></FONT>
 <H4><A NAME="SECTION06120020000000000000">
 To fetch your logs</A>
-</H4>
-  
-
-<PRE>
+</H4><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
+  </FONT></FONT><FONT COLOR="#ff0000"></FONT><PRE>
 $ heroku logs
 2010-09-16T15:13:46.677020+00:00 app[web.1]: Processing PostController#list (for 208.39.138.12 at 2010-09-16 15:13:46) [GET]
 2010-09-16T15:13:46.677023+00:00 app[web.1]: Rendering template within layouts/application
@@ -246,65 +242,62 @@ $ heroku logs
 2010-09-16T15:13:46.698234+00:00 app[web.1]: Completed in 74ms (View: 31, DB: 40) | 200 OK [http://myapp.heroku.com/]
 2010-09-16T15:13:46.723498+00:00 heroku[router]: at=info method=GET path=/posts host=myapp.herokuapp.com fwd="204.204.204.204" dyno=web.1 connect=1ms service=18ms status=200 bytes=975
 2010-09-16T15:13:47.893472+00:00 app[worker.1]: 2 jobs processed at 16.6761 j/s, 0 failed ...
-</PRE>
+</PRE><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
 In this example, the output includes log lines from one of the app’s
 web dynos, the Heroku HTTP router, and one of the app’s workers.
-
+</FONT></FONT>
 <P>
-The logs command retrieves 100 log lines by default.
-
+<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">The logs command retrieves 100 log lines by default.
+</FONT></FONT>
 <P>
-
+<FONT COLOR="#ff0000"></FONT>
 <H4><A NAME="SECTION06120030000000000000">
 Log message ordering</A>
-</H4>
-  
-
+</H4><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
+  </FONT></FONT><FONT COLOR="#ff0000"></FONT>
 <P>
-When retrieving logs, you may notice that the logs are not always
+<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">When retrieving logs, you may notice that the logs are not always
 in order, especially when multiple components are involved. 
-
+</FONT></FONT>
 <P>
-This
+<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">This
 is likely an artifact of distributed computing. 
-
+</FONT></FONT>
 <P>
-Logs originate from
+<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">Logs originate from
 many sources (router nodes, dynos, etc) and are assembled into a
 single log stream by logplex. 
-
+</FONT></FONT>
 <P>
-It is up to the logplex user to sort
+<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">It is up to the logplex user to sort
 the logs and provide the ordering required by their application,
 if any
-
+</FONT></FONT>
 <P>
-
+<FONT COLOR="#ff0000"></FONT>
 <H4><A NAME="SECTION06120040000000000000">
 Log history limits</A>
-</H4>
-  
-
+</H4><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
+  </FONT></FONT><FONT COLOR="#ff0000"></FONT>
 <P>
-You can fetch up to 1500 lines using the -num (or -n) option:
-<PRE>
+<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">You can fetch up to 1500 lines using the -num (or -n) option:
+</FONT></FONT><PRE>
 $ heroku logs -n 200
-</PRE>
+</PRE><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
 Heroku only stores the last 1500 lines of log history. If you’d
 like to persist more than 1500 lines, use a logging add-on or create
 your own syslog drain<A NAME="tex2html241"
-  HREF="footnode.html#foot7683"><SUP><SPAN CLASS="arabic">12</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A>.
-
+  HREF="footnode.html#foot7721"><SUP><SPAN CLASS="arabic">12</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A>.
+</FONT></FONT>
 <P>
-
+<FONT COLOR="#ff0000"></FONT>
 <H4><A NAME="SECTION06120050000000000000">
 Log format</A>
-</H4>
-  
-
+</H4><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
+  </FONT></FONT><FONT COLOR="#ff0000"></FONT>
 <P>
-Each line is formatted as follows:
-
+<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">Each line is formatted as follows:
+</FONT></FONT>
 <OL>
 <LI>timestamp source[dyno]: message
 </LI>
@@ -328,17 +321,15 @@ router appears as router.
 up to approximately 1024 bytes in length and longer messages will
 be truncated. 
 </LI>
-</OL>
-
+</OL><FONT COLOR="#ff0000"></FONT>
 <P>
-
+<FONT COLOR="#ff0000"></FONT>
 <H4><A NAME="SECTION06120060000000000000">
 Realtime tail</A>
-</H4>
-  
-
+</H4><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
+  </FONT></FONT><FONT COLOR="#ff0000"></FONT>
 <P>
-
+<FONT COLOR="#ff0000"></FONT>
 <OL>
 <LI>Similar to <code>tail -f</code>, realtime tail displays recent logs and leaves
 the session open for realtime logs to stream in. 
@@ -353,54 +344,48 @@ $ heroku logs --tail
 </PRE>
 When you are done, press Ctrl-C to close the session.
 </LI>
-</OL>
-
+</OL><FONT COLOR="#ff0000"></FONT>
 <P>
-
+<FONT COLOR="#ff0000"></FONT>
 <H4><A NAME="SECTION06120070000000000000">
 Filtering</A>
-</H4>
-  
-
+</H4><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
+  </FONT></FONT><FONT COLOR="#ff0000"></FONT>
 <P>
-If you only want to fetch logs with a certain source, a certain
+<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">If you only want to fetch logs with a certain source, a certain
 dyno, or both, you can use the <code>--source</code> (or <code>-s</code>) and
 <code>--ps</code> (or <code>-p</code>) filtering arguments:
-<PRE>
+</FONT></FONT><PRE>
 $ heroku logs --ps router
 2012-02-07T09:43:06.123456+00:00 heroku[router]: at=info method=GET path=/stylesheets/dev-center/library.css host=devcenter.heroku.com fwd="204.204.204.204" dyno=web.5 connect=1ms service=18ms status=200 bytes=13
 2012-02-07T09:43:06.123456+00:00 heroku[router]: at=info method=GET path=/articles/bundler host=devcenter.heroku.com fwd="204.204.204.204" dyno=web.6 connect=1ms service=18ms status=200 bytes=20375
-</PRE>
-
+</PRE><FONT COLOR="#ff0000"></FONT>
 <P>
-<PRE>
+<FONT COLOR="#ff0000"></FONT><PRE>
 $ heroku logs --source app
 2012-02-07T09:45:47.123456+00:00 app[web.1]: Rendered shared/_search.html.erb (1.0ms)
 2012-02-07T09:45:47.123456+00:00 app[web.1]: Completed 200 OK in 83ms (Views: 48.7ms | ActiveRecord: 32.2ms)
 2012-02-07T09:45:47.123456+00:00 app[worker.1]: [Worker(host:465cf64e-61c8-46d3-b480-362bfd4ecff9 pid:1)] 1 jobs processed at 23.0330 j/s, 0 failed ...
 2012-02-07T09:46:01.123456+00:00 app[web.6]: Started GET "/articles/buildpacks" for 4.1.81.209 at 2012-02-07 09:46:01 +0000
-</PRE>
-
+</PRE><FONT COLOR="#ff0000"></FONT>
 <P>
-<PRE>
+<FONT COLOR="#ff0000"></FONT><PRE>
 $ heroku logs --source app --ps worker
 2012-02-07T09:47:59.123456+00:00 app[worker.1]: [Worker(host:260cf64e-61c8-46d3-b480-362bfd4ecff9 pid:1)] Article#record_view_without_delay completed after 0.0221
 2012-02-07T09:47:59.123456+00:00 app[worker.1]: [Worker(host:260cf64e-61c8-46d3-b480-362bfd4ecff9 pid:1)] 5 jobs processed at 31.6842 j/s, 0 failed ...
-</PRE>
-
+</PRE><FONT COLOR="#ff0000"></FONT>
 <P>
-When filtering by dyno, either the base name, <code>--ps web</code>, or the full
+<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">When filtering by dyno, either the base name, <code>--ps web</code>, or the full
 name, <code>--ps web.1</code>, may be used.
-
+</FONT></FONT>
 <P>
-You can also combine the filtering switches with <code>--tail</code> to get a
+<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">You can also combine the filtering switches with <code>--tail</code> to get a
 realtime stream of filtered output.
-<PRE>
+</FONT></FONT><PRE>
 $ heroku logs --source app --tail
-</PRE>
-
+</PRE><FONT COLOR="#ff0000"></FONT>
 <P>
-
+<FONT COLOR="#ff0000"></FONT>
 <DIV CLASS="navigation"><HR>
 <A NAME="tex2html2066"
   HREF="node76.html">
