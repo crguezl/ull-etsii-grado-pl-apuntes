@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Esquemas de Traducción</TITLE>
-<META NAME="description" CONTENT="Esquemas de Traducción">
+<TITLE>Ejemplo Simple de Intérprete: Una Calculadora</TITLE>
+<META NAME="description" CONTENT="Ejemplo Simple de Intérprete: Una Calculadora">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node26.html">
 <LINK REL="previous" HREF="node24.html">
-<LINK REL="up" HREF="node21.html">
+<LINK REL="up" HREF="node24.html">
 <LINK REL="next" HREF="node26.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1157"
+<A NAME="tex2html1123"
   HREF="node26.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1151"
-  HREF="node21.html">
+<A NAME="tex2html1117"
+  HREF="node24.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1145"
+<A NAME="tex2html1111"
   HREF="node24.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1153"
-  HREF="node87.html">
+<A NAME="tex2html1119"
+  HREF="node88.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1155"
-  HREF="node90.html">
+<A NAME="tex2html1121"
+  HREF="node91.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,160 +92,51 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1158"
-  HREF="node26.html">Recursión por la Izquierda</A>
-<B>Sup:</B> <A NAME="tex2html1152"
-  HREF="node21.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html1146"
-  HREF="node24.html">Práctica: Analizador Descendente Predictivo</A>
+<B> Sig:</B> <A NAME="tex2html1124"
+  HREF="node26.html">Análisis Top Down Usando</A>
+<B>Sup:</B> <A NAME="tex2html1118"
+  HREF="node24.html">Análisis Sintáctico Mediante Precedencia</A>
+<B> Ant:</B> <A NAME="tex2html1112"
+  HREF="node24.html">Análisis Sintáctico Mediante Precedencia</A>
 <B> Con:</B> 
-<A NAME="tex2html1153"
-  HREF="node87.html">
+<A NAME="tex2html1119"
+  HREF="node88.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1155"
-  HREF="node90.html">
+<A NAME="tex2html1121"
+  HREF="node91.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION04340000000000000000"></A>
-<A NAME="section:esquemas"></A>
-<BR>
-Esquemas de Traducción
+<H1><A NAME="SECTION04310000000000000000">
+Ejemplo Simple de Intérprete: Una Calculadora</A>
 </H1>
-<P>
-<DIV><B>Definición  <SPAN CLASS="arabic">3</SPAN>.<SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Un <A NAME="3831"></A><SPAN  CLASS="textbf">esquema de traducción</SPAN> es una gramática independiente del contexto
-en la cual se han insertado fragmentos de código en las partes derechas
-de sus reglas de producción. Los fragmentos de código asi insertados 
-se denominan <A NAME="3833"></A><SPAN  CLASS="textbf">acciones semánticas</SPAN>. Dichos fragmentos actúan, calculan
-y modifican los atributos asociados con los nodos del árbol sintáctico. 
-El orden en que se evalúan los fragmentos
-es el de un recorrido primero-profundo del árbol de análisis sintáctico.</I></DIV><P></P>
-Obsérvese que, en general, para poder aplicar un esquema de traducción hay 
-que construir el árbol sintáctico y después aplicar las acciones empotradas
-en las reglas en el orden de recorrido primero-profundo. Por supuesto, si 
-la gramática es ambigua una frase podría tener dos árboles y la ejecución de las
-acciones para ellos podría dar lugar a diferentes resultados. Si se quiere
-evitar la multiplicidad de resultados (interpretaciones semánticas)
-es necesario precisar de que árbol sintáctico concreto se esta hablando.
 
-<P>
-Por ejemplo, si en la regla <!-- MATH
- $A \rightarrow \alpha \beta$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="67" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img57.png"
- ALT="$ A \rightarrow \alpha \beta $"></SPAN>
-insertamos un fragmento de código:
-
-<P>
-<DIV ALIGN="CENTER">
-<!-- MATH
- $A \rightarrow \alpha \{ action \} \beta$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="132" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img58.png"
- ALT="$ A \rightarrow \alpha \{ action \} \beta $"></SPAN>
-</DIV>
-
-<P>
-La acción <!-- MATH
- $\{ action \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="70" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img59.png"
- ALT="$ \{ action \}$"></SPAN> se ejecutará después de todas las acciones
-asociadas con el recorrido del subárbol de <SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img42.png"
- ALT="$ \alpha$"></SPAN> y antes que todas
-las acciones asociadas con el recorrido del subárbol <SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img60.png"
- ALT="$ \beta$"></SPAN>.
-
-<P>
-El siguiente esquema de traducción recibe como entrada una expresión en infijo
-y produce como salida su traducción a postfijo para expresiones aritmeticas con sólo 
-restas de números:
-
-<P>
-<BR>
-<BR>
-<TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $expr   \rightarrow expr_1  -  NUM$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="179" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img61.png"
- ALT="$ expr \rightarrow expr_1 - NUM$"></SPAN></TD>
-<TD ALIGN="LEFT"><code>{ $expr{TRA} = $expr[1]{TRA}." ".$NUM{VAL}." - "}</code></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $expr   \rightarrow NUM$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="116" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img62.png"
- ALT="$ expr \rightarrow NUM$"></SPAN></TD>
-<TD ALIGN="LEFT"><code>{ $expr{TRA} = $NUM{VAL} }</code></TD>
-</TR>
-</TABLE>
-<BR>
-<BR>
-
-<P>
-Las apariciones de variables sintácticas en una regla de producción se indexan
-como se ve en el ejemplo, para distinguir de que nodo del árbol de análisis estamos
-hablando. Cuando hablemos del atributo de un nodo utilizaremos una indexación tipo
-<SPAN  CLASS="textbf">hash</SPAN>. Aquí <code>VAL</code> es un atributo de los nodos de tipo <SPAN CLASS="MATH"><IMG
- WIDTH="53" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img63.png"
- ALT="$ NUM$"></SPAN> denotando
-su valor numérico y para accederlo escribiremos <code>$NUM{VAL}</code>.
-Análogamente <code>$expr{TRA}</code> denota el atributo ``traducción'' de
-los nodos de tipo <SPAN CLASS="MATH"><IMG
- WIDTH="40" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img64.png"
- ALT="$ expr$"></SPAN>.
-
-<P>
-<P>
-<DIV><B>Ejercicio  <SPAN CLASS="arabic">3</SPAN>.<SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Muestre la secuencia de acciones a la
-que da lugar el esquema de traducción anterior 
-para la frase 7 -5 -4.</I></DIV><P></P>
-
-<P>
-En este ejemplo, el cómputo del atributo <code>$expr{TRA}</code> depende de los atributos
-en los nodos hijos, o lo que es lo mismo, depende de los atributos de los símbolos
-en la parte derecha de la regla de producción. Esto ocurre a menudo y motiva la siguiente
-definición:
+<OL>
+<LI><A NAME="tex2html143"
+  HREF="http://www.codeproject.com/Articles/345888/How-to-write-a-simple-interpreter-in-JavaScript">How to write a simple interpreter in JavaScript</A>
+</LI>
+</OL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1157"
+<A NAME="tex2html1123"
   HREF="node26.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1151"
-  HREF="node21.html">
+<A NAME="tex2html1117"
+  HREF="node24.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1145"
+<A NAME="tex2html1111"
   HREF="node24.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1153"
-  HREF="node87.html">
+<A NAME="tex2html1119"
+  HREF="node88.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1155"
-  HREF="node90.html">
+<A NAME="tex2html1121"
+  HREF="node91.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -296,12 +187,12 @@ definición:
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1158"
-  HREF="node26.html">Recursión por la Izquierda</A>
-<B>Sup:</B> <A NAME="tex2html1152"
-  HREF="node21.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html1146"
-  HREF="node24.html">Práctica: Analizador Descendente Predictivo</A>
+<B> Sig:</B> <A NAME="tex2html1124"
+  HREF="node26.html">Análisis Top Down Usando</A>
+<B>Sup:</B> <A NAME="tex2html1118"
+  HREF="node24.html">Análisis Sintáctico Mediante Precedencia</A>
+<B> Ant:</B> <A NAME="tex2html1112"
+  HREF="node24.html">Análisis Sintáctico Mediante Precedencia</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

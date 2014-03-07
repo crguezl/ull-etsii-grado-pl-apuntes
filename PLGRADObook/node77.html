@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Troubleshooting</TITLE>
-<META NAME="description" CONTENT="Troubleshooting">
+<TITLE>Logging</TITLE>
+<META NAME="description" CONTENT="Logging">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node78.html">
 <LINK REL="previous" HREF="node76.html">
-<LINK REL="up" HREF="node74.html">
+<LINK REL="up" HREF="node75.html">
 <LINK REL="next" HREF="node78.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html2127"
+<A NAME="tex2html2121"
   HREF="node78.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2121"
-  HREF="node74.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
 <A NAME="tex2html2115"
+  HREF="node75.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2109"
   HREF="node76.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2123"
-  HREF="node87.html">
+<A NAME="tex2html2117"
+  HREF="node88.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2125"
-  HREF="node90.html">
+<A NAME="tex2html2119"
+  HREF="node91.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,19 +92,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2128"
-  HREF="node78.html">Configuration</A>
-<B>Sup:</B> <A NAME="tex2html2122"
-  HREF="node74.html">Heroku</A>
-<B> Ant:</B> <A NAME="tex2html2116"
-  HREF="node76.html">Logging</A>
+<B> Sig:</B> <A NAME="tex2html2122"
+  HREF="node78.html">Troubleshooting</A>
+<B>Sup:</B> <A NAME="tex2html2116"
+  HREF="node75.html">Heroku</A>
+<B> Ant:</B> <A NAME="tex2html2110"
+  HREF="node76.html">Introducción</A>
 <B> Con:</B> 
-<A NAME="tex2html2123"
-  HREF="node87.html">
+<A NAME="tex2html2117"
+  HREF="node88.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html2125"
-  HREF="node90.html">
+<A NAME="tex2html2119"
+  HREF="node91.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
@@ -115,200 +115,307 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <UL CLASS="ChildLinks">
 <LI><UL>
 <LI><UL>
+<LI><A NAME="tex2html2123"
+  HREF="node77.html#SECTION06120010000000000000">Writing to your log</A>
+<LI><A NAME="tex2html2124"
+  HREF="node77.html#SECTION06120020000000000000">To fetch your logs</A>
+<LI><A NAME="tex2html2125"
+  HREF="node77.html#SECTION06120030000000000000">Log message ordering</A>
+<LI><A NAME="tex2html2126"
+  HREF="node77.html#SECTION06120040000000000000">Log history limits</A>
+<LI><A NAME="tex2html2127"
+  HREF="node77.html#SECTION06120050000000000000">Log format</A>
+<LI><A NAME="tex2html2128"
+  HREF="node77.html#SECTION06120060000000000000">Realtime tail</A>
 <LI><A NAME="tex2html2129"
-  HREF="node77.html#SECTION06130010000000000000">Failed to require a sourcefile</A>
-<LI><A NAME="tex2html2130"
-  HREF="node77.html#SECTION06130020000000000000">Encoding error</A>
-<LI><A NAME="tex2html2131"
-  HREF="node77.html#SECTION06130030000000000000">Missing a gem</A>
-<LI><A NAME="tex2html2132"
-  HREF="node77.html#SECTION06130040000000000000">Runtime dependencies on development/test gems</A>
-<LI><A NAME="tex2html2133"
-  HREF="node77.html#SECTION06130050000000000000">Rack::Sendfile</A>
+  HREF="node77.html#SECTION06120070000000000000">Filtering</A>
 </UL></UL></UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION06130000000000000000">
-Troubleshooting</A>
+<H1><A NAME="SECTION06120000000000000000">
+Logging</A>
 </H1>
+Heroku aggregates three categories of logs for your app:
+
+<OL>
+<LI>App logs - Output from your application. 
 
 <P>
-If you push your app and it crashes, 
-<code>heroku ps</code> shows state crashed:
+This will include logs
+generated from 
+
+<OL>
+<LI>within your application, 
+</LI>
+<LI>application server and
+</LI>
+<LI>libraries. 
+</LI>
+</OL>
+(Filter: <code>--source app</code>)
+</LI>
+<LI>System logs - 
+
+<P>
+Messages about actions taken by the Heroku platform
+infrastructure on behalf of your app, such as: 
+
+<OL>
+<LI>restarting a crashed process, 
+</LI>
+<LI>sleeping or waking a web dyno, or 
+</LI>
+<LI>serving an error page
+due to a problem in your app. 
+</LI>
+</OL>
+(Filter: <code>--source heroku</code>)
+</LI>
+<LI>API logs - 
+
+<P>
+Messages about administrative actions taken by you and
+other developers working on your app, such as: 
+
+<P>
+
+<OL>
+<LI>deploying new code,
+</LI>
+<LI>scaling the process formation, or 
+</LI>
+<LI>toggling maintenance mode. 
+</LI>
+</OL>
+(Filter: <code>--source heroku --ps api</code>)
+
+<P>
 <PRE>
-=== web (1X): `bundle exec thin start -R config.ru -e $RACK_ENV -p $PORT`
-web.1: crashed 2013/10/24 20:21:34 (~ 1h ago)
+[~/rack/rack-rock-paper-scissors(master)]$ heroku logs --source heroku --ps api
+2013-10-23T21:33:41.105090+00:00 heroku[api]: Deploy 5ec1351 by chuchu.chachi.leon@gmail.com
+2013-10-23T21:33:41.154690+00:00 heroku[api]: Release v7 created by chuchu.chachi.leon@gmail.com
 </PRE>
-check your logs to find out what went wrong. 
+</LI>
+</OL>
 
 <P>
-Here are some common
-problems.
+Logplex is designed for collating and routing log messages, not for
+storage. It keeps the last 1,500 lines of consolidated logs. 
+
+<P>
+Heroku recommends using a separate service for long-term log storage; see
+Syslog drains for more information.
 
 <P>
 
-<H4><A NAME="SECTION06130010000000000000">
-Failed to require a sourcefile</A>
+<H4><A NAME="SECTION06120010000000000000">
+Writing to your log</A>
 </H4>
   
 
 <P>
-If your app failed to require a sourcefile, chances are good you’re
-running Ruby 1.9.1 or 1.8 in your local environment. 
+Anything written to standard out (stdout) or standard error (stderr)
+is captured into your logs. This means that you can log from anywhere
+in your application code with a simple output statement:
+<PRE>
+puts "Hello, logs!"
+</PRE>
+To take advantage of the realtime logging, you may need to disable
+any log buffering your application may be carrying out. For example,
+in Ruby add this to your config.ru:
+<PRE>
+$stdout.sync = true
+</PRE>
+Some frameworks send log output somewhere other than stdout by
+default. 
 
 <P>
-The load paths
-have changed in Ruby 1.9 which applies to Ruby 2.0. 
 
-<P>
-Port your app
-forward to Ruby 2.0.0 making certain it works locally before trying
-to push to Cedar again.
-
-<P>
-
-<H4><A NAME="SECTION06130020000000000000">
-Encoding error</A>
+<H4><A NAME="SECTION06120020000000000000">
+To fetch your logs</A>
 </H4>
   
 
-Ruby 1.9 added more sophisticated encoding support to the language
-which applies to Ruby 2.0. 
-
-<P>
-Not all gems work with Ruby 2.0. If you
-hit an encoding error, you probably haven’t fully tested your app
-with Ruby 2.0.0 in your local environment. 
-
-<P>
-Port your app forward
-to Ruby 2.0.0 making certain it works locally before trying to push
-to Cedar again.
-
-<P>
-
-<H4><A NAME="SECTION06130030000000000000">
-Missing a gem</A>
-</H4>
-  
-
-<P>
-If your app crashes due to missing a gem, you may have it installed
-locally but not specified in your Gemfile. 
-
-<P>
-You must isolate all
-local testing using <code>bundle exec</code>. 
-
-<P>
-For example, don’t run <code>ruby web.rb</code>,
-run 
-
-<P>
 <PRE>
-bundle exec ruby web.rb
+$ heroku logs
+2010-09-16T15:13:46.677020+00:00 app[web.1]: Processing PostController#list (for 208.39.138.12 at 2010-09-16 15:13:46) [GET]
+2010-09-16T15:13:46.677023+00:00 app[web.1]: Rendering template within layouts/application
+2010-09-16T15:13:46.677902+00:00 app[web.1]: Rendering post/list
+2010-09-16T15:13:46.678990+00:00 app[web.1]: Rendered includes/_header (0.1ms)
+2010-09-16T15:13:46.698234+00:00 app[web.1]: Completed in 74ms (View: 31, DB: 40) | 200 OK [http://myapp.heroku.com/]
+2010-09-16T15:13:46.723498+00:00 heroku[router]: at=info method=GET path=/posts host=myapp.herokuapp.com fwd="204.204.204.204" dyno=web.1 connect=1ms service=18ms status=200 bytes=975
+2010-09-16T15:13:47.893472+00:00 app[worker.1]: 2 jobs processed at 16.6761 j/s, 0 failed ...
 </PRE>
-Don’t run <code>rake db:migrate</code>, run 
-<PRE>
-bundle exec rake db:migrate.
-</PRE>
-Another approach is to create a blank RVM gemset to be absolutely
-sure you’re not touching any system-installed gems:
-<PRE>
-$ rvm gemset create myapp
-$ rvm gemset use myapp
-</PRE>
+In this example, the output includes log lines from one of the app’s
+web dynos, the Heroku HTTP router, and one of the app’s workers.
+
+<P>
+The logs command retrieves 100 log lines by default.
 
 <P>
 
-<H4><A NAME="SECTION06130040000000000000">
-Runtime dependencies on development/test gems</A>
+<H4><A NAME="SECTION06120030000000000000">
+Log message ordering</A>
 </H4>
   
 
 <P>
-If you’re still missing a gem when you deploy, check your Bundler
-groups.
+When retrieving logs, you may notice that the logs are not always
+in order, especially when multiple components are involved. 
 
 <P>
-Heroku builds your app without the <code>development</code> or <code>test</code>
-groups, and if you app depends on a gem from one of these groups
-to run, you should move it out of the group.
+This
+is likely an artifact of distributed computing. 
 
 <P>
-One common example using the <code>RSpec tasks</code> in your Rakefile. 
-If you see this in your Heroku deploy:
-<PRE>
-$ heroku run rake -T
-Running `rake -T` attached to terminal... up, ps.3
-rake aborted!
-no such file to load -- rspec/core/rake_task
-</PRE>
-Then you’ve hit this problem. 
+Logs originate from
+many sources (router nodes, dynos, etc) and are assembled into a
+single log stream by logplex. 
 
 <P>
-First, duplicate the problem locally like so:
-<PRE>
-$ bundle install --without development:test
-...
-$ bundle exec rake -T
-rake aborted!
-no such file to load -- rspec/core/rake_task
-</PRE>
-Now you can fix it by making these Rake tasks conditional on the gem load. 
-For example:
-<PRE>
-begin
-  require "rspec/core/rake_task"
-
-  desc "Run all examples"
-  RSpec::Core::RakeTask.new(:spec) do |t|
-    t.rspec_opts = %w[--color]
-    t.pattern = 'spec/*_spec.rb'
-  end
-rescue LoadError
-end
-</PRE>
-Confirm it works locally, then push to Heroku.
+It is up to the logplex user to sort
+the logs and provide the ordering required by their application,
+if any
 
 <P>
 
-<H4><A NAME="SECTION06130050000000000000">
-Rack::Sendfile</A>
+<H4><A NAME="SECTION06120040000000000000">
+Log history limits</A>
 </H4>
   
 
 <P>
-Heroku does not support the use of Rack::Sendfile. 
+You can fetch up to 1500 lines using the -num (or -n) option:
+<PRE>
+$ heroku logs -n 200
+</PRE>
+Heroku only stores the last 1500 lines of log history. If you’d
+like to persist more than 1500 lines, use a logging add-on or create
+your own syslog drain<A NAME="tex2html253"
+  HREF="footnode.html#foot7846"><SUP><SPAN CLASS="arabic">13</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A>.
 
 <P>
-Rack:Sendfile
-usually requires that there is a frontend webserver like nginx or
-apache is running on the same machine as the application server.
+
+<H4><A NAME="SECTION06120050000000000000">
+Log format</A>
+</H4>
+  
 
 <P>
-This is not how Heroku is architected. Using the Rack::Sendfile
-middleware will cause your file downloads to fail since it will
-send a body with Content-Length of 0.
+Each line is formatted as follows:
+
+<OL>
+<LI>timestamp source[dyno]: message
+</LI>
+<LI>Timestamp - The date and time recorded at the time the log line was produced by the dyno or component. The timestamp is in the format specified by RFC5424, and includes microsecond precision.
+</LI>
+<LI>Source - 
+  
+<OL>
+<LI>All of your app’s dynos (web dynos, background workers, cron) have a source of app. 
+</LI>
+<LI>All of Heroku’s system components (HTTP router, dyno manager) have a source of heroku.
+  
+</LI>
+</OL>
+</LI>
+<LI>Dyno - The name of the dyno or component that wrote this log line.
+For example, <code>worker #3</code> appears as <code>worker.3</code>, and the Heroku HTTP
+router appears as router.
+</LI>
+<LI>Message - The content of the log line. Dynos can generate messages
+up to approximately 1024 bytes in length and longer messages will
+be truncated. 
+</LI>
+</OL>
+
+<P>
+
+<H4><A NAME="SECTION06120060000000000000">
+Realtime tail</A>
+</H4>
+  
+
+<P>
+
+<OL>
+<LI>Similar to <code>tail -f</code>, realtime tail displays recent logs and leaves
+the session open for realtime logs to stream in. 
+</LI>
+<LI>By viewing a live
+stream of logs from your app, you can gain insight into the behavior
+of your live application and debug current problems.
+</LI>
+<LI>You may tail your logs using <code>--tail</code> (or <code>-t</code>).
+<PRE>
+$ heroku logs --tail
+</PRE>
+When you are done, press Ctrl-C to close the session.
+</LI>
+</OL>
+
+<P>
+
+<H4><A NAME="SECTION06120070000000000000">
+Filtering</A>
+</H4>
+  
+
+<P>
+If you only want to fetch logs with a certain source, a certain
+dyno, or both, you can use the <code>--source</code> (or <code>-s</code>) and
+<code>--ps</code> (or <code>-p</code>) filtering arguments:
+<PRE>
+$ heroku logs --ps router
+2012-02-07T09:43:06.123456+00:00 heroku[router]: at=info method=GET path=/stylesheets/dev-center/library.css host=devcenter.heroku.com fwd="204.204.204.204" dyno=web.5 connect=1ms service=18ms status=200 bytes=13
+2012-02-07T09:43:06.123456+00:00 heroku[router]: at=info method=GET path=/articles/bundler host=devcenter.heroku.com fwd="204.204.204.204" dyno=web.6 connect=1ms service=18ms status=200 bytes=20375
+</PRE>
+
+<P>
+<PRE>
+$ heroku logs --source app
+2012-02-07T09:45:47.123456+00:00 app[web.1]: Rendered shared/_search.html.erb (1.0ms)
+2012-02-07T09:45:47.123456+00:00 app[web.1]: Completed 200 OK in 83ms (Views: 48.7ms | ActiveRecord: 32.2ms)
+2012-02-07T09:45:47.123456+00:00 app[worker.1]: [Worker(host:465cf64e-61c8-46d3-b480-362bfd4ecff9 pid:1)] 1 jobs processed at 23.0330 j/s, 0 failed ...
+2012-02-07T09:46:01.123456+00:00 app[web.6]: Started GET "/articles/buildpacks" for 4.1.81.209 at 2012-02-07 09:46:01 +0000
+</PRE>
+
+<P>
+<PRE>
+$ heroku logs --source app --ps worker
+2012-02-07T09:47:59.123456+00:00 app[worker.1]: [Worker(host:260cf64e-61c8-46d3-b480-362bfd4ecff9 pid:1)] Article#record_view_without_delay completed after 0.0221
+2012-02-07T09:47:59.123456+00:00 app[worker.1]: [Worker(host:260cf64e-61c8-46d3-b480-362bfd4ecff9 pid:1)] 5 jobs processed at 31.6842 j/s, 0 failed ...
+</PRE>
+
+<P>
+When filtering by dyno, either the base name, <code>--ps web</code>, or the full
+name, <code>--ps web.1</code>, may be used.
+
+<P>
+You can also combine the filtering switches with <code>--tail</code> to get a
+realtime stream of filtered output.
+<PRE>
+$ heroku logs --source app --tail
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html2127"
+<A NAME="tex2html2121"
   HREF="node78.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2121"
-  HREF="node74.html">
-<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
 <A NAME="tex2html2115"
+  HREF="node75.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html2109"
   HREF="node76.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2123"
-  HREF="node87.html">
+<A NAME="tex2html2117"
+  HREF="node88.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2125"
-  HREF="node90.html">
+<A NAME="tex2html2119"
+  HREF="node91.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -359,12 +466,12 @@ send a body with Content-Length of 0.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2128"
-  HREF="node78.html">Configuration</A>
-<B>Sup:</B> <A NAME="tex2html2122"
-  HREF="node74.html">Heroku</A>
-<B> Ant:</B> <A NAME="tex2html2116"
-  HREF="node76.html">Logging</A>
+<B> Sig:</B> <A NAME="tex2html2122"
+  HREF="node78.html">Troubleshooting</A>
+<B>Sup:</B> <A NAME="tex2html2116"
+  HREF="node75.html">Heroku</A>
+<B> Ant:</B> <A NAME="tex2html2110"
+  HREF="node76.html">Introducción</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
