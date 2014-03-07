@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Recuperación de Errores</TITLE>
-<META NAME="description" CONTENT="Recuperación de Errores">
+<TITLE>Ejercicios: Casos de Estudio</TITLE>
+<META NAME="description" CONTENT="Ejercicios: Casos de Estudio">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,7 +21,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node56.html">
 <LINK REL="previous" HREF="node54.html">
-<LINK REL="up" HREF="node39.html">
+<LINK REL="up" HREF="node40.html">
 <LINK REL="next" HREF="node56.html">
 </HEAD>
 
@@ -32,16 +32,16 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   HREF="node56.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
 <A NAME="tex2html1684"
-  HREF="node39.html">
+  HREF="node40.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
 <A NAME="tex2html1678"
   HREF="node54.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
 <A NAME="tex2html1686"
-  HREF="node88.html">
+  HREF="node89.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
 <A NAME="tex2html1688"
-  HREF="node91.html">
+  HREF="node92.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -93,82 +93,191 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  ALT="pcgull"></A>
 <BR>
 <B> Sig:</B> <A NAME="tex2html1691"
-  HREF="node56.html">Depuración en jison</A>
+  HREF="node56.html">Recuperación de Errores</A>
 <B>Sup:</B> <A NAME="tex2html1685"
-  HREF="node39.html">Análisis Sintáctico Ascendente en</A>
+  HREF="node40.html">Análisis Sintáctico Ascendente en</A>
 <B> Ant:</B> <A NAME="tex2html1679"
-  HREF="node54.html">Ejercicios: Casos de Estudio</A>
+  HREF="node54.html">Definición Dirigida por la</A>
 <B> Con:</B> 
 <A NAME="tex2html1686"
-  HREF="node88.html">
+  HREF="node89.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
 <A NAME="tex2html1688"
-  HREF="node91.html">
+  HREF="node92.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<H1><A NAME="SECTION045160000000000000000"></A>
-<A NAME="section:errores"></A>
-<BR>
-Recuperación de Errores
-</H1>
-
-<P>
-La recuperación de errores no parece estar implementada en Jison.
-véase 
-
-<UL>
-<LI>la sección 
-<A NAME="tex2html216"
-  HREF="http://zaach.github.io/jison/docs/">Error Recovery</A>
-de la documentación
-</LI>
-<LI><A NAME="tex2html217"
-  HREF="https://github.com/zaach/jison/pull/147">Pullreq 5 - parser built-in grammar error recovery was completely broken</A>
-</LI>
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html1692"
+  HREF="node55.html#SECTION045151000000000000000">Un mal diseño</A>
+<LI><A NAME="tex2html1693"
+  HREF="node55.html#SECTION045152000000000000000">Gramática no LR(1)</A>
+<LI><A NAME="tex2html1694"
+  HREF="node55.html#SECTION045153000000000000000">Un Lenguaje Intrínsecamente Ambiguo</A>
+<LI><A NAME="tex2html1695"
+  HREF="node55.html#SECTION045154000000000000000">Conflicto reduce-reduce</A>
 </UL>
-<PRE>
-[~/srcPLgrado/jison/jison-aSb(error)]$ cat aSb.jison 
-%lex
-%%
-\s+             {}
-[ab]            { return yytext; }
-.               { return "INVALID"; }
-/lex
-%%
-S: /* empty */  { $$ = ''; console.log("empty"); }
-   | 'a' S 'b'  { $$ = $1 + $2 + $3; console.log("S -&gt; aSb"); }
-   | 'a' S error
-;
-%%
-</PRE>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION045150000000000000000">
+Ejercicios: Casos de Estudio</A>
+</H1>
+Véase nuestro proyecto
+<A NAME="tex2html215"
+  HREF="https://code.google.com/p/grammar-repository/">Grammar Repository</A>
+en GoogleCode.
 
 <P>
-<PRE>
-        parse: function parse(input) {
-              var self = this,
-                  stack = [0],
-                  vstack = [null], // semantic value stack
-                  lstack = [], // location stack
-                  ...
-                  recovering = 0,
-                  TERROR = 2,
-                  EOF = 1;
-            while (true) {
-                  // retreive state number from top of stack
-                  state = stack[stack.length - 1];
-  
-                  ...
-  
-                  // handle parse error
-&gt;&gt;                _handle_error: if (typeof action === 'undefined' || !action.length || !  ...action[0]) {
-  
-                      var errStr = '';
-                      if (!recovering) {
+
+<H2><A NAME="SECTION045151000000000000000">
+Un mal diseño</A>
+</H2>
+<P>
+<DIV><B>Ejercicio  <SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">15</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>This grammar 
+</I>
+<P><PRE>
+  %token D S
+
+  %%
+  p: ds ';' ss  | ss ;
+  ds: D ';' ds    
+    | D  
+  ;
+  ss: S ';' ss  | S  ;
+  %% 
 </PRE>
+<P>
+<I>illustrates a typical LALR conflict due to a 
+bad grammar design. 
+</I>
+<UL>
+<LI>Reescriba la gramática para que no existan conflictos
+</LI>
+<LI>Escriba las acciones semánticas necesarias para imprimir la lista de <code>D</code>s seguida de la lista de <code>S</code>s
+</LI>
+</UL></DIV><P></P>
+
+<P>
+
+<H2><A NAME="SECTION045152000000000000000">
+Gramática no LR(1)</A>
+</H2>
+
+<P>
+La siguiente gramática no es LR(1).
+<PRE>
+[~/srcPLgrado/jison/jison-nolr]$ cat confusingsolvedppcr.y
+%%
+A: 
+    B 'c' 'd' 
+  | E 'c' 'f' 
+;
+B: 
+    'x' 'y'
+;
+E: 
+    'x' 'y' 
+;
+
+%%
+</PRE>
+Encuentre una gramática sin conflictos equivalente a la anterior.
+
+<P>
+
+<H2><A NAME="SECTION045153000000000000000">
+Un Lenguaje Intrínsecamente Ambiguo</A>
+</H2>
+<P>
+<DIV><B>Ejercicio  <SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">15</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
+<I>A context-free language is inherently ambiguous if all context-free
+grammars generating that language are ambiguous.  While some
+context-free languages  have both ambiguous and unambiguous grammars, there
+are context-free languages for which no unambiguous context-free
+grammar can exist. An example of an inherently ambiguous language
+is the set 
+</I>
+<P>
+<I><code>{ a^n b^n c^m : n &gt;= 0, m &gt;= 0 } U { a^n b^m c^m : n &gt;= 0, m &gt;= 0 }</code>
+</I>
+<P>
+<I>Esto  es: Concatenaciones de repeticiones 
+de <code>a</code>s seguidas de repeticiones de <code>b</code>s y seguidas de
+repeticiones de <code>c</code>s donde el número
+de <code>a</code>s es igual al número de <code>b</code>s
+o bien el número de <code>b</code>s es igual al número de <code>c</code>s.
+</I>
+<P>
+<UL>
+<LI>Escriba una gramática que genere dicho lenguaje
+
+<P>
+</LI>
+<LI>Escriba un programa Jison que reconozca este lenguaje.
+</LI>
+</UL></DIV><P></P>
+
+<P>
+
+<H2><A NAME="SECTION045154000000000000000">
+Conflicto reduce-reduce</A>
+</H2>
+La siguiente gramática presenta conflictos reduce-reduce:
+<P>
+<DIV><B>Ejercicio  <SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">15</SPAN>.<SPAN CLASS="arabic">3</SPAN></B> &nbsp; <PRE>
+[~/srcPLgrado/jison/jison-reducereduceconflict]$ cat reducereduceconflictPPCR2.y
+%token ID
+
+%%
+
+def:    param_spec return_spec ','
+        ;
+param_spec:
+             type
+        |    name_list ':' type
+        ;
+return_spec:
+             type
+        |    name ':' type
+        ;
+type:        
+             ID
+        ;
+name:        
+             ID 
+        ;
+name_list:
+             name
+        |    name ',' name_list
+        ;
+%%
+</PRE><I>
+Este es el diagnóstico de Jison:
+</I><PRE>
+~/srcPLgrado/jison/jison-reducereduceconflict]$ jison reducereduceconflictPPCR2.y
+Conflict in grammar: multiple actions possible when lookahead token is ID in state 5
+- reduce by rule: name -&gt; ID
+- reduce by rule: type -&gt; ID
+Conflict in grammar: multiple actions possible when lookahead token is : in state 5
+- reduce by rule: name -&gt; ID
+- reduce by rule: type -&gt; ID
+Conflict in grammar: multiple actions possible when lookahead token is , in state 5
+- reduce by rule: name -&gt; ID
+- reduce by rule: type -&gt; ID
+
+States with conflicts:
+State 5
+  type -&gt; ID . #lookaheads= ID : ,
+  name -&gt; ID . #lookaheads= ID : ,
+</PRE><I>
+Encuentre una gramática equivalente a la anterior sin conflictos.</I></DIV><P></P>
 
 <P>
 
@@ -177,16 +286,16 @@ S: /* empty */  { $$ = ''; console.log("empty"); }
   HREF="node56.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
 <A NAME="tex2html1684"
-  HREF="node39.html">
+  HREF="node40.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
 <A NAME="tex2html1678"
   HREF="node54.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
 <A NAME="tex2html1686"
-  HREF="node88.html">
+  HREF="node89.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
 <A NAME="tex2html1688"
-  HREF="node91.html">
+  HREF="node92.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -238,11 +347,11 @@ S: /* empty */  { $$ = ''; console.log("empty"); }
  ALT="pcgull"></A>
 <BR>
 <B> Sig:</B> <A NAME="tex2html1691"
-  HREF="node56.html">Depuración en jison</A>
+  HREF="node56.html">Recuperación de Errores</A>
 <B>Sup:</B> <A NAME="tex2html1685"
-  HREF="node39.html">Análisis Sintáctico Ascendente en</A>
+  HREF="node40.html">Análisis Sintáctico Ascendente en</A>
 <B> Ant:</B> <A NAME="tex2html1679"
-  HREF="node54.html">Ejercicios: Casos de Estudio</A>
+  HREF="node54.html">Definición Dirigida por la</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Práctica: Analizador Descendente Predictivo Recursivo</TITLE>
-<META NAME="description" CONTENT="Práctica: Analizador Descendente Predictivo Recursivo">
+<TITLE>Eliminación de la Recursión por la Izquierda en un Esquema de Traducción</TITLE>
+<META NAME="description" CONTENT="Eliminación de la Recursión por la Izquierda en un Esquema de Traducción">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,6 +19,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
+<LINK REL="next" HREF="node24.html">
 <LINK REL="previous" HREF="node22.html">
 <LINK REL="up" HREF="node18.html">
 <LINK REL="next" HREF="node24.html">
@@ -27,20 +28,20 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1087"
+<A NAME="tex2html1093"
   HREF="node24.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1081"
+<A NAME="tex2html1087"
   HREF="node18.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1077"
+<A NAME="tex2html1081"
   HREF="node22.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1083"
-  HREF="node88.html">
+<A NAME="tex2html1089"
+  HREF="node89.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1085"
-  HREF="node91.html">
+<A NAME="tex2html1091"
+  HREF="node92.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -91,189 +92,165 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1088"
-  HREF="node24.html">Análisis Sintáctico Mediante Precedencia</A>
-<B>Sup:</B> <A NAME="tex2html1082"
+<B> Sig:</B> <A NAME="tex2html1094"
+  HREF="node24.html">Práctica: Analizador Descendente Predictivo</A>
+<B>Sup:</B> <A NAME="tex2html1088"
   HREF="node18.html">Analizadores Descendentes Predictivos en</A>
-<B> Ant:</B> <A NAME="tex2html1078"
+<B> Ant:</B> <A NAME="tex2html1082"
   HREF="node22.html">Esquemas de Traducción</A>
 <B> Con:</B> 
-<A NAME="tex2html1083"
-  HREF="node88.html">
+<A NAME="tex2html1089"
+  HREF="node89.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1085"
-  HREF="node91.html">
+<A NAME="tex2html1091"
+  HREF="node92.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
-
-<UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html1089"
-  HREF="node23.html#SECTION04250010000000000000">Donde</A>
-<LI><A NAME="tex2html1090"
-  HREF="node23.html#SECTION04250020000000000000">Tareas</A>
-<LI><A NAME="tex2html1091"
-  HREF="node23.html#SECTION04250030000000000000">Sass</A>
-<LI><A NAME="tex2html1092"
-  HREF="node23.html#SECTION04250040000000000000">Slim</A>
-<LI><A NAME="tex2html1093"
-  HREF="node23.html#SECTION04250050000000000000">CoffeeScript</A>
-</UL></UL></UL>
-<!--End of Table of Child-Links-->
-<HR>
 
 <H1><A NAME="SECTION04250000000000000000"></A>
-   <A NAME="3475"></A>
+<A NAME="section:eliminarecesquem"></A>
 <BR>
-Práctica: Analizador Descendente Predictivo Recursivo
+Eliminación de la Recursión por la Izquierda en un Esquema de Traducción
 </H1>
+La eliminación de la recursión por la izquierda es sólo un paso: debe 
+ser extendida a esquemas de traducción, 
+de manera que no sólo se preserve el lenguaje
+sino la secuencia de acciones. Supongamos que tenemos un esquema de
+traducción de la forma:
 
 <P>
-Partiendo del analizador sintáctico descendente predictivo recursivo para la gramática
-descrita en la sección <A HREF="node20.html#table:gramaticasimple">2.2.1</A>
+<BR>
+<BR>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $A   \rightarrow A \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="69" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img58.png"
+ ALT="$ A \rightarrow A \alpha$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ alpha_action }</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $A   \rightarrow A \beta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="69" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img67.png"
+ ALT="$ A \rightarrow A \beta$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ beta_action }</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $A   \rightarrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$ A \rightarrow \gamma$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ gamma_action }</code></TD>
+</TR>
+</TABLE>
+<BR>
+<BR>
 
 <P>
-
-<H4><A NAME="SECTION04250010000000000000">
-Donde</A>
-</H4>
-  
-
-Puede encontrar la versión de la que partir en
-
-<P>
-
-<UL>
-<LI>Despliegue en Heroku:
-<A NAME="tex2html132"
-  HREF="http://predictiveparser.herokuapp.com/">http://predictiveparser.herokuapp.com/</A>
-</LI>
-<LI>Repositorio en GitHub:
-<A NAME="tex2html133"
-  HREF="https://github.com/crguezl/prdcalc">https://github.com/crguezl/prdcalc</A>
-</LI>
-<LI><PRE>
-[~/javascript/PLgrado/predictiveRD/prdcalc(develop)]$ pwd -P
-/Users/casiano/local/src/javascript/PLgrado/predictiveRD/prdcalc
-[~/javascript/PLgrado/predictiveRD/prdcalc(develop)]$ git remote -v
-heroku  git@heroku.com:predictiveparser.git (fetch)
-heroku  git@heroku.com:predictiveparser.git (push)
-origin  git@github.com:crguezl/prdcalc.git (fetch)
-origin  git@github.com:crguezl/prdcalc.git (push)
-</PRE>
-</LI>
-</UL>
+para una sentencia como <!-- MATH
+ $\gamma \beta \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="37" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img68.png"
+ ALT="$ \gamma \beta \alpha$"></SPAN> la secuencia de
+acciones será: 
 
 <P>
+<DIV ALIGN="CENTER">
+<code>gamma_action  beta_action alpha_action</code>
 
-<H4><A NAME="SECTION04250020000000000000">
-Tareas</A>
-</H4>
-  
-
-Añada:
-
-<UL>
-<LI>Restas y divisiones. Procure que el arbol generado refleje la asociatividad 
-correcta
-</LI>
-<LI>Pase a  <A NAME="tex2html134"
-  HREF="http://coffeescript.org/">CoffeeScript</A>
- el mayor número de rutinas que pueda (fichero
-<code>views/main.coffee</code>)
-</LI>
-<LI>Usa  <A NAME="tex2html135"
-  HREF="http://sass-lang.com/">Sass</A>
- para las hojas de estilo
-</LI>
-<LI>Despliegue la aplicación en Heroku
-</LI>
-<LI>Añada pruebas
-</LI>
-</UL>
+</DIV>
 
 <P>
-
-<H4><A NAME="SECTION04250030000000000000">
-Sass</A>
-</H4>
-  
-
-<P>
-
-<OL>
-<LI><A NAME="tex2html136"
-  HREF="http://sass-lang.com/">Sass</A>
-
-</LI>
-<LI><A NAME="tex2html137"
-  HREF="http://sass-lang.com/guide">Sass Basics</A>
-</LI>
-</OL>
+¿Cómo construir un esquema de traducción para la gramática resultante
+de eliminar la recursión por la izquierda que ejecute las acciones
+asociadas en el mismo orden?. Supongamos para simplificar,
+que las acciones no dependen
+de atributos ni computan atributos, sino que actúan sobre
+variables globales. En tal caso, la siguiente
+ubicación de las acciones da lugar a que se ejecuten en el mismo
+orden:
 
 <P>
-
-<H4><A NAME="SECTION04250040000000000000">
-Slim</A>
-</H4>
-  
+<BR>
+<BR>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $A   \rightarrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$ A \rightarrow \gamma$"></SPAN> <code>{ gamma_action }</code> <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img69.png"
+ ALT="$ R$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $R   \rightarrow \beta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="56" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img70.png"
+ ALT="$ R \rightarrow \beta$"></SPAN> <code> { beta_action }</code> <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img69.png"
+ ALT="$ R$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $R   \rightarrow \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="57" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img71.png"
+ ALT="$ R \rightarrow \alpha$"></SPAN> <code> { alpha_action }</code> <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img69.png"
+ ALT="$ R$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $R   \rightarrow \epsilon$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="52" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ R \rightarrow \epsilon$"></SPAN></TD>
+</TR>
+</TABLE>
 
 <P>
-
-<OL>
-<LI><A NAME="tex2html138"
-  HREF="http://slim-lang.com/">slim</A>
-
-</LI>
-<LI><A NAME="tex2html139"
-  HREF="http://rdoc.info/gems/slim/frames">Slim docs</A>
-</LI>
-<LI><A NAME="tex2html140"
-  HREF="https://github.com/slim-template/html2slim">html2slim</A>
-</LI>
-</OL>
-
-<P>
-
-<H4><A NAME="SECTION04250050000000000000">
-CoffeeScript</A>
-</H4>
-  
-
-<P>
-
-<OL>
-<LI><A NAME="tex2html141"
-  HREF="http://coffeescriptcookbook.com/">CoffeeScript Cookbook</A>
-</LI>
-<LI><A NAME="tex2html142"
-  HREF="http://js2coffee.org/">js2coffee.org</A>
-</LI>
-</OL>
+Si hay atributos en juego, la estrategia para construir un
+esquema de traducción equivalente para la gramática resultante
+de eliminar la recursividad por la izquierda se complica.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1087"
+<A NAME="tex2html1093"
   HREF="node24.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1081"
+<A NAME="tex2html1087"
   HREF="node18.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1077"
+<A NAME="tex2html1081"
   HREF="node22.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1083"
-  HREF="node88.html">
+<A NAME="tex2html1089"
+  HREF="node89.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1085"
-  HREF="node91.html">
+<A NAME="tex2html1091"
+  HREF="node92.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -324,11 +301,11 @@ CoffeeScript</A>
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1088"
-  HREF="node24.html">Análisis Sintáctico Mediante Precedencia</A>
-<B>Sup:</B> <A NAME="tex2html1082"
+<B> Sig:</B> <A NAME="tex2html1094"
+  HREF="node24.html">Práctica: Analizador Descendente Predictivo</A>
+<B>Sup:</B> <A NAME="tex2html1088"
   HREF="node18.html">Analizadores Descendentes Predictivos en</A>
-<B> Ant:</B> <A NAME="tex2html1078"
+<B> Ant:</B> <A NAME="tex2html1082"
   HREF="node22.html">Esquemas de Traducción</A>
 </DIV>
 <!--End of Navigation Panel-->

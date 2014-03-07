@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Definición Dirigida por la Sintáxis</TITLE>
-<META NAME="description" CONTENT="Definición Dirigida por la Sintáxis">
+<TITLE>Manejo en jison de Atributos Heredados</TITLE>
+<META NAME="description" CONTENT="Manejo en jison de Atributos Heredados">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node54.html">
 <LINK REL="previous" HREF="node52.html">
-<LINK REL="up" HREF="node39.html">
+<LINK REL="up" HREF="node40.html">
 <LINK REL="next" HREF="node54.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1658"
+<A NAME="tex2html1662"
   HREF="node54.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1652"
-  HREF="node39.html">
+<A NAME="tex2html1656"
+  HREF="node40.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1646"
+<A NAME="tex2html1650"
   HREF="node52.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1654"
-  HREF="node88.html">
+<A NAME="tex2html1658"
+  HREF="node89.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1656"
-  HREF="node91.html">
+<A NAME="tex2html1660"
+  HREF="node92.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,293 +92,411 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1659"
-  HREF="node54.html">Ejercicios: Casos de Estudio</A>
-<B>Sup:</B> <A NAME="tex2html1653"
-  HREF="node39.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1647"
-  HREF="node52.html">Manejo en jison de</A>
+<B> Sig:</B> <A NAME="tex2html1663"
+  HREF="node54.html">Definición Dirigida por la</A>
+<B>Sup:</B> <A NAME="tex2html1657"
+  HREF="node40.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html1651"
+  HREF="node52.html">Esquemas de Traducción</A>
 <B> Con:</B> 
-<A NAME="tex2html1654"
-  HREF="node88.html">
+<A NAME="tex2html1658"
+  HREF="node89.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1656"
-  HREF="node91.html">
+<A NAME="tex2html1660"
+  HREF="node92.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION045140000000000000000">
-Definición Dirigida por la Sintáxis</A>
+<H1><A NAME="SECTION045130000000000000000"></A>
+<A NAME="section:heredados"></A>
+<BR>
+Manejo en <TT>jison</TT> de Atributos Heredados
 </H1>
-Una <A NAME="6709"></A><SPAN  CLASS="textbf">definición dirigida por la sintáxis</SPAN> es un pariente cercano
-de los esquemas de traducción. En una definición dirigida por la
-sintáxis una gramática <!-- MATH
- $G = (V, \Sigma, P, S)$
+
+<P>
+Supongamos  que <code>jison</code> esta inmerso 
+en la construcción de la antiderivación a derechas y que la forma sentencial
+derecha en ese momento es:
+
+<P>
+<DIV ALIGN="CENTER">
+<!-- MATH
+ $X_m \ldots X_1 X_0 Y_1 \ldots  Y_n a_1 \ldots a_0$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img211.png"
- ALT="$ G = (V, \Sigma, P, S)$"></SPAN> se aumenta 
-con nuevas características:
+ WIDTH="225" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img206.png"
+ ALT="$ X_m \ldots X_1 X_0 Y_1 \ldots Y_n a_1 \ldots a_0$"></SPAN>
+</DIV>
+
+<P>
+y que el mango es <!-- MATH
+ $B \rightarrow Y_1 \ldots  Y_n$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="109" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img207.png"
+ ALT="$ B \rightarrow Y_1 \ldots Y_n$"></SPAN> y en la entrada quedan por 
+procesar <!-- MATH
+ $a_1 \ldots a_0$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="65" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img208.png"
+ ALT="$ a_1 \ldots a_0$"></SPAN>.
+
+<P>
+No es posible acceder en <code>jison</code> a los valores de los atributos de los estados en la pila
+del analizador que se encuentran ``por debajo'' o si se quiere
+``a la izquierda'' de los estados asociados
+con la regla por la que se reduce. 
+
+<P>
+Vamos a usar un pequeño hack para acceder a los atributos asociados con símbolos vistos 
+en el pasado "remoto":
+<PRE>
+[~/jison/jison-inherited(grammar)]$ cat inherited.jison 
+%lex
+%%
+\s+                           {}
+(global|local|integer|float)  { return yytext; }
+[a-zA-Z_]\w*                  { return 'id'; }
+.                             { return yytext; }
+/lex
+%%
+D 
+  : C T L 
+  ;
+
+C
+  : global
+  | local
+  ; 
+  
+T
+  : integer
+  | float
+;
+
+L 
+  : L ',' id    { 
+                  console.log("L -&gt; L ',' id ("+yytext+")");
+                  var s =  eval('$$');
+                  console.log(s);
+                }
+  | id          {
+                  console.log("L -&gt; id ("+yytext+")");
+                  var s =  eval('$$');
+                  console.log(s);
+                }
+  ;
+%%
+</PRE>
+
+<P>
+Veamos un ejemplo de ejecución:
+
+<P>
+<PRE>
+[~/jison/jison-inherited(grammar)]$ cat input.txt 
+global integer a, b, c
+[~/jison/jison-inherited(grammar)]$ node inherited.js input.txt 
+L -&gt; id (a)
+[ null, 'global', 'integer', 'a' ]
+L -&gt; L ',' id (b)
+[ null, 'global', 'integer', 'a', ',', 'b' ]
+L -&gt; L ',' id (c)
+[ null, 'global', 'integer', 'a', ',', 'c' ]
+</PRE>
+
+<P>
+Esta forma de acceder a los atributos es especialmente útil cuando se 
+trabaja con <A NAME="6756"></A><SPAN  CLASS="textbf">atributos heredados</SPAN>. Esto es, cuando un atributo
+de un nodo del árbol sintáctico se computa en términos
+de valores de atributos de su padre y/o sus hermanos.
+Ejemplos de atributos heredados son la clase y tipo en la declaración
+de variables. 
+
+<P>
+Es importante darse cuenta que en cualquier derivación a derechas
+desde<code>D</code>, cuando se reduce por una de las reglas 
+
+<P>
+<DIV ALIGN="CENTER">
+L <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> id <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> L<SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img199.png"
+ ALT="$ _1$"></SPAN> ',' id
+
+</DIV>
+
+<P>
+el símbolo a la izquierda de L es T y el que esta a la izquierda de T es C.
+Considere, por ejemplo la derivación a derechas:
+
+<P>
+<DIV ALIGN="CENTER">
+D <!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img209.png"
+ ALT="$ \Longrightarrow$"></SPAN> C T L <!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img209.png"
+ ALT="$ \Longrightarrow$"></SPAN> C T L, id <!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img209.png"
+ ALT="$ \Longrightarrow$"></SPAN> C T L, id, id
+<!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img209.png"
+ ALT="$ \Longrightarrow$"></SPAN> C T id, id, id <!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img209.png"
+ ALT="$ \Longrightarrow$"></SPAN> 
+<BR><!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img209.png"
+ ALT="$ \Longrightarrow$"></SPAN> C float id, id, id <!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img209.png"
+ ALT="$ \Longrightarrow$"></SPAN> local float id, id, id
+
+</DIV>
+
+<P>
+Observe que el orden de recorrido de <code>jison</code> es:
+<DIV ALIGN="CENTER">
+local float id, id, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img210.png"
+ ALT="$ \Longleftarrow$"></SPAN> C float id, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img210.png"
+ ALT="$ \Longleftarrow$"></SPAN>
+C T id, id, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img210.png"
+ ALT="$ \Longleftarrow$"></SPAN>
+<BR><!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img210.png"
+ ALT="$ \Longleftarrow$"></SPAN> C T L, id, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img210.png"
+ ALT="$ \Longleftarrow$"></SPAN> C T L, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img210.png"
+ ALT="$ \Longleftarrow$"></SPAN> C T L <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img210.png"
+ ALT="$ \Longleftarrow$"></SPAN> D
+
+</DIV>
+
+<P>
+en la antiderivación, cuando el mango es una de las dos reglas 
+para listas de identificadores, L <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> id y L <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> L, id 
+es decir durante las tres ultimas antiderivaciones:
+
+<P>
+<DIV ALIGN="CENTER">
+C T L, id, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img210.png"
+ ALT="$ \Longleftarrow$"></SPAN> C T L, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img210.png"
+ ALT="$ \Longleftarrow$"></SPAN> C T L <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img210.png"
+ ALT="$ \Longleftarrow$"></SPAN> D
+
+</DIV>
+
+<P>
+las variables a la izquierda del mango son
+T y C. Esto ocurre siempre. 
+Estas observaciones nos conducen al siguiente
+programa <code>jison</code>: 
+
+<P>
+<PRE>
+[~/jison/jison-inherited(deepstack)]$ cat inherited.jison 
+%lex
+%%
+\s+                           {}
+(global|local|integer|float)  { return yytext; }
+[a-zA-Z_]\w*                  { return 'id'; }
+.                             { return yytext; }
+/lex
+%%
+D 
+  : C T L 
+  ;
+
+C
+  : global
+  | local
+  ; 
+  
+T
+  : integer
+  | float
+  ;
+
+L 
+  : L ',' id    { 
+                  var s =  eval('$$');
+                  var b0 = s.length - 3;
+
+                  console.log("L -&gt; L ',' id ("+yytext+")");
+                  console.log($id + ' is of type ' + s[b0-1]);
+                  console.log(s[b0] + ' is of class ' + s[b0-2]);
+                }
+  | id          {
+                  var s =  eval('$$');
+                  var b0 = s.length - 1;
+
+                  console.log("L -&gt; id ("+yytext+")");
+                  console.log($id + ' is of type ' + s[b0-1]);
+                  console.log(s[b0] + ' is of class ' + s[b0-2]);
+                }
+  ;
+%%
+</PRE>
+
+<P>
+A continuación sigue un ejemplo de ejecución:
+
+<P>
+<PRE>
+[~/jison/jison-inherited(deepstack)]$ node inherited.js input.txt 
+L -&gt; id (a)
+a is of type integer
+a is of class global
+L -&gt; L ',' id (b)
+b is of type integer
+a is of class global
+L -&gt; L ',' id (c)
+c is of type integer
+a is of class global
+</PRE>
+
+<P>
+En este caso, existen varias alternativas simples
+a esta solución:
 
 <UL>
-<LI>A cada símbolo <!-- MATH
- $S \in V \cup \Sigma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="84" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img212.png"
- ALT="$ S \in V \cup \Sigma$"></SPAN> de la gramática se le asocian
-cero o mas atributos. Un atributo queda caracterizado por un identificador
-o nombre y un tipo o clase. A este nivel son <A NAME="6711"></A><SPAN  CLASS="textbf">atributos formales</SPAN>,
-como los parámetros formales, en el sentido de que su realización 
-se produce cuando el nodo del árbol es creado.
+<LI>Montar la lista de identificadores  en un array y ponerles el tipo y la clase de "golpe"
+ en la regla de producción superior <code>D : C T L ;</code>
 </LI>
-<LI>A cada regla de producción <!-- MATH
- $A \rightarrow X_1 X_2 \ldots X_n \in P$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="173" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img213.png"
- ALT="$ A \rightarrow X_1 X_2 \ldots X_n \in P$"></SPAN>
-se le asocian un conjunto de <A NAME="6713"></A><SPAN  CLASS="textbf">reglas de evaluación de los atributos</SPAN>
-o <A NAME="6715"></A><SPAN  CLASS="textbf">reglas semánticas</SPAN> que indican que el atributo en la parte
-izquierda de la regla semántica depende de los atributos que aparecen en la parte
-derecha de la regla. El atributo que aparece en la parte izquierda de la regla semántica
-puede estar asociado con un símbolo en la parte derecha de la regla de producción.
+<LI>usar variables visibles (globales o atributos del objeto parser, por ejemplo) 
+como <code>current_type</code>, <code>current_class</code>
+<PRE>
+C
+  : global { current_class = 'global'; }
+  | local  { current_class = 'local'; }
+</PRE>
+y depués accederlas en las reglas de <code>L</code>
 </LI>
-<LI>Los atributos de cada símbolo de la gramática <!-- MATH
- $X \in V \cup \Sigma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="88" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img204.png"
- ALT="$ X \in V \cup \Sigma$"></SPAN>
-se dividen en dos grupos disjuntos: <A NAME="6717"></A><SPAN  CLASS="textbf">atributos sintetizados</SPAN>
-y <A NAME="6719"></A><SPAN  CLASS="textbf">atributos heredados</SPAN>. Un atributo de <SPAN CLASS="MATH"><IMG
- WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img205.png"
- ALT="$ X$"></SPAN> es un <A NAME="6721"></A><SPAN  CLASS="textbf">atributo heredado</SPAN> 
-si depende de atributos de su padre y hermános en el árbol.
-Un <A NAME="6723"></A><SPAN  CLASS="textbf">atributo sintetizado</SPAN> es aquél tal que el valor del atributo depende
-de los valores de los atributos de los hijos, 
-es decir en tal caso <SPAN CLASS="MATH"><IMG
- WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img205.png"
- ALT="$ X$"></SPAN> ha de ser una variable sintáctica
-y los atributos en la parte derecha de la regla semántica deben
-ser atributos de símbolos en la parte derecha de la regla de producción 
-asociada.
-</LI>
-<LI>Los atributos predefinidos se denominán <A NAME="6725"></A><SPAN  CLASS="textbf">atributos intrínsecos</SPAN>.
-Ejemplos de atributos intrínsecos son los atributos 
-sintetizados de los terminales, los cuáles se han
-computado durante la fase de análisis léxico. También
-son atributos intrínsecos los atributos heredados del símbolo
-de arranque, los cuales son pasados como parámetros 
-al comienzo de la computación.
+<LI>La que posiblemente sea la mejor estrategia general: construir 
+el árbol de análisis sintáctico. Posteriormente podemos recorrer
+el árbol como queramos y tantas veces como queramos.
 </LI>
 </UL>
 
 <P>
-La diferencia principal con un esquema de traducción está en que
-no se especifica el orden de ejecución de las reglas semánticas.
-Se asume que, bien de forma manual o automática, se resolverán
-las dependencias existentes entre los atributos determinadas
-por la aplicación de las reglas semánticas, de manera
-que serán evaluados primero aquellos atributos que no dependen
-de ningún otro, despues los que dependen de estos, etc. siguiendo
-un esquema de ejecución que viene guiado por las dependencias
-existentes entre los datos.
-
-<P>
-Aunque hay muchas formas de realizar un evaluador de una definición
-dirigida por la sintáxis, conceptualmente, tal evaluador debe:
-
-<P>
-
-<OL>
-<LI>Construir el árbol de análisis sintáctico para la gramática
-y la entrada dadas.
-</LI>
-<LI>Analizar las reglas semánticas para determinar los atributos,
-su clase y las dependencias entre los mismos.
-</LI>
-<LI>Construir el <A NAME="6727"></A><SPAN  CLASS="textbf">grafo de dependencias</SPAN> de los atributos,
-el cual tiene
-un nodo para cada ocurrencia de un atributo en el árbol de análisis
-sintáctico etiquetado con dicho atributo. El grafo tiene una arista entre dos
-nodos si existe una dependencia entre los dos atributos a través de alguna
-regla semántica. 
-</LI>
-<LI>Supuesto que el grafo de dependencias determina un <A NAME="6729"></A><SPAN  CLASS="textbf">orden parcial</SPAN>
-(esto es cumple las propiedades reflexiva, antisimétrica y transitiva) 
-construir un <A NAME="6731"></A><SPAN  CLASS="textbf">orden topológico</SPAN> compatible con el orden parcial.
-</LI>
-<LI>Evaluar las reglas semánticas de acuerdo con el orden topológico.
-</LI>
-</OL>
-
-<P>
-Una definición dirigida por la sintáxis en la que las reglas semánticas
-no tienen efectos laterales se denomina una <A NAME="6733"></A><SPAN  CLASS="textbf">gramática atribuída</SPAN>.
-
-<P>
-Si la definición dirigida por la sintáxis puede ser realizada 
-mediante un esquema de traducción se dice que es <A NAME="6735"></A><SPAN  CLASS="textbf">L-atribuída</SPAN>.
-Para que una definición dirigida por la sintáxis sea L-atribuída
-deben cumplirse que cualquiera que sea la regla de producción
-<!-- MATH
- $A \rightarrow X_1 \ldots X_n$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="117" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img214.png"
- ALT="$ A \rightarrow X_1 \ldots X_n$"></SPAN>, los atributos heredados de
-<SPAN CLASS="MATH"><IMG
- WIDTH="26" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img203.png"
- ALT="$ X_j$"></SPAN> pueden depender únicamente de:
-
-<OL>
-<LI>Los atributos de los símbolos a la izquierda de <SPAN CLASS="MATH"><IMG
- WIDTH="26" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img203.png"
- ALT="$ X_j$"></SPAN>
-</LI>
-<LI>Los atributos heredados de <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img1.png"
- ALT="$ A$"></SPAN>
-</LI>
-</OL>
-
-<P>
-Nótese que las restricciones se refieren a los atributos heredados.
-El cálculo de los atributos sintetizados no supone 
-problema para un esquema de traducción. Si la gramática
-es LL(1), resulta fácil realizar una definición 
-L-atribuída en un analizador descendente recursivo predictivo.
-
-<P>
-Si la definición dirigida por la sintáxis sólo utiliza 
-atributos sintetizados se denomina <A NAME="6737"></A><SPAN  CLASS="textbf">S-atribuída</SPAN>. Una
-definición S-atribuída puede ser fácilmente trasladada a un programa
-<code>jison</code>.
-
-<P>
-<P>
-<DIV><B>Ejercicio  <SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">14</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>El siguiente es un ejemplo de definición dirigida por la sintáxis:
-<BR>
-<BR>
-</I>
-<DIV ALIGN="CENTER"><TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT"><I>
-S <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img35.png"
- ALT="$ \rightarrow$"></SPAN> a A C   </I></TD>
-<TD ALIGN="LEFT"><I> <code>$C{i} = $A{s}</code></I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-
-S <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img35.png"
- ALT="$ \rightarrow$"></SPAN> b A B C </I></TD>
-<TD ALIGN="LEFT"><I> <code>$C{i} = $A{s}</code></I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-
-C <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img35.png"
- ALT="$ \rightarrow$"></SPAN> c       </I></TD>
-<TD ALIGN="LEFT"><I> <code>$C{s} = $C{i}</code></I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-
-A <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img35.png"
- ALT="$ \rightarrow$"></SPAN> a       </I></TD>
-<TD ALIGN="LEFT"><I> <code>$A{s} = "a"</code></I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-
-B <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img35.png"
- ALT="$ \rightarrow$"></SPAN> b       </I></TD>
-<TD ALIGN="LEFT"><I> <code>$B{s} = "b"</code></I></TD>
-</TR>
-</TABLE></DIV><I>
-<BR>
-<BR>
-</I>
-<P>
-<I>Determine un orden correcto de evaluación de la anterior
-definición dirigida por la sintáxis para la entrada <code>b a b c</code>.</I></DIV><P></P>
-
-<P>
-<P>
-<DIV><B>Ejercicio  <SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">14</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
-<I>Lea el artículo 
-<A NAME="tex2html214"
-  HREF="ftp://www.cocolab.com/products/cocktail/doc.pdf/industry.pdf">Are Attribute Grammars used in Industry?</A>
-por Josef Grosch
-</I>
-<BLOCKQUOTE><I>I am observing a lack of education and knowledge about compiler
-construction in industry. When I am asking the participants of our
-trainings or the employees we met in our projects then only few people
-have learned about compiler construction during their education. For
-many of them compiler construction has a bad reputation because of what
-and how they have learned about this topic. Even fewer people have a
-usable knowledge about compilers. Even fewer people know about the theory
-of attribute grammars. And even fewer people know how to use attribute
-grammars for solving practical problems.  Nevertheless, attribute grammars
-are used in industry. However, in many cases the people in industry
-do not know about this fact. They are running prefabricated subsystems
-constructed by external companies such as ours. These subsystems are
-for example parsers which use attribute grammar technology.
-</I></BLOCKQUOTE></DIV><P></P>
-
-<P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1658"
+<A NAME="tex2html1662"
   HREF="node54.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1652"
-  HREF="node39.html">
+<A NAME="tex2html1656"
+  HREF="node40.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1646"
+<A NAME="tex2html1650"
   HREF="node52.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1654"
-  HREF="node88.html">
+<A NAME="tex2html1658"
+  HREF="node89.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1656"
-  HREF="node91.html">
+<A NAME="tex2html1660"
+  HREF="node92.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -429,12 +547,12 @@ for example parsers which use attribute grammar technology.
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1659"
-  HREF="node54.html">Ejercicios: Casos de Estudio</A>
-<B>Sup:</B> <A NAME="tex2html1653"
-  HREF="node39.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1647"
-  HREF="node52.html">Manejo en jison de</A>
+<B> Sig:</B> <A NAME="tex2html1663"
+  HREF="node54.html">Definición Dirigida por la</A>
+<B>Sup:</B> <A NAME="tex2html1657"
+  HREF="node40.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html1651"
+  HREF="node52.html">Esquemas de Traducción</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

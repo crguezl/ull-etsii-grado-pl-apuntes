@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Análisis Sintáctico Mediante Precedencia de Operadores en JavaScript</TITLE>
-<META NAME="description" CONTENT="Análisis Sintáctico Mediante Precedencia de Operadores en JavaScript">
+<TITLE>Práctica: Analizador Descendente Predictivo Recursivo</TITLE>
+<META NAME="description" CONTENT="Práctica: Analizador Descendente Predictivo Recursivo">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node27.html">
-<LINK REL="previous" HREF="node18.html">
-<LINK REL="up" HREF="node6.html">
+<LINK REL="previous" HREF="node23.html">
+<LINK REL="up" HREF="node18.html">
 <LINK REL="next" HREF="node25.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1106"
+<A NAME="tex2html1105"
   HREF="node25.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1100"
-  HREF="node6.html">
+<A NAME="tex2html1099"
+  HREF="node18.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1094"
+<A NAME="tex2html1095"
   HREF="node23.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1102"
-  HREF="node88.html">
+<A NAME="tex2html1101"
+  HREF="node89.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1104"
-  HREF="node91.html">
+<A NAME="tex2html1103"
+  HREF="node92.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,59 +91,189 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1107"
-  HREF="node25.html">Ejemplo Simple de Intérprete:</A>
-<B>Sup:</B> <A NAME="tex2html1101"
-  HREF="node6.html">PRIMERA PARTE: APUNTES DE</A>
-<B> Ant:</B> <A NAME="tex2html1095"
-  HREF="node23.html">Práctica: Analizador Descendente Predictivo</A>
+<B> Sig:</B> <A NAME="tex2html1106"
+  HREF="node25.html">Análisis Sintáctico Mediante Precedencia</A>
+<B>Sup:</B> <A NAME="tex2html1100"
+  HREF="node18.html">Analizadores Descendentes Predictivos en</A>
+<B> Ant:</B> <A NAME="tex2html1096"
+  HREF="node23.html">Eliminación de la Recursión</A>
 <B> Con:</B> 
-<A NAME="tex2html1102"
-  HREF="node88.html">
+<A NAME="tex2html1101"
+  HREF="node89.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1104"
-  HREF="node91.html">
+<A NAME="tex2html1103"
+  HREF="node92.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-
-<H1><A NAME="SECTION04300000000000000000">
-Análisis Sintáctico Mediante Precedencia de Operadores en JavaScript</A>
-</H1>
-
-<P>
-<BR> <HR>
 <!--Table of Child-Links-->
 <A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
 <UL CLASS="ChildLinks">
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html1107"
+  HREF="node24.html#SECTION04260010000000000000">Donde</A>
 <LI><A NAME="tex2html1108"
-  HREF="node25.html">Ejemplo Simple de Intérprete: Una Calculadora</A>
+  HREF="node24.html#SECTION04260020000000000000">Tareas</A>
 <LI><A NAME="tex2html1109"
-  HREF="node26.html">Análisis Top Down Usando Precedencia de Operadores</A>
-<UL>
+  HREF="node24.html#SECTION04260030000000000000">Sass</A>
 <LI><A NAME="tex2html1110"
-  HREF="node26.html#SECTION04321000000000000000">Gramática de JavaScript</A>
-</UL></UL>
+  HREF="node24.html#SECTION04260040000000000000">Slim</A>
+<LI><A NAME="tex2html1111"
+  HREF="node24.html#SECTION04260050000000000000">CoffeeScript</A>
+</UL></UL></UL>
 <!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION04260000000000000000"></A>
+   <A NAME="3488"></A>
+<BR>
+Práctica: Analizador Descendente Predictivo Recursivo
+</H1>
+
+<P>
+Partiendo del analizador sintáctico descendente predictivo recursivo para la gramática
+descrita en la sección <A HREF="node20.html#table:gramaticasimple">2.2.1</A>
+
+<P>
+
+<H4><A NAME="SECTION04260010000000000000">
+Donde</A>
+</H4>
+  
+
+Puede encontrar la versión de la que partir en
+
+<P>
+
+<UL>
+<LI>Despliegue en Heroku:
+<A NAME="tex2html132"
+  HREF="http://predictiveparser.herokuapp.com/">http://predictiveparser.herokuapp.com/</A>
+</LI>
+<LI>Repositorio en GitHub:
+<A NAME="tex2html133"
+  HREF="https://github.com/crguezl/prdcalc">https://github.com/crguezl/prdcalc</A>
+</LI>
+<LI><PRE>
+[~/javascript/PLgrado/predictiveRD/prdcalc(develop)]$ pwd -P
+/Users/casiano/local/src/javascript/PLgrado/predictiveRD/prdcalc
+[~/javascript/PLgrado/predictiveRD/prdcalc(develop)]$ git remote -v
+heroku  git@heroku.com:predictiveparser.git (fetch)
+heroku  git@heroku.com:predictiveparser.git (push)
+origin  git@github.com:crguezl/prdcalc.git (fetch)
+origin  git@github.com:crguezl/prdcalc.git (push)
+</PRE>
+</LI>
+</UL>
+
+<P>
+
+<H4><A NAME="SECTION04260020000000000000">
+Tareas</A>
+</H4>
+  
+
+Añada:
+
+<UL>
+<LI>Restas y divisiones. Procure que el arbol generado refleje la asociatividad 
+correcta
+</LI>
+<LI>Pase a  <A NAME="tex2html134"
+  HREF="http://coffeescript.org/">CoffeeScript</A>
+ el mayor número de rutinas que pueda (fichero
+<code>views/main.coffee</code>)
+</LI>
+<LI>Usa  <A NAME="tex2html135"
+  HREF="http://sass-lang.com/">Sass</A>
+ para las hojas de estilo
+</LI>
+<LI>Despliegue la aplicación en Heroku
+</LI>
+<LI>Añada pruebas
+</LI>
+</UL>
+
+<P>
+
+<H4><A NAME="SECTION04260030000000000000">
+Sass</A>
+</H4>
+  
+
+<P>
+
+<OL>
+<LI><A NAME="tex2html136"
+  HREF="http://sass-lang.com/">Sass</A>
+
+</LI>
+<LI><A NAME="tex2html137"
+  HREF="http://sass-lang.com/guide">Sass Basics</A>
+</LI>
+</OL>
+
+<P>
+
+<H4><A NAME="SECTION04260040000000000000">
+Slim</A>
+</H4>
+  
+
+<P>
+
+<OL>
+<LI><A NAME="tex2html138"
+  HREF="http://slim-lang.com/">slim</A>
+
+</LI>
+<LI><A NAME="tex2html139"
+  HREF="http://rdoc.info/gems/slim/frames">Slim docs</A>
+</LI>
+<LI><A NAME="tex2html140"
+  HREF="https://github.com/slim-template/html2slim">html2slim</A>
+</LI>
+</OL>
+
+<P>
+
+<H4><A NAME="SECTION04260050000000000000">
+CoffeeScript</A>
+</H4>
+  
+
+<P>
+
+<OL>
+<LI><A NAME="tex2html141"
+  HREF="http://coffeescriptcookbook.com/">CoffeeScript Cookbook</A>
+</LI>
+<LI><A NAME="tex2html142"
+  HREF="http://js2coffee.org/">js2coffee.org</A>
+</LI>
+</OL>
+
+<P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1106"
+<A NAME="tex2html1105"
   HREF="node25.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1100"
-  HREF="node6.html">
+<A NAME="tex2html1099"
+  HREF="node18.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1094"
+<A NAME="tex2html1095"
   HREF="node23.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1102"
-  HREF="node88.html">
+<A NAME="tex2html1101"
+  HREF="node89.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1104"
-  HREF="node91.html">
+<A NAME="tex2html1103"
+  HREF="node92.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -195,12 +324,12 @@ Análisis Sintáctico Mediante Precedencia de Operadores en JavaScript</A>
  SRC="logopcgull.gif"
  ALT="pcgull"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1107"
-  HREF="node25.html">Ejemplo Simple de Intérprete:</A>
-<B>Sup:</B> <A NAME="tex2html1101"
-  HREF="node6.html">PRIMERA PARTE: APUNTES DE</A>
-<B> Ant:</B> <A NAME="tex2html1095"
-  HREF="node23.html">Práctica: Analizador Descendente Predictivo</A>
+<B> Sig:</B> <A NAME="tex2html1106"
+  HREF="node25.html">Análisis Sintáctico Mediante Precedencia</A>
+<B>Sup:</B> <A NAME="tex2html1100"
+  HREF="node18.html">Analizadores Descendentes Predictivos en</A>
+<B> Ant:</B> <A NAME="tex2html1096"
+  HREF="node23.html">Eliminación de la Recursión</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
