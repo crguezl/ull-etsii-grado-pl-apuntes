@@ -136,12 +136,14 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <H1><A NAME="SECTION04510000000000000000">
 La Calculadora</A>
-</H1><FONT COLOR="#ff0000"></FONT>
+</H1>
+
 <P>
-<FONT COLOR="#ff0000"></FONT>
+
 <H2><A NAME="SECTION04511000000000000000">
 Uso desde Línea de Comandos</A>
-</H2><FONT COLOR="#ff0000"></FONT><PRE>
+</H2>
+<PRE>
 [~/src/PL/rexical/sample(master)]$ racc --help
 Usage: racc [options] &lt;input&gt;
     -o, --output-file=PATH           output file name [&lt;input&gt;.tab.rb]
@@ -164,9 +166,10 @@ Usage: racc [options] &lt;input&gt;
         --runtime-version            Prints runtime version and quit.
         --copyright                  Prints copyright and quit.
         --help                       Prints this message and quit.
-</PRE><FONT COLOR="#ff0000"></FONT>
+</PRE>
+
 <P>
-<FONT COLOR="#ff0000"></FONT><PRE>
+<PRE>
 [~/Dropbox/src/PL/rexical/sample(master)]$ cat -n Rakefile 
      1  task :default =&gt; %W{racc rex} do
      2    sh "ruby calc3.tab.rb"
@@ -179,12 +182,14 @@ Usage: racc [options] &lt;input&gt;
      9  task :rex do
     10    sh "rex calc3.rex"
     11  end
-</PRE><FONT COLOR="#ff0000"></FONT>
+</PRE>
+
 <P>
-<FONT COLOR="#ff0000"></FONT>
+
 <H2><A NAME="SECTION04512000000000000000">
 Análisis Léxico con <TT>rexical</TT></A>
-</H2><FONT COLOR="#ff0000"></FONT><PRE>
+</H2>
+<PRE>
 [~/Dropbox/src/PL/rexical/sample(master)]$ cat -n calc3.rex
      1  #
      2  # calc3.rex
@@ -201,12 +206,14 @@ Análisis Léxico con <TT>rexical</TT></A>
     13    .|\n          { [text, text] }
     14  inner
     15  end
-</PRE><FONT COLOR="#ff0000"></FONT>
+</PRE>
+
 <P>
-<FONT COLOR="#ff0000"></FONT>
+
 <H2><A NAME="SECTION04513000000000000000">
 Análisis Sintáctico</A>
-</H2><FONT COLOR="#ff0000"></FONT><PRE>
+</H2>
+<PRE>
 [~/Dropbox/src/PL/rexical/sample(master)]$ cat -n calc3.racc 
      1  #
      2  # A simple calculator, version 3.
@@ -255,46 +262,49 @@ Análisis Sintáctico</A>
     45      puts 'parse error'
     46    end
     47  end
-</PRE><FONT COLOR="#ff0000"></FONT>
+</PRE>
+
 <P>
-<FONT COLOR="#ff0000"></FONT>
+
 <H4><A NAME="SECTION04513010000000000000">
 Precedencias</A>
-</H4><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
-  </FONT></FONT><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
+</H4>
+  
 
 <code>right</code> is yacc's <code>%right</code>, <code>left</code> is yacc's <code>%left</code>.
-</FONT></FONT>
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000"><code>= SYMBOL</code>  means yacc's <code>%prec SYMBOL</code>:
-</FONT></FONT><PRE>
+<code>= SYMBOL</code>  means yacc's <code>%prec SYMBOL</code>:
+<PRE>
 prechigh
   nonassoc '++'
   left     '*' '/'
   left     '+' '-'
   right    '='
 preclow
-</PRE><FONT COLOR="#ff0000"></FONT>
+</PRE>
+
 <P>
-<FONT COLOR="#ff0000"></FONT><PRE>
+<PRE>
 rule
   exp: exp '*' exp
      | exp '-' exp
      | '-' exp       =UMINUS   # equals to "%prec UMINUS"
          :
          :
-</PRE><FONT COLOR="#ff0000"></FONT>
+</PRE>
+
 <P>
-<FONT COLOR="#ff0000"></FONT>
+
 <H4><A NAME="SECTION04513020000000000000">
 Atributos</A>
-</H4><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
-  </FONT></FONT><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
+</H4>
+  
 
 You can use following special local variables in action.
-</FONT></FONT>
+
 <P>
-<FONT COLOR="#ff0000"></FONT>
+
 <OL>
 <LI><PRE>
 result ($$)
@@ -315,37 +325,40 @@ _values (...$-2,$-1,$0)
 </PRE>
 A stack of values. DO NOT MODIFY this stack unless you know what you are doing.
 </LI>
-</OL><FONT COLOR="#ff0000"></FONT>
+</OL>
+
 <P>
-<FONT COLOR="#ff0000"></FONT>
+
 <H4><A NAME="SECTION04513030000000000000">
 Declaring Tokens</A>
-</H4><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
-  </FONT></FONT><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
+</H4>
+  
 
 By declaring tokens, you can avoid bugs. 
-</FONT></FONT>
+
 <P>
-<FONT COLOR="#ff0000"></FONT><PRE>
+<PRE>
 token NUM ID IF
-</PRE><FONT COLOR="#ff0000"></FONT>
+</PRE>
+
 <P>
-<FONT COLOR="#ff0000"></FONT>
+
 <H4><A NAME="SECTION04513040000000000000">
 Opciones</A>
-</H4><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
-  </FONT></FONT><FONT COLOR="#ff0000"></FONT>
+</H4>
+  
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">You can write options for racc command in your racc file.
-</FONT></FONT>
+You can write options for racc command in your racc file.
+
 <P>
-<FONT COLOR="#ff0000"></FONT><PRE>
+<PRE>
 options OPTION OPTION ...
-</PRE><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
+</PRE>
 Options are:
-</FONT></FONT>
+
 <P>
-<FONT COLOR="#ff0000"></FONT>
+
 <OL>
 <LI><PRE>
 omit_action_call
@@ -359,28 +372,30 @@ result_var
 </PRE>
 use/does not use local variable "result"
 </LI>
-</OL><FONT COLOR="#ff0000"></FONT>
+</OL>
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">You can use <code>no_</code> prefix to invert its meanings.
-</FONT></FONT>
+You can use <code>no_</code> prefix to invert its meanings.
+
 <P>
-<FONT COLOR="#ff0000"></FONT>
+
 <H4><A NAME="SECTION04513050000000000000">
 User Code Block</A>
-</H4><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
-  </FONT></FONT><FONT COLOR="#ff0000"></FONT>
+</H4>
+  
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">"User Code Block" is a Ruby source code which is copied to output. There are three user code block, 
+"User Code Block" is a Ruby source code which is copied to output. There are three user code block, 
 "header" 
 "inner" 
 and "
 footer".
-</FONT></FONT>
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">Format of user code is like this:
-</FONT></FONT>
+Format of user code is like this:
+
 <P>
-<FONT COLOR="#ff0000"></FONT><PRE>
+<PRE>
 ---- header
   ruby statement
   ruby statement
@@ -390,13 +405,13 @@ footer".
   ruby statement
      :
      :
-</PRE><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
+</PRE>
 If four <code>-</code> exist on line head, 
 racc treat it as beginning of user code block. 
 A name of user code must be one word.
-</FONT></FONT>
+
 <P>
-<FONT COLOR="#ff0000"></FONT>
+
 <DIV CLASS="navigation"><HR>
 <A NAME="tex2html1711"
   HREF="node59.html">

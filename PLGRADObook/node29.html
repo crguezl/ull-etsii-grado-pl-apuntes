@@ -124,76 +124,74 @@ Ejecución de las Acciones Semánticas</A>
 
 <H1><A NAME="SECTION04380000000000000000">
 Eliminación de la Recursividad por la Izquierda</A>
-</H1><FONT COLOR="#ff0000"></FONT>
+</H1>
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">Es posible modificar la gramática para eliminar la recursión por 
+Es posible modificar la gramática para eliminar la recursión por 
 la izquierda. En este apartado nos limitaremos al caso de recursión 
 por la izquierda directa. 
 La generalización al caso de recursión por la izquierda no-directa
 se reduce a la iteración de la solución propuesta 
 para el caso directo.
-</FONT></FONT>
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">Consideremos una variable 
-<FONT COLOR="#ff0000"><SPAN CLASS="MATH"><IMG
+Consideremos una variable <SPAN CLASS="MATH"><IMG
  WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img52.png"
- ALT="\bgroup\color{red}$ A$\egroup"></SPAN></FONT> con dos producciones:
-</FONT></FONT>
+ SRC="img1.png"
+ ALT="$ A$"></SPAN> con dos producciones:
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
 <BR>
 <BR>
-</FONT></FONT>
-<DIV ALIGN="CENTER"><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
-<FONT COLOR="#ff0000"><!-- MATH
+<DIV ALIGN="CENTER">
+<!-- MATH
  $A   \rightarrow A \alpha |\ \beta$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="91" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img88.png"
- ALT="\bgroup\color{red}$ A \rightarrow A \alpha \vert \beta$\egroup"></SPAN></FONT> 
-</FONT></FONT></DIV><FONT COLOR="#ff0000"></FONT>
+ SRC="img80.png"
+ ALT="$ A \rightarrow A \alpha \vert\ \beta$"></SPAN> 
+
+</DIV>
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">donde 
-<FONT COLOR="#ff0000"><!-- MATH
+donde <!-- MATH
  $\alpha, \beta \in (V \cup \Sigma)^*$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="123" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img89.png"
- ALT="\bgroup\color{red}$ \alpha, \beta \in (V \cup \Sigma)^*$\egroup"></SPAN></FONT> no comienzan por 
-<FONT COLOR="#ff0000"><SPAN CLASS="MATH"><IMG
+ SRC="img81.png"
+ ALT="$ \alpha, \beta \in (V \cup \Sigma)^*$"></SPAN> no comienzan por <SPAN CLASS="MATH"><IMG
  WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img52.png"
- ALT="\bgroup\color{red}$ A$\egroup"></SPAN></FONT>.
+ SRC="img1.png"
+ ALT="$ A$"></SPAN>.
 Estas dos producciones pueden ser sustituidas por:
-</FONT></FONT>
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
 <BR>
 <BR>
-</FONT></FONT>
-<DIV ALIGN="CENTER"><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
-<FONT COLOR="#ff0000"><!-- MATH
+<DIV ALIGN="CENTER">
+<!-- MATH
  $A   \rightarrow \beta \alpha *$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="76" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img90.png"
- ALT="\bgroup\color{red}$ A \rightarrow \beta \alpha * $\egroup"></SPAN></FONT></FONT></FONT></DIV><FONT COLOR="#ff0000"></FONT>
+ SRC="img82.png"
+ ALT="$ A \rightarrow \beta \alpha * $"></SPAN>
+</DIV>
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
 eliminando así la recursión por la izquierda.
-</FONT></FONT>
+
 <P>
-<FONT COLOR="#ff0000"></FONT>
+
 <H2><A NAME="SECTION04381000000000000000">
 Eliminación de la Recursividad por la izquierda Respetando el Orden de 
 Ejecución de las Acciones Semánticas</A>
-</H2><FONT COLOR="#ff0000"></FONT>
+</H2>
+
 <P>
-<FONT COLOR="#ff0000"></FONT><PRE>
+<PRE>
 [~/pegjs-coffee-remove-left(master)]$ cat -n remove_left_recursive.pegjs 
      1  /*
      2  
@@ -216,15 +214,17 @@ Ejecución de las Acciones Semánticas</A>
     19            a = @do_x(a, x)
     20          a
     21       }
-</PRE><FONT COLOR="#ff0000"></FONT>
+</PRE>
+
 <P>
-<FONT COLOR="#ff0000"></FONT><PRE>
+<PRE>
 [~/pegjs-coffee-remove-left(master)]$ pegcoffee remove_left_recursive.pegjs 
 [~/pegjs-coffee-remove-left(master)]$ ls -ltr | tail -1
 -rw-rw-r--  1 casiano  staff   8919  3 jun 10:42 remove_left_recursive.js
-</PRE><FONT COLOR="#ff0000"></FONT>
+</PRE>
+
 <P>
-<FONT COLOR="#ff0000"></FONT><PRE>
+<PRE>
 [~/pegjs-coffee-remove-left(master)]$ cat use_remove_left.coffee 
 PEG = require("./remove_left_recursive.js")
 inputs = [
@@ -237,9 +237,10 @@ for input in inputs
   console.log("input = #{input}")
   r = PEG.parse input
   console.log("result = #{r}\n")
-</PRE><FONT COLOR="#ff0000"></FONT>
+</PRE>
+
 <P>
-<FONT COLOR="#ff0000"></FONT><PRE>
+<PRE>
 [~/pegjs-coffee-remove-left(master)]$ coffee use_remove_left.coffee 
 input = yxx
 do_y(y)
@@ -257,12 +258,14 @@ do_x(y, x)
 do_x(yx, x)
 do_x(yxx, x)
 result = yxxx
-</PRE><FONT COLOR="#ff0000"></FONT>
+</PRE>
+
 <P>
-<FONT COLOR="#ff0000"></FONT>
+
 <H2><A NAME="SECTION04382000000000000000">
 Eliminando la Recursividad por la Izquierda en la Calculadora</A>
-</H2><FONT COLOR="#ff0000"></FONT><PRE>
+</H2>
+<PRE>
 [~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat simple.pegjs 
 /* From the Wikipedia
 Value   ← [0-9]+ / '(' Expr ')'
@@ -295,14 +298,15 @@ sum   = left:product right:($[+-] product)* { return reduce(left, right); }
 product = left:value right:($[*/] value)*   { return reduce(left, right); }
 value   = number:$[0-9]+                    { return parseInt(number,10); }
         / '(' sum:sum ')'                   { return sum; }
-</PRE><FONT COLOR="#ff0000"></FONT>
+</PRE>
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">Es posible especificar mediante llaves  un código 
+Es posible especificar mediante llaves  un código 
 que este disponible dentro de las acciones semánticas.
-</FONT></FONT>
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">Ejecución:
-</FONT></FONT><PRE>
+Ejecución:
+<PRE>
 [~/pegjs/examples(master)]$ cat use_simple.js 
 var PEG = require("./simple.js");
 var r = PEG.parse("2-3-4");
@@ -310,9 +314,9 @@ console.log(r);
 
 [~/pegjs/examples(master)]$ node use_simple.js 
 -5
-</PRE><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
+</PRE>
 Veamos otra ejecución:
-</FONT></FONT><PRE>
+<PRE>
 [~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat use_simple.js 
 var PEG = require("./simple.js");
 var r = PEG.parse("2+3*(2+1)-10/2");
@@ -321,9 +325,10 @@ console.log(r);
 [~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ ../bin/pegjs simple.pegjs 
 [~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ node use_simple.js 
 6
-</PRE><FONT COLOR="#ff0000"></FONT>
+</PRE>
+
 <P>
-<FONT COLOR="#ff0000"></FONT>
+
 <DIV CLASS="navigation"><HR>
 <A NAME="tex2html1203"
   HREF="node30.html">

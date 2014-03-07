@@ -112,23 +112,23 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <H1><A NAME="SECTION044120000000000000000">
 Esquemas de Traducción</A>
-</H1><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
-Un <A NAME="6561"></A><SPAN  CLASS="textbf">esquema de traducción</SPAN> es una gramática independiente del
+</H1>
+Un <A NAME="6564"></A><SPAN  CLASS="textbf">esquema de traducción</SPAN> es una gramática independiente del
 contexto en la cuál se han asociado atributos a los símbolos de la gramática.
 Un atributo queda caracterizado por un identificador
 o nombre y un tipo o clase. Además se han insertado acciones, esto es,
 código JavaScript/Perl/Python/C, ...en medio de las partes derechas.
 En ese código es posible referenciar los atributos de los
 símbolos de la gramática como variables del lenguaje subyacente.
-</FONT></FONT>
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">Recuerde que el orden en que se evalúan los fragmentos de código
+Recuerde que el orden en que se evalúan los fragmentos de código
 es el de un recorrido primero-profundo del árbol de análisis sintáctico.
 Mas específicamente, considerando a las acciones como hijos-hoja del nodo,
 el recorrido que realiza un esquema de traducción es:
-</FONT></FONT>
+
 <P>
-<FONT COLOR="#ff0000"></FONT><PRE>
+<PRE>
  1     function esquema_de_traduccion(node) {
  2 
  3       for(c in node.children) { # de izquierda a derecha
@@ -139,117 +139,112 @@ el recorrido que realiza un esquema de traducción es:
  8         else { esquema_de_traduccion(child) }
  9       }
 10     }
-</PRE><FONT COLOR="#ff0000"></FONT>
+</PRE>
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">Obsérvese que, como el bucle recorre a los hijos
+Obsérvese que, como el bucle recorre a los hijos
 de izquierda a derecha, se debe dar la siguiente
 condición para que un esquema  de traducción funcione:
-</FONT></FONT>
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">Para cualquier regla de producción aumentada con acciones, de la forma 
-</FONT></FONT>
+Para cualquier regla de producción aumentada con acciones, de la forma 
+
 <P>
-<FONT COLOR="#ff0000"></FONT>
-<DIV ALIGN="CENTER"><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
-<FONT COLOR="#ff0000"><!-- MATH
+<DIV ALIGN="CENTER">
+<!-- MATH
  $A \rightarrow X_1 \ldots X_j$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="115" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img228.png"
- ALT="\bgroup\color{red}$ A \rightarrow X_1 \ldots X_j$\egroup"></SPAN></FONT><code>{ action(A{b}, X</code>
-<FONT COLOR="#ff0000"><SPAN CLASS="MATH"><IMG
+ SRC="img198.png"
+ ALT="$ A \rightarrow X_1 \ldots X_j$"></SPAN><code>{ action(A{b}, X</code><SPAN CLASS="MATH"><IMG
  WIDTH="12" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img229.png"
- ALT="\bgroup\color{red}$ _1$\egroup"></SPAN></FONT><code>{c}</code>
-<FONT COLOR="#ff0000"><SPAN CLASS="MATH"><IMG
+ SRC="img199.png"
+ ALT="$ _1$"></SPAN><code>{c}</code><SPAN CLASS="MATH"><IMG
  WIDTH="25" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img230.png"
- ALT="\bgroup\color{red}$ \ldots$\egroup"></SPAN></FONT><code> X</code>
-<FONT COLOR="#ff0000"><SPAN CLASS="MATH"><IMG
+ SRC="img200.png"
+ ALT="$ \ldots$"></SPAN><code> X</code><SPAN CLASS="MATH"><IMG
  WIDTH="14" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img231.png"
- ALT="\bgroup\color{red}$ _n$\egroup"></SPAN></FONT><code>{d})}</code>
-<FONT COLOR="#ff0000"><!-- MATH
+ SRC="img201.png"
+ ALT="$ _n$"></SPAN><code>{d})}</code><!-- MATH
  $X_{j+1} \ldots X_n$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="93" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img232.png"
- ALT="\bgroup\color{red}$ X_{j+1} \ldots X_n$\egroup"></SPAN></FONT></FONT></FONT></DIV><FONT COLOR="#ff0000"></FONT>
+ SRC="img202.png"
+ ALT="$ X_{j+1} \ldots X_n$"></SPAN>
+</DIV>
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">debe ocurrir que los atributos evaluados en
-la acción insertada después de 
-<FONT COLOR="#ff0000"><SPAN CLASS="MATH"><IMG
+debe ocurrir que los atributos evaluados en
+la acción insertada después de <SPAN CLASS="MATH"><IMG
  WIDTH="26" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img233.png"
- ALT="\bgroup\color{red}$ X_j$\egroup"></SPAN></FONT> 
+ SRC="img203.png"
+ ALT="$ X_j$"></SPAN> 
 dependan de atributos y variables que fueron computadas durante
 la visita de los hermanos izquierdos o de sus ancestros.
 En particular no deberían depender de atributos asociados
-con las variables 
-<FONT COLOR="#ff0000"><!-- MATH
+con las variables <!-- MATH
  $X_{j+1} \ldots X_n$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="93" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img232.png"
- ALT="\bgroup\color{red}$ X_{j+1} \ldots X_n$\egroup"></SPAN></FONT>. Ello no significa que
-no sea correcto evaluar atributos de 
-<FONT COLOR="#ff0000"><!-- MATH
+ SRC="img202.png"
+ ALT="$ X_{j+1} \ldots X_n$"></SPAN>. Ello no significa que
+no sea correcto evaluar atributos de <!-- MATH
  $X_{j+1} \ldots X_n$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="93" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img232.png"
- ALT="\bgroup\color{red}$ X_{j+1} \ldots X_n$\egroup"></SPAN></FONT>
+ SRC="img202.png"
+ ALT="$ X_{j+1} \ldots X_n$"></SPAN>
 en esa acción.
-</FONT></FONT>
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">Por ejemplo, el siguiente esquema no satisface el requisito:
+Por ejemplo, el siguiente esquema no satisface el requisito:
 
 <center>
 <img src="wrongtranslationscheme.png" width="50%"/>
 </center>
-</FONT></FONT>
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">porque cuando vas a ejecutar la acción <code>{ console.log(A.in) }</code> 
+porque cuando vas a ejecutar la acción <code>{ console.log(A.in) }</code> 
 el atributo <code>A.in</code> no ha sido computado.
-</FONT></FONT>
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">Los atributos de cada símbolo de la gramática 
-<FONT COLOR="#ff0000"><!-- MATH
+Los atributos de cada símbolo de la gramática <!-- MATH
  $X \in V \cup \Sigma$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="88" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img234.png"
- ALT="\bgroup\color{red}$ X \in V \cup \Sigma$\egroup"></SPAN></FONT>
-se dividen en dos grupos disjuntos: <A NAME="6563"></A><SPAN  CLASS="textbf">atributos sintetizados</SPAN>
-y <A NAME="6565"></A><SPAN  CLASS="textbf">atributos heredados</SPAN>: 
-</FONT></FONT>
+ SRC="img204.png"
+ ALT="$ X \in V \cup \Sigma$"></SPAN>
+se dividen en dos grupos disjuntos: <A NAME="6566"></A><SPAN  CLASS="textbf">atributos sintetizados</SPAN>
+y <A NAME="6568"></A><SPAN  CLASS="textbf">atributos heredados</SPAN>: 
+
 <P>
-<FONT COLOR="#ff0000"></FONT>
+
 <UL>
 <LI>Un atributo de <SPAN CLASS="MATH"><IMG
  WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img235.png"
- ALT="$ X$"></SPAN> es un <A NAME="6567"></A><SPAN  CLASS="textbf">atributo heredado</SPAN> 
+ SRC="img205.png"
+ ALT="$ X$"></SPAN> es un <A NAME="6570"></A><SPAN  CLASS="textbf">atributo heredado</SPAN> 
 si depende de atributos de su padre y hermános en el árbol.
 </LI>
-<LI>Un <A NAME="6569"></A><SPAN  CLASS="textbf">atributo sintetizado</SPAN> es aquél tal que el valor del atributo depende
+<LI>Un <A NAME="6572"></A><SPAN  CLASS="textbf">atributo sintetizado</SPAN> es aquél tal que el valor del atributo depende
 de los valores de los atributos de los hijos, 
 es decir en tal caso <SPAN CLASS="MATH"><IMG
  WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img235.png"
+ SRC="img205.png"
  ALT="$ X$"></SPAN> ha de ser una variable sintáctica
 y los atributos en la parte derecha de la regla semántica deben
 ser atributos de símbolos en la parte derecha de la regla de producción 
 asociada.
 </LI>
-</UL><FONT COLOR="#ff0000"></FONT>
+</UL>
+
 <P>
-<FONT COLOR="#ff0000"></FONT>
+
 <DIV CLASS="navigation"><HR>
 <A NAME="tex2html1575"
   HREF="node50.html">

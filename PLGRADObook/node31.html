@@ -112,9 +112,10 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <H1><A NAME="SECTION043100000000000000000">
 Asociando un else con su if mas cercano</A>
-</H1><FONT COLOR="#ff0000"></FONT>
+</H1>
+
 <P>
-<FONT COLOR="#ff0000"></FONT><PRE>
+<PRE>
 $ cat danglingelse.pegjs 
 /*
 S ← 'if' C 'then' S 'else' S / 'if' C 'then' S
@@ -129,22 +130,25 @@ O = _'o'_                        { return 'o'; }
 else = _'else'_                 
 if = _'if'_
 then = _'then'_
-</PRE><FONT COLOR="#ff0000"></FONT>
+</PRE>
+
 <P>
-<FONT COLOR="#ff0000"></FONT><PRE>
+<PRE>
 $ cat use_danglingelse.js 
 var PEG = require("./danglingelse.js");
 var r = PEG.parse("if c then if c then o else o");
 console.log(r);
-</PRE><FONT COLOR="#ff0000"></FONT>
+</PRE>
+
 <P>
-<FONT COLOR="#ff0000"></FONT><PRE>
+<PRE>
 $ ../bin/pegjs danglingelse.pegjs 
 $ node use_danglingelse.js 
 [ 'ifthen', 'c', [ 'ifthenelse', 'c', 'O', 'O' ] ]
-</PRE><FONT COLOR="#ff0000"></FONT>
+</PRE>
+
 <P>
-<FONT COLOR="#ff0000"></FONT>
+
 <DIV CLASS="navigation"><HR>
 <A NAME="tex2html1236"
   HREF="node32.html">

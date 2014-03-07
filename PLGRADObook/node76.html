@@ -131,129 +131,134 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <H1><A NAME="SECTION06130000000000000000">
 Troubleshooting</A>
-</H1><FONT COLOR="#ff0000"></FONT>
+</H1>
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">If you push your app and it crashes, 
+If you push your app and it crashes, 
 <code>heroku ps</code> shows state crashed:
-</FONT></FONT><PRE>
+<PRE>
 === web (1X): `bundle exec thin start -R config.ru -e $RACK_ENV -p $PORT`
 web.1: crashed 2013/10/24 20:21:34 (~ 1h ago)
-</PRE><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
+</PRE>
 check your logs to find out what went wrong. 
-</FONT></FONT>
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">Here are some common
+Here are some common
 problems.
-</FONT></FONT>
+
 <P>
-<FONT COLOR="#ff0000"></FONT>
+
 <H4><A NAME="SECTION06130010000000000000">
 Failed to require a sourcefile</A>
-</H4><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
-  </FONT></FONT><FONT COLOR="#ff0000"></FONT>
+</H4>
+  
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">If your app failed to require a sourcefile, chances are good you’re
+If your app failed to require a sourcefile, chances are good you’re
 running Ruby 1.9.1 or 1.8 in your local environment. 
-</FONT></FONT>
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">The load paths
+The load paths
 have changed in Ruby 1.9 which applies to Ruby 2.0. 
-</FONT></FONT>
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">Port your app
+Port your app
 forward to Ruby 2.0.0 making certain it works locally before trying
 to push to Cedar again.
-</FONT></FONT>
+
 <P>
-<FONT COLOR="#ff0000"></FONT>
+
 <H4><A NAME="SECTION06130020000000000000">
 Encoding error</A>
-</H4><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
-  </FONT></FONT><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
+</H4>
+  
 
 Ruby 1.9 added more sophisticated encoding support to the language
 which applies to Ruby 2.0. 
-</FONT></FONT>
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">Not all gems work with Ruby 2.0. If you
+Not all gems work with Ruby 2.0. If you
 hit an encoding error, you probably haven’t fully tested your app
 with Ruby 2.0.0 in your local environment. 
-</FONT></FONT>
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">Port your app forward
+Port your app forward
 to Ruby 2.0.0 making certain it works locally before trying to push
 to Cedar again.
-</FONT></FONT>
+
 <P>
-<FONT COLOR="#ff0000"></FONT>
+
 <H4><A NAME="SECTION06130030000000000000">
 Missing a gem</A>
-</H4><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
-  </FONT></FONT><FONT COLOR="#ff0000"></FONT>
+</H4>
+  
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">If your app crashes due to missing a gem, you may have it installed
+If your app crashes due to missing a gem, you may have it installed
 locally but not specified in your Gemfile. 
-</FONT></FONT>
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">You must isolate all
+You must isolate all
 local testing using <code>bundle exec</code>. 
-</FONT></FONT>
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">For example, don’t run <code>ruby web.rb</code>,
+For example, don’t run <code>ruby web.rb</code>,
 run 
-</FONT></FONT>
+
 <P>
-<FONT COLOR="#ff0000"></FONT><PRE>
+<PRE>
 bundle exec ruby web.rb
-</PRE><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
+</PRE>
 Don’t run <code>rake db:migrate</code>, run 
-</FONT></FONT><PRE>
+<PRE>
 bundle exec rake db:migrate.
-</PRE><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
+</PRE>
 Another approach is to create a blank RVM gemset to be absolutely
 sure you’re not touching any system-installed gems:
-</FONT></FONT><PRE>
+<PRE>
 $ rvm gemset create myapp
 $ rvm gemset use myapp
-</PRE><FONT COLOR="#ff0000"></FONT>
+</PRE>
+
 <P>
-<FONT COLOR="#ff0000"></FONT>
+
 <H4><A NAME="SECTION06130040000000000000">
 Runtime dependencies on development/test gems</A>
-</H4><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
-  </FONT></FONT><FONT COLOR="#ff0000"></FONT>
+</H4>
+  
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">If you’re still missing a gem when you deploy, check your Bundler
+If you’re still missing a gem when you deploy, check your Bundler
 groups.
-</FONT></FONT>
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">Heroku builds your app without the <code>development</code> or <code>test</code>
+Heroku builds your app without the <code>development</code> or <code>test</code>
 groups, and if you app depends on a gem from one of these groups
 to run, you should move it out of the group.
-</FONT></FONT>
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">One common example using the <code>RSpec tasks</code> in your Rakefile. 
+One common example using the <code>RSpec tasks</code> in your Rakefile. 
 If you see this in your Heroku deploy:
-</FONT></FONT><PRE>
+<PRE>
 $ heroku run rake -T
 Running `rake -T` attached to terminal... up, ps.3
 rake aborted!
 no such file to load -- rspec/core/rake_task
-</PRE><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
+</PRE>
 Then you’ve hit this problem. 
-</FONT></FONT>
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">First, duplicate the problem locally like so:
-</FONT></FONT><PRE>
+First, duplicate the problem locally like so:
+<PRE>
 $ bundle install --without development:test
 ...
 $ bundle exec rake -T
 rake aborted!
 no such file to load -- rspec/core/rake_task
-</PRE><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
+</PRE>
 Now you can fix it by making these Rake tasks conditional on the gem load. 
 For example:
-</FONT></FONT><PRE>
+<PRE>
 begin
   require "rspec/core/rake_task"
 
@@ -264,30 +269,31 @@ begin
   end
 rescue LoadError
 end
-</PRE><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
+</PRE>
 Confirm it works locally, then push to Heroku.
-</FONT></FONT>
+
 <P>
-<FONT COLOR="#ff0000"></FONT>
+
 <H4><A NAME="SECTION06130050000000000000">
 Rack::Sendfile</A>
-</H4><FONT COLOR="#ff0000"><FONT COLOR="#ff0000">
-  </FONT></FONT><FONT COLOR="#ff0000"></FONT>
+</H4>
+  
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">Heroku does not support the use of Rack::Sendfile. 
-</FONT></FONT>
+Heroku does not support the use of Rack::Sendfile. 
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">Rack:Sendfile
+Rack:Sendfile
 usually requires that there is a frontend webserver like nginx or
 apache is running on the same machine as the application server.
-</FONT></FONT>
+
 <P>
-<FONT COLOR="#ff0000"><FONT COLOR="#ff0000">This is not how Heroku is architected. Using the Rack::Sendfile
+This is not how Heroku is architected. Using the Rack::Sendfile
 middleware will cause your file downloads to fail since it will
 send a body with Content-Length of 0.
-</FONT></FONT>
+
 <P>
-<FONT COLOR="#ff0000"></FONT>
+
 <DIV CLASS="navigation"><HR>
 <A NAME="tex2html2087"
   HREF="node77.html">
