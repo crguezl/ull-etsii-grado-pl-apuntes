@@ -346,73 +346,103 @@ el siguiente programa construye ``implícitamente'' el árbol
 de análisis sintáctico concreto.
 
 <P>
-Dado que estamos usando <code>strict</code> se requiere prototipar las funciones
-al comienzo del fichero:
 <PRE>
-sub parse();
-sub statements();
-sub statement();
-sub expression();
-sub term();
-sub factor();
-sub idlist();
-sub declaration();
-sub declarations();
+  var parse = function(input) {
+    var tokens = input.tokens();
+    var lookahead = tokens.shift();
+
+    var match = function(t) {
+      if (lookahead.type === t) {
+        lookahead = tokens.shift();
+        if (typeof lookahead === 'undefined') {
+         lookahead = null; // end of input
+        } 
+      } else { // Error. Throw exception
+          throw "Syntax Error. Expected "+t+" found '"+lookahead.value+
+                "' near '"+input.substr(lookahead.from)+"'";
+      }
+    };
+
+    var statements = function() {
+      var result = [ statement() ];
+      while (lookahead &amp;&amp; lookahead.type === ';') {
+        match(';');
+        result.push(statement());
+      }
+      return result.length === 1? result[0] : result;
+    };
+
+    var statement = function() {
+      var result = null;
+
+      if (lookahead &amp;&amp; lookahead.type === 'ID') {
+        var left = { type: 'ID', value: lookahead.value };
+        match('ID');
+        match('=');
+        right = expression();
+        result = { type: '=', left: left, right: right };
+      } else if (lookahead &amp;&amp; lookahead.type === 'P') {
+        match('P');
+        right = expression();
+        result = { type: 'P', value: right };
+      } else { // Error!
+        throw "Syntax Error. Expected identifier but found "+
+              (lookahead? lookahead.value : "end of input")+
+              " near '"+input.substr(lookahead.from)+"'";
+      }
+      return result;
+    };
+
+    var expression = function() {
+      var result = term();
+      if (lookahead &amp;&amp; lookahead.type === '+') { 
+        match('+');
+        var right = expression();
+        result = {type: '+', left: result, right: right};
+      }
+      return result;
+    };
+
+    var term = function() {
+      var result = factor();
+      if (lookahead &amp;&amp; lookahead.type === '*') { 
+        match('*');
+        var right = term();
+        result = {type: '*', left: result, right: right};
+      }
+      return result;
+    };
+
+    var factor = function() {
+      var result = null;
+
+      if (lookahead.type === 'NUM') { 
+        result = {type: 'NUM', value: lookahead.value};
+        match('NUM'); 
+      }
+      else if (lookahead.type === 'ID') {
+        result = {type: 'ID', value: lookahead.value};
+        match('ID');
+      }
+      else if (lookahead.type === '(') {
+        match('(');
+        result = expression();
+        match(')');
+      } else { // Throw exception
+        throw "Syntax Error. Expected number or identifier or '(' but found "+
+              (lookahead? lookahead.value : "end of input")+
+              " near '"+input.substr(lookahead.from)+"'";
+      }
+      return result;
+    };
+    var tree = statements(input);
+    if (lookahead != null) {
+        throw "Syntax Error parsing statements. Expected end of input and found '"+
+              input.substr(lookahead.from)+"'";
+    }
+    return tree;
+  }
 </PRE>
-
-<P>
-Para saber mas sobre prototipos consulte <A HREF="#section:prototipos">
-<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> [<A
- HREF="node90.html#CasianoIntroAPerl">3</A>].
-
-<P>
-<P>
-<DIV><A NAME="program:adrp"><B>Programa  <SPAN CLASS="arabic">3</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">1</SPAN></B></A> &nbsp; <PRE>
- 1 sub match {
- 2   my $t = shift;
- 3 
- 4   if ($lookahead eq $t) {
- 5     ($lookahead, $value) = splice @tokens,0,2; 
- 6     if (defined($lookahead)) { 
- 7       $lookahead = $value if ($lookahead eq 'PUN');
- 8     } else { $lookahead = 'EOI'; }
- 9   }
-10   else { error("Se esperaba $t y se encontro $lookahead\n"); }
-11 }
-12 
-13 sub statement {
-14   if ($lookahead eq 'ID') { match('ID'); match('='); expression; }
-15   elsif ($lookahead eq 'P') { match('P'); expression; }
-16   else { error('Se esperaba un identificador'); }
-17 }
-18 
-19 sub term() {
-20   factor;
-21   if ($lookahead eq '*') { match('*'); term; }
-22 }
-23 
-24 sub expression() {
-25   term;
-26   if ($lookahead eq '+') { match('+'); expression; }
-27 }
-28 
-29 sub factor() {
-30   if ($lookahead eq 'NUM') { match('NUM'); }
-31   elsif ($lookahead eq 'ID') { match('ID'); }
-32   elsif ($lookahead eq '(') { match('('); expression; match(')'); }
-33   else { error("Se esperaba (, NUM o ID"); }
-34 }
-35 
-36 sub statements {
-37   statement;
-38   if ($lookahead eq ';') { match(';'); statements; }
-39 }
-40 
-41 sub parser {
-42   ($lookahead, $value) = splice @tokens,0,2; 
-43   statements; match('EOI');
-44 }
-</PRE></DIV><P></P>
 
 <P>
 Como vemos en el ejemplo, el análisis predictivo confía en que, si estamos
@@ -581,7 +611,7 @@ en una secuencia <!-- MATH
 <P>
 
 <H2><A NAME="SECTION04322000000000000000"></A>
-   <A NAME="3708"></A>
+   <A NAME="3698"></A>
 <BR>
 Ejercicio: Recorrido del árbol en un ADPR
 </H2>
