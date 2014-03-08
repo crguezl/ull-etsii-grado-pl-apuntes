@@ -348,8 +348,110 @@ Una Gramática Simple</CAPTION>
 <P>
 La secuencia de llamadas cuando se procesa la entrada mediante 
 el siguiente programa construye 
-<FONT COLOR="#ff0000"> implícitamente</FONT> el <A NAME="3478"></A><SPAN  CLASS="textbf">árbol 
+<FONT COLOR="#ff0000"> implícitamente</FONT> el <A NAME="3480"></A><SPAN  CLASS="textbf">árbol 
 de análisis sintáctico concreto</SPAN>.
+
+<P>
+<PRE>
+parse = (input) -&gt;
+  tokens = input.tokens()
+  lookahead = tokens.shift()
+  match = (t) -&gt;
+    if lookahead.type is t
+      lookahead = tokens.shift()
+      lookahead = null  if typeof lookahead is "undefined"
+    else # Error. Throw exception
+      throw "Syntax Error. Expected #{t} found '" + 
+            lookahead.value + "' near '" + 
+            input.substr(lookahead.from) + "'"
+    return
+
+  statements = -&gt;
+    result = [statement()]
+    while lookahead and lookahead.type is ";"
+      match ";"
+      result.push statement()
+    (if result.length is 1 then result[0] else result)
+
+  statement = -&gt;
+    result = null
+    if lookahead and lookahead.type is "ID"
+      left =
+        type: "ID"
+        value: lookahead.value
+
+      match "ID"
+      match "="
+      right = expression()
+      result =
+        type: "="
+        left: left
+        right: right
+    else if lookahead and lookahead.type is "P"
+      match "P"
+      right = expression()
+      result =
+        type: "P"
+        value: right
+    else # Error!
+      throw "Syntax Error. Expected identifier but found " + 
+        (if lookahead then lookahead.value else "end of input") + 
+        " near '#{input.substr(lookahead.from)}'"
+    result
+
+  expression = -&gt;
+    result = term()
+    if lookahead and lookahead.type is "+"
+      match "+"
+      right = expression()
+      result =
+        type: "+"
+        left: result
+        right: right
+    result
+
+  term = -&gt;
+    result = factor()
+    if lookahead and lookahead.type is "*"
+      match "*"
+      right = term()
+      result =
+        type: "*"
+        left: result
+        right: right
+    result
+
+  factor = -&gt;
+    result = null
+    if lookahead.type is "NUM"
+      result =
+        type: "NUM"
+        value: lookahead.value
+
+      match "NUM"
+    else if lookahead.type is "ID"
+      result =
+        type: "ID"
+        value: lookahead.value
+
+      match "ID"
+    else if lookahead.type is "("
+      match "("
+      result = expression()
+      match ")"
+    else # Throw exception
+      throw "Syntax Error. Expected number or identifier or '(' but found " + 
+        (if lookahead then lookahead.value else "end of input") + 
+        " near '" + input.substr(lookahead.from) + "'"
+    result
+
+  tree = statements(input)
+  if lookahead?
+    throw "Syntax Error parsing statements. " + 
+      "Expected 'end of input' and found '" + 
+      input.substr(lookahead.from) + "'"  
+  tree
+</PRE>
 
 <P>
 <PRE>
@@ -618,7 +720,7 @@ en una secuencia <!-- MATH
 <P>
 
 <H2><A NAME="SECTION04222000000000000000"></A>
-   <A NAME="3483"></A>
+   <A NAME="3485"></A>
 <BR>
 Ejercicio: Recorrido del árbol en un ADPR
 </H2>
