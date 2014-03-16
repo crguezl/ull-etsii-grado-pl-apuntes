@@ -133,7 +133,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <HR>
 
 <H1><A NAME="SECTION04260000000000000000"></A>
-   <A NAME="3560"></A>
+   <A NAME="3567"></A>
 <BR>
 Práctica: Analizador Descendente Predictivo Recursivo
 </H1>
@@ -372,8 +372,31 @@ Construyendo Árboles con la Asociatividad Correcta</A>
   
 
 Añadamos el operador <code>-</code> al código de nuestra práctica. 
-Para ello, podemos extender nuestro código 
-como sigue:
+Para ello, podemos extender nuestro gramática  con una regla
+de producción:
+<DIV ALIGN="CENTER">
+<BR>
+<BR>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">expression   <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> term '+' expression <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN>term '-' expression <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> term</TD>
+</TR>
+</TABLE>
+</DIV>
+<BR>
+<BR>
+que da lugar a un código como el que sigue:
 <PRE>
   expression = -&gt;
     result = term()
@@ -385,7 +408,7 @@ como sigue:
       result =
         type: "-" 
         left: result
-        right: rig
+        right: right
 </PRE>
 Cuando le damos como entrada <code>a = 4-2-1</code> produce el siguiente AST:
 <PRE>
