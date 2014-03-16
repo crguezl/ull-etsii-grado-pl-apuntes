@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Construyendo Árboles con la Asociatividad Correcta</TITLE>
-<META NAME="description" CONTENT="Construyendo Árboles con la Asociatividad Correcta">
+<TITLE>Análisis Sintáctico Mediante Precedencia de Operadores en JavaScript</TITLE>
+<META NAME="description" CONTENT="Análisis Sintáctico Mediante Precedencia de Operadores en JavaScript">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,28 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="previous" HREF="node24.html">
-<LINK REL="up" HREF="node18.html">
+<LINK REL="next" HREF="node28.html">
+<LINK REL="previous" HREF="node18.html">
+<LINK REL="up" HREF="node6.html">
 <LINK REL="next" HREF="node26.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1180"
+<A NAME="tex2html1178"
   HREF="node26.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1174"
-  HREF="node18.html">
+<A NAME="tex2html1172"
+  HREF="node6.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1170"
+<A NAME="tex2html1166"
   HREF="node24.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1176"
-  HREF="node96.html">
+<A NAME="tex2html1174"
+  HREF="node95.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1178"
-  HREF="node99.html">
+<A NAME="tex2html1176"
+  HREF="node98.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -91,127 +92,59 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1181"
-  HREF="node26.html">Análisis Sintáctico Mediante Precedencia</A>
-<B>Sup:</B> <A NAME="tex2html1175"
-  HREF="node18.html">Analizadores Descendentes Predictivos en</A>
-<B> Ant:</B> <A NAME="tex2html1171"
+<B> Sig:</B> <A NAME="tex2html1179"
+  HREF="node26.html">Ejemplo Simple de Intérprete:</A>
+<B>Sup:</B> <A NAME="tex2html1173"
+  HREF="node6.html">PRIMERA PARTE: APUNTES DE</A>
+<B> Ant:</B> <A NAME="tex2html1167"
   HREF="node24.html">Práctica: Analizador Descendente Predictivo</A>
 <B> Con:</B> 
-<A NAME="tex2html1176"
-  HREF="node96.html">
+<A NAME="tex2html1174"
+  HREF="node95.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1178"
-  HREF="node99.html">
+<A NAME="tex2html1176"
+  HREF="node98.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION04270000000000000000">
-Construyendo Árboles con la Asociatividad Correcta</A>
+<H1><A NAME="SECTION04300000000000000000">
+Análisis Sintáctico Mediante Precedencia de Operadores en JavaScript</A>
 </H1>
-Añadamos el operador <code>-</code>. Para ello, podemos extender nuestro código 
-como sigue:
-<PRE>
-  expression = -&gt;
-    result = term()
-    if lookahead and lookahead.type is "+"
-      ....
-    if lookahead and lookahead.type is "-" 
-      match "-" 
-      right = expression()
-      result =
-        type: "-" 
-        left: result
-        right: rig
-</PRE>
-Cuando le damos como entrada <code>a = 4-2-1</code> produce el siguiente AST:
-<PRE>
-{
-  "type": "=",
-  "left": {
-    "type": "ID",
-    "value": "a"
-  },
-  "right": {
-    "type": "-",
-    "left": {
-      "type": "NUM",
-      "value": 4
-    },
-    "right": {
-      "type": "-",
-      "left": {
-        "type": "NUM",
-        "value": 2
-      },
-      "right": {
-        "type": "NUM",
-        "value": 1
-      }
-    }
-  }
-}
-</PRE>
-que se corresponde con esta parentización: <code>a = (4 - (2 - 1))</code>
 
 <P>
-Este árbol no se corresponde con la asociatividad a izquierdas  del operador 
-<code>-</code>. Es un árbol que refleja una asociación a derechas (<code>a = 3</code>).
+<BR> <HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<P>
-Ahora bien, el lenguaje generado por dos reglas de la forma:
-<BR>
-<BR>
-<TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $A   \rightarrow A \alpha$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="69" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img58.png"
- ALT="$ A \rightarrow A \alpha$"></SPAN></TD>
-<TD ALIGN="LEFT"><code>{ alpha_action }</code></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $A   \rightarrow \gamma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img16.png"
- ALT="$ A \rightarrow \gamma$"></SPAN></TD>
-<TD ALIGN="LEFT"><code>{ gamma_action }</code></TD>
-</TR>
-</TABLE>
-Es <!-- MATH
- $\gamma \alpha *$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="35" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img73.png"
- ALT="$ \gamma \alpha *$"></SPAN>.
-<BR>
-<BR>
-
-<P>
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html1180"
+  HREF="node26.html">Ejemplo Simple de Intérprete: Una Calculadora</A>
+<LI><A NAME="tex2html1181"
+  HREF="node27.html">Análisis Top Down Usando Precedencia de Operadores</A>
+<UL>
+<LI><A NAME="tex2html1182"
+  HREF="node27.html#SECTION04321000000000000000">Gramática de JavaScript</A>
+</UL></UL>
+<!--End of Table of Child-Links-->
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1180"
+<A NAME="tex2html1178"
   HREF="node26.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1174"
-  HREF="node18.html">
+<A NAME="tex2html1172"
+  HREF="node6.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1170"
+<A NAME="tex2html1166"
   HREF="node24.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1176"
-  HREF="node96.html">
+<A NAME="tex2html1174"
+  HREF="node95.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1178"
-  HREF="node99.html">
+<A NAME="tex2html1176"
+  HREF="node98.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -262,11 +195,11 @@ Es <!-- MATH
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1181"
-  HREF="node26.html">Análisis Sintáctico Mediante Precedencia</A>
-<B>Sup:</B> <A NAME="tex2html1175"
-  HREF="node18.html">Analizadores Descendentes Predictivos en</A>
-<B> Ant:</B> <A NAME="tex2html1171"
+<B> Sig:</B> <A NAME="tex2html1179"
+  HREF="node26.html">Ejemplo Simple de Intérprete:</A>
+<B>Sup:</B> <A NAME="tex2html1173"
+  HREF="node6.html">PRIMERA PARTE: APUNTES DE</A>
+<B> Ant:</B> <A NAME="tex2html1167"
   HREF="node24.html">Práctica: Analizador Descendente Predictivo</A>
 </DIV>
 <!--End of Navigation Panel-->

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Precedencia y Asociatividad</TITLE>
-<META NAME="description" CONTENT="Precedencia y Asociatividad">
+<TITLE>Esquemas de Traducción</TITLE>
+<META NAME="description" CONTENT="Esquemas de Traducción">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node53.html">
 <LINK REL="previous" HREF="node51.html">
-<LINK REL="up" HREF="node41.html">
+<LINK REL="up" HREF="node40.html">
 <LINK REL="next" HREF="node53.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1704"
+<A NAME="tex2html1702"
   HREF="node53.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1698"
-  HREF="node41.html">
+<A NAME="tex2html1696"
+  HREF="node40.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1692"
+<A NAME="tex2html1690"
   HREF="node51.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1700"
-  HREF="node96.html">
+<A NAME="tex2html1698"
+  HREF="node95.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1702"
-  HREF="node99.html">
+<A NAME="tex2html1700"
+  HREF="node98.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,369 +92,174 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1705"
-  HREF="node53.html">Esquemas de Traducción</A>
-<B>Sup:</B> <A NAME="tex2html1699"
-  HREF="node41.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1693"
-  HREF="node51.html">El módulo Generado por</A>
+<B> Sig:</B> <A NAME="tex2html1703"
+  HREF="node53.html">Manejo en jison de</A>
+<B>Sup:</B> <A NAME="tex2html1697"
+  HREF="node40.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html1691"
+  HREF="node51.html">Precedencia y Asociatividad</A>
 <B> Con:</B> 
-<A NAME="tex2html1700"
-  HREF="node96.html">
+<A NAME="tex2html1698"
+  HREF="node95.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1702"
-  HREF="node99.html">
+<A NAME="tex2html1700"
+  HREF="node98.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION045110000000000000000"></A>
-<A NAME="section:prioridades"></A>
-<BR>
-Precedencia y Asociatividad
+<H1><A NAME="SECTION045120000000000000000">
+Esquemas de Traducción</A>
 </H1>
-Recordemos que si al construir la tabla LALR,
-alguna de las entradas de la tabla resulta multievaluada, decimos
-que existe un conflicto.
-Si una de las acciones es de `reducción'' y la otra es de
-`desplazamiento'', se dice que hay un <A NAME="6848"></A><SPAN  CLASS="textbf">conflicto shift-reduce</SPAN> o
-<A NAME="6850"></A><SPAN  CLASS="textbf">conflicto de desplazamiento-reducción</SPAN>. Si las
-dos reglas indican una acción de reducción, decimos que tenemos un 
-<A NAME="6852"></A><SPAN  CLASS="textbf">conflicto reduce-reduce</SPAN> o de <A NAME="6854"></A><SPAN  CLASS="textbf">reducción-reducción</SPAN>.
-En caso de que no existan indicaciones específicas <SPAN  CLASS="textbf">jison</SPAN> resuelve
-los conflictos que aparecen en la construcción de la tabla utilizando
-las siguientes reglas:
+Un <A NAME="6868"></A><SPAN  CLASS="textbf">esquema de traducción</SPAN> es una gramática independiente del
+contexto en la cuál se han asociado atributos a los símbolos de la gramática.
+Un atributo queda caracterizado por un identificador
+o nombre y un tipo o clase. Además se han insertado acciones, esto es,
+código JavaScript/Perl/Python/C, ...en medio de las partes derechas.
+En ese código es posible referenciar los atributos de los
+símbolos de la gramática como variables del lenguaje subyacente.
 
 <P>
-
-<OL>
-<LI>Un conflicto <SPAN  CLASS="textbf">reduce-reduce</SPAN> se resuelve eligiendo la producción
-que se listó primero en la especificación de la gramática.
-</LI>
-<LI>Un conflicto <SPAN  CLASS="textbf">shift-reduce</SPAN> se resuelve siempre en favor del <SPAN  CLASS="textbf">shift</SPAN>
-</LI>
-</OL>
+Recuerde que el orden en que se evalúan los fragmentos de código
+es el de un recorrido primero-profundo del árbol de análisis sintáctico.
+Mas específicamente, considerando a las acciones como hijos-hoja del nodo,
+el recorrido que realiza un esquema de traducción es:
 
 <P>
-Las declaraciones de precedencia y asociatividad mediante las
-palabras reservadas  <TT>%left</TT> ,  <TT>%right</TT> ,  <TT>%nonassoc</TT> 
-se utilizan para modificar estos criterios por defecto. 
-La declaración de  <TT>token</TT> s mediante la palabra
-reservada  <TT>%token</TT>  no modifica la precedencia. Si lo hacen las
-declaraciones realizadas usando las palabras  <TT>left</TT> ,  <TT>right</TT> 
-y  <TT>nonassoc</TT> . 
+<PRE>
+ 1     function esquema_de_traduccion(node) {
+ 2 
+ 3       for(c in node.children) { # de izquierda a derecha
+ 4         child = node.children[i];
+ 5         if (child.instanceof('SemanticAction') { # si es una acción semántica
+ 6           child.execute;
+ 7         }
+ 8         else { esquema_de_traduccion(child) }
+ 9       }
+10     }
+</PRE>
 
 <P>
+Obsérvese que, como el bucle recorre a los hijos
+de izquierda a derecha, se debe dar la siguiente
+condición para que un esquema  de traducción funcione:
 
-<OL>
-<LI>Los <SPAN  CLASS="textbf">tokens</SPAN> declarados  en la misma línea
-tienen igual precedencia e igual asociatividad. 
-La precedencia es mayor cuanto mas abajo 
-su posición en
-el texto. Así, en el ejemplo de la calculadora en la sección 
-<A HREF="node98.html#section:ejemplodeuso"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>, el <SPAN  CLASS="textbf">token</SPAN> <code>*</code> tiene 
-mayor precedencia que <code>+</code> pero la misma que <code>/</code>.
-</LI>
-<LI>La precedencia de una regla <!-- MATH
- $A \rightarrow \alpha$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img12.png"
- ALT="$ A \rightarrow \alpha$"></SPAN> se
-define como la del terminal mas a la derecha que aparece en
-<SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img42.png"
- ALT="$ \alpha$"></SPAN>. En el ejemplo, la producción 
+<P>
+Para cualquier regla de producción aumentada con acciones, de la forma 
 
 <P>
 <DIV ALIGN="CENTER">
-<code> expr : expr '+' expr</code> 
-
+<!-- MATH
+ $A \rightarrow X_1 \ldots X_j$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="115" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img199.png"
+ ALT="$ A \rightarrow X_1 \ldots X_j$"></SPAN><code>{ action(A{b}, X</code><SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img200.png"
+ ALT="$ _1$"></SPAN><code>{c}</code><SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img201.png"
+ ALT="$ \ldots$"></SPAN><code> X</code><SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img202.png"
+ ALT="$ _n$"></SPAN><code>{d})}</code><!-- MATH
+ $X_{j+1} \ldots X_n$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="93" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img203.png"
+ ALT="$ X_{j+1} \ldots X_n$"></SPAN>
 </DIV>
 
 <P>
-tiene la precedencia del <SPAN  CLASS="textbf">token</SPAN> <code>+</code>.
+debe ocurrir que los atributos evaluados en
+la acción insertada después de <SPAN CLASS="MATH"><IMG
+ WIDTH="26" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img204.png"
+ ALT="$ X_j$"></SPAN> 
+dependan de atributos y variables que fueron computadas durante
+la visita de los hermanos izquierdos o de sus ancestros.
+En particular no deberían depender de atributos asociados
+con las variables <!-- MATH
+ $X_{j+1} \ldots X_n$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="93" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img203.png"
+ ALT="$ X_{j+1} \ldots X_n$"></SPAN>. Ello no significa que
+no sea correcto evaluar atributos de <!-- MATH
+ $X_{j+1} \ldots X_n$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="93" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img203.png"
+ ALT="$ X_{j+1} \ldots X_n$"></SPAN>
+en esa acción.
+
+<P>
+Por ejemplo, el siguiente esquema no satisface el requisito:
+
+<center>
+<img src="wrongtranslationscheme.png" width="50%"/>
+</center>
+
+<P>
+porque cuando vas a ejecutar la acción <code>{ console.log(A.in) }</code> 
+el atributo <code>A.in</code> no ha sido computado.
+
+<P>
+Los atributos de cada símbolo de la gramática <!-- MATH
+ $X \in V \cup \Sigma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="88" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img205.png"
+ ALT="$ X \in V \cup \Sigma$"></SPAN>
+se dividen en dos grupos disjuntos: <A NAME="6870"></A><SPAN  CLASS="textbf">atributos sintetizados</SPAN>
+y <A NAME="6872"></A><SPAN  CLASS="textbf">atributos heredados</SPAN>: 
+
+<P>
+
+<UL>
+<LI>Un atributo de <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img206.png"
+ ALT="$ X$"></SPAN> es un <A NAME="6874"></A><SPAN  CLASS="textbf">atributo heredado</SPAN> 
+si depende de atributos de su padre y hermános en el árbol.
 </LI>
-<LI>Para decidir en un conflicto <SPAN  CLASS="textbf">shift-reduce</SPAN> se comparan la precedencia 
-de la regla con la del terminal que va a ser desplazado. Si la de la
-regla es mayor se reduce
-si la del <SPAN  CLASS="textbf">token</SPAN> es mayor, se desplaza.
+<LI>Un <A NAME="6876"></A><SPAN  CLASS="textbf">atributo sintetizado</SPAN> es aquél tal que el valor del atributo depende
+de los valores de los atributos de los hijos, 
+es decir en tal caso <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img206.png"
+ ALT="$ X$"></SPAN> ha de ser una variable sintáctica
+y los atributos en la parte derecha de la regla semántica deben
+ser atributos de símbolos en la parte derecha de la regla de producción 
+asociada.
 </LI>
-<LI>Si en un conflicto <SPAN  CLASS="textbf">shift-reduce</SPAN> ambos la regla y el terminal que
-va a ser desplazado tiene la misma precedencia <SPAN  CLASS="textbf">jison</SPAN> considera la
-asociatividad, si es asociativa a izquierdas, reduce y si es asociativa
-a derechas desplaza. Si no es asociativa, genera un mensaje de error.
-<BR>
-Obsérvese que, en esta situación, la asociatividad de la regla y la del
-<SPAN  CLASS="textbf">token</SPAN> han de ser por fuerza, las mismas.  Ello es así, porque en
-<SPAN  CLASS="textbf">jison</SPAN> los <SPAN  CLASS="textbf">tokens</SPAN> con la misma precedencia se declaran en
-la misma línea y sólo se permite una declaración por línea.
-
-<P>
-</LI>
-<LI><SPAN  CLASS="textbf"> Por tanto es imposible declarar dos <SPAN  CLASS="textbf">tokens</SPAN> con diferente
-asociatividad y la misma precedencia</SPAN>.
-</LI>
-<LI>Es posible modificar la precedencia ``natural'' de una regla, calificándola
-con un <SPAN  CLASS="textbf">token</SPAN> específico.  para ello se escribe a la derecha de
-la regla <code>prec token</code>, donde <code>token</code> es un <SPAN  CLASS="textbf">token</SPAN> con
-la precedencia que deseamos. Vea el uso del <SPAN  CLASS="textbf">token</SPAN> <code>dummy</code>
-en el siguiente ejercicio.
-</LI>
-</OL>
-
-<P>
-Para ilustrar las reglas anteriores usaremos el siguiente 
-programa <code>jison</code>:
-
-<P>
-<PRE>
-[~/jison/jison-prec(ast)]$ cat -n precedencia.jison 
- 1  %token NUMBER
- 2  %left '@'
- 3  %right '&amp;'  dummy
- 4  %%
- 5  s 
- 6      : list      { console.log($list); }
- 7      ;
- 8  
- 9  list
-10      :
-11                  {
-12                    $$ = [];
-13                  }
-14      | list '\n'
-15                  {
-16                    $$ = $1;
-17                  }
-18      | list e
-19                  {
-20                    $$ = $1;
-21                    $$.push($e);
-22                  }
-23      ;
-24  
-25  e : NUMBER
-26                  {
-27                    $$ = "NUMBER ("+yytext+")";
-28                  }
-29    | e '&amp;' e
-30                  {
-31                    $$ = [ "&amp;", $e1, $e2];
-32                  }
-33    | e '@' e %prec dummy
-34                  {
-35                    $$ = ["@", $e1, $e2];
-36                  }
-37    ;
-38  
-39  %%
-</PRE>            
-Obsérvese la siguiente ejecución:
-
-<P>
-<PRE>
-[~/jison/jison-prec(ast)]$ cat input.txt 
-2@3@4
-2&amp;3&amp;4
-[~/jison/jison-prec(ast)]$ node precedencia.js input.txt 
-[ [ '@', [ '@', 'NUMBER (2)', 'NUMBER (3)' ], 'NUMBER (4)' ],
-  [ '&amp;', 'NUMBER (2)', [ '&amp;', 'NUMBER (3)', 'NUMBER (4)' ] ] ]
-</PRE>
-
-<P>
-Compilamos a continuación con <code>bison</code> usando la opción <code>-v</code> para
-producir información sobre los conflictos y las tablas de salto y 
-de acciones:
-<PRE>
-[~/jison/jison-prec(ast)]$ bison -v precedencia.jison 
-precedencia.jison:6.31: warning: stray `$'
-precedencia.jison:21.27: warning: stray `$'
-precedencia.jison:31.31: warning: stray `$'
-precedencia.jison:31.36: warning: stray `$'
-precedencia.jison:35.30: warning: stray `$'
-precedencia.jison:35.35: warning: stray `$'
-</PRE>
-
-<P>
-La opción <code>-v</code> genera el fichero <code>Precedencia.output</code>
-el cual contiene información detallada sobre el autómata:
-
-<P>
-<PRE>
-[~/jison/jison-prec(ast)]$ cat precedencia.output 
-Grammar
-
-    0 $accept: s $end
-
-    1 s: list
-
-    2 list: /* empty */
-    3     | list '\n'
-    4     | list e
-
-    5 e: NUMBER
-    6  | e '&amp;' e
-    7  | e '@' e
-
-
-Terminals, with rules where they appear
-
-$end (0) 0
-'\n' (10) 3
-'&amp;' (38) 6
-'@' (64) 7
-error (256)
-NUMBER (258) 5
-dummy (259)
-
-
-Nonterminals, with rules where they appear
-
-$accept (8)
-    on left: 0
-s (9)
-    on left: 1, on right: 0
-list (10)
-    on left: 2 3 4, on right: 1 3 4
-e (11)
-    on left: 5 6 7, on right: 4 6 7
-
-
-state 0
-
-    0 $accept: . s $end
-
-    $default  reduce using rule 2 (list)
-
-    s     go to state 1
-    list  go to state 2
-
-
-state 1
-
-    0 $accept: s . $end
-
-    $end  shift, and go to state 3
-
-
-state 2
-
-    1 s: list .
-    3 list: list . '\n'
-    4     | list . e
-
-    NUMBER  shift, and go to state 4
-    '\n'    shift, and go to state 5
-
-    $default  reduce using rule 1 (s)
-
-    e  go to state 6
-
-
-state 3
-
-    0 $accept: s $end .
-
-    $default  accept
-
-
-state 4
-
-    5 e: NUMBER .
-
-    $default  reduce using rule 5 (e)
-
-
-state 5
-
-    3 list: list '\n' .
-
-    $default  reduce using rule 3 (list)
-
-
-state 6
-
-    4 list: list e .
-    6 e: e . '&amp;' e
-    7  | e . '@' e
-
-    '@'  shift, and go to state 7
-    '&amp;'  shift, and go to state 8
-
-    $default  reduce using rule 4 (list)
-
-
-state 7
-
-    7 e: e '@' . e
-
-    NUMBER  shift, and go to state 4
-
-    e  go to state 9
-
-
-state 8
-
-    6 e: e '&amp;' . e
-
-    NUMBER  shift, and go to state 4
-
-    e  go to state 10
-
-
-state 9
-
-    6 e: e . '&amp;' e
-    7  | e . '@' e
-    7  | e '@' e .
-
-    '&amp;'  shift, and go to state 8
-
-    $default  reduce using rule 7 (e)
-
-
-state 10
-
-    6 e: e . '&amp;' e
-    6  | e '&amp;' e .
-    7  | e . '@' e
-
-    '&amp;'  shift, and go to state 8
-
-    $default  reduce using rule 6 (e)
-</PRE>
-
-<P>
-La presencia de conflictos, aunque no siempre, en muchos casos es debida
-a la introducción de ambiguedad en la gramática. Si el conflicto 
-es de desplazamiento-reducción se puede resolver explicitando 
-alguna regla que rompa la ambiguedad. Los conflictos de
-reducción-reducción suelen producirse por un diseño erróneo
-de la gramática. En tales casos, suele ser mas adecuado
-modificar la gramática.
+</UL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1704"
+<A NAME="tex2html1702"
   HREF="node53.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1698"
-  HREF="node41.html">
+<A NAME="tex2html1696"
+  HREF="node40.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1692"
+<A NAME="tex2html1690"
   HREF="node51.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1700"
-  HREF="node96.html">
+<A NAME="tex2html1698"
+  HREF="node95.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1702"
-  HREF="node99.html">
+<A NAME="tex2html1700"
+  HREF="node98.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -505,12 +310,12 @@ modificar la gramática.
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1705"
-  HREF="node53.html">Esquemas de Traducción</A>
-<B>Sup:</B> <A NAME="tex2html1699"
-  HREF="node41.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1693"
-  HREF="node51.html">El módulo Generado por</A>
+<B> Sig:</B> <A NAME="tex2html1703"
+  HREF="node53.html">Manejo en jison de</A>
+<B>Sup:</B> <A NAME="tex2html1697"
+  HREF="node40.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html1691"
+  HREF="node51.html">Precedencia y Asociatividad</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

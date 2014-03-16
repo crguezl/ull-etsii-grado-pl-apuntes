@@ -19,7 +19,6 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node25.html">
 <LINK REL="previous" HREF="node23.html">
 <LINK REL="up" HREF="node18.html">
 <LINK REL="next" HREF="node25.html">
@@ -28,20 +27,20 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1162"
+<A NAME="tex2html1157"
   HREF="node25.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1156"
+<A NAME="tex2html1151"
   HREF="node18.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1150"
+<A NAME="tex2html1147"
   HREF="node23.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1158"
-  HREF="node96.html">
+<A NAME="tex2html1153"
+  HREF="node95.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1160"
-  HREF="node99.html">
+<A NAME="tex2html1155"
+  HREF="node98.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,19 +91,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1163"
-  HREF="node25.html">Construyendo Árboles con la</A>
-<B>Sup:</B> <A NAME="tex2html1157"
+<B> Sig:</B> <A NAME="tex2html1158"
+  HREF="node25.html">Análisis Sintáctico Mediante Precedencia</A>
+<B>Sup:</B> <A NAME="tex2html1152"
   HREF="node18.html">Analizadores Descendentes Predictivos en</A>
-<B> Ant:</B> <A NAME="tex2html1151"
+<B> Ant:</B> <A NAME="tex2html1148"
   HREF="node23.html">Eliminación de la Recursión</A>
 <B> Con:</B> 
-<A NAME="tex2html1158"
-  HREF="node96.html">
+<A NAME="tex2html1153"
+  HREF="node95.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1160"
-  HREF="node99.html">
+<A NAME="tex2html1155"
+  HREF="node98.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
@@ -115,18 +114,20 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <UL CLASS="ChildLinks">
 <LI><UL>
 <LI><UL>
-<LI><A NAME="tex2html1164"
+<LI><A NAME="tex2html1159"
   HREF="node24.html#SECTION04260010000000000000">Donde</A>
-<LI><A NAME="tex2html1165"
+<LI><A NAME="tex2html1160"
   HREF="node24.html#SECTION04260020000000000000">Tareas</A>
-<LI><A NAME="tex2html1166"
+<LI><A NAME="tex2html1161"
   HREF="node24.html#SECTION04260030000000000000">Sinatra</A>
-<LI><A NAME="tex2html1167"
+<LI><A NAME="tex2html1162"
   HREF="node24.html#SECTION04260040000000000000">Sass</A>
-<LI><A NAME="tex2html1168"
+<LI><A NAME="tex2html1163"
   HREF="node24.html#SECTION04260050000000000000">Slim</A>
-<LI><A NAME="tex2html1169"
+<LI><A NAME="tex2html1164"
   HREF="node24.html#SECTION04260060000000000000">CoffeeScript</A>
+<LI><A NAME="tex2html1165"
+  HREF="node24.html#SECTION04260070000000000000">Construyendo Árboles con la Asociatividad Correcta</A>
 </UL></UL></UL>
 <!--End of Table of Child-Links-->
 <HR>
@@ -365,21 +366,111 @@ CoffeeScript</A>
 
 <P>
 
+<H4><A NAME="SECTION04260070000000000000">
+Construyendo Árboles con la Asociatividad Correcta</A>
+</H4>
+  
+
+Añadamos el operador <code>-</code>. Para ello, podemos extender nuestro código 
+como sigue:
+<PRE>
+  expression = -&gt;
+    result = term()
+    if lookahead and lookahead.type is "+"
+      ....
+    if lookahead and lookahead.type is "-" 
+      match "-" 
+      right = expression()
+      result =
+        type: "-" 
+        left: result
+        right: rig
+</PRE>
+Cuando le damos como entrada <code>a = 4-2-1</code> produce el siguiente AST:
+<PRE>
+{
+  "type": "=",
+  "left": {
+    "type": "ID",
+    "value": "a"
+  },
+  "right": {
+    "type": "-",
+    "left": {
+      "type": "NUM",
+      "value": 4
+    },
+    "right": {
+      "type": "-",
+      "left": {
+        "type": "NUM",
+        "value": 2
+      },
+      "right": {
+        "type": "NUM",
+        "value": 1
+      }
+    }
+  }
+}
+</PRE>
+que se corresponde con esta parentización: <code>a = (4 - (2 - 1))</code>
+
+<P>
+Este árbol no se corresponde con la asociatividad a izquierdas  del operador 
+<code>-</code>. Es un árbol que refleja una asociación a derechas (<code>a = 3</code>).
+
+<P>
+Ahora bien, el lenguaje generado por dos reglas de la forma:
+<BR>
+<BR>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $A   \rightarrow A \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="69" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img58.png"
+ ALT="$ A \rightarrow A \alpha$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ alpha_action }</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $A   \rightarrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$ A \rightarrow \gamma$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ gamma_action }</code></TD>
+</TR>
+</TABLE>
+Es <!-- MATH
+ $\gamma \alpha *$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="35" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img73.png"
+ ALT="$ \gamma \alpha *$"></SPAN>.
+<BR>
+<BR>
+
+<P>
+
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1162"
+<A NAME="tex2html1157"
   HREF="node25.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1156"
+<A NAME="tex2html1151"
   HREF="node18.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1150"
+<A NAME="tex2html1147"
   HREF="node23.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1158"
-  HREF="node96.html">
+<A NAME="tex2html1153"
+  HREF="node95.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1160"
-  HREF="node99.html">
+<A NAME="tex2html1155"
+  HREF="node98.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -430,11 +521,11 @@ CoffeeScript</A>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1163"
-  HREF="node25.html">Construyendo Árboles con la</A>
-<B>Sup:</B> <A NAME="tex2html1157"
+<B> Sig:</B> <A NAME="tex2html1158"
+  HREF="node25.html">Análisis Sintáctico Mediante Precedencia</A>
+<B>Sup:</B> <A NAME="tex2html1152"
   HREF="node18.html">Analizadores Descendentes Predictivos en</A>
-<B> Ant:</B> <A NAME="tex2html1151"
+<B> Ant:</B> <A NAME="tex2html1148"
   HREF="node23.html">Eliminación de la Recursión</A>
 </DIV>
 <!--End of Navigation Panel-->
