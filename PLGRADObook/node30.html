@@ -203,6 +203,33 @@ LEFTPAR = _"("_
 RIGHTPAR = _")"_
 NUMBER = _ digits:$[0-9]+ _ { return parseInt(digits, 10); }
 </PRE>
+There are several types of parsing expressions, some of them containing
+subexpressions and thus forming a recursive structure:
+
+<UL>
+<LI><PRE>
+expression *
+</PRE>
+Match zero or more repetitions of the expression and 
+<FONT COLOR="#ff0000"> return their match
+results in an array</FONT>. The matching is greedy, i.e. the parser tries to
+match the expression as many times as possible.
+</LI>
+<LI><PRE>
+expression +
+</PRE>
+Match one or more repetitions of the expression and 
+<FONT COLOR="#ff0000"> return their
+match results in an array</FONT>. The matching is greedy, i.e. the parser tries
+to match the expression as many times as possible.
+</LI>
+<LI><PRE>
+$ expression
+</PRE>
+Try to match the expression. If the match succeeds, return the matched
+string instead of the match result.
+</LI>
+</UL>
 
 <P>
 
@@ -266,7 +293,7 @@ Asociación Incorrecta para la Resta y la División</A>
 <P>
 <P>
 <DIV><B>Definición  <SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Una <A NAME="4507"></A><SPAN  CLASS="textbf">gramática es recursiva por la izquierda</SPAN> cuando existe una derivación
+<I>Una <A NAME="4521"></A><SPAN  CLASS="textbf">gramática es recursiva por la izquierda</SPAN> cuando existe una derivación
 <!-- MATH
  $A \stackrel{*}{\Longrightarrow} A \alpha$
  -->
@@ -287,7 +314,7 @@ una regla de producción de la forma <!-- MATH
 En este caso se dice que la recursión por la izquierda es directa.</I></DIV><P></P>
 
 <P>
-Cuando la gramática es <A NAME="4509"></A><SPAN  CLASS="textbf">recursiva por la izquierda</SPAN>, 
+Cuando la gramática es <A NAME="4523"></A><SPAN  CLASS="textbf">recursiva por la izquierda</SPAN>, 
 el método 
 de análisis recursivo descendente predictivo no funciona. 
 En ese caso, el procedimiento
