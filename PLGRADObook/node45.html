@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Conceptos Básicos del Análisis LR</TITLE>
-<META NAME="description" CONTENT="Conceptos Básicos del Análisis LR">
+<TITLE>Ejemplo en Jison: Calculadora Simple</TITLE>
+<META NAME="description" CONTENT="Ejemplo en Jison: Calculadora Simple">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node46.html">
 <LINK REL="previous" HREF="node44.html">
-<LINK REL="up" HREF="node41.html">
+<LINK REL="up" HREF="node42.html">
 <LINK REL="next" HREF="node46.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1620"
+<A NAME="tex2html1616"
   HREF="node46.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1614"
-  HREF="node41.html">
+<A NAME="tex2html1610"
+  HREF="node42.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1608"
+<A NAME="tex2html1604"
   HREF="node44.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1616"
-  HREF="node96.html">
+<A NAME="tex2html1612"
+  HREF="node97.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1618"
-  HREF="node99.html">
+<A NAME="tex2html1614"
+  HREF="node100.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,580 +92,425 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1621"
-  HREF="node46.html">Construcción de las Tablas</A>
-<B>Sup:</B> <A NAME="tex2html1615"
-  HREF="node41.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1609"
-  HREF="node44.html">Ejemplo en Jison: Calculadora</A>
+<B> Sig:</B> <A NAME="tex2html1617"
+  HREF="node46.html">Conceptos Básicos del Análisis</A>
+<B>Sup:</B> <A NAME="tex2html1611"
+  HREF="node42.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html1605"
+  HREF="node44.html">Ejemplo Simple en Jison</A>
 <B> Con:</B> 
-<A NAME="tex2html1616"
-  HREF="node96.html">
+<A NAME="tex2html1612"
+  HREF="node97.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1618"
-  HREF="node99.html">
+<A NAME="tex2html1614"
+  HREF="node100.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<H1><A NAME="SECTION04540000000000000000"></A>
-<A NAME="section:conceptosbasicos"></A>
+<UL CLASS="ChildLinks">
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html1618"
+  HREF="node45.html#SECTION04530010000000000000">calculator.jison</A>
+<LI><A NAME="tex2html1619"
+  HREF="node45.html#SECTION04530020000000000000">main.js</A>
+<LI><A NAME="tex2html1620"
+  HREF="node45.html#SECTION04530030000000000000">calculator.html</A>
+<LI><A NAME="tex2html1621"
+  HREF="node45.html#SECTION04530040000000000000">Rakefile</A>
+<LI><A NAME="tex2html1622"
+  HREF="node45.html#SECTION04530050000000000000">global.css</A>
+<LI><A NAME="tex2html1623"
+  HREF="node45.html#SECTION04530060000000000000">test/assert.html</A>
+<LI><A NAME="tex2html1624"
+  HREF="node45.html#SECTION04530070000000000000">test/test.css</A>
+<LI><A NAME="tex2html1625"
+  HREF="node45.html#SECTION04530080000000000000">test/test.html</A>
+</UL>
+</UL>
 <BR>
-Conceptos Básicos del Análisis LR
+<LI><A NAME="tex2html1626"
+  HREF="node45.html#SECTION04531000000000000000">Práctica: Calculadora con Listas de Expresiones y Variables</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION04530000000000000000"></A>
+<A NAME="section:calculadora"></A>
+<BR>
+Ejemplo en Jison: Calculadora Simple
 </H1>
-Los analizadores generados por <code>jison</code> entran en la categoría de analizadores
-<A NAME="5854"></A><SPAN  CLASS="textbf">LR</SPAN>. Estos analizadores construyen una derivación a derechas inversa 
-(o <A NAME="5856"></A><SPAN  CLASS="textbf">antiderivación</SPAN>).
-De ahí la R en LR (del inglés <A NAME="5858"></A><SPAN  CLASS="textbf">rightmost derivation</SPAN>). El árbol sintáctico 
-es construido de las hojas hacia la raíz, siendo el último paso en la antiderivación
-la construcción de la primera derivación desde el símbolo de arranque.
 
 <P>
-Empezaremos entonces considerando las frases que pueden aparecer en una derivación
-a derechas. Tales frases consituyen el <A NAME="5860"></A><SPAN  CLASS="textbf">lenguaje de las formas sentenciales a rderechas</SPAN> <SPAN CLASS="MATH"><IMG
- WIDTH="45" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img100.png"
- ALT="$ FSD$"></SPAN>:
+
+<OL>
+<LI>Enlace al fork  <A NAME="tex2html232"
+  HREF="https://github.com/crguezl/jison/tree/develop/examples/html_calc_example">del proyecto jison de crguezl</A>
+(GitHub)
+</LI>
+</OL>
+<H4><A NAME="SECTION04530010000000000000">
+calculator.jison</A>
+</H4>
+  
+
+<PRE>
+[~/jison/examples/html_calc_example(develop)]$ cat calculator.jison 
+
+/* description: Parses end executes mathematical expressions. */
+
+/* lexical grammar */
+%lex
+%%
+
+\s+                   /* skip whitespace */
+[0-9]+("."[0-9]+)?\b  return 'NUMBER'
+"*"                   return '*'
+"/"                   return '/'
+"-"                   return '-'
+"+"                   return '+'
+"^"                   return '^'
+"!"                   return '!'
+"%"                   return '%'
+"("                   return '('
+")"                   return ')'
+"PI"                  return 'PI'
+"E"                   return 'E'
+&lt;&lt;EOF&gt;&gt;               return 'EOF'
+.                     return 'INVALID'
+
+/lex
+
+/* operator associations and precedence */
+
+%left '+' '-'
+%left '*' '/'
+%left '^'
+%right '!'
+%right '%'
+%left UMINUS
+
+%start expressions
+
+%% /* language grammar */
+
+expressions
+    : e EOF
+        { typeof console !== 'undefined' ? console.log($1) : print($1);
+          return $1; }
+    ;
+
+e
+    : e '+' e
+        {$$ = $1+$3;}
+    | e '-' e
+        {$$ = $1-$3;}
+    | e '*' e
+        {$$ = $1*$3;}
+    | e '/' e
+        {$$ = $1/$3;}
+    | e '^' e
+        {$$ = Math.pow($1, $3);}
+    | e '!'
+        {{
+          $$ = (function fact (n) { return n==0 ? 1 : fact(n-1) * n })($1);
+        }}
+    | e '%'
+        {$$ = $1/100;}
+    | '-' e %prec UMINUS
+        {$$ = -$2;}
+    | '(' e ')'
+        {$$ = $2;}
+    | NUMBER
+        {$$ = Number(yytext);}
+    | E
+        {$$ = Math.E;}
+    | PI
+        {$$ = Math.PI;}
+    ;
+</PRE>
 
 <P>
-<P>
-<DIV><B>Definición  <SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Dada una gramática <!-- MATH
- $G=(\Sigma,V,P,S)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img7.png"
- ALT="$ G =(\Sigma,V,P,S)$"></SPAN> no ambigua, se denota por <SPAN CLASS="MATH"><IMG
- WIDTH="45" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img100.png"
- ALT="$ FSD$"></SPAN> 
-(lenguaje de las formas Sentenciales a Derechas) al lenguaje de 
-las sentencias que aparecen en una derivación a derechas desde el símbolo de arranque.
-</I>
-<P>
-<DIV ALIGN="CENTER"><I><!-- MATH
- $FSD = \left \{ \alpha \in (\Sigma \cup V)* : \exists S \begin{array}{c} *\\\Longrightarrow \\{\scriptstyle RM} \end{array} \alpha \right \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="291" HEIGHT="82" ALIGN="MIDDLE" BORDER="0"
- SRC="img101.png"
- ALT="$ FSD = \left \{ \alpha \in (\Sigma \cup V)* : \exists S \begin{array}{c} * \Longrightarrow  {\scriptstyle RM} \end{array} \alpha \right \}$"></SPAN></I></DIV>
-<P>
-<I>Donde la notacion RM indica una derivación a derechas (<SPAN  CLASS="textbf">rightmost</SPAN>).
-Los elementos de <SPAN CLASS="MATH"><IMG
- WIDTH="45" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img100.png"
- ALT="$ FSD$"></SPAN> se llaman ``formas sentenciales derechas''.</I></DIV><P></P>
+
+<H4><A NAME="SECTION04530020000000000000">
+main.js</A>
+</H4>
+  
+
+<PRE>
+[~/jison/examples/html_calc_example(develop)]$ cat main.js
+$(document).ready(function () {
+  $("button").click(function () {
+    try {
+      var result = calculator.parse($("input").val())
+      $("span").html(result);
+    } catch (e) {
+      $("span").html(String(e));
+    }
+  });
+});
+</PRE>
 
 <P>
-Dada una gramática no ambigua <!-- MATH
- $G=(\Sigma,V,P,S)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img7.png"
- ALT="$ G =(\Sigma,V,P,S)$"></SPAN> y una frase <!-- MATH
- $x \in L(G)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="75" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img32.png"
- ALT="$ x \in L(G)$"></SPAN> el proceso
-de antiderivación consiste en encontrar la última derivación a derechas que dió lugar a 
-<SPAN CLASS="MATH"><IMG
- WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img34.png"
- ALT="$ x$"></SPAN>. Esto es, si <!-- MATH
- $x \in L(G)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="75" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img32.png"
- ALT="$ x \in L(G)$"></SPAN> es porque existe una derivación a derechas de la forma
+
+<H4><A NAME="SECTION04530030000000000000">
+calculator.html</A>
+</H4>
+  
+
+<PRE>
+[~/jison/examples/html_calc_example(develop)]$ cat calculator.html 
+&lt;!DOCTYPE HTML&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;title&gt;Calc&lt;/title&gt;
+    &lt;link rel="stylesheet" href="global.css" type="text/css" media="screen" charset="utf-8" /&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Calculator demo&lt;/h1&gt;
+    &lt;div id="content"&gt;
+      &lt;script src="jquery/jquery.js"&gt;&lt;/script&gt; 
+      &lt;script src="calculator.js"&gt;&lt;/script&gt;
+      &lt;script src="main.js"&gt;&lt;/script&gt;
+      &lt;p&gt;
+        &lt;input type="text" value="PI*4^2 + 5" /&gt; &lt;button&gt;equals&lt;/button&gt; 
+        &lt;span&gt;&lt;/span&gt; &lt;!-- Output goes here! --&gt;
+      &lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</PRE>
 
 <P>
-<DIV ALIGN="CENTER">
-<!-- MATH
- $S \stackrel{*}{\Longrightarrow} y A z \Longrightarrow y w z = x$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="187" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
- SRC="img102.png"
- ALT="$ S \stackrel{*}{\Longrightarrow} y A z \Longrightarrow y w z = x$"></SPAN>. 
 
-</DIV>
+<H4><A NAME="SECTION04530040000000000000">
+Rakefile</A>
+</H4>
+  
 
-<P>
-El problema es averiguar que regla <!-- MATH
- $A \rightarrow w$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="58" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img103.png"
- ALT="$ A \rightarrow w$"></SPAN> se aplicó y en que lugar 
-de la cadena <SPAN CLASS="MATH"><IMG
- WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img34.png"
- ALT="$ x$"></SPAN> se aplicó. En general, si queremos antiderivar
-una forma sentencial derecha <!-- MATH
- $\beta \alpha w$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="40" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img104.png"
- ALT="$ \beta \alpha w$"></SPAN> 
-debemos averiguar por que regla <!-- MATH
- $A \rightarrow \alpha$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img12.png"
- ALT="$ A \rightarrow \alpha$"></SPAN>
-seguir y en que lugar de la forma (después de <SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img62.png"
- ALT="$ \beta$"></SPAN> en el ejemplo)
-aplicarla. 
+<PRE>
+[~/jisoncalc(clase)]$ cat Rakefile 
+task :default =&gt; %w{calcugly.js} do
+  sh "jsbeautify calcugly.js &gt; calculator.js"
+  sh "rm -f calcugly.js"
+end
+
+file "calcugly.js" =&gt; %w{calculator.jison} do
+  sh "jison calculator.jison calculator.l -o calculator.js; mv calculator.js calcugly.js"
+end
+
+task :testf do
+  sh "open -a firefox test/test.html"
+end
+
+task :tests do
+  sh "open -a safari test/test.html"
+end
+</PRE>
 
 <P>
-<DIV ALIGN="CENTER">
-<!-- MATH
- $S \stackrel{*}{\Longrightarrow} \beta A w \Longrightarrow \beta \alpha w$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="164" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
- SRC="img105.png"
- ALT="$ S \stackrel{*}{\Longrightarrow} \beta A w \Longrightarrow \beta \alpha w$"></SPAN>. 
 
-</DIV>
+<H4><A NAME="SECTION04530050000000000000">
+global.css</A>
+</H4>
+  
 
 <P>
-La pareja formada por la regla y la posición 
-se denomina <A NAME="5862"></A><SPAN  CLASS="textbf">handle</SPAN>, <A NAME="5864"></A><SPAN  CLASS="textbf">mango</SPAN> o <A NAME="5866"></A><SPAN  CLASS="textbf">manecilla</SPAN> de la forma. Esta denominación viene
-de la visualización gráfica de la regla de producción como una mano
-que nos permite escalar hacia arriba en el árbol. Los ``dedos'' serían los
-símbolos en la parte derecha de la regla de producción.
+<PRE>
+[~/jison/examples/html_calc_example(develop)]$ cat global.css
+html *
+{
+   font-size: large; 
+   /* The !important ensures that nothing can override what you've set in this style (unless it is also important). */
+   font-family: Arial;
+}
+
+.thumb {
+    height: 75px;
+    border: 1px solid #000;
+    margin: 10px 5px 0 0;
+  }
+
+h1            { text-align: center; font-size: x-large; }
+th, td        { vertical-align: top; text-align: left; }   
+/* #finaltable  * { color: white; background-color: black; }   */
+
+/* #finaltable table { border-collapse:collapse; } */
+/* #finaltable table, td { border:1px solid white; } */
+#finaltable:hover td { background-color: blue; } 
+tr:nth-child(odd)    { background-color:#eee; }
+tr:nth-child(even)    { background-color:#00FF66; }
+input        { text-align: right;  border: none;       }     /* Align input to the right  */
+textarea     { border: outset; border-color: white;       }                        
+table        { border: inset; border-color: white; }
+.hidden      { display: none; }
+.unhidden    { display: block; }
+table.center { margin-left:auto; margin-right:auto; }
+#result      { border-color: red; }
+tr.error       { background-color: red; }
+pre.output   { background-color: white; }
+span.repeated { background-color: red }
+span.header { background-color: blue }
+span.comments { background-color: orange }
+span.blanks { background-color: green }
+span.nameEqualValue { background-color: cyan }
+span.error { background-color: red }
+
+body
+{
+ background-color:#b0c4de;  /* blue */
+}
+</PRE>
 
 <P>
-<P>
-<DIV><B>Definición  <SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
-<I>Dada una gramática <!-- MATH
- $G=(\Sigma,V,P,S)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img7.png"
- ALT="$ G =(\Sigma,V,P,S)$"></SPAN> no ambigua, y dada una forma sentencial derecha 
-<!-- MATH
- $\alpha = \beta \gamma x$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="70" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img106.png"
- ALT="$ \alpha = \beta \gamma x$"></SPAN>, con <!-- MATH
- $x \in \Sigma^*$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="56" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
- SRC="img107.png"
- ALT="$ x \in \Sigma^*$"></SPAN>, el <A NAME="5868"></A><SPAN  CLASS="textbf">mango</SPAN> o <A NAME="5870"></A><SPAN  CLASS="textbf">handle</SPAN>  de 
-<SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img42.png"
- ALT="$ \alpha$"></SPAN> es la última producción/posición  que dió lugar a <SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img42.png"
- ALT="$ \alpha$"></SPAN>:
-</I>
-<P>
-<DIV ALIGN="CENTER"><I><!-- MATH
- $S \begin{array}{c} *\\\Longrightarrow  \\{\scriptstyle RM} \end{array} \beta B x \Longrightarrow \beta \gamma x = \alpha$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="198" HEIGHT="82" ALIGN="MIDDLE" BORDER="0"
- SRC="img108.png"
- ALT="$ S \begin{array}{c} * \Longrightarrow  {\scriptstyle RM} \end{array} \beta B x \Longrightarrow \beta \gamma x = \alpha$"></SPAN></I></DIV>
-<P></DIV><P></P>
-Escribiremos: 
-<!-- MATH
- $handle(\alpha) = (B \rightarrow \gamma, \beta \gamma)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="199" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img109.png"
- ALT="$ handle(\alpha) = (B \rightarrow \gamma, \beta \gamma)$"></SPAN>. La función <SPAN CLASS="MATH"><IMG
- WIDTH="57" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img110.png"
- ALT="$ handle$"></SPAN> tiene dos componentes:
-<!-- MATH
- $handle_1(\alpha) = B \rightarrow \gamma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="164" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img111.png"
- ALT="$ handle_1(\alpha) = B \rightarrow \gamma$"></SPAN> y 
-<!-- MATH
- $handle_2(\alpha) =  \beta \gamma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="134" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img112.png"
- ALT="$ handle_2(\alpha) = \beta \gamma$"></SPAN>
+
+<H4><A NAME="SECTION04530060000000000000">
+test/assert.html</A>
+</H4>
+  
+
+<PRE>
+$ cat test/assert.js 
+var output = document.getElementById('output');
+
+function assert( outcome, description) {
+  var li = document.createElement('li');
+  li.className = outcome ? 'pass' : 'fail';
+  li.appendChild(document.createTextNode(description));
+  
+  output.appendChild(li);
+};
+</PRE>
 
 <P>
-Si dispusieramos de un procedimiento que fuera capaz de identificar el mango,
-esto es, de detectar la regla y el lugar en el que se posiciona, tendríamos un
-mecanismo para construir un analizador. 
-Lo curioso es que, a menudo es posible encontrar un autómata finito que
-reconoce el lenguaje de los prefijos <!-- MATH
- $\beta \gamma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="26" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img113.png"
- ALT="$ \beta \gamma$"></SPAN> que terminan 
-en el mango. Con mas precisión, del lenguaje:
+
+<H4><A NAME="SECTION04530070000000000000">
+test/test.css</A>
+</H4>
+  
 
 <P>
-<P>
-<DIV><B>Definición  <SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">3</SPAN></B> &nbsp; 
-<I>El conjunto de <SPAN  CLASS="textbf">prefijos viables</SPAN> de una gramática G se define
-como  el conjunto:
-</I>
-<P>
-<DIV ALIGN="CENTER"><I><!-- MATH
- $PV = \left \{ \delta \in (\Sigma \cup V)* :  \exists S \begin{array}{c} *\\\Longrightarrow \\{\scriptstyle RM} \end{array} \alpha = \beta \gamma x \mbox{ y }\delta\ es\ un\ prefijo\ de\  handle_2(\alpha) = \beta \gamma \right \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="629" HEIGHT="82" ALIGN="MIDDLE" BORDER="0"
- SRC="img114.png"
- ALT="$ PV = \left \{ \delta \in (\Sigma \cup V)* : \exists S \begin{array}{c} * \Lo...
-...mbox{ y }\delta es un prefijo de handle_2(\alpha) = \beta \gamma \right \}$"></SPAN></I></DIV></DIV><P></P>
+<PRE>
+~/jisoncalc(clase)]$ cat test/test.css 
+.pass:before {
+  content: 'PASS: ';
+  color:  blue;
+  font-weight: bold;
+}
+
+.fail:before {
+  content: 'FAIL: ';
+  color: red;
+  font-weight: bold;
+  
+}
+</PRE>
 
 <P>
-Esto es, es el lenguaje de los prefijos viables es el 
-conjunto de frases que son prefijos de 
-<!-- MATH
- $handle_2(\alpha)) =  \beta \gamma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="140" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img115.png"
- ALT="$ handle_2(\alpha)) = \beta \gamma$"></SPAN>, 
-siendo <SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img42.png"
- ALT="$ \alpha$"></SPAN> una forma sentencial derecha (<!-- MATH
- $\alpha \in FSD$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="78" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img116.png"
- ALT="$ \alpha \in FSD$"></SPAN>). Los
-elementos de <SPAN CLASS="MATH"><IMG
- WIDTH="32" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img117.png"
- ALT="$ PV$"></SPAN> se denominan prefijos viables.
+
+<H4><A NAME="SECTION04530080000000000000">
+test/test.html</A>
+</H4>
+  
 
 <P>
-Obsérvese que si se dispone de un autómata que reconoce 
-<SPAN CLASS="MATH"><IMG
- WIDTH="32" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img117.png"
- ALT="$ PV$"></SPAN> entonces se dispone de un mecanismo para investigar el lugar y 
-el aspecto que pueda tener el mango. Si damos como 
-entrada la sentencia <!-- MATH
- $\alpha = \beta \gamma x$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="70" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img106.png"
- ALT="$ \alpha = \beta \gamma x$"></SPAN>
-a dicho autómata, el autómata aceptará la cadena <!-- MATH
- $\beta \gamma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="26" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img113.png"
- ALT="$ \beta \gamma$"></SPAN> pero rechazará
-cualquier extensión del prefijo. Ahora sabemos que el mango 
-será alguna regla de producción de <SPAN CLASS="MATH"><IMG
- WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img6.png"
- ALT="$ G$"></SPAN> cuya parte derecha 
-sea un sufijo de  <!-- MATH
- $\beta \gamma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="26" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img113.png"
- ALT="$ \beta \gamma$"></SPAN>.
+<PRE>
+[~/jisoncalc(clase)]$ cat test/test.html
+&lt;!DOCTYPE HTML&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Testing Our Simple Calculator&lt;/title&gt;
+    &lt;link rel="stylesheet" href="test.css" /&gt;
+    &lt;script type="text/javascript" src="../calculator.js"&gt;&lt;/script&gt;
+
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Testing Our Simple Calculator
+    &lt;/h1&gt;
+    
+    &lt;ul id="output"&gt;&lt;/ul&gt;
+    &lt;script type="text/javascript" src="______.js"&gt;&lt;/script&gt;
+    
+    &lt;script type="text/javascript"&gt;
+      var r = __________.parse("a = 4*8");
+      assert(_______________, "a is 4*8");
+      assert(_____________, "32 == 4*8");
+      r = calculator.parse("a = 4;\nb=a+1;\nc=b*2");
+      assert(____________, "4 is the first computed result ");
+      assert(______________, "a is 4");
+      assert(______________, "b is 5");
+      assert(______________, "c is 10");
+    &lt;/script&gt;
+      See the NetTuts+ tutorial at &lt;a href="http://net.tutsplus.com/tutorials/javascript-ajax/quick-tip-quick-and-easy-javascript-testing-with-assert/"&gt;Quick and Easy JavaScript Testing&lt;/a&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</PRE>
 
 <P>
-<P>
-<DIV><A NAME="definition:slrautomata"><B>Definición  <SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">4</SPAN></B></A> &nbsp; 
-<I>El siguiente autómata finito no determinista puede ser utilizado para
-reconocer el lenguaje de los prefijos viables PV:
-</I>
+
+<H2><A NAME="SECTION04531000000000000000"></A>
+   <A NAME="5864"></A>
+  
+<A NAME="subsectionpractica:calculadora"></A>
+<BR>
+Práctica: Calculadora con Listas de Expresiones y Variables
+</H2>
+Modifique la calculadora vista en la sección anterior 
+<A HREF="#section:calculadora">5.3</A>
+para que el lenguaje cumpla los siguientes requisitos:
+
 <UL>
-<LI>Alfabeto = <!-- MATH
- $V \cup \Sigma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="51" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img29.png"
- ALT="$ V \cup \Sigma$"></SPAN>
+<LI>Extienda el lenguaje de la calculadora para que admita expresiones
+de asignación <code>a = 2*3</code>
 </LI>
-<LI>Los estados del autómata se denominan LR(0) items. Son parejas formadas
-por una regla de producción de la gramática y una posición en la parte derecha 
-de la regla de producción. Por ejemplo, <!-- MATH
- $(E \rightarrow E + E, 2)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="125" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img118.png"
- ALT="$ (E \rightarrow E + E, 2)$"></SPAN> sería un
-LR(0) item para la gramática de las expresiones.
-
-<P>
-Conjunto de Estados:
-
-<P>
-<!-- MATH
- $Q =  \left \{ (A \rightarrow \alpha, n) :  A \rightarrow \alpha \in P,\ n \le |\alpha| \right \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="309" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img119.png"
- ALT="$ Q = \left \{ (A \rightarrow \alpha, n) : A \rightarrow \alpha \in P, n \le \vert\alpha\vert \right \}$"></SPAN>
-
-<P>
-La notación <!-- MATH
- $\mid \alpha \mid$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="35" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img120.png"
- ALT="$ \mid \alpha \mid$"></SPAN> denota la longitud de la cadena <!-- MATH
- $\mid \alpha \mid$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="35" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img120.png"
- ALT="$ \mid \alpha \mid$"></SPAN>.
- En vez de la notación <!-- MATH
- $(A \rightarrow \alpha, n)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="88" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img121.png"
- ALT="$ (A \rightarrow \alpha, n)$"></SPAN> escribiremos: 
- <!-- MATH
- $A \rightarrow \beta _\uparrow \gamma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="72" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img122.png"
- ALT="$ A \rightarrow \beta _\uparrow \gamma$"></SPAN> <SPAN CLASS="MATH"><IMG
- WIDTH="34" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img123.png"
- ALT="$ = \alpha$"></SPAN>, 
- donde la flecha ocupa el lugar indicado por el número <!-- MATH
- $n = \mid \beta \mid$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="64" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img124.png"
- ALT="$ n = \mid \beta \mid$"></SPAN> :
+<LI>Extienda el lenguaje de la calculadora para que admita listas de
+sentencias <code>a = 2; b = a +1</code>
 </LI>
-<LI>La función de transición intenta conjeturar que partes derechas de reglas de producción son viables. El conjunto de estados actual del NFA representa el conjunto de pares 
-(regla de producción, posición en la parte derecha) que tienen alguna posibilidad de
-ser aplicadas de acuerdo con la entrada procesada hasta el momento:
-
-<P>
-<DIV ALIGN="CENTER">
-<!-- MATH
- $\delta(A \rightarrow \alpha _\uparrow X \beta, X) = A \rightarrow \alpha X _\uparrow \beta\ \forall X \in  V \cup \Sigma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="342" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img125.png"
- ALT="$ \delta(A \rightarrow \alpha _\uparrow X \beta, X) = A \rightarrow \alpha X _\uparrow \beta \forall X \in V \cup \Sigma$"></SPAN> 
-</DIV>
-<P>
-<DIV ALIGN="CENTER"><!-- MATH
- $\delta(A \rightarrow \alpha _\uparrow B \beta, \epsilon) = B \rightarrow 
-_\uparrow \gamma\  \forall B \rightarrow \gamma \in  P$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="309" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img126.png"
- ALT="$ \delta(A \rightarrow \alpha _\uparrow B \beta, \epsilon) = B \rightarrow
-_\uparrow \gamma \forall B \rightarrow \gamma \in P$"></SPAN>
-</DIV>
+<LI>El analizador devuelve la lista de expresiones
+evaluadas y la tabla de símbolos (con las parejas variable-valor).
+</LI>
+<LI>Emita un mensaje de error específico si se intentan modificar las constantes 
+<code>PI</code> y <code>e</code>.
+</LI>
+<LI>Emita un mensaje de error específico si se intenta una división por cero
+</LI>
+<LI>Emita un mensaje de error específico si se intenta acceder para lectura a una variable 
+no inicializada <code>a = c</code>
+</LI>
+<LI>El lenguaje debería admitir expresiones vacías, estos es secuencias consecutivas de puntos y comas sin producir error (<code>a = 4;;; b = 5</code>)
+</LI>
+<LI>Introduzca pruebas unitarias como las descritas en 
+la sección <A HREF="node203.html#section:tstingfacil"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> (<I><A NAME="tex2html233"
+  HREF="http://net.tutsplus.com/tutorials/javascript-ajax/quick-tip-quick-and-easy-javascript-testing-with-assert/">Quick Tip: Quick and Easy JavaScript Testing with “Assert”</A></I>)
 
 <P>
 </LI>
-<LI>Estado de arranque: Se añade la ``superregla'' <!-- MATH
- $S' \rightarrow S$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="60" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
- SRC="img127.png"
- ALT="$ S' \rightarrow S$"></SPAN> a la gramática <!-- MATH
- $G = (\Sigma,V,P,S)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img7.png"
- ALT="$ G =(\Sigma,V,P,S)$"></SPAN>. El LR(0) item 
-<!-- MATH
- $S' \rightarrow _\uparrow S$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="67" HEIGHT="35" ALIGN="MIDDLE" BORDER="0"
- SRC="img128.png"
- ALT="$ S' \rightarrow _\uparrow S$"></SPAN> es el estado de arranque.
-</LI>
-<LI>Todos los estados definidos (salvo el de muerte) son de aceptación.
-</LI>
-</UL></DIV><P></P>
-
-<P>
-Denotaremos por <SPAN CLASS="MATH"><IMG
- WIDTH="52" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img129.png"
- ALT="$ LR(0)$"></SPAN> a este autómata. Sus estados se denominan <!-- MATH
- $LR(0)-items$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="117" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img130.png"
- ALT="$ LR(0)-items$"></SPAN>. La idea es que este
-autómata nos ayuda a reconocer los prefijos viables <SPAN CLASS="MATH"><IMG
- WIDTH="32" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img117.png"
- ALT="$ PV$"></SPAN>.
-
-<P>
-Una vez que se tiene un autómata que reconoce los prefijos viables es posible construir un analizador sintáctico que construye una antiderivación a derechas. La estrategia consiste en ``alimentar'' el autómata con la forma sentencial derecha. El lugar en el que el autómata se detiene, rechazando indica el lugar exacto en el que termina el <SPAN  CLASS="textbf">handle</SPAN> de dicha forma.
-
-<P>
-<P>
-<DIV><A NAME="example:asb"><B>Ejemplo  <SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">1</SPAN></B></A> &nbsp; 
-<I>Consideremos la gramática:
-</I>
-<P>
-<I>
-<BR>
-<BR>
-</I>
-<DIV ALIGN="CENTER"><TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><I>
-S      <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img35.png"
- ALT="$ \rightarrow$"></SPAN> a S b</I></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><I> 
-S      <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img35.png"
- ALT="$ \rightarrow$"></SPAN> <SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img5.png"
- ALT="$ \epsilon$"></SPAN></I></TD>
-</TR>
-</TABLE></DIV><I>
-<BR>
-<BR>
-</I>
-<P>
-<I>El lenguaje generado por esta gramática es <!-- MATH
- $L(G) = \{ a^n b^n\ :\ n \ge 0 \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="188" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img131.png"
- ALT="$ L(G) = \{ a^n b^n : n \ge 0 \}$"></SPAN>
-Es bien sabido que el lenguaje <SPAN CLASS="MATH"><IMG
- WIDTH="44" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img25.png"
- ALT="$ L(G)$"></SPAN> no es regular.
-La figura <A HREF="#fig:nfa">5.1</A> muestra 
-el <A NAME="5872"></A><SPAN  CLASS="textbf">autómata finito no determinista con <SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img5.png"
- ALT="$ \epsilon$"></SPAN>-transiciones</SPAN> 
-(<A NAME="5874"></A><SPAN  CLASS="textbf">NFA</SPAN>)
-que reconoce los prefijos viables de esta gramática, construido
-de acuerdo con el algoritmo <A HREF="#definition:slrautomata">5.4.4</A>.
-</I>
-<P>
-<I>Véase <A NAME="tex2html234"
-  HREF="https://github.com/crguezl/jison-aSb">https://github.com/crguezl/jison-aSb</A>
-para una implementación en Jison de una variante de esta gramática.
-</I>
-<P>
-<DIV ALIGN="CENTER"></DIV>
-<DIV ALIGN="CENTER"><A NAME="fig:nfa"></A><A NAME="5428"></A>
-<TABLE>
-<CAPTION ALIGN="BOTTOM"><STRONG>Figura 5.1:</STRONG>
-NFA que reconoce los prefijos viables</CAPTION>
-<TR><TD><IMG
- WIDTH="543" HEIGHT="186" BORDER="0"
- SRC="img132.png"
- ALT="\begin{figure}\centerline{\epsfig{file=chapter_bottomup/nfa.eps, width=12cm}}\end{figure}"></TD></TR>
-</TABLE>
-</DIV>
-<DIV ALIGN="CENTER"></DIV></DIV><P></P>
-
-<P>
-<P>
-<DIV><B>Ejercicio  <SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Simule el comportamiento del autómata sobre la entrada <SPAN CLASS="MATH"><IMG
- WIDTH="38" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img133.png"
- ALT="$ aabb$"></SPAN>. ¿Donde rechaza?
-¿En que estados está el autómata en el momento del rechazo?. ¿Qué etiquetas tienen?
-Haga también las
-trazas del autómata para las entradas <SPAN CLASS="MATH"><IMG
- WIDTH="50" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img134.png"
- ALT="$ aaSbb$"></SPAN> y <SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img135.png"
- ALT="$ aSb$"></SPAN>. ¿Que antiderivación 
-ha construido el autómata con sus sucesivos rechazos? ¿Que terminales
-se puede esperar que hayan en la entrada cuando se produce el rechazo
-del autómata?</I></DIV><P></P>
+</UL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1620"
+<A NAME="tex2html1616"
   HREF="node46.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1614"
-  HREF="node41.html">
+<A NAME="tex2html1610"
+  HREF="node42.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1608"
+<A NAME="tex2html1604"
   HREF="node44.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1616"
-  HREF="node96.html">
+<A NAME="tex2html1612"
+  HREF="node97.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1618"
-  HREF="node99.html">
+<A NAME="tex2html1614"
+  HREF="node100.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -716,12 +561,12 @@ del autómata?</I></DIV><P></P>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1621"
-  HREF="node46.html">Construcción de las Tablas</A>
-<B>Sup:</B> <A NAME="tex2html1615"
-  HREF="node41.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1609"
-  HREF="node44.html">Ejemplo en Jison: Calculadora</A>
+<B> Sig:</B> <A NAME="tex2html1617"
+  HREF="node46.html">Conceptos Básicos del Análisis</A>
+<B>Sup:</B> <A NAME="tex2html1611"
+  HREF="node42.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html1605"
+  HREF="node44.html">Ejemplo Simple en Jison</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
