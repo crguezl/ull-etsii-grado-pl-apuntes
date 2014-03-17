@@ -339,17 +339,25 @@ indica que plugin se van a usar.
 #!/usr/bin/env coffee
 PEG = require 'pegjs'
 coffee = require 'pegjs-coffee-plugin'
-grammar = "a = 'hello' b\nb = 'world'"
+grammar = """
+a = 'hello' _ b { console.log 1 }
+b = 'world'     { console.log 2 }
+_ = [ \t]+      { console.log 3 }
+"""
 parser = PEG.buildParser grammar, plugins: [coffee]
-r = parser.parse "helloworld"
-console.log(r)
+r = parser.parse "hello world"
 </PRE>
 
 <P>
 <PRE>
 [~/srcPLgrado/pegjs/examples(master)]$ ./plugin.coffee 
-[ 'hello', 'world' ]
+3
+2
+1
 </PRE>
+
+<P>
+
 <DIV CLASS="navigation"><HR>
 <A NAME="tex2html1309"
   HREF="node31.html">
