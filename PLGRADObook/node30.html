@@ -28,19 +28,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1306"
+<A NAME="tex2html1307"
   HREF="node31.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1300"
+<A NAME="tex2html1301"
   HREF="node28.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1294"
+<A NAME="tex2html1295"
   HREF="node29.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1302"
+<A NAME="tex2html1303"
   HREF="node96.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1304"
+<A NAME="tex2html1305"
   HREF="node99.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -92,18 +92,18 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1307"
+<B> Sig:</B> <A NAME="tex2html1308"
   HREF="node31.html">Un Ejemplo Sencillo</A>
-<B>Sup:</B> <A NAME="tex2html1301"
+<B>Sup:</B> <A NAME="tex2html1302"
   HREF="node28.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html1295"
+<B> Ant:</B> <A NAME="tex2html1296"
   HREF="node29.html">Introducción a los PEGs</A>
 <B> Con:</B> 
-<A NAME="tex2html1302"
+<A NAME="tex2html1303"
   HREF="node96.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1304"
+<A NAME="tex2html1305"
   HREF="node99.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
@@ -115,12 +115,14 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <UL CLASS="ChildLinks">
 <LI><UL>
 <LI><UL>
-<LI><A NAME="tex2html1308"
-  HREF="node30.html#SECTION04420010000000000000">What is</A>
 <LI><A NAME="tex2html1309"
-  HREF="node30.html#SECTION04420020000000000000">Installation</A>
+  HREF="node30.html#SECTION04420010000000000000">What is</A>
 <LI><A NAME="tex2html1310"
+  HREF="node30.html#SECTION04420020000000000000">Installation</A>
+<LI><A NAME="tex2html1311"
   HREF="node30.html#SECTION04420030000000000000">Using it</A>
+<LI><A NAME="tex2html1312"
+  HREF="node30.html#SECTION04420040000000000000">Opciones: allowedStartRules</A>
 </UL></UL></UL>
 <!--End of Table of Child-Links-->
 <HR>
@@ -225,20 +227,70 @@ Using it</A>
 
 <P>
 
+<H4><A NAME="SECTION04420040000000000000">
+Opciones: allowedStartRules</A>
+</H4>
+  
+
+<P>
+<PRE>
+[~/srcPLgrado/pegjs/examples(master)]$ cat allowedstartrules.js 
+var PEG = require("pegjs");
+var grammar = "a = 'hello' b\nb = 'world'"; //"a = 'hello' b\nb='world';
+console.log(grammar);
+
+var parser = PEG.buildParser(grammar,{ allowedStartRules: ['a', 'b'] });
+var r = parser.parse("helloworld", { startRule: 'a' });
+console.log(r); // [ 'hello', 'world' ]
+r = parser.parse("helloworld")
+console.log(r); // [ 'hello', 'world' ]
+
+r =  parser.parse("world", { startRule: 'b' })
+console.log(r); // 'world'
+
+try {
+  r = parser.parse("world"); // Throws an exception
+}
+catch(e) {
+  console.log("Error!!!!");
+  console.log(e);
+}
+</PRE>
+
+<P>
+<PRE>
+[~/srcPLgrado/pegjs/examples(master)]$ node allowedstartrules.js 
+a = 'hello' b
+b = 'world'
+[ 'hello', 'world' ]
+[ 'hello', 'world' ]
+world
+Error!!!!
+{ message: 'Expected "hello" but "w" found.',
+  expected: [ { type: 'literal', value: 'hello', description: '"hello"' } ],
+  found: 'w',
+  offset: 0,
+  line: 1,
+  column: 1,
+  name: 'SyntaxError' }
+</PRE>
+
+<P>
+
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1306"
+<A NAME="tex2html1307"
   HREF="node31.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1300"
+<A NAME="tex2html1301"
   HREF="node28.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1294"
+<A NAME="tex2html1295"
   HREF="node29.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1302"
+<A NAME="tex2html1303"
   HREF="node96.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1304"
+<A NAME="tex2html1305"
   HREF="node99.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -290,11 +342,11 @@ Using it</A>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1307"
+<B> Sig:</B> <A NAME="tex2html1308"
   HREF="node31.html">Un Ejemplo Sencillo</A>
-<B>Sup:</B> <A NAME="tex2html1301"
+<B>Sup:</B> <A NAME="tex2html1302"
   HREF="node28.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html1295"
+<B> Ant:</B> <A NAME="tex2html1296"
   HREF="node29.html">Introducción a los PEGs</A>
 </DIV>
 <!--End of Navigation Panel-->
