@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Google+ Sign-In for server-side apps</TITLE>
-<META NAME="description" CONTENT="Google+ Sign-In for server-side apps">
+<TITLE>Sign-in with Google</TITLE>
+<META NAME="description" CONTENT="Sign-in with Google">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node91.html">
 <LINK REL="previous" HREF="node89.html">
-<LINK REL="up" HREF="node87.html">
+<LINK REL="up" HREF="node88.html">
 <LINK REL="next" HREF="node91.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html2426"
+<A NAME="tex2html2427"
   HREF="node91.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2420"
-  HREF="node87.html">
+<A NAME="tex2html2421"
+  HREF="node88.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2414"
+<A NAME="tex2html2415"
   HREF="node89.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2422"
-  HREF="node97.html">
+<A NAME="tex2html2423"
+  HREF="node98.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2424"
-  HREF="node100.html">
+<A NAME="tex2html2425"
+  HREF="node101.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,69 +92,179 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2427"
-  HREF="node91.html">Authentication using the Google</A>
-<B>Sup:</B> <A NAME="tex2html2421"
-  HREF="node87.html">Google Oauth</A>
-<B> Ant:</B> <A NAME="tex2html2415"
-  HREF="node89.html">Sign-in with Google</A>
+<B> Sig:</B> <A NAME="tex2html2428"
+  HREF="node91.html">Google+ Sign-In for server-side</A>
+<B>Sup:</B> <A NAME="tex2html2422"
+  HREF="node88.html">Google Oauth</A>
+<B> Ant:</B> <A NAME="tex2html2416"
+  HREF="node89.html">Using OAuth 2.0 to</A>
 <B> Con:</B> 
-<A NAME="tex2html2422"
-  HREF="node97.html">
+<A NAME="tex2html2423"
+  HREF="node98.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html2424"
-  HREF="node100.html">
+<A NAME="tex2html2425"
+  HREF="node101.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<H1><A NAME="SECTION06330000000000000000">
-Google+ Sign-In for server-side apps</A>
-</H1>
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html2429"
+  HREF="node90.html#SECTION06321000000000000000">Google + API for Ruby</A>
+<UL>
+<LI><A NAME="tex2html2430"
+  HREF="node90.html#SECTION06321010000000000000">Donde</A>
+<LI><A NAME="tex2html2431"
+  HREF="node90.html#SECTION06321020000000000000">Step 1: Enable the Google+ API</A>
+</UL></UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION06320000000000000000">
+Sign-in with Google</A>
+</H1> 
+Google+ Sign-in provides the OAuth 2.0 authentication mechanism along
+with additional access to Google desktop and mobile features.
+
+<UL>
+<LI><A NAME="tex2html298"
+  HREF="https://developers.google.com/+/">https://developers.google.com/+/</A>
+provides the OAuth 2.0 authentication mechanism along with additional access to Google desktop and mobile features.
+</LI>
+<LI>Direct access to an authentication service based on the standardized OpenID Connect mechanism is also available.
+<A NAME="tex2html299"
+  HREF="https://developers.google.com/accounts/docs/OAuth2Login">https://developers.google.com/accounts/docs/OAuth2Login</A>
+</LI>
+</UL>
 
 <P>
-To take advantage of all of the benefits of Google+ Sign-In you must
-use a hybrid server-side flow where a user authorizes your app on the
-client side using the JavaScript API client and you send a
-special one-time authorization code to your server. 
 
-<P>
-Your server exchanges this one-time-use code to acquire its own access and
-refresh tokens from Google for the server to be able to make its own API
-calls, which can be done while the user is offline. 
-
-<P>
-This one-time code flow has security advantages over both a pure
-server-side flow and over sending access tokens to your server.
+<H2><A NAME="SECTION06321000000000000000">
+Google + API for Ruby</A>
+</H2>
 
 <P>
 
-<FONT COLOR="#ff0000"> The Google+ Sign-In server-side flow differs from the OAuth 2.0
-for Web server applications flow.</FONT>
+<H4><A NAME="SECTION06321010000000000000">
+Donde</A>
+</H4>
+  
 
 <P>
 
-<img src="server_side_code_flow.png" />
+<UL>
+<LI><A NAME="tex2html300"
+  HREF="https://github.com/crguezl/gplus-quickstart-ruby">https://github.com/crguezl/gplus-quickstart-ruby</A>
+</LI>
+<LI><PRE>
+[~/sinatra/gplus-quickstart-ruby(master)]$ pwd -P
+/Users/casiano/local/src/ruby/sinatra/gplus-quickstart-ruby
+[~/sinatra/gplus-quickstart-ruby(master)]$ git remote -v
+googleplus      git@github.com:googleplus/gplus-quickstart-ruby.git (fetch)
+googleplus      git@github.com:googleplus/gplus-quickstart-ruby.git (push)
+origin  git@github.com:crguezl/gplus-quickstart-ruby.git (fetch)
+origin  git@github.com:crguezl/gplus-quickstart-ruby.git (push)
+</PRE>
+</LI>
+<LI><A NAME="tex2html301"
+  HREF="https://github.com/crguezl/gplus-quickstart-ruby">https://github.com/crguezl/gplus-quickstart-ruby</A>
+</LI>
+<LI><A NAME="tex2html302"
+  HREF="https://developers.google.com/+/quickstart/ruby">https://developers.google.com/+/quickstart/ruby</A>
+</LI>
+</UL>
 
 <P>
+The app demonstrates:
+
+<P>
+
+<UL>
+<LI>Using the Google+ Sign-In button to get an OAuth 2.0 refresh token.
+</LI>
+<LI>Exchanging the refresh token for an access token.
+</LI>
+<LI>Making Google+ API requests with the access token, including getting a list of people that the user has circled.
+</LI>
+<LI>Disconnecting the app from the user's Google account and revoking tokens.
+</LI>
+</UL>
+
+<P>
+
+<H4><A NAME="SECTION06321020000000000000">
+Step 1: Enable the Google+ API</A>
+</H4>
+  
+
+<P>
+Create a Google APIs Console project, OAuth 2.0 client ID, and register your JavaScript origins:
+
+<P>
+To register a new application, do the following:
+
+<P>
+
+<UL>
+<LI>Go to the Google Cloud Console.
+</LI>
+<LI>Select a project, or create a new one.
+</LI>
+<LI>In the sidebar on the left, select <code>APIs &amp; auth</code>. 
+In the displayed list of APIs, make sure the <code>Google+ API</code> status is set to <code>ON</code>.
+</LI>
+<LI>In the sidebar on the left, select <code>Registered apps</code>.
+</LI>
+<LI>At the top of the page, select Register App.
+</LI>
+<LI>Fill out the form and select Register.
+</LI>
+</UL>
+
+<FONT COLOR="#ff0000"> Register the origins where your app is allowed to access the Google APIs</FONT>. 
+The origin is the unique combination of protocol, hostname, and
+port. You can enter multiple origins to allow for your app to run on
+different protocols, domains or subdomains. Wildcards are not allowed.
+
+<P>
+
+<UL>
+<LI>Expand the OAuth 2.0 Client ID section.
+</LI>
+<LI>In the Web origin field, enter your origin:
+<PRE>
+http://localhost:4567
+</PRE>
+</LI>
+<LI>Press ENTER to save your origin. You can then click the + symbol to add additional origins.
+</LI>
+<LI>Note or copy the client ID and client secret that your app will need to use to access the APIs.
+</LI>
+</UL>
+
+<P>
+<A NAME="tex2html303"
+  HREF="https://developers.google.com/api-client-library/ruby/guide/aaa_client_secrets">Client Secrets</A>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html2426"
+<A NAME="tex2html2427"
   HREF="node91.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2420"
-  HREF="node87.html">
+<A NAME="tex2html2421"
+  HREF="node88.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2414"
+<A NAME="tex2html2415"
   HREF="node89.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2422"
-  HREF="node97.html">
+<A NAME="tex2html2423"
+  HREF="node98.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2424"
-  HREF="node100.html">
+<A NAME="tex2html2425"
+  HREF="node101.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -205,12 +315,12 @@ for Web server applications flow.</FONT>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2427"
-  HREF="node91.html">Authentication using the Google</A>
-<B>Sup:</B> <A NAME="tex2html2421"
-  HREF="node87.html">Google Oauth</A>
-<B> Ant:</B> <A NAME="tex2html2415"
-  HREF="node89.html">Sign-in with Google</A>
+<B> Sig:</B> <A NAME="tex2html2428"
+  HREF="node91.html">Google+ Sign-In for server-side</A>
+<B>Sup:</B> <A NAME="tex2html2422"
+  HREF="node88.html">Google Oauth</A>
+<B> Ant:</B> <A NAME="tex2html2416"
+  HREF="node89.html">Using OAuth 2.0 to</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Ejemplo Simple en Jison</TITLE>
-<META NAME="description" CONTENT="Ejemplo Simple en Jison">
+<TITLE>Conceptos Básicos para el Análisis Sintáctico</TITLE>
+<META NAME="description" CONTENT="Conceptos Básicos para el Análisis Sintáctico">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node45.html">
 <LINK REL="previous" HREF="node43.html">
-<LINK REL="up" HREF="node42.html">
+<LINK REL="up" HREF="node43.html">
 <LINK REL="next" HREF="node45.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1596"
+<A NAME="tex2html1599"
   HREF="node45.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1590"
-  HREF="node42.html">
+<A NAME="tex2html1593"
+  HREF="node43.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1584"
+<A NAME="tex2html1587"
   HREF="node43.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1592"
-  HREF="node97.html">
+<A NAME="tex2html1595"
+  HREF="node98.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1594"
-  HREF="node100.html">
+<A NAME="tex2html1597"
+  HREF="node101.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,19 +92,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1597"
-  HREF="node45.html">Ejemplo en Jison: Calculadora</A>
-<B>Sup:</B> <A NAME="tex2html1591"
-  HREF="node42.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1585"
-  HREF="node43.html">Conceptos Básicos para el</A>
+<B> Sig:</B> <A NAME="tex2html1600"
+  HREF="node45.html">Ejemplo Simple en Jison</A>
+<B>Sup:</B> <A NAME="tex2html1594"
+  HREF="node43.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html1588"
+  HREF="node43.html">Análisis Sintáctico Ascendente en</A>
 <B> Con:</B> 
-<A NAME="tex2html1592"
-  HREF="node97.html">
+<A NAME="tex2html1595"
+  HREF="node98.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1594"
-  HREF="node100.html">
+<A NAME="tex2html1597"
+  HREF="node101.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
@@ -113,341 +113,555 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html1598"
-  HREF="node44.html#SECTION04520010000000000000">Gramática</A>
-<LI><A NAME="tex2html1599"
-  HREF="node44.html#SECTION04520020000000000000">basic2_lex.jison</A>
-<LI><A NAME="tex2html1600"
-  HREF="node44.html#SECTION04520030000000000000">index.html</A>
 <LI><A NAME="tex2html1601"
-  HREF="node44.html#SECTION04520040000000000000">Rakefile</A>
-<LI><A NAME="tex2html1602"
-  HREF="node44.html#SECTION04520050000000000000">Véase También</A>
-<LI><A NAME="tex2html1603"
-  HREF="node44.html#SECTION04520060000000000000">global.css</A>
-</UL>
-</UL>
-<BR>
-<LI><A NAME="tex2html1604"
-  HREF="node44.html#SECTION04521000000000000000">Véase También</A>
-<LI><A NAME="tex2html1605"
-  HREF="node44.html#SECTION04522000000000000000">Práctica: Secuencia de Asignaciones Simples</A>
+  HREF="node44.html#SECTION04511000000000000000">Ejercicio</A>
 </UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION04520000000000000000">
-Ejemplo Simple en Jison</A>
-</H1>
-
-<P>
-Jison es un generador de analizadores sintácticos LALR. Otro
-analizador LALR es 
-<A NAME="tex2html212"
-  HREF="http://jscc.phorward-software.com/">JS/CC</A>.
-
-<P>
-
-<H4><A NAME="SECTION04520010000000000000">
-Gramática</A>
-</H4>
-  
-
-<P>
-<PRE>
-%%
-
-S   : A
-    ;
-A   : /* empty */  
-    | A x 
-    ;
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION04520020000000000000">
-basic2_lex.jison</A>
-</H4>
-  
-
-<PRE>
-[~/jison/examples/basic2_lex(develop)]$ cat basic2_lex.jison 
-/* description: Basic grammar that contains a nullable A nonterminal. */
-
-%lex
-%%
-
-\s+               {/* skip whitespace */}
-[a-zA-Z_]\w*      {return 'x';}
-
-/lex
-
-%%
-
-S   : A
-           { return $1+" identifiers"; }
-    ;
-A   : /* empty */  
-           { 
-              console.log("starting"); 
-              $$ = 0; 
-           }
-    | A x  { 
-              $$ = $1 + 1;  
-              console.log($$)
-           }
-    ;
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION04520030000000000000">
-index.html</A>
-</H4>
-  
-
-<PRE>
-$ cat basic2_lex.html
-&lt;!DOCTYPE HTML&gt;
-&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;meta charset="utf-8"&gt;
-    &lt;title&gt;Jison&lt;/title&gt;
-    &lt;link rel="stylesheet" href="global.css" type="text/css" media="screen" charset="utf-8" /&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;h1&gt;basic2_lex demo&lt;/h1&gt;
-    &lt;div id="content"&gt;
-      &lt;script src="jquery/jquery.js"&gt;&lt;/script&gt; 
-      &lt;script src="basic2_lex.js"&gt;&lt;/script&gt;
-      &lt;script src="main.js"&gt;&lt;/script&gt;
-      &lt;p&gt;
-        &lt;input type="text" value="x x x x" /&gt; &lt;button&gt;parse&lt;/button&gt; 
-        &lt;span id="output"&gt;&lt;/span&gt; &lt;!-- Output goes here! --&gt;
-      &lt;/p&gt;
-    &lt;/div&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION04520040000000000000">
-Rakefile</A>
-</H4>
-  
-
-<P>
-<PRE>
-$ cat Rakefile 
-# install package:
-#     sudo npm install beautifier
-# 
-#   more about beautifier:
-#       https://github.com/rickeyski/node-beautifier
-
-dec "compile the grammar basic2_lex_ugly.jison"
-task :default =&gt; %w{basic2_lex_ugly.js} do
-  sh "mv basic2_lex.js basic2_lex_ugly.js"
-  sh "jsbeautify basic2_lex_ugly.js &gt; basic2_lex.js"
-  sh "rm -f basic2_lex_ugly.js"
-end
-
-file "basic2_lex_ugly.js" =&gt; %w{basic2_lex.jison} do
-  sh "jison basic2_lex.jison -o basic2_lex.js"
-end
-</PRE>
-
-<P>
-
-<OL>
-<LI><A NAME="tex2html213"
-  HREF="https://github.com/rickeyski/node-beautifier">node-beautifier</A>
-</LI>
-</OL>
-
-<P>
-
-<H4><A NAME="SECTION04520050000000000000">
-Véase También</A>
-</H4>
-  
-
-<OL>
-<LI><A NAME="tex2html214"
-  HREF="http://zaach.github.com/jison/">JISON</A>
-</LI>
-<LI><A NAME="tex2html215"
-  HREF="http://zaach.github.com/jison/try/usf/">Try Jison Examples</A>
-</LI>
-<LI><A NAME="tex2html216"
-  HREF="http://www-archive.mozilla.org/js/language/grammar14.html">JavaScript 1.4 LR(1) Grammar</A>
-1999.
-</LI>
-<LI><A NAME="tex2html217"
-  HREF="http://cjihrig.com/blog/creating-a-javascript-parser/">Creating a JavaScript Parser</A>
-Una implementación de ECMAScript 5.1 usando Jison 
-disponible 
-en GitHub
- en
-<A NAME="tex2html218"
-  HREF="https://github.com/cjihrig/jsparser">https://github.com/cjihrig/jsparser</A>.
-Puede probarse en:
-<A NAME="tex2html219"
-  HREF="http://www.cjihrig.com/development/jsparser/">http://www.cjihrig.com/development/jsparser/</A>
-</LI>
-<LI><A NAME="tex2html220"
-  HREF="http://www.rolilink.com/presentations/Jison/Charla.html">Bison on JavaScript</A>
-por Rolando Perez
-</LI>
-<LI><A NAME="tex2html221"
-  HREF="http://hansineffect.github.com/Slogo/">Slogo</A>
-a language written using Jison
-</LI>
-<LI><A NAME="tex2html222"
-  HREF="https://github.com/jashkenas/coffee-script/wiki/List-of-languages-that-compile-to-JS">List of languages that compile to JS</A>
-</LI>
-<LI><A NAME="tex2html223"
-  HREF="http://blog.kalleberg.org/post/1256702765/prototype-of-a-scannerless-generalized-left-to-right">Prototype of a Scannerless, Generalized Left-to-right Rightmost (SGLR) derivation parser for JavaScript</A>
-</LI>
-</OL>
-<H4><A NAME="SECTION04520060000000000000">
-global.css</A>
-</H4>
-  
-
-<P>
-<PRE>
-[~/jison/examples/basic2_lex(develop)]$ cat global.css 
-html *
-{
-   font-size: large; 
-   /* The !important ensures that nothing can override what you've set in this style (unless it is also important). */
-   font-family: Arial;
-}
-
-.thumb {
-    height: 75px;
-    border: 1px solid #000;
-    margin: 10px 5px 0 0;
-  }
-
-h1            { text-align: center; font-size: x-large; }
-th, td        { vertical-align: top; text-align: left; }   
-/* #finaltable  * { color: white; background-color: black; }   */
-
-/* #finaltable table { border-collapse:collapse; } */
-/* #finaltable table, td { border:1px solid white; } */
-#finaltable:hover td { background-color: blue; } 
-tr:nth-child(odd)    { background-color:#eee; }
-tr:nth-child(even)    { background-color:#00FF66; }
-input        { text-align: right;  border: none;       }     /* Align input to the right  */
-textarea     { border: outset; border-color: white;       }                        
-table        { border: inset; border-color: white; }
-.hidden      { display: none; }
-.unhidden    { display: block; }
-table.center { margin-left:auto; margin-right:auto; }
-#result      { border-color: red; }
-tr.error       { background-color: red; }
-pre.output   { background-color: white; }
-span.repeated { background-color: red }
-span.header { background-color: blue }
-span.comments { background-color: orange }
-span.blanks { background-color: green }
-span.nameEqualValue { background-color: cyan }
-span.error { background-color: red }
-
-body
-{
- background-color:#b0c4de;  /* blue */
-}
-</PRE>
-
-<P>
-
-<H2><A NAME="SECTION04521000000000000000">
-Véase También</A>
-</H2>
-
-<OL>
-<LI><A NAME="tex2html224"
-  HREF="http://zaach.github.com/jison/">JISON</A>
-</LI>
-<LI><A NAME="tex2html225"
-  HREF="http://zaach.github.com/jison/try/usf/">Try Jison Examples</A>
-</LI>
-<LI><A NAME="tex2html226"
-  HREF="http://www-archive.mozilla.org/js/language/grammar14.html">JavaScript 1.4 LR(1) Grammar</A>
-1999.
-</LI>
-<LI><A NAME="tex2html227"
-  HREF="http://cjihrig.com/blog/creating-a-javascript-parser/">Creating a JavaScript Parser</A>
-Una implementación de ECAMScript 5.1 usando Jison 
-disponible 
-en GitHub
- en
-<A NAME="tex2html228"
-  HREF="https://github.com/cjihrig/jsparser">https://github.com/cjihrig/jsparser</A>.
-Puede probarse en:
-<A NAME="tex2html229"
-  HREF="http://www.cjihrig.com/development/jsparser/">http://www.cjihrig.com/development/jsparser/</A>
-</LI>
-<LI><A NAME="tex2html230"
-  HREF="http://hansineffect.github.com/Slogo/">Slogo</A>
-a language written using Jison
-</LI>
-<LI><A NAME="tex2html231"
-  HREF="https://github.com/jashkenas/coffee-script/wiki/List-of-languages-that-compile-to-JS">List of languages that compile to JS</A>
-</LI>
-<LI><A NAME="tex2html232"
-  HREF="http://blog.kalleberg.org/post/1256702765/prototype-of-a-scannerless-generalized-left-to-right">Prototype of a Scannerless, Generalized Left-to-right Rightmost (SGLR) derivation parser for JavaScript</A>
-</LI>
-</OL>
-
-<P>
-
-<H2><A NAME="SECTION04522000000000000000"></A>
-   <A NAME="5834"></A>
+<H1><A NAME="SECTION04510000000000000000"></A>
+<A NAME="section:conceptos"></A>
 <BR>
-Práctica: Secuencia de Asignaciones Simples
+Conceptos Básicos para el Análisis Sintáctico
+</H1>
+Suponemos que el lector de esta sección ha realizado con éxito
+un curso en teoría de autómatas y lenguajes formales.
+Las siguientes definiciones repasan los conceptos mas importantes.
+
+<P>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Dado un conjunto <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$ A$"></SPAN>, se define <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="19" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$ A^*$"></SPAN> el cierre de Kleene de <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$ A$"></SPAN> como:
+</I><!-- MATH
+ \begin{math}
+A^* = \cup_{n=0}^{\infty} A^n
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="109" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$ A^* = \cup_{n=0}^{\infty} A^n
+$"></SPAN>
+<P>
+<I>Se admite que <!-- MATH
+ $A^0 = \{ \epsilon \}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="73" HEIGHT="39" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$ A^0 = \{ \epsilon \}$"></SPAN>, donde <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$ \epsilon$"></SPAN> denota la palabra vacía, esto es
+la palabra que tiene longitud cero, formada por cero símbolos del conjunto base <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$ A$"></SPAN>.</I></DIV><P></P>
+
+<P>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
+<I>Una gramática <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$ G$"></SPAN> es una cuaterna <!-- MATH
+ $G =(\Sigma,V,P,S)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$ G =(\Sigma,V,P,S)$"></SPAN>. 
+<SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img8.png"
+ ALT="$ \Sigma$"></SPAN> es el conjunto de terminales. <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$ V$"></SPAN> es un conjunto (disjunto de <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img8.png"
+ ALT="$ \Sigma$"></SPAN>)
+que se denomina conjunto de <SPAN  CLASS="textbf">variables sintácticas</SPAN> o <SPAN  CLASS="textbf">categorías gramáticales</SPAN>,
+P es un conjunto de pares de <!-- MATH
+ $V \times (V \cup \Sigma )^*$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="107" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img10.png"
+ ALT="$ V \times (V \cup \Sigma )^*$"></SPAN>. En vez de escribir
+un par usando la notación <!-- MATH
+ $(A, \alpha) \in P$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="85" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$ (A, \alpha) \in P$"></SPAN> se escribe <!-- MATH
+ $A \rightarrow \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.png"
+ ALT="$ A \rightarrow \alpha$"></SPAN>.
+Un elemento de <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img13.png"
+ ALT="$ P$"></SPAN> se denomina producción. Por último, <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.png"
+ ALT="$ S$"></SPAN> es un símbolo del conjunto
+<SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$ V$"></SPAN> que se denomina símbolo de arranque.</I></DIV><P></P>
+
+<P>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">3</SPAN></B> &nbsp; 
+<I>Dada una gramática <!-- MATH
+ $G=(\Sigma,V,P,S)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$ G =(\Sigma,V,P,S)$"></SPAN> y <!-- MATH
+ $\mu = \alpha A \beta \in (V \cup \Sigma)^*$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="162" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.png"
+ ALT="$ \mu = \alpha A \beta \in (V \cup \Sigma)^*$"></SPAN>
+una frase formada por variables y terminales y <!-- MATH
+ $A \rightarrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$ A \rightarrow \gamma$"></SPAN> una producción de 
+<SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img13.png"
+ ALT="$ P$"></SPAN>, decimos que  <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$ \mu$"></SPAN> deriva en un paso en  <!-- MATH
+ $\alpha \gamma \beta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="37" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.png"
+ ALT="$ \alpha \gamma \beta$"></SPAN>. Esto es, derivar 
+una cadena <!-- MATH
+ $\alpha A \beta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="40" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.png"
+ ALT="$ \alpha A \beta$"></SPAN> es sustituir 
+una variable sintáctica <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$ A$"></SPAN> de <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$ V$"></SPAN> por la parte derecha <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.png"
+ ALT="$ \gamma$"></SPAN> de una de sus reglas de producción.
+Se dice que <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$ \mu$"></SPAN> deriva en <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img21.png"
+ ALT="$ n$"></SPAN> pasos en <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.png"
+ ALT="$ \delta$"></SPAN> si deriva en <SPAN CLASS="MATH"><IMG
+ WIDTH="45" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img23.png"
+ ALT="$ n-1$"></SPAN> pasos en una cadena
+<!-- MATH
+ $\alpha A \beta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="40" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.png"
+ ALT="$ \alpha A \beta$"></SPAN> la cual deriva en un paso en <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.png"
+ ALT="$ \delta$"></SPAN>. Se escribe entonces
+que <!-- MATH
+ $\mu  \stackrel{*}{\Longrightarrow}  \delta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="61" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.png"
+ ALT="$ \mu \stackrel{*}{\Longrightarrow} \delta$"></SPAN>. Una cadena deriva en 0 pasos en si misma.
+</I>
+<P></DIV><P></P>
+
+<P>
+<P>
+<DIV><A NAME="definition:lenguajegenerado"><B>Definición  <SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">4</SPAN></B></A> &nbsp; 
+<I>Dada una gramática <!-- MATH
+ $G=(\Sigma,V,P,S)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$ G =(\Sigma,V,P,S)$"></SPAN> se denota por <SPAN CLASS="MATH"><IMG
+ WIDTH="44" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img25.png"
+ ALT="$ L(G)$"></SPAN> o lenguaje
+generado por <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$ G$"></SPAN> al lenguaje:
+</I>
+<P>
+<DIV ALIGN="CENTER"><I><!-- MATH
+ $L(G) = \{ x \in \Sigma^* : S \stackrel{*}{\Longrightarrow} x \}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="210" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.png"
+ ALT="$ L(G) = \{ x \in \Sigma^* : S \stackrel{*}{\Longrightarrow} x \}$"></SPAN></I></DIV>
+<P>
+<I>Esto es, el lenguaje generado por la gramática <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$ G$"></SPAN> esta formado por las cadenas
+de terminales que pueden ser derivados desde el símbolo de arranque.</I></DIV><P></P>
+
+<P>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">5</SPAN></B> &nbsp; 
+<I>Una derivación que comienza en el símbolo de arranque y termina en una secuencia
+formada por sólo terminales de <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img8.png"
+ ALT="$ \Sigma$"></SPAN> se dice <SPAN  CLASS="textbf">completa</SPAN>.
+</I>
+<P>
+<I>Una derivación <!-- MATH
+ $\mu  \stackrel{*}{\Longrightarrow}  \delta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="61" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.png"
+ ALT="$ \mu \stackrel{*}{\Longrightarrow} \delta$"></SPAN> 
+en la cual en cada paso <!-- MATH
+ $\alpha A x$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="39" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img27.png"
+ ALT="$ \alpha A x$"></SPAN> la regla de producción aplicada <!-- MATH
+ $A \rightarrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$ A \rightarrow \gamma$"></SPAN>
+se aplica en la variable sintáctica mas a la derecha se dice <SPAN  CLASS="textbf">una derivación a derechas</SPAN>
+</I>
+<P>
+<I>Una derivación <!-- MATH
+ $\mu  \stackrel{*}{\Longrightarrow}  \delta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="61" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.png"
+ ALT="$ \mu \stackrel{*}{\Longrightarrow} \delta$"></SPAN> 
+en la cual en cada paso <!-- MATH
+ $x A \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="39" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img28.png"
+ ALT="$ x A \alpha$"></SPAN> la regla de producción aplicada <!-- MATH
+ $A \rightarrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$ A \rightarrow \gamma$"></SPAN>
+se aplica en la variable sintáctica mas a la izquierda se dice <SPAN  CLASS="textbf">una derivación a izquierdas</SPAN></I></DIV><P></P>
+
+<P>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">6</SPAN></B> &nbsp; 
+<I>Observe que una derivación puede ser representada como un árbol cuyos nodos
+están etiquetados en <!-- MATH
+ $V \cup \Sigma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="51" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img29.png"
+ ALT="$ V \cup \Sigma$"></SPAN>. La aplicación de la regla de 
+producción <!-- MATH
+ $A \rightarrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$ A \rightarrow \gamma$"></SPAN> se traduce en asignar como hijos del nodo etiquetado con <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$ A$"></SPAN>
+a los nodos etiquetados con los símbolos <!-- MATH
+ $X_1 \ldots X_n$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="76" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img30.png"
+ ALT="$ X_1 \ldots X_n$"></SPAN> que constituyen
+la frase <!-- MATH
+ $\gamma = X_1 \ldots X_n$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="110" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img31.png"
+ ALT="$ \gamma = X_1 \ldots X_n$"></SPAN>.  
+Este árbol se llama <A NAME="5822"></A><SPAN  CLASS="textbf">árbol sintáctico concreto</SPAN> asociado 
+con la derivación.</I></DIV><P></P>
+
+<P>
+<P>
+<DIV><A NAME="definition:arbolconcreto"><B>Definición  <SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">7</SPAN></B></A> &nbsp; 
+<I>Observe que, dada una frase <!-- MATH
+ $x \in L(G)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="75" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.png"
+ ALT="$ x \in L(G)$"></SPAN> una derivación desde el
+símbolo de arranque da lugar a  un árbol. Ese árbol tiene como raíz el 
+símbolo de arranque y como hojas los terminales 
+<!-- MATH
+ $x_1 \ldots x_n$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="67" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img33.png"
+ ALT="$ x_1 \ldots x_n$"></SPAN> que forman <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.png"
+ ALT="$ x$"></SPAN>. Dicho árbol se denomina <SPAN  CLASS="textbf">árbol
+de análisis sintáctico concreto</SPAN> de <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.png"
+ ALT="$ x$"></SPAN>. Una derivación determina
+una forma de recorrido del árbol de análisis sintáctico concreto.</I></DIV><P></P>
+
+<P>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">8</SPAN></B> &nbsp; 
+<I>Una gramática <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$ G$"></SPAN> se dice ambigua si existe alguna frase <!-- MATH
+ $x \in L(G)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="75" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.png"
+ ALT="$ x \in L(G)$"></SPAN>
+con al menos dos árboles sintácticos. 
+Es claro que esta definición es equivalente a afirmar que existe 
+alguna frase <!-- MATH
+ $x \in L(G)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="75" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.png"
+ ALT="$ x \in L(G)$"></SPAN> para la cual existen dos derivaciones a 
+izquierda (derecha) distintas.</I></DIV><P></P>
+
+<P>
+
+<H2><A NAME="SECTION04511000000000000000"></A>
+<A NAME="ejercicio:tutugrammar"></A>
+<BR>
+Ejercicio
 </H2>
-  
-Modifique este ejemplo para que el lenguaje acepte una secuencia
-de sentencias de asignación de la forma <code>ID = NUM</code> separadas
-por puntos y comas, por ejemplo <code>a = 4; b = 4.56; c = -8.57e34</code>.
-El analizador retorna un hash/objeto 
-cuyas claves son los identificadores y cuyos valores 
-son los números.
-Clone el repositorio en
-<A NAME="tex2html233"
-  HREF="https://github.com/crguezl/jison-basic2">https://github.com/crguezl/jison-basic2</A>.
+Dada la gramática con producciones:
 
 <P>
-Modifique los analizadores léxico y sintáctico de forma conveniente.
+<BR>
+<BR>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">program      <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> declarations  statements         <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> statements</TD>
+</TR>
+<TR><TD ALIGN="LEFT">declarations <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> declaration  ';'  declarations    <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> declaration ';'</TD>
+</TR>
+<TR><TD ALIGN="LEFT">declaration  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> INT  idlist                       <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> STRING   idlist</TD>
+</TR>
+<TR><TD ALIGN="LEFT">statements   <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> statement  ';'  statements        <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> statement</TD>
+</TR>
+<TR><TD ALIGN="LEFT">statement    <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> ID '=' expression                 <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> P  expression</TD>
+</TR>
+<TR><TD ALIGN="LEFT">expression   <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> term '+' expression               <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> term</TD>
+</TR>
+<TR><TD ALIGN="LEFT">term         <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> factor '*' term                   <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> factor</TD>
+</TR>
+<TR><TD ALIGN="LEFT">factor       <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> '(' expression ')' <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> ID <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> NUM <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> STR</TD>
+</TR>
+<TR><TD ALIGN="LEFT">idlist       <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> ID ',' idlist <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> ID</TD>
+</TR>
+</TABLE>
+<BR>
+<BR>
 
 <P>
-Añada acciones semánticas para que el analizador devuelva una tabla de símbolos con los identificadores y sus valores.
+En esta gramática, <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img8.png"
+ ALT="$ \Sigma$"></SPAN> esta formado por los caracteres entre comillas simples y 
+los símbolos cuyos identificadores están en mayúsculas. Los restantes identificadores
+corresponden a elementos de <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$ V$"></SPAN>. El símbolo de arranque es <!-- MATH
+ $S = program$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="107" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img99.png"
+ ALT="% latex2html id marker 16030
+$ S = program$"></SPAN>.
+
+<P>
+Conteste a las siguientes cuestiones:
+
+<P>
+
+<OL>
+<LI>Describa con palabras el lenguaje generado.
+</LI>
+<LI><A NAME="ejer:arbol"></A>Construya el árbol de análisis sintáctico
+concreto para cuatro frases del lenguaje.
+</LI>
+<LI>Señale a que recorridos del árbol corresponden las respectivas
+derivaciones a izquierda y a derecha en el apartado <A HREF="#ejer:arbol">2</A>.
+</LI>
+<LI>¿Es ambigua esta gramática?. Justifique su respuesta.
+</LI>
+</OL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1596"
+<A NAME="tex2html1599"
   HREF="node45.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1590"
-  HREF="node42.html">
+<A NAME="tex2html1593"
+  HREF="node43.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1584"
+<A NAME="tex2html1587"
   HREF="node43.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1592"
-  HREF="node97.html">
+<A NAME="tex2html1595"
+  HREF="node98.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1594"
-  HREF="node100.html">
+<A NAME="tex2html1597"
+  HREF="node101.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -498,12 +712,12 @@ Añada acciones semánticas para que el analizador devuelva una tabla de símbol
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1597"
-  HREF="node45.html">Ejemplo en Jison: Calculadora</A>
-<B>Sup:</B> <A NAME="tex2html1591"
-  HREF="node42.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1585"
-  HREF="node43.html">Conceptos Básicos para el</A>
+<B> Sig:</B> <A NAME="tex2html1600"
+  HREF="node45.html">Ejemplo Simple en Jison</A>
+<B>Sup:</B> <A NAME="tex2html1594"
+  HREF="node43.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html1588"
+  HREF="node43.html">Análisis Sintáctico Ascendente en</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

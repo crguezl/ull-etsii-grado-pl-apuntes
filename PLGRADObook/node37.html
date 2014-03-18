@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Un Lenguaje Dependiente del Contexto</TITLE>
-<META NAME="description" CONTENT="Un Lenguaje Dependiente del Contexto">
+<TITLE>Comentarios Anidados</TITLE>
+<META NAME="description" CONTENT="Comentarios Anidados">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -28,20 +28,20 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1441"
+<A NAME="tex2html1445"
   HREF="node38.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1435"
+<A NAME="tex2html1439"
   HREF="node28.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1429"
+<A NAME="tex2html1433"
   HREF="node36.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1437"
-  HREF="node97.html">
+<A NAME="tex2html1441"
+  HREF="node98.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1439"
-  HREF="node100.html">
+<A NAME="tex2html1443"
+  HREF="node101.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,110 +92,82 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1442"
-  HREF="node38.html">Usando Pegjs con CoffeeScript</A>
-<B>Sup:</B> <A NAME="tex2html1436"
+<B> Sig:</B> <A NAME="tex2html1446"
+  HREF="node38.html">Un Lenguaje Dependiente del</A>
+<B>Sup:</B> <A NAME="tex2html1440"
   HREF="node28.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html1430"
-  HREF="node36.html">Comentarios Anidados</A>
+<B> Ant:</B> <A NAME="tex2html1434"
+  HREF="node36.html">Asociando un else con</A>
 <B> Con:</B> 
-<A NAME="tex2html1437"
-  HREF="node97.html">
+<A NAME="tex2html1441"
+  HREF="node98.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1439"
-  HREF="node100.html">
+<A NAME="tex2html1443"
+  HREF="node101.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
 <H1><A NAME="SECTION04490000000000000000">
-Un Lenguaje Dependiente del Contexto</A>
+Comentarios Anidados</A>
 </H1>
 
 <P>
-El lenguaje <!-- MATH
- $\{ a^n b^n c^n / n \in \mathcal{N} \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="131" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img98.png"
- ALT="$ \{ a^n b^n c^n / n \in \mathcal{N} \}$"></SPAN> no puede ser 
-expresado mediante una gramática independiente del contexto.
-
-<P>
 <PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat anbncn.pegjs 
-/*
-  The following parsing expression grammar describes the classic 
-  non-context-free language : 
-               { a^nb^nc^n / n &gt;= 1 }
+$ cat pascal_comments.pegjs 
+/* Pascal nested comments */
 
-            S ← &amp;(A 'c') 'a'+ B !('a'/'b'/'c')
-            A ← 'a' A? 'b'
-            B ← 'b' B? 'c'
-*/
-
-S = &amp;(A 'c') 'a'+ B !('a'/'b'/'c')
-A = 'a' A? 'b'
-B = 'b' B? 'c'
+P     =   prog:N+                          { return prog; }
+N     =   chars:$(!Begin ANY)+             { return chars;}
+        / C
+C     = Begin chars:T* End                 { return chars.join(''); }
+T     =   C 
+        / (!Begin !End char:ANY)           { return char;}
+Begin = '(*'
+End   = '*)'
+ANY   =   'z'    /* any character */       { return 'z';  }
+        / char:[^z]                        { return char; }
 </PRE>
 
 <P>
-Este ejemplo puede ser obtenido desde GitHub:
 <PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ git remote -v
-dmajda  https://github.com/dmajda/pegjs.git (fetch)
-dmajda  https://github.com/dmajda/pegjs.git (push)
-origin  git@github.com:crguezl/pegjs.git (fetch)
-origin  git@github.com:crguezl/pegjs.git (push)
-</PRE>
-
-<P>
-Veamos un ejemplo de uso:
-<PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat use_anbncn.js 
-var PEG = require("./anbncn.js");
-var r = PEG.parse("aabbcc");
+$ cat use_pascal_comments.js 
+var PEG = require("./pascal_comments.js");
+var r = PEG.parse(
+  "not bla bla (* pascal (* nested *) comment *)"+
+  " pum pum (* another comment *)");
 console.log(r);
-
-try {
-  r = PEG.parse("aabbc");
-  console.log(r);
-}
-catch (e) {
-  console.log("Grr...."+e);
-}
 </PRE>
 
 <P>
-Ejecución:
 <PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ ../bin/pegjs anbncn.pegjs 
-
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ node use_anbncn.js 
-[ '', [ 'a', 'a' ], [ 'b', [ 'b', '', 'c' ], 'c' ], '' ]
-Grr....SyntaxError: Expected "c" but end of input found.
+$ ../bin/pegjs pascal_comments.pegjs 
+$ node use_pascal_comments.js 
+[ 'not bla bla ',
+  ' pascal  nested  comment ',
+  ' pum pum ',
+  ' another comment ' ]
 </PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1441"
+<A NAME="tex2html1445"
   HREF="node38.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1435"
+<A NAME="tex2html1439"
   HREF="node28.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1429"
+<A NAME="tex2html1433"
   HREF="node36.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1437"
-  HREF="node97.html">
+<A NAME="tex2html1441"
+  HREF="node98.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1439"
-  HREF="node100.html">
+<A NAME="tex2html1443"
+  HREF="node101.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -246,12 +218,12 @@ Grr....SyntaxError: Expected "c" but end of input found.
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1442"
-  HREF="node38.html">Usando Pegjs con CoffeeScript</A>
-<B>Sup:</B> <A NAME="tex2html1436"
+<B> Sig:</B> <A NAME="tex2html1446"
+  HREF="node38.html">Un Lenguaje Dependiente del</A>
+<B>Sup:</B> <A NAME="tex2html1440"
   HREF="node28.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html1430"
-  HREF="node36.html">Comentarios Anidados</A>
+<B> Ant:</B> <A NAME="tex2html1434"
+  HREF="node36.html">Asociando un else con</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

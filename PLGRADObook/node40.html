@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Práctica: Ambiguedad en C++</TITLE>
-<META NAME="description" CONTENT="Práctica: Ambiguedad en C++">
+<TITLE>Práctica: PL0 ampliado</TITLE>
+<META NAME="description" CONTENT="Práctica: PL0 ampliado">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -28,20 +28,20 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1486"
+<A NAME="tex2html1490"
   HREF="node41.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1480"
+<A NAME="tex2html1484"
   HREF="node28.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1474"
+<A NAME="tex2html1478"
   HREF="node39.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1482"
-  HREF="node97.html">
+<A NAME="tex2html1486"
+  HREF="node98.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1484"
-  HREF="node100.html">
+<A NAME="tex2html1488"
+  HREF="node101.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,205 +92,58 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1487"
-  HREF="node41.html">Práctica: Inventando un Lenguaje:</A>
-<B>Sup:</B> <A NAME="tex2html1481"
+<B> Sig:</B> <A NAME="tex2html1491"
+  HREF="node41.html">Práctica: Ambiguedad en C++</A>
+<B>Sup:</B> <A NAME="tex2html1485"
   HREF="node28.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html1475"
-  HREF="node39.html">Práctica: PL0 ampliado</A>
+<B> Ant:</B> <A NAME="tex2html1479"
+  HREF="node39.html">Usando Pegjs con CoffeeScript</A>
 <B> Con:</B> 
-<A NAME="tex2html1482"
-  HREF="node97.html">
+<A NAME="tex2html1486"
+  HREF="node98.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1484"
-  HREF="node100.html">
+<A NAME="tex2html1488"
+  HREF="node101.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
 <H1><A NAME="SECTION044120000000000000000"></A>
-   <A NAME="4689"></A>
-<BR>
-Práctica: Ambiguedad en C++
-</H1>
+   <A NAME="4692"></A>
   
-This lab illustrates a problem 
-that arises in C++.
-The C++ syntax does not disambiguate between expression
-statements (<code>stmt</code>) and declaration statements (<code>decl</code>). 
-The ambiguity arises when an expression
-statement has a function-style cast as its left-most subexpression.
-Since C does not support function-style casts, this ambiguity does not occur
-in C programs.
-For example, the phrase 
-
-<P>
-<code>int (x) = y+z;</code> 
-
-<P>
-parses as either a <TT>decl</TT> or a <TT>stmt</TT>.
-
-<P>
-The disambiguation rule used in C++ is that <I>if the statement can be interpreted both as a declaration and
-as an expression, the statement is interpreted as a declaration statement.
-</I>
-
-<P>
-The following examples  disambiguate into <I>expression</I> statements when the
-potential <I>declarator</I> is followed by an operator different from equal 
-or semicolon (<TT>type_spec</TT> stands for a type specifier):
-
-<P>
-<DIV ALIGN="CENTER">
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=99>expr</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=128>dec</TD>
-</TR>
-<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=99><PRE>
-type_spec(i)++;      
-type_spec(i,3)&lt;&lt;d;  
-type_spec(i)-&gt;l=24;
-</PRE></TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=128><PRE>
-type_spec(*i)(int); 
-type_spec(j)[5];   
-type_spec(m) = { 1, 2 }; 
-type_spec(a);              
-type_spec(*b)();          
-type_spec(c)=23;         
-type_spec(d),e,f,g=0;   
-type_spec(h)(e,3);
-</PRE></TD>
-</TR>
-</TABLE>
-</DIV>
-
-<P>
-Regarding to this problem, Bjarne Stroustrup remarks:<BLOCKQUOTE><I>Consider analyzing a statement consisting of
-a sequence of tokens as follows:
-</I></BLOCKQUOTE><PRE>
-              type_spec (dec_or_exp) tail
-</PRE><BLOCKQUOTE><I>
-Here <code>dec_or_exp</code> must be a declarator, an expression, 
-or both for the statement to be legal. This implies that <code>tail</code>
-must be a semicolon, something that can follow a 
-parenthesized declarator or something that can follow
-a parenthesized expression, that is, an initializer, <code>const</code>,
-<code>volatile</code>, <code>(</code>, <code>[</code>, or a postfix or infix operator.
-The general cases cannot be resolved without backtracking, nested grammars
-or similar advanced parsing strategies. In particular,
-the lookahead needed to disambiguate this case is not limited.
-</I>
-</BLOCKQUOTE>
-
-<P>
-The following grammar 
-depicts 
-an oversimplified version of the C++ ambiguity:
-
-<P>
-<PRE>
-$ cat CplusplusNested.y 
-%token ID INT NUM
-
-%right '='
-%left '+'
-
-%%
-prog:
-    /* empty */
-  | prog stmt
-;
-
-stmt: 
-    expr ';' 
-  | decl    
-;
-
-expr:
-    ID 
-  | NUM
-  | INT '(' expr ')' /* typecast */ 
-  | expr '+' expr
-  | expr '=' expr
-;
-
-decl:
-    INT declarator ';'
-  | INT declarator '=' expr ';'
-;
-
-declarator:
-    ID 
-  | '(' declarator ')'
-;
-
-%%
-</PRE>
-
-<P>
-Escriba un programa PegJS en CoffeeScript que distinga correctamente entre declaraciones
-y sentencias. Este es un ejemplo de un programa que usa una solución al problema:
-<PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs-coffee-plugin/examples(master)]$ cat use_cplusplus.coffee 
-PEG = require("./cplusplus.js")
-input = "int (a); int c = int (b);"
-
-r = PEG.parse(input)
-console.log("input = '#{input}'\noutput="+JSON.stringify r)
-
-input = "int b = 4+2  ;  "
-r = PEG.parse(input)
-console.log("input = '#{input}'\noutput="+JSON.stringify r)
-
-input = "bum = caf = 4-1;\n"
-r = PEG.parse(input)
-console.log("input = '#{input}'\noutput="+JSON.stringify r)
-
-input = "b2 = int(4);"
-r = PEG.parse(input)
-console.log("input = '#{input}'\noutput="+JSON.stringify r)
-
-input = "int(4);"
-r = PEG.parse(input)
-console.log("input = '#{input}'\noutput="+JSON.stringify r)
-</PRE>
-Y este un ejemplo de salida:
-<PRE>
-$ pegcoffee cplusplus.pegjs 
-$ coffee use_cplusplus.coffee 
-input = 'int (a); int c = int (b);'
-output=["decl","decl"]
-input = 'int b = 4+2  ;  '
-output=["decl"]
-input = 'bum = caf = 4-1;
-'
-output=["stmt"]
-input = 'b2 = int(4);'
-output=["stmt"]
-input = 'int(4);'
-output=["stmt"]
-</PRE>
+<A NAME="practica:pl0ampliado"></A>
+<BR>
+Práctica: PL0 ampliado
+</H1>
+Reescriba el analizador sintáctico del lenguaje PL0 
+realizado en la práctica 
+<A HREF="node24.html#practica:pl0">2.6</A>
+usando  <A NAME="tex2html196"
+  HREF="http://pegjs.majda.cz/">PEG.js</A>
+.
+Modifique <code>block</code> y <code>statement</code> para que los 
+<code>procedure</code> reciban argumentos y las llamadas 
+a procedimiento puedan pasar argumentos.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1486"
+<A NAME="tex2html1490"
   HREF="node41.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1480"
+<A NAME="tex2html1484"
   HREF="node28.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1474"
+<A NAME="tex2html1478"
   HREF="node39.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1482"
-  HREF="node97.html">
+<A NAME="tex2html1486"
+  HREF="node98.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1484"
-  HREF="node100.html">
+<A NAME="tex2html1488"
+  HREF="node101.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -341,12 +194,12 @@ output=["stmt"]
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1487"
-  HREF="node41.html">Práctica: Inventando un Lenguaje:</A>
-<B>Sup:</B> <A NAME="tex2html1481"
+<B> Sig:</B> <A NAME="tex2html1491"
+  HREF="node41.html">Práctica: Ambiguedad en C++</A>
+<B>Sup:</B> <A NAME="tex2html1485"
   HREF="node28.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html1475"
-  HREF="node39.html">Práctica: PL0 ampliado</A>
+<B> Ant:</B> <A NAME="tex2html1479"
+  HREF="node39.html">Usando Pegjs con CoffeeScript</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

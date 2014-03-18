@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Usando Pegjs con CoffeeScript</TITLE>
-<META NAME="description" CONTENT="Usando Pegjs con CoffeeScript">
+<TITLE>Un Lenguaje Dependiente del Contexto</TITLE>
+<META NAME="description" CONTENT="Un Lenguaje Dependiente del Contexto">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -28,20 +28,20 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1455"
+<A NAME="tex2html1459"
   HREF="node39.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1449"
+<A NAME="tex2html1453"
   HREF="node28.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1443"
+<A NAME="tex2html1447"
   HREF="node37.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1451"
-  HREF="node97.html">
+<A NAME="tex2html1455"
+  HREF="node98.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1453"
-  HREF="node100.html">
+<A NAME="tex2html1457"
+  HREF="node101.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,145 +92,110 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1456"
-  HREF="node39.html">Práctica: PL0 ampliado</A>
-<B>Sup:</B> <A NAME="tex2html1450"
+<B> Sig:</B> <A NAME="tex2html1460"
+  HREF="node39.html">Usando Pegjs con CoffeeScript</A>
+<B>Sup:</B> <A NAME="tex2html1454"
   HREF="node28.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html1444"
-  HREF="node37.html">Un Lenguaje Dependiente del</A>
+<B> Ant:</B> <A NAME="tex2html1448"
+  HREF="node37.html">Comentarios Anidados</A>
 <B> Con:</B> 
-<A NAME="tex2html1451"
-  HREF="node97.html">
+<A NAME="tex2html1455"
+  HREF="node98.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1453"
-  HREF="node100.html">
+<A NAME="tex2html1457"
+  HREF="node101.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
-
-<UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html1457"
-  HREF="node38.html#SECTION044100010000000000000">Instalación de pegjs-coffee-plugin</A>
-<LI><A NAME="tex2html1458"
-  HREF="node38.html#SECTION044100020000000000000">Ejemplo Sencillo</A>
-<LI><A NAME="tex2html1459"
-  HREF="node38.html#SECTION044100030000000000000">Véase También</A>
-</UL></UL></UL>
-<!--End of Table of Child-Links-->
-<HR>
 
 <H1><A NAME="SECTION044100000000000000000">
-Usando Pegjs con CoffeeScript</A>
+Un Lenguaje Dependiente del Contexto</A>
 </H1>
 
 <P>
+El lenguaje <!-- MATH
+ $\{ a^n b^n c^n / n \in \mathcal{N} \}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="131" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img98.png"
+ ALT="$ \{ a^n b^n c^n / n \in \mathcal{N} \}$"></SPAN> no puede ser 
+expresado mediante una gramática independiente del contexto.
 
-<H4><A NAME="SECTION044100010000000000000">
-Instalación de pegjs-coffee-plugin</A>
-</H4>
-  
-
+<P>
 <PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ sudo  npm install -g pegjs-coffee-plugin
+[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat anbncn.pegjs 
+/*
+  The following parsing expression grammar describes the classic 
+  non-context-free language : 
+               { a^nb^nc^n / n &gt;= 1 }
+
+            S ← &amp;(A 'c') 'a'+ B !('a'/'b'/'c')
+            A ← 'a' A? 'b'
+            B ← 'b' B? 'c'
+*/
+
+S = &amp;(A 'c') 'a'+ B !('a'/'b'/'c')
+A = 'a' A? 'b'
+B = 'b' B? 'c'
 </PRE>
 
 <P>
-
-<H4><A NAME="SECTION044100020000000000000">
-Ejemplo Sencillo</A>
-</H4>
-  
-
+Este ejemplo puede ser obtenido desde GitHub:
 <PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs-coffee-plugin/examples(master)]$ cat simple.pegjs 
-{ 
-  @reduce = (left, right)-&gt;  
-    sum = left
-    for t in right
-      op = t[0]
-      num = t[1]
-      switch op 
-        when '+' then sum += num; break
-        when '-' then sum -= num; break
-        when '*' then sum *= num; break
-        when '/' then sum /= num; break
-        else console.log("Error! "+op)
-    sum
-  
+[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ git remote -v
+dmajda  https://github.com/dmajda/pegjs.git (fetch)
+dmajda  https://github.com/dmajda/pegjs.git (push)
+origin  git@github.com:crguezl/pegjs.git (fetch)
+origin  git@github.com:crguezl/pegjs.git (push)
+</PRE>
+
+<P>
+Veamos un ejemplo de uso:
+<PRE>
+[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat use_anbncn.js 
+var PEG = require("./anbncn.js");
+var r = PEG.parse("aabbcc");
+console.log(r);
+
+try {
+  r = PEG.parse("aabbc");
+  console.log(r);
 }
-sum   = left:product right:([+-] product)* { @reduce(left, right); }
-product = left:value right:([*/] value)*   { @reduce(left, right); }
-value   = number:[0-9]+                    { parseInt(number.join(''),10) }
-        / '(' sum:sum ')'                  { sum }
+catch (e) {
+  console.log("Grr...."+e);
+}
 </PRE>
 
 <P>
+Ejecución:
 <PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs-coffee-plugin/examples(master)]$  cat use_simple.coffee 
-PEG = require("./simple.js")
-r = PEG.parse("2+3*(2+1)-10/2")
-console.log(r)
+[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ ../bin/pegjs anbncn.pegjs 
+
+[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ node use_anbncn.js 
+[ '', [ 'a', 'a' ], [ 'b', [ 'b', '', 'c' ], 'c' ], '' ]
+Grr....SyntaxError: Expected "c" but end of input found.
 </PRE>
-
-<P>
-<PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs-coffee-plugin/examples(master)]$ cat Rakefile 
-
-task :default do 
-  sh "pegcoffee simple.pegjs"
-end
-
-task :run do
-  sh "coffee use_simple.coffee"
-end
-</PRE>
-
-<P>
-<PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs-coffee-plugin/examples(master)]$ rake
-pegcoffee simple.pegjs
-[~/Dropbox/src/javascript/PLgrado/pegjs-coffee-plugin/examples(master)]$ rake run
-coffee use_simple.coffee
-6
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION044100030000000000000">
-Véase También</A>
-</H4>
-  
-
-<UL>
-<LI><A NAME="tex2html195"
-  HREF="https://github.com/Dignifiedquire/pegjs-coffee-plugin">pegjs-coffee-plugin</A>
-en GitHub
-</LI>
-</UL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1455"
+<A NAME="tex2html1459"
   HREF="node39.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1449"
+<A NAME="tex2html1453"
   HREF="node28.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1443"
+<A NAME="tex2html1447"
   HREF="node37.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1451"
-  HREF="node97.html">
+<A NAME="tex2html1455"
+  HREF="node98.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1453"
-  HREF="node100.html">
+<A NAME="tex2html1457"
+  HREF="node101.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -281,12 +246,12 @@ en GitHub
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1456"
-  HREF="node39.html">Práctica: PL0 ampliado</A>
-<B>Sup:</B> <A NAME="tex2html1450"
+<B> Sig:</B> <A NAME="tex2html1460"
+  HREF="node39.html">Usando Pegjs con CoffeeScript</A>
+<B>Sup:</B> <A NAME="tex2html1454"
   HREF="node28.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html1444"
-  HREF="node37.html">Un Lenguaje Dependiente del</A>
+<B> Ant:</B> <A NAME="tex2html1448"
+  HREF="node37.html">Comentarios Anidados</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
