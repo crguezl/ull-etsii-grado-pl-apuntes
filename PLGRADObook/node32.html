@@ -28,19 +28,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1377"
+<A NAME="tex2html1378"
   HREF="node33.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1371"
+<A NAME="tex2html1372"
   HREF="node28.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1365"
+<A NAME="tex2html1366"
   HREF="node31.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1373"
+<A NAME="tex2html1374"
   HREF="node99.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1375"
+<A NAME="tex2html1376"
   HREF="node102.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -92,18 +92,18 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1378"
+<B> Sig:</B> <A NAME="tex2html1379"
   HREF="node33.html">PegJS en los Browser</A>
-<B>Sup:</B> <A NAME="tex2html1372"
+<B>Sup:</B> <A NAME="tex2html1373"
   HREF="node28.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html1366"
+<B> Ant:</B> <A NAME="tex2html1367"
   HREF="node31.html">Un Ejemplo Sencillo</A>
 <B> Con:</B> 
-<A NAME="tex2html1373"
+<A NAME="tex2html1374"
   HREF="node99.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1375"
+<A NAME="tex2html1376"
   HREF="node102.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
@@ -115,6 +115,10 @@ Acciones Intermedias</A>
 </H1>
 
 <P>
+Supongamos que queremos poner una acción semántica intermedia
+en un programa  <A NAME="tex2html195"
+  HREF="http://pegjs.majda.cz/">PEG.js</A>
+:
 <PRE>
 [~/srcPLgrado/pegjs/examples(master)]$ cat direct_intermedia.pegjs 
 a = 'a'+ { console.log("acción intermedia"); } 'b'+ { 
@@ -122,14 +126,12 @@ a = 'a'+ { console.log("acción intermedia"); } 'b'+ {
                      return "hello world!";
                    }
 </PRE>
-
-<P>
+Al compilar nos da un mensjae de error:
 <PRE>
 [~/srcPLgrado/pegjs/examples(master)]$ pegjs direct_intermedia.pegjs 
 1:48: Expected "/", ";", end of input or identifier but "'" found.
 </PRE>
-
-<P>
+La solución consiste en introducir una variable sintáctica en medio que derive a la palabra vacía y que tenga asociada la correspondiente acción semántica:
 <PRE>
 [~/srcPLgrado/pegjs/examples(master)]$ cat intermedia.pegjs 
 a = 'a'+ temp 'b'+ { 
@@ -138,8 +140,7 @@ a = 'a'+ temp 'b'+ {
                    }
 temp = { console.log("acción intermedia"); }
 </PRE>
-
-<P>
+Este es el progrma que usa el parser generado:
 <PRE>
 [~/srcPLgrado/pegjs/examples(master)]$ cat main_intermedia.js 
 var parser = require("intermedia");
@@ -147,8 +148,7 @@ var input = process.argv[2] || 'aabb';
 var result = parser.parse(input);
 console.log(result);
 </PRE>
-
-<P>
+al ejecutar tenemos:
 <PRE>
 [~/srcPLgrado/pegjs/examples(master)]$ pegjs intermedia.pegjs 
 [~/srcPLgrado/pegjs/examples(master)]$ node main_intermedia.js 
@@ -160,19 +160,19 @@ hello world!
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1377"
+<A NAME="tex2html1378"
   HREF="node33.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1371"
+<A NAME="tex2html1372"
   HREF="node28.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1365"
+<A NAME="tex2html1366"
   HREF="node31.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1373"
+<A NAME="tex2html1374"
   HREF="node99.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1375"
+<A NAME="tex2html1376"
   HREF="node102.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -224,11 +224,11 @@ hello world!
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1378"
+<B> Sig:</B> <A NAME="tex2html1379"
   HREF="node33.html">PegJS en los Browser</A>
-<B>Sup:</B> <A NAME="tex2html1372"
+<B>Sup:</B> <A NAME="tex2html1373"
   HREF="node28.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html1366"
+<B> Ant:</B> <A NAME="tex2html1367"
   HREF="node31.html">Un Ejemplo Sencillo</A>
 </DIV>
 <!--End of Navigation Panel-->
