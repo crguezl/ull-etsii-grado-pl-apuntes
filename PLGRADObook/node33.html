@@ -124,11 +124,11 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <LI><A NAME="tex2html1397"
   HREF="node33.html#SECTION04450040000000000000">Compilación</A>
 <LI><A NAME="tex2html1398"
-  HREF="node33.html#SECTION04450050000000000000">arithmetic.pegjs</A>
+  HREF="node33.html#SECTION04450050000000000000">calculator.js</A>
 <LI><A NAME="tex2html1399"
-  HREF="node33.html#SECTION04450060000000000000">calculator.html</A>
+  HREF="node33.html#SECTION04450060000000000000">arithmetic.pegjs</A>
 <LI><A NAME="tex2html1400"
-  HREF="node33.html#SECTION04450070000000000000">calculator.js</A>
+  HREF="node33.html#SECTION04450070000000000000">calculator.html</A>
 </UL></UL></UL>
 <!--End of Table of Child-Links-->
 <HR>
@@ -244,6 +244,39 @@ calculator = (function() {
 <P>
 
 <H4><A NAME="SECTION04450050000000000000">
+calculator.js</A>
+</H4>
+  
+
+<PRE>
+[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat calculator.js 
+$(document).ready(function() {
+  $('#eval').click(function() {
+    try {
+      var result = calculator.parse($('#input').val());
+      $('#output').html(result);
+    } catch (e) {
+      $('#output').html('&lt;div class="error"&gt;&lt;pre&gt;\n' + String(e) + '\n&lt;/pre&gt;&lt;/div&gt;');
+    }
+  });
+
+  $("#examples").change(function(ev) {
+    var f = ev.target.files[0]; 
+    var r = new FileReader();
+    r.onload = function(e) { 
+      var contents = e.target.result;
+      
+      input.innerHTML = contents;
+    }
+    r.readAsText(f);
+  });
+
+});
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION04450060000000000000">
 arithmetic.pegjs</A>
 </H4>
   
@@ -288,7 +321,7 @@ NUMBER = _ digits:$[0-9]+ _ { return parseInt(digits, 10); }
 
 <P>
 
-<H4><A NAME="SECTION04450060000000000000">
+<H4><A NAME="SECTION04450070000000000000">
 calculator.html</A>
 </H4>
   
@@ -337,39 +370,6 @@ calculator.html</A>
 <P>
 
 <img src="pegjs.png">
-
-<P>
-
-<H4><A NAME="SECTION04450070000000000000">
-calculator.js</A>
-</H4>
-  
-
-<PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat calculator.js 
-$(document).ready(function() {
-  $('#eval').click(function() {
-    try {
-      var result = calculator.parse($('#input').val());
-      $('#output').html(result);
-    } catch (e) {
-      $('#output').html('&lt;div class="error"&gt;&lt;pre&gt;\n' + String(e) + '\n&lt;/pre&gt;&lt;/div&gt;');
-    }
-  });
-
-  $("#examples").change(function(ev) {
-    var f = ev.target.files[0]; 
-    var r = new FileReader();
-    r.onload = function(e) { 
-      var contents = e.target.result;
-      
-      input.innerHTML = contents;
-    }
-    r.readAsText(f);
-  });
-
-});
-</PRE>
 
 <P>
 
