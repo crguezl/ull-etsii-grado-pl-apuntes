@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Configuration</TITLE>
-<META NAME="description" CONTENT="Configuration">
+<TITLE>Troubleshooting</TITLE>
+<META NAME="description" CONTENT="Troubleshooting">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -28,20 +28,20 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html2402"
+<A NAME="tex2html2401"
   HREF="node85.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2396"
+<A NAME="tex2html2395"
   HREF="node80.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2390"
+<A NAME="tex2html2389"
   HREF="node83.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2398"
-  HREF="node104.html">
+<A NAME="tex2html2397"
+  HREF="node105.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2400"
-  HREF="node107.html">
+<A NAME="tex2html2399"
+  HREF="node108.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,90 +92,236 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2403"
-  HREF="node85.html">Make Heroku run non-master</A>
-<B>Sup:</B> <A NAME="tex2html2397"
+<B> Sig:</B> <A NAME="tex2html2402"
+  HREF="node85.html">Configuration</A>
+<B>Sup:</B> <A NAME="tex2html2396"
   HREF="node80.html">Heroku</A>
-<B> Ant:</B> <A NAME="tex2html2391"
-  HREF="node83.html">Troubleshooting</A>
+<B> Ant:</B> <A NAME="tex2html2390"
+  HREF="node83.html">Heroku Postgress</A>
 <B> Con:</B> 
-<A NAME="tex2html2398"
-  HREF="node104.html">
+<A NAME="tex2html2397"
+  HREF="node105.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html2400"
-  HREF="node107.html">
+<A NAME="tex2html2399"
+  HREF="node108.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html2403"
+  HREF="node84.html#SECTION06140010000000000000">Failed to require a sourcefile</A>
+<LI><A NAME="tex2html2404"
+  HREF="node84.html#SECTION06140020000000000000">Encoding error</A>
+<LI><A NAME="tex2html2405"
+  HREF="node84.html#SECTION06140030000000000000">Missing a gem</A>
+<LI><A NAME="tex2html2406"
+  HREF="node84.html#SECTION06140040000000000000">Runtime dependencies on development/test gems</A>
+<LI><A NAME="tex2html2407"
+  HREF="node84.html#SECTION06140050000000000000">Versiones soportadas por Heroku</A>
+<LI><A NAME="tex2html2408"
+  HREF="node84.html#SECTION06140060000000000000">Rack::Sendfile</A>
+</UL></UL></UL>
+<!--End of Table of Child-Links-->
+<HR>
 
 <H1><A NAME="SECTION06140000000000000000">
-Configuration</A>
+Troubleshooting</A>
 </H1>
+
+<P>
+If you push your app and it crashes, 
+<code>heroku ps</code> shows state crashed:
 <PRE>
-[~/sinatra/sinatra-datamapper-jump-start(master)]$ heroku help config 
-Usage: heroku config
-
- display the config vars for an app
-
- -s, --shell  # output config vars in shell format
-
-Examples:
-
- $ heroku config
- A: one
- B: two
-
- $ heroku config --shell
- A=one
- B=two
-
-Additional commands, type "heroku help COMMAND" for more details:
-
-  config:get KEY                            #  display a config value for an app
-  config:set KEY1=VALUE1 [KEY2=VALUE2 ...]  #  set one or more config vars
-  config:unset KEY1 [KEY2 ...]              #  unset one or more config vars
+=== web (1X): `bundle exec thin start -R config.ru -e $RACK_ENV -p $PORT`
+web.1: crashed 2013/10/24 20:21:34 (~ 1h ago)
 </PRE>
+check your logs to find out what went wrong. 
+
+<P>
+Here are some common
+problems.
+
+<P>
+
+<H4><A NAME="SECTION06140010000000000000">
+Failed to require a sourcefile</A>
+</H4>
+  
+
+<P>
+If your app failed to require a sourcefile, chances are good you’re
+running Ruby 1.9.1 or 1.8 in your local environment. 
+
+<P>
+The load paths
+have changed in Ruby 1.9 which applies to Ruby 2.0. 
+
+<P>
+Port your app
+forward to Ruby 2.0.0 making certain it works locally before trying
+to push to Cedar again.
+
+<P>
+
+<H4><A NAME="SECTION06140020000000000000">
+Encoding error</A>
+</H4>
+  
+
+Ruby 1.9 added more sophisticated encoding support to the language
+which applies to Ruby 2.0. 
+
+<P>
+Not all gems work with Ruby 2.0. If you
+hit an encoding error, you probably haven’t fully tested your app
+with Ruby 2.0.0 in your local environment. 
+
+<P>
+Port your app forward
+to Ruby 2.0.0 making certain it works locally before trying to push
+to Cedar again.
+
+<P>
+
+<H4><A NAME="SECTION06140030000000000000">
+Missing a gem</A>
+</H4>
+  
+
+<P>
+If your app crashes due to missing a gem, you may have it installed
+locally but not specified in your Gemfile. 
+
+<P>
+You must isolate all
+local testing using <code>bundle exec</code>. 
+
+<P>
+For example, don’t run <code>ruby web.rb</code>,
+run 
 
 <P>
 <PRE>
-[~/sinatra/sinatra-datamapper-jump-start(master)]$ heroku config -s
-DATABASE_URL=postgres://bhhatrhjjhwcvt:hjgjfhgjfhjfuWH7ls_PJKK5QD@ec2-54-204-35-132.compute-1.amazonaws.com:5999/d2888888888888
-HEROKU_POSTGRESQL_BLACK_URL=postgres://bhjshfdhakwcvt:hQssnhq1y1jhgfhgls_PGNu5QD@ec2-54-204-35-132.compute-1.amazonaws.com:9999/d555555555555j
+bundle exec ruby web.rb
+</PRE>
+Don’t run <code>rake db:migrate</code>, run 
+<PRE>
+bundle exec rake db:migrate.
+</PRE>
+Another approach is to create a blank RVM gemset to be absolutely
+sure you’re not touching any system-installed gems:
+<PRE>
+$ rvm gemset create myapp
+$ rvm gemset use myapp
 </PRE>
 
 <P>
-<PRE>
-[~/sinatra/sinatra-datamapper-jump-start(master)]$ heroku config:set C=4
-Setting config vars and restarting crguezl-songs... done, v6
-C: 4
-[~/sinatra/sinatra-datamapper-jump-start(master)]$ heroku config:get C
-4
-[~/sinatra/sinatra-datamapper-jump-start(master)]$ heroku config:unset C
-Unsetting C and restarting crguezl-songs... done, v7
-[~/sinatra/sinatra-datamapper-jump-start(master)]$ heroku config:get C
 
-[~/sinatra/sinatra-datamapper-jump-start(master)]$]]
+<H4><A NAME="SECTION06140040000000000000">
+Runtime dependencies on development/test gems</A>
+</H4>
+  
+
+<P>
+If you’re still missing a gem when you deploy, check your Bundler
+groups.
+
+<P>
+Heroku builds your app without the <code>development</code> or <code>test</code>
+groups, and if you app depends on a gem from one of these groups
+to run, you should move it out of the group.
+
+<P>
+One common example using the <code>RSpec tasks</code> in your Rakefile. 
+If you see this in your Heroku deploy:
+<PRE>
+$ heroku run rake -T
+Running `rake -T` attached to terminal... up, ps.3
+rake aborted!
+no such file to load -- rspec/core/rake_task
 </PRE>
+Then you’ve hit this problem. 
+
+<P>
+First, duplicate the problem locally like so:
+<PRE>
+$ bundle install --without development:test
+...
+$ bundle exec rake -T
+rake aborted!
+no such file to load -- rspec/core/rake_task
+</PRE>
+Now you can fix it by making these Rake tasks conditional on the gem load. 
+For example:
+<PRE>
+begin
+  require "rspec/core/rake_task"
+
+  desc "Run all examples"
+  RSpec::Core::RakeTask.new(:spec) do |t|
+    t.rspec_opts = %w[--color]
+    t.pattern = 'spec/*_spec.rb'
+  end
+rescue LoadError
+end
+</PRE>
+Confirm it works locally, then push to Heroku.
+
+<P>
+
+<H4><A NAME="SECTION06140050000000000000">
+Versiones soportadas por Heroku</A>
+</H4>
+  
+
+<P>
+Véase
+<A NAME="tex2html297"
+  HREF="https://devcenter.heroku.com/articles/ruby-support#ruby-versions">Heroku Ruby Support</A>
+<P>
+
+<H4><A NAME="SECTION06140060000000000000">
+Rack::Sendfile</A>
+</H4>
+  
+
+<P>
+Heroku does not support the use of Rack::Sendfile. 
+
+<P>
+Rack:Sendfile
+usually requires that there is a frontend webserver like nginx or
+apache is running on the same machine as the application server.
+
+<P>
+This is not how Heroku is architected. Using the Rack::Sendfile
+middleware will cause your file downloads to fail since it will
+send a body with Content-Length of 0.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html2402"
+<A NAME="tex2html2401"
   HREF="node85.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2396"
+<A NAME="tex2html2395"
   HREF="node80.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2390"
+<A NAME="tex2html2389"
   HREF="node83.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2398"
-  HREF="node104.html">
+<A NAME="tex2html2397"
+  HREF="node105.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2400"
-  HREF="node107.html">
+<A NAME="tex2html2399"
+  HREF="node108.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -226,12 +372,12 @@ Unsetting C and restarting crguezl-songs... done, v7
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2403"
-  HREF="node85.html">Make Heroku run non-master</A>
-<B>Sup:</B> <A NAME="tex2html2397"
+<B> Sig:</B> <A NAME="tex2html2402"
+  HREF="node85.html">Configuration</A>
+<B>Sup:</B> <A NAME="tex2html2396"
   HREF="node80.html">Heroku</A>
-<B> Ant:</B> <A NAME="tex2html2391"
-  HREF="node83.html">Troubleshooting</A>
+<B> Ant:</B> <A NAME="tex2html2390"
+  HREF="node83.html">Heroku Postgress</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
