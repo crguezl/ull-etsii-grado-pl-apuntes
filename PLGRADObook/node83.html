@@ -270,6 +270,18 @@ Establish primary DB</A>
 Heroku recommends using the <code>DATABASE_URL</code> config var to store
 the location
 of your primary database. 
+<PRE>
+[~/srcPLgrado/pegjscalc(master)]$ head main.rb 
+require 'sinatra'
+require "sinatra/reloader" if development?
+require 'sinatra/flash'
+require 'data_mapper'
+require 'pp'
+
+# full path!
+DataMapper.setup(:default, 
+                 ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/database.db" )
+</PRE>
 
 <P>
 In single-database setups your new database
