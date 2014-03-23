@@ -28,19 +28,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html2400"
+<A NAME="tex2html2402"
   HREF="node84.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2394"
+<A NAME="tex2html2396"
   HREF="node80.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2388"
+<A NAME="tex2html2390"
   HREF="node82.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2396"
+<A NAME="tex2html2398"
   HREF="node105.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2398"
+<A NAME="tex2html2400"
   HREF="node108.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -92,18 +92,18 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2401"
+<B> Sig:</B> <A NAME="tex2html2403"
   HREF="node84.html">Troubleshooting</A>
-<B>Sup:</B> <A NAME="tex2html2395"
+<B>Sup:</B> <A NAME="tex2html2397"
   HREF="node80.html">Heroku</A>
-<B> Ant:</B> <A NAME="tex2html2389"
+<B> Ant:</B> <A NAME="tex2html2391"
   HREF="node82.html">Logging</A>
 <B> Con:</B> 
-<A NAME="tex2html2396"
+<A NAME="tex2html2398"
   HREF="node105.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html2398"
+<A NAME="tex2html2400"
   HREF="node108.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
@@ -115,18 +115,22 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <UL CLASS="ChildLinks">
 <LI><UL>
 <LI><UL>
-<LI><A NAME="tex2html2402"
-  HREF="node83.html#SECTION06130010000000000000">Provisioning the add-on</A>
-<LI><A NAME="tex2html2403"
-  HREF="node83.html#SECTION06130020000000000000">Create new db</A>
 <LI><A NAME="tex2html2404"
-  HREF="node83.html#SECTION06130030000000000000">Establish primary DB</A>
+  HREF="node83.html#SECTION06130010000000000000">Provisioning the add-on</A>
 <LI><A NAME="tex2html2405"
-  HREF="node83.html#SECTION06130040000000000000">pg:info</A>
+  HREF="node83.html#SECTION06130020000000000000">Create new db</A>
 <LI><A NAME="tex2html2406"
-  HREF="node83.html#SECTION06130050000000000000">pg:psql</A>
+  HREF="node83.html#SECTION06130030000000000000">Establish primary DB</A>
 <LI><A NAME="tex2html2407"
+  HREF="node83.html#SECTION06130040000000000000">pg:info</A>
+<LI><A NAME="tex2html2408"
+  HREF="node83.html#SECTION06130050000000000000">pg:psql</A>
+<LI><A NAME="tex2html2409"
   HREF="node83.html#SECTION06130060000000000000">pg:reset</A>
+<LI><A NAME="tex2html2410"
+  HREF="node83.html#SECTION06130070000000000000">pg:pull</A>
+<LI><A NAME="tex2html2411"
+  HREF="node83.html#SECTION06130080000000000000">pg:push</A>
 </UL></UL></UL>
 <!--End of Table of Child-Links-->
 <HR>
@@ -420,20 +424,72 @@ Es necesario a continuación rearrancar el servidor:
 [~/srcPLgrado/pegjscalc(master)]$ heroku ps:restart
 Restarting dynos... done
 </PRE>
+
+<P>
+
+<H4><A NAME="SECTION06130070000000000000">
+pg:pull</A>
+</H4>
+  
+
+<code>pg:pull</code> can be used to pull remote data from a Heroku Postgres
+database to a database on your local machine. The command looks like this:
+<PRE>
+[~/srcPLgrado/pegjscalc(master)]$ pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
+server starting
+</PRE>
+
+<P>
+<PRE>
+$ heroku pg:pull HEROKU_POSTGRESQL_MAGENTA mylocaldb --app sushi
+</PRE>
+This command will create a new local database named <code>mylocaldb</code> and
+then pull data from database at <code>DATABASE_URL</code> from the app 
+<code>sushi</code>. 
+
+<P>
+In
+order to prevent accidental data overwrites and loss, the local database
+must not exist. You will be prompted to drop an already existing local
+database before proceeding.
+
+<P>
+
+<H4><A NAME="SECTION06130080000000000000">
+pg:push</A>
+</H4>
+  
+
+Like pull but in reverse, <code>pg:push</code> will push data from a local
+database into a remote Heroku Postgres database. The command looks
+like this:
+<PRE>
+$ heroku pg:push mylocaldb HEROKU_POSTGRESQL_MAGENTA --app sushi
+</PRE>
+This command will take the local database <code>mylocaldb</code> 
+and push it
+to the database at <code>DATABASE_URL</code> on the app <code>sushi</code>. 
+In order to
+prevent accidental data overwrites and loss, the remote database must
+be empty. You will be prompted to <code>pg:reset</code> an already a remote database
+that is not empty.
+
+<P>
+
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html2400"
+<A NAME="tex2html2402"
   HREF="node84.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2394"
+<A NAME="tex2html2396"
   HREF="node80.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2388"
+<A NAME="tex2html2390"
   HREF="node82.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2396"
+<A NAME="tex2html2398"
   HREF="node105.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2398"
+<A NAME="tex2html2400"
   HREF="node108.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -485,11 +541,11 @@ Restarting dynos... done
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2401"
+<B> Sig:</B> <A NAME="tex2html2403"
   HREF="node84.html">Troubleshooting</A>
-<B>Sup:</B> <A NAME="tex2html2395"
+<B>Sup:</B> <A NAME="tex2html2397"
   HREF="node80.html">Heroku</A>
-<B> Ant:</B> <A NAME="tex2html2389"
+<B> Ant:</B> <A NAME="tex2html2391"
   HREF="node82.html">Logging</A>
 </DIV>
 <!--End of Navigation Panel-->

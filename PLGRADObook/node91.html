@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Introducción al Patrón DataMapper</TITLE>
-<META NAME="description" CONTENT="Introducción al Patrón DataMapper">
+<TITLE>Patterns Active Record y DataMapper</TITLE>
+<META NAME="description" CONTENT="Patterns Active Record y DataMapper">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -28,19 +28,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html2547"
+<A NAME="tex2html2553"
   HREF="node92.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2541"
+<A NAME="tex2html2547"
   HREF="node89.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2535"
+<A NAME="tex2html2541"
   HREF="node90.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2543"
+<A NAME="tex2html2549"
   HREF="node105.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2545"
+<A NAME="tex2html2551"
   HREF="node108.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -92,27 +92,110 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2548"
+<B> Sig:</B> <A NAME="tex2html2554"
   HREF="node92.html">Ejemplo de Uso de</A>
-<B>Sup:</B> <A NAME="tex2html2542"
+<B>Sup:</B> <A NAME="tex2html2548"
   HREF="node89.html">DataMapper</A>
-<B> Ant:</B> <A NAME="tex2html2536"
+<B> Ant:</B> <A NAME="tex2html2542"
   HREF="node90.html">Introducción a Los Object</A>
 <B> Con:</B> 
-<A NAME="tex2html2543"
+<A NAME="tex2html2549"
   HREF="node105.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html2545"
+<A NAME="tex2html2551"
   HREF="node108.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html2555"
+  HREF="node91.html#SECTION06220010000000000000">Active Record</A>
+<LI><A NAME="tex2html2556"
+  HREF="node91.html#SECTION06220020000000000000">DataMapper</A>
+</UL></UL></UL>
+<!--End of Table of Child-Links-->
+<HR>
 
 <H1><A NAME="SECTION06220000000000000000">
-Introducción al Patrón DataMapper</A>
+Patterns Active Record y  DataMapper</A>
 </H1>
+
+<P>
+
+<H4><A NAME="SECTION06220010000000000000">
+Active Record</A>
+</H4>
+  
+
+In software engineering, the active record pattern is an architectural
+pattern found in software that stores its data in relational databases. It
+was named by Martin Fowler in his 2003 book <I>Patterns of Enterprise
+Application Architecture</I>. 
+
+<P>
+The interface of an object conforming to
+this pattern would include functions such as 
+
+<UL>
+<LI>Insert, 
+</LI>
+<LI>Update, and 
+</LI>
+<LI>Delete,
+</LI>
+</UL>
+plus properties that correspond more or less directly to the columns in
+the underlying database table.
+
+<P>
+Active record is an approach to accessing data in a database. 
+
+<P>
+A database
+table or view is wrapped into a class. 
+
+<P>
+Thus, an object instance is tied
+to a single row in the table. 
+
+<P>
+After creation of an object, a new row is
+added to the table upon save. 
+
+<P>
+Any object loaded gets its information
+from the database. 
+
+<P>
+When an object is updated the corresponding row in
+the table is also updated. 
+
+<P>
+The wrapper class implements accessor methods
+or properties for each column in the table or view.
+
+<P>
+This pattern is commonly used by object persistence tools, and in
+object-relational mapping (ORM). 
+
+<P>
+Typically, foreign key relationships will
+be exposed as an object instance of the appropriate type via a property.
+
+<P>
+
+<H4><A NAME="SECTION06220020000000000000">
+DataMapper</A>
+</H4>
+  
+
 Martin Fowler 
 (<A NAME="tex2html317"
   HREF="http://martinfowler.com/eaaCatalog/index.html">Catalog of Patterns of Enterprise Application Architecture</A>):
@@ -141,7 +224,7 @@ transfer becomes a complexity in its own right.
 know about the relational database structure, changes in
 one tend to ripple to the other.
 </LI>
-<LI>The <A NAME="9311"></A><SPAN  CLASS="textbf">Data Mapper</SPAN> is a layer of software that separates the in-memory
+<LI>The <A NAME="9350"></A><SPAN  CLASS="textbf">Data Mapper</SPAN> is a layer of software that separates the in-memory
 objects from the database. 
 </LI>
 <LI><SPAN  CLASS="textbf">Its responsibility is to transfer data between
@@ -184,19 +267,19 @@ en GitHub
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html2547"
+<A NAME="tex2html2553"
   HREF="node92.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2541"
+<A NAME="tex2html2547"
   HREF="node89.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2535"
+<A NAME="tex2html2541"
   HREF="node90.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2543"
+<A NAME="tex2html2549"
   HREF="node105.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2545"
+<A NAME="tex2html2551"
   HREF="node108.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -248,11 +331,11 @@ en GitHub
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2548"
+<B> Sig:</B> <A NAME="tex2html2554"
   HREF="node92.html">Ejemplo de Uso de</A>
-<B>Sup:</B> <A NAME="tex2html2542"
+<B>Sup:</B> <A NAME="tex2html2548"
   HREF="node89.html">DataMapper</A>
-<B> Ant:</B> <A NAME="tex2html2536"
+<B> Ant:</B> <A NAME="tex2html2542"
   HREF="node90.html">Introducción a Los Object</A>
 </DIV>
 <!--End of Navigation Panel-->
