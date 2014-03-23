@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Google+ Sign-In for server-side apps</TITLE>
-<META NAME="description" CONTENT="Google+ Sign-In for server-side apps">
+<TITLE>Configurando la Base de Datos en Heroku con DataMapper. Despliegue</TITLE>
+<META NAME="description" CONTENT="Configurando la Base de Datos en Heroku con DataMapper. Despliegue">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node93.html">
 <LINK REL="previous" HREF="node91.html">
-<LINK REL="up" HREF="node89.html">
+<LINK REL="up" HREF="node88.html">
 <LINK REL="next" HREF="node93.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html2485"
+<A NAME="tex2html2556"
   HREF="node93.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2479"
-  HREF="node89.html">
+<A NAME="tex2html2550"
+  HREF="node88.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2473"
+<A NAME="tex2html2546"
   HREF="node91.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2481"
-  HREF="node99.html">
+<A NAME="tex2html2552"
+  HREF="node104.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2483"
-  HREF="node102.html">
+<A NAME="tex2html2554"
+  HREF="node107.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,69 +91,134 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2486"
-  HREF="node93.html">Authentication using the Google</A>
-<B>Sup:</B> <A NAME="tex2html2480"
-  HREF="node89.html">Google Oauth</A>
-<B> Ant:</B> <A NAME="tex2html2474"
-  HREF="node91.html">Sign-in with Google</A>
+<B> Sig:</B> <A NAME="tex2html2557"
+  HREF="node93.html">Slim</A>
+<B>Sup:</B> <A NAME="tex2html2551"
+  HREF="node88.html">DataMapper</A>
+<B> Ant:</B> <A NAME="tex2html2547"
+  HREF="node91.html">Ejemplo de Uso de</A>
 <B> Con:</B> 
-<A NAME="tex2html2481"
-  HREF="node99.html">
+<A NAME="tex2html2552"
+  HREF="node104.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html2483"
-  HREF="node102.html">
+<A NAME="tex2html2554"
+  HREF="node107.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION06330000000000000000">
-Google+ Sign-In for server-side apps</A>
+<H1><A NAME="SECTION06240000000000000000">
+Configurando la Base de Datos en Heroku con DataMapper. Despliegue</A>
 </H1>
 
 <P>
-To take advantage of all of the benefits of Google+ Sign-In you must
-use a hybrid server-side flow where a user authorizes your app on the
-client side using the JavaScript API client and you send a
-special one-time authorization code to your server. 
+<A NAME="tex2html325"
+  HREF="https://devcenter.heroku.com/articles/quickstart">Heroku</A> utiliza la base de datos PostgreSQL y una URL en una variable 
+de entorno <code>ENV['DATABASE_URL']</code>.
 
 <P>
-Your server exchanges this one-time-use code to acquire its own access and
-refresh tokens from Google for the server to be able to make its own API
-calls, which can be done while the user is offline. 
+<PRE>
+configure :development do
+  DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/development.db")
+end
+
+configure :production do
+  DataMapper.setup(:default, ENV['DATABASE_URL'])
+end
+</PRE>
 
 <P>
-This one-time code flow has security advantages over both a pure
-server-side flow and over sending access tokens to your server.
+Estas líneas especifican que se usa SQLite en desarrollo y PostgreSQL en producción.
+Obsérvese que el <code>Gemfile</code> debe estar coherente:
+<PRE>
+[~/sinatra/sinatra-datamapper-jump-start(master)]$ cat Gemfile
+source 'https://rubygems.org'
+gem "sinatra"
+gem "slim"
+gem "sass"
+gem "dm-core"
+gem "dm-migrations"
+gem "thin"
+gem "pg", :group =&gt; :production
+gem "dm-postgres-adapter", :group =&gt; :production
+gem "dm-sqlite-adapter", :group =&gt; :development
+</PRE>
+o mejor:
+<PRE>
+group :production do
+    gem "pg"
+    gem "dm-postgres-adapter"
+end
+</PRE>
 
 <P>
-
-<FONT COLOR="#ff0000"> The Google+ Sign-In server-side flow differs from the OAuth 2.0
-for Web server applications flow.</FONT>
+<PRE>
+heroku create ...
+</PRE>
 
 <P>
+<PRE>
+git push heroku master
+</PRE>
 
-<img src="server_side_code_flow.png" />
+<P>
+<PRE>
+heroku open
+</PRE>
+
+<P>
+<PRE>
+heroku logs --source app
+</PRE>
+
+<P>
+Ahora ejecutamos la consola de heroku:
+
+<P>
+<PRE>
+heroku run console
+</PRE>
+lo que nos abre una sesión <code>irb</code>.
+
+<P>
+Ahora creamos la base de datos en <A NAME="tex2html326"
+  HREF="https://devcenter.heroku.com/articles/quickstart">Heroku</A>:
+<PRE>
+[~/sinatra/sinatra-datamapper-jump-start(master)]$ heroku run console
+Running `console` attached to terminal... up, run.8011
+irb(main):001:0&gt; require './main'
+=&gt; true
+irb(main):002:0&gt; DataMapper.auto_migrate!
+=&gt; #&lt;DataMapper::DescendantSet:0x007fb89c878230 @descendants=#&lt;DataMapper::SubjectSet:0x007fb89c8781b8 @entries=#&lt;DataMapper::OrderedSet:0x007fb89c878190 @cache=#&lt;DataMapper::SubjectSet::NameCache:0x007fb89c878168 @cache={"Song"=&gt;0}&gt;, @entries=[Song]&gt;&gt;&gt;
+irb(main):003:0&gt;
+</PRE>
+Véase también 
+la practica TicTacToe
+<A HREF="#practica:ticatactoe"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>
+y
+el capítulo <I>Despliegue en Heroku</I> 
+<A HREF="#chapter:despliegueenheroku"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>.
+.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html2485"
+<A NAME="tex2html2556"
   HREF="node93.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2479"
-  HREF="node89.html">
+<A NAME="tex2html2550"
+  HREF="node88.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2473"
+<A NAME="tex2html2546"
   HREF="node91.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2481"
-  HREF="node99.html">
+<A NAME="tex2html2552"
+  HREF="node104.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2483"
-  HREF="node102.html">
+<A NAME="tex2html2554"
+  HREF="node107.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -205,12 +269,12 @@ for Web server applications flow.</FONT>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2486"
-  HREF="node93.html">Authentication using the Google</A>
-<B>Sup:</B> <A NAME="tex2html2480"
-  HREF="node89.html">Google Oauth</A>
-<B> Ant:</B> <A NAME="tex2html2474"
-  HREF="node91.html">Sign-in with Google</A>
+<B> Sig:</B> <A NAME="tex2html2557"
+  HREF="node93.html">Slim</A>
+<B>Sup:</B> <A NAME="tex2html2551"
+  HREF="node88.html">DataMapper</A>
+<B> Ant:</B> <A NAME="tex2html2547"
+  HREF="node91.html">Ejemplo de Uso de</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
