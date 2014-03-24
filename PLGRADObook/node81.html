@@ -144,13 +144,15 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <LI><A NAME="tex2html2396"
   HREF="node81.html#SECTION061100140000000000000">View the logs</A>
 <LI><A NAME="tex2html2397"
-  HREF="node81.html#SECTION061100150000000000000"><FONT COLOR="#ff0000"> heroku run</FONT></A>
+  HREF="node81.html#SECTION061100150000000000000"><FONT COLOR="#ff0000"> heroku run bash</FONT></A>
 <LI><A NAME="tex2html2398"
-  HREF="node81.html#SECTION061100160000000000000">Rake</A>
+  HREF="node81.html#SECTION061100160000000000000"><FONT COLOR="#ff0000"> heroku run console</FONT></A>
 <LI><A NAME="tex2html2399"
-  HREF="node81.html#SECTION061100170000000000000">Using a SQL database</A>
+  HREF="node81.html#SECTION061100170000000000000">Rake</A>
 <LI><A NAME="tex2html2400"
-  HREF="node81.html#SECTION061100180000000000000">Webserver</A>
+  HREF="node81.html#SECTION061100180000000000000">Using a SQL database</A>
+<LI><A NAME="tex2html2401"
+  HREF="node81.html#SECTION061100190000000000000">Webserver</A>
 </UL></UL></UL>
 <!--End of Table of Child-Links-->
 <HR>
@@ -850,7 +852,68 @@ $ heroku logs
 
 <H4><A NAME="SECTION061100150000000000000">
 
-<FONT COLOR="#ff0000"> heroku run</FONT></A>
+<FONT COLOR="#ff0000"> heroku run bash</FONT></A>
+</H4>
+  
+
+Heroku allows you to run commands in a one-off dyno - scripts and
+applications that only need to be executed when needed - using the
+<code>heroku run</code> command. 
+
+<P>
+<PRE>
+~ $ uname -a
+Linux 8f9f0a0c-b10d-4cd5-9c1e-8e87067b6be2 3.8.11-ec2 #1 SMP Fri May 3 09:11:15 UTC 2013 x86_64 GNU/Linux
+[~/srcPLgrado/pegjscalc(master)]$ heroku run bash
+Running `bash` attached to terminal... up, run.2966
+~ $ ls -l
+total 48
+drwx------ 2 u20508 20508 4096 2014-03-24 11:23 bin
+-rw------- 1 u20508 20508   42 2014-03-24 11:23 config.ru
+-rw------- 1 u20508 20508  258 2014-03-24 11:23 Gemfile
+-rw------- 1 u20508 20508 2399 2014-03-24 11:23 Gemfile.lock
+-rw------- 1 u20508 20508 1152 2014-03-24 11:23 main.rb
+-rw------- 1 u20508 20508   43 2014-03-24 11:23 Procfile
+drwx------ 2 u20508 20508 4096 2014-03-24 11:23 public
+-rw------- 1 u20508 20508  492 2014-03-24 11:23 Rakefile
+-rw------- 1 u20508 20508  421 2014-03-24 11:23 README.md
+drwx------ 2 u20508 20508 4096 2014-03-24 11:23 tmp
+drwx------ 5 u20508 20508 4096 2014-03-24 11:23 vendor
+drwx------ 2 u20508 20508 4096 2014-03-24 11:23 views
+</PRE>
+
+<P>
+<PRE>
+~ $ ls -l tmp/
+total 4
+-rw------- 1 u20508 20508 242 2014-03-24 11:23 heroku-buildpack-release-step.yml
+~ $ ls -l vendor
+total 12
+drwx------ 4 u20508 20508 4096 2014-03-20 23:33 bundle
+drwx------ 2 u20508 20508 4096 2014-03-20 23:33 heroku
+drwx------ 6 u20508 20508 4096 2014-03-24 11:23 ruby-2.0.0
+</PRE>
+
+<P>
+<PRE>
+~ $ ls -l bin
+total 0
+lrwxrwxrwx 1 u20508 20508 28 2014-03-24 15:05 erb -&gt; ../vendor/ruby-2.0.0/bin/erb
+lrwxrwxrwx 1 u20508 20508 28 2014-03-24 15:05 gem -&gt; ../vendor/ruby-2.0.0/bin/gem
+lrwxrwxrwx 1 u20508 20508 28 2014-03-24 15:05 irb -&gt; ../vendor/ruby-2.0.0/bin/irb
+lrwxrwxrwx 1 u20508 20508 29 2014-03-24 15:05 rake -&gt; ../vendor/ruby-2.0.0/bin/rake
+lrwxrwxrwx 1 u20508 20508 29 2014-03-24 15:05 rdoc -&gt; ../vendor/ruby-2.0.0/bin/rdoc
+lrwxrwxrwx 1 u20508 20508 27 2014-03-24 15:05 ri -&gt; ../vendor/ruby-2.0.0/bin/ri
+lrwxrwxrwx 1 u20508 20508 29 2014-03-24 15:05 ruby -&gt; ../vendor/ruby-2.0.0/bin/ruby
+lrwxrwxrwx 1 u20508 20508 33 2014-03-24 15:05 ruby.exe -&gt; ../vendor/ruby-2.0.0/bin/ruby.exe
+lrwxrwxrwx 1 u20508 20508 31 2014-03-24 15:05 testrb -&gt; ../vendor/ruby-2.0.0/bin/testrb
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION061100160000000000000">
+
+<FONT COLOR="#ff0000"> heroku run console</FONT></A>
 </H4>
   
 
@@ -882,8 +945,34 @@ $ heroku run console -r ./web
 </OL>
 
 <P>
+<PRE>
+[~/srcPLgrado/pegjscalc(master)]$ heroku run irb
+Running `irb` attached to terminal... up, run.1081
+irb(main):001:0&gt; ENV.keys
+=&gt; ["DATABASE_URL", "SHLVL", "PORT", "HOME", "HEROKU_POSTGRESQL_BROWN_URL", "PS1", "_", "COLUMNS", "RACK_ENV", "TERM", "PATH", "LANG", "GEM_PATH", "PWD", "LINES", "DYNO"]
+irb(main):002:0&gt; ENV["DATABASE_URL"]
+=&gt; "postgres://moiwgreelvvujc:GL3shXGOpURyWOPrS2G8qaxzUe@ec2-23-21-101-129.compute-1.amazonaws.com:5432/dat9smslrg6g0a"
+irb(main):003:0&gt; ENV["HEROKU_POSTGRESQL_BROWN_URL"]
+=&gt; "postgres://moiwgreelvvujc:GL3shXGOpURyWOPrS2G8qaxzUe@ec2-23-21-101-129.compute-1.amazonaws.com:5432/dat9smslrg6g0a"
+irb(main):004:0&gt; 
+[~/srcPLgrado/pegjscalc(master)]$ heroku run console
+Running `console` attached to terminal... up, run.9013
+irb(main):002:0&gt; require './main'
+=&gt; true
+irb(main):003:0&gt; p = PL0Program.all
+=&gt; [#&lt;PL0Program @name="3p2m1" @source="                    3-2-1\r\n          "&gt;, #&lt;PL0Program @name="apbtc" @source="a+b*c"&gt;]
+irb(main):005:0&gt; chuchu = PL0Program.first(:name =&gt; "apbtc")
+=&gt; #&lt;PL0Program @name="apbtc" @source="a+b*c"&gt;
+irb(main):006:0&gt; chuchu.source
+=&gt; "a+b*c"
+irb(main):007:0&gt; prog = PL0Program.create(:name =&gt; "tata", :source =&gt; "3*a-c")
+=&gt; #&lt;PL0Program @name="tata" @source="3*a-c"&gt;
+irb(main):008:0&gt;
+</PRE>
 
-<H4><A NAME="SECTION061100160000000000000">
+<P>
+
+<H4><A NAME="SECTION061100170000000000000">
 Rake</A>
 </H4>
   
@@ -896,7 +985,7 @@ $ heroku run rake db:migrate
 
 <P>
 
-<H4><A NAME="SECTION061100170000000000000">
+<H4><A NAME="SECTION061100180000000000000">
 Using a SQL database</A>
 </H4>
   
@@ -931,7 +1020,7 @@ gem 'pg'
 
 <P>
 
-<H4><A NAME="SECTION061100180000000000000">
+<H4><A NAME="SECTION061100190000000000000">
 Webserver</A>
 </H4>
   
