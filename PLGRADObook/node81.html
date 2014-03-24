@@ -856,7 +856,8 @@ $ heroku logs
 </H4>
   
 
-Heroku allows you to run commands in a one-off dyno - scripts and
+Heroku allows you to run commands in a <A NAME="8824"></A><SPAN  CLASS="textbf">one-off dyno</SPAN> 
+- scripts and
 applications that only need to be executed when needed - using the
 <code>heroku run</code> command. 
 
@@ -873,9 +874,37 @@ is no single place to SSH into.
 You can invoke a shell as a one-off dyno.
 
 <P>
-While the web dyno would be defined in the Procfile and managed by
+While the web dyno would be defined in the <code>Procfile</code> 
+and managed by
 the platform, the console and script would only be executed when
-needed. These are <A NAME="8823"></A><SPAN  CLASS="textbf">one-off dynos</SPAN>.
+needed. These are <A NAME="8828"></A><SPAN  CLASS="textbf">one-off dynos</SPAN>.
+
+<P>
+
+<OL>
+<LI>One-off dynos run attached to your terminal, with a character-by-character
+TCP connection for <code>STDIN</code> and <code>STDOUT</code>. 
+This allows you to use interactive
+processes like a console. 
+</LI>
+<LI>Since <code>STDOUT</code> is going to your terminal, the
+only thing recorded in the app’s logs is the startup and shutdown of
+the dyno.
+</LI>
+<LI>One-off dynos terminate as soon as you press <code>Ctrl-C</code> or otherwise
+disconnect in your local terminal. 
+</LI>
+<LI>One-off dynos never automatically
+restart, whether the process ends on its own or whether you manually
+disconnect.
+</LI>
+<LI>One-off dynos are named in the scheme <code>run.N</code> 
+rather than the scheme <code>&lt;process-type&gt;.N</code>.
+</LI>
+<LI>One-off dynos can never receive HTTP traffic, since the routers only
+routes traffic to dynos named <code>web.N</code>.
+</LI>
+</OL>
 
 <P>
 <PRE>
