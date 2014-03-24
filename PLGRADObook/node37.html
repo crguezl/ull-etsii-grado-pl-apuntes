@@ -115,6 +115,59 @@ Asociando un else con su if mas cercano</A>
 </H1>
 
 <P>
+The dangling else is a problem in computer programming in which an
+optional <code>else clause</code> in an <code>If–then(–else)</code> statement results in nested
+conditionals being ambiguous. 
+
+<P>
+Formally, the reference context-free
+grammar of the language is ambiguous, meaning there is more than one
+correct parse tree.
+
+<P>
+In many programming languages one may write conditionally executed code
+in two forms: 
+
+<P>
+the <code>if-then</code> form, and the <code>if-then-else</code> form – the 
+<code>else</code>
+clause is optional:
+<PRE>
+              if a then s
+              if a then s1 else s2
+</PRE>
+
+<P>
+This gives rise to an ambiguity in interpretation when there are nested
+statements, specifically whenever an <code>if-then</code> form appears as <code>s1</code>
+in an <code>if-then-else</code> form:
+<PRE>
+              if a then if b then s else s2
+</PRE>
+In this example, <code>s</code> is unambiguously executed when <code>a</code> is
+<code>true</code> and <code>b</code> is <code>true</code>, but one may interpret <code>s2</code>
+as being executed when <code>a</code> is <code>false</code> 
+
+<UL>
+<LI>(thus attaching the
+<code>else</code> to the first <code>if</code>) or when 
+</LI>
+<LI><code>a</code> is <code>true</code>
+and <code>b</code> is <code>false</code> (thus attaching the <code>else</code> to the
+second <code>if</code>). 
+</LI>
+</UL>
+In other words, one may see the previous statement
+as either of the following expressions:
+<PRE>
+if a then (if b then s) else s2
+</PRE>
+      or
+<PRE>
+if a then (if b then s else s2)
+</PRE>
+
+<P>
 <PRE>
 $ cat danglingelse.pegjs 
 /*
