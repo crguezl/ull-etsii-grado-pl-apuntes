@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Práctica: Traducción de Infijo a Postfijo</TITLE>
-<META NAME="description" CONTENT="Práctica: Traducción de Infijo a Postfijo">
+<TITLE>Eliminando la Recursividad por la Izquierda en la Calculadora</TITLE>
+<META NAME="description" CONTENT="Eliminando la Recursividad por la Izquierda en la Calculadora">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node51.html">
 <LINK REL="previous" HREF="node49.html">
-<LINK REL="up" HREF="node44.html">
+<LINK REL="up" HREF="node43.html">
 <LINK REL="next" HREF="node51.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1797"
+<A NAME="tex2html2699"
   HREF="node51.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1791"
-  HREF="node44.html">
+<A NAME="tex2html2693"
+  HREF="node43.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1785"
+<A NAME="tex2html2687"
   HREF="node49.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1793"
-  HREF="node105.html">
+<A NAME="tex2html2695"
+  HREF="node120.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1795"
-  HREF="node108.html">
+<A NAME="tex2html2697"
+  HREF="node123.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,169 +92,106 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1798"
-  HREF="node51.html">Práctica: Calculadora con Funciones</A>
-<B>Sup:</B> <A NAME="tex2html1792"
-  HREF="node44.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1786"
-  HREF="node49.html">Construcción de las Tablas</A>
+<B> Sig:</B> <A NAME="tex2html2700"
+  HREF="node51.html">Eliminación de la Recursividad</A>
+<B>Sup:</B> <A NAME="tex2html2694"
+  HREF="node43.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html2688"
+  HREF="node49.html">Eliminación de la Recursividad</A>
 <B> Con:</B> 
-<A NAME="tex2html1793"
-  HREF="node105.html">
+<A NAME="tex2html2695"
+  HREF="node120.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1795"
-  HREF="node108.html">
+<A NAME="tex2html2697"
+  HREF="node123.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION04560000000000000000"></A>
-   <A NAME="6242"></A>
-  
-<A NAME="section:calculadoraampliada"></A>
-<BR>
-Práctica: Traducción de Infijo a Postfijo
+<H1><A NAME="SECTION04670000000000000000">
+Eliminando la Recursividad por la Izquierda en la Calculadora</A>
 </H1>
-Modifique el programa Jison realizado en la práctica 
-<A HREF="node47.html#subsectionpractica:calculadora">5.3.1</A>
-para traducir de infijo a postfijo. 
-Añada los operadores de comparación e igualdad.
-Por ejemplo
-
-<P>
-<DIV ALIGN="CENTER">
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170>Infijo</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170>Postfijo</TD>
-</TR>
-<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><code>a = 3+2*4</code></TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><code> 3 2 4 * + &amp;a = </code></TD>
-</TR>
-<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><code>b = a == 11</code></TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><code> a 11 == &amp;b = </code></TD>
-</TR>
-</TABLE>
-</DIV>
-En estas traducciones la notación 
-<code>&amp;a</code> indica la dirección de la variable <code>a</code>
-y <code>a</code> indica el valor almacenado en la variable <code>a</code>.
-
-<P>
-Añada sentencias 
-<code>if</code> ...
-<code>then</code> e <code>if</code> ... <code>then</code> ... <code>else</code>
-
-<P>
-Para realizar la traducción de estas sentencias
-añada 
-instrucciones <code>jmp label</code> y <code>jmpz label</code> (por <I>jump if zero</I>)
-y etiquetas:
-
-<P>
-<DIV ALIGN="CENTER">
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>Infijo</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170>Postfijo</TD>
-</TR>
-<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227><PRE>
-a = (2+5)*3;
-if a == 0 then b = 5 else b = 3;
-c = b + 1;
-</PRE></TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><PRE>
-        2
-        5
-        +
-        3
-        *
-        &amp;a
-        =
-        a
-        0
-        ==
-        jmpz else1
-        5
-        &amp;b
-        =
-        jmp endif0
-:else1
-        3
-        &amp;b
-        =
-:endif0
-        b
-        1
-        +
-        &amp;c
-        =
-</PRE></TD>
-</TR>
-</TABLE>
-</DIV>
-Introduzca pruebas unitarias como las descritas en 
-la sección <A HREF="node203.html#section:tstingfacil"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> (<I><A NAME="tex2html253"
-  HREF="http://net.tutsplus.com/tutorials/javascript-ajax/quick-tip-quick-and-easy-javascript-testing-with-assert/">Quick Tip: Quick and Easy JavaScript Testing with “Assert”</A></I>)
-
-<P>
 <PRE>
-[~/srcPLgrado/jisoninfix2postfix(master)]$ cat test/test.html 
-&lt;!DOCTYPE HTML&gt;
-&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;title&gt;Testing Our Simple Translator&lt;/title&gt;
-    &lt;link rel="stylesheet" href="test.css" /&gt;
-    &lt;script type="text/javascript" src="../calculator.js"&gt;&lt;/script&gt;
+[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat simple.pegjs 
+/* From the Wikipedia
+Value   ← [0-9]+ / '(' Expr ')'
+Product ← Value (('*' / '/') Value)*
+Sum     ← Product (('+' / '-') Product)*
+Expr    ← Sum
+*/
+{ 
+  function reduce(left, right) {
+    var sum = left;
+    // console.log("sum = "+sum);
+    for(var i = 0; i &lt; right.length;i++) {
+      var t = right[i];
+      var op = t[0];
+      var num = t[1];
+      switch(op) {
+        case '+' : sum += num; break;
+        case '-' : sum -= num; break;
+        case '*' : sum *= num; break;
+        case '/' : sum /= num; break;
+        default : console.log("Error! "+op);
+      }
+      // console.log("sum = "+sum);
+    }
+    return sum;
+  }
+}
 
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;h1&gt;Testing Our Simple Translator
-    &lt;/h1&gt;
-    
-    &lt;ul id="output"&gt;&lt;/ul&gt;
-    &lt;script type="text/javascript" src="assert.js"&gt;&lt;/script&gt;
-    
-    &lt;script type="text/javascript"&gt;
+sum   = left:product right:($[+-] product)* { return reduce(left, right); }
+product = left:value right:($[*/] value)*   { return reduce(left, right); }
+value   = number:$[0-9]+                    { return parseInt(number,10); }
+        / '(' sum:sum ')'                   { return sum; }
+</PRE>
 
-      var r = calculator.parse("a = 4*8");
-      assert( /4\s*8\s*[*]\s*a\s*=\s*/.exec(r), "a is 4*8");
-      
-      r = calculator.parse("a=4;b=a+1");
-      r = r.replace(/\s+/g,'');
-      var expected = "4a=a1+b=";
-      assert( r == expected, "a = 4;\nb=a+1 translated");
+<P>
+Es posible especificar mediante llaves  un código 
+que este disponible dentro de las acciones semánticas.
 
+<P>
+Ejecución:
+<PRE>
+[~/pegjs/examples(master)]$ cat use_simple.js 
+var PEG = require("./simple.js");
+var r = PEG.parse("2-3-4");
+console.log(r);
 
-      var r = calculator.parse("if a &gt; 0 then b = 1 else b = 2");
-      r = r.replace(/\s+/g,'');
-      expected = "a 0 &gt; jmpz else1 1 b = jmp endif0 :else1 2 b = :endif0".
-                 replace(/\s+/g,'');
-      assert( r == expected, "'if a &gt; 0 then b = 1 else b = 2' translated");
-    &lt;/script&gt;
-      See the NetTuts+ tutorial at &lt;a href="http://net.tutsplus.com/tutorials/javascript-ajax/quick-tip-quick-and-easy-javascript-testing-with-assert/"&gt;Quick and Easy JavaScript Testing&lt;/a&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
+[~/pegjs/examples(master)]$ node use_simple.js 
+-5
+</PRE>
+Veamos otra ejecución:
+<PRE>
+[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat use_simple.js 
+var PEG = require("./simple.js");
+var r = PEG.parse("2+3*(2+1)-10/2");
+console.log(r);
+
+[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ ../bin/pegjs simple.pegjs 
+[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ node use_simple.js 
+6
 </PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1797"
+<A NAME="tex2html2699"
   HREF="node51.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1791"
-  HREF="node44.html">
+<A NAME="tex2html2693"
+  HREF="node43.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1785"
+<A NAME="tex2html2687"
   HREF="node49.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1793"
-  HREF="node105.html">
+<A NAME="tex2html2695"
+  HREF="node120.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1795"
-  HREF="node108.html">
+<A NAME="tex2html2697"
+  HREF="node123.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -305,17 +242,17 @@ la sección <A HREF="node203.html#section:tstingfacil"><IMG  ALIGN="BOTTOM" BORD
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1798"
-  HREF="node51.html">Práctica: Calculadora con Funciones</A>
-<B>Sup:</B> <A NAME="tex2html1792"
-  HREF="node44.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1786"
-  HREF="node49.html">Construcción de las Tablas</A>
+<B> Sig:</B> <A NAME="tex2html2700"
+  HREF="node51.html">Eliminación de la Recursividad</A>
+<B>Sup:</B> <A NAME="tex2html2694"
+  HREF="node43.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html2688"
+  HREF="node49.html">Eliminación de la Recursividad</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-03-24</I>
+2014-03-26</I>
 </ADDRESS>
 </BODY>
 </HTML>

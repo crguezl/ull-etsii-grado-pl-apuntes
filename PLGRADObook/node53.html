@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Algoritmo de Análisis LR</TITLE>
-<META NAME="description" CONTENT="Algoritmo de Análisis LR">
+<TITLE>Not Predicate: Comentarios Anidados</TITLE>
+<META NAME="description" CONTENT="Not Predicate: Comentarios Anidados">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node54.html">
 <LINK REL="previous" HREF="node52.html">
-<LINK REL="up" HREF="node44.html">
+<LINK REL="up" HREF="node43.html">
 <LINK REL="next" HREF="node54.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1839"
+<A NAME="tex2html2748"
   HREF="node54.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1833"
-  HREF="node44.html">
+<A NAME="tex2html2742"
+  HREF="node43.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1827"
+<A NAME="tex2html2736"
   HREF="node52.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1835"
-  HREF="node105.html">
+<A NAME="tex2html2744"
+  HREF="node120.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1837"
-  HREF="node108.html">
+<A NAME="tex2html2746"
+  HREF="node123.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,134 +92,154 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1840"
-  HREF="node54.html">El módulo Generado por</A>
-<B>Sup:</B> <A NAME="tex2html1834"
-  HREF="node44.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1828"
-  HREF="node52.html">Práctica: Calculadora con Análisis</A>
+<B> Sig:</B> <A NAME="tex2html2749"
+  HREF="node54.html">Un Lenguaje Dependiente del</A>
+<B>Sup:</B> <A NAME="tex2html2743"
+  HREF="node43.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html2737"
+  HREF="node52.html">Dangling else: Asociando un</A>
 <B> Con:</B> 
-<A NAME="tex2html1835"
-  HREF="node105.html">
+<A NAME="tex2html2744"
+  HREF="node120.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1837"
-  HREF="node108.html">
+<A NAME="tex2html2746"
+  HREF="node123.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<H1><A NAME="SECTION04590000000000000000"></A>
-<A NAME="section:algoritmoLR"></A>
-<BR>
-Algoritmo de Análisis LR
+<UL CLASS="ChildLinks">
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html2750"
+  HREF="node53.html#SECTION046100010000000000000">Pascal_comments.pegjs</A>
+<LI><A NAME="tex2html2751"
+  HREF="node53.html#SECTION046100020000000000000">use_pascal_comments.js</A>
+<LI><A NAME="tex2html2752"
+  HREF="node53.html#SECTION046100030000000000000">Ejecución</A>
+<LI><A NAME="tex2html2753"
+  HREF="node53.html#SECTION046100040000000000000">Donde</A>
+</UL></UL></UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION046100000000000000000">
+Not Predicate: Comentarios Anidados</A>
 </H1>
-Asi  pues la tabla de transiciones del autómata nos genera dos tablas:
-la tabla de acciones y la de saltos.
-El  algoritmo  de análisis sintáctico <SPAN  CLASS="textbf">LR</SPAN> en el  que 
-se basa <SPAN  CLASS="textbf">jison</SPAN> utiliza una pila y dos tablas 
-para analizar la entrada. Como se ha visto, la tabla  de acciones contiene cuatro tipo de acciones: 
+The following recursive  <A NAME="tex2html410"
+  HREF="http://pegjs.majda.cz/">PEG.js</A>
 
-<OL>
-<LI>Desplazar (<SPAN  CLASS="textbf">shift</SPAN>)
-</LI>
-<LI>Reducir (<SPAN  CLASS="textbf">reduce</SPAN>)
-</LI>
-<LI>Aceptar
-</LI>
-<LI>Error
-</LI>
-</OL>
-El algoritmo utiliza una pila en la que se guardan los estados
-del autómata. De este modo se evita tener que ``comenzar'' 
-el procesado de la forma sentencial derecha resultante
-después de una reducción (antiderivación).
+program  matches Pascal-style nested comment syntax:
+<PRE>
+(* which can (* nest *) like this *)
+</PRE>
+
 <P>
-<DIV><A NAME="alg:parser"><B>Algoritmo  <SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">9</SPAN>.<SPAN CLASS="arabic">1</SPAN></B></A> &nbsp; 
-<I>Análizador LR
-</I><PRE>
- push(s0);
- b = yylex();
- for( ; ; ;) {
-   s = top(0); a = b;
-   switch (action[s][a]) {
-     case "shift t" : 
-       t.attr = a.attr;
-       push(t); 
-       b = yylex();
-       break;
-     case "reduce A -&gt;alpha" : 
-       eval(Sem{A -&gt; alpha}(top(|alpha|-1).attr, ... , top(0).attr)); 
-       pop(|alpha|); 
-       push(goto[top(0)][A]); 
-       break;
-     case "accept" : return (1); 
-     default : yyerror("syntax error");
-   }
- }
-</PRE></DIV><P></P>
+
+<H4><A NAME="SECTION046100010000000000000">
+Pascal_comments.pegjs</A>
+</H4>
+  
+
+<PRE>
+$ cat pascal_comments.pegjs 
+/* Pascal nested comments */
+
+P     =   prog:N+                          { return prog; }
+N     =   chars:$(!Begin ANY)+             { return chars;}
+        / C
+C     = Begin chars:T* End                 { return chars.join(''); }
+T     =   C 
+        / (!Begin !End char:ANY)           { return char;}
+Begin = '(*'
+End   = '*)'
+ANY   =   'z'    /* any character */       { return 'z';  }
+        / char:[^z]                        { return char; }
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION046100020000000000000">
+use_pascal_comments.js</A>
+</H4>
+  
+
+<PRE>
+$ cat use_pascal_comments.js 
+var PEG = require("./pascal_comments.js");
+var r = PEG.parse(
+  "not bla bla (* pascal (* nested *) comment *)"+
+  " pum pum (* another comment *)");
+console.log(r);
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION046100030000000000000">
+Ejecución</A>
+</H4>
+  
+
+<PRE>
+$ ../bin/pegjs pascal_comments.pegjs 
+$ node use_pascal_comments.js 
+[ 'not bla bla ',
+  ' pascal  nested  comment ',
+  ' pum pum ',
+  ' another comment ' ]
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION046100040000000000000">
+Donde</A>
+</H4>
+  
+
+<P>
 
 <UL>
-<LI>Como es habitual, <SPAN CLASS="MATH"><IMG
- WIDTH="24" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img198.png"
- ALT="$ \vert x\vert$"></SPAN> denota la longitud de la cadena <SPAN CLASS="MATH"><IMG
- WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img34.png"
- ALT="$ x$"></SPAN>.
-</LI>
-<LI>La función <code>top(k)</code> devuelve el elemento que ocupa la 
-posición <code>k</code> desde el <SPAN  CLASS="textbf">top</SPAN> de la pila (esto es, está a profundidad <code>k</code>).
-</LI>
-<LI>La función <code>pop(k)</code> extrae <code>k</code> elementos de la pila.
-</LI>
-<LI>La notación <code>state.attr</code> hace referencia al atributo
-asociado con cada estado, el cual desde el punto de vista del programador
-esta asociado con el correspondiente símbolo de la parte derecha de la regla. 
-Nótese que cada estado que está en la pila es el resultado de una transición con
-un símbolo. El atributo de ese símbolo es guardado en el objeto estado
-cada vez que ocurre una transición.
+<LI><PRE>
+[~/srcPLgrado/pegjs/examples(master)]$ pwd -P
+/Users/casiano/local/src/javascript/PLgrado/pegjs/examples
+</PRE>
 
 <P>
 </LI>
-<LI>Denotamos por <code>Sem {reduce A -&gt; alpha}</code>
-el código de la acción semántica asociada con la regla <!-- MATH
- $A \rightarrow \alpha$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img12.png"
- ALT="$ A \rightarrow \alpha$"></SPAN>.
+<LI><PRE>
+[~/srcPLgrado/pegjs/examples(master)]$ git remote -v
+dmajda  https://github.com/dmajda/pegjs.git (fetch)
+dmajda  https://github.com/dmajda/pegjs.git (push)
+origin  git@github.com:crguezl/pegjs.git (fetch)
+origin  git@github.com:crguezl/pegjs.git (push)
+</PRE>
+</LI>
+<LI><A NAME="tex2html411"
+  HREF="https://github.com/crguezl/pegjs/tree/master/examples">https://github.com/crguezl/pegjs/tree/master/examples</A>
 </LI>
 </UL>
 
 <P>
-Todos los analizadores LR comparten, salvo pequeñas
-exepciones, el mismo algoritmo
-de análisis. Lo que más los diferencia es la forma en 
-la que construyen las tablas.
-En <code>jison</code>
-la construcción de las tablas de <SPAN  CLASS="textbf">acciones</SPAN> y <SPAN  CLASS="textbf">gotos</SPAN>
-se realiza  por defecto mediante el algoritmo <SPAN  CLASS="textbf">LALR</SPAN>.
-
-<P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1839"
+<A NAME="tex2html2748"
   HREF="node54.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1833"
-  HREF="node44.html">
+<A NAME="tex2html2742"
+  HREF="node43.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1827"
+<A NAME="tex2html2736"
   HREF="node52.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1835"
-  HREF="node105.html">
+<A NAME="tex2html2744"
+  HREF="node120.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1837"
-  HREF="node108.html">
+<A NAME="tex2html2746"
+  HREF="node123.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -270,17 +290,17 @@ se realiza  por defecto mediante el algoritmo <SPAN  CLASS="textbf">LALR</SPAN>.
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1840"
-  HREF="node54.html">El módulo Generado por</A>
-<B>Sup:</B> <A NAME="tex2html1834"
-  HREF="node44.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1828"
-  HREF="node52.html">Práctica: Calculadora con Análisis</A>
+<B> Sig:</B> <A NAME="tex2html2749"
+  HREF="node54.html">Un Lenguaje Dependiente del</A>
+<B>Sup:</B> <A NAME="tex2html2743"
+  HREF="node43.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html2737"
+  HREF="node52.html">Dangling else: Asociando un</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-03-24</I>
+2014-03-26</I>
 </ADDRESS>
 </BODY>
 </HTML>

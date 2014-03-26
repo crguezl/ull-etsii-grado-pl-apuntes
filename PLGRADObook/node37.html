@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Dangling else: Asociando un else con su if mas cercano</TITLE>
-<META NAME="description" CONTENT="Dangling else: Asociando un else con su if mas cercano">
+<TITLE>Esquemas de Traducción</TITLE>
+<META NAME="description" CONTENT="Esquemas de Traducción">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node38.html">
 <LINK REL="previous" HREF="node36.html">
-<LINK REL="up" HREF="node28.html">
+<LINK REL="up" HREF="node33.html">
 <LINK REL="next" HREF="node38.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1528"
+<A NAME="tex2html2411"
   HREF="node38.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1522"
-  HREF="node28.html">
+<A NAME="tex2html2405"
+  HREF="node33.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1516"
+<A NAME="tex2html2399"
   HREF="node36.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1524"
-  HREF="node105.html">
+<A NAME="tex2html2407"
+  HREF="node120.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1526"
-  HREF="node108.html">
+<A NAME="tex2html2409"
+  HREF="node123.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,219 +92,168 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1529"
-  HREF="node38.html">Not Predicate: Comentarios Anidados</A>
-<B>Sup:</B> <A NAME="tex2html1523"
-  HREF="node28.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html1517"
-  HREF="node36.html">Eliminación de la Recursividad</A>
+<B> Sig:</B> <A NAME="tex2html2412"
+  HREF="node38.html">Eliminación de la Recursión</A>
+<B>Sup:</B> <A NAME="tex2html2406"
+  HREF="node33.html">Analizadores Descendentes Predictivos en</A>
+<B> Ant:</B> <A NAME="tex2html2400"
+  HREF="node36.html">Recursión por la Izquierda</A>
 <B> Con:</B> 
-<A NAME="tex2html1524"
-  HREF="node105.html">
+<A NAME="tex2html2407"
+  HREF="node120.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1526"
-  HREF="node108.html">
+<A NAME="tex2html2409"
+  HREF="node123.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html1530"
-  HREF="node37.html#SECTION04490010000000000000">danglingelse.pegjs</A>
-<LI><A NAME="tex2html1531"
-  HREF="node37.html#SECTION04490020000000000000">use_danglingelse.js</A>
-<LI><A NAME="tex2html1532"
-  HREF="node37.html#SECTION04490030000000000000">Ejecución</A>
-<LI><A NAME="tex2html1533"
-  HREF="node37.html#SECTION04490040000000000000">Donde</A>
-</UL></UL></UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION04490000000000000000">
-
-<FONT COLOR="#ff0000"> Dangling else</FONT>: Asociando un else con su if mas cercano</A>
+<H1><A NAME="SECTION04440000000000000000"></A>
+<A NAME="section:esquemas"></A>
+<BR>
+Esquemas de Traducción
 </H1>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Un <A NAME="11102"></A><SPAN  CLASS="textbf">esquema de traducción</SPAN> es una gramática independiente del contexto
+en la cual se han insertado fragmentos de código en las partes derechas
+de sus reglas de producción. Los fragmentos de código asi insertados 
+se denominan <A NAME="11104"></A><SPAN  CLASS="textbf">acciones semánticas</SPAN>. Dichos fragmentos actúan, calculan
+y modifican los atributos asociados con los nodos del árbol sintáctico. 
+El orden en que se evalúan los fragmentos
+es el de un recorrido primero-profundo del árbol de análisis sintáctico.</I></DIV><P></P>
+Obsérvese que, en general, para poder aplicar un esquema de traducción hay 
+que construir el árbol sintáctico y después aplicar las acciones empotradas
+en las reglas en el orden de recorrido primero-profundo. Por supuesto, si 
+la gramática es ambigua una frase podría tener dos árboles y la ejecución de las
+acciones para ellos podría dar lugar a diferentes resultados. Si se quiere
+evitar la multiplicidad de resultados (interpretaciones semánticas)
+es necesario precisar de que árbol sintáctico concreto se esta hablando.
 
 <P>
-The dangling else is a problem in computer programming in which an
-optional <code>else clause</code> in an <code>If–then(–else)</code> statement results in nested
-conditionals being ambiguous. 
+Por ejemplo, si en la regla <!-- MATH
+ $A \rightarrow \alpha \beta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="67" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img68.png"
+ ALT="$ A \rightarrow \alpha \beta $"></SPAN>
+insertamos un fragmento de código:
 
 <P>
-Formally, the reference context-free
-grammar of the language is ambiguous, meaning there is more than one
-correct parse tree.
+<DIV ALIGN="CENTER">
+<!-- MATH
+ $A \rightarrow \alpha \{ action \} \beta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="132" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img69.png"
+ ALT="$ A \rightarrow \alpha \{ action \} \beta $"></SPAN>
+</DIV>
 
 <P>
-In many programming languages one may write conditionally executed code
-in two forms: 
+La acción <!-- MATH
+ $\{ action \}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="70" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img70.png"
+ ALT="$ \{ action \}$"></SPAN> se ejecutará después de todas las acciones
+asociadas con el recorrido del subárbol de <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img51.png"
+ ALT="$ \alpha$"></SPAN> y antes que todas
+las acciones asociadas con el recorrido del subárbol <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img71.png"
+ ALT="$ \beta$"></SPAN>.
 
 <P>
-the <code>if-then</code> form, and the <code>if-then-else</code> form – the 
-<code>else</code>
-clause is optional:
-<PRE>
-              if a then s
-              if a then s1 else s2
-</PRE>
+El siguiente esquema de traducción recibe como entrada una expresión en infijo
+y produce como salida su traducción a postfijo para expresiones aritmeticas con sólo 
+restas de números:
 
 <P>
-This gives rise to an ambiguity in interpretation when there are nested
-statements, specifically whenever an <code>if-then</code> form appears as <code>s1</code>
-in an <code>if-then-else</code> form:
-<PRE>
-              if a then if b then s else s2
-</PRE>
-In this example, <code>s</code> is unambiguously executed when <code>a</code> is
-<code>true</code> and <code>b</code> is <code>true</code>, but one may interpret <code>s2</code>
-as being executed when <code>a</code> is <code>false</code> 
-
-<UL>
-<LI>(thus attaching the
-<code>else</code> to the first <code>if</code>) or when 
-</LI>
-<LI><code>a</code> is <code>true</code>
-and <code>b</code> is <code>false</code> (thus attaching the <code>else</code> to the
-second <code>if</code>). 
-</LI>
-</UL>
-In other words, one may see the previous statement
-as either of the following expressions:
-<PRE>
-if a then (if b then s) else s2
-</PRE>
-      or
-<PRE>
-if a then (if b then s else s2)
-</PRE>
+<BR>
+<BR>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $expr   \rightarrow expr_1  -  NUM$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="179" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img72.png"
+ ALT="$ expr \rightarrow expr_1 - NUM$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ expr.TRA = expr[1].TRA+" "+NUM.VAL+" - "}</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $expr   \rightarrow NUM$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="116" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img73.png"
+ ALT="$ expr \rightarrow NUM$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ expr.TRA = NUM.VAL }</code></TD>
+</TR>
+</TABLE>
+<BR>
+<BR>
 
 <P>
-This is a problem that often comes up in compiler construction,
-especially scannerless parsing. 
+Las apariciones de variables sintácticas en una regla de producción se indexan
+como se ve en el ejemplo, para distinguir de que nodo del árbol de análisis estamos
+hablando. Cuando hablemos del atributo de un nodo utilizaremos el punto (<code>.</code>). 
+Aquí <code>VAL</code> es un atributo de los nodos de tipo <SPAN CLASS="MATH"><IMG
+ WIDTH="53" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img74.png"
+ ALT="$ NUM$"></SPAN> denotando
+su valor numérico y para accederlo escribiremos <code>NUM.VAL</code>.
+Análogamente <code>expr.TRA</code> denota el atributo 
+<FONT COLOR="#ff0000"> traducción</FONT> de
+los nodos de tipo <SPAN CLASS="MATH"><IMG
+ WIDTH="40" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img75.png"
+ ALT="$ expr$"></SPAN>.
 
 <P>
-The convention when dealing with
-the dangling <code>else</code> is to attach the <code>else</code> to the nearby
-<code>if</code> statement.
+<P>
+<DIV><B>Ejercicio  <SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Muestre la secuencia de acciones a la
+que da lugar el esquema de traducción anterior 
+para la frase 7 -5 -4.</I></DIV><P></P>
 
 <P>
-Programming languages like Pascal and C follow this
-convention, so there is no ambiguity in the semantics of the language,
-though the use of a parser generator may lead to ambiguous grammars. 
-In
-these cases 
-<FONT COLOR="#ff0000"> alternative grouping is accomplished by explicit blocks</FONT>,
-such as <code>begin...end</code> in Pascal and <code>{...}</code> in C.
+En este ejemplo, el cómputo del atributo <code>expr.TRA</code> depende de los atributos
+en los nodos hijos, o lo que es lo mismo, depende de los atributos de los símbolos
+en la parte derecha de la regla de producción. Esto ocurre a menudo y motiva la siguiente
+definición:
 
 <P>
-Here follows a solution in PEG.js:
-
 <P>
-
-<H4><A NAME="SECTION04490010000000000000">
-danglingelse.pegjs</A>
-</H4>
-  
-
-<PRE>
-$ cat danglingelse.pegjs 
-/*
-S ← 'if' C 'then' S 'else' S / 'if' C 'then' S
-*/
-
-S =   if C:C then S1:S else S2:S { return [ 'ifthenelse', C, S1, S2 ]; }
-    / if C:C then S:S            { return [ 'ifthen', C, S]; }
-    / O                          { return 'O'; }
-_ = ' '*
-C = _'c'_                        { return 'c'; }
-O = _'o'_                        { return 'o'; }
-else = _'else'_                 
-if = _'if'_
-then = _'then'_
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION04490020000000000000">
-use_danglingelse.js</A>
-</H4>
-  
-
-<P>
-<PRE>
-$ cat use_danglingelse.js 
-var PEG = require("./danglingelse.js");
-var r = PEG.parse("if c then if c then o else o");
-console.log(r);
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION04490030000000000000">
-Ejecución</A>
-</H4>
-  
-
-<PRE>
-$ ../bin/pegjs danglingelse.pegjs 
-$ node use_danglingelse.js 
-[ 'ifthen', 'c', [ 'ifthenelse', 'c', 'O', 'O' ] ]
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION04490040000000000000">
-Donde</A>
-</H4>
-  
-
-<P>
-
-<UL>
-<LI><PRE>
-[~/srcPLgrado/pegjs/examples(master)]$ pwd -P
-/Users/casiano/local/src/javascript/PLgrado/pegjs/examples
-</PRE>
-
-<P>
-</LI>
-<LI><PRE>
-[~/srcPLgrado/pegjs/examples(master)]$ git remote -v
-dmajda  https://github.com/dmajda/pegjs.git (fetch)
-dmajda  https://github.com/dmajda/pegjs.git (push)
-origin  git@github.com:crguezl/pegjs.git (fetch)
-origin  git@github.com:crguezl/pegjs.git (push)
-</PRE>
-</LI>
-<LI><A NAME="tex2html203"
-  HREF="https://github.com/crguezl/pegjs/tree/master/examples">https://github.com/crguezl/pegjs/tree/master/examples</A>
-</LI>
-</UL>
+<DIV><B>Definición  <SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
+<I>Un atributo tal que su valor en todo nodo del árbol sintáctico
+puede ser computado en términos de los atributos de los hijos del nodo se dice
+que es un <A NAME="11108"></A><SPAN  CLASS="textbf">atributo sintetizado</SPAN>.</I></DIV><P></P>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1528"
+<A NAME="tex2html2411"
   HREF="node38.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1522"
-  HREF="node28.html">
+<A NAME="tex2html2405"
+  HREF="node33.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1516"
+<A NAME="tex2html2399"
   HREF="node36.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1524"
-  HREF="node105.html">
+<A NAME="tex2html2407"
+  HREF="node120.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1526"
-  HREF="node108.html">
+<A NAME="tex2html2409"
+  HREF="node123.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -355,17 +304,17 @@ origin  git@github.com:crguezl/pegjs.git (push)
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1529"
-  HREF="node38.html">Not Predicate: Comentarios Anidados</A>
-<B>Sup:</B> <A NAME="tex2html1523"
-  HREF="node28.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html1517"
-  HREF="node36.html">Eliminación de la Recursividad</A>
+<B> Sig:</B> <A NAME="tex2html2412"
+  HREF="node38.html">Eliminación de la Recursión</A>
+<B>Sup:</B> <A NAME="tex2html2406"
+  HREF="node33.html">Analizadores Descendentes Predictivos en</A>
+<B> Ant:</B> <A NAME="tex2html2400"
+  HREF="node36.html">Recursión por la Izquierda</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-03-24</I>
+2014-03-26</I>
 </ADDRESS>
 </BODY>
 </HTML>

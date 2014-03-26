@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Manejo en jison de Atributos Heredados</TITLE>
-<META NAME="description" CONTENT="Manejo en jison de Atributos Heredados">
+<TITLE>Práctica: Ambiguedad en C++</TITLE>
+<META NAME="description" CONTENT="Práctica: Ambiguedad en C++">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node58.html">
 <LINK REL="previous" HREF="node56.html">
-<LINK REL="up" HREF="node44.html">
+<LINK REL="up" HREF="node43.html">
 <LINK REL="next" HREF="node58.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1906"
+<A NAME="tex2html2814"
   HREF="node58.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1900"
-  HREF="node44.html">
+<A NAME="tex2html2808"
+  HREF="node43.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1894"
+<A NAME="tex2html2802"
   HREF="node56.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1902"
-  HREF="node105.html">
+<A NAME="tex2html2810"
+  HREF="node120.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1904"
-  HREF="node108.html">
+<A NAME="tex2html2812"
+  HREF="node123.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,411 +92,205 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1907"
-  HREF="node58.html">Definición Dirigida por la</A>
-<B>Sup:</B> <A NAME="tex2html1901"
-  HREF="node44.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1895"
-  HREF="node56.html">Esquemas de Traducción</A>
+<B> Sig:</B> <A NAME="tex2html2815"
+  HREF="node58.html">Práctica: Inventando un Lenguaje:</A>
+<B>Sup:</B> <A NAME="tex2html2809"
+  HREF="node43.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html2803"
+  HREF="node56.html">Práctica: Analizador de PL0</A>
 <B> Con:</B> 
-<A NAME="tex2html1902"
-  HREF="node105.html">
+<A NAME="tex2html2810"
+  HREF="node120.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1904"
-  HREF="node108.html">
+<A NAME="tex2html2812"
+  HREF="node123.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION045130000000000000000"></A>
-<A NAME="section:heredados"></A>
+<H1><A NAME="SECTION046140000000000000000"></A>
+   <A NAME="12434"></A>
 <BR>
-Manejo en <TT>jison</TT> de Atributos Heredados
+Práctica: Ambiguedad en C++
 </H1>
+  
+This lab illustrates a problem 
+that arises in C++.
+The C++ syntax does not disambiguate between expression
+statements (<code>stmt</code>) and declaration statements (<code>decl</code>). 
+The ambiguity arises when an expression
+statement has a function-style cast as its left-most subexpression.
+Since C does not support function-style casts, this ambiguity does not occur
+in C programs.
+For example, the phrase 
 
 <P>
-Supongamos  que <code>jison</code> esta inmerso 
-en la construcción de la antiderivación a derechas y que la forma sentencial
-derecha en ese momento es:
+<code>int (x) = y+z;</code> 
+
+<P>
+parses as either a <TT>decl</TT> or a <TT>stmt</TT>.
+
+<P>
+The disambiguation rule used in C++ is that <I>if the statement can be interpreted both as a declaration and
+as an expression, the statement is interpreted as a declaration statement.
+</I>
+
+<P>
+The following examples  disambiguate into <I>expression</I> statements when the
+potential <I>declarator</I> is followed by an operator different from equal 
+or semicolon (<TT>type_spec</TT> stands for a type specifier):
 
 <P>
 <DIV ALIGN="CENTER">
-<!-- MATH
- $X_m \ldots X_1 X_0 Y_1 \ldots  Y_n a_1 \ldots a_0$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="225" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img207.png"
- ALT="$ X_m \ldots X_1 X_0 Y_1 \ldots Y_n a_1 \ldots a_0$"></SPAN>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=99>expr</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=128>dec</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=99><PRE>
+type_spec(i)++;      
+type_spec(i,3)&lt;&lt;d;  
+type_spec(i)-&gt;l=24;
+</PRE></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=128><PRE>
+type_spec(*i)(int); 
+type_spec(j)[5];   
+type_spec(m) = { 1, 2 }; 
+type_spec(a);              
+type_spec(*b)();          
+type_spec(c)=23;         
+type_spec(d),e,f,g=0;   
+type_spec(h)(e,3);
+</PRE></TD>
+</TR>
+</TABLE>
 </DIV>
 
 <P>
-y que el mango es <!-- MATH
- $B \rightarrow Y_1 \ldots  Y_n$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="109" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img208.png"
- ALT="$ B \rightarrow Y_1 \ldots Y_n$"></SPAN> y en la entrada quedan por 
-procesar <!-- MATH
- $a_1 \ldots a_0$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="65" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img209.png"
- ALT="$ a_1 \ldots a_0$"></SPAN>.
+Regarding to this problem, Bjarne Stroustrup remarks:<BLOCKQUOTE><I>Consider analyzing a statement consisting of
+a sequence of tokens as follows:
+</I></BLOCKQUOTE><PRE>
+              type_spec (dec_or_exp) tail
+</PRE><BLOCKQUOTE><I>
+Here <code>dec_or_exp</code> must be a declarator, an expression, 
+or both for the statement to be legal. This implies that <code>tail</code>
+must be a semicolon, something that can follow a 
+parenthesized declarator or something that can follow
+a parenthesized expression, that is, an initializer, <code>const</code>,
+<code>volatile</code>, <code>(</code>, <code>[</code>, or a postfix or infix operator.
+The general cases cannot be resolved without backtracking, nested grammars
+or similar advanced parsing strategies. In particular,
+the lookahead needed to disambiguate this case is not limited.
+</I>
+</BLOCKQUOTE>
 
 <P>
-No es posible acceder en <code>jison</code> a los valores de los atributos de los estados en la pila
-del analizador que se encuentran ``por debajo'' o si se quiere
-``a la izquierda'' de los estados asociados
-con la regla por la que se reduce. 
+The following grammar 
+depicts 
+an oversimplified version of the C++ ambiguity:
 
 <P>
-Vamos a usar un pequeño hack para acceder a los atributos asociados con símbolos vistos 
-en el pasado "remoto":
 <PRE>
-[~/jison/jison-inherited(grammar)]$ cat inherited.jison 
-%lex
-%%
-\s+                           {}
-(global|local|integer|float)  { return yytext; }
-[a-zA-Z_]\w*                  { return 'id'; }
-.                             { return yytext; }
-/lex
-%%
-D 
-  : C T L 
-  ;
+$ cat CplusplusNested.y 
+%token ID INT NUM
 
-C
-  : global
-  | local
-  ; 
-  
-T
-  : integer
-  | float
+%right '='
+%left '+'
+
+%%
+prog:
+    /* empty */
+  | prog stmt
 ;
 
-L 
-  : L ',' id    { 
-                  console.log("L -&gt; L ',' id ("+yytext+")");
-                  var s =  eval('$$');
-                  console.log(s);
-                }
-  | id          {
-                  console.log("L -&gt; id ("+yytext+")");
-                  var s =  eval('$$');
-                  console.log(s);
-                }
-  ;
+stmt: 
+    expr ';' 
+  | decl    
+;
+
+expr:
+    ID 
+  | NUM
+  | INT '(' expr ')' /* typecast */ 
+  | expr '+' expr
+  | expr '=' expr
+;
+
+decl:
+    INT declarator ';'
+  | INT declarator '=' expr ';'
+;
+
+declarator:
+    ID 
+  | '(' declarator ')'
+;
+
 %%
 </PRE>
 
 <P>
-Veamos un ejemplo de ejecución:
-
-<P>
+Escriba un programa PegJS en CoffeeScript que distinga correctamente entre declaraciones
+y sentencias. Este es un ejemplo de un programa que usa una solución al problema:
 <PRE>
-[~/jison/jison-inherited(grammar)]$ cat input.txt 
-global integer a, b, c
-[~/jison/jison-inherited(grammar)]$ node inherited.js input.txt 
-L -&gt; id (a)
-[ null, 'global', 'integer', 'a' ]
-L -&gt; L ',' id (b)
-[ null, 'global', 'integer', 'a', ',', 'b' ]
-L -&gt; L ',' id (c)
-[ null, 'global', 'integer', 'a', ',', 'c' ]
+[~/Dropbox/src/javascript/PLgrado/pegjs-coffee-plugin/examples(master)]$ cat use_cplusplus.coffee 
+PEG = require("./cplusplus.js")
+input = "int (a); int c = int (b);"
+
+r = PEG.parse(input)
+console.log("input = '#{input}'\noutput="+JSON.stringify r)
+
+input = "int b = 4+2  ;  "
+r = PEG.parse(input)
+console.log("input = '#{input}'\noutput="+JSON.stringify r)
+
+input = "bum = caf = 4-1;\n"
+r = PEG.parse(input)
+console.log("input = '#{input}'\noutput="+JSON.stringify r)
+
+input = "b2 = int(4);"
+r = PEG.parse(input)
+console.log("input = '#{input}'\noutput="+JSON.stringify r)
+
+input = "int(4);"
+r = PEG.parse(input)
+console.log("input = '#{input}'\noutput="+JSON.stringify r)
 </PRE>
-
-<P>
-Esta forma de acceder a los atributos es especialmente útil cuando se 
-trabaja con <A NAME="7428"></A><SPAN  CLASS="textbf">atributos heredados</SPAN>. Esto es, cuando un atributo
-de un nodo del árbol sintáctico se computa en términos
-de valores de atributos de su padre y/o sus hermanos.
-Ejemplos de atributos heredados son la clase y tipo en la declaración
-de variables. 
-
-<P>
-Es importante darse cuenta que en cualquier derivación a derechas
-desde<code>D</code>, cuando se reduce por una de las reglas 
-
-<P>
-<DIV ALIGN="CENTER">
-L <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img35.png"
- ALT="$ \rightarrow$"></SPAN> id <SPAN CLASS="MATH"><IMG
- WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img36.png"
- ALT="$ \vert$"></SPAN> L<SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img200.png"
- ALT="$ _1$"></SPAN> ',' id
-
-</DIV>
-
-<P>
-el símbolo a la izquierda de L es T y el que esta a la izquierda de T es C.
-Considere, por ejemplo la derivación a derechas:
-
-<P>
-<DIV ALIGN="CENTER">
-D <!-- MATH
- $\Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img210.png"
- ALT="$ \Longrightarrow$"></SPAN> C T L <!-- MATH
- $\Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img210.png"
- ALT="$ \Longrightarrow$"></SPAN> C T L, id <!-- MATH
- $\Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img210.png"
- ALT="$ \Longrightarrow$"></SPAN> C T L, id, id
-<!-- MATH
- $\Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img210.png"
- ALT="$ \Longrightarrow$"></SPAN> C T id, id, id <!-- MATH
- $\Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img210.png"
- ALT="$ \Longrightarrow$"></SPAN> 
-<BR><!-- MATH
- $\Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img210.png"
- ALT="$ \Longrightarrow$"></SPAN> C float id, id, id <!-- MATH
- $\Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img210.png"
- ALT="$ \Longrightarrow$"></SPAN> local float id, id, id
-
-</DIV>
-
-<P>
-Observe que el orden de recorrido de <code>jison</code> es:
-<DIV ALIGN="CENTER">
-local float id, id, id <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img211.png"
- ALT="$ \Longleftarrow$"></SPAN> C float id, id <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img211.png"
- ALT="$ \Longleftarrow$"></SPAN>
-C T id, id, id <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img211.png"
- ALT="$ \Longleftarrow$"></SPAN>
-<BR><!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img211.png"
- ALT="$ \Longleftarrow$"></SPAN> C T L, id, id <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img211.png"
- ALT="$ \Longleftarrow$"></SPAN> C T L, id <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img211.png"
- ALT="$ \Longleftarrow$"></SPAN> C T L <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img211.png"
- ALT="$ \Longleftarrow$"></SPAN> D
-
-</DIV>
-
-<P>
-en la antiderivación, cuando el mango es una de las dos reglas 
-para listas de identificadores, L <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img35.png"
- ALT="$ \rightarrow$"></SPAN> id y L <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img35.png"
- ALT="$ \rightarrow$"></SPAN> L, id 
-es decir durante las tres ultimas antiderivaciones:
-
-<P>
-<DIV ALIGN="CENTER">
-C T L, id, id <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img211.png"
- ALT="$ \Longleftarrow$"></SPAN> C T L, id <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img211.png"
- ALT="$ \Longleftarrow$"></SPAN> C T L <!-- MATH
- $\Longleftarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img211.png"
- ALT="$ \Longleftarrow$"></SPAN> D
-
-</DIV>
-
-<P>
-las variables a la izquierda del mango son
-T y C. Esto ocurre siempre. 
-Estas observaciones nos conducen al siguiente
-programa <code>jison</code>: 
-
-<P>
+Y este un ejemplo de salida:
 <PRE>
-[~/jison/jison-inherited(deepstack)]$ cat inherited.jison 
-%lex
-%%
-\s+                           {}
-(global|local|integer|float)  { return yytext; }
-[a-zA-Z_]\w*                  { return 'id'; }
-.                             { return yytext; }
-/lex
-%%
-D 
-  : C T L 
-  ;
-
-C
-  : global
-  | local
-  ; 
-  
-T
-  : integer
-  | float
-  ;
-
-L 
-  : L ',' id    { 
-                  var s =  eval('$$');
-                  var b0 = s.length - 3;
-
-                  console.log("L -&gt; L ',' id ("+yytext+")");
-                  console.log($id + ' is of type ' + s[b0-1]);
-                  console.log(s[b0] + ' is of class ' + s[b0-2]);
-                }
-  | id          {
-                  var s =  eval('$$');
-                  var b0 = s.length - 1;
-
-                  console.log("L -&gt; id ("+yytext+")");
-                  console.log($id + ' is of type ' + s[b0-1]);
-                  console.log(s[b0] + ' is of class ' + s[b0-2]);
-                }
-  ;
-%%
+$ pegcoffee cplusplus.pegjs 
+$ coffee use_cplusplus.coffee 
+input = 'int (a); int c = int (b);'
+output=["decl","decl"]
+input = 'int b = 4+2  ;  '
+output=["decl"]
+input = 'bum = caf = 4-1;
+'
+output=["stmt"]
+input = 'b2 = int(4);'
+output=["stmt"]
+input = 'int(4);'
+output=["stmt"]
 </PRE>
-
-<P>
-A continuación sigue un ejemplo de ejecución:
-
-<P>
-<PRE>
-[~/jison/jison-inherited(deepstack)]$ node inherited.js input.txt 
-L -&gt; id (a)
-a is of type integer
-a is of class global
-L -&gt; L ',' id (b)
-b is of type integer
-a is of class global
-L -&gt; L ',' id (c)
-c is of type integer
-a is of class global
-</PRE>
-
-<P>
-En este caso, existen varias alternativas simples
-a esta solución:
-
-<UL>
-<LI>Montar la lista de identificadores  en un array y ponerles el tipo y la clase de "golpe"
- en la regla de producción superior <code>D : C T L ;</code>
-</LI>
-<LI>usar variables visibles (globales o atributos del objeto parser, por ejemplo) 
-como <code>current_type</code>, <code>current_class</code>
-<PRE>
-C
-  : global { current_class = 'global'; }
-  | local  { current_class = 'local'; }
-</PRE>
-y depués accederlas en las reglas de <code>L</code>
-</LI>
-<LI>La que posiblemente sea la mejor estrategia general: construir 
-el árbol de análisis sintáctico. Posteriormente podemos recorrer
-el árbol como queramos y tantas veces como queramos.
-</LI>
-</UL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1906"
+<A NAME="tex2html2814"
   HREF="node58.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1900"
-  HREF="node44.html">
+<A NAME="tex2html2808"
+  HREF="node43.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1894"
+<A NAME="tex2html2802"
   HREF="node56.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1902"
-  HREF="node105.html">
+<A NAME="tex2html2810"
+  HREF="node120.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1904"
-  HREF="node108.html">
+<A NAME="tex2html2812"
+  HREF="node123.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -547,17 +341,17 @@ el árbol como queramos y tantas veces como queramos.
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1907"
-  HREF="node58.html">Definición Dirigida por la</A>
-<B>Sup:</B> <A NAME="tex2html1901"
-  HREF="node44.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1895"
-  HREF="node56.html">Esquemas de Traducción</A>
+<B> Sig:</B> <A NAME="tex2html2815"
+  HREF="node58.html">Práctica: Inventando un Lenguaje:</A>
+<B>Sup:</B> <A NAME="tex2html2809"
+  HREF="node43.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html2803"
+  HREF="node56.html">Práctica: Analizador de PL0</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-03-24</I>
+2014-03-26</I>
 </ADDRESS>
 </BODY>
 </HTML>

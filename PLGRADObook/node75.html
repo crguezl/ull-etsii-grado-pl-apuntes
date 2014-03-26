@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Setting Values</TITLE>
-<META NAME="description" CONTENT="Setting Values">
+<TITLE>Recuperación de Errores</TITLE>
+<META NAME="description" CONTENT="Recuperación de Errores">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node76.html">
 <LINK REL="previous" HREF="node74.html">
-<LINK REL="up" HREF="node72.html">
+<LINK REL="up" HREF="node59.html">
 <LINK REL="next" HREF="node76.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html2211"
+<A NAME="tex2html3154"
   HREF="node76.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2205"
-  HREF="node72.html">
+<A NAME="tex2html3148"
+  HREF="node59.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2199"
+<A NAME="tex2html3142"
   HREF="node74.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2207"
-  HREF="node105.html">
+<A NAME="tex2html3150"
+  HREF="node120.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2209"
-  HREF="node108.html">
+<A NAME="tex2html3152"
+  HREF="node123.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,45 +92,101 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2212"
-  HREF="node76.html">Putting Things Together</A>
-<B>Sup:</B> <A NAME="tex2html2206"
-  HREF="node72.html">Scheem Interpreter</A>
-<B> Ant:</B> <A NAME="tex2html2200"
-  HREF="node74.html">Variables</A>
+<B> Sig:</B> <A NAME="tex2html3155"
+  HREF="node76.html">Depuración en jison</A>
+<B>Sup:</B> <A NAME="tex2html3149"
+  HREF="node59.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html3143"
+  HREF="node74.html">Ejercicios: Casos de Estudio</A>
 <B> Con:</B> 
-<A NAME="tex2html2207"
-  HREF="node105.html">
+<A NAME="tex2html3150"
+  HREF="node120.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html2209"
-  HREF="node108.html">
+<A NAME="tex2html3152"
+  HREF="node123.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION05430000000000000000">
-Setting Values</A>
+<H1><A NAME="SECTION047160000000000000000"></A>
+<A NAME="section:errores"></A>
+<BR>
+Recuperación de Errores
 </H1>
+
+<P>
+La recuperación de errores no parece estar implementada en Jison.
+véase 
+
+<UL>
+<LI>la sección 
+<A NAME="tex2html467"
+  HREF="http://zaach.github.io/jison/docs/">Error Recovery</A>
+de la documentación
+</LI>
+<LI><A NAME="tex2html468"
+  HREF="https://github.com/zaach/jison/pull/147">Pullreq 5 - parser built-in grammar error recovery was completely broken</A>
+</LI>
+</UL>
+<PRE>
+[~/srcPLgrado/jison/jison-aSb(error)]$ cat aSb.jison 
+%lex
+%%
+\s+             {}
+[ab]            { return yytext; }
+.               { return "INVALID"; }
+/lex
+%%
+S: /* empty */  { $$ = ''; console.log("empty"); }
+   | 'a' S 'b'  { $$ = $1 + $2 + $3; console.log("S -&gt; aSb"); }
+   | 'a' S error
+;
+%%
+</PRE>
+
+<P>
+<PRE>
+        parse: function parse(input) {
+              var self = this,
+                  stack = [0],
+                  vstack = [null], // semantic value stack
+                  lstack = [], // location stack
+                  ...
+                  recovering = 0,
+                  TERROR = 2,
+                  EOF = 1;
+            while (true) {
+                  // retreive state number from top of stack
+                  state = stack[stack.length - 1];
+  
+                  ...
+  
+                  // handle parse error
+&gt;&gt;                _handle_error: if (typeof action === 'undefined' || !action.length || !  ...action[0]) {
+  
+                      var errStr = '';
+                      if (!recovering) {
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html2211"
+<A NAME="tex2html3154"
   HREF="node76.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2205"
-  HREF="node72.html">
+<A NAME="tex2html3148"
+  HREF="node59.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2199"
+<A NAME="tex2html3142"
   HREF="node74.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2207"
-  HREF="node105.html">
+<A NAME="tex2html3150"
+  HREF="node120.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2209"
-  HREF="node108.html">
+<A NAME="tex2html3152"
+  HREF="node123.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -181,17 +237,17 @@ Setting Values</A>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2212"
-  HREF="node76.html">Putting Things Together</A>
-<B>Sup:</B> <A NAME="tex2html2206"
-  HREF="node72.html">Scheem Interpreter</A>
-<B> Ant:</B> <A NAME="tex2html2200"
-  HREF="node74.html">Variables</A>
+<B> Sig:</B> <A NAME="tex2html3155"
+  HREF="node76.html">Depuración en jison</A>
+<B>Sup:</B> <A NAME="tex2html3149"
+  HREF="node59.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html3143"
+  HREF="node74.html">Ejercicios: Casos de Estudio</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-03-24</I>
+2014-03-26</I>
 </ADDRESS>
 </BODY>
 </HTML>

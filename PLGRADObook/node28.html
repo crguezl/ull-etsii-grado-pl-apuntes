@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Análisis Descendente mediante Parsing Expresion Grammars en JavaScript</TITLE>
-<META NAME="description" CONTENT="Análisis Descendente mediante Parsing Expresion Grammars en JavaScript">
+<TITLE>Pack y Unpack</TITLE>
+<META NAME="description" CONTENT="Pack y Unpack">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node44.html">
-<LINK REL="previous" HREF="node25.html">
-<LINK REL="up" HREF="node6.html">
+<LINK REL="next" HREF="node29.html">
+<LINK REL="previous" HREF="node27.html">
+<LINK REL="up" HREF="node21.html">
 <LINK REL="next" HREF="node29.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1300"
+<A NAME="tex2html2192"
   HREF="node29.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1294"
-  HREF="node6.html">
+<A NAME="tex2html2186"
+  HREF="node21.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1288"
+<A NAME="tex2html2180"
   HREF="node27.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1296"
-  HREF="node105.html">
+<A NAME="tex2html2188"
+  HREF="node120.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1298"
-  HREF="node108.html">
+<A NAME="tex2html2190"
+  HREF="node123.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,213 +92,120 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1301"
-  HREF="node29.html">Introducción a los PEGs</A>
-<B>Sup:</B> <A NAME="tex2html1295"
-  HREF="node6.html">PRIMERA PARTE: APUNTES DE</A>
-<B> Ant:</B> <A NAME="tex2html1289"
-  HREF="node27.html">Análisis Top Down Usando</A>
+<B> Sig:</B> <A NAME="tex2html2193"
+  HREF="node29.html">Práctica: Un lenguaje para</A>
+<B>Sup:</B> <A NAME="tex2html2187"
+  HREF="node21.html">Expresiones Regulares en Perl</A>
+<B> Ant:</B> <A NAME="tex2html2181"
+  HREF="node27.html">tr y split</A>
 <B> Con:</B> 
-<A NAME="tex2html1296"
-  HREF="node105.html">
+<A NAME="tex2html2188"
+  HREF="node120.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1298"
-  HREF="node108.html">
+<A NAME="tex2html2190"
+  HREF="node123.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION04400000000000000000">
-Análisis Descendente mediante Parsing Expresion Grammars en JavaScript</A>
+<H1><A NAME="SECTION04370000000000000000"></A>
+<A NAME="section:pack"></A>
+<BR>
+<TT>Pack</TT> y <TT>Unpack</TT>
 </H1>
-  <BR> <HR>
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
+El operador <code>pack</code> trabaja de forma parecida a <code>sprintf</code>.
+Su primer argumento es una cadena, seguida de una lista de valores
+a formatear y devuelve una cadena:
+<PRE>
+pack("CCC", 65, 66, 67, 68) # empaquetamos A B C D
+</PRE>
+el inverso es el operador <code>unpack</code>
+<PRE>
+unpack("CCC", "ABCD")
+</PRE>
+La cadena de formato es una lista de especificadores que indican el
+tipo del dato que se va a empaquetar/desempaquetar. Cada especificador
+puede opcionalmente seguirse de un contador de repetición
+que indica el número de elementos a formatear. Si se pone un
+asterisco (<code>*</code>) se indica que la especificación
+se aplica a todos los elementos restantes de la lista.
 
-<UL CLASS="ChildLinks">
-<LI><A NAME="tex2html1302"
-  HREF="node29.html">Introducción a los PEGs</A>
-<UL>
-<LI><A NAME="tex2html1303"
-  HREF="node29.html#SECTION04411000000000000000">Syntax</A>
-<LI><A NAME="tex2html1304"
-  HREF="node29.html#SECTION04412000000000000000">Semantics</A>
-<LI><A NAME="tex2html1305"
-  HREF="node29.html#SECTION04413000000000000000">Implementing parsers from parsing expression grammars</A>
-<LI><A NAME="tex2html1306"
-  HREF="node29.html#SECTION04414000000000000000">Lexical Analysis</A>
-<LI><A NAME="tex2html1307"
-  HREF="node29.html#SECTION04415000000000000000">Left recursion</A>
-<LI><A NAME="tex2html1308"
-  HREF="node29.html#SECTION04416000000000000000">Referencias y Documentación</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html1309"
-  HREF="node30.html">PEGJS</A>
-<UL>
-<LI><A NAME="tex2html1310"
-  HREF="node30.html#SECTION04420010000000000000">What is</A>
-<LI><A NAME="tex2html1311"
-  HREF="node30.html#SECTION04420020000000000000">Installation</A>
-<LI><A NAME="tex2html1312"
-  HREF="node30.html#SECTION04420030000000000000">El compilador de línea de comandos</A>
-<LI><A NAME="tex2html1313"
-  HREF="node30.html#SECTION04420040000000000000">Using it</A>
-<LI><A NAME="tex2html1314"
-  HREF="node30.html#SECTION04420050000000000000">Opciones: allowedStartRules</A>
-<LI><A NAME="tex2html1315"
-  HREF="node30.html#SECTION04420060000000000000">Opciones: output</A>
-<LI><A NAME="tex2html1316"
-  HREF="node30.html#SECTION04420070000000000000">Opciones: plugin</A>
-<LI><A NAME="tex2html1317"
-  HREF="node30.html#SECTION04420080000000000000">cache</A>
-<LI><A NAME="tex2html1318"
-  HREF="node30.html#SECTION04420090000000000000">optimize</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html1319"
-  HREF="node31.html">Un Ejemplo Sencillo</A>
-<UL>
-<LI><A NAME="tex2html1320"
-  HREF="node31.html#SECTION04430010000000000000">Donde</A>
-<LI><A NAME="tex2html1321"
-  HREF="node31.html#SECTION04430020000000000000">arithmetics.pegjs</A>
-<LI><A NAME="tex2html1322"
-  HREF="node31.html#SECTION04430030000000000000">main.js</A>
-<LI><A NAME="tex2html1323"
-  HREF="node31.html#SECTION04430040000000000000">Rakefile</A>
-<LI><A NAME="tex2html1324"
-  HREF="node31.html#SECTION04430050000000000000">Compilación</A>
-<LI><A NAME="tex2html1325"
-  HREF="node31.html#SECTION04431000000000000000">Asociación Incorrecta para la Resta y la División</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html1326"
-  HREF="node32.html">Acciones Intermedias</A>
-<LI><A NAME="tex2html1327"
-  HREF="node33.html">PegJS en los Browser</A>
-<UL>
-<LI><A NAME="tex2html1328"
-  HREF="node33.html#SECTION04450010000000000000">Donde</A>
-<LI><A NAME="tex2html1329"
-  HREF="node33.html#SECTION04450020000000000000">Versiones para Browser</A>
-<LI><A NAME="tex2html1330"
-  HREF="node33.html#SECTION04450030000000000000">La opción -e de pegjs</A>
-<LI><A NAME="tex2html1331"
-  HREF="node33.html#SECTION04450040000000000000">Compilación</A>
-<LI><A NAME="tex2html1332"
-  HREF="node33.html#SECTION04450050000000000000">calc.js</A>
-<LI><A NAME="tex2html1333"
-  HREF="node33.html#SECTION04450060000000000000">arithmetic.pegjs</A>
-<LI><A NAME="tex2html1334"
-  HREF="node33.html#SECTION04450070000000000000">calculator.html</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html1335"
-  HREF="node34.html">Eliminación de la Recursividad por la Izquierda en PEGs</A>
-<UL>
-<LI><A NAME="tex2html1336"
-  HREF="node34.html#SECTION04460010000000000000">Donde</A>
-<LI><A NAME="tex2html1337"
-  HREF="node34.html#SECTION04460020000000000000">PEGjs Coffee Plugin</A>
-<LI><A NAME="tex2html1338"
-  HREF="node34.html#SECTION04460030000000000000">Un Esquema de Traducción Recursivo por la Izquierda</A>
-<LI><A NAME="tex2html1339"
-  HREF="node34.html#SECTION04460040000000000000">Métodología</A>
-<LI><A NAME="tex2html1340"
-  HREF="node34.html#SECTION04460050000000000000">Solución</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html1341"
-  HREF="node35.html">Eliminando la Recursividad por la Izquierda en la Calculadora</A>
-<LI><A NAME="tex2html1342"
-  HREF="node36.html">Eliminación de la Recursividad por la Izquierda y Atributos Heredados</A>
-<UL>
-<LI><A NAME="tex2html1343"
-  HREF="node36.html#SECTION04481000000000000000">Eliminación de la Recursión por la Izquierda en la Gramática</A>
-<LI><A NAME="tex2html1344"
-  HREF="node36.html#SECTION04482000000000000000">Eliminación de la Recursión por la Izquierda en un Esquema de Traducción</A>
-<LI><A NAME="tex2html1345"
-  HREF="node36.html#SECTION04483000000000000000">Eliminación de la Recursividad por la Izquierda en PEGJS</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html1346"
-  HREF="node37.html"><FONT COLOR="#ff0000"> Dangling else</FONT>: Asociando un else con su if mas cercano</A>
-<UL>
-<LI><A NAME="tex2html1347"
-  HREF="node37.html#SECTION04490010000000000000">danglingelse.pegjs</A>
-<LI><A NAME="tex2html1348"
-  HREF="node37.html#SECTION04490020000000000000">use_danglingelse.js</A>
-<LI><A NAME="tex2html1349"
-  HREF="node37.html#SECTION04490030000000000000">Ejecución</A>
-<LI><A NAME="tex2html1350"
-  HREF="node37.html#SECTION04490040000000000000">Donde</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html1351"
-  HREF="node38.html">Not Predicate: Comentarios Anidados</A>
-<UL>
-<LI><A NAME="tex2html1352"
-  HREF="node38.html#SECTION044100010000000000000">Pascal_comments.pegjs</A>
-<LI><A NAME="tex2html1353"
-  HREF="node38.html#SECTION044100020000000000000">use_pascal_comments.js</A>
-<LI><A NAME="tex2html1354"
-  HREF="node38.html#SECTION044100030000000000000">Ejecución</A>
-<LI><A NAME="tex2html1355"
-  HREF="node38.html#SECTION044100040000000000000">Donde</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html1356"
-  HREF="node39.html">Un Lenguaje Dependiente del Contexto</A>
-<LI><A NAME="tex2html1357"
-  HREF="node40.html">Usando Pegjs con CoffeeScript</A>
-<UL>
-<LI><A NAME="tex2html1358"
-  HREF="node40.html#SECTION044120010000000000000">Instalación de pegjs-coffee-plugin</A>
-<LI><A NAME="tex2html1359"
-  HREF="node40.html#SECTION044120020000000000000">Ejemplo Sencillo</A>
-<LI><A NAME="tex2html1360"
-  HREF="node40.html#SECTION044120030000000000000">Véase También</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html1361"
-  HREF="node41.html">Práctica: Analizador de PL0 Ampliado Usando PEG.js</A>
-<UL>
-<LI><A NAME="tex2html1362"
-  HREF="node41.html#SECTION044130010000000000000">Donde</A>
-<LI><A NAME="tex2html1363"
-  HREF="node41.html#SECTION044130020000000000000">Tareas</A>
-<LI><A NAME="tex2html1364"
-  HREF="node41.html#SECTION044130030000000000000">Referencias para esta Práctica</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html1365"
-  HREF="node42.html">Práctica: Ambiguedad en C++</A>
-<LI><A NAME="tex2html1366"
-  HREF="node43.html">Práctica: Inventando un Lenguaje: Tortoise</A>
-<UL>
-<LI><A NAME="tex2html1367"
-  HREF="node43.html#SECTION044150010000000000000">Recursos</A>
-</UL></UL>
-<!--End of Table of Child-Links-->
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">Formato</TD>
+<TD ALIGN="LEFT">Descripción</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">A</TD>
+<TD ALIGN="LEFT">Una cadena completada con blancos</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">a</TD>
+<TD ALIGN="LEFT">Una cadena completada con ceros</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">B</TD>
+<TD ALIGN="LEFT">Una cadena binaria en orden descendente</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">b</TD>
+<TD ALIGN="LEFT">Una cadena binaria en orden ascendente</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">H</TD>
+<TD ALIGN="LEFT">Una cadena hexadecimal, los nibble altos primero</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">h</TD>
+<TD ALIGN="LEFT">Una cadena hexadecimal, los nibble bajos primero</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+</TABLE>
+
+<P>
+Ejemplo de uso del formato <code>A</code>:
+<PRE>
+DB&lt;1&gt; $a = pack "A2A3", "Pea","rl"
+DB&lt;2&gt; p $a
+Perl
+DB&lt;3&gt; @b = unpack "A2A3", "Perl"
+DB&lt;4&gt; p "@b"
+Pe rl
+</PRE>
+La variable <code>@b</code> tiene ahora dos cadenas. Una es <code>Pe</code> la otra es <code>rl</code>.
+Veamos un ejemplo con el formato <code>B</code>:
+<PRE>
+p ord('A')
+65
+DB&lt;22&gt; $x = pack "B8", "01000001"
+DB&lt;23&gt; p $x
+A
+DB&lt;24&gt; @y = unpack "B8", "A"
+DB&lt;25&gt; p "@y"
+01000001
+DB&lt;26&gt; $x = pack "b8", "10000010"
+DB&lt;27&gt; p $x
+</PRE>
+
+<P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1300"
+<A NAME="tex2html2192"
   HREF="node29.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1294"
-  HREF="node6.html">
+<A NAME="tex2html2186"
+  HREF="node21.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1288"
+<A NAME="tex2html2180"
   HREF="node27.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1296"
-  HREF="node105.html">
+<A NAME="tex2html2188"
+  HREF="node120.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1298"
-  HREF="node108.html">
+<A NAME="tex2html2190"
+  HREF="node123.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -349,17 +256,17 @@ Análisis Descendente mediante Parsing Expresion Grammars en JavaScript</A>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1301"
-  HREF="node29.html">Introducción a los PEGs</A>
-<B>Sup:</B> <A NAME="tex2html1295"
-  HREF="node6.html">PRIMERA PARTE: APUNTES DE</A>
-<B> Ant:</B> <A NAME="tex2html1289"
-  HREF="node27.html">Análisis Top Down Usando</A>
+<B> Sig:</B> <A NAME="tex2html2193"
+  HREF="node29.html">Práctica: Un lenguaje para</A>
+<B>Sup:</B> <A NAME="tex2html2187"
+  HREF="node21.html">Expresiones Regulares en Perl</A>
+<B> Ant:</B> <A NAME="tex2html2181"
+  HREF="node27.html">tr y split</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-03-24</I>
+2014-03-26</I>
 </ADDRESS>
 </BODY>
 </HTML>

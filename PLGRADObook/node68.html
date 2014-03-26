@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>JavaScript Review </TITLE>
-<META NAME="description" CONTENT="JavaScript Review ">
+<TITLE>Algoritmo de Análisis LR</TITLE>
+<META NAME="description" CONTENT="Algoritmo de Análisis LR">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node70.html">
+<LINK REL="next" HREF="node69.html">
 <LINK REL="previous" HREF="node67.html">
-<LINK REL="up" HREF="node67.html">
+<LINK REL="up" HREF="node59.html">
 <LINK REL="next" HREF="node69.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html2093"
+<A NAME="tex2html3041"
   HREF="node69.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2087"
-  HREF="node67.html">
+<A NAME="tex2html3035"
+  HREF="node59.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2081"
+<A NAME="tex2html3029"
   HREF="node67.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2089"
-  HREF="node105.html">
+<A NAME="tex2html3037"
+  HREF="node120.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2091"
-  HREF="node108.html">
+<A NAME="tex2html3039"
+  HREF="node123.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,55 +92,134 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2094"
-  HREF="node69.html">Closures</A>
-<B>Sup:</B> <A NAME="tex2html2088"
-  HREF="node67.html">PARTE: CREATE YOUR OWN</A>
-<B> Ant:</B> <A NAME="tex2html2082"
-  HREF="node67.html">PARTE: CREATE YOUR OWN</A>
+<B> Sig:</B> <A NAME="tex2html3042"
+  HREF="node69.html">El módulo Generado por</A>
+<B>Sup:</B> <A NAME="tex2html3036"
+  HREF="node59.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html3030"
+  HREF="node67.html">Práctica: Calculadora con Análisis</A>
 <B> Con:</B> 
-<A NAME="tex2html2089"
-  HREF="node105.html">
+<A NAME="tex2html3037"
+  HREF="node120.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html2091"
-  HREF="node108.html">
+<A NAME="tex2html3039"
+  HREF="node123.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION05100000000000000000">
-JavaScript Review </A>
+<H1><A NAME="SECTION04790000000000000000"></A>
+<A NAME="section:algoritmoLR"></A>
+<BR>
+Algoritmo de Análisis LR
 </H1>
-<A NAME="tex2html270"
-  HREF="http://nathansuniversity.com/jsreview.html">http://nathansuniversity.com/jsreview.html</A>
-<P>
-<BR> <HR>
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
+Asi  pues la tabla de transiciones del autómata nos genera dos tablas:
+la tabla de acciones y la de saltos.
+El  algoritmo  de análisis sintáctico <SPAN  CLASS="textbf">LR</SPAN> en el  que 
+se basa <SPAN  CLASS="textbf">jison</SPAN> utiliza una pila y dos tablas 
+para analizar la entrada. Como se ha visto, la tabla  de acciones contiene cuatro tipo de acciones: 
 
-<UL CLASS="ChildLinks">
-<LI><A NAME="tex2html2095"
-  HREF="node69.html">Closures</A>
+<OL>
+<LI>Desplazar (<SPAN  CLASS="textbf">shift</SPAN>)
+</LI>
+<LI>Reducir (<SPAN  CLASS="textbf">reduce</SPAN>)
+</LI>
+<LI>Aceptar
+</LI>
+<LI>Error
+</LI>
+</OL>
+El algoritmo utiliza una pila en la que se guardan los estados
+del autómata. De este modo se evita tener que ``comenzar'' 
+el procesado de la forma sentencial derecha resultante
+después de una reducción (antiderivación).
+<P>
+<DIV><A NAME="alg:parser"><B>Algoritmo  <SPAN CLASS="arabic">7</SPAN>.<SPAN CLASS="arabic">9</SPAN>.<SPAN CLASS="arabic">1</SPAN></B></A> &nbsp; 
+<I>Análizador LR
+</I><PRE>
+ push(s0);
+ b = yylex();
+ for( ; ; ;) {
+   s = top(0); a = b;
+   switch (action[s][a]) {
+     case "shift t" : 
+       t.attr = a.attr;
+       push(t); 
+       b = yylex();
+       break;
+     case "reduce A -&gt;alpha" : 
+       eval(Sem{A -&gt; alpha}(top(|alpha|-1).attr, ... , top(0).attr)); 
+       pop(|alpha|); 
+       push(goto[top(0)][A]); 
+       break;
+     case "accept" : return (1); 
+     default : yyerror("syntax error");
+   }
+ }
+</PRE></DIV><P></P>
+
+<UL>
+<LI>Como es habitual, <SPAN CLASS="MATH"><IMG
+ WIDTH="24" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img207.png"
+ ALT="$ \vert x\vert$"></SPAN> denota la longitud de la cadena <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img43.png"
+ ALT="$ x$"></SPAN>.
+</LI>
+<LI>La función <code>top(k)</code> devuelve el elemento que ocupa la 
+posición <code>k</code> desde el <SPAN  CLASS="textbf">top</SPAN> de la pila (esto es, está a profundidad <code>k</code>).
+</LI>
+<LI>La función <code>pop(k)</code> extrae <code>k</code> elementos de la pila.
+</LI>
+<LI>La notación <code>state.attr</code> hace referencia al atributo
+asociado con cada estado, el cual desde el punto de vista del programador
+esta asociado con el correspondiente símbolo de la parte derecha de la regla. 
+Nótese que cada estado que está en la pila es el resultado de una transición con
+un símbolo. El atributo de ese símbolo es guardado en el objeto estado
+cada vez que ocurre una transición.
+
+<P>
+</LI>
+<LI>Denotamos por <code>Sem {reduce A -&gt; alpha}</code>
+el código de la acción semántica asociada con la regla <!-- MATH
+ $A \rightarrow \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.png"
+ ALT="$ A \rightarrow \alpha$"></SPAN>.
+</LI>
 </UL>
-<!--End of Table of Child-Links-->
+
+<P>
+Todos los analizadores LR comparten, salvo pequeñas
+exepciones, el mismo algoritmo
+de análisis. Lo que más los diferencia es la forma en 
+la que construyen las tablas.
+En <code>jison</code>
+la construcción de las tablas de <SPAN  CLASS="textbf">acciones</SPAN> y <SPAN  CLASS="textbf">gotos</SPAN>
+se realiza  por defecto mediante el algoritmo <SPAN  CLASS="textbf">LALR</SPAN>.
+
+<P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html2093"
+<A NAME="tex2html3041"
   HREF="node69.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2087"
-  HREF="node67.html">
+<A NAME="tex2html3035"
+  HREF="node59.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2081"
+<A NAME="tex2html3029"
   HREF="node67.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2089"
-  HREF="node105.html">
+<A NAME="tex2html3037"
+  HREF="node120.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2091"
-  HREF="node108.html">
+<A NAME="tex2html3039"
+  HREF="node123.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -191,17 +270,17 @@ JavaScript Review </A>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2094"
-  HREF="node69.html">Closures</A>
-<B>Sup:</B> <A NAME="tex2html2088"
-  HREF="node67.html">PARTE: CREATE YOUR OWN</A>
-<B> Ant:</B> <A NAME="tex2html2082"
-  HREF="node67.html">PARTE: CREATE YOUR OWN</A>
+<B> Sig:</B> <A NAME="tex2html3042"
+  HREF="node69.html">El módulo Generado por</A>
+<B>Sup:</B> <A NAME="tex2html3036"
+  HREF="node59.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html3030"
+  HREF="node67.html">Práctica: Calculadora con Análisis</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-03-24</I>
+2014-03-26</I>
 </ADDRESS>
 </BODY>
 </HTML>
