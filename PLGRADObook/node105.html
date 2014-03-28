@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Introducción a Los Object Relational Mappers (ORM)</TITLE>
-<META NAME="description" CONTENT="Introducción a Los Object Relational Mappers (ORM)">
+<TITLE>Ejemplo Simple Combinando Rack::Request, Rack::Response y Middleware (Lobster)</TITLE>
+<META NAME="description" CONTENT="Ejemplo Simple Combinando Rack::Request, Rack::Response y Middleware (Lobster)">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node106.html">
 <LINK REL="previous" HREF="node104.html">
-<LINK REL="up" HREF="node104.html">
+<LINK REL="up" HREF="node95.html">
 <LINK REL="next" HREF="node106.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3817"
+<A NAME="tex2html4434"
   HREF="node106.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3811"
-  HREF="node104.html">
+<A NAME="tex2html4428"
+  HREF="node95.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3805"
+<A NAME="tex2html4422"
   HREF="node104.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3813"
-  HREF="node126.html">
+<A NAME="tex2html4430"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3815"
-  HREF="node129.html">
+<A NAME="tex2html4432"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,100 +92,228 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3818"
-  HREF="node106.html">Patterns Active Record y</A>
-<B>Sup:</B> <A NAME="tex2html3812"
-  HREF="node104.html">DataMapper</A>
-<B> Ant:</B> <A NAME="tex2html3806"
-  HREF="node104.html">DataMapper</A>
+<B> Sig:</B> <A NAME="tex2html4435"
+  HREF="node106.html">Práctica: Accediendo a Twitter</A>
+<B>Sup:</B> <A NAME="tex2html4429"
+  HREF="node95.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4423"
+  HREF="node104.html">Gestión de Sesiones</A>
 <B> Con:</B> 
-<A NAME="tex2html3813"
-  HREF="node126.html">
+<A NAME="tex2html4430"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3815"
-  HREF="node129.html">
+<A NAME="tex2html4432"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION06210000000000000000">
-Introducción a Los Object Relational Mappers (ORM)</A>
+<H1><A NAME="SECTION061100000000000000000">
+Ejemplo Simple Combinando Rack::Request, Rack::Response y Middleware (Lobster)</A>
 </H1>
 
 <P>
-What is a Object Relational Mapper?
-
-<P>
-A simple answer is that you wrap your tables or stored procedures
-in classes in your programming language, so that instead of writing
-SQL statements to interact with your database, you use methods and
-properties of objects.
-
-<P>
-In other words, instead of something like this:
-
+Este código se encuentra en
+<A NAME="tex2html525"
+  HREF="https://github.com/crguezl/rack-lobster">https://github.com/crguezl/rack-lobster</A>
 <P>
 <PRE>
-  String sql = "SELECT ... FROM persons WHERE id = 10"
-  DbCommand cmd = new DbCommand(connection, sql);
-  Result res = cmd.Execute();
-  String name = res[0]["FIRST_NAME"];
+[~/local/src/ruby/sinatra/rack/rack-lobster(master)]$ cat lobster.rb 
+require 'rack/request'
+require 'rack/response'
+
+module Rack
+  class Lobster
+    LobsterString = "a lobster"
+
+    def call(env)
+      req = Request.new(env)
+
+      req.env.keys.sort.each { |x| puts "#{x} =&gt; #{req.env[x]}" }
+
+      if req.GET["flip"] == "left"
+        lobster = LobsterString.reverse
+        href = "?flip=right"
+      elsif req.GET["flip"] == "crash"
+        raise "Lobster crashed"
+      else
+        lobster = LobsterString
+        href = "?flip=left"
+      end
+
+      res = Response.new
+      res.write &lt;&lt;-"EOS"
+      &lt;title&gt;Lobstericious!&lt;/title&gt;
+      &lt;pre&gt;
+      #{lobster}
+      &lt;/pre&gt;
+      &lt;p&gt;&lt;a href='#{href}'&gt;flip!&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;&lt;a href='?flip=crash'&gt;crash!&lt;/a&gt;&lt;/p&gt;
+      EOS
+      res.finish
+    end
+  end
+end
+
+if $0 == __FILE__
+  require 'rack'
+  require 'rack/showexceptions'
+  Rack::Server.start(
+    :app =&gt; Rack::ShowExceptions.new(
+              Rack::Lint.new(
+                Rack::Lobster.new)), 
+    :Port =&gt; 9292,
+    :server =&gt; 'thin'
+  )
+end
 </PRE>
-you do something like this:
 
 <P>
-<PRE>
-  Person p = Person.Get(10);
-</PRE>
-
-<P>
-or similar code (lots of variations here). 
-The framework is what makes this code possible.
-
-<P>
-Now, benefits:
-
-<P>
+Véase:
 
 <OL>
-<LI>First of all, you hide the SQL away from your logic
-code
+<LI><A NAME="tex2html526"
+  HREF="https://github.com/rack/rack/blob/master/lib/rack/showexceptions.rb">rack/lib/rack/showexceptions.rb</A>
+<P>
+(Rack::ShowExceptions catches all exceptions raised from the app it
+wraps.  It shows a useful backtrace with the sourcefile and
+clickable context, the whole Rack environment and the request
+data.
+
+<P>
+Be careful when you use this on public-facing sites as it could
+reveal information helpful to attackers)
 </LI>
-<LI>This has the benefit of allowing you to more easily support
-more database engines 
-</LI>
-<LI>For instance, MS SQL Server and Oracle have
-different names on typical functions, and different ways to do
-calculations with dates.
-This difference can be put away from your
-logic code.
-</LI>
-<LI>Additionally, you can focus on writing the logic, instead of getting all the SQL right.
-</LI>
-<LI>The code will typically be more readable as well, since it doesn't
-contain all the plumbing necessary to talk to the database.
+<LI><A NAME="tex2html527"
+  HREF="https://github.com/rack/rack/blob/master/lib/rack/lint.rb">rack/lib/rack/lint.rb</A>
+en GitHub
+
+<P>
+(Rack::Lint validates your application and the requests and
+ responses according to the Rack spec)
 </LI>
 </OL>
+Tanto Rack::ShowExceptions como Rack::Lint disponen de un método <code>call</code> que recibe una variable <code>env</code> describiendo el entorno CGI.
+Esto es, se trata de aplicaciones que siguen el protocolo Rack.
+Así este código:
+<PRE>
+  Rack::Server.start(
+    :app =&gt; Rack::ShowExceptions.new(
+              Rack::Lint.new(
+                Rack::Lobster.new)), 
+    :Port =&gt; 9292,
+    :server =&gt; 'thin'
+  )
+</PRE>
+
+<P>
+construye una nueva objeto/aplicación Rack que es la composición
+de los tres Racks.
+
+<P>
+<PRE>
+[~/local/src/ruby/sinatra/rack/rack-lobster(master)]$ cat Rakefile 
+desc "run the server"
+task :default do
+  sh "ruby lobster.rb"
+end
+
+desc "run the client flip left"
+task :left do
+  sh %q{curl -v 'http://localhost:9292?flip=left'}
+end
+
+desc "run the client flip right"
+task :right do
+  sh %q{curl -v 'http://localhost:9292?flip=right'}
+end
+
+desc "run the client. Generate exception"
+task :crash do
+  sh %q{curl -v 'http://localhost:9292/?flip=crash'}
+end
+</PRE>
+
+<P>
+<PRE>
+[~/local/src/ruby/sinatra/rack/rack-lobster(master)]$ rake left
+curl -v 'http://localhost:9292?flip=left'
+* About to connect() to localhost port 9292 (#0)
+*   Trying ::1... Connection refused
+*   Trying 127.0.0.1... connected
+* Connected to localhost (127.0.0.1) port 9292 (#0)
+&gt; GET /?flip=left HTTP/1.1
+&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8y zlib/1.2.5
+&gt; Host: localhost:9292
+&gt; Accept: */*
+&gt; 
+&lt; HTTP/1.1 200 OK
+&lt; Content-Length: 168
+&lt; Connection: keep-alive
+&lt; Server: thin 1.5.1 codename Straight Razor
+&lt; 
+      &lt;title&gt;Lobstericious!&lt;/title&gt;
+      &lt;pre&gt;
+      retsbol a
+      &lt;/pre&gt;
+      &lt;p&gt;&lt;a href='?flip=right'&gt;flip!&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;&lt;a href='?flip=crash'&gt;crash!&lt;/a&gt;&lt;/p&gt;
+* Connection #0 to host localhost left intact
+* Closing connection #0
+</PRE>
+
+<P>
+<PRE>
+[~/local/src/ruby/sinatra/rack/rack-lobster(master)]$ rake right
+curl -v 'http://localhost:9292?flip=right'
+* About to connect() to localhost port 9292 (#0)
+*   Trying ::1... Connection refused
+*   Trying 127.0.0.1... connected
+* Connected to localhost (127.0.0.1) port 9292 (#0)
+&gt; GET /?flip=right HTTP/1.1
+&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8y zlib/1.2.5
+&gt; Host: localhost:9292
+&gt; Accept: */*
+&gt; 
+&lt; HTTP/1.1 200 OK
+&lt; Content-Length: 167
+&lt; Connection: keep-alive
+&lt; Server: thin 1.5.1 codename Straight Razor
+&lt; 
+      &lt;title&gt;Lobstericious!&lt;/title&gt;
+      &lt;pre&gt;
+      a lobster
+      &lt;/pre&gt;
+      &lt;p&gt;&lt;a href='?flip=left'&gt;flip!&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;&lt;a href='?flip=crash'&gt;crash!&lt;/a&gt;&lt;/p&gt;
+* Connection #0 to host localhost left intact
+* Closing connection #0
+</PRE>
+
+<P>
+
+<img src="rackcrash.png" width="50%" />
+
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3817"
+<A NAME="tex2html4434"
   HREF="node106.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3811"
-  HREF="node104.html">
+<A NAME="tex2html4428"
+  HREF="node95.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3805"
+<A NAME="tex2html4422"
   HREF="node104.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3813"
-  HREF="node126.html">
+<A NAME="tex2html4430"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3815"
-  HREF="node129.html">
+<A NAME="tex2html4432"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -236,12 +364,12 @@ contain all the plumbing necessary to talk to the database.
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3818"
-  HREF="node106.html">Patterns Active Record y</A>
-<B>Sup:</B> <A NAME="tex2html3812"
-  HREF="node104.html">DataMapper</A>
-<B> Ant:</B> <A NAME="tex2html3806"
-  HREF="node104.html">DataMapper</A>
+<B> Sig:</B> <A NAME="tex2html4435"
+  HREF="node106.html">Práctica: Accediendo a Twitter</A>
+<B>Sup:</B> <A NAME="tex2html4429"
+  HREF="node95.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4423"
+  HREF="node104.html">Gestión de Sesiones</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

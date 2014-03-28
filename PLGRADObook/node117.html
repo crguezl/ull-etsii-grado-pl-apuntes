@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Google+ Sign-In for server-side apps</TITLE>
-<META NAME="description" CONTENT="Google+ Sign-In for server-side apps">
+<TITLE>Rack::Cascade</TITLE>
+<META NAME="description" CONTENT="Rack::Cascade">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node118.html">
 <LINK REL="previous" HREF="node116.html">
-<LINK REL="up" HREF="node110.html">
+<LINK REL="up" HREF="node95.html">
 <LINK REL="next" HREF="node118.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4026"
+<A NAME="tex2html4631"
   HREF="node118.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4020"
-  HREF="node110.html">
+<A NAME="tex2html4625"
+  HREF="node95.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4014"
+<A NAME="tex2html4619"
   HREF="node116.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4022"
-  HREF="node126.html">
+<A NAME="tex2html4627"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4024"
-  HREF="node129.html">
+<A NAME="tex2html4629"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,71 +92,206 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4027"
-  HREF="node118.html">Authentication using the Google</A>
-<B>Sup:</B> <A NAME="tex2html4021"
-  HREF="node110.html">Google Oauth</A>
-<B> Ant:</B> <A NAME="tex2html4015"
-  HREF="node116.html">OmniAuth OAuth2 gem</A>
+<B> Sig:</B> <A NAME="tex2html4632"
+  HREF="node118.html">Rack::Mount</A>
+<B>Sup:</B> <A NAME="tex2html4626"
+  HREF="node95.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4620"
+  HREF="node116.html">Código de Rack::Builder</A>
 <B> Con:</B> 
-<A NAME="tex2html4022"
-  HREF="node126.html">
+<A NAME="tex2html4627"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4024"
-  HREF="node129.html">
+<A NAME="tex2html4629"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<H1><A NAME="SECTION06470000000000000000">
-Google+ Sign-In for server-side apps</A>
+<UL CLASS="ChildLinks">
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html4633"
+  HREF="node117.html#SECTION061220010000000000000">Ejemplo</A>
+<LI><A NAME="tex2html4634"
+  HREF="node117.html#SECTION061220020000000000000">Código del Constructor</A>
+<LI><A NAME="tex2html4635"
+  HREF="node117.html#SECTION061220030000000000000">Código de <TT>call</TT></A>
+</UL></UL></UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION061220000000000000000">
+Rack::Cascade</A>
 </H1>
 
 <P>
-To take advantage of all of the benefits of Google+ Sign-In you must
-use a hybrid server-side flow where a user authorizes your app on the
-client side using the JavaScript API client and you send a
-special one-time authorization code to your server. 
-
-<P>
-Your server exchanges this one-time-use code to acquire its own access and
-refresh tokens from Google for the server to be able to make its own API
-calls, which can be done while the user is offline. 
-
-<P>
-This one-time code flow has security advantages over both a pure
-server-side flow and over sending access tokens to your server.
+<A NAME="tex2html590"
+  HREF="http://rack.rubyforge.org/doc/Rack/Cascade.html">Rack::Cascade</A> 
+tries an request on several apps, and returns the first response
+that is not 404 (or in a list of configurable status codes).
 
 <P>
 
-<FONT COLOR="#ff0000"> The Google+ Sign-In server-side flow differs from the  <A NAME="tex2html571"
-  HREF="http://oauth.net/">OAuth</A>
- 2.0
-for Web server applications flow.</FONT>
+<H4><A NAME="SECTION061220010000000000000">
+Ejemplo</A>
+</H4>
+  
+
+<P>
+<PRE>
+[~/local/src/ruby/sinatra/rack/rack-cascade]$ cat cascade2.ru 
+statuses = [200,404]
+apps = [
+  lambda {|env| 
+    status = statuses.sample
+    [status, {}, ["I'm the first app. Status = #{status}\n"]]
+  }, 
+  lambda {|env| 
+    status = statuses.sample
+    [status, {}, ["I'm the second app. Status = #{status}\n"]]
+  }, 
+  lambda {|env| 
+    status = statuses.sample
+    [status, {}, ["I'm the last app. Status = #{status}\n"]]
+  } 
+]
+use Rack::ContentLength 
+use Rack::ContentType 
+run Rack::Cascade.new(apps)
+</PRE>
+
+<P>
+<PRE>
+[~/local/src/ruby/sinatra/rack/rack-cascade]$ rake client
+curl -v 'http://localhost:9292'
+* About to connect() to localhost port 9292 (#0)
+*   Trying 127.0.0.1... connected
+* Connected to localhost (127.0.0.1) port 9292 (#0)
+&gt; GET / HTTP/1.1
+&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8y zlib/1.2.5
+&gt; Host: localhost:9292
+&gt; Accept: */*
+&gt; 
+&lt; HTTP/1.1 200 OK
+&lt; Content-Type: text/html
+&lt; Content-Length: 33
+&lt; Connection: keep-alive
+&lt; Server: thin 1.5.1 codename Straight Razor
+&lt; 
+I'm the second app. Status = 200
+* Connection #0 to host localhost left intact
+* Closing connection #0
+</PRE>
+
+<P>
+<PRE>
+[~/local/src/ruby/sinatra/rack/rack-cascade]$ rake client
+curl -v 'http://localhost:9292'
+* About to connect() to localhost port 9292 (#0)
+*   Trying 127.0.0.1... connected
+* Connected to localhost (127.0.0.1) port 9292 (#0)
+&gt; GET / HTTP/1.1
+&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8y zlib/1.2.5
+&gt; Host: localhost:9292
+&gt; Accept: */*
+&gt; 
+&lt; HTTP/1.1 200 OK
+&lt; Content-Type: text/html
+&lt; Content-Length: 31
+&lt; Connection: keep-alive
+&lt; Server: thin 1.5.1 codename Straight Razor
+&lt; 
+I'm the last app. Status = 200
+* Connection #0 to host localhost left intact
+* Closing connection #0
+</PRE>
+
+<P>
+<PRE>
+[~/local/src/ruby/sinatra/rack/rack-cascade]$ rake client
+curl -v 'http://localhost:9292'
+* About to connect() to localhost port 9292 (#0)
+*   Trying 127.0.0.1... connected
+* Connected to localhost (127.0.0.1) port 9292 (#0)
+&gt; GET / HTTP/1.1
+&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8y zlib/1.2.5
+&gt; Host: localhost:9292
+&gt; Accept: */*
+&gt; 
+&lt; HTTP/1.1 200 OK
+&lt; Content-Type: text/html
+&lt; Content-Length: 32
+&lt; Connection: keep-alive
+&lt; Server: thin 1.5.1 codename Straight Razor
+&lt; 
+I'm the first app. Status = 200
+* Connection #0 to host localhost left intact
+* Closing connection #0]
+</PRE>
 
 <P>
 
-<img src="server_side_code_flow.png" />
+<H4><A NAME="SECTION061220020000000000000">
+Código del Constructor</A>
+</H4>
+  
+
+<P>
+<PRE>
+        # File lib/rack/cascade.rb, line 11
+11:     def initialize(apps, catch=404)
+12:       @apps = []; @has_app = {}
+13:       apps.each { |app| add app }
+14: 
+15:       @catch = {}
+16:       [*catch].each { |status| @catch[status] = true }
+17:     end
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION061220030000000000000">
+Código de <TT>call</TT></A>
+</H4>
+  
+
+<P>
+<PRE>
+        # File lib/rack/cascade.rb, line 19
+19:     def call(env)
+20:       result = NotFound
+21: 
+22:       @apps.each do |app|
+23:         result = app.call(env)
+24:         break unless @catch.include?(result[0].to_i)
+25:       end
+26: 
+27:       result
+28:     end
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4026"
+<A NAME="tex2html4631"
   HREF="node118.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4020"
-  HREF="node110.html">
+<A NAME="tex2html4625"
+  HREF="node95.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4014"
+<A NAME="tex2html4619"
   HREF="node116.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4022"
-  HREF="node126.html">
+<A NAME="tex2html4627"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4024"
-  HREF="node129.html">
+<A NAME="tex2html4629"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -207,12 +342,12 @@ for Web server applications flow.</FONT>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4027"
-  HREF="node118.html">Authentication using the Google</A>
-<B>Sup:</B> <A NAME="tex2html4021"
-  HREF="node110.html">Google Oauth</A>
-<B> Ant:</B> <A NAME="tex2html4015"
-  HREF="node116.html">OmniAuth OAuth2 gem</A>
+<B> Sig:</B> <A NAME="tex2html4632"
+  HREF="node118.html">Rack::Mount</A>
+<B>Sup:</B> <A NAME="tex2html4626"
+  HREF="node95.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4620"
+  HREF="node116.html">Código de Rack::Builder</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

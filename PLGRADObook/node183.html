@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Usando REPL via un socket TCP</TITLE>
-<META NAME="description" CONTENT="Usando REPL via un socket TCP">
+<TITLE>Sinatra::Flash</TITLE>
+<META NAME="description" CONTENT="Sinatra::Flash">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node184.html">
 <LINK REL="previous" HREF="node182.html">
-<LINK REL="up" HREF="node179.html">
+<LINK REL="up" HREF="node94.html">
 <LINK REL="next" HREF="node184.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5367"
+<A NAME="tex2html5747"
   HREF="node184.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5361"
-  HREF="node179.html">
+<A NAME="tex2html5741"
+  HREF="node94.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5355"
+<A NAME="tex2html5735"
   HREF="node182.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5363"
-  HREF="node234.html">
+<A NAME="tex2html5743"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5365"
-  HREF="node237.html">
+<A NAME="tex2html5745"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -59,7 +59,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   WIDTH="30" ALIGN="BOTTOM" BORDER="0"
  SRC="gv.jpeg"
  ALT="ps"></A><A NAME="tex2html6"
-  HREF="https://dl.dropbox.com/u/14539152/PLgrado/PLgradoBOOK/index.html"><IMG
+  HREF="http://crguezl.github.io/pl-html/"><IMG
   WIDTH="60" ALIGN="BOTTOM" BORDER="0"
  SRC="lupa.gif"
  ALT="ruby gems"></A><A NAME="tex2html7"
@@ -70,11 +70,11 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   HREF="http://github.com"><IMG
   WIDTH="27" ALIGN="BOTTOM" BORDER="0"
  SRC="google-code-project-hosting.jpeg"
- ALT="google code project hosting"></A><A NAME="tex2html9"
-  HREF="http://jquery.com/"><IMG
+ ALT="github"></A><A NAME="tex2html9"
+  HREF="https://plus.google.com/u/0/communities/107031495100582318205"><IMG
   WIDTH="27" ALIGN="BOTTOM" BORDER="0"
  SRC="perl6.jpg"
- ALT="blogs"></A><A NAME="tex2html10"
+ ALT="comunidad g+ PL1314"></A><A NAME="tex2html10"
   HREF="http://www.google.es/"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
  SRC="ggoogle.gif"
@@ -87,84 +87,146 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
  SRC="ull.gif"
  ALT="ull"></A><A NAME="tex2html13"
-  HREF="http://crondinosaur.blogspot.com/"><IMG
+  HREF="https://github.com/crguezl"><IMG
   WIDTH="32" ALIGN="BOTTOM" BORDER="0"
  SRC="logopcgull.gif"
- ALT="pcgull"></A>
+ ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5368"
-  HREF="node184.html">Referencias sobre REPL</A>
-<B>Sup:</B> <A NAME="tex2html5362"
-  HREF="node179.html">JavaScript en el Lado</A>
-<B> Ant:</B> <A NAME="tex2html5356"
-  HREF="node182.html">Usando REPL desde un</A>
+<B> Sig:</B> <A NAME="tex2html5748"
+  HREF="node184.html">Pruebas</A>
+<B>Sup:</B> <A NAME="tex2html5742"
+  HREF="node94.html">SINATRA</A>
+<B> Ant:</B> <A NAME="tex2html5736"
+  HREF="node182.html">Rest</A>
 <B> Con:</B> 
-<A NAME="tex2html5363"
-  HREF="node234.html">
+<A NAME="tex2html5743"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5365"
-  HREF="node237.html">
+<A NAME="tex2html5745"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION051140000000000000000">
-Usando REPL via un socket TCP</A>
+<H1><A NAME="SECTION061400000000000000000">
+Sinatra::Flash</A>
 </H1>
+<A NAME="tex2html740"
+  HREF="https://github.com/SFEley/sinatra-flash">Sinatra::Flash</A>
+is an extension that lets you store information between
+requests. 
+
+<P>
+Often, when an application processes a request, it will redirect
+to another URL upon finishing, which generates another request. 
+
+<P>
+This
+means that any information from the previous request is lost (due to the
+stateless nature of HTTP). 
+
+<P>
+<A NAME="tex2html741"
+  HREF="https://github.com/SFEley/sinatra-flash">Sinatra::Flash</A>
+overcomes this by providing
+access to the 
+<FONT COLOR="#ff0000"> flash</FONT>—a hash-like object that stores temporary values
+such as error messages so that they can be retrieved later—usually
+on the next request. 
+
+<P>
+It also removes the information once it’s been
+used. 
+
+<P>
+All this can be achieved via sessions (and that’s exactly how
+<A NAME="tex2html742"
+  HREF="https://github.com/SFEley/sinatra-flash">Sinatra::Flash</A>
+does it), but 
+<A NAME="tex2html743"
+  HREF="https://github.com/SFEley/sinatra-flash">Sinatra::Flash</A>
+is easy to implement and
+provides a number of helper methods.
+
+<P>
+
+<H4><A NAME="SECTION061400010000000000000">
+Ejemplo</A>
+</H4>
+  
+
 <PRE>
-[~/Dropbox/src/javascript/node.js/repl(master)]$ cat repl_server.js 
-var net = require("net"),
-    repl = require("repl");
+[~/sinatra/sinatra-flash]$ cat app.rb 
+require 'sinatra'
+require 'sinatra/flash'
 
-connections = 0;
+enable :sessions
 
-net.createServer(function (socket) {
-  connections += 1;
-  repl.start({
-    prompt: "node via TCP socket&gt; ",
-    input: socket,
-    output: socket
-  }).on('exit', function() {
-    socket.end();
-  });
-}).listen(5001);
+get '/blah' do
+  # This message won't be seen until the NEXT Web request that accesses the flash collection
+  flash[:blah] = "You were feeling blah at #{Time.now}."
 
-[~/Dropbox/src/javascript/node.js/repl(master)]$ node repl_server.js
+  # Accessing the flash displays messages set from the LAST request
+  "Feeling blah again? That's too bad. #{flash[:blah]}"
+end
+
+get '/pum' do
+  # This message won't be seen until the NEXT Web request that accesses the flash collection
+  flash[:pum] = "You were feeling pum at #{Time.now}."
+
+  # Accessing the flash displays messages set from the LAST request
+  "Feeling pum again? That's too bad. #{flash[:pum]}"
+end
 </PRE>
 
 <P>
-Podemos ahora usar <A NAME="23566"></A><SPAN  CLASS="textbf">netcat</SPAN> para comunicar con el servidor:
+
+<H4><A NAME="SECTION061400020000000000000">
+Gemfile</A>
+</H4>
+  
+
 <PRE>
-[~/Dropbox/src/javascript/node.js/hector_correa_introduction_to_node(master)]$ nc -v localhost 5001
-nc: connect to localhost port 5001 (tcp) failed: Connection refused
-Connection to localhost 5001 port [tcp/commplex-link] succeeded!
-node via TCP socket&gt; a = 2+3
-5
-node via TCP socket&gt; a
-5
-node via TCP socket&gt; .exit
-[~/Dropbox/src/javascript/node.js/hector_correa_introduction_to_node(master)]$
+[~/sinatra/sinatra-flash]$ cat Gemfile
+source 'https://rubygems.org'
+
+gem 'sinatra'
+gem 'sinatra-flash'
 </PRE>
 
 <P>
+<BR> <HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><UL>
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html5749"
+  HREF="node183.html#SECTION061400010000000000000">Ejemplo</A>
+<LI><A NAME="tex2html5750"
+  HREF="node183.html#SECTION061400020000000000000">Gemfile</A>
+</UL></UL></UL></UL>
+<!--End of Table of Child-Links-->
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5367"
+<A NAME="tex2html5747"
   HREF="node184.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5361"
-  HREF="node179.html">
+<A NAME="tex2html5741"
+  HREF="node94.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5355"
+<A NAME="tex2html5735"
   HREF="node182.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5363"
-  HREF="node234.html">
+<A NAME="tex2html5743"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5365"
-  HREF="node237.html">
+<A NAME="tex2html5745"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -182,7 +244,7 @@ node via TCP socket&gt; .exit
   WIDTH="30" ALIGN="BOTTOM" BORDER="0"
  SRC="gv.jpeg"
  ALT="ps"></A><A NAME="tex2html6"
-  HREF="https://dl.dropbox.com/u/14539152/PLgrado/PLgradoBOOK/index.html"><IMG
+  HREF="http://crguezl.github.io/pl-html/"><IMG
   WIDTH="60" ALIGN="BOTTOM" BORDER="0"
  SRC="lupa.gif"
  ALT="ruby gems"></A><A NAME="tex2html7"
@@ -193,11 +255,11 @@ node via TCP socket&gt; .exit
   HREF="http://github.com"><IMG
   WIDTH="27" ALIGN="BOTTOM" BORDER="0"
  SRC="google-code-project-hosting.jpeg"
- ALT="google code project hosting"></A><A NAME="tex2html9"
-  HREF="http://jquery.com/"><IMG
+ ALT="github"></A><A NAME="tex2html9"
+  HREF="https://plus.google.com/u/0/communities/107031495100582318205"><IMG
   WIDTH="27" ALIGN="BOTTOM" BORDER="0"
  SRC="perl6.jpg"
- ALT="blogs"></A><A NAME="tex2html10"
+ ALT="comunidad g+ PL1314"></A><A NAME="tex2html10"
   HREF="http://www.google.es/"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
  SRC="ggoogle.gif"
@@ -210,22 +272,22 @@ node via TCP socket&gt; .exit
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
  SRC="ull.gif"
  ALT="ull"></A><A NAME="tex2html13"
-  HREF="http://crondinosaur.blogspot.com/"><IMG
+  HREF="https://github.com/crguezl"><IMG
   WIDTH="32" ALIGN="BOTTOM" BORDER="0"
  SRC="logopcgull.gif"
- ALT="pcgull"></A>
+ ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5368"
-  HREF="node184.html">Referencias sobre REPL</A>
-<B>Sup:</B> <A NAME="tex2html5362"
-  HREF="node179.html">JavaScript en el Lado</A>
-<B> Ant:</B> <A NAME="tex2html5356"
-  HREF="node182.html">Usando REPL desde un</A>
+<B> Sig:</B> <A NAME="tex2html5748"
+  HREF="node184.html">Pruebas</A>
+<B>Sup:</B> <A NAME="tex2html5742"
+  HREF="node94.html">SINATRA</A>
+<B> Ant:</B> <A NAME="tex2html5736"
+  HREF="node182.html">Rest</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-01-17</I>
+2014-03-28</I>
 </ADDRESS>
 </BODY>
 </HTML>

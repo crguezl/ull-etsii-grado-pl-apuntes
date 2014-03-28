@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Introduction to OAuth</TITLE>
-<META NAME="description" CONTENT="Introduction to OAuth">
+<TITLE>Rack::Static</TITLE>
+<META NAME="description" CONTENT="Rack::Static">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node112.html">
 <LINK REL="previous" HREF="node110.html">
-<LINK REL="up" HREF="node110.html">
+<LINK REL="up" HREF="node95.html">
 <LINK REL="next" HREF="node112.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3937"
+<A NAME="tex2html4531"
   HREF="node112.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3931"
-  HREF="node110.html">
+<A NAME="tex2html4525"
+  HREF="node95.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3925"
+<A NAME="tex2html4519"
   HREF="node110.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3933"
-  HREF="node126.html">
+<A NAME="tex2html4527"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3935"
-  HREF="node129.html">
+<A NAME="tex2html4529"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,19 +92,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3938"
-  HREF="node112.html">Roles in OAuth</A>
-<B>Sup:</B> <A NAME="tex2html3932"
-  HREF="node110.html">Google Oauth</A>
-<B> Ant:</B> <A NAME="tex2html3926"
-  HREF="node110.html">Google Oauth</A>
+<B> Sig:</B> <A NAME="tex2html4532"
+  HREF="node112.html">Un Ejemplo Simple: Piedra,</A>
+<B>Sup:</B> <A NAME="tex2html4526"
+  HREF="node95.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4520"
+  HREF="node110.html">rackup</A>
 <B> Con:</B> 
-<A NAME="tex2html3933"
-  HREF="node126.html">
+<A NAME="tex2html4527"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3935"
-  HREF="node129.html">
+<A NAME="tex2html4529"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
@@ -115,171 +115,271 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <UL CLASS="ChildLinks">
 <LI><UL>
 <LI><UL>
-<LI><A NAME="tex2html3939"
-  HREF="node111.html#SECTION06410010000000000000">Valet Key for the Web</A>
+<LI><A NAME="tex2html4533"
+  HREF="node111.html#SECTION061160010000000000000">Véase</A>
+<LI><A NAME="tex2html4534"
+  HREF="node111.html#SECTION061160020000000000000">Ejemplo</A>
+<LI><A NAME="tex2html4535"
+  HREF="node111.html#SECTION061160030000000000000"><TT>El comando rackup</TT></A>
+<LI><A NAME="tex2html4536"
+  HREF="node111.html#SECTION061160040000000000000">Véase</A>
 </UL></UL></UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION06410000000000000000">
-Introduction to OAuth</A>
+<H1><A NAME="SECTION061160000000000000000">
+Rack::Static</A>
 </H1>
-OAuth 2 is rapidly becoming a preferred authorization protocol, and is used by major service providers such as Google, Facebook and Github. 
 
 <P>
 
-<H4><A NAME="SECTION06410010000000000000">
-Valet Key for the Web</A>
+<H4><A NAME="SECTION061160010000000000000">
+Véase</A>
 </H4>
   
 
 <P>
-Many luxury cars come with a 
-<FONT COLOR="#0000ff"> valet key</FONT>. 
-It is a special key 
-<FONT COLOR="#0000ff"> you</FONT>
- give the
-
-<FONT COLOR="#0000ff"> parking attendant</FONT> and unlike your regular key, will only allow the 
-
-<FONT COLOR="#0000ff"> car</FONT>
-to be driven a short distance while 
-<FONT COLOR="#ff0000"> blocking access to the trunk and the
-onboard cell phone</FONT>. 
-
-<P>
-Regardless of the restrictions the valet key imposes,
-the idea is very clever. 
-<FONT COLOR="#ff0000"> You give someone limited access to your car
-with a special key</FONT>, while using another key to unlock everything else.
-
-<P>
-As the web grows, more and more sites rely on distributed services and
-cloud computing: 
-
-<UL>
-<LI>a photo lab printing your Flickr photos, 
-</LI>
-<LI>a social network
-using your Google address book to look for friends, or 
-</LI>
-<LI>a third-party
-application utilizing APIs from multiple services.
-</LI>
-</UL>
-
-<P>
-The problem is, in order for these applications to access user data
-on other sites, they ask for usernames and passwords. 
-<FONT COLOR="#ff0000"> Not only does
-this require exposing user passwords to someone else – often the same
-passwords used for online banking and other sites – it also provides
-these application <SPAN ID="txt17691">unlimited access</SPAN> to do as they wish</FONT>. They can do
-anything, including changing the passwords and lock users out.
-
-<P>
- <A NAME="tex2html549"
-  HREF="http://oauth.net/">OAuth</A>
- provides a method for 
-<FONT COLOR="#0000ff"> users</FONT> (you) 
-to grant 
-<FONT COLOR="#0000ff"> third-party</FONT> (parking attendant) access to
-their 
-<FONT COLOR="#0000ff"> resources</FONT> (your luxury car)
-without sharing their 
-<FONT COLOR="#0000ff"> passwords</FONT> (the key of your car). 
-It also provides a way
-to <SPAN ID="txt17543">grant limited access</SPAN> (in scope, duration, etc. the equivalent of
-not having access to the trunk or the onboard cell phone).
-
-<P>
-For example, 
-
-<UL>
-<LI>a 
-<FONT COLOR="#0000ff"> web user (resource owner)</FONT> can grant a 
-</LI>
-<LI>
-<FONT COLOR="#0000ff"> printing service</FONT>
-(client) 
-</LI>
-<LI>access to her 
-<FONT COLOR="#0000ff"> private photos</FONT> (partial resource) 
-</LI>
-<LI>stored at a photo sharing service
-(server), 
-</LI>
-<LI>without sharing her username and password with the printing
-service.  
-</LI>
-</UL>
-Instead, she authenticates directly with the photo sharing
-service which issues the printing service 
-delegation-specific credentials.
-
-<P>
-In OAuth, the 
-<FONT COLOR="#0000ff"> client</FONT> requests access to resources controlled
-by the 
-<FONT COLOR="#0000ff"> resource owner</FONT> and hosted by the 
-<FONT COLOR="#0000ff"> resource server</FONT>, 
-and <I>is
-issued a different set of credentials than those of the resource
-owner</I>.
-
-<P>
-Instead of using the resource owner's credentials to access protected
-resources, the 
-<FONT COLOR="#0000ff"> client</FONT> obtains an 
-<FONT COLOR="#ff0000"> access token</FONT> 
-- <I>a string denoting a
-specific scope, lifetime, and other access attributes</I>.  
-
-<P>
-
-<FONT COLOR="#ff0000"> Access tokens</FONT>
-are issued to third-party clients by an 
-<FONT COLOR="#0000ff"> authorization server</FONT> with the
-approval of the 
-<FONT COLOR="#0000ff"> resource owner</FONT>.  
-
-<P>
-The client uses the 
-<FONT COLOR="#ff0000"> access token</FONT> to
-access the 
-<FONT COLOR="#0000ff"> protected resources</FONT> hosted by the 
-<FONT COLOR="#0000ff"> resource server</FONT>.
-
-<P>
-
-<img src="oauth-print-service-access-token-flow.gif" />
-
-<P>
 
 <OL>
-<LI><A NAME="tex2html550"
-  HREF="http://tools.ietf.org/html/rfc6749">The OAuth 2.0 Authorization Framework</A>
-proposed standard document
+<LI>Documentación de <A NAME="tex2html544"
+  HREF="http://rack.rubyforge.org/doc/Rack/Static.html">Rack::Static</A> 
+</LI>
+<LI>Este ejemplo: 
+<A NAME="tex2html545"
+  HREF="https://github.com/crguezl/rack-static-example">rack-static-example</A>
+en GitHub
+</LI>
+<LI><A NAME="tex2html546"
+  HREF="https://github.com/rack/rack/blob/master/lib/rack/static.rb">Código fuente</A>
+de <A NAME="tex2html547"
+  HREF="http://rack.rubyforge.org/doc/Rack/Static.html">Rack::Static</A> en GitHub
 </LI>
 </OL>
 
 <P>
 
+<H4><A NAME="SECTION061160020000000000000">
+Ejemplo</A>
+</H4>
+  
+
+<P>
+<PRE>
+[~/local/src/ruby/sinatra/rack/rack-static(master)]$ tree
+.
+|--- README
+|--- README.md
+|--- Rakefile
+|--- config.ru
+|--- myapp.rb
+`---- public
+   `--- index.html
+</PRE>
+
+<P>
+<PRE>
+1 directory, 6 files
+[~/local/src/ruby/sinatra/rack/rack-static(master)]$ cat public/index.html 
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Hello&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Hello World!&lt;/h1&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</PRE>
+
+<P>
+<PRE>
+[~/local/src/ruby/sinatra/rack/rack-static(master)]$ cat config.ru 
+require './myapp'
+
+use Rack::Static, :urls =&gt; ["/public"]
+
+run MyApp.new
+</PRE>
+
+<P>
+<PRE>
+[~/local/src/ruby/sinatra/rack/rack-static(master)]$ cat Rakefile 
+task :default =&gt; :server
+
+desc "run server"
+task :server do
+  sh "rackup"
+end
+
+desc "run client via curl"
+task :client do
+  sh "curl -v localhost:9292"
+end
+
+desc "access to static file"
+task :index do
+  sh "curl -v localhost:9292/public/index.html"
+end
+</PRE>
+
+<P>
+<PRE>
+[~/local/src/ruby/sinatra/rack/rack-static(master)]$ cat myapp.rb 
+# my_app.rb
+#
+class MyApp
+  def call env
+    [200, {"Content-Type" =&gt; "text/html"}, ["Hello SYTW!"]] 
+  end
+end
+</PRE>
+
+<P>
+<PRE>
+[~/local/src/ruby/sinatra/rack/rack-static(master)]$ rake client
+curl -v localhost:9292
+* About to connect() to localhost port 9292 (#0)
+*   Trying ::1... Connection refused
+*   Trying 127.0.0.1... connected
+* Connected to localhost (127.0.0.1) port 9292 (#0)
+&gt; GET / HTTP/1.1
+&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8y zlib/1.2.5
+&gt; Host: localhost:9292
+&gt; Accept: */*
+&gt; 
+&lt; HTTP/1.1 200 OK
+&lt; Content-Type: text/html
+&lt; Transfer-Encoding: chunked
+&lt; Connection: close
+&lt; Server: thin 1.5.1 codename Straight Razor
+&lt; 
+* Closing connection #0
+Hello SYTW!
+</PRE>
+
+<P>
+<PRE>
+[~/local/src/ruby/sinatra/rack/rack-static(master)]$ rake index
+curl -v localhost:9292/public/index.html
+* About to connect() to localhost port 9292 (#0)
+*   Trying ::1... Connection refused
+*   Trying 127.0.0.1... connected
+* Connected to localhost (127.0.0.1) port 9292 (#0)
+&gt; GET /public/index.html HTTP/1.1
+&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8y zlib/1.2.5
+&gt; Host: localhost:9292
+&gt; Accept: */*
+&gt; 
+&lt; HTTP/1.1 200 OK
+&lt; Last-Modified: Thu, 03 Oct 2013 08:24:43 GMT
+&lt; Content-Type: text/html
+&lt; Content-Length: 227
+&lt; Connection: keep-alive
+&lt; Server: thin 1.5.1 codename Straight Razor
+&lt; 
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Hello&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Hello World!&lt;/h1&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+
+* Connection #0 to host localhost left intact
+* Closing connection #0
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION061160030000000000000">
+<TT>El comando rackup</TT></A>
+</H4>
+  
+
+<P>
+<code>rackup</code> converts the supplied rack config file to an instance of <A NAME="tex2html548"
+  HREF="http://rack.rubyforge.org/doc/Rack/Builder.html">Rack::Builder</A>. 
+In short, rack config files are evaluated within the context of a <A NAME="tex2html549"
+  HREF="http://rack.rubyforge.org/doc/Rack/Builder.html">Rack::Builder</A>
+object.
+
+<P>
+Rackup also has a <A NAME="17343"></A><SPAN  CLASS="textbf">use</SPAN> method that accepts a <A NAME="17345"></A><SPAN  CLASS="textbf">middleware</SPAN>. Let us use one
+of Rack’s built-in middleware.
+
+<P>
+<PRE>
+[~/sinatra/rackup/middleware]$ cat config.ru 
+require './myapp'
+require './myrackmiddleware'
+use Rack::Reloader
+use MyRackMiddleware
+run MyApp.new
+</PRE>
+
+<P>
+<PRE>
+[~/sinatra/rackup/middleware]$ cat myapp.rb 
+# myapp.rb
+class MyApp
+  def call(env)
+    [200, {"Content-Type" =&gt; "text/html"}, ["Hello Rack Participants from across the globe"]] 
+  end
+end
+</PRE>
+
+<P>
+<PRE>
+[~/sinatra/rackup/middleware]$ cat myrackmiddleware.rb 
+class MyRackMiddleware
+  def initialize(appl)
+    @appl = appl
+  end
+  def call(env)
+    status, headers, body = @appl.call(env)
+    append_s = "... greetings from RubyLearning!!"
+    [status, headers, body &lt;&lt; append_s]
+  end  
+end
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION061160040000000000000">
+Véase</A>
+</H4>
+  
+
+<P>
+
+<UL>
+<LI><A NAME="tex2html550"
+  HREF="http://railscasts.com/episodes/151-rack-middleware">RailCast #151 Rack Middleware</A>
+</LI>
+<LI><A NAME="tex2html551"
+  HREF="http://www.confreaks.com/videos/961-mwrc2012-rack-middleware-as-a-general-purpose-abstraction">Rack Middleware as a General Purpose Abstraction por Mitchell Hashimoto</A>
+</LI>
+</UL>
+
+<P>
+
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3937"
+<A NAME="tex2html4531"
   HREF="node112.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3931"
-  HREF="node110.html">
+<A NAME="tex2html4525"
+  HREF="node95.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3925"
+<A NAME="tex2html4519"
   HREF="node110.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3933"
-  HREF="node126.html">
+<A NAME="tex2html4527"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3935"
-  HREF="node129.html">
+<A NAME="tex2html4529"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -330,12 +430,12 @@ proposed standard document
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3938"
-  HREF="node112.html">Roles in OAuth</A>
-<B>Sup:</B> <A NAME="tex2html3932"
-  HREF="node110.html">Google Oauth</A>
-<B> Ant:</B> <A NAME="tex2html3926"
-  HREF="node110.html">Google Oauth</A>
+<B> Sig:</B> <A NAME="tex2html4532"
+  HREF="node112.html">Un Ejemplo Simple: Piedra,</A>
+<B>Sup:</B> <A NAME="tex2html4526"
+  HREF="node95.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4520"
+  HREF="node110.html">rackup</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

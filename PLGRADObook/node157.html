@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Tipos, Valores y Variables</TITLE>
-<META NAME="description" CONTENT="Tipos, Valores y Variables">
+<TITLE>Autentificación Básica</TITLE>
+<META NAME="description" CONTENT="Autentificación Básica">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node158.html">
 <LINK REL="previous" HREF="node156.html">
-<LINK REL="up" HREF="node154.html">
+<LINK REL="up" HREF="node131.html">
 <LINK REL="next" HREF="node158.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4962"
+<A NAME="tex2html5333"
   HREF="node158.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4956"
-  HREF="node154.html">
+<A NAME="tex2html5327"
+  HREF="node131.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4950"
+<A NAME="tex2html5321"
   HREF="node156.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4958"
-  HREF="node234.html">
+<A NAME="tex2html5329"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4960"
-  HREF="node237.html">
+<A NAME="tex2html5331"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -59,7 +59,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   WIDTH="30" ALIGN="BOTTOM" BORDER="0"
  SRC="gv.jpeg"
  ALT="ps"></A><A NAME="tex2html6"
-  HREF="https://dl.dropbox.com/u/14539152/PLgrado/PLgradoBOOK/index.html"><IMG
+  HREF="http://crguezl.github.io/pl-html/"><IMG
   WIDTH="60" ALIGN="BOTTOM" BORDER="0"
  SRC="lupa.gif"
  ALT="ruby gems"></A><A NAME="tex2html7"
@@ -70,11 +70,11 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   HREF="http://github.com"><IMG
   WIDTH="27" ALIGN="BOTTOM" BORDER="0"
  SRC="google-code-project-hosting.jpeg"
- ALT="google code project hosting"></A><A NAME="tex2html9"
-  HREF="http://jquery.com/"><IMG
+ ALT="github"></A><A NAME="tex2html9"
+  HREF="https://plus.google.com/u/0/communities/107031495100582318205"><IMG
   WIDTH="27" ALIGN="BOTTOM" BORDER="0"
  SRC="perl6.jpg"
- ALT="blogs"></A><A NAME="tex2html10"
+ ALT="comunidad g+ PL1314"></A><A NAME="tex2html10"
   HREF="http://www.google.es/"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
  SRC="ggoogle.gif"
@@ -87,52 +87,69 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
  SRC="ull.gif"
  ALT="ull"></A><A NAME="tex2html13"
-  HREF="http://crondinosaur.blogspot.com/"><IMG
+  HREF="https://github.com/crguezl"><IMG
   WIDTH="32" ALIGN="BOTTOM" BORDER="0"
  SRC="logopcgull.gif"
- ALT="pcgull"></A>
+ ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4963"
-  HREF="node158.html">Expresiones y Operadores</A>
-<B>Sup:</B> <A NAME="tex2html4957"
-  HREF="node154.html">SEGUNDA PARTE: APUNTES DE</A>
-<B> Ant:</B> <A NAME="tex2html4951"
-  HREF="node156.html">Estructura Léxica</A>
+<B> Sig:</B> <A NAME="tex2html5334"
+  HREF="node158.html">Sinatra como Middleware</A>
+<B>Sup:</B> <A NAME="tex2html5328"
+  HREF="node131.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5322"
+  HREF="node156.html">Sinatra Authentication</A>
 <B> Con:</B> 
-<A NAME="tex2html4958"
-  HREF="node234.html">
+<A NAME="tex2html5329"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4960"
-  HREF="node237.html">
+<A NAME="tex2html5331"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION05300000000000000000">
-Tipos, Valores y Variables</A>
+<H1><A NAME="SECTION063260000000000000000"></A>
+<A NAME="section:basicauthentication"></A>
+<BR>
+Autentificación Básica
 </H1>
+<PRE>
+[~/srcSTW/sinatra-faq/authentication/basic(esau)]$ cat app.rb 
+require 'rubygems'
+require 'sinatra'
 
-<P>
+use Rack::Auth::Basic, "Restricted Area" do |username, password|
+  [username, password] == ['admin', 'admin']
+end
+
+get '/' do
+  "You're welcome"
+end
+
+get '/foo' do
+  "You're also welcome"
+end
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4962"
+<A NAME="tex2html5333"
   HREF="node158.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4956"
-  HREF="node154.html">
+<A NAME="tex2html5327"
+  HREF="node131.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4950"
+<A NAME="tex2html5321"
   HREF="node156.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4958"
-  HREF="node234.html">
+<A NAME="tex2html5329"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4960"
-  HREF="node237.html">
+<A NAME="tex2html5331"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -150,7 +167,7 @@ Tipos, Valores y Variables</A>
   WIDTH="30" ALIGN="BOTTOM" BORDER="0"
  SRC="gv.jpeg"
  ALT="ps"></A><A NAME="tex2html6"
-  HREF="https://dl.dropbox.com/u/14539152/PLgrado/PLgradoBOOK/index.html"><IMG
+  HREF="http://crguezl.github.io/pl-html/"><IMG
   WIDTH="60" ALIGN="BOTTOM" BORDER="0"
  SRC="lupa.gif"
  ALT="ruby gems"></A><A NAME="tex2html7"
@@ -161,11 +178,11 @@ Tipos, Valores y Variables</A>
   HREF="http://github.com"><IMG
   WIDTH="27" ALIGN="BOTTOM" BORDER="0"
  SRC="google-code-project-hosting.jpeg"
- ALT="google code project hosting"></A><A NAME="tex2html9"
-  HREF="http://jquery.com/"><IMG
+ ALT="github"></A><A NAME="tex2html9"
+  HREF="https://plus.google.com/u/0/communities/107031495100582318205"><IMG
   WIDTH="27" ALIGN="BOTTOM" BORDER="0"
  SRC="perl6.jpg"
- ALT="blogs"></A><A NAME="tex2html10"
+ ALT="comunidad g+ PL1314"></A><A NAME="tex2html10"
   HREF="http://www.google.es/"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
  SRC="ggoogle.gif"
@@ -178,22 +195,22 @@ Tipos, Valores y Variables</A>
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
  SRC="ull.gif"
  ALT="ull"></A><A NAME="tex2html13"
-  HREF="http://crondinosaur.blogspot.com/"><IMG
+  HREF="https://github.com/crguezl"><IMG
   WIDTH="32" ALIGN="BOTTOM" BORDER="0"
  SRC="logopcgull.gif"
- ALT="pcgull"></A>
+ ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4963"
-  HREF="node158.html">Expresiones y Operadores</A>
-<B>Sup:</B> <A NAME="tex2html4957"
-  HREF="node154.html">SEGUNDA PARTE: APUNTES DE</A>
-<B> Ant:</B> <A NAME="tex2html4951"
-  HREF="node156.html">Estructura Léxica</A>
+<B> Sig:</B> <A NAME="tex2html5334"
+  HREF="node158.html">Sinatra como Middleware</A>
+<B>Sup:</B> <A NAME="tex2html5328"
+  HREF="node131.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5322"
+  HREF="node156.html">Sinatra Authentication</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-01-17</I>
+2014-03-28</I>
 </ADDRESS>
 </BODY>
 </HTML>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Heroku Postgress</TITLE>
-<META NAME="description" CONTENT="Heroku Postgress">
+<TITLE>Detectando el Proceso que está Usando un Puerto</TITLE>
+<META NAME="description" CONTENT="Detectando el Proceso que está Usando un Puerto">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -28,20 +28,20 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3678"
+<A NAME="tex2html4298"
   HREF="node99.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3672"
+<A NAME="tex2html4292"
   HREF="node95.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3666"
+<A NAME="tex2html4286"
   HREF="node97.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3674"
-  HREF="node126.html">
+<A NAME="tex2html4294"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3676"
-  HREF="node129.html">
+<A NAME="tex2html4296"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,392 +92,101 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3679"
-  HREF="node99.html">Troubleshooting</A>
-<B>Sup:</B> <A NAME="tex2html3673"
-  HREF="node95.html">Heroku</A>
-<B> Ant:</B> <A NAME="tex2html3667"
-  HREF="node97.html">Logging</A>
+<B> Sig:</B> <A NAME="tex2html4299"
+  HREF="node99.html">Usando PATH_INFO y erubis</A>
+<B>Sup:</B> <A NAME="tex2html4293"
+  HREF="node95.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4287"
+  HREF="node97.html">Analizando env con pry-debugger</A>
 <B> Con:</B> 
-<A NAME="tex2html3674"
-  HREF="node126.html">
+<A NAME="tex2html4294"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3676"
-  HREF="node129.html">
+<A NAME="tex2html4296"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
-
-<UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html3680"
-  HREF="node98.html#SECTION06130010000000000000">Provisioning the add-on</A>
-<LI><A NAME="tex2html3681"
-  HREF="node98.html#SECTION06130020000000000000">Create new db</A>
-<LI><A NAME="tex2html3682"
-  HREF="node98.html#SECTION06130030000000000000">Establish primary DB</A>
-<LI><A NAME="tex2html3683"
-  HREF="node98.html#SECTION06130040000000000000">pg:info</A>
-<LI><A NAME="tex2html3684"
-  HREF="node98.html#SECTION06130050000000000000">pg:psql</A>
-<LI><A NAME="tex2html3685"
-  HREF="node98.html#SECTION06130060000000000000">pg:reset</A>
-<LI><A NAME="tex2html3686"
-  HREF="node98.html#SECTION06130070000000000000">pg:pull</A>
-<LI><A NAME="tex2html3687"
-  HREF="node98.html#SECTION06130080000000000000">pg:push</A>
-</UL></UL></UL>
-<!--End of Table of Child-Links-->
-<HR>
 
 <H1><A NAME="SECTION06130000000000000000">
-Heroku Postgress</A>
+Detectando el Proceso que está Usando un Puerto</A>
 </H1>
 
 <P>
-Véase <A NAME="tex2html506"
-  HREF="https://devcenter.heroku.com/articles/heroku-postgresql">Heroku Postgress</A>.
-
-<P>
-Heroku Postgres is the SQL database service run by Heroku that is
-provisioned and managed as an add-on. 
-
-<P>
-Heroku Postgres is accessible
-from any language with a PostgreSQL driver including all languages
-and frameworks supported by Heroku: Java, Ruby, Python, Scala, Play,
-Node.js and Clojure.
-
-<P>
+Si intentamos ejecutar una segunda instancia del servidor mientras otra instancia esta ejecutandose 
+obtenemos un error que indica que el puerto está en uso:
 <PRE>
-[~/srcPLgrado/pegjscalc(master)]$ heroku addons
-=== pegjspl0 Configured Add-ons
-heroku-postgresql:hobby-dev  HEROKU_POSTGRESQL_BROWN
-</PRE>
-
-<P>
-In addition to a variety of management commands available via the Heroku
-CLI, Heroku Postgres features a 
-<A NAME="tex2html507"
-  HREF="https://postgres.heroku.com/databases">web dashboard</A>, 
-the ability to create
-<A NAME="tex2html508"
-  HREF="https://postgres.heroku.com/blog/past/2012/1/31/simple_data_sharing_with_data_clips/">dataclips </A>
-and several additional services on top of a fully managed
-database service.
-
-<P>
-
-<img src="herokudatabases.png" />
-
-<P>
-
-<H4><A NAME="SECTION06130010000000000000">
-Provisioning the add-on</A>
-</H4>
-  
-
-Many 
-<A NAME="tex2html510"
-  HREF="https://devcenter.heroku.com/articles/buildpacks">buildpacks </A>
-(what compiles your application into a runnable entity on
-Heroku) automatically provision a 
-<FONT COLOR="#ff0000"> Heroku Postgres instance for you</FONT>. 
-
-<P>
-Your
-language’s buildpack documentation will specify if any add-ons are
-automatically provisioned. 
-
-<P>
-Additionally, you can use <code>heroku addons</code> 
-to
-see if your application already has a database provisioned and what plan
-it is<A NAME="tex2html509"
-  HREF="footnode.html#foot16183"><SUP><SPAN CLASS="arabic">15</SPAN>.<SPAN CLASS="arabic">2</SPAN></SUP></A>.
-
-<P>
-<PRE>
-[~/srcPLgrado/pegjscalc(master)]$ heroku addons
-=== pegjspl0 Configured Add-ons
-heroku-postgresql:hobby-dev  HEROKU_POSTGRESQL_BROWN
-</PRE>
-
-<P>
-If your application doesn’t yet have a database provisioned, or you
-wish to 
-<A NAME="tex2html511"
-  HREF="https://devcenter.heroku.com/articles/upgrade-heroku-postgres-with-pgbackups">upgrade your existing database</A>
-or 
-<A NAME="tex2html512"
-  HREF="https://devcenter.heroku.com/articles/heroku-postgres-follower-databases">create a master/slave setup,</A>
-you can create a new database using the CLI.
-
-<P>
-
-<H4><A NAME="SECTION06130020000000000000">
-Create new db</A>
-</H4>
-  
-
-Heroku Postgres can be attached to a Heroku application via the 
-CLI<A NAME="tex2html513"
-  HREF="footnode.html#foot16191"><SUP><SPAN CLASS="arabic">15</SPAN>.<SPAN CLASS="arabic">3</SPAN></SUP></A>:
-<PRE>
-$ heroku addons:add heroku-postgresql:dev
-Adding heroku-postgresql:dev to sushi... done, v69 (free)
-Attached as HEROKU_POSTGRESQL_RED
-Database has been created and is available
-</PRE>
-
-<P>
-Once Heroku Postgres has been added a <code>HEROKU_POSTGRESQL_COLOR_URL</code> 
-setting
-will be available in the app configuration and will contain the URL
-used to access the newly provisioned Heroku Postgres service. 
-
-<P>
-This can
-be confirmed using the <code>heroku config</code> command.
-<PRE>
-[~/srcPLgrado/pegjscalc(master)]$ heroku config
-=== pegjspl0 Config Vars
-DATABASE_URL:                postgres://moiwgreelvvujc:GL3shXGOpURyWOPrS2G8qaxzUe@ec2-23-21-101-129.compute-1.amazonaws.com:5432/dat9smslrg6g0a
-HEROKU_POSTGRESQL_BROWN_URL: postgres://moiwgreelvvujc:GL3shXGOpURyWOPrS2G8qaxzUe@ec2-23-21-101-129.compute-1.amazonaws.com:5432/dat9smslrg6g0a
-LANG:                        en_US.UTF-8
-PGBACKUPS_URL:               https://453643:cqz59jrxbbfcxj0fanhjfg0vz@pgbackups.herokuapp.com/client
-RACK_ENV:                    production
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION06130030000000000000">
-Establish primary DB</A>
-</H4>
-  
-
-<P>
-Heroku recommends using the <code>DATABASE_URL</code> config var to store
-the location
-of your primary database. 
-<PRE>
-[~/srcPLgrado/pegjscalc(master)]$ head main.rb 
-require 'sinatra'
-require "sinatra/reloader" if development?
-require 'sinatra/flash'
-require 'data_mapper'
-require 'pp'
-
-# full path!
-DataMapper.setup(:default, 
-                 ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/database.db" )
-</PRE>
-
-<P>
-In single-database setups your new database
-will have already been assigned a <code>HEROKU_POSTGRESQL_COLOR_URL</code>
-config with
-the accompanying <code>DATABASE_URL</code>. 
-
-<P>
-You may verify this via heroku config and
-verifying the value of both <code>HEROKU_POSTGRESQL_COLOR_URL</code> 
-and <code>DATABASE_URL</code>
-which should match.
-
-<P>
-
-<H4><A NAME="SECTION06130040000000000000">
-pg:info</A>
-</H4>
-  
-
-<P>
-To see all PostgreSQL databases provisioned by your application and the
-identifying characteristics of each 
-(db size, status, number of tables, PG version, creation date etc…) 
-use the <code>heroku pg:info</code> command.
-
-<P>
-<PRE>
-[~/srcPLgrado/pegjscalc(master)]$ heroku pg:info
-=== HEROKU_POSTGRESQL_BROWN_URL (DATABASE_URL)
-Plan:        Hobby-dev
-Status:      available
-Connections: 0
-PG Version:  9.3.3
-Created:     2014-03-20 23:33 UTC
-Data Size:   6.5 MB
-Tables:      1
-Rows:        4/10000 (In compliance)
-Fork/Follow: Unsupported
-Rollback:    Unsupported
-</PRE>
-
-<P>
-To continuously monitor the status of your database, pass pg:info through the unix watch command:
-<PRE>
-[~/srcPLgrado/pegjscalc(master)]$ watch heroku pg:info
--bash: watch: no se encontró la orden
-[~/srcPLgrado/pegjscalc(master)]$ brew install watch
-[~/srcPLgrado/pegjscalc(master)]$ watch heroku pg:info
+[~/sinatra/sinatra-simple(master)]$ rackup
+Thin web server (v1.6.1 codename Death Proof)
+Maximum connections set to 1024
+Listening on 0.0.0.0:9292, CTRL+C to stop
+/Users/casiano/.rvm/gems/ruby-2.0.0-p247/gems/eventmachine-1.0.3/lib/eventmachine.rb:526:
+  in `start_tcp_server': no acceptor 
+  (port is in use or requires root privileges) (RuntimeError)
+  from /Users/casiano/.rvm/gems/ruby-2.0.0-p247/gems/eventmachine-1.0.3/lib/eventmachine.rb:526:
+    in `start_server'
 ...
 </PRE>
-
-<P>
-
-<H4><A NAME="SECTION06130050000000000000">
-pg:psql</A>
-</H4>
-  
-
-<code>psql</code> is the native PostgreSQL interactive terminal and is used to execute queries and issue commands to the connected database.
-
-<P>
-To establish a <code>psql</code> session 
-with your remote database use <code>heroku pg:psql</code>.
-You must have PostgreSQL installed on your system to use heroku <code>pg:psql</code>.
-
-<P>
+Si sabemos en que puerto esta corriendo - como es el caso - podemos hacer algo así
+para saber el PID del proceso que lo ocupa:
 <PRE>
-[~/srcPLgrado/pegjscalc(master)]$ heroku pg:psql
----&gt; Connecting to HEROKU_POSTGRESQL_BROWN_URL (DATABASE_URL)
-psql (9.2.6, server 9.3.3)
-WARNING: psql version 9.2, server version 9.3.
-         Some psql features might not work.
-SSL connection (cipher: DHE-RSA-AES256-SHA, bits: 256)
-Type "help" for help.
-
-pegjspl0::BROWN=&gt; \dt
-               List of relations
- Schema |     Name     | Type  |     Owner      
---------+--------------+-------+----------------
- public | pl0_programs | table | moiwgreelvvujc
-(1 row)
-
-pegjspl0::BROWN=&gt; 
-pegjspl0::BROWN=&gt; SELECT * FROM pl0_programs;
-  name  |           source            
---------+-----------------------------
- 3m2m1  |                     3-2-1\r+
-        |           
- ap1tb  | a+1*b\r                    +
-        |           
- test   |                     a+1*b\r+
-        |           \r               +
-        |           
- lolwut |                     3-2-1\r+
-        |           
-(4 rows)
+[~/sinatra/sinatra-simple(master)]$ lsof -i :9292
+COMMAND   PID    USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+ruby    52870 casiano    9u  IPv4 0x9f3ffc595152af29      0t0  TCP *:armtechdaemon (LISTEN)
 </PRE>
-
-<P>
-If you have more than one database, specify the database to connect to as
-the first argument to the command (the database located at <code>DATABASE_URL</code>
-is used by default).
+Si no lo sabemos podemos hacer:
 <PRE>
-$ heroku pg:psql HEROKU_POSTGRESQL_GRAY
-Connecting to HEROKU_POSTGRESQL_GRAY... done
-...
+[~/sinatra/sinatra-simple(master)]$ ps -fA | egrep ruby
+  501 52870   565   0 11:16AM ttys003    0:00.61 ruby /Users/casiano/.rvm/gems/ruby-2.0.0-p247/bin/rackup
+  501 53230 52950   0 11:35AM ttys006    0:00.00 egrep ruby
 </PRE>
-
-<P>
-
-<H4><A NAME="SECTION06130060000000000000">
-pg:reset</A>
-</H4>
-  
-
- To drop and recreate your database use <code>pg:reset</code>:
-
-<P>
+Si tenemos privilegios suficientes podemos ahora eliminar el proceso:
 <PRE>
-[~/srcPLgrado/pegjscalc(master)]$ heroku pg:reset DATABASE
-
- !    WARNING: Destructive Action
- !    This command will affect the app: pegjspl0
- !    To proceed, type "pegjspl0" or re-run this command with --confirm pegjspl0
-
-&gt; pegjspl0
-Resetting HEROKU_POSTGRESQL_BROWN_URL (DATABASE_URL)... done
-</PRE>
-Es necesario a continuación rearrancar el servidor:
-<PRE>
-[~/srcPLgrado/pegjscalc(master)]$ heroku ps:restart
-Restarting dynos... done
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION06130070000000000000">
-pg:pull</A>
-</H4>
-  
-
-<code>pg:pull</code> can be used to pull remote data from a Heroku Postgres
-database to a database on your local machine. The command looks like this:
-<PRE>
-[~/srcPLgrado/pegjscalc(master)]$ pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
-server starting
+[~/sinatra/sinatra-simple(master)]$ kill -9 52870
 </PRE>
 
 <P>
 <PRE>
-$ heroku pg:pull HEROKU_POSTGRESQL_MAGENTA mylocaldb --app sushi
+[~/sinatra/sinatra-simple(master)]$ rackup
+Thin web server (v1.6.1 codename Death Proof)
+Maximum connections set to 1024
+Listening on 0.0.0.0:9292, CTRL+C to stop
+Killed: 9
 </PRE>
-This command will create a new local database named <code>mylocaldb</code> and
-then pull data from database at <code>DATABASE_URL</code> from the app 
-<code>sushi</code>. 
 
 <P>
-In
-order to prevent accidental data overwrites and loss, the local database
-must not exist. You will be prompted to drop an already existing local
-database before proceeding.
-
-<P>
-
-<H4><A NAME="SECTION06130080000000000000">
-pg:push</A>
-</H4>
-  
-
-Like pull but in reverse, <code>pg:push</code> will push data from a local
-database into a remote Heroku Postgres database. The command looks
-like this:
+El comando 
 <PRE>
-$ heroku pg:push mylocaldb HEROKU_POSTGRESQL_MAGENTA --app sushi
+$ lsof -i | egrep -i 'tcp.*(\d+.)+'
 </PRE>
-This command will take the local database <code>mylocaldb</code> 
-and push it
-to the database at <code>DATABASE_URL</code> on the app <code>sushi</code>. 
-In order to
-prevent accidental data overwrites and loss, the remote database must
-be empty. You will be prompted to <code>pg:reset</code> an already a remote database
-that is not empty.
+Nos da una lista bastante completa de como están nuestras conexiones.
+
+<OL>
+<LI><code>-i [i]</code>   selects  the  listing  of  files  any of whose Internet address matches the address
+                specified in i.  If no address is specified, this option selects the listing of all
+                Internet and x.25 (HP-UX) network files.
+</LI>
+</OL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3678"
+<A NAME="tex2html4298"
   HREF="node99.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3672"
+<A NAME="tex2html4292"
   HREF="node95.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3666"
+<A NAME="tex2html4286"
   HREF="node97.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3674"
-  HREF="node126.html">
+<A NAME="tex2html4294"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3676"
-  HREF="node129.html">
+<A NAME="tex2html4296"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -528,12 +237,12 @@ that is not empty.
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3679"
-  HREF="node99.html">Troubleshooting</A>
-<B>Sup:</B> <A NAME="tex2html3673"
-  HREF="node95.html">Heroku</A>
-<B> Ant:</B> <A NAME="tex2html3667"
-  HREF="node97.html">Logging</A>
+<B> Sig:</B> <A NAME="tex2html4299"
+  HREF="node99.html">Usando PATH_INFO y erubis</A>
+<B>Sup:</B> <A NAME="tex2html4293"
+  HREF="node95.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4287"
+  HREF="node97.html">Analizando env con pry-debugger</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

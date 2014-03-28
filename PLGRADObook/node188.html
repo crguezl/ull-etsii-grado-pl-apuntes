@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Como Crear tu Propio Módulo en Node.js</TITLE>
-<META NAME="description" CONTENT="Como Crear tu Propio Módulo en Node.js">
+<TITLE>Logging</TITLE>
+<META NAME="description" CONTENT="Logging">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node189.html">
 <LINK REL="previous" HREF="node187.html">
-<LINK REL="up" HREF="node179.html">
+<LINK REL="up" HREF="node186.html">
 <LINK REL="next" HREF="node189.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5450"
+<A NAME="tex2html5916"
   HREF="node189.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5444"
-  HREF="node179.html">
+<A NAME="tex2html5910"
+  HREF="node186.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5438"
+<A NAME="tex2html5904"
   HREF="node187.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5446"
-  HREF="node234.html">
+<A NAME="tex2html5912"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5448"
-  HREF="node237.html">
+<A NAME="tex2html5914"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -59,7 +59,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   WIDTH="30" ALIGN="BOTTOM" BORDER="0"
  SRC="gv.jpeg"
  ALT="ps"></A><A NAME="tex2html6"
-  HREF="https://dl.dropbox.com/u/14539152/PLgrado/PLgradoBOOK/index.html"><IMG
+  HREF="http://crguezl.github.io/pl-html/"><IMG
   WIDTH="60" ALIGN="BOTTOM" BORDER="0"
  SRC="lupa.gif"
  ALT="ruby gems"></A><A NAME="tex2html7"
@@ -70,11 +70,11 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   HREF="http://github.com"><IMG
   WIDTH="27" ALIGN="BOTTOM" BORDER="0"
  SRC="google-code-project-hosting.jpeg"
- ALT="google code project hosting"></A><A NAME="tex2html9"
-  HREF="http://jquery.com/"><IMG
+ ALT="github"></A><A NAME="tex2html9"
+  HREF="https://plus.google.com/u/0/communities/107031495100582318205"><IMG
   WIDTH="27" ALIGN="BOTTOM" BORDER="0"
  SRC="perl6.jpg"
- ALT="blogs"></A><A NAME="tex2html10"
+ ALT="comunidad g+ PL1314"></A><A NAME="tex2html10"
   HREF="http://www.google.es/"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
  SRC="ggoogle.gif"
@@ -87,24 +87,24 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
  SRC="ull.gif"
  ALT="ull"></A><A NAME="tex2html13"
-  HREF="http://crondinosaur.blogspot.com/"><IMG
+  HREF="https://github.com/crguezl"><IMG
   WIDTH="32" ALIGN="BOTTOM" BORDER="0"
  SRC="logopcgull.gif"
- ALT="pcgull"></A>
+ ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5451"
-  HREF="node189.html">Mas sobre Node</A>
-<B>Sup:</B> <A NAME="tex2html5445"
-  HREF="node179.html">JavaScript en el Lado</A>
-<B> Ant:</B> <A NAME="tex2html5439"
-  HREF="node187.html">Modulos</A>
+<B> Sig:</B> <A NAME="tex2html5917"
+  HREF="node189.html">Heroku Postgress</A>
+<B>Sup:</B> <A NAME="tex2html5911"
+  HREF="node186.html">Heroku</A>
+<B> Ant:</B> <A NAME="tex2html5905"
+  HREF="node187.html">Introducción</A>
 <B> Con:</B> 
-<A NAME="tex2html5446"
-  HREF="node234.html">
+<A NAME="tex2html5912"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5448"
-  HREF="node237.html">
+<A NAME="tex2html5914"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
@@ -113,403 +113,312 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html5452"
-  HREF="node188.html#SECTION051191000000000000000">Introducción</A>
-<LI><A NAME="tex2html5453"
-  HREF="node188.html#SECTION051192000000000000000">Un Fichero <TT>package.json</TT></A>
-<LI><A NAME="tex2html5454"
-  HREF="node188.html#SECTION051193000000000000000">README y otros documentos</A>
-<LI><A NAME="tex2html5455"
-  HREF="node188.html#SECTION051194000000000000000">Véase También</A>
-</UL>
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html5918"
+  HREF="node188.html#SECTION07120010000000000000">Writing to your log</A>
+<LI><A NAME="tex2html5919"
+  HREF="node188.html#SECTION07120020000000000000">To fetch your logs</A>
+<LI><A NAME="tex2html5920"
+  HREF="node188.html#SECTION07120030000000000000">Log message ordering</A>
+<LI><A NAME="tex2html5921"
+  HREF="node188.html#SECTION07120040000000000000">Log history limits</A>
+<LI><A NAME="tex2html5922"
+  HREF="node188.html#SECTION07120050000000000000">Log format</A>
+<LI><A NAME="tex2html5923"
+  HREF="node188.html#SECTION07120060000000000000">Realtime tail</A>
+<LI><A NAME="tex2html5924"
+  HREF="node188.html#SECTION07120070000000000000">Filtering</A>
+</UL></UL></UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION051190000000000000000">
-Como Crear tu Propio Módulo en Node.js</A>
+<H1><A NAME="SECTION07120000000000000000">
+Logging</A>
 </H1>
+Heroku aggregates three categories of logs for your app:
+
+<OL>
+<LI>App logs - Output from your application. 
 
 <P>
+This will include logs
+generated from 
 
-<H2><A NAME="SECTION051191000000000000000">
-Introducción</A>
-</H2>
-
-<P>
-Cuando Node carga nuestro fichero JavaScript
-crea un nuevo ámbito. Cuando estamos en nuestro módulo, no podemos
-ver el ámbito externo lo que evita las colisiones de nombres.
-
-<P>
-
-<H2><A NAME="SECTION051192000000000000000">
-Un Fichero <TT>package.json</TT></A>
-</H2>
-
-<P>
-Creamos un fichero en la raíz de nuestro proyecto con nombre 
-<code>package.json</code>. Este fichero describe nuestro proyecto.
-Es esencial si vamos a publicar nuestro proyecto con 
-<A NAME="tex2html406"
-  HREF="https://npmjs.org/"><TT>npm</TT></A>.
+<OL>
+<LI>within your application, 
+</LI>
+<LI>application server and
+</LI>
+<LI>libraries. 
+</LI>
+</OL>
+(Filter: <code>--source app</code>)
+</LI>
+<LI>System logs - 
 
 <P>
-Podemos especificar en este fichero:
+Messages about actions taken by the Heroku platform
+infrastructure on behalf of your app, such as: 
+
+<OL>
+<LI>restarting a crashed process, 
+</LI>
+<LI>sleeping or waking a 
+<FONT COLOR="#ff0000"> web dyno</FONT>, or 
+</LI>
+<LI>serving an error page
+due to a problem in your app. 
+</LI>
+</OL>
+(Filter: <code>--source heroku</code>)
+</LI>
+<LI>API logs - 
+
+<P>
+Messages about administrative actions taken by you and
+other developers working on your app, such as: 
 
 <P>
 
 <OL>
-<LI>Name, version, description, and keywords to describe your program.
+<LI>deploying new code,
 </LI>
-<LI>A homepage where users can learn more about it.
+<LI>scaling the process formation, or 
 </LI>
-<LI>Other packages that yours depends on.
+<LI>toggling maintenance mode. 
+</LI>
+</OL>
+(Filter: <code>--source heroku --ps api</code>)
+
+<P>
+<PRE>
+[~/rack/rack-rock-paper-scissors(master)]$ heroku logs --source heroku --ps api
+2013-10-23T21:33:41.105090+00:00 heroku[api]: Deploy 5ec1351 by chuchu.chachi.leon@gmail.com
+2013-10-23T21:33:41.154690+00:00 heroku[api]: Release v7 created by chuchu.chachi.leon@gmail.com
+</PRE>
 </LI>
 </OL>
 
 <P>
-Si hemos instalado <A NAME="tex2html407"
-  HREF="https://npmjs.org/"><TT>npm</TT></A> podemos usar el comando 
-<code>npm</code> <A NAME="tex2html408"
-  HREF="https://npmjs.org/doc/init.html"><TT>init</TT></A>
-para empezar.
-Véase  <code>npm help</code>
-<A NAME="tex2html409"
-  HREF="https://npmjs.org/doc/json.html"><TT>json</TT></A>
-para obtener información sobre este fichero:
+Logplex is designed for collating and routing log messages, not for
+storage. It keeps the last 1,500 lines of consolidated logs. 
 
 <P>
-La cosa mas importante a especificar 
-cuando estamos escribiendo un programa para su uso por otros,
-es el módulo <code>main</code>. Este consituirá el punto de entrada 
-a nuestro programa.
+Heroku recommends using a separate service for long-term log storage; see
+Syslog drains for more information.
 
 <P>
-Es esencial documentar las dependencias.
+
+<H4><A NAME="SECTION07120010000000000000">
+Writing to your log</A>
+</H4>
+  
 
 <P>
-El siguiente es un ejemplo de fichero <code>package.json</code> tomado
-del proyecto <A NAME="tex2html410"
-  HREF="https://github.com/zaach/ebnf-parser"><TT>ebnf-parser</TT></A>:
+Anything written to standard out (stdout) or standard error (stderr)
+is captured into your logs. This means that you can log from anywhere
+in your application code with a simple output statement:
 <PRE>
-[~/javascript/PLgrado/ebnf-parser(master)]$ cat -n package.json 
-   1  {
-   2    "name": "ebnf-parser",
-   3    "version": "0.1.1",
-   4    "description": "A parser for BNF and EBNF grammars used by jison",
-   5    "main": "ebnf-parser.js",
-   6    "scripts": {
-   7      "test": "make test"
-   8    },
-   9    "repository": "",
-  10    "keywords": [
-  11      "bnf",
-  12      "ebnf",
-  13      "grammar",
-  14      "parser",
-  15      "jison"
-  16    ],
-  17    "author": "Zach Carter",
-  18    "license": "MIT",
-  19    "devDependencies": {
-  20      "jison": "0.4.x",
-  21      "lex-parser": "0.1.0",
-  22      "test": "*"
-  23    }
-  24  }
+puts "Hello, logs!"
+</PRE>
+To take advantage of the realtime logging, you may need to disable
+any log buffering your application may be carrying out. For example,
+in Ruby add this to your config.ru:
+<PRE>
+$stdout.sync = true
+</PRE>
+Some frameworks send log output somewhere other than stdout by
+default. 
+
+<P>
+
+<H4><A NAME="SECTION07120020000000000000">
+To fetch your logs</A>
+</H4>
+  
+
+<PRE>
+$ heroku logs
+2010-09-16T15:13:46.677020+00:00 app[web.1]: Processing PostController#list (for 208.39.138.12 at 2010-09-16 15:13:46) [GET]
+2010-09-16T15:13:46.677023+00:00 app[web.1]: Rendering template within layouts/application
+2010-09-16T15:13:46.677902+00:00 app[web.1]: Rendering post/list
+2010-09-16T15:13:46.678990+00:00 app[web.1]: Rendered includes/_header (0.1ms)
+2010-09-16T15:13:46.698234+00:00 app[web.1]: Completed in 74ms (View: 31, DB: 40) | 200 OK [http://myapp.heroku.com/]
+2010-09-16T15:13:46.723498+00:00 heroku[router]: at=info method=GET path=/posts host=myapp.herokuapp.com fwd="204.204.204.204" dyno=web.1 connect=1ms service=18ms status=200 bytes=975
+2010-09-16T15:13:47.893472+00:00 app[worker.1]: 2 jobs processed at 16.6761 j/s, 0 failed ...
+</PRE>
+In this example, the output includes log lines from one of the app’s
+
+<FONT COLOR="#ff0000"> web dyno</FONT>s, the Heroku HTTP router, and one of the app’s workers.
+
+<P>
+The logs command retrieves 100 log lines by default.
+
+<P>
+
+<H4><A NAME="SECTION07120030000000000000">
+Log message ordering</A>
+</H4>
+  
+
+<P>
+When retrieving logs, you may notice that the logs are not always
+in order, especially when multiple components are involved. 
+
+<P>
+This
+is likely an artifact of distributed computing. 
+
+<P>
+Logs originate from
+many sources (router nodes, dynos, etc) and are assembled into a
+single log stream by logplex. 
+
+<P>
+It is up to the logplex user to sort
+the logs and provide the ordering required by their application,
+if any
+
+<P>
+
+<H4><A NAME="SECTION07120040000000000000">
+Log history limits</A>
+</H4>
+  
+
+<P>
+You can fetch up to 1500 lines using the -num (or -n) option:
+<PRE>
+$ heroku logs -n 200
+</PRE>
+Heroku only stores the last 1500 lines of log history. If you’d
+like to persist more than 1500 lines, use a logging add-on or create
+your own syslog drain<A NAME="tex2html749"
+  HREF="footnode.html#foot20866"><SUP><SPAN CLASS="arabic">30</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A>.
+
+<P>
+
+<H4><A NAME="SECTION07120050000000000000">
+Log format</A>
+</H4>
+  
+
+<P>
+Each line is formatted as follows:
+
+<OL>
+<LI>timestamp source[dyno]: message
+</LI>
+<LI>Timestamp - The date and time recorded at the time the log line was produced by the dyno or component. The timestamp is in the format specified by RFC5424, and includes microsecond precision.
+</LI>
+<LI>Source - 
+  
+<OL>
+<LI>All of your app’s dynos (
+<FONT COLOR="#ff0000"> web dyno</FONT>s, background workers, cron) have a source of app. 
+</LI>
+<LI>All of Heroku’s system components (HTTP router, dyno manager) have a source of heroku.
+  
+</LI>
+</OL>
+</LI>
+<LI>Dyno - The name of the dyno or component that wrote this log line.
+For example, <code>worker #3</code> appears as <code>worker.3</code>, and the Heroku HTTP
+router appears as router.
+</LI>
+<LI>Message - The content of the log line. Dynos can generate messages
+up to approximately 1024 bytes in length and longer messages will
+be truncated. 
+</LI>
+</OL>
+
+<P>
+
+<H4><A NAME="SECTION07120060000000000000">
+Realtime tail</A>
+</H4>
+  
+
+<P>
+
+<OL>
+<LI>Similar to <code>tail -f</code>, realtime tail displays recent logs and leaves
+the session open for realtime logs to stream in. 
+</LI>
+<LI>By viewing a live
+stream of logs from your app, you can gain insight into the behavior
+of your live application and debug current problems.
+</LI>
+<LI>You may tail your logs using <code>--tail</code> (or <code>-t</code>).
+<PRE>
+$ heroku logs --tail
+</PRE>
+When you are done, press Ctrl-C to close the session.
+</LI>
+</OL>
+
+<P>
+
+<H4><A NAME="SECTION07120070000000000000">
+Filtering</A>
+</H4>
+  
+
+<P>
+If you only want to fetch logs with a certain source, a certain
+dyno, or both, you can use the <code>--source</code> (or <code>-s</code>) and
+<code>--ps</code> (or <code>-p</code>) filtering arguments:
+<PRE>
+$ heroku logs --ps router
+2012-02-07T09:43:06.123456+00:00 heroku[router]: at=info method=GET path=/stylesheets/dev-center/library.css host=devcenter.heroku.com fwd="204.204.204.204" dyno=web.5 connect=1ms service=18ms status=200 bytes=13
+2012-02-07T09:43:06.123456+00:00 heroku[router]: at=info method=GET path=/articles/bundler host=devcenter.heroku.com fwd="204.204.204.204" dyno=web.6 connect=1ms service=18ms status=200 bytes=20375
 </PRE>
 
 <P>
-
-<H2><A NAME="SECTION051193000000000000000">
-README y otros documentos</A>
-</H2>
-
-<P>
-Pon la información basica acerca del módulo 
-en la raíz del proyecto.
-Como ejemplo veamos el <code>README.md</code> (observa que 
-está en formato <A NAME="tex2html411"
-  HREF="http://daringfireball.net/projects/markdown/syntax"><TT>markdown</TT></A>) 
-del proyecto <A NAME="tex2html412"
-  HREF="https://github.com/zaach/ebnf-parser"><TT>ebnf-parser</TT></A>:
-
-<P>
 <PRE>
-$ cat README.md 
-
-# ebnf-parser
-
-A parser for BNF and EBNF grammars used by jison.
-
-## install
-
-    npm install ebnf-parser
-
-
-## build
-
-To build the parser yourself, clone the git repo then run:
-
-    make
-
-This will generate `parser.js`, which is required by `ebnf-parser.js`.
-
-## usage
-
-The parser translates a string grammar or JSON grammar into a JSON grammar that jison can use (ENBF is transformed into BNF).
-
-    var ebnfParser = require('ebnf-parser');
-
-    // parse a bnf or ebnf string grammar
-    ebnfParser.parse("%start ... %");
-
-    // transform an ebnf JSON gramamr
-    ebnfParser.transform({"ebnf": ...});
-
-
-## example grammar
-
-The parser can parse its own BNF grammar, shown below:
-
-    %start spec
-
-    /* grammar for parsing jison grammar files */
-
-    %{
-    var transform = require('./ebnf-transform').transform;
-    var ebnf = false;
-    %}
-
-    %%
-
-    spec
-        : declaration_list '%%' grammar optional_end_block EOF
-            {$$ = $1; return extend($$, $3);}
-        | declaration_list '%%' grammar '%%' CODE EOF
-            {$$ = $1; yy.addDeclaration($$,{include:$5}); return extend($$, $3);}
-        ;
-
-    optional_end_block
-        :
-        | '%%'
-        ;
-
-    declaration_list
-        : declaration_list declaration
-            {$$ = $1; yy.addDeclaration($$, $2);}
-        |
-            {$$ = {};}
-        ;
-
-    declaration
-        : START id
-            {$$ = {start: $2};}
-        | LEX_BLOCK
-            {$$ = {lex: $1};}
-        | operator
-            {$$ = {operator: $1};}
-        | ACTION
-            {$$ = {include: $1};}
-        ;
-
-    operator
-        : associativity token_list
-            {$$ = [$1]; $$.push.apply($$, $2);}
-        ;
-
-    associativity
-        : LEFT
-            {$$ = 'left';}
-        | RIGHT
-            {$$ = 'right';}
-        | NONASSOC
-            {$$ = 'nonassoc';}
-        ;
-
-    token_list
-        : token_list symbol
-            {$$ = $1; $$.push($2);}
-        | symbol
-            {$$ = [$1];}
-        ;
-
-    grammar
-        : production_list
-            {$$ = $1;}
-        ;
-
-    production_list
-        : production_list production
-            {$$ = $1;
-              if($2[0] in $$) $$[$2[0]] = $$[$2[0]].concat($2[1]);
-              else  $$[$2[0]] = $2[1];}
-        | production
-            {$$ = {}; $$[$1[0]] = $1[1];}
-        ;
-
-    production
-        : id ':' handle_list ';'
-            {$$ = [$1, $3];}
-        ;
-
-    handle_list
-        : handle_list '|' handle_action
-            {$$ = $1; $$.push($3);}
-        | handle_action
-            {$$ = [$1];}
-        ;
-
-    handle_action
-        : handle prec action
-            {$$ = [($1.length ? $1.join(' ') : '')];
-                if($3) $$.push($3);
-                if($2) $$.push($2);
-                if ($$.length === 1) $$ = $$[0];
-            }
-        ;
-
-    handle
-        : handle expression_suffix
-            {$$ = $1; $$.push($2)}
-        |
-            {$$ = [];}
-        ;
-
-    handle_sublist
-        : handle_sublist '|' handle
-            {$$ = $1; $$.push($3.join(' '));}
-        | handle
-            {$$ = [$1.join(' ')];}
-        ;
-
-    expression_suffix
-        : expression suffix
-            {$$ = $expression + $suffix; }
-        ;
-
-    expression
-        : ID
-            {$$ = $1; }
-        | STRING
-            {$$ = ebnf ? "'"+$1+"'" : $1; }
-        | '(' handle_sublist ')'
-            {$$ = '(' + $handle_sublist.join(' | ') + ')'; }
-        ;
-
-    suffix
-        : {$$ = ''}
-        | '*'
-        | '?'
-        | '+'
-        ;
-
-    prec
-        : PREC symbol
-            {$$ = {prec: $2};}
-        |
-            {$$ = null;}
-        ;
-
-    symbol
-        : id
-            {$$ = $1;}
-        | STRING
-            {$$ = yytext;}
-        ;
-
-    id
-        : ID
-            {$$ = yytext;}
-        ;
-
-    action
-        : '{' action_body '}'
-            {$$ = $2;}
-        | ACTION
-            {$$ = $1;}
-        | ARROW_ACTION
-            {$$ = '$$ ='+$1+';';}
-        |
-            {$$ = '';}
-        ;
-
-    action_body
-        :
-            {$$ = '';}
-        | ACTION_BODY
-            {$$ = yytext;}
-        | action_body '{' action_body '}' ACTION_BODY
-            {$$ = $1+$2+$3+$4+$5;}
-        | action_body '{' action_body '}'
-            {$$ = $1+$2+$3+$4;}
-        ;
-
-    %%
-
-    // transform ebnf to bnf if necessary
-    function extend (json, grammar) {
-        json.bnf = ebnf ? transform(grammar) : grammar;
-        return json;
-    }
-
-## license
-
-MIT
+$ heroku logs --source app
+2012-02-07T09:45:47.123456+00:00 app[web.1]: Rendered shared/_search.html.erb (1.0ms)
+2012-02-07T09:45:47.123456+00:00 app[web.1]: Completed 200 OK in 83ms (Views: 48.7ms | ActiveRecord: 32.2ms)
+2012-02-07T09:45:47.123456+00:00 app[worker.1]: [Worker(host:465cf64e-61c8-46d3-b480-362bfd4ecff9 pid:1)] 1 jobs processed at 23.0330 j/s, 0 failed ...
+2012-02-07T09:46:01.123456+00:00 app[web.6]: Started GET "/articles/buildpacks" for 4.1.81.209 at 2012-02-07 09:46:01 +0000
 </PRE>
 
 <P>
-En general se anima  a que uses el formato markdown. Salva el fichero como
-<code>README.md</code>.
+<PRE>
+$ heroku logs --source app --ps worker
+2012-02-07T09:47:59.123456+00:00 app[worker.1]: [Worker(host:260cf64e-61c8-46d3-b480-362bfd4ecff9 pid:1)] Article#record_view_without_delay completed after 0.0221
+2012-02-07T09:47:59.123456+00:00 app[worker.1]: [Worker(host:260cf64e-61c8-46d3-b480-362bfd4ecff9 pid:1)] 5 jobs processed at 31.6842 j/s, 0 failed ...
+</PRE>
 
 <P>
-La documentación adicional se pone en un directorio <code>./docs</code>. 
-Los ficheros markdown teminan en <code>.md</code> y los html en <code>.html</code>.
+When filtering by dyno, either the base name, <code>--ps web</code>, or the full
+name, <code>--ps web.1</code>, may be used.
 
 <P>
-
-<H2><A NAME="SECTION051194000000000000000">
-Véase También</A>
-</H2>
-
-<UL>
-<LI><A NAME="tex2html413"
-  HREF="http://howtonode.org/how-to-module">How To: Create Your Own Node.js Module</A>
-por Isaac Z. Schlueter autor de 
-<A NAME="tex2html414"
-  HREF="http://npmjs.org/">npm</A>.
-Véase también este
-<A NAME="tex2html415"
-  HREF="https://gist.github.com/isaacs/4150d972e0aa2a4060c1">gist en GitHub</A>
-</LI>
-<LI><A NAME="tex2html416"
-  HREF="http://howtonode.org/creating-custom-modules">Creating Custom Modules</A>
-</LI>
-<LI><A NAME="tex2html417"
-  HREF="http://decodize.com/javascript/build-nodejs-npm-installation-package-scratch/">How to Build a Nodejs Npm Package From Scratch.</A>
-May 2012 Decodize
-
-<P>
-</LI>
-</UL>
+You can also combine the filtering switches with <code>--tail</code> to get a
+realtime stream of filtered output.
+<PRE>
+$ heroku logs --source app --tail
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5450"
+<A NAME="tex2html5916"
   HREF="node189.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5444"
-  HREF="node179.html">
+<A NAME="tex2html5910"
+  HREF="node186.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5438"
+<A NAME="tex2html5904"
   HREF="node187.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5446"
-  HREF="node234.html">
+<A NAME="tex2html5912"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5448"
-  HREF="node237.html">
+<A NAME="tex2html5914"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -527,7 +436,7 @@ May 2012 Decodize
   WIDTH="30" ALIGN="BOTTOM" BORDER="0"
  SRC="gv.jpeg"
  ALT="ps"></A><A NAME="tex2html6"
-  HREF="https://dl.dropbox.com/u/14539152/PLgrado/PLgradoBOOK/index.html"><IMG
+  HREF="http://crguezl.github.io/pl-html/"><IMG
   WIDTH="60" ALIGN="BOTTOM" BORDER="0"
  SRC="lupa.gif"
  ALT="ruby gems"></A><A NAME="tex2html7"
@@ -538,11 +447,11 @@ May 2012 Decodize
   HREF="http://github.com"><IMG
   WIDTH="27" ALIGN="BOTTOM" BORDER="0"
  SRC="google-code-project-hosting.jpeg"
- ALT="google code project hosting"></A><A NAME="tex2html9"
-  HREF="http://jquery.com/"><IMG
+ ALT="github"></A><A NAME="tex2html9"
+  HREF="https://plus.google.com/u/0/communities/107031495100582318205"><IMG
   WIDTH="27" ALIGN="BOTTOM" BORDER="0"
  SRC="perl6.jpg"
- ALT="blogs"></A><A NAME="tex2html10"
+ ALT="comunidad g+ PL1314"></A><A NAME="tex2html10"
   HREF="http://www.google.es/"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
  SRC="ggoogle.gif"
@@ -555,22 +464,22 @@ May 2012 Decodize
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
  SRC="ull.gif"
  ALT="ull"></A><A NAME="tex2html13"
-  HREF="http://crondinosaur.blogspot.com/"><IMG
+  HREF="https://github.com/crguezl"><IMG
   WIDTH="32" ALIGN="BOTTOM" BORDER="0"
  SRC="logopcgull.gif"
- ALT="pcgull"></A>
+ ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5451"
-  HREF="node189.html">Mas sobre Node</A>
-<B>Sup:</B> <A NAME="tex2html5445"
-  HREF="node179.html">JavaScript en el Lado</A>
-<B> Ant:</B> <A NAME="tex2html5439"
-  HREF="node187.html">Modulos</A>
+<B> Sig:</B> <A NAME="tex2html5917"
+  HREF="node189.html">Heroku Postgress</A>
+<B>Sup:</B> <A NAME="tex2html5911"
+  HREF="node186.html">Heroku</A>
+<B> Ant:</B> <A NAME="tex2html5905"
+  HREF="node187.html">Introducción</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-01-17</I>
+2014-03-28</I>
 </ADDRESS>
 </BODY>
 </HTML>

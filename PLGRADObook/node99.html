@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Troubleshooting</TITLE>
-<META NAME="description" CONTENT="Troubleshooting">
+<TITLE>Usando PATH_INFO y erubis para construir una aplicación (Noah Gibbs)</TITLE>
+<META NAME="description" CONTENT="Usando PATH_INFO y erubis para construir una aplicación (Noah Gibbs)">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -28,20 +28,20 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3700"
+<A NAME="tex2html4312"
   HREF="node100.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3694"
+<A NAME="tex2html4306"
   HREF="node95.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3688"
+<A NAME="tex2html4300"
   HREF="node98.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3696"
-  HREF="node126.html">
+<A NAME="tex2html4308"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3698"
-  HREF="node129.html">
+<A NAME="tex2html4310"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,19 +92,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3701"
-  HREF="node100.html">Configuration</A>
-<B>Sup:</B> <A NAME="tex2html3695"
-  HREF="node95.html">Heroku</A>
-<B> Ant:</B> <A NAME="tex2html3689"
-  HREF="node98.html">Heroku Postgress</A>
+<B> Sig:</B> <A NAME="tex2html4313"
+  HREF="node100.html">HTTP</A>
+<B>Sup:</B> <A NAME="tex2html4307"
+  HREF="node95.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4301"
+  HREF="node98.html">Detectando el Proceso que</A>
 <B> Con:</B> 
-<A NAME="tex2html3696"
-  HREF="node126.html">
+<A NAME="tex2html4308"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3698"
-  HREF="node129.html">
+<A NAME="tex2html4310"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
@@ -113,274 +113,176 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html3702"
-  HREF="node99.html#SECTION06141000000000000000">Crashing</A>
-<UL>
-<LI><A NAME="tex2html3703"
-  HREF="node99.html#SECTION06141010000000000000">Failed to require a sourcefile</A>
-<LI><A NAME="tex2html3704"
-  HREF="node99.html#SECTION06141020000000000000">Encoding error</A>
-<LI><A NAME="tex2html3705"
-  HREF="node99.html#SECTION06141030000000000000">Missing a gem</A>
-<LI><A NAME="tex2html3706"
-  HREF="node99.html#SECTION06141040000000000000">Runtime dependencies on development/test gems</A>
-<LI><A NAME="tex2html3707"
-  HREF="node99.html#SECTION06141050000000000000">Versiones soportadas por Heroku</A>
-<LI><A NAME="tex2html3708"
-  HREF="node99.html#SECTION06141060000000000000">Rack::Sendfile</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html3709"
-  HREF="node99.html#SECTION06142000000000000000"><FONT COLOR="#ff0000"> heroku run</FONT>: Timeout awaiting process</A>
-</UL>
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html4314"
+  HREF="node99.html#SECTION06140010000000000000">config.ru</A>
+<LI><A NAME="tex2html4315"
+  HREF="node99.html#SECTION06140020000000000000">Template erb</A>
+<LI><A NAME="tex2html4316"
+  HREF="node99.html#SECTION06140030000000000000">Arrancando el Servidor</A>
+<LI><A NAME="tex2html4317"
+  HREF="node99.html#SECTION06140040000000000000">Ejecutando un cliente</A>
+<LI><A NAME="tex2html4318"
+  HREF="node99.html#SECTION06140050000000000000">Logs del servidor</A>
+<LI><A NAME="tex2html4319"
+  HREF="node99.html#SECTION06140060000000000000">Véase</A>
+</UL></UL></UL>
 <!--End of Table of Child-Links-->
 <HR>
 
 <H1><A NAME="SECTION06140000000000000000">
-Troubleshooting</A>
+Usando <TT>PATH_INFO</TT> y <TT>erubis</TT> para construir una aplicación (Noah Gibbs)</A>
 </H1>
 
 <P>
 
-<H2><A NAME="SECTION06141000000000000000">
-Crashing</A>
-</H2>
-If you push your app and it crashes, 
-<code>heroku ps</code> shows state crashed:
-<PRE>
-=== web (1X): `bundle exec thin start -R config.ru -e $RACK_ENV -p $PORT`
-web.1: crashed 2013/10/24 20:21:34 (~ 1h ago)
-</PRE>
-check your logs to find out what went wrong. 
-
-<P>
-Here are some common
-problems.
-
-<P>
-
-<H4><A NAME="SECTION06141010000000000000">
-Failed to require a sourcefile</A>
+<H4><A NAME="SECTION06140010000000000000">
+config.ru</A>
 </H4>
   
 
 <P>
-If your app failed to require a sourcefile, chances are good you’re
-running Ruby 1.9.1 or 1.8 in your local environment. 
-
-<P>
-The load paths
-have changed in Ruby 1.9 which applies to Ruby 2.0. 
-
-<P>
-Port your app
-forward to Ruby 2.0.0 making certain it works locally before trying
-to push to Cedar again.
-
-<P>
-
-<H4><A NAME="SECTION06141020000000000000">
-Encoding error</A>
-</H4>
-  
-
-Ruby 1.9 added more sophisticated encoding support to the language
-which applies to Ruby 2.0. 
-
-<P>
-Not all gems work with Ruby 2.0. If you
-hit an encoding error, you probably haven’t fully tested your app
-with Ruby 2.0.0 in your local environment. 
-
-<P>
-Port your app forward
-to Ruby 2.0.0 making certain it works locally before trying to push
-to Cedar again.
-
-<P>
-
-<H4><A NAME="SECTION06141030000000000000">
-Missing a gem</A>
-</H4>
-  
-
-<P>
-If your app crashes due to missing a gem, you may have it installed
-locally but not specified in your Gemfile. 
-
-<P>
-You must isolate all
-local testing using <code>bundle exec</code>. 
-
-<P>
-For example, don’t run <code>ruby web.rb</code>,
-run 
-
-<P>
 <PRE>
-bundle exec ruby web.rb
-</PRE>
-Don’t run <code>rake db:migrate</code>, run 
-<PRE>
-bundle exec rake db:migrate.
-</PRE>
-Another approach is to create a blank RVM gemset to be absolutely
-sure you’re not touching any system-installed gems:
-<PRE>
-$ rvm gemset create myapp
-$ rvm gemset use myapp
-</PRE>
+[~/local/src/ruby/sinatra/rack/hangout-framework(master)]$ cat config.ru 
+require "erubis"
 
-<P>
+use Rack::ContentType
 
-<H4><A NAME="SECTION06141040000000000000">
-Runtime dependencies on development/test gems</A>
-</H4>
-  
-
-<P>
-If you’re still missing a gem when you deploy, check your Bundler
-groups.
-
-<P>
-Heroku builds your app without the <code>development</code> or <code>test</code>
-groups, and if you app depends on a gem from one of these groups
-to run, you should move it out of the group.
-
-<P>
-One common example using the <code>RSpec tasks</code> in your Rakefile. 
-If you see this in your Heroku deploy:
-<PRE>
-$ heroku run rake -T
-Running `rake -T` attached to terminal... up, ps.3
-rake aborted!
-no such file to load -- rspec/core/rake_task
-</PRE>
-Then you’ve hit this problem. 
-
-<P>
-First, duplicate the problem locally like so:
-<PRE>
-$ bundle install --without development:test
-...
-$ bundle exec rake -T
-rake aborted!
-no such file to load -- rspec/core/rake_task
-</PRE>
-Now you can fix it by making these Rake tasks conditional on the gem load. 
-For example:
-<PRE>
-begin
-  require "rspec/core/rake_task"
-
-  desc "Run all examples"
-  RSpec::Core::RakeTask.new(:spec) do |t|
-    t.rspec_opts = %w[--color]
-    t.pattern = 'spec/*_spec.rb'
-  end
-rescue LoadError
+def output(text, options = {})
+  [ options[:status] || 200,
+    {}, [ text ].flatten ]
 end
+
+def from_erb(file, vars = {})
+  eruby = Erubis::Eruby.new File.read(file)
+  output eruby.result vars
+end
+
+run proc { |env|
+  path = env['PATH_INFO']
+  if path =~ %r{^/foo}
+    from_erb "template.html.erb"
+  else
+    output "Not found!", :status =&gt; 400
+  end
+}
 </PRE>
-Confirm it works locally, then push to Heroku.
 
 <P>
 
-<H4><A NAME="SECTION06141050000000000000">
-Versiones soportadas por Heroku</A>
+<H4><A NAME="SECTION06140020000000000000">
+Template erb</A>
 </H4>
   
 
 <P>
-Véase
-<A NAME="tex2html514"
-  HREF="https://devcenter.heroku.com/articles/ruby-support#ruby-versions">Heroku Ruby Support</A>
+<PRE>
+[~/local/src/ruby/sinatra/rack/hangout-framework(master)]$ cat template.html.erb 
+&lt;p&gt; A template! &lt;/p&gt;
+&lt;% 10.times do -%&gt; &lt;p&gt; Pretty cool! &lt;/p&gt; &lt;% end -%&gt;
+</PRE>
+
 <P>
 
-<H4><A NAME="SECTION06141060000000000000">
-Rack::Sendfile</A>
+<H4><A NAME="SECTION06140030000000000000">
+Arrancando el Servidor</A>
+</H4>
+  
+
+<PRE>
+[~/local/src/ruby/sinatra/rack/hangout-framework(master)]$ rackup
+&gt;&gt; Thin web server (v1.5.1 codename Straight Razor)
+&gt;&gt; Maximum connections set to 1024
+&gt;&gt; Listening on 0.0.0.0:9292, CTRL+C to stop}
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION06140040000000000000">
+Ejecutando un cliente</A>
+</H4>
+  
+
+<PRE>
+[~/local/src/ruby/sinatra/rack/hangout-framework(master)]$ curl -v http://localhost:9292/foochazam
+* About to connect() to localhost port 9292 (#0)
+*   Trying ::1... Connection refused
+*   Trying 127.0.0.1... connected
+* Connected to localhost (127.0.0.1) port 9292 (#0)
+&gt; GET /foochazam HTTP/1.1
+&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8y zlib/1.2.5
+&gt; Host: localhost:9292
+&gt; Accept: */*
+&gt; 
+&lt; HTTP/1.1 200 OK
+&lt; Content-Type: text/html
+&lt; Transfer-Encoding: chunked
+&lt; Connection: close
+&lt; Server: thin 1.5.1 codename Straight Razor
+&lt; 
+&lt;p&gt; A template! &lt;/p&gt;
+ &lt;p&gt; Pretty cool! &lt;/p&gt;  &lt;p&gt; Pretty cool! &lt;/p&gt;  &lt;p&gt; Pretty cool! &lt;/p&gt;  
+ &lt;p&gt; Pretty cool! &lt;/p&gt;  &lt;p&gt; Pretty cool! &lt;/p&gt;  &lt;p&gt; Pretty cool! &lt;/p&gt;  
+ &lt;p&gt; Pretty cool! &lt;/p&gt;  &lt;p&gt; Pretty cool! &lt;/p&gt;  &lt;p&gt; Pretty cool! &lt;/p&gt;  
+ &lt;p&gt; Pretty cool! &lt;/p&gt; 
+* Closing connection #0
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION06140050000000000000">
+Logs del servidor</A>
 </H4>
   
 
 <P>
-Heroku does not support the use of Rack::Sendfile. 
-
-<P>
-Rack:Sendfile
-usually requires that there is a frontend webserver like nginx or
-apache is running on the same machine as the application server.
-
-<P>
-This is not how Heroku is architected. Using the Rack::Sendfile
-middleware will cause your file downloads to fail since it will
-send a body with Content-Length of 0.
-
-<P>
-
-<H2><A NAME="SECTION06142000000000000000">
-
-<FONT COLOR="#ff0000"> heroku run</FONT>: Timeout awaiting process</A>
-</H2>
-
-<P>
-The 
-<FONT COLOR="#ff0000"> heroku run command opens a connection to Heroku on port 5000</FONT>. If
-your local network or ISP is blocking port 5000 (el caso de la ULL), 
-or you are experiencing
-a connectivity issue, you will see an error similar to:
-
-<P>
 <PRE>
-[~/srcPLgrado/pegjscalc(master)]$ heroku run console
-Running `console` attached to terminal... up, run.4357
- !    
- !    Timeout awaiting process
+[~/local/src/ruby/sinatra/rack/hangout-framework(master)]$ rackup
+&gt;&gt; Thin web server (v1.5.1 codename Straight Razor)
+&gt;&gt; Maximum connections set to 1024
+&gt;&gt; Listening on 0.0.0.0:9292, CTRL+C to stop
+ 127.0.0.1 - - [20/Oct/2013 12:22:37] "GET /foochazam HTTP/1.1" 200 - 0.0014
 </PRE>
 
 <P>
-You can test your connection to Heroku by trying to connect directly to
-port 5000 by using <code>telnet</code> to <code>rendezvous.runtime.heroku.com</code>. 
+
+<H4><A NAME="SECTION06140060000000000000">
+Véase</A>
+</H4>
+  
 
 <P>
-Desde la universidad fracasa:
 
-<P>
-<PRE>
-[~/srcPLgrado/pegjscalc(master)]$ telnet rendezvous.runtime.heroku.com 5000Trying 50.19.103.36...
-telnet: connect to address 50.19.103.36: Operation timed out
-telnet: Unable to connect to remote host
-</PRE>
-
-<P>
-A successful session will look like this:
-
-<P>
-<PRE>
-$ telnet rendezvous.runtime.heroku.com 5000
-Trying 50.19.103.36...
-Connected to ec2-50-19-103-36.compute-1.amazonaws.com.
-Escape character is '^]'.
-</PRE>
-If you do not get this output, your computer is being blocked from
-accessing our services. We recommend contacting your IT department, ISP,
-or firewall manufacturer to move forward with this issue.
+<OL>
+<LI><A NAME="tex2html506"
+  HREF="http://www.kuwata-lab.com/erubis/">erubis</A>
+</LI>
+<LI>Noah Gibbs <A NAME="tex2html507"
+  HREF="https://github.com/noahgibbs/hangout-framework">Demo Rack framework for March 6th, 2013 Ruby Hangout.</A>
+</LI>
+<LI><A NAME="tex2html508"
+  HREF="http://youtu.be/evDJMLb1d28">Ruby Hangout 3-13 Noah Gibbs</A>
+</LI>
+</OL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3700"
+<A NAME="tex2html4312"
   HREF="node100.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3694"
+<A NAME="tex2html4306"
   HREF="node95.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3688"
+<A NAME="tex2html4300"
   HREF="node98.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3696"
-  HREF="node126.html">
+<A NAME="tex2html4308"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3698"
-  HREF="node129.html">
+<A NAME="tex2html4310"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -431,12 +333,12 @@ or firewall manufacturer to move forward with this issue.
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3701"
-  HREF="node100.html">Configuration</A>
-<B>Sup:</B> <A NAME="tex2html3695"
-  HREF="node95.html">Heroku</A>
-<B> Ant:</B> <A NAME="tex2html3689"
-  HREF="node98.html">Heroku Postgress</A>
+<B> Sig:</B> <A NAME="tex2html4313"
+  HREF="node100.html">HTTP</A>
+<B>Sup:</B> <A NAME="tex2html4307"
+  HREF="node95.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4301"
+  HREF="node98.html">Detectando el Proceso que</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Generación de Código</TITLE>
-<META NAME="description" CONTENT="Generación de Código">
+<TITLE>Configuring attack protection</TITLE>
+<META NAME="description" CONTENT="Configuring attack protection">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node152.html">
 <LINK REL="previous" HREF="node150.html">
-<LINK REL="up" HREF="node6.html">
+<LINK REL="up" HREF="node131.html">
 <LINK REL="next" HREF="node152.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4805"
+<A NAME="tex2html5243"
   HREF="node152.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4799"
-  HREF="node6.html">
+<A NAME="tex2html5237"
+  HREF="node131.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4793"
+<A NAME="tex2html5231"
   HREF="node150.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4801"
-  HREF="node234.html">
+<A NAME="tex2html5239"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4803"
-  HREF="node237.html">
+<A NAME="tex2html5241"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -59,7 +59,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   WIDTH="30" ALIGN="BOTTOM" BORDER="0"
  SRC="gv.jpeg"
  ALT="ps"></A><A NAME="tex2html6"
-  HREF="https://dl.dropbox.com/u/14539152/PLgrado/PLgradoBOOK/index.html"><IMG
+  HREF="http://crguezl.github.io/pl-html/"><IMG
   WIDTH="60" ALIGN="BOTTOM" BORDER="0"
  SRC="lupa.gif"
  ALT="ruby gems"></A><A NAME="tex2html7"
@@ -70,11 +70,11 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   HREF="http://github.com"><IMG
   WIDTH="27" ALIGN="BOTTOM" BORDER="0"
  SRC="google-code-project-hosting.jpeg"
- ALT="google code project hosting"></A><A NAME="tex2html9"
-  HREF="http://jquery.com/"><IMG
+ ALT="github"></A><A NAME="tex2html9"
+  HREF="https://plus.google.com/u/0/communities/107031495100582318205"><IMG
   WIDTH="27" ALIGN="BOTTOM" BORDER="0"
  SRC="perl6.jpg"
- ALT="blogs"></A><A NAME="tex2html10"
+ ALT="comunidad g+ PL1314"></A><A NAME="tex2html10"
   HREF="http://www.google.es/"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
  SRC="ggoogle.gif"
@@ -87,50 +87,95 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
  SRC="ull.gif"
  ALT="ull"></A><A NAME="tex2html13"
-  HREF="http://crondinosaur.blogspot.com/"><IMG
+  HREF="https://github.com/crguezl"><IMG
   WIDTH="32" ALIGN="BOTTOM" BORDER="0"
  SRC="logopcgull.gif"
- ALT="pcgull"></A>
+ ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4806"
-  HREF="node152.html">Optimización de Código</A>
-<B>Sup:</B> <A NAME="tex2html4800"
-  HREF="node6.html">PRIMERA PARTE: APUNTES DE</A>
-<B> Ant:</B> <A NAME="tex2html4794"
-  HREF="node150.html">Análisis Semántico</A>
+<B> Sig:</B> <A NAME="tex2html5244"
+  HREF="node152.html">Settings disponibles/Available Settings</A>
+<B>Sup:</B> <A NAME="tex2html5238"
+  HREF="node131.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5232"
+  HREF="node150.html">Configuration / Configuración</A>
 <B> Con:</B> 
-<A NAME="tex2html4801"
-  HREF="node234.html">
+<A NAME="tex2html5239"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4803"
-  HREF="node237.html">
+<A NAME="tex2html5241"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION041400000000000000000">
-Generación de Código</A>
+<H1><A NAME="SECTION063200000000000000000">
+Configuring attack protection</A>
 </H1>
+Sinatra is using <A NAME="tex2html673"
+  HREF="http://rubydoc.info/gems/rack-protection/">Rack::Protection</A>
+to defend your application against common, opportunistic attacks.
+
+<P>
+
+<OL>
+<LI>You can easily disable this behavior (which will open up your
+application to tons of common vulnerabilities):
+
+<P>
+<code>disable :protection</code>
+</LI>
+<LI>To skip a single defense layer, set protection to an options hash:
+
+<P>
+<PRE>
+set :protection, :except =&gt; :path_traversal
+</PRE>
+</LI>
+<LI>You can also hand in an array in order to disable a list of protections:
+
+<P>
+<PRE>
+set :protection, :except =&gt; [:path_traversal, :session_hijacking]
+</PRE>
+</LI>
+<LI>By default, Sinatra will only set up session based protection if
+<code>:sessions</code> has been enabled. 
+
+<P>
+Sometimes you want to set up sessions
+on your own, though. 
+
+<P>
+In that case you can get it to set up session
+based protections by passing the <code>:session option</code>:
+
+<P>
+<PRE>
+use Rack::Session::Pool
+set :protection, :session =&gt; true
+</PRE>
+</LI>
+</OL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4805"
+<A NAME="tex2html5243"
   HREF="node152.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4799"
-  HREF="node6.html">
+<A NAME="tex2html5237"
+  HREF="node131.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4793"
+<A NAME="tex2html5231"
   HREF="node150.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4801"
-  HREF="node234.html">
+<A NAME="tex2html5239"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4803"
-  HREF="node237.html">
+<A NAME="tex2html5241"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -148,7 +193,7 @@ Generación de Código</A>
   WIDTH="30" ALIGN="BOTTOM" BORDER="0"
  SRC="gv.jpeg"
  ALT="ps"></A><A NAME="tex2html6"
-  HREF="https://dl.dropbox.com/u/14539152/PLgrado/PLgradoBOOK/index.html"><IMG
+  HREF="http://crguezl.github.io/pl-html/"><IMG
   WIDTH="60" ALIGN="BOTTOM" BORDER="0"
  SRC="lupa.gif"
  ALT="ruby gems"></A><A NAME="tex2html7"
@@ -159,11 +204,11 @@ Generación de Código</A>
   HREF="http://github.com"><IMG
   WIDTH="27" ALIGN="BOTTOM" BORDER="0"
  SRC="google-code-project-hosting.jpeg"
- ALT="google code project hosting"></A><A NAME="tex2html9"
-  HREF="http://jquery.com/"><IMG
+ ALT="github"></A><A NAME="tex2html9"
+  HREF="https://plus.google.com/u/0/communities/107031495100582318205"><IMG
   WIDTH="27" ALIGN="BOTTOM" BORDER="0"
  SRC="perl6.jpg"
- ALT="blogs"></A><A NAME="tex2html10"
+ ALT="comunidad g+ PL1314"></A><A NAME="tex2html10"
   HREF="http://www.google.es/"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
  SRC="ggoogle.gif"
@@ -176,22 +221,22 @@ Generación de Código</A>
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
  SRC="ull.gif"
  ALT="ull"></A><A NAME="tex2html13"
-  HREF="http://crondinosaur.blogspot.com/"><IMG
+  HREF="https://github.com/crguezl"><IMG
   WIDTH="32" ALIGN="BOTTOM" BORDER="0"
  SRC="logopcgull.gif"
- ALT="pcgull"></A>
+ ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4806"
-  HREF="node152.html">Optimización de Código</A>
-<B>Sup:</B> <A NAME="tex2html4800"
-  HREF="node6.html">PRIMERA PARTE: APUNTES DE</A>
-<B> Ant:</B> <A NAME="tex2html4794"
-  HREF="node150.html">Análisis Semántico</A>
+<B> Sig:</B> <A NAME="tex2html5244"
+  HREF="node152.html">Settings disponibles/Available Settings</A>
+<B>Sup:</B> <A NAME="tex2html5238"
+  HREF="node131.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5232"
+  HREF="node150.html">Configuration / Configuración</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-01-17</I>
+2014-03-28</I>
 </ADDRESS>
 </BODY>
 </HTML>

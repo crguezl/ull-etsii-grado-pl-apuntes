@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Configurando la Base de Datos en Heroku con DataMapper. Despliegue</TITLE>
-<META NAME="description" CONTENT="Configurando la Base de Datos en Heroku con DataMapper. Despliegue">
+<TITLE>Redirección</TITLE>
+<META NAME="description" CONTENT="Redirección">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,28 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
+<LINK REL="next" HREF="node109.html">
 <LINK REL="previous" HREF="node107.html">
-<LINK REL="up" HREF="node104.html">
+<LINK REL="up" HREF="node95.html">
 <LINK REL="next" HREF="node109.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3880"
+<A NAME="tex2html4484"
   HREF="node109.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3874"
-  HREF="node104.html">
+<A NAME="tex2html4478"
+  HREF="node95.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3870"
+<A NAME="tex2html4472"
   HREF="node107.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3876"
-  HREF="node126.html">
+<A NAME="tex2html4480"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3878"
-  HREF="node129.html">
+<A NAME="tex2html4482"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -91,134 +92,70 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3881"
-  HREF="node109.html">Slim</A>
-<B>Sup:</B> <A NAME="tex2html3875"
-  HREF="node104.html">DataMapper</A>
-<B> Ant:</B> <A NAME="tex2html3871"
-  HREF="node107.html">Ejemplo de Uso de</A>
+<B> Sig:</B> <A NAME="tex2html4485"
+  HREF="node109.html">La Estructura de una</A>
+<B>Sup:</B> <A NAME="tex2html4479"
+  HREF="node95.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4473"
+  HREF="node107.html">Ejemplo: Basic Authentication</A>
 <B> Con:</B> 
-<A NAME="tex2html3876"
-  HREF="node126.html">
+<A NAME="tex2html4480"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3878"
-  HREF="node129.html">
+<A NAME="tex2html4482"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION06240000000000000000">
-Configurando la Base de Datos en Heroku con DataMapper. Despliegue</A>
+<H1><A NAME="SECTION061130000000000000000">
+Redirección</A>
 </H1>
 
 <P>
-<A NAME="tex2html547"
-  HREF="https://devcenter.heroku.com/articles/quickstart">Heroku</A> utiliza la base de datos PostgreSQL y una URL en una variable 
-de entorno <code>ENV['DATABASE_URL']</code>.
-
-<P>
 <PRE>
-configure :development do
-  DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/development.db")
+[~/local/src/ruby/sinatra/rack/rack-debugging(master)]$ cat redirect.rb 
+require 'rack'
+require 'thin'
+
+app = lambda do |env|
+  req = Rack::Request.new env
+  res = Rack::Response.new
+
+  if req.path_info == '/redirect'
+    res.redirect('https://plus.google.com/u/0/')
+  else
+    res.write "You did not get redirected"
+  end
+  res.finish
 end
 
-configure :production do
-  DataMapper.setup(:default, ENV['DATABASE_URL'])
-end
+Rack::Server.start(
+ :app =&gt; app,
+ :Port =&gt; 9292,
+ :server =&gt; 'thin'
+)
 </PRE>
-
-<P>
-Estas líneas especifican que se usa SQLite en desarrollo y PostgreSQL en producción.
-Obsérvese que el <code>Gemfile</code> debe estar coherente:
-<PRE>
-[~/sinatra/sinatra-datamapper-jump-start(master)]$ cat Gemfile
-source 'https://rubygems.org'
-gem "sinatra"
-gem "slim"
-gem "sass"
-gem "dm-core"
-gem "dm-migrations"
-gem "thin"
-gem "pg", :group =&gt; :production
-gem "dm-postgres-adapter", :group =&gt; :production
-gem "dm-sqlite-adapter", :group =&gt; :development
-</PRE>
-o mejor:
-<PRE>
-group :production do
-    gem "pg"
-    gem "dm-postgres-adapter"
-end
-</PRE>
-
-<P>
-<PRE>
-heroku create ...
-</PRE>
-
-<P>
-<PRE>
-git push heroku master
-</PRE>
-
-<P>
-<PRE>
-heroku open
-</PRE>
-
-<P>
-<PRE>
-heroku logs --source app
-</PRE>
-
-<P>
-Ahora ejecutamos la consola de heroku:
-
-<P>
-<PRE>
-heroku run console
-</PRE>
-lo que nos abre una sesión <code>irb</code>.
-
-<P>
-Ahora creamos la base de datos en <A NAME="tex2html548"
-  HREF="https://devcenter.heroku.com/articles/quickstart">Heroku</A>:
-<PRE>
-[~/sinatra/sinatra-datamapper-jump-start(master)]$ heroku run console
-Running `console` attached to terminal... up, run.8011
-irb(main):001:0&gt; require './main'
-=&gt; true
-irb(main):002:0&gt; DataMapper.auto_migrate!
-=&gt; #&lt;DataMapper::DescendantSet:0x007fb89c878230 @descendants=#&lt;DataMapper::SubjectSet:0x007fb89c8781b8 @entries=#&lt;DataMapper::OrderedSet:0x007fb89c878190 @cache=#&lt;DataMapper::SubjectSet::NameCache:0x007fb89c878168 @cache={"Song"=&gt;0}&gt;, @entries=[Song]&gt;&gt;&gt;
-irb(main):003:0&gt;
-</PRE>
-Véase también 
-la practica TicTacToe
-<A HREF="#practica:ticatactoe"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>
-y
-el capítulo <I>Despliegue en Heroku</I> 
-<A HREF="#chapter:despliegueenheroku"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>.
-.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3880"
+<A NAME="tex2html4484"
   HREF="node109.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3874"
-  HREF="node104.html">
+<A NAME="tex2html4478"
+  HREF="node95.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3870"
+<A NAME="tex2html4472"
   HREF="node107.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3876"
-  HREF="node126.html">
+<A NAME="tex2html4480"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3878"
-  HREF="node129.html">
+<A NAME="tex2html4482"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -269,12 +206,12 @@ el capítulo <I>Despliegue en Heroku</I>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3881"
-  HREF="node109.html">Slim</A>
-<B>Sup:</B> <A NAME="tex2html3875"
-  HREF="node104.html">DataMapper</A>
-<B> Ant:</B> <A NAME="tex2html3871"
-  HREF="node107.html">Ejemplo de Uso de</A>
+<B> Sig:</B> <A NAME="tex2html4485"
+  HREF="node109.html">La Estructura de una</A>
+<B>Sup:</B> <A NAME="tex2html4479"
+  HREF="node95.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4473"
+  HREF="node107.html">Ejemplo: Basic Authentication</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

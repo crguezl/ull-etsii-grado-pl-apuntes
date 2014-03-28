@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Proyecto: Diseña e Implementa un Lenguaje de Dominio Específico</TITLE>
-<META NAME="description" CONTENT="Proyecto: Diseña e Implementa un Lenguaje de Dominio Específico">
+<TITLE>Despliegue de una Aplicación Web en la ETSII</TITLE>
+<META NAME="description" CONTENT="Despliegue de una Aplicación Web en la ETSII">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,28 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
+<LINK REL="next" HREF="node126.html">
 <LINK REL="previous" HREF="node124.html">
-<LINK REL="up" HREF="node122.html">
+<LINK REL="up" HREF="node95.html">
 <LINK REL="next" HREF="node126.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4150"
+<A NAME="tex2html4756"
   HREF="node126.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4144"
-  HREF="node122.html">
+<A NAME="tex2html4750"
+  HREF="node95.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4140"
+<A NAME="tex2html4744"
   HREF="node124.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4146"
-  HREF="node126.html">
+<A NAME="tex2html4752"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4148"
-  HREF="node129.html">
+<A NAME="tex2html4754"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -91,123 +92,108 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4151"
-  HREF="node126.html">&#205;ndice General</A>
-<B>Sup:</B> <A NAME="tex2html4145"
-  HREF="node122.html">2014</A>
-<B> Ant:</B> <A NAME="tex2html4141"
-  HREF="node124.html">02</A>
+<B> Sig:</B> <A NAME="tex2html4757"
+  HREF="node126.html">Práctica: Despliegue en Heroku</A>
+<B>Sup:</B> <A NAME="tex2html4751"
+  HREF="node95.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4745"
+  HREF="node124.html">Prácticas: Centro de Cálculo</A>
 <B> Con:</B> 
-<A NAME="tex2html4146"
-  HREF="node126.html">
+<A NAME="tex2html4752"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4148"
-  HREF="node129.html">
+<A NAME="tex2html4754"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<H1><A NAME="SECTION07130000000000000000">
-Proyecto: Diseña e Implementa un Lenguaje de Dominio Específico</A>
+<UL CLASS="ChildLinks">
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html4758"
+  HREF="node125.html#SECTION061300010000000000000">Véase también</A>
+</UL></UL></UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION061300000000000000000">
+Despliegue de una Aplicación Web en la ETSII</A>
 </H1>
+Para desplegar una aplicación web usaremos <code>exthost2</code> (en 2013).
 
 <P>
-Se trata de realizar un proyecto relacionado con el procesamiento de lenguajes.
-El objetivo puede ser:
+Veamos que puertos están libres usando  <TT>netstat</TT> :
+<PRE>
+casiano@exthost2:~$ netstat -an | less
+</PRE>
+o bien usamos  <TT>lsof</TT> : 
+<PRE>
+lsof -i | less
+</PRE>
+y después - si es necesario - terminamos el proceso que ya estuviera escuchando en el puerto
+<PRE>
+kill -9 PID
+</PRE>
 
 <P>
+Veamos una simple aplicación usando <code>rack</code>:
+<PRE>
+casiano@exthost2:~/src/ruby/simplewebapp$ cat hello.rb 
+require 'rack'
+
+app = lambda { |env| [200, {"Content-Type" =&gt; "text/plain"}, ["Hello. The time is #{Time.now}"]] }
+Rack::Handler::WEBrick.run app,:Port =&gt; 4567
+</PRE>
+La ejecutamos:
+<PRE>
+casiano@exthost2:~/src/ruby/simplewebapp$ ruby hello.rb 
+[2013-10-28 09:58:54] INFO  WEBrick 1.3.1
+[2013-10-28 09:58:54] INFO  ruby 1.9.3 (2011-10-30) [i686-linux]
+[2013-10-28 09:58:54] WARN  TCPServer Error: Address already in use - bind(2)
+[2013-10-28 09:58:54] INFO  WEBrick::HTTPServer#start: pid=16597 port=4567
+</PRE>
+Ya tenemos disponible la página en <code>exthost2</code> en el puerto correspondiente.
+
+<P>
+El acceso al servidor está limitado a
+la red de la ULL.
+
+<P>
+
+<H4><A NAME="SECTION061300010000000000000">
+Véase también</A>
+</H4>
+  
 
 <OL>
-<LI>Diseñar un lenguaje de dominio específico para simplificar cualquier tarea en la que estés interesado:
-
-<P>
-
-<UL>
-<LI>Para escribir exámenes, 
-
-<UL>
-<LI>Por ejemplo se puede escribir un traductor para el formato Moodle gift que traduzca a javascript + HTML + css y que evalúe al usuario
-</LI>
-<LI>Por ejemplo se puede escribir un traductor para el formato Moodle XML que traduzca a javascript + HTML + css y que evalúe al usuario
-</LI>
-</UL>
-</LI>
-<LI>Para dibujar árboles, 
-</LI>
-<LI>Para calcular fechas,
-</LI>
-<LI>Para generar emails
-</LI>
-<LI>Para escribir música
-</LI>
-<LI>Para escribir autómatas finitos
-</LI>
-<LI>Para procesar 
-<A NAME="tex2html584"
-  HREF="http://www.w3.org/TR/CSS21/grammar.html#grammar">CSS</A>
-</LI>
-<LI>etc.
-</LI>
-</UL>
-</LI>
-<LI>Estudiar un traductor existente en profundidad  como:
-
-<UL>
-<LI>ECMAscript 5.1: 
-<A NAME="tex2html585"
-  HREF="http://cjihrig.com/blog/creating-a-javascript-parser/">Creating a JavaScript Parser</A>
-Una implementación de ECMAScript 5.1 usando Jison 
-disponible 
-en GitHub
- en
-<A NAME="tex2html586"
-  HREF="https://github.com/cjihrig/jsparser">https://github.com/cjihrig/jsparser</A>.
-Puede probarse en:
-<A NAME="tex2html587"
-  HREF="http://www.cjihrig.com/development/jsparser/">http://www.cjihrig.com/development/jsparser/</A>
-</LI>
-<LI>Roy
-</LI>
-<LI>CoffeScript
-</LI>
-<LI>Jison
-</LI>
-<LI><A NAME="tex2html588"
-  HREF="http://www-archive.mozilla.org/js/language/grammar14.html">Javascript 1.4</A>
-</LI>
-<LI>etc.
-</LI>
-</UL>
-</LI>
-<LI>También puedes proponer tu propio tema relacionado al profesor
+<LI><I>Gemas instaladas en local</I> <A HREF="#section:gemasinstaladasenlocal"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>
 </LI>
 </OL>
 
 <P>
-Se recomienda para ello organizar equipos de no menos de dos y no mas de cuatro.
-
-<P>
-Las presentaciones de los proyectos tendrán lugar el último día de clase Martes 21 de Mayo.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4150"
+<A NAME="tex2html4756"
   HREF="node126.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4144"
-  HREF="node122.html">
+<A NAME="tex2html4750"
+  HREF="node95.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4140"
+<A NAME="tex2html4744"
   HREF="node124.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4146"
-  HREF="node126.html">
+<A NAME="tex2html4752"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4148"
-  HREF="node129.html">
+<A NAME="tex2html4754"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -258,12 +244,12 @@ Las presentaciones de los proyectos tendrán lugar el último día de clase Mart
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4151"
-  HREF="node126.html">&#205;ndice General</A>
-<B>Sup:</B> <A NAME="tex2html4145"
-  HREF="node122.html">2014</A>
-<B> Ant:</B> <A NAME="tex2html4141"
-  HREF="node124.html">02</A>
+<B> Sig:</B> <A NAME="tex2html4757"
+  HREF="node126.html">Práctica: Despliegue en Heroku</A>
+<B>Sup:</B> <A NAME="tex2html4751"
+  HREF="node95.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4745"
+  HREF="node124.html">Prácticas: Centro de Cálculo</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
