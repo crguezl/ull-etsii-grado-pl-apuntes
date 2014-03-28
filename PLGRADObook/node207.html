@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Authentication using the Google APIs Client Library for JavaScript</TITLE>
-<META NAME="description" CONTENT="Authentication using the Google APIs Client Library for JavaScript">
+<TITLE>Google+ Sign-In for server-side apps</TITLE>
+<META NAME="description" CONTENT="Google+ Sign-In for server-side apps">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -28,19 +28,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html6265"
+<A NAME="tex2html6267"
   HREF="node208.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html6259"
+<A NAME="tex2html6261"
   HREF="node199.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html6253"
+<A NAME="tex2html6255"
   HREF="node206.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html6261"
+<A NAME="tex2html6263"
   HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html6263"
+<A NAME="tex2html6265"
   HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -92,82 +92,70 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html6266"
-  HREF="node208.html">Auth Hash Schema</A>
-<B>Sup:</B> <A NAME="tex2html6260"
+<B> Sig:</B> <A NAME="tex2html6268"
+  HREF="node208.html">Authentication using the Google</A>
+<B>Sup:</B> <A NAME="tex2html6262"
   HREF="node199.html">Google Oauth</A>
-<B> Ant:</B> <A NAME="tex2html6254"
-  HREF="node206.html">Google+ Sign-In for server-side</A>
+<B> Ant:</B> <A NAME="tex2html6256"
+  HREF="node206.html">Google + API for</A>
 <B> Con:</B> 
-<A NAME="tex2html6261"
+<A NAME="tex2html6263"
   HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html6263"
+<A NAME="tex2html6265"
   HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
-
-<UL CLASS="ChildLinks">
-<LI><A NAME="tex2html6267"
-  HREF="node207.html#SECTION07481000000000000000">Getting access keys for your application</A>
-</UL>
-<!--End of Table of Child-Links-->
-<HR>
 
 <H1><A NAME="SECTION07480000000000000000">
-Authentication using the Google APIs Client Library for JavaScript</A>
+Google+ Sign-In for server-side apps</A>
 </H1>
 
 <P>
-<A NAME="tex2html815"
-  HREF="https://developers.google.com/api-client-library/javascript/features/authentication">See</A>.
+To take advantage of all of the benefits of Google+ Sign-In you must
+use a hybrid server-side flow where a user authorizes your app on the
+client side using the JavaScript API client and you send a
+special one-time authorization code to your server. 
+
+<P>
+Your server exchanges this one-time-use code to acquire its own access and
+refresh tokens from Google for the server to be able to make its own API
+calls, which can be done while the user is offline. 
+
+<P>
+This one-time code flow has security advantages over both a pure
+server-side flow and over sending access tokens to your server.
 
 <P>
 
-<H2><A NAME="SECTION07481000000000000000">
-Getting access keys for your application</A>
-</H2>
-
-<P>
-To get access keys, go to the Google APIs Console and specify your
-<A NAME="tex2html816"
-  HREF="https://cloud.google.com/console">Google Developers Console</A>. 
-application's name and the Google APIs it will access. For simple access,
-Google generates an API key that uniquely identifies your application
-in its transactions with the Google Auth server.
-
-<P>
-For authorized access, you must also tell Google your website's protocol and domain. In return, Google generates a client ID. Your application submits this to the Google Auth server to get an  <A NAME="tex2html817"
+<FONT COLOR="#ff0000"> The Google+ Sign-In server-side flow differs from the  <A NAME="tex2html819"
   HREF="http://oauth.net/">OAuth</A>
- 2.0 access token.
+ 2.0
+for Web server applications flow.</FONT>
 
 <P>
-For detailed instructions for this process, see the Getting started page.
 
-<P>
-See below for details and examples of how to use these credentials in your application.
+<img src="server_side_code_flow.png" />
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html6265"
+<A NAME="tex2html6267"
   HREF="node208.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html6259"
+<A NAME="tex2html6261"
   HREF="node199.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html6253"
+<A NAME="tex2html6255"
   HREF="node206.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html6261"
+<A NAME="tex2html6263"
   HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html6263"
+<A NAME="tex2html6265"
   HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -219,12 +207,12 @@ See below for details and examples of how to use these credentials in your appli
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html6266"
-  HREF="node208.html">Auth Hash Schema</A>
-<B>Sup:</B> <A NAME="tex2html6260"
+<B> Sig:</B> <A NAME="tex2html6268"
+  HREF="node208.html">Authentication using the Google</A>
+<B>Sup:</B> <A NAME="tex2html6262"
   HREF="node199.html">Google Oauth</A>
-<B> Ant:</B> <A NAME="tex2html6254"
-  HREF="node206.html">Google+ Sign-In for server-side</A>
+<B> Ant:</B> <A NAME="tex2html6256"
+  HREF="node206.html">Google + API for</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

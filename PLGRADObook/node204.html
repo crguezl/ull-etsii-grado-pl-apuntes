@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>OmniAuth gem: Standardized Multi-Provider Authentication for Ruby</TITLE>
-<META NAME="description" CONTENT="OmniAuth gem: Standardized Multi-Provider Authentication for Ruby">
+<TITLE>OmniAuth OAuth2 gem</TITLE>
+<META NAME="description" CONTENT="OmniAuth OAuth2 gem">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -28,19 +28,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html6219"
+<A NAME="tex2html6223"
   HREF="node205.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html6213"
+<A NAME="tex2html6217"
   HREF="node199.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html6207"
+<A NAME="tex2html6211"
   HREF="node203.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html6215"
+<A NAME="tex2html6219"
   HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html6217"
+<A NAME="tex2html6221"
   HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -92,118 +92,57 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html6220"
-  HREF="node205.html">OmniAuth OAuth2 gem</A>
-<B>Sup:</B> <A NAME="tex2html6214"
+<B> Sig:</B> <A NAME="tex2html6224"
+  HREF="node205.html">Sign-in with Google +</A>
+<B>Sup:</B> <A NAME="tex2html6218"
   HREF="node199.html">Google Oauth</A>
-<B> Ant:</B> <A NAME="tex2html6208"
-  HREF="node203.html">Sign-in with Google</A>
+<B> Ant:</B> <A NAME="tex2html6212"
+  HREF="node203.html">OmniAuth gem: Standardized Multi-Provider</A>
 <B> Con:</B> 
-<A NAME="tex2html6215"
+<A NAME="tex2html6219"
   HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html6217"
+<A NAME="tex2html6221"
   HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
-
-<UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html6221"
-  HREF="node204.html#SECTION07450010000000000000">Getting Started</A>
-</UL></UL></UL>
-<!--End of Table of Child-Links-->
-<HR>
 
 <H1><A NAME="SECTION07450000000000000000">
-OmniAuth gem: Standardized Multi-Provider Authentication for Ruby</A>
+OmniAuth OAuth2 gem</A>
 </H1>
 
 <P>
 
 <UL>
-<LI><A NAME="tex2html805"
-  HREF="http://intridea.github.io/omniauth/">OmniAuth</A>
+<LI><A NAME="tex2html807"
+  HREF="https://github.com/intridea/omniauth-oauth2">omniauth-oauth2</A>
 </LI>
 </UL>
 
 <P>
-OmniAuth is a library that standardizes multi-provider authentication
-for web applications. Any developer can create <A NAME="22461"></A><SPAN  CLASS="textbf">strategies</SPAN> for
-OmniAuth that can
-authenticate users via disparate systems. 
-
-<P>
-OmniAuth strategies have been created for everything from Facebook to LDAP.
-
-<P>
-
-<H4><A NAME="SECTION07450010000000000000">
-Getting Started</A>
-</H4>
-  
-
-<P>
-To use OmniAuth in a project with a Gemfile, just add each of the
-strategies you want to use individually:
-
-<P>
-<PRE>
-gem 'omniauth-github'
-gem 'omniauth-openid'
-</PRE>
-
-<P>
-Now you can use the <code>OmniAuth::Builder</code> 
-Rack middleware to build up your
-list of OmniAuth strategies for use in your application:
-
-<P>
-<PRE>
-use OmniAuth::Builder do
-  provider:github, ENV['GITHUB_KEY'], ENV['GITHUB_SECRET']
-  provider:openid, :store =&gt; OpenID::Store::Filesystem.new('/tmp')
-end
-</PRE>
-By default, OmniAuth will return auth information to the path
-<code>/auth/:provider/callback</code> inside the Rack environment. 
-
-<P>
-In Sinatra, for
-example, a callback might look something like this:
-
-<P>
-<PRE>
-# Support both GET and POST for callbacks
-%w(get post).each do |method|
-  send(method, "/auth/:provider/callback") do
-    env['omniauth.auth'] # =&gt; OmniAuth::AuthHash
-  end
-end
-</PRE>
+This gem contains a generic OAuth2 strategy for OmniAuth. It is meant to
+serve as a building block strategy for other strategies and not to be used
+independently (since it has no inherent way to gather uid and user info).
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html6219"
+<A NAME="tex2html6223"
   HREF="node205.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html6213"
+<A NAME="tex2html6217"
   HREF="node199.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html6207"
+<A NAME="tex2html6211"
   HREF="node203.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html6215"
+<A NAME="tex2html6219"
   HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html6217"
+<A NAME="tex2html6221"
   HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -255,12 +194,12 @@ end
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html6220"
-  HREF="node205.html">OmniAuth OAuth2 gem</A>
-<B>Sup:</B> <A NAME="tex2html6214"
+<B> Sig:</B> <A NAME="tex2html6224"
+  HREF="node205.html">Sign-in with Google +</A>
+<B>Sup:</B> <A NAME="tex2html6218"
   HREF="node199.html">Google Oauth</A>
-<B> Ant:</B> <A NAME="tex2html6208"
-  HREF="node203.html">Sign-in with Google</A>
+<B> Ant:</B> <A NAME="tex2html6212"
+  HREF="node203.html">OmniAuth gem: Standardized Multi-Provider</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
