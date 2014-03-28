@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Ejemplo Simple</TITLE>
-<META NAME="description" CONTENT="Ejemplo Simple">
+<TITLE>Depurando una Ejecución con Ruby</TITLE>
+<META NAME="description" CONTENT="Depurando una Ejecución con Ruby">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -27,20 +27,20 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5678"
+<A NAME="tex2html5671"
   HREF="node179.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5672"
+<A NAME="tex2html5665"
   HREF="node177.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5668"
+<A NAME="tex2html5661"
   HREF="node177.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5674"
-  HREF="node217.html">
+<A NAME="tex2html5667"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5676"
-  HREF="node220.html">
+<A NAME="tex2html5669"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -91,110 +91,149 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5679"
-  HREF="node179.html">Depuración en Sinatra</A>
-<B>Sup:</B> <A NAME="tex2html5673"
-  HREF="node177.html">Google Plus y Sinatra</A>
-<B> Ant:</B> <A NAME="tex2html5669"
-  HREF="node177.html">Google Plus y Sinatra</A>
+<B> Sig:</B> <A NAME="tex2html5672"
+  HREF="node179.html">Envío de SMSs y</A>
+<B>Sup:</B> <A NAME="tex2html5666"
+  HREF="node177.html">Depuración en Sinatra</A>
+<B> Ant:</B> <A NAME="tex2html5662"
+  HREF="node177.html">Depuración en Sinatra</A>
 <B> Con:</B> 
-<A NAME="tex2html5674"
-  HREF="node217.html">
+<A NAME="tex2html5667"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5676"
-  HREF="node220.html">
+<A NAME="tex2html5669"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION061010000000000000000">
-Ejemplo Simple</A>
+<H1><A NAME="SECTION061010000000000000000"></A>
+<A NAME="section:depuracionsinatra"></A>
+<BR>
+Depurando una Ejecución con Ruby
 </H1>
 
 <P>
-Véase
-<A NAME="tex2html730"
-  HREF="https://github.com/crguezl/sinatra-google-plus-simple">https://github.com/crguezl/sinatra-google-plus-simple</A>
 <PRE>
-[~/src/ruby/sinatra/sinatra-google-plus(master)]$ tree
-.
-|--- Gemfile
-|--- Gemfile.lock
-|--- README.md
-|--- clientID.txt
-|--- config.yml
-|--- config.yml.example
-|--- public
-|   |--- images
-|   |   `--- favicon.ico
-|   |--- javascript
-|   `--- stylesheets
-|       `--- style.css
-|--- sinatragplus.rb
-`--- views
-    |--- 404.erb
-    |--- 500.erb
-    |--- index.erb
-    |--- layout.erb
-    `--- show.erb
-
-5 directories, 14 files
+[~/sinatra/sinatra-debug/example1]$ ls 
+Gemfile           Rakefile          my_sinatra.rb
+Gemfile.lock      config.ru         rackmiddleware.rb
 </PRE>
 
 <P>
 <PRE>
-[~/src/ruby/sinatra/sinatra-google-plus(master)]$ cat sinatragplus.rb 
-# sinatragplus.rb
-require 'sinatra'
-require "sinatra/config_file"
-require 'google_plus'
+[~/sinatra/sinatra-debug/example1]$ cat Gemfile
+source 'http://rubygems.org'
 
-config_file 'config.yml'
-
-
-error do
-  erb :'500'
+group :development, :test do
+  gem 'awesome_print'
+  gem 'racksh'
+  gem 'debugger'
+  gem 'pry'
+  gem 'pry-debugger'
 end
+</PRE>
 
-#class
-class GPlus
-  def initialize(apikey, gid)
-    @apikey = apikey
-    @gid = gid
-    get_info
+<P>
+<PRE>
+[~/sinatra/sinatra-debug/example1]$ cat my_sinatra.rb 
+# my_sinatra.rb
+require 'debugger'
+require 'sinatra'
+require './rackmiddleware'
+use RackMiddleware
+get '/:p' do |x|
+   # debugger
+  "Welcome to #{x}"
+end
+</PRE>
+
+<P>
+<PRE>
+[~/sinatra/sinatra-debug/example1]$ cat rackmiddleware.rb 
+class RackMiddleware
+  def initialize(appl)
+    @appl = appl
   end
 
-  attr_reader :row0, :row1, :row2, :logo
-  private
-    #Get info about specific G+ ID
-    def get_info
-      begin
-        GooglePlus.api_key = @apikey
-        person = GooglePlus::Person.get(@gid.to_i)
-        @row0 = person.display_name
-        @row1 = person.list_activities.items
-        @row2 = person.url
-        properties = person.attributes
-        puts properties.class
-        puts properties['image'].class
-        @logo = properties['image']['url']
-        properties.each { |key, value| puts "%-20s %20s" % [key, value] }
-      rescue Exception =&gt; msg  
-        # display the system generated error message  
-        puts msg  
-      end  
-    end
+  def call(env)
+    debugger
+    start = Time.now
+    status, headers, body = @appl.call(env) # call our Sinatra app
+    stop = Time.now
+    puts "Response Time: #{stop-start}" # display on console
+    [status, headers, body]
+  end
 end
- 
-# Display Google+ details
-get '/' do
-  @key = settings.key
-  @user = settings.user
-  @gplus = GPlus.new(@key, @user)
-  erb :show
-end
+</PRE>
+
+<P>
+<PRE>
+[~/sinatra/sinatra-debug/example1]$ ruby my_sinatra.rb 
+== Sinatra/1.4.3 has taken the stage on 4567 for development with backup from Thin
+&gt;&gt; Thin web server (v1.5.1 codename Straight Razor)
+&gt;&gt; Maximum connections set to 1024
+&gt;&gt; Listening on localhost:4567, CTRL+C to stop
+</PRE>
+
+<P>
+Al conectar al servidor queda en espera:
+<PRE>
+[~/sinatra/sinatra-debug]$ curl 'http://localhost:4567/canarias'
+</PRE>
+
+<P>
+En la otra terminal el servidor se detiene en el primer breakpoint señalado:
+<PRE>
+[~/sinatra/sinatra-debug/example1]$ ruby my_sinatra.rb 
+== Sinatra/1.4.3 has taken the stage on 4567 for development with backup from Thin
+&gt;&gt; Thin web server (v1.5.1 codename Straight Razor)
+&gt;&gt; Maximum connections set to 1024
+&gt;&gt; Listening on localhost:4567, CTRL+C to stop
+/Users/casiano/Dropbox/src/ruby/sinatra/sinatra-debug/example1/rackmiddleware.rb:8
+start = Time.now
+
+[3, 12] in /Users/casiano/Dropbox/src/ruby/sinatra/sinatra-debug/example1/rackmiddleware.rb
+   3      @appl = appl
+   4    end
+   5  
+   6    def call(env)
+   7      debugger
+=&gt; 8      start = Time.now
+   9      status, headers, body = @appl.call(env) # call our Sinatra app
+   10      stop = Time.now
+   11      puts "Response Time: #{stop-start}" # display on console
+   12      [status, headers, body]
+</PRE>
+
+<P>
+Ahora podemos ir paso a paso e inspeccionar variables:
+<PRE>
+(rdb:1) p start
+2013-07-04 15:40:11 +0100
+(rdb:1) n
+/Users/casiano/Dropbox/src/ruby/sinatra/sinatra-debug/example1/rackmiddleware.rb:10
+stop = Time.now
+
+[5, 14] in /Users/casiano/Dropbox/src/ruby/sinatra/sinatra-debug/example1/rackmiddleware.rb
+   5  
+   6    def call(env)
+   7      debugger
+   8      start = Time.now
+   9      status, headers, body = @appl.call(env) # call our Sinatra app
+=&gt; 10      stop = Time.now
+   11      puts "Response Time: #{stop-start}" # display on console
+   12      [status, headers, body]
+   13    end
+   14  end
+(rdb:1) p body
+["Welcome to canarias"]
+(rdb:1) p status
+200
+(rdb:1) p headers
+{"Content-Type"=&gt;"text/html;charset=utf-8", "Content-Length"=&gt;"19"}
 </PRE>
 
 <P>
@@ -202,20 +241,20 @@ end
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5678"
+<A NAME="tex2html5671"
   HREF="node179.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5672"
+<A NAME="tex2html5665"
   HREF="node177.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5668"
+<A NAME="tex2html5661"
   HREF="node177.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5674"
-  HREF="node217.html">
+<A NAME="tex2html5667"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5676"
-  HREF="node220.html">
+<A NAME="tex2html5669"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -266,12 +305,12 @@ end
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5679"
-  HREF="node179.html">Depuración en Sinatra</A>
-<B>Sup:</B> <A NAME="tex2html5673"
-  HREF="node177.html">Google Plus y Sinatra</A>
-<B> Ant:</B> <A NAME="tex2html5669"
-  HREF="node177.html">Google Plus y Sinatra</A>
+<B> Sig:</B> <A NAME="tex2html5672"
+  HREF="node179.html">Envío de SMSs y</A>
+<B>Sup:</B> <A NAME="tex2html5666"
+  HREF="node177.html">Depuración en Sinatra</A>
+<B> Ant:</B> <A NAME="tex2html5662"
+  HREF="node177.html">Depuración en Sinatra</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

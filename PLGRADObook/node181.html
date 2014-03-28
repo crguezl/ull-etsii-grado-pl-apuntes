@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Envío de SMSs y Mensajes: Twilio y Clockworks</TITLE>
-<META NAME="description" CONTENT="Envío de SMSs y Mensajes: Twilio y Clockworks">
+<TITLE>Sinatra::Flash</TITLE>
+<META NAME="description" CONTENT="Sinatra::Flash">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -20,7 +20,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
 <LINK REL="next" HREF="node182.html">
-<LINK REL="previous" HREF="node179.html">
+<LINK REL="previous" HREF="node180.html">
 <LINK REL="up" HREF="node94.html">
 <LINK REL="next" HREF="node182.html">
 </HEAD>
@@ -28,20 +28,20 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5719"
+<A NAME="tex2html5713"
   HREF="node182.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5713"
+<A NAME="tex2html5707"
   HREF="node94.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5707"
+<A NAME="tex2html5701"
   HREF="node180.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5715"
-  HREF="node217.html">
+<A NAME="tex2html5709"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5717"
-  HREF="node220.html">
+<A NAME="tex2html5711"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,99 +92,141 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5720"
-  HREF="node182.html">Rest</A>
-<B>Sup:</B> <A NAME="tex2html5714"
+<B> Sig:</B> <A NAME="tex2html5714"
+  HREF="node182.html">Pruebas</A>
+<B>Sup:</B> <A NAME="tex2html5708"
   HREF="node94.html">PARTE: SINATRA</A>
-<B> Ant:</B> <A NAME="tex2html5708"
-  HREF="node180.html">Depurando una Ejecución con</A>
+<B> Ant:</B> <A NAME="tex2html5702"
+  HREF="node180.html">Rest</A>
 <B> Con:</B> 
-<A NAME="tex2html5715"
-  HREF="node217.html">
+<A NAME="tex2html5709"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5717"
-  HREF="node220.html">
+<A NAME="tex2html5711"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION061200000000000000000">
-Envío de SMSs y Mensajes: Twilio y Clockworks</A>
+<H1><A NAME="SECTION061300000000000000000">
+Sinatra::Flash</A>
 </H1>
+<A NAME="tex2html739"
+  HREF="https://github.com/SFEley/sinatra-flash">Sinatra::Flash</A>
+is an extension that lets you store information between
+requests. 
+
+<P>
+Often, when an application processes a request, it will redirect
+to another URL upon finishing, which generates another request. 
+
+<P>
+This
+means that any information from the previous request is lost (due to the
+stateless nature of HTTP). 
+
+<P>
+<A NAME="tex2html740"
+  HREF="https://github.com/SFEley/sinatra-flash">Sinatra::Flash</A>
+overcomes this by providing
+access to the 
+<FONT COLOR="#ff0000"> flash</FONT>—a hash-like object that stores temporary values
+such as error messages so that they can be retrieved later—usually
+on the next request. 
+
+<P>
+It also removes the information once it’s been
+used. 
+
+<P>
+All this can be achieved via sessions (and that’s exactly how
+<A NAME="tex2html741"
+  HREF="https://github.com/SFEley/sinatra-flash">Sinatra::Flash</A>
+does it), but 
+<A NAME="tex2html742"
+  HREF="https://github.com/SFEley/sinatra-flash">Sinatra::Flash</A>
+is easy to implement and
+provides a number of helper methods.
 
 <P>
 
-<OL>
-<LI><A NAME="tex2html731"
-  HREF="https://vimeo.com/5403424">How to create a Twilio app on Heroku de Morten Baga </A>
-</LI>
-<LI><A NAME="tex2html732"
-  HREF="https://github.com/labcoder/Twilio-Hackpack-for-Heroku-and-Sinatra">Twilio HackPack for Heroku and Sinatra</A>
-</LI>
-<LI><A NAME="tex2html733"
-  HREF="https://github.com/CEWendel/heroku-twilio">heroku-twilio</A>
-A fork of the Twilio node library that is Heroku friendly
-</LI>
-<LI><A NAME="tex2html734"
-  HREF="https://www.twilio.com/blog/2012/07/twilio-hackpack-for-sinatra-and-heroku.html">Twilio HackPack for Sinatra and Heroku
-Posted by Oscar Sanchez on July 05, 2012 in Tips, Tricks and Sample Code</A>
-</LI>
-</OL>
+<H4><A NAME="SECTION061300010000000000000">
+Ejemplo</A>
+</H4>
+  
 
-<P>
-
-<OL>
-<LI><A NAME="tex2html735"
-  HREF="http://www.clockworksms.com/">Clockworks SMS</A>
-</LI>
-<LI><A NAME="tex2html736"
-  HREF="http://www.clockworksms.com/doc/">Documentación de Clockworks SMS</A>
-</LI>
-<LI><A NAME="tex2html737"
-  HREF="http://www.clockworksms.com/doc/easy-stuff/code-wrappers/ruby/">Ruby gem para Clockworks</A>.
-En 
-<A NAME="tex2html738"
-  HREF="https://github.com/mediaburst/clockwork-ruby/blob/master/README.md">Github</A>
-</LI>
-</OL>
-
-<P>
 <PRE>
-require 'clockwork'
- 
-api = Clockwork::API.new( 'API_KEY_GOES_HERE' )
-message = api.messages.build( :to =&gt; '441234123456', :content =&gt; 'This is a test message.' )
-response = message.deliver
- 
-if response.success
-    puts response.message_id
-else
-    puts response.error_code
-    puts response.error_description
+[~/sinatra/sinatra-flash]$ cat app.rb 
+require 'sinatra'
+require 'sinatra/flash'
+
+enable :sessions
+
+get '/blah' do
+  # This message won't be seen until the NEXT Web request that accesses the flash collection
+  flash[:blah] = "You were feeling blah at #{Time.now}."
+
+  # Accessing the flash displays messages set from the LAST request
+  "Feeling blah again? That's too bad. #{flash[:blah]}"
+end
+
+get '/pum' do
+  # This message won't be seen until the NEXT Web request that accesses the flash collection
+  flash[:pum] = "You were feeling pum at #{Time.now}."
+
+  # Accessing the flash displays messages set from the LAST request
+  "Feeling pum again? That's too bad. #{flash[:pum]}"
 end
 </PRE>
 
 <P>
 
+<H4><A NAME="SECTION061300020000000000000">
+Gemfile</A>
+</H4>
+  
+
+<PRE>
+[~/sinatra/sinatra-flash]$ cat Gemfile
+source 'https://rubygems.org'
+
+gem 'sinatra'
+gem 'sinatra-flash'
+</PRE>
+
 <P>
+<BR> <HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><UL>
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html5715"
+  HREF="node181.html#SECTION061300010000000000000">Ejemplo</A>
+<LI><A NAME="tex2html5716"
+  HREF="node181.html#SECTION061300020000000000000">Gemfile</A>
+</UL></UL></UL></UL>
+<!--End of Table of Child-Links-->
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5719"
+<A NAME="tex2html5713"
   HREF="node182.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5713"
+<A NAME="tex2html5707"
   HREF="node94.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5707"
+<A NAME="tex2html5701"
   HREF="node180.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5715"
-  HREF="node217.html">
+<A NAME="tex2html5709"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5717"
-  HREF="node220.html">
+<A NAME="tex2html5711"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -235,12 +277,12 @@ end
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5720"
-  HREF="node182.html">Rest</A>
-<B>Sup:</B> <A NAME="tex2html5714"
+<B> Sig:</B> <A NAME="tex2html5714"
+  HREF="node182.html">Pruebas</A>
+<B>Sup:</B> <A NAME="tex2html5708"
   HREF="node94.html">PARTE: SINATRA</A>
-<B> Ant:</B> <A NAME="tex2html5708"
-  HREF="node180.html">Depurando una Ejecución con</A>
+<B> Ant:</B> <A NAME="tex2html5702"
+  HREF="node180.html">Rest</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

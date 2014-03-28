@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Configurando la Base de Datos en Heroku con DataMapper. Despliegue</TITLE>
-<META NAME="description" CONTENT="Configurando la Base de Datos en Heroku con DataMapper. Despliegue">
+<TITLE>Google Oauth</TITLE>
+<META NAME="description" CONTENT="Google Oauth">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -20,27 +20,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
 <LINK REL="previous" HREF="node198.html">
-<LINK REL="up" HREF="node195.html">
+<LINK REL="up" HREF="node183.html">
 <LINK REL="next" HREF="node200.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html6139"
+<A NAME="tex2html6131"
   HREF="node200.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html6133"
-  HREF="node195.html">
+<A NAME="tex2html6125"
+  HREF="node183.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html6129"
+<A NAME="tex2html6121"
   HREF="node198.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html6135"
-  HREF="node217.html">
+<A NAME="tex2html6127"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html6137"
-  HREF="node220.html">
+<A NAME="tex2html6129"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -91,134 +91,101 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html6140"
-  HREF="node200.html">Slim</A>
-<B>Sup:</B> <A NAME="tex2html6134"
-  HREF="node195.html">DataMapper</A>
-<B> Ant:</B> <A NAME="tex2html6130"
-  HREF="node198.html">Ejemplo de Uso de</A>
+<B> Sig:</B> <A NAME="tex2html6132"
+  HREF="node200.html">Introduction to OAuth</A>
+<B>Sup:</B> <A NAME="tex2html6126"
+  HREF="node183.html">PARTE: HERRAMIENTAS</A>
+<B> Ant:</B> <A NAME="tex2html6122"
+  HREF="node198.html">Slim</A>
 <B> Con:</B> 
-<A NAME="tex2html6135"
-  HREF="node217.html">
+<A NAME="tex2html6127"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html6137"
-  HREF="node220.html">
+<A NAME="tex2html6129"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION07240000000000000000">
-Configurando la Base de Datos en Heroku con DataMapper. Despliegue</A>
+<H1><A NAME="SECTION07400000000000000000"></A>
+<A NAME="chapter:googleoauth"></A>
+<BR>
+Google Oauth
 </H1>
+<BR> <HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<P>
-<A NAME="tex2html791"
-  HREF="https://devcenter.heroku.com/articles/quickstart">Heroku</A> utiliza la base de datos PostgreSQL y una URL en una variable 
-de entorno <code>ENV['DATABASE_URL']</code>.
-
-<P>
-<PRE>
-configure :development do
-  DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/development.db")
-end
-
-configure :production do
-  DataMapper.setup(:default, ENV['DATABASE_URL'])
-end
-</PRE>
-
-<P>
-Estas líneas especifican que se usa SQLite en desarrollo y PostgreSQL en producción.
-Obsérvese que el <code>Gemfile</code> debe estar coherente:
-<PRE>
-[~/sinatra/sinatra-datamapper-jump-start(master)]$ cat Gemfile
-source 'https://rubygems.org'
-gem "sinatra"
-gem "slim"
-gem "sass"
-gem "dm-core"
-gem "dm-migrations"
-gem "thin"
-gem "pg", :group =&gt; :production
-gem "dm-postgres-adapter", :group =&gt; :production
-gem "dm-sqlite-adapter", :group =&gt; :development
-</PRE>
-o mejor:
-<PRE>
-group :production do
-    gem "pg"
-    gem "dm-postgres-adapter"
-end
-</PRE>
-
-<P>
-<PRE>
-heroku create ...
-</PRE>
-
-<P>
-<PRE>
-git push heroku master
-</PRE>
-
-<P>
-<PRE>
-heroku open
-</PRE>
-
-<P>
-<PRE>
-heroku logs --source app
-</PRE>
-
-<P>
-Ahora ejecutamos la consola de heroku:
-
-<P>
-<PRE>
-heroku run console
-</PRE>
-lo que nos abre una sesión <code>irb</code>.
-
-<P>
-Ahora creamos la base de datos en <A NAME="tex2html792"
-  HREF="https://devcenter.heroku.com/articles/quickstart">Heroku</A>:
-<PRE>
-[~/sinatra/sinatra-datamapper-jump-start(master)]$ heroku run console
-Running `console` attached to terminal... up, run.8011
-irb(main):001:0&gt; require './main'
-=&gt; true
-irb(main):002:0&gt; DataMapper.auto_migrate!
-=&gt; #&lt;DataMapper::DescendantSet:0x007fb89c878230 @descendants=#&lt;DataMapper::SubjectSet:0x007fb89c8781b8 @entries=#&lt;DataMapper::OrderedSet:0x007fb89c878190 @cache=#&lt;DataMapper::SubjectSet::NameCache:0x007fb89c878168 @cache={"Song"=&gt;0}&gt;, @entries=[Song]&gt;&gt;&gt;
-irb(main):003:0&gt;
-</PRE>
-Véase también 
-la practica TicTacToe
-<A HREF="node159.html#practica:ticatactoe">17.28</A>
-y
-el capítulo <I>Despliegue en Heroku</I> 
-<A HREF="#chapter:despliegueenheroku"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>.
-.
-
-<P>
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html6133"
+  HREF="node200.html">Introduction to OAuth</A>
+<UL>
+<LI><A NAME="tex2html6134"
+  HREF="node200.html#SECTION07410010000000000000">Valet Key for the Web</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html6135"
+  HREF="node201.html">Roles in OAuth</A>
+<LI><A NAME="tex2html6136"
+  HREF="node202.html">Using OAuth 2.0 to Access Google APIs</A>
+<LI><A NAME="tex2html6137"
+  HREF="node203.html">Sign-in with Google</A>
+<LI><A NAME="tex2html6138"
+  HREF="node204.html">OmniAuth gem: Standardized Multi-Provider Authentication for Ruby</A>
+<UL>
+<LI><A NAME="tex2html6139"
+  HREF="node204.html#SECTION07450010000000000000">Getting Started</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html6140"
+  HREF="node205.html">OmniAuth OAuth2 gem</A>
+<UL>
+<LI><A NAME="tex2html6141"
+  HREF="node205.html#SECTION07461000000000000000">Google + API for Ruby</A>
+<UL>
+<LI><A NAME="tex2html6142"
+  HREF="node205.html#SECTION07461010000000000000">Donde</A>
+<LI><A NAME="tex2html6143"
+  HREF="node205.html#SECTION07461020000000000000">Step 1: Enable the Google+ API</A>
+</UL>
+</UL>
+<BR>
+<LI><A NAME="tex2html6144"
+  HREF="node206.html">Google+ Sign-In for server-side apps</A>
+<LI><A NAME="tex2html6145"
+  HREF="node207.html">Authentication using the Google APIs Client Library for JavaScript</A>
+<UL>
+<LI><A NAME="tex2html6146"
+  HREF="node207.html#SECTION07481000000000000000">Getting access keys for your application</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html6147"
+  HREF="node208.html">Auth Hash Schema</A>
+<LI><A NAME="tex2html6148"
+  HREF="node209.html">Class: OmniAuth::AuthHash::InfoHash</A>
+<UL>
+<LI><A NAME="tex2html6149"
+  HREF="node209.html#SECTION074100010000000000000">Schema (1.0 and Later)</A>
+</UL></UL>
+<!--End of Table of Child-Links-->
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html6139"
+<A NAME="tex2html6131"
   HREF="node200.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html6133"
-  HREF="node195.html">
+<A NAME="tex2html6125"
+  HREF="node183.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html6129"
+<A NAME="tex2html6121"
   HREF="node198.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html6135"
-  HREF="node217.html">
+<A NAME="tex2html6127"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html6137"
-  HREF="node220.html">
+<A NAME="tex2html6129"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -269,12 +236,12 @@ el capítulo <I>Despliegue en Heroku</I>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html6140"
-  HREF="node200.html">Slim</A>
-<B>Sup:</B> <A NAME="tex2html6134"
-  HREF="node195.html">DataMapper</A>
-<B> Ant:</B> <A NAME="tex2html6130"
-  HREF="node198.html">Ejemplo de Uso de</A>
+<B> Sig:</B> <A NAME="tex2html6132"
+  HREF="node200.html">Introduction to OAuth</A>
+<B>Sup:</B> <A NAME="tex2html6126"
+  HREF="node183.html">PARTE: HERRAMIENTAS</A>
+<B> Ant:</B> <A NAME="tex2html6122"
+  HREF="node198.html">Slim</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
