@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Using OAuth 2.0 to Access Google APIs</TITLE>
-<META NAME="description" CONTENT="Using OAuth 2.0 to Access Google APIs">
+<TITLE>Introduction to OAuth</TITLE>
+<META NAME="description" CONTENT="Introduction to OAuth">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -28,20 +28,20 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3899"
+<A NAME="tex2html3905"
   HREF="node112.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3893"
+<A NAME="tex2html3899"
   HREF="node110.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3887"
+<A NAME="tex2html3893"
   HREF="node110.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3895"
-  HREF="node122.html">
+<A NAME="tex2html3901"
+  HREF="node123.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3897"
-  HREF="node125.html">
+<A NAME="tex2html3903"
+  HREF="node126.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,68 +92,113 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3900"
-  HREF="node112.html">Sign-in with Google</A>
-<B>Sup:</B> <A NAME="tex2html3894"
+<B> Sig:</B> <A NAME="tex2html3906"
+  HREF="node112.html">Using OAuth 2.0 to</A>
+<B>Sup:</B> <A NAME="tex2html3900"
   HREF="node110.html">Google Oauth</A>
-<B> Ant:</B> <A NAME="tex2html3888"
+<B> Ant:</B> <A NAME="tex2html3894"
   HREF="node110.html">Google Oauth</A>
 <B> Con:</B> 
-<A NAME="tex2html3895"
-  HREF="node122.html">
+<A NAME="tex2html3901"
+  HREF="node123.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3897"
-  HREF="node125.html">
+<A NAME="tex2html3903"
+  HREF="node126.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html3907"
+  HREF="node111.html#SECTION06410010000000000000">Valet Key for the Web</A>
+</UL></UL></UL>
+<!--End of Table of Child-Links-->
+<HR>
 
 <H1><A NAME="SECTION06410000000000000000">
-Using OAuth 2.0 to Access Google APIs</A>
+Introduction to OAuth</A>
 </H1>
 
 <P>
-Google APIs use the OAuth 2.0 protocol for authentication and
-authorization. Google supports common OAuth 2.0 scenarios such as those
-for web server, installed, and client-side applications.
+
+<H4><A NAME="SECTION06410010000000000000">
+Valet Key for the Web</A>
+</H4>
+  
 
 <P>
+Many luxury cars come with a 
+<FONT COLOR="#0000ff"> valet key</FONT>. 
+It is a special key 
+<FONT COLOR="#0000ff"> you</FONT>
+ give the
 
-<OL>
-<LI>OAuth 2.0 is a relatively simple protocol. To begin, you obtain OAuth
-2.0 credentials from the 
-<A NAME="tex2html549"
-  HREF="https://cloud.google.com/console">Google Developers Console</A>. 
-See the Video in YouTube 
-<A NAME="tex2html550"
-  HREF="http://youtu.be/Im69kzhpR3I">Obtaining a developer key for the YouTube Data API v3 and the Analytics API</A>
+<FONT COLOR="#0000ff"> parking attendant</FONT> and unlike your regular key, will only allow the 
+
+<FONT COLOR="#0000ff"> car</FONT>
+to be driven a short distance while 
+<FONT COLOR="#ff0000"> blocking access to the trunk and the
+onboard cell phone</FONT>. 
+
+<P>
+Regardless of the restrictions the valet key imposes,
+the idea is very clever. 
+<FONT COLOR="#ff0000"> You give someone limited access to your car
+with a special key</FONT>, while using another key to unlock everything else.
+
+<P>
+As the web grows, more and more sites rely on distributed services and
+cloud computing: 
+
+<UL>
+<LI>a photo lab printing your Flickr photos, 
 </LI>
-<LI>Then your client
-application requests an access token from the Google Authorization Server,
-extracts a token from the response, and sends the token to the Google
-API that you want to access.
+<LI>a social network
+using your Google address book to look for friends, or 
 </LI>
-</OL>
+<LI>a third-party
+application utilizing APIs from multiple services.
+</LI>
+</UL>
+
+<P>
+The problem is, in order for these applications to access user data
+on other sites, they ask for usernames and passwords. 
+<FONT COLOR="#ff0000"> Not only does
+this require exposing user passwords to someone else – often the same
+passwords used for online banking and other sites – it also provides
+these application <SPAN ID="txt17611">unlimited access</SPAN> to do as they wish</FONT>. They can do
+anything, including changing the passwords and lock users out.
+
+<P>
+OAuth provides a method for users to grant third-party access to their resources without sharing their passwords. It also provides a way to grant limited access (in scope, duration, etc.).
+
+<P>
+For example, a web user (resource owner) can grant a printing service (client) access to her private photos stored at a photo sharing service (server), without sharing her username and password with the printing service.  Instead, she authenticates directly with the photo sharing service which issues the printing service delegation-specific credentials.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3899"
+<A NAME="tex2html3905"
   HREF="node112.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3893"
+<A NAME="tex2html3899"
   HREF="node110.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3887"
+<A NAME="tex2html3893"
   HREF="node110.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3895"
-  HREF="node122.html">
+<A NAME="tex2html3901"
+  HREF="node123.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3897"
-  HREF="node125.html">
+<A NAME="tex2html3903"
+  HREF="node126.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -204,17 +249,17 @@ API that you want to access.
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3900"
-  HREF="node112.html">Sign-in with Google</A>
-<B>Sup:</B> <A NAME="tex2html3894"
+<B> Sig:</B> <A NAME="tex2html3906"
+  HREF="node112.html">Using OAuth 2.0 to</A>
+<B>Sup:</B> <A NAME="tex2html3900"
   HREF="node110.html">Google Oauth</A>
-<B> Ant:</B> <A NAME="tex2html3888"
+<B> Ant:</B> <A NAME="tex2html3894"
   HREF="node110.html">Google Oauth</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-03-26</I>
+2014-03-28</I>
 </ADDRESS>
 </BODY>
 </HTML>
