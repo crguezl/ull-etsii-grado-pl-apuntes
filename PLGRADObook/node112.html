@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Using OAuth 2.0 to Access Google APIs</TITLE>
-<META NAME="description" CONTENT="Using OAuth 2.0 to Access Google APIs">
+<TITLE>Roles in OAuth</TITLE>
+<META NAME="description" CONTENT="Roles in OAuth">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -28,20 +28,20 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3936"
+<A NAME="tex2html3940"
   HREF="node113.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3930"
+<A NAME="tex2html3934"
   HREF="node110.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3924"
+<A NAME="tex2html3928"
   HREF="node111.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3932"
-  HREF="node123.html">
+<A NAME="tex2html3936"
+  HREF="node124.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3934"
-  HREF="node126.html">
+<A NAME="tex2html3938"
+  HREF="node127.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,76 +92,95 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3937"
-  HREF="node113.html">Sign-in with Google</A>
-<B>Sup:</B> <A NAME="tex2html3931"
+<B> Sig:</B> <A NAME="tex2html3941"
+  HREF="node113.html">Using OAuth 2.0 to</A>
+<B>Sup:</B> <A NAME="tex2html3935"
   HREF="node110.html">Google Oauth</A>
-<B> Ant:</B> <A NAME="tex2html3925"
+<B> Ant:</B> <A NAME="tex2html3929"
   HREF="node111.html">Introduction to OAuth</A>
 <B> Con:</B> 
-<A NAME="tex2html3932"
-  HREF="node123.html">
+<A NAME="tex2html3936"
+  HREF="node124.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3934"
-  HREF="node126.html">
+<A NAME="tex2html3938"
+  HREF="node127.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
 <H1><A NAME="SECTION06420000000000000000">
-Using OAuth 2.0 to Access Google APIs</A>
+Roles in OAuth</A>
 </H1>
-
-<P>
-Google APIs use the  <A NAME="tex2html551"
-  HREF="http://oauth.net/">OAuth</A>
- 2.0 protocol for authentication and
-authorization. Google supports common  <A NAME="tex2html552"
-  HREF="http://oauth.net/">OAuth</A>
- 2.0 scenarios such as those
-for web server, installed, and client-side applications.
+   OAuth defines four roles:
 
 <P>
 
 <OL>
-<LI><A NAME="tex2html553"
-  HREF="http://oauth.net/">OAuth</A>
- 2.0 is a relatively simple protocol. To begin, you obtain  <A NAME="tex2html554"
-  HREF="http://oauth.net/">OAuth</A>
+<LI><A NAME="17707"></A><SPAN  CLASS="textbf">resource owner</SPAN>
 
-2.0 credentials from the 
-<A NAME="tex2html555"
-  HREF="https://cloud.google.com/console">Google Developers Console</A>. 
-See the Video in YouTube 
-<A NAME="tex2html556"
-  HREF="http://youtu.be/Im69kzhpR3I">Obtaining a developer key for the YouTube Data API v3 and the Analytics API</A>
+<P>
+An entity capable of granting access to a protected resource.
+      When the resource owner is a person, it is referred to as an
+      <A NAME="17709"></A><SPAN  CLASS="textbf">end-user</SPAN>.
+
+<P>
 </LI>
-<LI>Then your client
-application requests an access token from the Google Authorization Server,
-extracts a token from the response, and sends the token to the Google
-API that you want to access.
+<LI><A NAME="17711"></A><SPAN  CLASS="textbf">resource server</SPAN>
+
+<P>
+The server hosting the protected resources, capable of accepting
+      and responding to protected resource requests using access tokens.
+
+<P>
+</LI>
+<LI><A NAME="17713"></A><SPAN  CLASS="textbf">client</SPAN>
+
+<P>
+An application making protected resource requests on behalf of the
+      resource owner and with its authorization.  
+
+<P>
+The term "
+<FONT COLOR="#0000ff"> client</FONT>" does
+      not imply any particular implementation characteristics (e.g.,
+      whether the application executes on a server, a desktop, or other
+      devices).
+
+<P>
+</LI>
+<LI><A NAME="17717"></A><SPAN  CLASS="textbf">authorization server</SPAN>
+
+<P>
+The server issuing access tokens to the client after successfully
+      authenticating the resource owner and obtaining authorization.
 </LI>
 </OL>
 
 <P>
+The authorization server
+may be the same server as the resource server or a separate entity.
+A single authorization server may issue access tokens accepted by
+multiple resource servers.
+
+<P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3936"
+<A NAME="tex2html3940"
   HREF="node113.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3930"
+<A NAME="tex2html3934"
   HREF="node110.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3924"
+<A NAME="tex2html3928"
   HREF="node111.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3932"
-  HREF="node123.html">
+<A NAME="tex2html3936"
+  HREF="node124.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3934"
-  HREF="node126.html">
+<A NAME="tex2html3938"
+  HREF="node127.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -212,11 +231,11 @@ API that you want to access.
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3937"
-  HREF="node113.html">Sign-in with Google</A>
-<B>Sup:</B> <A NAME="tex2html3931"
+<B> Sig:</B> <A NAME="tex2html3941"
+  HREF="node113.html">Using OAuth 2.0 to</A>
+<B>Sup:</B> <A NAME="tex2html3935"
   HREF="node110.html">Google Oauth</A>
-<B> Ant:</B> <A NAME="tex2html3925"
+<B> Ant:</B> <A NAME="tex2html3929"
   HREF="node111.html">Introduction to OAuth</A>
 </DIV>
 <!--End of Navigation Panel-->
