@@ -147,7 +147,7 @@ OmniAuth gem: Standardized Multi-Provider Authentication for Ruby</A>
 
 <P>
 OmniAuth is a library that standardizes multi-provider authentication
-for web applications. Any developer can create <A NAME="22463"></A><SPAN  CLASS="textbf">strategies</SPAN> for
+for web applications. Any developer can create <A NAME="22470"></A><SPAN  CLASS="textbf">strategies</SPAN> for
 OmniAuth that can
 authenticate users via disparate systems. 
 
@@ -170,7 +170,7 @@ user through the necessary steps to authenticate them with the chosen strategy.
 <P>
 </LI>
 <LI>Once the user has authenticated, 
-OmniAuth sets a special hash called the <A NAME="22465"></A><SPAN  CLASS="textbf">Authentication Hash</SPAN> 
+OmniAuth sets a special hash called the <A NAME="22472"></A><SPAN  CLASS="textbf">Authentication Hash</SPAN> 
 on the Rack environment of a request to <code>/auth/:provider/callback</code>. 
 
 <P>
@@ -300,8 +300,72 @@ with an external provider in the Rack environment under the key
 
 <P>
 This information is meant to be as normalized as
-possible, so the schema below will be filled to the greatest degree available given the provider upon authentication. Fields marked required will always be present. Note that this guide may also be
-useful to developers implementing custom strategies to know how to provide results.
+possible, so the schema below will be filled to the greatest degree
+available given the provider upon authentication. Fields marked required
+will always be present. 
+
+<P>
+
+<UL>
+<LI><code>provider (required)</code> The provider with which the user
+authenticated (e.g. <code>twitter</code> or <code>facebook</code>)
+
+<P>
+</LI>
+<LI><code>uid (required)</code> An identifier unique to the given provider,
+such as a 
+<FONT COLOR="#ff0000"> Twitter user ID</FONT>. Should be stored as a string.
+
+<P>
+</LI>
+<LI><code>info (required)</code> A hash containing information about the user
+  
+<UL>
+<LI><code>name (required)</code> The best display name known to the
+strategy. Usually a concatenation of first and last name, but may also
+be an arbitrary designator or nickname for some strategies
+</LI>
+<LI><code>email</code> The e-mail of the authenticating user. Should be provided if at all possible (but some sites such as Twitter do not provide this information)
+</LI>
+<LI><code>nickname</code> The username of an authenticating user (such
+    as your <code>@-name</code> from Twitter or GitHub account name)
+</LI>
+<LI><code>first_name</code>
+</LI>
+<LI><code>last_name</code>
+</LI>
+<LI><code>location</code> The general location of the user, usually a city and state.
+</LI>
+<LI><code>description</code> A short description of the authenticating user.
+</LI>
+<LI><code>image</code> A URL representing a profile image of the
+    authenticating user. Where possible, should be specified to a square,
+    roughly 50x50 pixel image.
+</LI>
+<LI><code>phone</code> The telephone number of the authenticating user (no formatting is enforced).
+</LI>
+<LI><code>urls</code> A hash containing key value pairs of an identifier
+    for the website and its URL. 
+
+<P>
+For instance, an entry could be 
+<PRE>
+"Blog" =&gt; "http://intridea.com/blog"
+</PRE>
+</LI>
+</UL>
+</LI>
+<LI><code>credentials</code> If the authenticating service provides some kind of access token or other credentials upon authentication, these are passed through here.
+</LI>
+<LI><code>token</code> Supplied by OAuth and OAuth 2.0 providers, the access token.
+</LI>
+<LI><code>secret</code> Supplied by OAuth providers, the access token secret.
+</LI>
+<LI><code>extra</code> Contains extra information returned from the authentication provider. May be in provider-specific formats.
+</LI>
+<LI><code>raw_info</code> A hash of all information gathered about a user in the format it was gathered. For example, for Twitter users this is a hash representing the JSON hash returned from the Twitter API.
+</LI>
+</UL>
 
 <P>
 
