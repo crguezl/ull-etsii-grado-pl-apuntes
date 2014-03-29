@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>OmniAuth gem: Standardized Multi-Provider Authentication for Ruby</TITLE>
-<META NAME="description" CONTENT="OmniAuth gem: Standardized Multi-Provider Authentication for Ruby">
+<TITLE>OmniAuth OAuth2 gem</TITLE>
+<META NAME="description" CONTENT="OmniAuth OAuth2 gem">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -28,19 +28,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html6201"
+<A NAME="tex2html6205"
   HREF="node204.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html6195"
+<A NAME="tex2html6199"
   HREF="node199.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html6189"
+<A NAME="tex2html6193"
   HREF="node202.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html6197"
+<A NAME="tex2html6201"
   HREF="node214.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html6199"
+<A NAME="tex2html6203"
   HREF="node217.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -92,257 +92,57 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html6202"
-  HREF="node204.html">OmniAuth OAuth2 gem</A>
-<B>Sup:</B> <A NAME="tex2html6196"
+<B> Sig:</B> <A NAME="tex2html6206"
+  HREF="node204.html">Using OAuth 2.0 to</A>
+<B>Sup:</B> <A NAME="tex2html6200"
   HREF="node199.html">Google Oauth</A>
-<B> Ant:</B> <A NAME="tex2html6190"
-  HREF="node202.html">Using OAuth 2.0 to</A>
+<B> Ant:</B> <A NAME="tex2html6194"
+  HREF="node202.html">OmniAuth gem: Standardized Multi-Provider</A>
 <B> Con:</B> 
-<A NAME="tex2html6197"
+<A NAME="tex2html6201"
   HREF="node214.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html6199"
+<A NAME="tex2html6203"
   HREF="node217.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
-
-<UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html6203"
-  HREF="node203.html#SECTION07440010000000000000">Getting Started</A>
-</UL>
-</UL>
-<BR>
-<LI><A NAME="tex2html6204"
-  HREF="node203.html#SECTION07441000000000000000">Auth Hash Schema</A>
-<LI><A NAME="tex2html6205"
-  HREF="node203.html#SECTION07442000000000000000">Class: OmniAuth::AuthHash::InfoHash</A>
-<UL>
-<LI><A NAME="tex2html6206"
-  HREF="node203.html#SECTION07442010000000000000">Schema (1.0 and Later)</A>
-</UL></UL>
-<!--End of Table of Child-Links-->
-<HR>
 
 <H1><A NAME="SECTION07440000000000000000">
-OmniAuth gem: Standardized Multi-Provider Authentication for Ruby</A>
+OmniAuth OAuth2 gem</A>
 </H1>
 
 <P>
 
 <UL>
-<LI><A NAME="tex2html803"
-  HREF="http://intridea.github.io/omniauth/">OmniAuth</A>
+<LI><A NAME="tex2html800"
+  HREF="https://github.com/intridea/omniauth-oauth2">omniauth-oauth2</A>
 </LI>
 </UL>
 
 <P>
-OmniAuth is a library that standardizes multi-provider authentication
-for web applications. Any developer can create <A NAME="22462"></A><SPAN  CLASS="textbf">strategies</SPAN> for
-OmniAuth that can
-authenticate users via disparate systems. 
-
-<P>
-OmniAuth strategies have been created for everything from Facebook to LDAP.
-
-<P>
-
-<H4><A NAME="SECTION07440010000000000000">
-Getting Started</A>
-</H4>
-  
-
-<P>
-To use OmniAuth in a project with a Gemfile, just add each of the
-
-<FONT COLOR="#0000ff"> strategies</FONT> you want to use individually:
-
-<P>
-<PRE>
-gem 'omniauth-github'
-gem 'omniauth-openid'
-</PRE>
-
-<P>
-Now you can use the <code>OmniAuth::Builder</code> 
-Rack middleware 
-<FONT COLOR="#0000ff"> to build up your
-list of OmniAuth strategies for use in your application</FONT>:
-
-<P>
-<PRE>
-use OmniAuth::Builder do
-  provider:github, ENV['GITHUB_KEY'], ENV['GITHUB_SECRET']
-  provider:openid, :store =&gt; OpenID::Store::Filesystem.new('/tmp')
-end
-</PRE>
-By default, OmniAuth will return auth information to the path
-<code>/auth/:provider/callback</code> inside the Rack environment. 
-
-<P>
-In Sinatra, for
-example, a callback might look something like this:
-
-<P>
-<PRE>
-# Support both GET and POST for callbacks
-%w(get post).each do |method|
-  send(method, "/auth/:provider/callback") do
-    env['omniauth.auth'] # =&gt; OmniAuth::AuthHash
-  end
-end
-</PRE>
-
-<P>
-Also of note, by default, if user authentication fails on the provider
-side, OmniAuth will catch the response and then redirect the request
-to the path <code>/auth/failure</code>,
- passing a corresponding error message in a
-parameter named <code>message</code>. 
-
-<P>
-You may want to add an action to catch these
-cases. Continuing with the previous Sinatra example, you could add an
-action like this:
-
-<P>
-<PRE>
-get '/auth/failure' do
-  flash[:notice] = params[:message] # if using sinatra-flash or rack-flash
-  redirect '/'
-end
-</PRE>
-
-<P>
-
-<H2><A NAME="SECTION07441000000000000000">
-Auth Hash Schema</A>
-</H2>
-
-<P>
-<A NAME="tex2html804"
-  HREF="https://github.com/intridea/omniauth/wiki/Auth-Hash-Schema">OmniAuth is a flexible authentication system utilizing Rack middleware.</A>
-<P>
-OmniAuth will always return a hash of information after authenticating
-with an external provider in the Rack environment under the key
-<code>omniauth.auth</code>. 
-
-<P>
-This information is meant to be as normalized as
-possible, so the schema below will be filled to the greatest degree available given the provider upon authentication. Fields marked required will always be present. Note that this guide may also be
-useful to developers implementing custom strategies to know how to provide results.
-
-<P>
-
-<H2><A NAME="SECTION07442000000000000000">
-Class: OmniAuth::AuthHash::InfoHash</A>
-</H2>
-Esta clase contiene información sobre el usuario.
-
-<P>
-<A NAME="tex2html805"
-  HREF="http://rubydoc.info/github/intridea/omniauth/master/OmniAuth/AuthHash/InfoHash">Class: OmniAuth::AuthHash::InfoHash</A>
-<P>
-<PRE>
-@auth info = 
-#&lt;OmniAuth::AuthHash::InfoHash
-  email="fulano.apellido1.apellido2@gmail.com" 
-  first_name="Fulano"
-  image="https://lh111.googleusercontent.com/-zYiezVYENBo/BBBBBBBBBBI/BBBBBBBBbFs/jKVZrfPCT8c/photo.jpg"
-  last_name="Apellido1-Apellido2" name="Fulano Apellido1-Apellido2" 
-  urls=#&lt;OmniAuth::AuthHash Google="https://plus.google.com/+FulanoApellido1Apellido2"&gt;
-&gt;
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION07442010000000000000">
-Schema (1.0 and Later)</A>
-</H4>
-  
-
-<OL>
-<LI><code>provider</code> (required) - The provider with which the user
-authenticated (e.g. 'twitter' or 'facebook')
-</LI>
-<LI><code>uid</code> (required) - An identifier unique to the given provider, such as a Twitter user ID. Should be stored as a string.
-</LI>
-<LI><code>info</code> (required) - A hash containing information about the user
-  
-<OL>
-<LI><code>name</code> (required) - The best display name known to the
-    strategy. Usually a concatenation of first and last name, but may also
-    be an arbitrary designator or nickname for some strategies
-</LI>
-<LI><code>email</code> - The e-mail of the authenticating user. Should
-    be provided if at all possible (but some sites such as Twitter do not
-    provide this information)
-</LI>
-<LI><code>nickname</code> - The username of an authenticating user (such
-    as your <code>@-name</code> from Twitter or GitHub account name)
-</LI>
-<LI><code>first_name</code>
-</LI>
-<LI><code>last_name</code>
-</LI>
-<LI><code>location</code> - The general location of the user, usually a
-    city and state.
-</LI>
-<LI><code>description</code> - A short description of the authenticating
-    user.
-</LI>
-<LI><code>image</code> - A URL representing a profile image of the
-    authenticating user. Where possible, should be specified to a square,
-    roughly 50x50 pixel image.
-    phone - The telephone number of the authenticating user (no formatting is enforced).
-    urls - A hash containing key value pairs of an identifier for the website and its URL. For instance, an entry could be "Blog" =&gt; "http://intridea.com/blog"
-  
-</LI>
-</OL>
-</LI>
-<LI><code>credentials</code> - If the authenticating service provides some kind of
-access token or other credentials upon authentication, these are passed
-through here.
-</LI>
-<LI><code>token</code> - Supplied by  <A NAME="tex2html806"
-  HREF="http://oauth.net/">OAuth</A>
- and  <A NAME="tex2html807"
-  HREF="http://oauth.net/">OAuth</A>
- 2.0 providers, the access token.
-</LI>
-<LI><code>secret</code> - Supplied by  <A NAME="tex2html808"
-  HREF="http://oauth.net/">OAuth</A>
- providers, the access token secret.
-</LI>
-<LI><code>extra</code> - Contains extra information returned from the authentication provider. May be in provider-specific formats.
-</LI>
-<LI><code>raw_info</code> - A hash of all information gathered about a user in the format it was gathered. For example, for Twitter users this is a hash representing the JSON hash returned from the Twitter API.
-</LI>
-</OL>
+This gem contains a generic OAuth2 strategy for OmniAuth. It is meant to
+serve as a building block strategy for other strategies and not to be used
+independently (since it has no inherent way to gather uid and user info).
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html6201"
+<A NAME="tex2html6205"
   HREF="node204.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html6195"
+<A NAME="tex2html6199"
   HREF="node199.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html6189"
+<A NAME="tex2html6193"
   HREF="node202.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html6197"
+<A NAME="tex2html6201"
   HREF="node214.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html6199"
+<A NAME="tex2html6203"
   HREF="node217.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -394,17 +194,17 @@ through here.
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html6202"
-  HREF="node204.html">OmniAuth OAuth2 gem</A>
-<B>Sup:</B> <A NAME="tex2html6196"
+<B> Sig:</B> <A NAME="tex2html6206"
+  HREF="node204.html">Using OAuth 2.0 to</A>
+<B>Sup:</B> <A NAME="tex2html6200"
   HREF="node199.html">Google Oauth</A>
-<B> Ant:</B> <A NAME="tex2html6190"
-  HREF="node202.html">Using OAuth 2.0 to</A>
+<B> Ant:</B> <A NAME="tex2html6194"
+  HREF="node202.html">OmniAuth gem: Standardized Multi-Provider</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-03-28</I>
+2014-03-29</I>
 </ADDRESS>
 </BODY>
 </HTML>
