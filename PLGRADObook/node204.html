@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Google OAuth 2.0 Playground</TITLE>
-<META NAME="description" CONTENT="Google OAuth 2.0 Playground">
+<TITLE>Using OAuth 2.0 to Access Google APIs</TITLE>
+<META NAME="description" CONTENT="Using OAuth 2.0 to Access Google APIs">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -28,20 +28,20 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html6230"
+<A NAME="tex2html6236"
   HREF="node205.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html6224"
+<A NAME="tex2html6230"
   HREF="node199.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html6218"
+<A NAME="tex2html6224"
   HREF="node203.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html6226"
-  HREF="node214.html">
+<A NAME="tex2html6232"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html6228"
-  HREF="node217.html">
+<A NAME="tex2html6234"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,46 +92,103 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html6231"
-  HREF="node205.html">Sign-in with Google +</A>
-<B>Sup:</B> <A NAME="tex2html6225"
+<B> Sig:</B> <A NAME="tex2html6237"
+  HREF="node205.html">Google OAuth 2.0 Playground</A>
+<B>Sup:</B> <A NAME="tex2html6231"
   HREF="node199.html">Google Oauth</A>
-<B> Ant:</B> <A NAME="tex2html6219"
-  HREF="node203.html">Using OAuth 2.0 to</A>
+<B> Ant:</B> <A NAME="tex2html6225"
+  HREF="node203.html">The gem omniauth-google-oauth2</A>
 <B> Con:</B> 
-<A NAME="tex2html6226"
-  HREF="node214.html">
+<A NAME="tex2html6232"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html6228"
-  HREF="node217.html">
+<A NAME="tex2html6234"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
 <H1><A NAME="SECTION07450000000000000000">
-Google OAuth 2.0 Playground</A>
+Using OAuth 2.0 to Access Google APIs</A>
 </H1>
+
+<P>
+Véase 
+<A NAME="tex2html808"
+  HREF="https://developers.google.com/accounts/docs/OAuth2">Using OAuth 2.0 to Access Google APIs</A>.
+
+<P>
+Google APIs use the  <A NAME="tex2html809"
+  HREF="http://oauth.net/">OAuth</A>
+ 2.0 protocol for authentication and
+authorization. Google supports common  <A NAME="tex2html810"
+  HREF="http://oauth.net/">OAuth</A>
+ 2.0 scenarios such as those
+for web server, installed, and client-side applications.
+
+<P>
+
+<OL>
+<LI><A NAME="tex2html811"
+  HREF="http://oauth.net/">OAuth</A>
+ 2.0 is a relatively simple protocol. To begin, you obtain  <A NAME="tex2html812"
+  HREF="http://oauth.net/">OAuth</A>
+
+2.0 credentials from the 
+<A NAME="tex2html813"
+  HREF="https://cloud.google.com/console">Google Developers Console</A>. 
+</LI>
+<LI>See the Video in YouTube 
+<A NAME="tex2html814"
+  HREF="http://youtu.be/Im69kzhpR3I">Obtaining a developer key for the YouTube Data API v3 and the Analytics API</A>
+</LI>
+<LI>Then your client
+application requests an 
+<FONT COLOR="#0000ff"> access token</FONT> from the 
+
+<FONT COLOR="#0000ff"> Google Authorization Server</FONT>,
+extracts a token from the response, and sends the token to the 
+
+<FONT COLOR="#0000ff"> Google API</FONT> 
+that you want to access.
+</LI>
+</OL>
+
+<P>
+To get access keys, go to the Google APIs Console and specify your
 <A NAME="tex2html815"
-  HREF="https://developers.google.com/oauthplayground/">Google OAuth 2.0 Playground</A>
+  HREF="https://cloud.google.com/console">Google Developers Console</A>. 
+application's name and the Google APIs it will access. For simple access,
+Google generates an API key that uniquely identifies your application
+in its transactions with the Google Auth server.
+
+<P>
+For authorized access, you must also tell Google your website's protocol
+and domain. In return, Google generates a client ID. Your application
+submits this to the Google Auth server to get an  <A NAME="tex2html816"
+  HREF="http://oauth.net/">OAuth</A>
+ 2.0 access
+token.
+
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html6230"
+<A NAME="tex2html6236"
   HREF="node205.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html6224"
+<A NAME="tex2html6230"
   HREF="node199.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html6218"
+<A NAME="tex2html6224"
   HREF="node203.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html6226"
-  HREF="node214.html">
+<A NAME="tex2html6232"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html6228"
-  HREF="node217.html">
+<A NAME="tex2html6234"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -182,12 +239,12 @@ Google OAuth 2.0 Playground</A>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html6231"
-  HREF="node205.html">Sign-in with Google +</A>
-<B>Sup:</B> <A NAME="tex2html6225"
+<B> Sig:</B> <A NAME="tex2html6237"
+  HREF="node205.html">Google OAuth 2.0 Playground</A>
+<B>Sup:</B> <A NAME="tex2html6231"
   HREF="node199.html">Google Oauth</A>
-<B> Ant:</B> <A NAME="tex2html6219"
-  HREF="node203.html">Using OAuth 2.0 to</A>
+<B> Ant:</B> <A NAME="tex2html6225"
+  HREF="node203.html">The gem omniauth-google-oauth2</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
