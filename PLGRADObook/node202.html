@@ -28,19 +28,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html6187"
+<A NAME="tex2html6189"
   HREF="node203.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html6181"
+<A NAME="tex2html6183"
   HREF="node199.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html6175"
+<A NAME="tex2html6177"
   HREF="node201.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html6183"
+<A NAME="tex2html6185"
   HREF="node214.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html6185"
+<A NAME="tex2html6187"
   HREF="node217.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -92,18 +92,18 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html6188"
+<B> Sig:</B> <A NAME="tex2html6190"
   HREF="node203.html">OmniAuth OAuth2 gem</A>
-<B>Sup:</B> <A NAME="tex2html6182"
+<B>Sup:</B> <A NAME="tex2html6184"
   HREF="node199.html">Google Oauth</A>
-<B> Ant:</B> <A NAME="tex2html6176"
+<B> Ant:</B> <A NAME="tex2html6178"
   HREF="node201.html">Roles in OAuth</A>
 <B> Con:</B> 
-<A NAME="tex2html6183"
+<A NAME="tex2html6185"
   HREF="node214.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html6185"
+<A NAME="tex2html6187"
   HREF="node217.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
@@ -115,17 +115,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <UL CLASS="ChildLinks">
 <LI><UL>
 <LI><UL>
-<LI><A NAME="tex2html6189"
+<LI><A NAME="tex2html6191"
   HREF="node202.html#SECTION07430010000000000000">Getting Started</A>
+<LI><A NAME="tex2html6192"
+  HREF="node202.html#SECTION07430020000000000000">Strategies</A>
 </UL>
 </UL>
 <BR>
-<LI><A NAME="tex2html6190"
+<LI><A NAME="tex2html6193"
   HREF="node202.html#SECTION07431000000000000000">Auth Hash Schema</A>
-<LI><A NAME="tex2html6191"
+<LI><A NAME="tex2html6194"
   HREF="node202.html#SECTION07432000000000000000">Class: OmniAuth::AuthHash::InfoHash</A>
 <UL>
-<LI><A NAME="tex2html6192"
+<LI><A NAME="tex2html6195"
   HREF="node202.html#SECTION07432010000000000000">Schema (1.0 and Later)</A>
 </UL></UL>
 <!--End of Table of Child-Links-->
@@ -145,12 +147,26 @@ OmniAuth gem: Standardized Multi-Provider Authentication for Ruby</A>
 
 <P>
 OmniAuth is a library that standardizes multi-provider authentication
-for web applications. Any developer can create <A NAME="22456"></A><SPAN  CLASS="textbf">strategies</SPAN> for
+for web applications. Any developer can create <A NAME="22459"></A><SPAN  CLASS="textbf">strategies</SPAN> for
 OmniAuth that can
 authenticate users via disparate systems. 
 
 <P>
 OmniAuth strategies have been created for everything from Facebook to LDAP.
+
+<P>
+To use OmniAuth, you need only to redirect users to <code>/auth/:provider</code>,
+where <code>:provider</code> is the name of the strategy 
+(for example, <code>developer</code> or <code>twitter</code>). 
+
+<P>
+From there, OmniAuth will take over and take the
+user through the necessary steps to authenticate them with the chosen strategy.
+
+<P>
+Once the user has authenticated, what do you do next? OmniAuth simply sets a special hash called the Authentication Hash on the Rack environment of a request to /auth/:provider/callback. This hash
+contains as much information about the user as OmniAuth was able to glean from the utilized strategy. You should set up an endpoint in your application that matches to the callback URL and then
+performs whatever steps are necessary for your application. 
 
 <P>
 
@@ -238,12 +254,24 @@ end
 
 <P>
 
+<H4><A NAME="SECTION07430020000000000000">
+Strategies</A>
+</H4>
+  
+
+<P>
+In this link we can find a list of the strategies that are available for OmniAuth:
+<A NAME="tex2html795"
+  HREF="https://github.com/intridea/omniauth/wiki/List-of-Strategies">List of Strategies for Omniauth</A>.
+
+<P>
+
 <H2><A NAME="SECTION07431000000000000000">
 Auth Hash Schema</A>
 </H2>
 
 <P>
-<A NAME="tex2html795"
+<A NAME="tex2html796"
   HREF="https://github.com/intridea/omniauth/wiki/Auth-Hash-Schema">OmniAuth is a flexible authentication system utilizing Rack middleware.</A>
 <P>
 OmniAuth will always return a hash of information after authenticating
@@ -263,7 +291,7 @@ Class: OmniAuth::AuthHash::InfoHash</A>
 Esta clase contiene información sobre el usuario.
 
 <P>
-<A NAME="tex2html796"
+<A NAME="tex2html797"
   HREF="http://rubydoc.info/github/intridea/omniauth/master/OmniAuth/AuthHash/InfoHash">Class: OmniAuth::AuthHash::InfoHash</A>
 <P>
 <PRE>
@@ -327,13 +355,13 @@ authenticated (e.g. 'twitter' or 'facebook')
 access token or other credentials upon authentication, these are passed
 through here.
 </LI>
-<LI><code>token</code> - Supplied by  <A NAME="tex2html797"
+<LI><code>token</code> - Supplied by  <A NAME="tex2html798"
   HREF="http://oauth.net/">OAuth</A>
- and  <A NAME="tex2html798"
+ and  <A NAME="tex2html799"
   HREF="http://oauth.net/">OAuth</A>
  2.0 providers, the access token.
 </LI>
-<LI><code>secret</code> - Supplied by  <A NAME="tex2html799"
+<LI><code>secret</code> - Supplied by  <A NAME="tex2html800"
   HREF="http://oauth.net/">OAuth</A>
  providers, the access token secret.
 </LI>
@@ -346,19 +374,19 @@ through here.
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html6187"
+<A NAME="tex2html6189"
   HREF="node203.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html6181"
+<A NAME="tex2html6183"
   HREF="node199.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html6175"
+<A NAME="tex2html6177"
   HREF="node201.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html6183"
+<A NAME="tex2html6185"
   HREF="node214.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html6185"
+<A NAME="tex2html6187"
   HREF="node217.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -410,11 +438,11 @@ through here.
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html6188"
+<B> Sig:</B> <A NAME="tex2html6190"
   HREF="node203.html">OmniAuth OAuth2 gem</A>
-<B>Sup:</B> <A NAME="tex2html6182"
+<B>Sup:</B> <A NAME="tex2html6184"
   HREF="node199.html">Google Oauth</A>
-<B> Ant:</B> <A NAME="tex2html6176"
+<B> Ant:</B> <A NAME="tex2html6178"
   HREF="node201.html">Roles in OAuth</A>
 </DIV>
 <!--End of Navigation Panel-->
