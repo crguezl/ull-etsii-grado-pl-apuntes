@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Configuration / Configuración</TITLE>
-<META NAME="description" CONTENT="Configuration / Configuración">
+<TITLE>Redireccionamientos/Browser Redirect</TITLE>
+<META NAME="description" CONTENT="Redireccionamientos/Browser Redirect">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node151.html">
 <LINK REL="previous" HREF="node149.html">
-<LINK REL="up" HREF="node131.html">
+<LINK REL="up" HREF="node132.html">
 <LINK REL="next" HREF="node151.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5235"
+<A NAME="tex2html5250"
   HREF="node151.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5229"
-  HREF="node131.html">
+<A NAME="tex2html5244"
+  HREF="node132.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5223"
+<A NAME="tex2html5238"
   HREF="node149.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5231"
-  HREF="node216.html">
+<A NAME="tex2html5246"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5233"
-  HREF="node219.html">
+<A NAME="tex2html5248"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,97 +92,96 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5236"
-  HREF="node151.html">Configuring attack protection</A>
-<B>Sup:</B> <A NAME="tex2html5230"
-  HREF="node131.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5224"
-  HREF="node149.html">Redireccionamientos/Browser Redirect</A>
+<B> Sig:</B> <A NAME="tex2html5251"
+  HREF="node151.html">Configuration / Configuración</A>
+<B>Sup:</B> <A NAME="tex2html5245"
+  HREF="node132.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5239"
+  HREF="node149.html">Generating URLs</A>
 <B> Con:</B> 
-<A NAME="tex2html5231"
-  HREF="node216.html">
+<A NAME="tex2html5246"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5233"
-  HREF="node219.html">
+<A NAME="tex2html5248"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION063190000000000000000">
-Configuration / Configuración</A>
+<H1><A NAME="SECTION063180000000000000000">
+Redireccionamientos/Browser Redirect</A>
 </H1>
-Run once, at startup, in any environment:
+
+<P>
+You can trigger a browser redirect with the <code>redirect</code> helper method:
 
 <P>
 <PRE>
-configure do
-  # setting one option
-  set :option, 'value'
-
-  # setting multiple options
-  set :a =&gt; 1, :b =&gt; 2
-
-  # same as `set :option, true`
-  enable :option
-
-  # same as `set :option, false`
-  disable :option
-
-  # you can also have dynamic settings with blocks
-  set(:css_dir) { File.join(views, 'css') }
+get '/foo' do
+  redirect to('/bar')
 end
 </PRE>
-Run only when the environment (<code>RACK_ENV</code>
- environment variable) is set to :<code>production</code>:
+Any additional parameters are handled like arguments passed to <code>halt</code>:
 
 <P>
 <PRE>
-configure :production do
-  ...
+redirect to('/bar'), 303
+redirect 'http://google.com', 'wrong place, buddy'
+</PRE>
+You can also easily <code>redirect</code> back to the page the user came from with <code>redirect back</code>:
+
+<P>
+<PRE>
+get '/foo' do
+  "&lt;a href='/bar'&gt;do something&lt;/a&gt;"
+end
+
+get '/bar' do
+  do_something
+  redirect back
 end
 </PRE>
-Run when the environment is set to either <code>:production</code> or <code>:test</code>:
+To pass arguments with a <code>redirect</code>, either add them to the query:
 
 <P>
 <PRE>
-configure :production, :test do
-  ...
-end
+redirect to('/bar?sum=42')
 </PRE>
-You can access those options via settings:
+Or use a session:
 
 <P>
 <PRE>
-configure do
-  set :foo, 'bar'
+enable :sessions
+
+get '/foo' do
+  session[:secret] = 'foo'
+  redirect to('/bar')
 end
 
-get '/' do
-  settings.foo? # =&gt; true
-  settings.foo  # =&gt; 'bar'
-  ...
+get '/bar' do
+  session[:secret]
 end
 </PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5235"
+<A NAME="tex2html5250"
   HREF="node151.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5229"
-  HREF="node131.html">
+<A NAME="tex2html5244"
+  HREF="node132.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5223"
+<A NAME="tex2html5238"
   HREF="node149.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5231"
-  HREF="node216.html">
+<A NAME="tex2html5246"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5233"
-  HREF="node219.html">
+<A NAME="tex2html5248"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -233,17 +232,17 @@ end
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5236"
-  HREF="node151.html">Configuring attack protection</A>
-<B>Sup:</B> <A NAME="tex2html5230"
-  HREF="node131.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5224"
-  HREF="node149.html">Redireccionamientos/Browser Redirect</A>
+<B> Sig:</B> <A NAME="tex2html5251"
+  HREF="node151.html">Configuration / Configuración</A>
+<B>Sup:</B> <A NAME="tex2html5245"
+  HREF="node132.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5239"
+  HREF="node149.html">Generating URLs</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-03-29</I>
+2014-03-30</I>
 </ADDRESS>
 </BODY>
 </HTML>

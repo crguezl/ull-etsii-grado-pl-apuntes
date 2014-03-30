@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Make Heroku run non-master Git branch</TITLE>
-<META NAME="description" CONTENT="Make Heroku run non-master Git branch">
+<TITLE>Configuration</TITLE>
+<META NAME="description" CONTENT="Configuration">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node191.html">
 <LINK REL="previous" HREF="node189.html">
-<LINK REL="up" HREF="node184.html">
+<LINK REL="up" HREF="node185.html">
 <LINK REL="next" HREF="node191.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5974"
+<A NAME="tex2html5989"
   HREF="node191.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5968"
-  HREF="node184.html">
+<A NAME="tex2html5983"
+  HREF="node185.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5962"
+<A NAME="tex2html5977"
   HREF="node189.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5970"
-  HREF="node216.html">
+<A NAME="tex2html5985"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5972"
-  HREF="node219.html">
+<A NAME="tex2html5987"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,74 +92,90 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5975"
-  HREF="node191.html">Account Verification and add-ons</A>
-<B>Sup:</B> <A NAME="tex2html5969"
-  HREF="node184.html">Heroku</A>
-<B> Ant:</B> <A NAME="tex2html5963"
-  HREF="node189.html">Configuration</A>
+<B> Sig:</B> <A NAME="tex2html5990"
+  HREF="node191.html">Make Heroku run non-master</A>
+<B>Sup:</B> <A NAME="tex2html5984"
+  HREF="node185.html">Heroku</A>
+<B> Ant:</B> <A NAME="tex2html5978"
+  HREF="node189.html">Troubleshooting</A>
 <B> Con:</B> 
-<A NAME="tex2html5970"
-  HREF="node216.html">
+<A NAME="tex2html5985"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5972"
-  HREF="node219.html">
+<A NAME="tex2html5987"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION07160000000000000000">
-Make Heroku run non-master Git branch</A>
+<H1><A NAME="SECTION07150000000000000000">
+Configuration</A>
 </H1>
-
-<P>
-<A NAME="tex2html758"
-  HREF="http://stackoverflow.com/questions/14593538/make-heroku-run-non-master-git-branch">Make Heroku run non-master Git branch</A>
-You can push an alternative branch to Heroku using Git.
 <PRE>
-git push heroku-dev test:master
+[~/sinatra/sinatra-datamapper-jump-start(master)]$ heroku help config 
+Usage: heroku config
+
+ display the config vars for an app
+
+ -s, --shell  # output config vars in shell format
+
+Examples:
+
+ $ heroku config
+ A: one
+ B: two
+
+ $ heroku config --shell
+ A=one
+ B=two
+
+Additional commands, type "heroku help COMMAND" for more details:
+
+  config:get KEY                            #  display a config value for an app
+  config:set KEY1=VALUE1 [KEY2=VALUE2 ...]  #  set one or more config vars
+  config:unset KEY1 [KEY2 ...]              #  unset one or more config vars
 </PRE>
-This pushes your local test branch to the remote's master branch (on Heroku).
 
 <P>
-El manual de <code>git push</code> dice:
-
-<P>
-To push a local branch to an established remote, you need to issue the command:
 <PRE>
-git push  &lt;REMOTENAME&gt; &lt;BRANCHNAME&gt;
+[~/sinatra/sinatra-datamapper-jump-start(master)]$ heroku config -s
+DATABASE_URL=postgres://bhhatrhjjhwcvt:hjgjfhgjfhjfuWH7ls_PJKK5QD@ec2-54-204-35-132.compute-1.amazonaws.com:5999/d2888888888888
+HEROKU_POSTGRESQL_BLACK_URL=postgres://bhjshfdhakwcvt:hQssnhq1y1jhgfhgls_PGNu5QD@ec2-54-204-35-132.compute-1.amazonaws.com:9999/d555555555555j
 </PRE>
-This is most typically invoked as <code>git push origin master</code>. 
-
-<P>
-If you
-would like to give the branch a different name on the upstream side
-of the push, you can issue the command:
 
 <P>
 <PRE>
-git push  &lt;REMOTENAME&gt; &lt;LOCALBRANCHNAME&gt;:&lt;REMOTEBRANCHNAME&gt;
+[~/sinatra/sinatra-datamapper-jump-start(master)]$ heroku config:set C=4
+Setting config vars and restarting crguezl-songs... done, v6
+C: 4
+[~/sinatra/sinatra-datamapper-jump-start(master)]$ heroku config:get C
+4
+[~/sinatra/sinatra-datamapper-jump-start(master)]$ heroku config:unset C
+Unsetting C and restarting crguezl-songs... done, v7
+[~/sinatra/sinatra-datamapper-jump-start(master)]$ heroku config:get C
+
+[~/sinatra/sinatra-datamapper-jump-start(master)]$]]
 </PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5974"
+<A NAME="tex2html5989"
   HREF="node191.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5968"
-  HREF="node184.html">
+<A NAME="tex2html5983"
+  HREF="node185.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5962"
+<A NAME="tex2html5977"
   HREF="node189.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5970"
-  HREF="node216.html">
+<A NAME="tex2html5985"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5972"
-  HREF="node219.html">
+<A NAME="tex2html5987"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -210,17 +226,17 @@ git push  &lt;REMOTENAME&gt; &lt;LOCALBRANCHNAME&gt;:&lt;REMOTEBRANCHNAME&gt;
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5975"
-  HREF="node191.html">Account Verification and add-ons</A>
-<B>Sup:</B> <A NAME="tex2html5969"
-  HREF="node184.html">Heroku</A>
-<B> Ant:</B> <A NAME="tex2html5963"
-  HREF="node189.html">Configuration</A>
+<B> Sig:</B> <A NAME="tex2html5990"
+  HREF="node191.html">Make Heroku run non-master</A>
+<B>Sup:</B> <A NAME="tex2html5984"
+  HREF="node185.html">Heroku</A>
+<B> Ant:</B> <A NAME="tex2html5978"
+  HREF="node189.html">Troubleshooting</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-03-29</I>
+2014-03-30</I>
 </ADDRESS>
 </BODY>
 </HTML>

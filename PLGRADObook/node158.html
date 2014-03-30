@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Sinatra como Middleware</TITLE>
-<META NAME="description" CONTENT="Sinatra como Middleware">
+<TITLE>Autentificación Básica</TITLE>
+<META NAME="description" CONTENT="Autentificación Básica">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node159.html">
 <LINK REL="previous" HREF="node157.html">
-<LINK REL="up" HREF="node131.html">
+<LINK REL="up" HREF="node132.html">
 <LINK REL="next" HREF="node159.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5353"
+<A NAME="tex2html5368"
   HREF="node159.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5347"
-  HREF="node131.html">
+<A NAME="tex2html5362"
+  HREF="node132.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5341"
+<A NAME="tex2html5356"
   HREF="node157.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5349"
-  HREF="node216.html">
+<A NAME="tex2html5364"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5351"
-  HREF="node219.html">
+<A NAME="tex2html5366"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,146 +92,64 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5354"
-  HREF="node159.html">Práctica: TicTacToe</A>
-<B>Sup:</B> <A NAME="tex2html5348"
-  HREF="node131.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5342"
-  HREF="node157.html">Autentificación Básica</A>
+<B> Sig:</B> <A NAME="tex2html5369"
+  HREF="node159.html">Sinatra como Middleware</A>
+<B>Sup:</B> <A NAME="tex2html5363"
+  HREF="node132.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5357"
+  HREF="node157.html">Sinatra Authentication</A>
 <B> Con:</B> 
-<A NAME="tex2html5349"
-  HREF="node216.html">
+<A NAME="tex2html5364"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5351"
-  HREF="node219.html">
+<A NAME="tex2html5366"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION063270000000000000000">
-Sinatra como Middleware</A>
+<H1><A NAME="SECTION063260000000000000000"></A>
+<A NAME="section:basicauthentication"></A>
+<BR>
+Autentificación Básica
 </H1>
-
-<P>
-Not only is Sinatra able to use other Rack middleware, any Sinatra
-application can in turn be added in front of any Rack endpoint as
-middleware itself. 
-
-<P>
-This endpoint could be another Sinatra application,
-or any other Rack-based application (Rails/Ramaze/Camping/…):
-
-<P>
-
-<OL>
-<LI>When a request comes in, all <code>before</code> filters are triggered
-</LI>
-<LI>Then, if a route matches, the corresponding block will be executed
-</LI>
-<LI>If no route matches, the request is handed off to the wrapped application
-</LI>
-<LI>The <code>after</code> filters are executed after we've got a response back from the
-route or  the wrapped app
-</LI>
-</OL>
-Thus, our Sinatra app is a middleware.
-
-<P>
-
-<img src="rack_stack.png" />
-
-<P>
 <PRE>
-[~/sinatra/sinatra-as-middleware]$ cat app.rb
-require 'sinatra/base'
-require 'haml'
-require 'pp'
+[~/srcSTW/sinatra-faq/authentication/basic(esau)]$ cat app.rb 
+require 'rubygems'
+require 'sinatra'
 
-class LoginScreen &lt; Sinatra::Base
-  enable :sessions
-  enable :inline_templates
-
-  get('/login') { haml :login }
-
-  post('/login') do
-    if params[:name] == 'admin' &amp;&amp; params[:password] == 'admin'
-      puts "params = "
-      pp params
-      session['user_name'] = params[:name]
-      redirect '/'
-    else
-      redirect '/login'
-    end
-  end
+use Rack::Auth::Basic, "Restricted Area" do |username, password|
+  [username, password] == ['admin', 'admin']
 end
 
-class MyApp &lt; Sinatra::Base
-  enable :inline_templates
-  # middleware will run before filters
-  use LoginScreen
-
-  before do
-    unless session['user_name']
-      halt haml :denied
-    end
-  end
-
-  get('/') do
-    haml :cheer, :locals =&gt; { :name =&gt; session['user_name'] }
-  end
-
-  run!
+get '/' do
+  "You're welcome"
 end
 
-__END__
-
-@@ layout
-!!!
-%html
-  %head
-    %title Sinatra as Middleware
-  %body
-    %h1 Sinatra as Middleware
-    = yield
-
-@@ login
-%form{:action=&gt;'/login', :method=&gt;'post'}
-  %label{:for=&gt;'name'} Name
-  %input#name{:type=&gt;"text",     :name=&gt;"name", :autofocus =&gt; true }
-  %br
-  %label{:for=&gt;'password'} Password
-  %input#password{:type=&gt;"password", :name=&gt;"password"}
-  %br
-  %button#go{:type=&gt;"submit",  :name=&gt;"submit", :value=&gt;"submit"} Click me!
-
-@@ cheer
-%h1
-  Hello #{name}
-  %br
-
-@@ denied
-%h1 
-  Access denied, please 
-  %a{:href=&gt;'/login'}login.
+get '/foo' do
+  "You're also welcome"
+end
 </PRE>
 
+<P>
+
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5353"
+<A NAME="tex2html5368"
   HREF="node159.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5347"
-  HREF="node131.html">
+<A NAME="tex2html5362"
+  HREF="node132.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5341"
+<A NAME="tex2html5356"
   HREF="node157.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5349"
-  HREF="node216.html">
+<A NAME="tex2html5364"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5351"
-  HREF="node219.html">
+<A NAME="tex2html5366"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -282,17 +200,17 @@ __END__
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5354"
-  HREF="node159.html">Práctica: TicTacToe</A>
-<B>Sup:</B> <A NAME="tex2html5348"
-  HREF="node131.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5342"
-  HREF="node157.html">Autentificación Básica</A>
+<B> Sig:</B> <A NAME="tex2html5369"
+  HREF="node159.html">Sinatra como Middleware</A>
+<B>Sup:</B> <A NAME="tex2html5363"
+  HREF="node132.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5357"
+  HREF="node157.html">Sinatra Authentication</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-03-29</I>
+2014-03-30</I>
 </ADDRESS>
 </BODY>
 </HTML>

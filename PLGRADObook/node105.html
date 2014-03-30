@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Ejemplo Simple Combinando Rack::Request, Rack::Response y Middleware (Lobster)</TITLE>
-<META NAME="description" CONTENT="Ejemplo Simple Combinando Rack::Request, Rack::Response y Middleware (Lobster)">
+<TITLE>Gestión de Sesiones</TITLE>
+<META NAME="description" CONTENT="Gestión de Sesiones">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node106.html">
 <LINK REL="previous" HREF="node104.html">
-<LINK REL="up" HREF="node95.html">
+<LINK REL="up" HREF="node96.html">
 <LINK REL="next" HREF="node106.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4440"
+<A NAME="tex2html4451"
   HREF="node106.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4434"
-  HREF="node95.html">
+<A NAME="tex2html4445"
+  HREF="node96.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4428"
+<A NAME="tex2html4439"
   HREF="node104.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4436"
-  HREF="node216.html">
+<A NAME="tex2html4447"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4438"
-  HREF="node219.html">
+<A NAME="tex2html4449"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,228 +92,404 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4441"
-  HREF="node106.html">Práctica: Accediendo a Twitter</A>
-<B>Sup:</B> <A NAME="tex2html4435"
-  HREF="node95.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4429"
-  HREF="node104.html">Gestión de Sesiones</A>
+<B> Sig:</B> <A NAME="tex2html4452"
+  HREF="node106.html">Ejemplo Simple Combinando Rack::Request,</A>
+<B>Sup:</B> <A NAME="tex2html4446"
+  HREF="node96.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4440"
+  HREF="node104.html">Cookies y Rack</A>
 <B> Con:</B> 
-<A NAME="tex2html4436"
-  HREF="node216.html">
+<A NAME="tex2html4447"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4438"
-  HREF="node219.html">
+<A NAME="tex2html4449"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<H1><A NAME="SECTION061100000000000000000">
-Ejemplo Simple Combinando Rack::Request, Rack::Response y Middleware (Lobster)</A>
+<UL CLASS="ChildLinks">
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html4453"
+  HREF="node105.html#SECTION06190010000000000000">Introducción</A>
+<LI><A NAME="tex2html4454"
+  HREF="node105.html#SECTION06190020000000000000">Uso de Cookies para el manejo de sesiones</A>
+<LI><A NAME="tex2html4455"
+  HREF="node105.html#SECTION06190030000000000000">Ejemplo</A>
+</UL>
+</UL>
+<BR>
+<LI><A NAME="tex2html4456"
+  HREF="node105.html#SECTION06191000000000000000">Ejercicio</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION06190000000000000000"></A>
+<A NAME="section:gestiondesesiones"></A>
+<BR>
+Gestión de Sesiones
 </H1>
 
 <P>
-Este código se encuentra en
-<A NAME="tex2html525"
-  HREF="https://github.com/crguezl/rack-lobster">https://github.com/crguezl/rack-lobster</A>
-<P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rack-lobster(master)]$ cat lobster.rb 
-require 'rack/request'
-require 'rack/response'
 
-module Rack
-  class Lobster
-    LobsterString = "a lobster"
-
-    def call(env)
-      req = Request.new(env)
-
-      req.env.keys.sort.each { |x| puts "#{x} =&gt; #{req.env[x]}" }
-
-      if req.GET["flip"] == "left"
-        lobster = LobsterString.reverse
-        href = "?flip=right"
-      elsif req.GET["flip"] == "crash"
-        raise "Lobster crashed"
-      else
-        lobster = LobsterString
-        href = "?flip=left"
-      end
-
-      res = Response.new
-      res.write &lt;&lt;-"EOS"
-      &lt;title&gt;Lobstericious!&lt;/title&gt;
-      &lt;pre&gt;
-      #{lobster}
-      &lt;/pre&gt;
-      &lt;p&gt;&lt;a href='#{href}'&gt;flip!&lt;/a&gt;&lt;/p&gt;
-      &lt;p&gt;&lt;a href='?flip=crash'&gt;crash!&lt;/a&gt;&lt;/p&gt;
-      EOS
-      res.finish
-    end
-  end
-end
-
-if $0 == __FILE__
-  require 'rack'
-  require 'rack/showexceptions'
-  Rack::Server.start(
-    :app =&gt; Rack::ShowExceptions.new(
-              Rack::Lint.new(
-                Rack::Lobster.new)), 
-    :Port =&gt; 9292,
-    :server =&gt; 'thin'
-  )
-end
-</PRE>
+<H4><A NAME="SECTION06190010000000000000">
+Introducción</A>
+</H4>
+  
 
 <P>
-Véase:
 
 <OL>
-<LI><A NAME="tex2html526"
-  HREF="https://github.com/rack/rack/blob/master/lib/rack/showexceptions.rb">rack/lib/rack/showexceptions.rb</A>
-<P>
-(Rack::ShowExceptions catches all exceptions raised from the app it
-wraps.  It shows a useful backtrace with the sourcefile and
-clickable context, the whole Rack environment and the request
-data.
+<LI>Hypertext Transfer Protocol (HTTP) is stateless: a client computer
+running a web browser must establish a new Transmission Control
+Protocol (TCP) network connection to the web server with each new
+HTTP GET or POST request. 
 
 <P>
-Be careful when you use this on public-facing sites as it could
-reveal information helpful to attackers)
 </LI>
-<LI><A NAME="tex2html527"
-  HREF="https://github.com/rack/rack/blob/master/lib/rack/lint.rb">rack/lib/rack/lint.rb</A>
-en GitHub
+<LI>The web server, therefore, cannot rely
+on an established TCP network connection for longer than a single
+HTTP GET or POST operation. 
 
 <P>
-(Rack::Lint validates your application and the requests and
- responses according to the Rack spec)
+</LI>
+<LI><A NAME="17280"></A><SPAN  CLASS="textbf">Session management</SPAN> is the technique
+used by the web developer to make the stateless HTTP protocol support
+session state. 
+
+<P>
+</LI>
+<LI>For example, once a user has been authenticated to
+the web server, the user's next HTTP request (GET or POST) should
+not cause the web server to ask for the user's account and password
+again. 
+
+<P>
+</LI>
+<LI>The session information is stored on the web server using the 
+<A NAME="17282"></A><SPAN  CLASS="textbf">session identifier</SPAN>
+generated as a result of the first (sometimes
+the first authenticated) request from the end user running a web
+browser. 
+
+<P>
+</LI>
+<LI>The "storage" of Session IDs and the associated session
+data (user name, account number, etc.) on the web server is
+accomplished using a variety of techniques including, but not limited
+to, local memory, flat files, and databases.
+
+<P>
+</LI>
+<LI>A <A NAME="17284"></A><SPAN  CLASS="textbf">session token</SPAN> is a unique identifier that is generated and sent
+from a server to a client to identify the current interaction
+session. 
+
+<P>
+</LI>
+<LI>The client usually stores and sends the token as an HTTP
+cookie and/or sends it as a parameter in GET or POST queries. The
+reason to use session tokens is that the client only has to handle
+the identifier—all session data is stored on the server (usually
+in a database, to which the client does not have direct access)
+linked to that identifier. 
 </LI>
 </OL>
-Tanto Rack::ShowExceptions como Rack::Lint disponen de un método <code>call</code> que recibe una variable <code>env</code> describiendo el entorno CGI.
-Esto es, se trata de aplicaciones que siguen el protocolo Rack.
-Así este código:
+
+<P>
+
+<H4><A NAME="SECTION06190020000000000000">
+Uso de Cookies para el manejo de sesiones</A>
+</H4>
+  
+
+<P>
+
+<OL>
+<LI>Allowing users to log into a website is a frequent use of
+    cookies. 
+</LI>
+<LI>A web server typically sends a cookie containing a unique 
+    <A NAME="17290"></A><SPAN  CLASS="textbf">session identifier</SPAN>. The web browser will send back that session identifier
+   with each subsequent request and related items are stored
+   associated with this unique session identifier.
+</LI>
+<LI>Typically the web server will first send a cookie
+    containing a unique session identifier. Users then submit their
+    credentials and the web application authenticates the session
+    and allows the user access to services.
+</LI>
+<LI>Applications today usually store the gathered information
+    in a database on the server side, rather than storing them 
+    in cookies
+  
+</LI>
+</OL>
+
+<P>
+
+<H4><A NAME="SECTION06190030000000000000">
+Ejemplo</A>
+</H4>
+  
+
+<P>
+<A NAME="tex2html527"
+  HREF="http://rack.rubyforge.org/doc/Rack/Session/Cookie.html">Rack::Session::Cookie</A> proporciona un sencillo sistema para gestionar
+sesiones basado en cookies.
+
+<P>
+
+<OL>
+<LI>La sesión es un cookie que contiene un
+hash almacenado mediante marshalling codificado en base64.
+</LI>
+<LI>Por defecto el nombre del cookie es <code>rack.session</code> pero puede ser 
+modificado mediante el atributo <code>:key</code>.
+</LI>
+<LI>Dándole un valor a <code>secret_key</code> se garantiza que es comprobada 
+la integridad de los datos de la cookie
+</LI>
+<LI>Para acceder dentro de nuestro programa
+a la sesión accedemos al hash <code>env["rack.session"]</code> o bien
+<code>env["key-value"]</code> si hemos especificado el atributo
+<code>:key</code>
+</LI>
+</OL>
+
+<P>
+Sigue un ejemplo:
 <PRE>
-  Rack::Server.start(
-    :app =&gt; Rack::ShowExceptions.new(
-              Rack::Lint.new(
-                Rack::Lobster.new)), 
-    :Port =&gt; 9292,
-    :server =&gt; 'thin'
-  )
+[~/local/src/ruby/sinatra/rack/rack-session-cookie(master)]$ cat configapp.ru 
+require 'pp'
+require './myapp'
+
+use Rack::Session::Cookie, 
+      :key =&gt; 'rack.session', 
+      :domain =&gt; 'example.com',
+      :secret =&gt; 'some_secret'
+
+run MyApp.new
 </PRE>
 
 <P>
-construye una nueva objeto/aplicación Rack que es la composición
-de los tres Racks.
+<PRE>
+[~/local/src/ruby/sinatra/rack/rack-session-cookie(master)]$ cat myapp.rb 
+class MyApp
+
+  def set_env(env)
+    @env = env
+    @session = env['rack.session']
+  end
+
+  def some_key 
+    return @session['some_key'].to_i if @session['some_key']
+    @session['some_key'] = 0
+  end
+
+  def some_key=(value)
+    @session['some_key'] = value
+  end
+
+  def call(env)
+    set_env(env)
+    res = Rack::Response.new
+    req = Rack::Request.new env
+
+    self.some_key = self.some_key + 1 if req.path == '/'
+
+    res.write("some_key = #{@session['some_key']}\n")
+
+    res.finish
+  end
+
+end
+</PRE>
+
+<P>
+Hagamos la prueba conectándonos a <code>www.example.com</code>. Para ello
+edtiamos <code>/etc/hosts</code> para que <code>localhost</code> apunte a
+<code>www.example.com</code>:
 
 <P>
 <PRE>
-[~/local/src/ruby/sinatra/rack/rack-lobster(master)]$ cat Rakefile 
+[~/local/src/ruby/sinatra/rack/rack-session-cookie(master)]$ cat /etc/hosts
+##
+# Host Database
+#
+# localhost is used to configure the loopback interface
+# when the system is booting.  Do not change this entry.
+##
+127.0.0.1 localhost www.example.com
+...
+</PRE>
+
+<P>
+Arrancamos el servidor:
+
+<P>
+<PRE>
+[~/local/src/ruby/sinatra/rack/rack-session-cookie(master)]$ rackup  configapp.ru 
+&gt;&gt; Thin web server (v1.5.1 codename Straight Razor)
+&gt;&gt; Maximum connections set to 1024
+&gt;&gt; Listening on 0.0.0.0:9292, CTRL+C to stop
+</PRE>
+
+<P>
+Y visitamos <code>www.example.com</code> con nuestro navegador:
+
+<img src="rack_session_example.png" />
+
+<P>
+
+<H2><A NAME="SECTION06191000000000000000">
+Ejercicio</A>
+</H2>
+
+<P>
+Supongamos el siguiente programa <A NAME="tex2html528"
+  HREF="http://rack.github.io/">rack</A> en el que se incrementa 
+la variable <code>@some_key</code>:
+<PRE>
+[~/local/src/ruby/sinatra/rack/rack-appvswebserver(icon)]$ cat configapp.ru 
+class Persistence
+
+  def call(env)
+    
+    res = Rack::Response.new
+    req = Rack::Request.new env
+
+    @some_key ||= 0
+    @some_key = @some_key + 1 
+
+    res.write("@some_key = #{@some_key}\n")
+
+    res.finish
+  end
+
+end
+
+run Persistence.new
+</PRE>
+
+<P>
+Supongamos que arranco el servidor:
+<PRE>
+[~/local/src/ruby/sinatra/rack/rack-appvswebserver(master)]$ rackup configapp.ru &gt;&gt; Thin web server (v1.5.1 codename Straight Razor)
+&gt;&gt; Maximum connections set to 1024
+&gt;&gt; Listening on 0.0.0.0:9292, CTRL+C to stop
+</PRE>
+
+<P>
+Nótese que con <code>thin</code> arrancado desde <code>rack</code>
+se tienen los valores de <code>env</code> para las claves:
+<PRE>
+rack.multithread =&gt; false
+rack.multiprocess =&gt; false
+</PRE>
+lo que indica que el servidor no está soportando multithreading ni multiproceso.
+
+<P>
+Responda a estas preguntas:
+
+<OL>
+<LI>¿Que valores de <code>@some_key</code> serán mostrados cuando me conecto a <code>localhost:9292</code>?
+</LI>
+<LI>¿Y si recargo la página varias veces?
+</LI>
+<LI>¿Y si abro un nuevo navegador o ventana de incógnito en la misma URL?
+</LI>
+<LI>¿Y si re-arranco el servidor?
+</LI>
+<LI>¿Como afectaría a la conducta que el servidor fuera multithreading?
+<PRE>
+[~/local/src/ruby/sinatra/rack/rack-appvswebserver(icon)]$ rvm use jruby-1.7.3
+Using /Users/casiano/.rvm/gems/jruby-1.7.3
+[~/local/src/ruby/sinatra/rack/rack-appvswebserver(icon)]$ rackup configapp.ru 
+Puma 2.6.0 starting...
+* Min threads: 0, max threads: 16
+* Environment: development
+* Listening on tcp://0.0.0.0:9292
+rack.multithread =&gt; true
+rack.multiprocess =&gt; false
+</PRE>
+<PRE>
+[~/local/src/ruby/sinatra/rack/rack-appvswebserver(icon)]$ cat Rakefile 
 desc "run the server"
 task :default do
-  sh "ruby lobster.rb"
+  sh &lt;&lt;-"EOS"
+  #rvm use jruby-1.7.3 &amp;&amp;
+  #ruby -v &amp;&amp;
+  rackup -s puma configapp.ru 
+  EOS
 end
 
-desc "run the client flip left"
-task :left do
-  sh %q{curl -v 'http://localhost:9292?flip=left'}
+desc "run the client"
+task :client do
+  pids = []
+  (0...100).each do
+    pids &lt;&lt; fork do
+      sh %q{curl -v 'http://localhost:9292' &gt;&gt; salida 2&gt;&gt; logs}
+    end
+  end
+  puts pids
 end
 
-desc "run the client flip right"
-task :right do
-  sh %q{curl -v 'http://localhost:9292?flip=right'}
-end
-
-desc "run the client. Generate exception"
-task :crash do
-  sh %q{curl -v 'http://localhost:9292/?flip=crash'}
+desc "remove output and logs"
+task :clean do
+  sh "rm -f salida logs"
 end
 </PRE>
+</LI>
+</OL>
 
 <P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rack-lobster(master)]$ rake left
-curl -v 'http://localhost:9292?flip=left'
-* About to connect() to localhost port 9292 (#0)
-*   Trying ::1... Connection refused
-*   Trying 127.0.0.1... connected
-* Connected to localhost (127.0.0.1) port 9292 (#0)
-&gt; GET /?flip=left HTTP/1.1
-&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8y zlib/1.2.5
-&gt; Host: localhost:9292
-&gt; Accept: */*
-&gt; 
-&lt; HTTP/1.1 200 OK
-&lt; Content-Length: 168
-&lt; Connection: keep-alive
-&lt; Server: thin 1.5.1 codename Straight Razor
-&lt; 
-      &lt;title&gt;Lobstericious!&lt;/title&gt;
-      &lt;pre&gt;
-      retsbol a
-      &lt;/pre&gt;
-      &lt;p&gt;&lt;a href='?flip=right'&gt;flip!&lt;/a&gt;&lt;/p&gt;
-      &lt;p&gt;&lt;a href='?flip=crash'&gt;crash!&lt;/a&gt;&lt;/p&gt;
-* Connection #0 to host localhost left intact
-* Closing connection #0
-</PRE>
-
+De acuerdo a  una respuesta en StackOverflow a la pregunta:
+<A NAME="tex2html529"
+  HREF="http://stackoverflow.com/questions/6278817/is-sinatra-multi-threaded">Is Sinatra multi-threaded? I read else where that "sinatra is multi-threaded by default", what does that imply?</A>
+<BLOCKQUOTE>
+The choice is mainly made by the server and middleware you use:
+</BLOCKQUOTE>
 <P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rack-lobster(master)]$ rake right
-curl -v 'http://localhost:9292?flip=right'
-* About to connect() to localhost port 9292 (#0)
-*   Trying ::1... Connection refused
-*   Trying 127.0.0.1... connected
-* Connected to localhost (127.0.0.1) port 9292 (#0)
-&gt; GET /?flip=right HTTP/1.1
-&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8y zlib/1.2.5
-&gt; Host: localhost:9292
-&gt; Accept: */*
-&gt; 
-&lt; HTTP/1.1 200 OK
-&lt; Content-Length: 167
-&lt; Connection: keep-alive
-&lt; Server: thin 1.5.1 codename Straight Razor
-&lt; 
-      &lt;title&gt;Lobstericious!&lt;/title&gt;
-      &lt;pre&gt;
-      a lobster
-      &lt;/pre&gt;
-      &lt;p&gt;&lt;a href='?flip=left'&gt;flip!&lt;/a&gt;&lt;/p&gt;
-      &lt;p&gt;&lt;a href='?flip=crash'&gt;crash!&lt;/a&gt;&lt;/p&gt;
-* Connection #0 to host localhost left intact
-* Closing connection #0
-</PRE>
-
-<P>
-
-<img src="rackcrash.png" width="50%" />
-
+<OL>
+<LI>Multi-Process, non-preforking: Mongrel, Thin, WEBrick, Zbatery
+</LI>
+<LI>Multi-Process, preforking: Unicorn, Rainbows, Passenger
+</LI>
+<LI>Evented (suited for sinatra-synchrony): Thin, Rainbows, Zbatery
+</LI>
+<LI>Threaded: Net::HTTP::Server, Threaded Mongrel, Puma, Rainbows,
+Zbatery, Phusion Passenger Enterprise &gt;= 4
+</LI>
+<LI>Since Sinatra 1.3.0, Thin will be started in threaded mode, if
+it is started by Sinatra (i.e. with ruby app.rb, but not with the
+thin command, nor with rackup).
+</LI>
+</OL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4440"
+<A NAME="tex2html4451"
   HREF="node106.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4434"
-  HREF="node95.html">
+<A NAME="tex2html4445"
+  HREF="node96.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4428"
+<A NAME="tex2html4439"
   HREF="node104.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4436"
-  HREF="node216.html">
+<A NAME="tex2html4447"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4438"
-  HREF="node219.html">
+<A NAME="tex2html4449"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -364,17 +540,17 @@ curl -v 'http://localhost:9292?flip=right'
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4441"
-  HREF="node106.html">Práctica: Accediendo a Twitter</A>
-<B>Sup:</B> <A NAME="tex2html4435"
-  HREF="node95.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4429"
-  HREF="node104.html">Gestión de Sesiones</A>
+<B> Sig:</B> <A NAME="tex2html4452"
+  HREF="node106.html">Ejemplo Simple Combinando Rack::Request,</A>
+<B>Sup:</B> <A NAME="tex2html4446"
+  HREF="node96.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4440"
+  HREF="node104.html">Cookies y Rack</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-03-29</I>
+2014-03-30</I>
 </ADDRESS>
 </BODY>
 </HTML>

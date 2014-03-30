@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Precedencia y Asociatividad</TITLE>
-<META NAME="description" CONTENT="Precedencia y Asociatividad">
+<TITLE>El módulo Generado por jison</TITLE>
+<META NAME="description" CONTENT="El módulo Generado por jison">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -28,20 +28,20 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3604"
+<A NAME="tex2html3608"
   HREF="node71.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3598"
+<A NAME="tex2html3602"
   HREF="node59.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3592"
+<A NAME="tex2html3596"
   HREF="node69.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3600"
-  HREF="node216.html">
+<A NAME="tex2html3604"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3602"
-  HREF="node219.html">
+<A NAME="tex2html3606"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,369 +92,781 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3605"
-  HREF="node71.html">Esquemas de Traducción</A>
-<B>Sup:</B> <A NAME="tex2html3599"
+<B> Sig:</B> <A NAME="tex2html3609"
+  HREF="node71.html">Precedencia y Asociatividad</A>
+<B>Sup:</B> <A NAME="tex2html3603"
   HREF="node59.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html3593"
-  HREF="node69.html">El módulo Generado por</A>
+<B> Ant:</B> <A NAME="tex2html3597"
+  HREF="node69.html">Algoritmo de Análisis LR</A>
 <B> Con:</B> 
-<A NAME="tex2html3600"
-  HREF="node216.html">
+<A NAME="tex2html3604"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3602"
-  HREF="node219.html">
+<A NAME="tex2html3606"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html3610"
+  HREF="node70.html#SECTION047111000000000000000">Version</A>
+<LI><A NAME="tex2html3611"
+  HREF="node70.html#SECTION047112000000000000000">Gramática Inicial</A>
+<LI><A NAME="tex2html3612"
+  HREF="node70.html#SECTION047113000000000000000">Tablas</A>
+<LI><A NAME="tex2html3613"
+  HREF="node70.html#SECTION047114000000000000000">Acciones Semánticas</A>
+<LI><A NAME="tex2html3614"
+  HREF="node70.html#SECTION047115000000000000000">Tabla de Acciones y GOTOs</A>
+<LI><A NAME="tex2html3615"
+  HREF="node70.html#SECTION047116000000000000000">defaultActions</A>
+<LI><A NAME="tex2html3616"
+  HREF="node70.html#SECTION047117000000000000000">Reducciones</A>
+<LI><A NAME="tex2html3617"
+  HREF="node70.html#SECTION047118000000000000000">Desplazamientos/Shifts</A>
+<LI><A NAME="tex2html3618"
+  HREF="node70.html#SECTION047119000000000000000">Manejo de Errores</A>
+<LI><A NAME="tex2html3619"
+  HREF="node70.html#SECTION0471110000000000000000">Analizador Léxico</A>
+<LI><A NAME="tex2html3620"
+  HREF="node70.html#SECTION0471111000000000000000">Exportación</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
 
 <H1><A NAME="SECTION047110000000000000000"></A>
-<A NAME="section:prioridades"></A>
+<A NAME="section:tablas"></A>
 <BR>
-Precedencia y Asociatividad
+El módulo Generado por <TT>jison</TT>
 </H1>
-Recordemos que si al construir la tabla LALR,
-alguna de las entradas de la tabla resulta multievaluada, decimos
-que existe un conflicto.
-Si una de las acciones es de `reducción'' y la otra es de
-`desplazamiento'', se dice que hay un <A NAME="14937"></A><SPAN  CLASS="textbf">conflicto shift-reduce</SPAN> o
-<A NAME="14939"></A><SPAN  CLASS="textbf">conflicto de desplazamiento-reducción</SPAN>. Si las
-dos reglas indican una acción de reducción, decimos que tenemos un 
-<A NAME="14941"></A><SPAN  CLASS="textbf">conflicto reduce-reduce</SPAN> o de <A NAME="14943"></A><SPAN  CLASS="textbf">reducción-reducción</SPAN>.
-En caso de que no existan indicaciones específicas <SPAN  CLASS="textbf">jison</SPAN> resuelve
-los conflictos que aparecen en la construcción de la tabla utilizando
-las siguientes reglas:
 
 <P>
 
-<OL>
-<LI>Un conflicto <SPAN  CLASS="textbf">reduce-reduce</SPAN> se resuelve eligiendo la producción
-que se listó primero en la especificación de la gramática.
-</LI>
-<LI>Un conflicto <SPAN  CLASS="textbf">shift-reduce</SPAN> se resuelve siempre en favor del <SPAN  CLASS="textbf">shift</SPAN>
-</LI>
-</OL>
+<H2><A NAME="SECTION047111000000000000000">
+Version</A>
+</H2>
 
 <P>
-Las declaraciones de precedencia y asociatividad mediante las
-palabras reservadas  <TT>%left</TT> ,  <TT>%right</TT> ,  <TT>%nonassoc</TT> 
-se utilizan para modificar estos criterios por defecto. 
-La declaración de  <TT>token</TT> s mediante la palabra
-reservada  <TT>%token</TT>  no modifica la precedencia. Si lo hacen las
-declaraciones realizadas usando las palabras  <TT>left</TT> ,  <TT>right</TT> 
-y  <TT>nonassoc</TT> . 
+En esta sección estudiamos el analizador generado por Jison:
+<PRE>
+[~/Dropbox/src/javascript/PLgrado/jison-aSb(develop)]$ jison --version
+0.4.2
+</PRE>
 
 <P>
 
-<OL>
-<LI>Los <SPAN  CLASS="textbf">tokens</SPAN> declarados  en la misma línea
-tienen igual precedencia e igual asociatividad. 
-La precedencia es mayor cuanto mas abajo 
-su posición en
-el texto. Así, en el ejemplo de la calculadora en la sección 
-<A HREF="node98.html#section:ejemplodeuso"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>, el <SPAN  CLASS="textbf">token</SPAN> <code>*</code> tiene 
-mayor precedencia que <code>+</code> pero la misma que <code>/</code>.
-</LI>
-<LI>La precedencia de una regla <!-- MATH
- $A \rightarrow \alpha$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img22.png"
- ALT="$ A \rightarrow \alpha$"></SPAN> se
-define como la del terminal mas a la derecha que aparece en
-<SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img51.png"
- ALT="$ \alpha$"></SPAN>. En el ejemplo, la producción 
+<H2><A NAME="SECTION047112000000000000000">
+Gramática Inicial</A>
+</H2>
+Veamos el módulo generado por jison para esta gramática:
+<PRE>
+[~/srcPLgrado/aSb(develop)]$ cat aSb.jison 
+%lex
+%%
+.               { return yytext; }
+/lex
+%%
+S: /* empty */  { console.log("empty"); }
+   | 'a' S 'b'  { console.log("S -&gt; aSb"); }
+;
+%%
+</PRE>
+
+<P>
+
+<H2><A NAME="SECTION047113000000000000000">
+Tablas</A>
+</H2>
+Esta es la primera parte del parser generado:
+<PRE>
+/* parser generated by jison 0.4.2 */
+var aSb = (function() {
+    var parser = {
+        trace: function trace() {},
+        yy: {},
+        symbols_: {
+            "$accept": 0, /* super-arranque $accept -&gt; S */
+            "$end": 1     /* end of input */
+            "error": 2, /* numero para el símbolo 'error' */
+            "S": 3,     /* numero para el símbolo 'S' */
+            "a": 4,
+            "b": 5,
+        },
+        /* array inverso de terminales */
+        terminals_: {   /* numero -&gt; terminal */
+            2: "error", 
+            4: "a",
+            5: "b"
+        },
+        productions_: 
+        [0, 
+/* 1 */     [3, 0], /* S : vacio        simbolo,longitud de la parte derecha */
+/* 2 */     [3, 3]  /* S : a S b        simbolo,longitud */
+        ],
+</PRE>
 
 <P>
 <DIV ALIGN="CENTER">
-<code> expr : expr '+' expr</code> 
+
+<img src="aSb.png" width="50%"/>
+<p>
+
+DFA construido por Jison
 
 </DIV>
 
 <P>
-tiene la precedencia del <SPAN  CLASS="textbf">token</SPAN> <code>+</code>.
-</LI>
-<LI>Para decidir en un conflicto <SPAN  CLASS="textbf">shift-reduce</SPAN> se comparan la precedencia 
-de la regla con la del terminal que va a ser desplazado. Si la de la
-regla es mayor se reduce
-si la del <SPAN  CLASS="textbf">token</SPAN> es mayor, se desplaza.
-</LI>
-<LI>Si en un conflicto <SPAN  CLASS="textbf">shift-reduce</SPAN> ambos la regla y el terminal que
-va a ser desplazado tiene la misma precedencia <SPAN  CLASS="textbf">jison</SPAN> considera la
-asociatividad, si es asociativa a izquierdas, reduce y si es asociativa
-a derechas desplaza. Si no es asociativa, genera un mensaje de error.
-<BR>
-Obsérvese que, en esta situación, la asociatividad de la regla y la del
-<SPAN  CLASS="textbf">token</SPAN> han de ser por fuerza, las mismas.  Ello es así, porque en
-<SPAN  CLASS="textbf">jison</SPAN> los <SPAN  CLASS="textbf">tokens</SPAN> con la misma precedencia se declaran en
-la misma línea y sólo se permite una declaración por línea.
+
+<H2><A NAME="SECTION047114000000000000000">
+Acciones Semánticas</A>
+</H2>
+Cada vez que se produce una acción de reducción esta función es llamada:
+<PRE>
+performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate, $$, _$) {
+
+    var $0 = $$.length - 1;
+    switch (yystate) { /* yystate: numero de regla de producción */
+        case 1:
+            console.log("empty");
+            break;
+        case 2:
+            console.log("S -&gt; aSb");
+            break;
+    }
+},
+</PRE>
+
+<UL>
+<LI>Parece que  cuando se llama a este método <code>this</code> refiere a un objeto <code>yyval</code>. Este es el
+punto  de llamada a la acción semántica dentro del parser generado por Jison.
+Puede encontrarse dentro del parser en el caso de un <code>switch</code> 
+que corresponde a la acción de reducción:
+<PRE>
+r = this.performAction.call(yyval, yytext, yyleng, yylineno, this.yy, action[1], vstack, lstack);
+</PRE>
+El método <code>call</code>
+nos permite invocar una función como si fuera un método de algún otro 
+objeto. Véase la sección 
+<A HREF="node173.html#subsection:callyapply"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>.
 
 <P>
+Este objeto <code>yyval</code> tiene dos atributos: <code>$</code> y <code>_$</code>.
+  
+<UL>
+<LI>El atributo 
+  <code>$</code> se corresponde con <code>$$</code> de la gramática (atributo de la variable
+  sintactica en la parte izquierda)
 </LI>
-<LI><SPAN  CLASS="textbf"> Por tanto es imposible declarar dos <SPAN  CLASS="textbf">tokens</SPAN> con diferente
-asociatividad y la misma precedencia</SPAN>.
+<LI>El atributo <code>_$</code> guarda información
+  sobre la posición del último token leído.
+  
 </LI>
-<LI>Es posible modificar la precedencia ``natural'' de una regla, calificándola
-con un <SPAN  CLASS="textbf">token</SPAN> específico.  para ello se escribe a la derecha de
-la regla <code>prec token</code>, donde <code>token</code> es un <SPAN  CLASS="textbf">token</SPAN> con
-la precedencia que deseamos. Vea el uso del <SPAN  CLASS="textbf">token</SPAN> <code>dummy</code>
-en el siguiente ejercicio.
+</UL>
+</LI>
+<LI><code>yytext</code> parece contener el texto asociado con el token actual
+</LI>
+<LI><code>yyleng</code> es la longitud del token actual
+</LI>
+<LI><code>yylineno</code> es la línea actual (empezando en 0)
+</LI>
+<LI><code>yy</code> es un objeto con dos atributos <code>lexer</code> y <code>parser</code> 
+</LI>
+<LI><code>yystate</code> es el estado actual 
+</LI>
+<LI><code>$$</code> parece ser un array/pila conteniendo 
+los valores de los atributos asociados con los estados de la pila (<code>vstack</code> ¿Por value stack?)
+</LI>
+<LI>Asi pues <code>$0</code> es el índice en <code>$0</code> del último elemento de <code>$$</code>.
+Por ejemplo, una acción semántica asociada con una regla <code>A : B C D</code> con tres elementos como:
+<PRE>
+$$ = $1 + $2 + $3;
+</PRE>
+Se traduce por:
+<PRE>
+this.$ = $$[$0 - 2] + $$[$0 - 1] + $$[$0];
+</PRE>
+</LI>
+<LI><code>_$</code>
+Es un array con la información sobre la localización de los simbolos (<code>lstack</code> ¿Por location stack?)
+</LI>
+</UL>
+
+<P>
+
+<H2><A NAME="SECTION047115000000000000000">
+Tabla de Acciones y GOTOs</A>
+</H2>
+
+<P>
+<PRE>
+        table: [{
+/* 0 */     1: [2, 1],    /* En estado 0 viendo $end(1) reducir por S : vacio */
+            3: 1,         /* En el estado 0 viendo S(3) ir al estado 1 */
+            4: [1, 2]     /* Estado 0 viendo a(4) shift(1) al estado 2 */
+        }, {
+/* 1 */     1: [3]        /* En 1 viendo $end(1) aceptar */
+        }, {
+/* 2 */     3: 3,         /* En 2 viendo S ir a 3 */
+            4: [1, 2],    /* En 2 viendo a(4) shift a 2 */
+            5: [2, 1]     /* En 2 viendo b(5) reducir por regla 1: S -&gt; vacio */
+        }, {
+/* 3 */     5: [1, 4]     /* En 3 viendo b(5) shift a 4 */
+        }, {
+/* 4 */     1: [2, 2],    /* En 4  viendo $end(1) reducir(2) por la 2: S -&gt; aSb */
+            5: [2, 2]     /* En 4 viendo b(5) reducir por la 2: S-&gt; aSb */
+        }],
+</PRE>
+
+<P>
+
+<UL>
+<LI>La tabla es un array de objetos
+</LI>
+<LI>El índice de la tabla es el estado. En el ejemplo tenemos 5 estados
+</LI>
+<LI>El objeto/hash que es el valor contiene las acciones ante los símbolos.
+
+<OL>
+<LI>Los atributos/claves son los símbolos, los valores las acciones
+</LI>
+<LI>Las acciones son de dos tipos:
+
+<OL>
+<LI>El número del estado al que se transita mediante la tabla <code>goto</code>
+cuando el símbolo es una variable sintactica 
+</LI>
+<LI>Un par <code>[tipo de acción, estado o regla]</code>. 
+Si el <code>tipo de acción</code> es 1 indica un shift al <code>estado</code> con ese número.
+Si el <code>tipo de acción</code> es 2 indica una reducción por la <code>regla</code> con ese número.
+</LI>
+</OL>
+</LI>
+<LI>Por ejemplo <code>table[0]</code> es 
+<PRE>
+        {
+            1: [2, 1],    /* En estado 0 viendo $end(1) reducir(2) por S : vacio */
+            3: 1,         /* En el estado 0 viendo S(3) ir (goto) al estado 1 */
+            4: [1, 2]     /* Estado 0 viendo a(4) shift(1) al estado 2 */
+        }
+</PRE>
 </LI>
 </OL>
 
 <P>
-Para ilustrar las reglas anteriores usaremos el siguiente 
-programa <code>jison</code>:
+</LI>
+</UL>
 
 <P>
-<PRE>
-[~/jison/jison-prec(ast)]$ cat -n precedencia.jison 
- 1  %token NUMBER
- 2  %left '@'
- 3  %right '&amp;'  dummy
- 4  %%
- 5  s 
- 6      : list      { console.log($list); }
- 7      ;
- 8  
- 9  list
-10      :
-11                  {
-12                    $$ = [];
-13                  }
-14      | list '\n'
-15                  {
-16                    $$ = $1;
-17                  }
-18      | list e
-19                  {
-20                    $$ = $1;
-21                    $$.push($e);
-22                  }
-23      ;
-24  
-25  e : NUMBER
-26                  {
-27                    $$ = "NUMBER ("+yytext+")";
-28                  }
-29    | e '&amp;' e
-30                  {
-31                    $$ = [ "&amp;", $e1, $e2];
-32                  }
-33    | e '@' e %prec dummy
-34                  {
-35                    $$ = ["@", $e1, $e2];
-36                  }
-37    ;
-38  
-39  %%
-</PRE>            
-Obsérvese la siguiente ejecución:
 
-<P>
+<H2><A NAME="SECTION047116000000000000000">
+defaultActions</A>
+</H2>
 <PRE>
-[~/jison/jison-prec(ast)]$ cat input.txt 
-2@3@4
-2&amp;3&amp;4
-[~/jison/jison-prec(ast)]$ node precedencia.js input.txt 
-[ [ '@', [ '@', 'NUMBER (2)', 'NUMBER (3)' ], 'NUMBER (4)' ],
-  [ '&amp;', 'NUMBER (2)', [ '&amp;', 'NUMBER (3)', 'NUMBER (4)' ] ] ]
+        defaultActions: {},
 </PRE>
 
 <P>
-Compilamos a continuación con <code>bison</code> usando la opción <code>-v</code> para
-producir información sobre los conflictos y las tablas de salto y 
-de acciones:
+
+<UL>
+<LI><code>defaultActions</code> contiene las acciones por defecto.
+
+<P>
+</LI>
+<LI>Después de la construcción de la tabla, Jison identifica para
+cada estado la reducción que tiene el conjunto 
+de lookaheads mas grande. Para reducir el tamaño del parser,
+Jison puede decidir suprimir dicho conjunto y asiganr esa reducción como 
+acción del parser por defecto. Tal reducción se conoce como
+<A NAME="14996"></A><SPAN  CLASS="textbf">reducción por defecto</SPAN>.
+</LI>
+<LI>Esto puede verse en este segmento del código del parser:
 <PRE>
-[~/jison/jison-prec(ast)]$ bison -v precedencia.jison 
-precedencia.jison:6.31: warning: stray `$'
-precedencia.jison:21.27: warning: stray `$'
-precedencia.jison:31.31: warning: stray `$'
-precedencia.jison:31.36: warning: stray `$'
-precedencia.jison:35.30: warning: stray `$'
-precedencia.jison:35.35: warning: stray `$'
+    while (true) {
+          state = stack[stack.length - 1]; 
+          if (this.defaultActions[state]) {
+              action = this.defaultActions[state];
+          } else {
+              if (symbol === null || typeof symbol == "undefined") {
+                  symbol = lex();
+              }   
+              action = table[state] &amp;&amp; table[state][symbol];
+          }   
+          ...
+    }
+</PRE>
+</LI>
+</UL>
+
+<P>
+
+<H2><A NAME="SECTION047117000000000000000">
+Reducciones</A>
+</H2>
+<PRE>
+parse: function parse(input) {
+    ...
+    while (true) {
+        state = stack[stack.length - 1];
+        if (this.defaultActions[state]) {
+            action = this.defaultActions[state];
+        } else {
+            if (symbol === null || typeof symbol == "undefined") {
+                symbol = lex(); /* obtener siguiente token */
+            }
+            action = table[state] &amp;&amp; table[state][symbol];
+        }
+        if (typeof action === "undefined" || !action.length || !action[0]) {
+          ... // error
+        }
+        if (action[0] instanceof Array &amp;&amp; action.length &gt; 1) {
+            throw new Error("Parse Error: multiple actions possible at state: ..." 
+        }
+        switch (action[0]) {
+            case 1:                                    // shift
+                ...
+                break;
+            case 2:                                    // reduce
+                len = this.productions_[action[1]][1]; // longitud de la producción
+                yyval.$ = vstack[vstack.length - len];
+                yyval._$ = {                           // datos de la posición
+                    first_line: lstack[lstack.length - (len || 1)].first_line,
+                    last_line: lstack[lstack.length - 1].last_line,
+                    first_column: lstack[lstack.length - (len || 1)].first_column,
+                    last_column: lstack[lstack.length - 1].last_column
+                };
+                ...
+                r = this.performAction.call(yyval, yytext, yyleng, yylineno, this.yy, action[1], vstack, lstack);
+                if (typeof r !== "undefined") {
+                    return r; /* un return de algo distinto de undefined nos saca del parser */
+                }
+                if (len) {                                  /* retirar de las pilas */
+                    stack = stack.slice(0, - 1 * len * 2);  /* simbolo, estado, simbolo, estado ... */
+                    vstack = vstack.slice(0, - 1 * len);    /* retirar atributos */
+                    lstack = lstack.slice(0, - 1 * len);    /* retirar localizaciones */
+                }
+                stack.push(this.productions_[action[1]][0]); /* empujemos el símbolo */
+                vstack.push(yyval.$);                        /* empujemos valor semantico */
+                lstack.push(yyval._$);                       /* empujemos localización */
+                newState = table[stack[stack.length - 2]][stack[stack.length - 1]];
+                stack.push(newState);                        /* empujemos goto[top][A]*/
+                break;
+            case 3: // accept
+                return true;
+        }
+    }
+    return true;
+}
 </PRE>
 
 <P>
-La opción <code>-v</code> genera el fichero <code>Precedencia.output</code>
-el cual contiene información detallada sobre el autómata:
+
+<H2><A NAME="SECTION047118000000000000000">
+Desplazamientos/Shifts</A>
+</H2>
 
 <P>
 <PRE>
-[~/jison/jison-prec(ast)]$ cat precedencia.output 
-Grammar
-
-    0 $accept: s $end
-
-    1 s: list
-
-    2 list: /* empty */
-    3     | list '\n'
-    4     | list e
-
-    5 e: NUMBER
-    6  | e '&amp;' e
-    7  | e '@' e
-
-
-Terminals, with rules where they appear
-
-$end (0) 0
-'\n' (10) 3
-'&amp;' (38) 6
-'@' (64) 7
-error (256)
-NUMBER (258) 5
-dummy (259)
-
-
-Nonterminals, with rules where they appear
-
-$accept (8)
-    on left: 0
-s (9)
-    on left: 1, on right: 0
-list (10)
-    on left: 2 3 4, on right: 1 3 4
-e (11)
-    on left: 5 6 7, on right: 4 6 7
-
-
-state 0
-
-    0 $accept: . s $end
-
-    $default  reduce using rule 2 (list)
-
-    s     go to state 1
-    list  go to state 2
-
-
-state 1
-
-    0 $accept: s . $end
-
-    $end  shift, and go to state 3
-
-
-state 2
-
-    1 s: list .
-    3 list: list . '\n'
-    4     | list . e
-
-    NUMBER  shift, and go to state 4
-    '\n'    shift, and go to state 5
-
-    $default  reduce using rule 1 (s)
-
-    e  go to state 6
-
-
-state 3
-
-    0 $accept: s $end .
-
-    $default  accept
-
-
-state 4
-
-    5 e: NUMBER .
-
-    $default  reduce using rule 5 (e)
-
-
-state 5
-
-    3 list: list '\n' .
-
-    $default  reduce using rule 3 (list)
-
-
-state 6
-
-    4 list: list e .
-    6 e: e . '&amp;' e
-    7  | e . '@' e
-
-    '@'  shift, and go to state 7
-    '&amp;'  shift, and go to state 8
-
-    $default  reduce using rule 4 (list)
-
-
-state 7
-
-    7 e: e '@' . e
-
-    NUMBER  shift, and go to state 4
-
-    e  go to state 9
-
-
-state 8
-
-    6 e: e '&amp;' . e
-
-    NUMBER  shift, and go to state 4
-
-    e  go to state 10
-
-
-state 9
-
-    6 e: e . '&amp;' e
-    7  | e . '@' e
-    7  | e '@' e .
-
-    '&amp;'  shift, and go to state 8
-
-    $default  reduce using rule 7 (e)
-
-
-state 10
-
-    6 e: e . '&amp;' e
-    6  | e '&amp;' e .
-    7  | e . '@' e
-
-    '&amp;'  shift, and go to state 8
-
-    $default  reduce using rule 6 (e)
+parse: function parse(input) {
+    ...
+    while (true) {
+        state = stack[stack.length - 1];     /* estado en el top de la pila */
+        if (this.defaultActions[state]) {    /* definida la acción por defecto? */
+            action = this.defaultActions[state];
+        } else {
+            if (symbol === null || typeof symbol == "undefined") {
+                symbol = lex();              /* obtener token */
+            }
+            action = table[state] &amp;&amp; table[state][symbol]; /* obtener la acción para el estado actual */
+        }
+        if (typeof action === "undefined" || !action.length || !action[0]) { 
+            ... /* error */
+        }
+        if (action[0] instanceof Array &amp;&amp; action.length &gt; 1) {
+            throw new Error("Parse Error: multiple actions possible at state: " + state + ", token: " + symbol);
+        }
+        switch (action[0]) {
+            case 1:
+                stack.push(symbol);                /* empujamos token */
+                vstack.push(this.lexer.yytext);    /* empujamos el atributo del token */
+                lstack.push(this.lexer.yylloc);    /* salvamos la localización del token */
+                stack.push(action[1]);             /* salvamos el estado */
+                symbol = null;
+                if (!preErrorSymbol) {             /* si no hay errores ... */
+                    yyleng = this.lexer.yyleng;    /* actualizamos los atributos */
+                    yytext = this.lexer.yytext;    /* del objeto */
+                    yylineno = this.lexer.yylineno;
+                    yyloc = this.lexer.yylloc;
+                    if (recovering &gt; 0) recovering--; /* las cosas van mejor si hubieron errores */
+                } else {
+                    symbol = preErrorSymbol;
+                    preErrorSymbol = null;
+                }
+                break;
+            case 2:
+                ...
+                break;
+            case 3:
+                return true;
+        }
+    }
+    return true;
+}
 </PRE>
 
 <P>
-La presencia de conflictos, aunque no siempre, en muchos casos es debida
-a la introducción de ambiguedad en la gramática. Si el conflicto 
-es de desplazamiento-reducción se puede resolver explicitando 
-alguna regla que rompa la ambiguedad. Los conflictos de
-reducción-reducción suelen producirse por un diseño erróneo
-de la gramática. En tales casos, suele ser mas adecuado
-modificar la gramática.
+
+<H2><A NAME="SECTION047119000000000000000">
+Manejo de Errores</A>
+</H2>
+
+<P>
+<PRE>
+while (true) {
+    state = stack[stack.length - 1];
+    if (this.defaultActions[state]) { action = this.defaultActions[state]; } 
+    else {
+        if (symbol === null || typeof symbol == "undefined") { symbol = lex(); }
+        action = table[state] &amp;&amp; table[state][symbol];
+    }
+    if (typeof action === "undefined" || !action.length || !action[0]) {
+        var errStr = "";
+        if (!recovering) { /* recovering = en estado de recuperación de un error */
+            expected = [];                       /* computemos los tokens esperados */
+            for (p in table[state])              /* si el estado "state" transita con p */
+              if (this.terminals_[p] &amp;&amp; p &gt; 2) { /* y "p" es un terminal no especial */
+                  expected.push("'" + this.terminals_[p] + "'"); /* entonces es esperado */
+              }
+            if (this.lexer.showPosition) { /* si esta definida la función showPosition */
+                errStr = "Parse error on line " + (yylineno + 1) + 
+                         ":\n" + this.lexer.showPosition() + 
+                         "\nExpecting " + expected.join(", ") + 
+                         ", got '" + 
+                         (this.terminals_[symbol] || symbol) + /* terminals_ es el array inverso */
+                         "'";                                  /* numero -&gt; terminal             */
+            } else { /* ¡monta la cadena como puedas! */
+                errStr = "Parse error on line " + (yylineno + 1) + 
+                         ": Unexpected " + 
+                         (symbol == 1 ? "end of input" : "'" + 
+                         (this.terminals_[symbol] || symbol) + "'");
+            }
+            this.parseError(errStr, {    /* genera la excepción */
+                text: this.lexer.match,  /* hash/objeto conteniendo los detalles del */
+                token: this.terminals_[symbol] || symbol,                   /* error */
+                line: this.lexer.yylineno,
+                loc: yyloc,
+                expected: expected
+            });
+        }
+    }
+    if (action[0] instanceof Array &amp;&amp; action.length &gt; 1) {
+        throw new Error("Parse Error: multiple actions possible at state: " + state + ", token: " + symbol);
+    }
+    ...
+}
+</PRE>
+
+<P>
+La función <code>parseError</code> genera una excepción:
+
+<P>
+<PRE>
+        parseError: function parseError(str, hash) {
+            throw new Error(str); /* El hash contiene info sobre el error: token, linea, etc. */
+        },
+</PRE>
+
+<P>
+
+<UL>
+<LI><code>parseError</code> es llamada cada vez que ocurre un error sintáctico.
+<code>str</code> contiene la cadena con el mensaje de error del tipo: 
+<code>Expecting something, got other thing'</code>.
+<code>hash</code> contiene atributos como <code>expected</code>: el array de tokens esperados; 
+<code>line</code> la línea implicada, <code>loc</code> una descripción de la localización detallada del punto/terminal
+en el que ocurre el error; etc.
+</LI>
+</UL>
+
+<P>
+
+<H2><A NAME="SECTION0471110000000000000000">
+Analizador Léxico</A>
+</H2>
+El analizador léxico:
+<PRE>
+/* generated by jison-lex 0.1.0 */
+var lexer = (function() {
+    var lexer = {
+        EOF: 1,
+        parseError: function parseError(str, hash) { /* manejo de errores léxicos */ },
+        setInput: function(input) { /* inicializar la entrada para el analizadorléxico */},
+        input: function() { /* ... */ },
+        unput: function(ch) { /* devolver al flujo de entrada */ },
+        more: function() { /* ... */ },
+        less: function(n) { /* ... */ },
+        pastInput: function() { /* ... */ },
+        upcomingInput: function() { /* ... */ },
+        showPosition: function() { /* ... */ },
+        next: function() {
+                if (this.done) { return this.EOF; }
+                if (!this._input) this.done = true;
+
+                var token, match, tempMatch, index, col, lines;
+                if (!this._more) { this.yytext = ''; this.match = ''; }
+                var rules = this._currentRules();
+                for (var i = 0; i &lt; rules.length; i++) {
+                    tempMatch = this._input.match(this.rules[rules[i]]);
+                    if (tempMatch &amp;&amp; (!match || tempMatch[0].length &gt; match[0].length)) {
+                        match = tempMatch;
+                        index = i;
+                        if (!this.options.flex) break;
+                    }
+                }
+                if (match) {
+                    lines = match[0].match(/(?:\r\n?|\n).*/g);
+                    if (lines) this.yylineno += lines.length;
+                    this.yylloc = {
+                        first_line: this.yylloc.last_line,
+                        last_line: this.yylineno + 1,
+                        first_column: this.yylloc.last_column,
+                        last_column: 
+                          lines ? lines[lines.length - 1].length - 
+                                  lines[lines.length - 1].match(/\r?\n?/)[0].length 
+                                  : 
+                                  this.yylloc.last_column + match[0].length
+                    };
+                    this.yytext += match[0];
+                    this.match += match[0];
+                    this.matches = match;
+                    this.yyleng = this.yytext.length;
+                    if (this.options.ranges) {
+                        this.yylloc.range = [this.offset, this.offset += this.yyleng];
+                    }
+                    this._more = false;
+                    this._input = this._input.slice(match[0].length);
+                    this.matched += match[0];
+                    token = this.performAction.call(
+                                 this, 
+                                 this.yy, 
+                                 this, 
+                                 rules[index], 
+                                 this.conditionStack[this.conditionStack.length - 1]
+                            );
+                    if (this.done &amp;&amp; this._input) this.done = false;
+                    if (token) return token;
+                    else return;
+                }
+                if (this._input === "") { return this.EOF; } 
+                else {
+                    return this.parseError(
+                             'Lexical error on line ' + (this.yylineno + 1) + 
+                              '. Unrecognized text.\n' + this.showPosition(), 
+                              { text: "", token: null, line: this.yylineno }
+                           );
+                }
+            },
+        lex: function lex() {
+            var r = this.next();
+            if (typeof r !== 'undefined') {
+                return r;
+            } else {
+                return this.lex();
+            }
+        },
+        begin: function begin(condition) { },
+        popState: function popState() { },
+        _currentRules: function _currentRules() { },
+        topState: function() { },
+        pushState: function begin(condition) { },
+        options: {},
+        performAction: function anonymous(yy, yy_, $avoiding_name_collisions, YY_START)
+        {
+            var YYSTATE = YY_START;
+            switch ($avoiding_name_collisions) {
+                case 0:
+                    return yy_.yytext;
+                    break;
+            }
+        },
+        rules: [/^(?:.)/], /* lista de expresiones regulares */
+        conditions: { /* ... */ }
+  }
+};
+</PRE>
+
+<P>
+
+<H2><A NAME="SECTION0471111000000000000000">
+Exportación</A>
+</H2>
+
+<P>
+Si no ha sido exportado ya ...
+<PRE>
+if (typeof require !== 'undefined' &amp;&amp; typeof exports !== 'undefined') {
+    exports.parser = aSb;         /* hacemos accesible el objeto aSb  */
+    exports.Parser = aSb.Parser;
+</PRE>
+El objeto <code>aSb.Parser</code> representa al parser. Este es el código que lo crea.
+<PRE>
+      function Parser() {
+          this.yy = {}; 
+      }   
+      Parser.prototype = parser;
+      parser.Parser = Parser;
+      return new Parser;
+  })();
+</PRE>
+También se exporta una función <code>parse</code>:
+<PRE>
+    exports.parse = function() {
+        return aSb.parse.apply(aSb, arguments);
+    };
+</PRE>
+y una función <code>main</code>:
+<PRE>
+    exports.main = function commonjsMain(args) {
+        if (!args[1]) {
+            console.log('Usage: ' + args[0] + ' FILE');
+            process.exit(1);
+        }
+        var source = require('fs').readFileSync(require('path').normalize(args[1]), "utf8");
+        return exports.parser.parse(source);
+    };
+    if (typeof module !== 'undefined' &amp;&amp; require.main === module) {
+        exports.main(process.argv.slice(1));
+    }
+}
+</PRE>
+Esto permite ejecutar el módulo directamente:
+<PRE>
+[~/Dropbox/src/javascript/PLgrado/jison-aSb(develop)]$ node aSb.js input.ab 
+empty
+S -&gt; aSb
+S -&gt; aSb
+[~/Dropbox/src/javascript/PLgrado/jison-aSb(develop)]$ cat input.ab 
+aabb
+</PRE>
+
+<P>
+<PRE>
+~/Dropbox/src/javascript/PLgrado/jison-aSb(develop)]$ node debug aSb.js input.ab 
+&lt; debugger listening on port 5858
+connecting... ok
+break in aSb.js:2
+  1 /* parser generated by jison 0.4.2 */
+  2 var aSb = (function() {
+  3     var parser = {
+  4         trace: function trace() {},
+debug&gt; n
+break in aSb.js:390
+ 388     return new Parser;
+ 389 })();
+ 390 if (typeof require !== 'undefined' &amp;&amp; typeof exports !== 'undefined') {
+ 391     exports.parser = aSb;
+ 392     exports.Parser = aSb.Parser;
+</PRE>
+
+<P>
+<PRE>
+debug&gt; repl
+Press Ctrl + C to leave debug repl
+&gt; 
+&gt; typeof require
+'function'
+&gt; typeof exports
+'object'
+&gt; aSb
+{ yy: {} }
+&gt; aSb.Parser
+[Function]
+^C
+debug&gt; sb(396)
+ 395     };
+debug&gt; c
+break in aSb.js:396
+ 394         return aSb.parse.apply(aSb, arguments);
+ 395     };
+*396     exports.main = function commonjsMain(args) {
+ 397         if (!args[1]) {
+ 398             console.log('Usage: ' + args[0] + ' FILE');
+debug&gt; n
+break in aSb.js:404
+ 402         return exports.parser.parse(source);
+ 403     };
+ 404     if (typeof module !== 'undefined' &amp;&amp; require.main === module) {
+ 405         exports.main(process.argv.slice(1));
+ 406     }
+debug&gt; repl
+Press Ctrl + C to leave debug repl
+&gt; process.argv.slice(1)
+[ '/Users/casiano/Dropbox/src/javascript/PLgrado/jison-aSb/aSb.js',
+  'input.ab' ]
+&gt; typeof module
+'object'
+&gt; require.main
+{ id: '.',
+  exports: 
+   { parser: { yy: {} },
+     Parser: [Function],
+     parse: [Function],
+     main: [Function] },
+  parent: null,
+  filename: '/Users/casiano/Dropbox/src/javascript/PLgrado/jison-aSb/aSb.js',
+  loaded: false,
+  children: [],
+  paths: 
+   [ '/Users/casiano/Dropbox/src/javascript/PLgrado/jison-aSb/node_modules',
+     '/Users/casiano/Dropbox/src/javascript/PLgrado/node_modules',
+     '/Users/casiano/Dropbox/src/javascript/node_modules',
+     '/Users/casiano/Dropbox/src/node_modules',
+     '/Users/casiano/Dropbox/node_modules',
+     '/Users/casiano/node_modules',
+     '/Users/node_modules',
+     '/node_modules' ] }
+^C
+debug&gt; n
+break in aSb.js:405
+ 403     };
+ 404     if (typeof module !== 'undefined' &amp;&amp; require.main === module) {
+ 405         exports.main(process.argv.slice(1));
+ 406     }
+ 407 }
+debug&gt; n
+&lt; empty
+&lt; S -&gt; aSb
+&lt; S -&gt; aSb
+break in aSb.js:409
+ 407 }
+ 408 
+ 409 });
+debug&gt; c
+program terminated
+debug&gt;
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3604"
+<A NAME="tex2html3608"
   HREF="node71.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3598"
+<A NAME="tex2html3602"
   HREF="node59.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3592"
+<A NAME="tex2html3596"
   HREF="node69.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3600"
-  HREF="node216.html">
+<A NAME="tex2html3604"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3602"
-  HREF="node219.html">
+<A NAME="tex2html3606"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -505,17 +917,17 @@ modificar la gramática.
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3605"
-  HREF="node71.html">Esquemas de Traducción</A>
-<B>Sup:</B> <A NAME="tex2html3599"
+<B> Sig:</B> <A NAME="tex2html3609"
+  HREF="node71.html">Precedencia y Asociatividad</A>
+<B>Sup:</B> <A NAME="tex2html3603"
   HREF="node59.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html3593"
-  HREF="node69.html">El módulo Generado por</A>
+<B> Ant:</B> <A NAME="tex2html3597"
+  HREF="node69.html">Algoritmo de Análisis LR</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-03-29</I>
+2014-03-30</I>
 </ADDRESS>
 </BODY>
 </HTML>

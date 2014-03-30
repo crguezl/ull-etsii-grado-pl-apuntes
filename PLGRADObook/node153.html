@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Environments</TITLE>
-<META NAME="description" CONTENT="Environments">
+<TITLE>Settings disponibles/Available Settings</TITLE>
+<META NAME="description" CONTENT="Settings disponibles/Available Settings">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node154.html">
 <LINK REL="previous" HREF="node152.html">
-<LINK REL="up" HREF="node131.html">
+<LINK REL="up" HREF="node132.html">
 <LINK REL="next" HREF="node154.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5277"
+<A NAME="tex2html5292"
   HREF="node154.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5271"
-  HREF="node131.html">
+<A NAME="tex2html5286"
+  HREF="node132.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5265"
+<A NAME="tex2html5280"
   HREF="node152.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5273"
-  HREF="node216.html">
+<A NAME="tex2html5288"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5275"
-  HREF="node219.html">
+<A NAME="tex2html5290"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,87 +92,156 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5278"
-  HREF="node154.html">Correo</A>
-<B>Sup:</B> <A NAME="tex2html5272"
-  HREF="node131.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5266"
-  HREF="node152.html">Settings disponibles/Available Settings</A>
+<B> Sig:</B> <A NAME="tex2html5293"
+  HREF="node154.html">Environments</A>
+<B>Sup:</B> <A NAME="tex2html5287"
+  HREF="node132.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5281"
+  HREF="node152.html">Configuring attack protection</A>
 <B> Con:</B> 
-<A NAME="tex2html5273"
-  HREF="node216.html">
+<A NAME="tex2html5288"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5275"
-  HREF="node219.html">
+<A NAME="tex2html5290"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION063220000000000000000">
-Environments</A>
+<H1><A NAME="SECTION063210000000000000000">
+Settings disponibles/Available Settings</A>
 </H1>
 
 <OL>
-<LI>There are three predefined environments:
- <TT>development</TT> ,  <TT>production</TT>  and  <TT>test</TT> . 
+<LI><code>absolute_redirects</code>
+If disabled, Sinatra will allow relative redirects, however, Sinatra will no longer conform with RFC 2616 (HTTP 1.1), which only allows absolute redirects.
+
+<P>
+Enable if your app is running behind a reverse proxy that has not been set up properly. Note that the <code>url</code> helper will still produce absolute URLs, unless you pass in <code>false</code> as the second parameter.
+Disabled by default.
 
 <P>
 </LI>
-<LI>Environments can be set through the <code>RACK_ENV</code> environment variable. 
+<LI><code>add_charsets</code>
+mime types the <code>content_type</code> helper will automatically add the charset info to. 
 
 <P>
-</LI>
-<LI>The default value is <code>development</code>
-</LI>
-<LI>In the <code>development</code> environment all templates are
-reloaded between requests, and special <code>not_found</code> and 
-<code>error</code> handlers
-display stack traces in your browser
-</LI>
-<LI>In the <code>production</code> and <code>test</code> environments, templates are cached by default
-</LI>
-<LI>To run different environments, set the <code>RACK_ENV</code> environment variable:
-
-<P>
+You should add to it rather than overriding this option: 
 <PRE>
-RACK_ENV=production ruby my_app.rb
+settings.add_charsets &lt;&lt; "application/foobar"
 </PRE>
 </LI>
-<LI>You can use predefined methods: <code>development?</code>, <code>test?</code> 
-and <code>production?</code> to check the current environment setting:
-
-<P>
+<LI><code>app_file</code>
+Path to the main application file, used to detect project root, views and public folder and inline templates.
+</LI>
+<LI><code>bind</code>
+IP address to bind to (default: 0.0.0.0 or localhost if your <code>environment</code> is set to 
+<code>development</code>). Only used for built-in server.
+</LI>
+<LI><code>default_encoding</code>
+encoding to assume if unknown (defaults to "utf-8").
+</LI>
+<LI><code>dump_errors</code>
+display errors in the log.
+</LI>
+<LI><code>environment</code>
+current environment, defaults to <code>ENV['RACK_ENV']</code>, 
+or <code>development</code> if not available.
+</LI>
+<LI><code>logging</code>
+use the logger.
+</LI>
+<LI><code>lock</code>
+Places a lock around every request, only running processing on request per Ruby process concurrently.
+Enabled if your app is not thread-safe. Disabled per default.
+</LI>
+<LI><code>method_override</code>
+use <code>_method magic</code> to allow put/delete forms in browsers that don't support it.
+</LI>
+<LI><code>port</code>
+Port to listen on. Only used for built-in server.
+</LI>
+<LI><code>prefixed_redirects</code>
+Whether or not to insert <code>request.script_name</code> into redirects if no absolute path is given. That way redirect '/foo' would behave like redirect to('/foo'). Disabled per default.
+</LI>
+<LI><code>protection</code>
+Whether or not to enable web attack protections. See protection section above.
+</LI>
+<LI><code>public_dir</code>
+Alias for <code>public_folder</code>. See below.
+</LI>
+<LI><code>public_folder</code>
+Path to the folder public files are served from. Only used if static file serving is enabled (see static setting below). Inferred from <code>app_file</code> setting if not set.
+</LI>
+<LI><code>reload_templates</code>
+Whether or not to reload templates between requests. Enabled in development mode.
+</LI>
+<LI><code>root</code>
+Path to project root folder. Inferred from <code>app_file</code> setting if not set.
+</LI>
+<LI><code>raise_errors</code>
+raise exceptions (will stop application). Enabled by default when environment is set to "test", disabled otherwise.
+</LI>
+<LI><code>run</code>
+if enabled, Sinatra will handle starting the web server, do not enable if using rackup or other means.
+</LI>
+<LI><code>running</code>
+is the built-in server running now? do not change this setting!
+</LI>
+<LI><code>server</code>
+Server or list of servers to use for built-in server. order indicates priority, default depends on Ruby implementation.
+</LI>
+<LI><code>sessions</code>
+Enable cookie-based sessions support using Rack::Session::Cookie. See 'Using Sessions' section for more information.
+</LI>
+<LI><code>show_exceptions</code>
+Show a stack trace in the browser when an exception happens. Enabled by default when environment is set to "development", disabled otherwise.
+Can also be set to <code>:after_handler</code> to trigger app-specified error handling before showing a stack trace in the browser.
+</LI>
+<LI><code>static</code>
+Whether Sinatra should handle serving static files.
+Disable when using a server able to do this on its own.
+Disabling will boost performance.
+Enabled per default in classic style, disabled for modular apps.
+</LI>
+<LI><code>static_cache_control</code>
+When Sinatra is serving static files, set this to add Cache-Control headers to the responses. 
+Uses the <code>cache_control</code> helper. Disabled by default.
+Use an explicit array when setting multiple values: 
 <PRE>
-get '/' do
-  if settings.development?
-    "development!"
-  else
-    "not development!"
-  end
-end
+set :static_cache_control, [:public, :max_age =&gt; 300]
 </PRE>
+</LI>
+<LI><code>threaded</code>
+If set to true, will tell Thin to use EventMachine.defer for processing the request.
+</LI>
+<LI><code>views</code>
+Path to the views folder. Inferred from <code>app_file</code> setting if not set.
+</LI>
+<LI><code>x_cascade</code>
+Whether or not to set the X-Cascade header if no route matches. Defaults to true.
 </LI>
 </OL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5277"
+<A NAME="tex2html5292"
   HREF="node154.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5271"
-  HREF="node131.html">
+<A NAME="tex2html5286"
+  HREF="node132.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5265"
+<A NAME="tex2html5280"
   HREF="node152.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5273"
-  HREF="node216.html">
+<A NAME="tex2html5288"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5275"
-  HREF="node219.html">
+<A NAME="tex2html5290"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -223,17 +292,17 @@ end
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5278"
-  HREF="node154.html">Correo</A>
-<B>Sup:</B> <A NAME="tex2html5272"
-  HREF="node131.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5266"
-  HREF="node152.html">Settings disponibles/Available Settings</A>
+<B> Sig:</B> <A NAME="tex2html5293"
+  HREF="node154.html">Environments</A>
+<B>Sup:</B> <A NAME="tex2html5287"
+  HREF="node132.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5281"
+  HREF="node152.html">Configuring attack protection</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-03-29</I>
+2014-03-30</I>
 </ADDRESS>
 </BODY>
 </HTML>

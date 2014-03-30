@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Correo</TITLE>
-<META NAME="description" CONTENT="Correo">
+<TITLE>Environments</TITLE>
+<META NAME="description" CONTENT="Environments">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node155.html">
 <LINK REL="previous" HREF="node153.html">
-<LINK REL="up" HREF="node131.html">
+<LINK REL="up" HREF="node132.html">
 <LINK REL="next" HREF="node155.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5291"
+<A NAME="tex2html5306"
   HREF="node155.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5285"
-  HREF="node131.html">
+<A NAME="tex2html5300"
+  HREF="node132.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5279"
+<A NAME="tex2html5294"
   HREF="node153.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5287"
-  HREF="node216.html">
+<A NAME="tex2html5302"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5289"
-  HREF="node219.html">
+<A NAME="tex2html5304"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,81 +92,87 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5292"
-  HREF="node155.html">Ambito</A>
-<B>Sup:</B> <A NAME="tex2html5286"
-  HREF="node131.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5280"
-  HREF="node153.html">Environments</A>
+<B> Sig:</B> <A NAME="tex2html5307"
+  HREF="node155.html">Correo</A>
+<B>Sup:</B> <A NAME="tex2html5301"
+  HREF="node132.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5295"
+  HREF="node153.html">Settings disponibles/Available Settings</A>
 <B> Con:</B> 
-<A NAME="tex2html5287"
-  HREF="node216.html">
+<A NAME="tex2html5302"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5289"
-  HREF="node219.html">
+<A NAME="tex2html5304"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION063230000000000000000"></A>
-<A NAME="section:correo"></A>
-<BR>
-Correo
+<H1><A NAME="SECTION063220000000000000000">
+Environments</A>
 </H1>
-<PRE>
-[~/srcSTW/sinatra-faq/mail(esau)]$ cat app.rb 
-require 'sinatra'
-require 'pony'
-raise "Execute:\n\t#{$0} password email_to email_from" if ARGV.length.zero?
-get '/' do
-    email = ARGV.shift
-    pass = ARGV.shift
-    Pony.mail({
-      :to =&gt; email,
-      :body =&gt; "Hello Casiano",
-      :subject =&gt; 'Howdy, Partna!',
-      :via =&gt; :smtp,
-      :via_options =&gt; {
-          :address              =&gt; 'smtp.gmail.com',
-          :port                 =&gt; '587',
-          :enable_starttls_auto =&gt; true,
-          :user_name            =&gt; ARGV.shift,
-          :password             =&gt; pass,
-          :authentication       =&gt; :plain, # :plain, :login, :cram_md5, no auth by default
-          :domain               =&gt; "localhost.localdomain" # the HELO domain provided by the client to the server
-        }
-    })
-    "Check your email at #{email}"
-end
-</PRE>
-
-<P>
 
 <OL>
-<LI><A NAME="tex2html674"
-  HREF="http://www.millwoodonline.co.uk/blog/getting-started-with-sinatra">Getting started with Sinatra</A>
+<LI>There are three predefined environments:
+ <TT>development</TT> ,  <TT>production</TT>  and  <TT>test</TT> . 
+
+<P>
+</LI>
+<LI>Environments can be set through the <code>RACK_ENV</code> environment variable. 
+
+<P>
+</LI>
+<LI>The default value is <code>development</code>
+</LI>
+<LI>In the <code>development</code> environment all templates are
+reloaded between requests, and special <code>not_found</code> and 
+<code>error</code> handlers
+display stack traces in your browser
+</LI>
+<LI>In the <code>production</code> and <code>test</code> environments, templates are cached by default
+</LI>
+<LI>To run different environments, set the <code>RACK_ENV</code> environment variable:
+
+<P>
+<PRE>
+RACK_ENV=production ruby my_app.rb
+</PRE>
+</LI>
+<LI>You can use predefined methods: <code>development?</code>, <code>test?</code> 
+and <code>production?</code> to check the current environment setting:
+
+<P>
+<PRE>
+get '/' do
+  if settings.development?
+    "development!"
+  else
+    "not development!"
+  end
+end
+</PRE>
 </LI>
 </OL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5291"
+<A NAME="tex2html5306"
   HREF="node155.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5285"
-  HREF="node131.html">
+<A NAME="tex2html5300"
+  HREF="node132.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5279"
+<A NAME="tex2html5294"
   HREF="node153.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5287"
-  HREF="node216.html">
+<A NAME="tex2html5302"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5289"
-  HREF="node219.html">
+<A NAME="tex2html5304"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -217,17 +223,17 @@ end
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5292"
-  HREF="node155.html">Ambito</A>
-<B>Sup:</B> <A NAME="tex2html5286"
-  HREF="node131.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5280"
-  HREF="node153.html">Environments</A>
+<B> Sig:</B> <A NAME="tex2html5307"
+  HREF="node155.html">Correo</A>
+<B>Sup:</B> <A NAME="tex2html5301"
+  HREF="node132.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5295"
+  HREF="node153.html">Settings disponibles/Available Settings</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-03-29</I>
+2014-03-30</I>
 </ADDRESS>
 </BODY>
 </HTML>

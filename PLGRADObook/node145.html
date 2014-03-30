@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Passing a Request</TITLE>
-<META NAME="description" CONTENT="Passing a Request">
+<TITLE>halt</TITLE>
+<META NAME="description" CONTENT="halt">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node146.html">
 <LINK REL="previous" HREF="node144.html">
-<LINK REL="up" HREF="node131.html">
+<LINK REL="up" HREF="node132.html">
 <LINK REL="next" HREF="node146.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5162"
+<A NAME="tex2html5177"
   HREF="node146.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5156"
-  HREF="node131.html">
+<A NAME="tex2html5171"
+  HREF="node132.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5150"
+<A NAME="tex2html5165"
   HREF="node144.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5158"
-  HREF="node216.html">
+<A NAME="tex2html5173"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5160"
-  HREF="node219.html">
+<A NAME="tex2html5175"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,66 +92,84 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5163"
-  HREF="node146.html">Triggering Another Route: calling</A>
-<B>Sup:</B> <A NAME="tex2html5157"
-  HREF="node131.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5151"
-  HREF="node144.html">halt</A>
+<B> Sig:</B> <A NAME="tex2html5178"
+  HREF="node146.html">Passing a Request</A>
+<B>Sup:</B> <A NAME="tex2html5172"
+  HREF="node132.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5166"
+  HREF="node144.html">Uploads. Subida de Ficheros</A>
 <B> Con:</B> 
-<A NAME="tex2html5158"
-  HREF="node216.html">
+<A NAME="tex2html5173"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5160"
-  HREF="node219.html">
+<A NAME="tex2html5175"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION063140000000000000000">
-Passing a Request</A>
+<H1><A NAME="SECTION063130000000000000000">
+halt</A>
 </H1>
-When we want to pass processing 
-to the next matching route we use
-<code>pass</code>:
+
+<P>
+Sometimes we want to stop the program: maybe a critical error has ocurred.
+To immediately stop a request within a filter or route use:
 
 <P>
 <PRE>
-get '/guess/:who' do
-  pass unless params[:who] == 'Frank'
-  'You got me!'
-end
-
-get '/guess/*' do
-  'You missed!'
-end
+halt
 </PRE>
-The route block is immediately exited and control continues with
-the next matching route. 
+You can also specify the status when halting:
 
 <P>
-If no matching route is found, a 404 is
-returned.
+<PRE>
+halt 410
+</PRE>
+Or the body:
+
+<P>
+<PRE>
+halt 'this will be the body'
+</PRE>
+Or both:
+
+<P>
+<PRE>
+halt 401, 'go away!'
+</PRE>
+With headers:
+
+<P>
+<PRE>
+halt 402, {'Content-Type' =&gt; 'text/plain'}, 'revenge'
+</PRE>
+It is of course possible to combine a template with halt:
+
+<P>
+<PRE>
+halt erb(:error)
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5162"
+<A NAME="tex2html5177"
   HREF="node146.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5156"
-  HREF="node131.html">
+<A NAME="tex2html5171"
+  HREF="node132.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5150"
+<A NAME="tex2html5165"
   HREF="node144.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5158"
-  HREF="node216.html">
+<A NAME="tex2html5173"
+  HREF="node217.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5160"
-  HREF="node219.html">
+<A NAME="tex2html5175"
+  HREF="node220.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -202,17 +220,17 @@ returned.
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5163"
-  HREF="node146.html">Triggering Another Route: calling</A>
-<B>Sup:</B> <A NAME="tex2html5157"
-  HREF="node131.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5151"
-  HREF="node144.html">halt</A>
+<B> Sig:</B> <A NAME="tex2html5178"
+  HREF="node146.html">Passing a Request</A>
+<B>Sup:</B> <A NAME="tex2html5172"
+  HREF="node132.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5166"
+  HREF="node144.html">Uploads. Subida de Ficheros</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-03-29</I>
+2014-03-30</I>
 </ADDRESS>
 </BODY>
 </HTML>
