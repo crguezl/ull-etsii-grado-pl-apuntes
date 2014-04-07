@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Usando PATH_INFO y erubis para construir una aplicación (Noah Gibbs)</TITLE>
-<META NAME="description" CONTENT="Usando PATH_INFO y erubis para construir una aplicación (Noah Gibbs)">
+<TITLE>Detectando el Proceso que está Usando un Puerto</TITLE>
+<META NAME="description" CONTENT="Detectando el Proceso que está Usando un Puerto">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node101.html">
 <LINK REL="previous" HREF="node99.html">
-<LINK REL="up" HREF="node96.html">
+<LINK REL="up" HREF="node97.html">
 <LINK REL="next" HREF="node101.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4369"
+<A NAME="tex2html4375"
   HREF="node101.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4363"
-  HREF="node96.html">
+<A NAME="tex2html4369"
+  HREF="node97.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4357"
+<A NAME="tex2html4363"
   HREF="node99.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4365"
-  HREF="node220.html">
+<A NAME="tex2html4371"
+  HREF="node221.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4367"
-  HREF="node223.html">
+<A NAME="tex2html4373"
+  HREF="node224.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,197 +92,101 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4370"
-  HREF="node101.html">HTTP</A>
-<B>Sup:</B> <A NAME="tex2html4364"
-  HREF="node96.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4358"
-  HREF="node99.html">Detectando el Proceso que</A>
+<B> Sig:</B> <A NAME="tex2html4376"
+  HREF="node101.html">Usando PATH_INFO y erubis</A>
+<B>Sup:</B> <A NAME="tex2html4370"
+  HREF="node97.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4364"
+  HREF="node99.html">Analizando env con pry-debugger</A>
 <B> Con:</B> 
-<A NAME="tex2html4365"
-  HREF="node220.html">
+<A NAME="tex2html4371"
+  HREF="node221.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4367"
-  HREF="node223.html">
+<A NAME="tex2html4373"
+  HREF="node224.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html4371"
-  HREF="node100.html#SECTION06140010000000000000">config.ru</A>
-<LI><A NAME="tex2html4372"
-  HREF="node100.html#SECTION06140020000000000000">Template erb</A>
-<LI><A NAME="tex2html4373"
-  HREF="node100.html#SECTION06140030000000000000">Arrancando el Servidor</A>
-<LI><A NAME="tex2html4374"
-  HREF="node100.html#SECTION06140040000000000000">Ejecutando un cliente</A>
-<LI><A NAME="tex2html4375"
-  HREF="node100.html#SECTION06140050000000000000">Logs del servidor</A>
-<LI><A NAME="tex2html4376"
-  HREF="node100.html#SECTION06140060000000000000">Véase</A>
-</UL></UL></UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION06140000000000000000">
-Usando <TT>PATH_INFO</TT> y <TT>erubis</TT> para construir una aplicación (Noah Gibbs)</A>
+<H1><A NAME="SECTION06130000000000000000">
+Detectando el Proceso que está Usando un Puerto</A>
 </H1>
 
 <P>
-
-<H4><A NAME="SECTION06140010000000000000">
-config.ru</A>
-</H4>
-  
-
-<P>
+Si intentamos ejecutar una segunda instancia del servidor mientras otra instancia esta ejecutandose 
+obtenemos un error que indica que el puerto está en uso:
 <PRE>
-[~/local/src/ruby/sinatra/rack/hangout-framework(master)]$ cat config.ru 
-require "erubis"
-
-use Rack::ContentType
-
-def output(text, options = {})
-  [ options[:status] || 200,
-    {}, [ text ].flatten ]
-end
-
-def from_erb(file, vars = {})
-  eruby = Erubis::Eruby.new File.read(file)
-  output eruby.result vars
-end
-
-run proc { |env|
-  path = env['PATH_INFO']
-  if path =~ %r{^/foo}
-    from_erb "template.html.erb"
-  else
-    output "Not found!", :status =&gt; 400
-  end
-}
+[~/sinatra/sinatra-simple(master)]$ rackup
+Thin web server (v1.6.1 codename Death Proof)
+Maximum connections set to 1024
+Listening on 0.0.0.0:9292, CTRL+C to stop
+/Users/casiano/.rvm/gems/ruby-2.0.0-p247/gems/eventmachine-1.0.3/lib/eventmachine.rb:526:
+  in `start_tcp_server': no acceptor 
+  (port is in use or requires root privileges) (RuntimeError)
+  from /Users/casiano/.rvm/gems/ruby-2.0.0-p247/gems/eventmachine-1.0.3/lib/eventmachine.rb:526:
+    in `start_server'
+...
+</PRE>
+Si sabemos en que puerto esta corriendo - como es el caso - podemos hacer algo así
+para saber el PID del proceso que lo ocupa:
+<PRE>
+[~/sinatra/sinatra-simple(master)]$ lsof -i :9292
+COMMAND   PID    USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+ruby    52870 casiano    9u  IPv4 0x9f3ffc595152af29      0t0  TCP *:armtechdaemon (LISTEN)
+</PRE>
+Si no lo sabemos podemos hacer:
+<PRE>
+[~/sinatra/sinatra-simple(master)]$ ps -fA | egrep ruby
+  501 52870   565   0 11:16AM ttys003    0:00.61 ruby /Users/casiano/.rvm/gems/ruby-2.0.0-p247/bin/rackup
+  501 53230 52950   0 11:35AM ttys006    0:00.00 egrep ruby
+</PRE>
+Si tenemos privilegios suficientes podemos ahora eliminar el proceso:
+<PRE>
+[~/sinatra/sinatra-simple(master)]$ kill -9 52870
 </PRE>
 
 <P>
-
-<H4><A NAME="SECTION06140020000000000000">
-Template erb</A>
-</H4>
-  
-
-<P>
 <PRE>
-[~/local/src/ruby/sinatra/rack/hangout-framework(master)]$ cat template.html.erb 
-&lt;p&gt; A template! &lt;/p&gt;
-&lt;% 10.times do -%&gt; &lt;p&gt; Pretty cool! &lt;/p&gt; &lt;% end -%&gt;
+[~/sinatra/sinatra-simple(master)]$ rackup
+Thin web server (v1.6.1 codename Death Proof)
+Maximum connections set to 1024
+Listening on 0.0.0.0:9292, CTRL+C to stop
+Killed: 9
 </PRE>
 
 <P>
-
-<H4><A NAME="SECTION06140030000000000000">
-Arrancando el Servidor</A>
-</H4>
-  
-
+El comando 
 <PRE>
-[~/local/src/ruby/sinatra/rack/hangout-framework(master)]$ rackup
-&gt;&gt; Thin web server (v1.5.1 codename Straight Razor)
-&gt;&gt; Maximum connections set to 1024
-&gt;&gt; Listening on 0.0.0.0:9292, CTRL+C to stop}
+$ lsof -i | egrep -i 'tcp.*(\d+.)+'
 </PRE>
-
-<P>
-
-<H4><A NAME="SECTION06140040000000000000">
-Ejecutando un cliente</A>
-</H4>
-  
-
-<PRE>
-[~/local/src/ruby/sinatra/rack/hangout-framework(master)]$ curl -v http://localhost:9292/foochazam
-* About to connect() to localhost port 9292 (#0)
-*   Trying ::1... Connection refused
-*   Trying 127.0.0.1... connected
-* Connected to localhost (127.0.0.1) port 9292 (#0)
-&gt; GET /foochazam HTTP/1.1
-&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8y zlib/1.2.5
-&gt; Host: localhost:9292
-&gt; Accept: */*
-&gt; 
-&lt; HTTP/1.1 200 OK
-&lt; Content-Type: text/html
-&lt; Transfer-Encoding: chunked
-&lt; Connection: close
-&lt; Server: thin 1.5.1 codename Straight Razor
-&lt; 
-&lt;p&gt; A template! &lt;/p&gt;
- &lt;p&gt; Pretty cool! &lt;/p&gt;  &lt;p&gt; Pretty cool! &lt;/p&gt;  &lt;p&gt; Pretty cool! &lt;/p&gt;  
- &lt;p&gt; Pretty cool! &lt;/p&gt;  &lt;p&gt; Pretty cool! &lt;/p&gt;  &lt;p&gt; Pretty cool! &lt;/p&gt;  
- &lt;p&gt; Pretty cool! &lt;/p&gt;  &lt;p&gt; Pretty cool! &lt;/p&gt;  &lt;p&gt; Pretty cool! &lt;/p&gt;  
- &lt;p&gt; Pretty cool! &lt;/p&gt; 
-* Closing connection #0
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION06140050000000000000">
-Logs del servidor</A>
-</H4>
-  
-
-<P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/hangout-framework(master)]$ rackup
-&gt;&gt; Thin web server (v1.5.1 codename Straight Razor)
-&gt;&gt; Maximum connections set to 1024
-&gt;&gt; Listening on 0.0.0.0:9292, CTRL+C to stop
- 127.0.0.1 - - [20/Oct/2013 12:22:37] "GET /foochazam HTTP/1.1" 200 - 0.0014
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION06140060000000000000">
-Véase</A>
-</H4>
-  
-
-<P>
+Nos da una lista bastante completa de como están nuestras conexiones.
 
 <OL>
-<LI><A NAME="tex2html517"
-  HREF="http://www.kuwata-lab.com/erubis/">erubis</A>
-</LI>
-<LI>Noah Gibbs <A NAME="tex2html518"
-  HREF="https://github.com/noahgibbs/hangout-framework">Demo Rack framework for March 6th, 2013 Ruby Hangout.</A>
-</LI>
-<LI><A NAME="tex2html519"
-  HREF="http://youtu.be/evDJMLb1d28">Ruby Hangout 3-13 Noah Gibbs</A>
+<LI><code>-i [i]</code>   selects  the  listing  of  files  any of whose Internet address matches the address
+                specified in i.  If no address is specified, this option selects the listing of all
+                Internet and x.25 (HP-UX) network files.
 </LI>
 </OL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4369"
+<A NAME="tex2html4375"
   HREF="node101.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4363"
-  HREF="node96.html">
+<A NAME="tex2html4369"
+  HREF="node97.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4357"
+<A NAME="tex2html4363"
   HREF="node99.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4365"
-  HREF="node220.html">
+<A NAME="tex2html4371"
+  HREF="node221.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4367"
-  HREF="node223.html">
+<A NAME="tex2html4373"
+  HREF="node224.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -333,12 +237,12 @@ Véase</A>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4370"
-  HREF="node101.html">HTTP</A>
-<B>Sup:</B> <A NAME="tex2html4364"
-  HREF="node96.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4358"
-  HREF="node99.html">Detectando el Proceso que</A>
+<B> Sig:</B> <A NAME="tex2html4376"
+  HREF="node101.html">Usando PATH_INFO y erubis</A>
+<B>Sup:</B> <A NAME="tex2html4370"
+  HREF="node97.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4364"
+  HREF="node99.html">Analizando env con pry-debugger</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Testing en Sinatra</TITLE>
-<META NAME="description" CONTENT="Testing en Sinatra">
+<TITLE>Aplicaciones Modulares</TITLE>
+<META NAME="description" CONTENT="Aplicaciones Modulares">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -20,28 +20,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
 <LINK REL="next" HREF="node170.html">
-<LINK REL="previous" HREF="node168.html">
-<LINK REL="up" HREF="node95.html">
+<LINK REL="previous" HREF="node164.html">
+<LINK REL="up" HREF="node96.html">
 <LINK REL="next" HREF="node170.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5553"
+<A NAME="tex2html5559"
   HREF="node170.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5547"
-  HREF="node95.html">
+<A NAME="tex2html5553"
+  HREF="node96.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5541"
+<A NAME="tex2html5547"
   HREF="node168.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5549"
-  HREF="node220.html">
+<A NAME="tex2html5555"
+  HREF="node221.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5551"
-  HREF="node223.html">
+<A NAME="tex2html5557"
+  HREF="node224.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,93 +92,69 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5554"
-  HREF="node170.html">CoffeeScript y Sinatra</A>
-<B>Sup:</B> <A NAME="tex2html5548"
-  HREF="node95.html">PARTE: SINATRA</A>
-<B> Ant:</B> <A NAME="tex2html5542"
-  HREF="node168.html">Aplicaciones Modulares</A>
+<B> Sig:</B> <A NAME="tex2html5560"
+  HREF="node170.html">Testing en Sinatra</A>
+<B>Sup:</B> <A NAME="tex2html5554"
+  HREF="node96.html">PARTE: SINATRA</A>
+<B> Ant:</B> <A NAME="tex2html5548"
+  HREF="node168.html">Petición y Respuesta</A>
 <B> Con:</B> 
-<A NAME="tex2html5549"
-  HREF="node220.html">
+<A NAME="tex2html5555"
+  HREF="node221.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5551"
-  HREF="node223.html">
+<A NAME="tex2html5557"
+  HREF="node224.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION06600000000000000000">
-Testing en Sinatra</A>
+<H1><A NAME="SECTION06500000000000000000">
+Aplicaciones Modulares</A>
 </H1>
 
-<OL>
-<LI><A NAME="tex2html717"
-  HREF="http://www.sitepoint.com/build-sinatra-api-using-tdd-heroku-continuous-integration-travis/">Build a Sinatra API Using TDD, Heroku, and Continuous Integration with Travis
-by Darren Jones. Published December 9, 2013</A>
-SitePoint
-</LI>
-<LI>Código del artículo anterior
-
-</LI>
-<LI><A NAME="tex2html719"
-  HREF="http://www.millwoodonline.co.uk/blog/mini-minitest-tutorial?utm_content=buffer1e8e1&amp;utm_medium=social&amp;utm_source=twitter.com&amp;utm_campaign=buffer">Mini MiniTest Tutorial by Tim Millwood</A>
 <P>
-We'll use MiniTest::Spec, which is a functionally complete spec engine, to create a spec for a Hello World! Sinatra application. Firstly we create a folder 'spec' within the application directory. Within this, two files.
+Las aplicaciones normales Sinatra se denominan <A NAME="20113"></A><SPAN  CLASS="textbf">alicaciones clásicas sinatra</SPAN>
+y viven en <A NAME="tex2html713"
+  HREF="https://github.com/sinatra/sinatra/blob/master/lib/sinatra/base.rb">Sinatra::Application</A>,
+que es una subclase de <A NAME="tex2html714"
+  HREF="https://github.com/sinatra/sinatra/blob/master/lib/sinatra/base.rb">Sinatra::Base</A>.
 
 <P>
-<PRE>
-ENV['RACK_ENV'] = 'test'
-
-require 'minitest/autorun'
-require 'rack/test'
-require_relative '../app'
-
-include Rack::Test::Methods
-
-def app
-  Sinatra::Application
-end
-</PRE>
+En las aplicaciones clásicas Sinatra extiende la clase <code>Object</code> en el momento 
+de cargarse lo que, en cierto modo, contamina el espacio de nombres global. Eso dificulta que nuestra aplicación 
+pueda ser distribuída como una gema y que se puedan tener varias aplicaciones clásicas 
+en un único proceso.
 
 <P>
-The above code is to go into the file <code>spec_helper.rb</code>. It sets up the initial setting for the test. We set the <code>RACK_ENV</code> environment variable to 'test' then require '<code>minitest/autorun</code>' for MiniTest, 'rack/test' because we are testing a rack based application and our application, in this case app.rb. The Rack::Test::Methods module is included to add a number of helper methods to allow the testing of rack applications. Finally we define the application as a Sinatra Application.
-The next file <code>app_spec.rb</code> will be our spec.
-<PRE>
-require_relative 'spec_helper'
+Una aplicación Sinatra se dice una <A NAME="20119"></A><SPAN  CLASS="textbf">aplicación modular sinatra</SPAN>
+si no hace uso de <A NAME="tex2html715"
+  HREF="https://github.com/sinatra/sinatra/blob/master/lib/sinatra/base.rb">Sinatra::Application</A>,
+renunciando al DSL de alto nivel proveído por Sinatra,
+sino que hereda de <A NAME="tex2html716"
+  HREF="https://github.com/sinatra/sinatra/blob/master/lib/sinatra/base.rb">Sinatra::Base</A>.
 
-describe 'Hello World' do
-
-  it 'should have hello world' do
-    get '/'
-    last_response.must_be :ok?
-    last_response.body.must_include "Hello world!"
-  end
-end
-</PRE>
-Firstly the <code>spec_helper</code> file is required, we then create a describe block to describe the 'Hello World' application. Within this a single behaviour. We run a get method against the root route and check the response is ok, and that the page includes the text 'Hello World!'.
-</LI>
-</OL>
+<P>
+Podemos combinar una aplicación clásica  con una modular, pero sólo puede haber una aplicación clásica por proceso.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5553"
+<A NAME="tex2html5559"
   HREF="node170.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5547"
-  HREF="node95.html">
+<A NAME="tex2html5553"
+  HREF="node96.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5541"
+<A NAME="tex2html5547"
   HREF="node168.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5549"
-  HREF="node220.html">
+<A NAME="tex2html5555"
+  HREF="node221.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5551"
-  HREF="node223.html">
+<A NAME="tex2html5557"
+  HREF="node224.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -229,12 +205,12 @@ Firstly the <code>spec_helper</code> file is required, we then create a describe
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5554"
-  HREF="node170.html">CoffeeScript y Sinatra</A>
-<B>Sup:</B> <A NAME="tex2html5548"
-  HREF="node95.html">PARTE: SINATRA</A>
-<B> Ant:</B> <A NAME="tex2html5542"
-  HREF="node168.html">Aplicaciones Modulares</A>
+<B> Sig:</B> <A NAME="tex2html5560"
+  HREF="node170.html">Testing en Sinatra</A>
+<B>Sup:</B> <A NAME="tex2html5554"
+  HREF="node96.html">PARTE: SINATRA</A>
+<B> Ant:</B> <A NAME="tex2html5548"
+  HREF="node168.html">Petición y Respuesta</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

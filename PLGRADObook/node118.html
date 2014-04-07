@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Rack::Cascade</TITLE>
-<META NAME="description" CONTENT="Rack::Cascade">
+<TITLE>Código de Rack::Builder</TITLE>
+<META NAME="description" CONTENT="Código de Rack::Builder">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node119.html">
 <LINK REL="previous" HREF="node117.html">
-<LINK REL="up" HREF="node96.html">
+<LINK REL="up" HREF="node97.html">
 <LINK REL="next" HREF="node119.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4688"
+<A NAME="tex2html4694"
   HREF="node119.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4682"
-  HREF="node96.html">
+<A NAME="tex2html4688"
+  HREF="node97.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4676"
+<A NAME="tex2html4682"
   HREF="node117.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4684"
-  HREF="node220.html">
+<A NAME="tex2html4690"
+  HREF="node221.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4686"
-  HREF="node223.html">
+<A NAME="tex2html4692"
+  HREF="node224.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,206 +92,200 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4689"
-  HREF="node119.html">Rack::Mount</A>
-<B>Sup:</B> <A NAME="tex2html4683"
-  HREF="node96.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4677"
-  HREF="node117.html">Código de Rack::Builder</A>
+<B> Sig:</B> <A NAME="tex2html4695"
+  HREF="node119.html">Rack::Cascade</A>
+<B>Sup:</B> <A NAME="tex2html4689"
+  HREF="node97.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4683"
+  HREF="node117.html">Construyendo Nuestro Propio Rack::Builder</A>
 <B> Con:</B> 
-<A NAME="tex2html4684"
-  HREF="node220.html">
+<A NAME="tex2html4690"
+  HREF="node221.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4686"
-  HREF="node223.html">
+<A NAME="tex2html4692"
+  HREF="node224.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html4690"
-  HREF="node118.html#SECTION061220010000000000000">Ejemplo</A>
-<LI><A NAME="tex2html4691"
-  HREF="node118.html#SECTION061220020000000000000">Código del Constructor</A>
-<LI><A NAME="tex2html4692"
-  HREF="node118.html#SECTION061220030000000000000">Código de <TT>call</TT></A>
-</UL></UL></UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION061220000000000000000">
-Rack::Cascade</A>
+<H1><A NAME="SECTION061210000000000000000">
+Código de </A><A NAME="tex2html599"
+  HREF="http://rack.rubyforge.org/doc/Rack/Builder.html">Rack::Builder</A>
 </H1>
-
-<P>
-<A NAME="tex2html601"
-  HREF="http://rack.rubyforge.org/doc/Rack/Cascade.html">Rack::Cascade</A> 
-tries an request on several apps, and returns the first response
-that is not 404 (or in a list of configurable status codes).
-
-<P>
-
-<H4><A NAME="SECTION061220010000000000000">
-Ejemplo</A>
-</H4>
-  
-
-<P>
+Tomado de 
+<A NAME="tex2html600"
+  HREF="https://github.com/rack/rack/blob/master/lib/rack/builder.rb">https://github.com/rack/rack/blob/master/lib/rack/builder.rb</A>:
 <PRE>
-[~/local/src/ruby/sinatra/rack/rack-cascade]$ cat cascade2.ru 
-statuses = [200,404]
-apps = [
-  lambda {|env| 
-    status = statuses.sample
-    [status, {}, ["I'm the first app. Status = #{status}\n"]]
-  }, 
-  lambda {|env| 
-    status = statuses.sample
-    [status, {}, ["I'm the second app. Status = #{status}\n"]]
-  }, 
-  lambda {|env| 
-    status = statuses.sample
-    [status, {}, ["I'm the last app. Status = #{status}\n"]]
-  } 
-]
-use Rack::ContentLength 
-use Rack::ContentType 
-run Rack::Cascade.new(apps)
-</PRE>
+module Rack
+  # Rack::Builder implements a small DSL to iteratively construct Rack
+  # applications.
+  #
+  # Example:
+  #
+  #  require 'rack/lobster'
+  #  app = Rack::Builder.new do
+  #    use Rack::CommonLogger
+  #    use Rack::ShowExceptions
+  #    map "/lobster" do
+  #      use Rack::Lint
+  #      run Rack::Lobster.new
+  #    end
+  #  end
+  #
+  #  run app
+  #
+  # Or
+  #
+  #  app = Rack::Builder.app do
+  #    use Rack::CommonLogger
+  #    run lambda { |env| [200, {'Content-Type' =&gt; 'text/plain'}, ['OK']] }
+  #  end
+  #
+  #  run app
+  #
+  # +use+ adds middleware to the stack, +run+ dispatches to an application.
+  # You can use +map+ to construct a Rack::URLMap in a convenient way.
 
-<P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rack-cascade]$ rake client
-curl -v 'http://localhost:9292'
-* About to connect() to localhost port 9292 (#0)
-*   Trying 127.0.0.1... connected
-* Connected to localhost (127.0.0.1) port 9292 (#0)
-&gt; GET / HTTP/1.1
-&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8y zlib/1.2.5
-&gt; Host: localhost:9292
-&gt; Accept: */*
-&gt; 
-&lt; HTTP/1.1 200 OK
-&lt; Content-Type: text/html
-&lt; Content-Length: 33
-&lt; Connection: keep-alive
-&lt; Server: thin 1.5.1 codename Straight Razor
-&lt; 
-I'm the second app. Status = 200
-* Connection #0 to host localhost left intact
-* Closing connection #0
-</PRE>
+  class Builder
+    def self.parse_file(config, opts = Server::Options.new)
+      options = {}
+      if config =~ /\.ru$/
+        cfgfile = ::File.read(config)
+        if cfgfile[/^#\\(.*)/] &amp;&amp; opts
+          options = opts.parse! $1.split(/\s+/)
+        end
+        cfgfile.sub!(/^__END__\n.*\Z/m, '')
+        app = new_from_string cfgfile, config
+      else
+        require config
+        app = Object.const_get(::File.basename(config, '.rb').capitalize)
+      end
+      return app, options
+    end
 
-<P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rack-cascade]$ rake client
-curl -v 'http://localhost:9292'
-* About to connect() to localhost port 9292 (#0)
-*   Trying 127.0.0.1... connected
-* Connected to localhost (127.0.0.1) port 9292 (#0)
-&gt; GET / HTTP/1.1
-&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8y zlib/1.2.5
-&gt; Host: localhost:9292
-&gt; Accept: */*
-&gt; 
-&lt; HTTP/1.1 200 OK
-&lt; Content-Type: text/html
-&lt; Content-Length: 31
-&lt; Connection: keep-alive
-&lt; Server: thin 1.5.1 codename Straight Razor
-&lt; 
-I'm the last app. Status = 200
-* Connection #0 to host localhost left intact
-* Closing connection #0
-</PRE>
+    def self.new_from_string(builder_script, file="(rackup)")
+      eval "Rack::Builder.new {\n" + builder_script + "\n}.to_app",
+        TOPLEVEL_BINDING, file, 0
+    end
 
-<P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rack-cascade]$ rake client
-curl -v 'http://localhost:9292'
-* About to connect() to localhost port 9292 (#0)
-*   Trying 127.0.0.1... connected
-* Connected to localhost (127.0.0.1) port 9292 (#0)
-&gt; GET / HTTP/1.1
-&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8y zlib/1.2.5
-&gt; Host: localhost:9292
-&gt; Accept: */*
-&gt; 
-&lt; HTTP/1.1 200 OK
-&lt; Content-Type: text/html
-&lt; Content-Length: 32
-&lt; Connection: keep-alive
-&lt; Server: thin 1.5.1 codename Straight Razor
-&lt; 
-I'm the first app. Status = 200
-* Connection #0 to host localhost left intact
-* Closing connection #0]
-</PRE>
+    def initialize(default_app = nil,&amp;block)
+      @use, @map, @run = [], nil, default_app
+      instance_eval(&amp;block) if block_given?
+    end
 
-<P>
+    def self.app(default_app = nil, &amp;block)
+      self.new(default_app, &amp;block).to_app
+    end
 
-<H4><A NAME="SECTION061220020000000000000">
-Código del Constructor</A>
-</H4>
-  
+    # Specifies middleware to use in a stack.
+    #
+    #   class Middleware
+    #     def initialize(app)
+    #       @app = app
+    #     end
+    #
+    #     def call(env)
+    #       env["rack.some_header"] = "setting an example"
+    #       @app.call(env)
+    #     end
+    #   end
+    #
+    #   use Middleware
+    #   run lambda { |env| [200, { "Content-Type =&gt; "text/plain" }, ["OK"]] }
+    #
+    # All requests through to this application will first be processed by the middleware class.
+    # The +call+ method in this example sets an additional environment key which then can be
+    # referenced in the application if required.
+    def use(middleware, *args, &amp;block)
+      if @map
+        mapping, @map = @map, nil
+        @use &lt;&lt; proc { |app| generate_map app, mapping }
+      end
+      @use &lt;&lt; proc { |app| middleware.new(app, *args, &amp;block) }
+    end
 
-<P>
-<PRE>
-        # File lib/rack/cascade.rb, line 11
-11:     def initialize(apps, catch=404)
-12:       @apps = []; @has_app = {}
-13:       apps.each { |app| add app }
-14: 
-15:       @catch = {}
-16:       [*catch].each { |status| @catch[status] = true }
-17:     end
-</PRE>
+    # Takes an argument that is an object that responds to #call and returns a Rack response.
+    # The simplest form of this is a lambda object:
+    #
+    #   run lambda { |env| [200, { "Content-Type" =&gt; "text/plain" }, ["OK"]] }
+    #
+    # However this could also be a class:
+    #
+    #   class Heartbeat
+    #     def self.call(env)
+    #      [200, { "Content-Type" =&gt; "text/plain" }, ["OK"]]
+    #    end
+    #   end
+    #
+    #   run Heartbeat
+    def run(app)
+      @run = app
+    end
 
-<P>
+    # Creates a route within the application.
+    #
+    #   Rack::Builder.app do
+    #     map '/' do
+    #       run Heartbeat
+    #     end
+    #   end
+    #
+    # The +use+ method can also be used here to specify middleware to run under a specific path:
+    #
+    #   Rack::Builder.app do
+    #     map '/' do
+    #       use Middleware
+    #       run Heartbeat
+    #     end
+    #   end
+    #
+    # This example includes a piece of middleware which will run before requests hit +Heartbeat+.
+    #
+    def map(path, &amp;block)
+      @map ||= {}
+      @map[path] = block
+    end
 
-<H4><A NAME="SECTION061220030000000000000">
-Código de <TT>call</TT></A>
-</H4>
-  
+    def to_app
+      app = @map ? generate_map(@run, @map) : @run
+      fail "missing run or map statement" unless app
+      @use.reverse.inject(app) { |a,e| e[a] }
+    end
 
-<P>
-<PRE>
-        # File lib/rack/cascade.rb, line 19
-19:     def call(env)
-20:       result = NotFound
-21: 
-22:       @apps.each do |app|
-23:         result = app.call(env)
-24:         break unless @catch.include?(result[0].to_i)
-25:       end
-26: 
-27:       result
-28:     end
+    def call(env)
+      to_app.call(env)
+    end
+
+    private
+
+    def generate_map(default_app, mapping)
+      mapped = default_app ? {'/' =&gt; default_app} : {}
+      mapping.each { |r,b| mapped[r] = self.class.new(default_app, &amp;b) }
+      URLMap.new(mapped)
+    end
+  end
+end
 </PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4688"
+<A NAME="tex2html4694"
   HREF="node119.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4682"
-  HREF="node96.html">
+<A NAME="tex2html4688"
+  HREF="node97.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4676"
+<A NAME="tex2html4682"
   HREF="node117.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4684"
-  HREF="node220.html">
+<A NAME="tex2html4690"
+  HREF="node221.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4686"
-  HREF="node223.html">
+<A NAME="tex2html4692"
+  HREF="node224.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -342,12 +336,12 @@ Código de <TT>call</TT></A>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4689"
-  HREF="node119.html">Rack::Mount</A>
-<B>Sup:</B> <A NAME="tex2html4683"
-  HREF="node96.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4677"
-  HREF="node117.html">Código de Rack::Builder</A>
+<B> Sig:</B> <A NAME="tex2html4695"
+  HREF="node119.html">Rack::Cascade</A>
+<B>Sup:</B> <A NAME="tex2html4689"
+  HREF="node97.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4683"
+  HREF="node117.html">Construyendo Nuestro Propio Rack::Builder</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

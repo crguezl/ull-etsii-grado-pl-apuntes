@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>CoffeeScript y Sinatra</TITLE>
-<META NAME="description" CONTENT="CoffeeScript y Sinatra">
+<TITLE>Testing en Sinatra</TITLE>
+<META NAME="description" CONTENT="Testing en Sinatra">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node171.html">
 <LINK REL="previous" HREF="node169.html">
-<LINK REL="up" HREF="node95.html">
+<LINK REL="up" HREF="node96.html">
 <LINK REL="next" HREF="node171.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5567"
+<A NAME="tex2html5573"
   HREF="node171.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5561"
-  HREF="node95.html">
+<A NAME="tex2html5567"
+  HREF="node96.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5555"
+<A NAME="tex2html5561"
   HREF="node169.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5563"
-  HREF="node220.html">
+<A NAME="tex2html5569"
+  HREF="node221.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5565"
-  HREF="node223.html">
+<A NAME="tex2html5571"
+  HREF="node224.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,76 +92,93 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5568"
-  HREF="node171.html">Openid y Sinatra</A>
-<B>Sup:</B> <A NAME="tex2html5562"
-  HREF="node95.html">PARTE: SINATRA</A>
-<B> Ant:</B> <A NAME="tex2html5556"
-  HREF="node169.html">Testing en Sinatra</A>
+<B> Sig:</B> <A NAME="tex2html5574"
+  HREF="node171.html">CoffeeScript y Sinatra</A>
+<B>Sup:</B> <A NAME="tex2html5568"
+  HREF="node96.html">PARTE: SINATRA</A>
+<B> Ant:</B> <A NAME="tex2html5562"
+  HREF="node169.html">Aplicaciones Modulares</A>
 <B> Con:</B> 
-<A NAME="tex2html5563"
-  HREF="node220.html">
+<A NAME="tex2html5569"
+  HREF="node221.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5565"
-  HREF="node223.html">
+<A NAME="tex2html5571"
+  HREF="node224.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION06700000000000000000">
-CoffeeScript y Sinatra</A>
+<H1><A NAME="SECTION06600000000000000000">
+Testing en Sinatra</A>
 </H1>
 
+<OL>
+<LI><A NAME="tex2html717"
+  HREF="http://www.sitepoint.com/build-sinatra-api-using-tdd-heroku-continuous-integration-travis/">Build a Sinatra API Using TDD, Heroku, and Continuous Integration with Travis
+by Darren Jones. Published December 9, 2013</A>
+SitePoint
+</LI>
+<LI>Código del artículo anterior
+
+</LI>
+<LI><A NAME="tex2html719"
+  HREF="http://www.millwoodonline.co.uk/blog/mini-minitest-tutorial?utm_content=buffer1e8e1&amp;utm_medium=social&amp;utm_source=twitter.com&amp;utm_campaign=buffer">Mini MiniTest Tutorial by Tim Millwood</A>
 <P>
-<PRE>
-[~/Dropbox/src/ruby/sinatra/sinatra-coffeescript]$ tree
-.
-|-- app.rb
-`-- views
-    `-- application.coffee
-</PRE>
+We'll use MiniTest::Spec, which is a functionally complete spec engine, to create a spec for a Hello World! Sinatra application. Firstly we create a folder 'spec' within the application directory. Within this, two files.
 
 <P>
 <PRE>
-1 directory, 2 files
-[~/Dropbox/src/ruby/sinatra/sinatra-coffeescript]$ cat app.rb 
-## You'll need to require coffee-script in your app
-require 'sinatra'
-require 'coffee-script'
+ENV['RACK_ENV'] = 'test'
 
-get '/application.js' do
-  x = coffee :application
-  "&lt;script&gt;#{x}&lt;/script&gt;"
+require 'minitest/autorun'
+require 'rack/test'
+require_relative '../app'
+
+include Rack::Test::Methods
+
+def app
+  Sinatra::Application
 end
 </PRE>
 
 <P>
+The above code is to go into the file <code>spec_helper.rb</code>. It sets up the initial setting for the test. We set the <code>RACK_ENV</code> environment variable to 'test' then require '<code>minitest/autorun</code>' for MiniTest, 'rack/test' because we are testing a rack based application and our application, in this case app.rb. The Rack::Test::Methods module is included to add a number of helper methods to allow the testing of rack applications. Finally we define the application as a Sinatra Application.
+The next file <code>app_spec.rb</code> will be our spec.
 <PRE>
-[~/Dropbox/src/ruby/sinatra/sinatra-coffeescript]$ cat views/application.coffee 
-alert "hello world!"
-</PRE>
+require_relative 'spec_helper'
 
-<P>
+describe 'Hello World' do
+
+  it 'should have hello world' do
+    get '/'
+    last_response.must_be :ok?
+    last_response.body.must_include "Hello world!"
+  end
+end
+</PRE>
+Firstly the <code>spec_helper</code> file is required, we then create a describe block to describe the 'Hello World' application. Within this a single behaviour. We run a get method against the root route and check the response is ok, and that the page includes the text 'Hello World!'.
+</LI>
+</OL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5567"
+<A NAME="tex2html5573"
   HREF="node171.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5561"
-  HREF="node95.html">
+<A NAME="tex2html5567"
+  HREF="node96.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5555"
+<A NAME="tex2html5561"
   HREF="node169.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5563"
-  HREF="node220.html">
+<A NAME="tex2html5569"
+  HREF="node221.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5565"
-  HREF="node223.html">
+<A NAME="tex2html5571"
+  HREF="node224.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -212,12 +229,12 @@ alert "hello world!"
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5568"
-  HREF="node171.html">Openid y Sinatra</A>
-<B>Sup:</B> <A NAME="tex2html5562"
-  HREF="node95.html">PARTE: SINATRA</A>
-<B> Ant:</B> <A NAME="tex2html5556"
-  HREF="node169.html">Testing en Sinatra</A>
+<B> Sig:</B> <A NAME="tex2html5574"
+  HREF="node171.html">CoffeeScript y Sinatra</A>
+<B>Sup:</B> <A NAME="tex2html5568"
+  HREF="node96.html">PARTE: SINATRA</A>
+<B> Ant:</B> <A NAME="tex2html5562"
+  HREF="node169.html">Aplicaciones Modulares</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
