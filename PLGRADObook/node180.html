@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Depurando una Ejecución con Ruby</TITLE>
-<META NAME="description" CONTENT="Depurando una Ejecución con Ruby">
+<TITLE>Openid y Sinatra</TITLE>
+<META NAME="description" CONTENT="Openid y Sinatra">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,28 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
+<LINK REL="next" HREF="node182.html">
 <LINK REL="previous" HREF="node179.html">
-<LINK REL="up" HREF="node179.html">
+<LINK REL="up" HREF="node104.html">
 <LINK REL="next" HREF="node181.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5757"
+<A NAME="tex2html5804"
   HREF="node181.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5751"
-  HREF="node179.html">
+<A NAME="tex2html5798"
+  HREF="node104.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5747"
+<A NAME="tex2html5792"
   HREF="node179.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5753"
-  HREF="node221.html">
+<A NAME="tex2html5800"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5755"
-  HREF="node224.html">
+<A NAME="tex2html5802"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -91,170 +92,78 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5758"
-  HREF="node181.html">Envío de SMSs y</A>
-<B>Sup:</B> <A NAME="tex2html5752"
-  HREF="node179.html">Depuración en Sinatra</A>
-<B> Ant:</B> <A NAME="tex2html5748"
-  HREF="node179.html">Depuración en Sinatra</A>
+<B> Sig:</B> <A NAME="tex2html5805"
+  HREF="node181.html">Referencias. Véase Tambien</A>
+<B>Sup:</B> <A NAME="tex2html5799"
+  HREF="node104.html">PARTE: SINATRA</A>
+<B> Ant:</B> <A NAME="tex2html5793"
+  HREF="node179.html">CoffeeScript y Sinatra</A>
 <B> Con:</B> 
-<A NAME="tex2html5753"
-  HREF="node221.html">
+<A NAME="tex2html5800"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5755"
-  HREF="node224.html">
+<A NAME="tex2html5802"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION061010000000000000000"></A>
-<A NAME="section:depuracionsinatra"></A>
-<BR>
-Depurando una Ejecución con Ruby
+<H1><A NAME="SECTION06800000000000000000">
+Openid y Sinatra</A>
 </H1>
 
 <P>
-<PRE>
-[~/sinatra/sinatra-debug/example1]$ ls 
-Gemfile           Rakefile          my_sinatra.rb
-Gemfile.lock      config.ru         rackmiddleware.rb
-</PRE>
+OpenID provides sites and services with a decentralized protocol for
+authenticating users through a wide variety of providers. What this means
+is that a site integrating OpenID can allow its users to log in using,
+for example, their Yahoo!, Google, or AOL accounts. Not only can the
+consuming site avoid having to create a login system itself, but it
+can also take advantage of the accounts that its users already have,
+thereby in- creasing user registration and login rates.
 
 <P>
-<PRE>
-[~/sinatra/sinatra-debug/example1]$ cat Gemfile
-source 'http://rubygems.org'
-
-group :development, :test do
-  gem 'awesome_print'
-  gem 'racksh'
-  gem 'debugger'
-  gem 'pry'
-  gem 'pry-debugger'
-end
-</PRE>
+In addition to simple authentication, OpenID also offers a series of
+extensions through which an OpenID provider can allow sites to obtain
+a user’s profile information or integrate additional layers
+of security for the login procedure.
 
 <P>
-<PRE>
-[~/sinatra/sinatra-debug/example1]$ cat my_sinatra.rb 
-# my_sinatra.rb
-require 'debugger'
-require 'sinatra'
-require './rackmiddleware'
-use RackMiddleware
-get '/:p' do |x|
-   # debugger
-  "Welcome to #{x}"
-end
-</PRE>
+What makes OpenID so intriguing is the fact that it offers a standard
+that is fully decentralized from the providers and consumers. This
+aspect is what allows a single consuming site to allow its
+users to log in via Yahoo! and Google, while another site may want to
+allow logins via Blogger or WordPress. Ultimately, it is up to the OpenID
+consumer (your site or service) to choose what login
+methods it would like to offer its user base.
 
 <P>
-<PRE>
-[~/sinatra/sinatra-debug/example1]$ cat rackmiddleware.rb 
-class RackMiddleware
-  def initialize(appl)
-    @appl = appl
-  end
+<BR> <HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-  def call(env)
-    debugger
-    start = Time.now
-    status, headers, body = @appl.call(env) # call our Sinatra app
-    stop = Time.now
-    puts "Response Time: #{stop-start}" # display on console
-    [status, headers, body]
-  end
-end
-</PRE>
-
-<P>
-<PRE>
-[~/sinatra/sinatra-debug/example1]$ ruby my_sinatra.rb 
-== Sinatra/1.4.3 has taken the stage on 4567 for development with backup from Thin
-&gt;&gt; Thin web server (v1.5.1 codename Straight Razor)
-&gt;&gt; Maximum connections set to 1024
-&gt;&gt; Listening on localhost:4567, CTRL+C to stop
-</PRE>
-
-<P>
-Al conectar al servidor queda en espera:
-<PRE>
-[~/sinatra/sinatra-debug]$ curl 'http://localhost:4567/canarias'
-</PRE>
-
-<P>
-En la otra terminal el servidor se detiene en el primer breakpoint señalado:
-<PRE>
-[~/sinatra/sinatra-debug/example1]$ ruby my_sinatra.rb 
-== Sinatra/1.4.3 has taken the stage on 4567 for development with backup from Thin
-&gt;&gt; Thin web server (v1.5.1 codename Straight Razor)
-&gt;&gt; Maximum connections set to 1024
-&gt;&gt; Listening on localhost:4567, CTRL+C to stop
-/Users/casiano/Dropbox/src/ruby/sinatra/sinatra-debug/example1/rackmiddleware.rb:8
-start = Time.now
-
-[3, 12] in /Users/casiano/Dropbox/src/ruby/sinatra/sinatra-debug/example1/rackmiddleware.rb
-   3      @appl = appl
-   4    end
-   5  
-   6    def call(env)
-   7      debugger
-=&gt; 8      start = Time.now
-   9      status, headers, body = @appl.call(env) # call our Sinatra app
-   10      stop = Time.now
-   11      puts "Response Time: #{stop-start}" # display on console
-   12      [status, headers, body]
-</PRE>
-
-<P>
-Ahora podemos ir paso a paso e inspeccionar variables:
-<PRE>
-(rdb:1) p start
-2013-07-04 15:40:11 +0100
-(rdb:1) n
-/Users/casiano/Dropbox/src/ruby/sinatra/sinatra-debug/example1/rackmiddleware.rb:10
-stop = Time.now
-
-[5, 14] in /Users/casiano/Dropbox/src/ruby/sinatra/sinatra-debug/example1/rackmiddleware.rb
-   5  
-   6    def call(env)
-   7      debugger
-   8      start = Time.now
-   9      status, headers, body = @appl.call(env) # call our Sinatra app
-=&gt; 10      stop = Time.now
-   11      puts "Response Time: #{stop-start}" # display on console
-   12      [status, headers, body]
-   13    end
-   14  end
-(rdb:1) p body
-["Welcome to canarias"]
-(rdb:1) p status
-200
-(rdb:1) p headers
-{"Content-Type"=&gt;"text/html;charset=utf-8", "Content-Length"=&gt;"19"}
-</PRE>
-
-<P>
-
-<P>
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html5806"
+  HREF="node181.html">Referencias. Véase Tambien</A>
+</UL>
+<!--End of Table of Child-Links-->
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5757"
+<A NAME="tex2html5804"
   HREF="node181.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5751"
-  HREF="node179.html">
+<A NAME="tex2html5798"
+  HREF="node104.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5747"
+<A NAME="tex2html5792"
   HREF="node179.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5753"
-  HREF="node221.html">
+<A NAME="tex2html5800"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5755"
-  HREF="node224.html">
+<A NAME="tex2html5802"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -305,17 +214,17 @@ stop = Time.now
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5758"
-  HREF="node181.html">Envío de SMSs y</A>
-<B>Sup:</B> <A NAME="tex2html5752"
-  HREF="node179.html">Depuración en Sinatra</A>
-<B> Ant:</B> <A NAME="tex2html5748"
-  HREF="node179.html">Depuración en Sinatra</A>
+<B> Sig:</B> <A NAME="tex2html5805"
+  HREF="node181.html">Referencias. Véase Tambien</A>
+<B>Sup:</B> <A NAME="tex2html5799"
+  HREF="node104.html">PARTE: SINATRA</A>
+<B> Ant:</B> <A NAME="tex2html5793"
+  HREF="node179.html">CoffeeScript y Sinatra</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-04-21</I>
+2014-04-22</I>
 </ADDRESS>
 </BODY>
 </HTML>

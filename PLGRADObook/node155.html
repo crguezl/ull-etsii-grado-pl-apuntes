@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Environments</TITLE>
-<META NAME="description" CONTENT="Environments">
+<TITLE>Passing a Request</TITLE>
+<META NAME="description" CONTENT="Passing a Request">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node156.html">
 <LINK REL="previous" HREF="node154.html">
-<LINK REL="up" HREF="node133.html">
+<LINK REL="up" HREF="node141.html">
 <LINK REL="next" HREF="node156.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5350"
+<A NAME="tex2html5436"
   HREF="node156.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5344"
-  HREF="node133.html">
+<A NAME="tex2html5430"
+  HREF="node141.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5338"
+<A NAME="tex2html5424"
   HREF="node154.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5346"
-  HREF="node221.html">
+<A NAME="tex2html5432"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5348"
-  HREF="node224.html">
+<A NAME="tex2html5434"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,87 +92,66 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5351"
-  HREF="node156.html">Correo</A>
-<B>Sup:</B> <A NAME="tex2html5345"
-  HREF="node133.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5339"
-  HREF="node154.html">Settings disponibles/Available Settings</A>
+<B> Sig:</B> <A NAME="tex2html5437"
+  HREF="node156.html">Triggering Another Route: calling</A>
+<B>Sup:</B> <A NAME="tex2html5431"
+  HREF="node141.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5425"
+  HREF="node154.html">halt</A>
 <B> Con:</B> 
-<A NAME="tex2html5346"
-  HREF="node221.html">
+<A NAME="tex2html5432"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5348"
-  HREF="node224.html">
+<A NAME="tex2html5434"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION063220000000000000000">
-Environments</A>
+<H1><A NAME="SECTION063140000000000000000">
+Passing a Request</A>
 </H1>
-
-<OL>
-<LI>There are three predefined environments:
- <TT>development</TT> ,  <TT>production</TT>  and  <TT>test</TT> . 
-
-<P>
-</LI>
-<LI>Environments can be set through the <code>RACK_ENV</code> environment variable. 
-
-<P>
-</LI>
-<LI>The default value is <code>development</code>
-</LI>
-<LI>In the <code>development</code> environment all templates are
-reloaded between requests, and special <code>not_found</code> and 
-<code>error</code> handlers
-display stack traces in your browser
-</LI>
-<LI>In the <code>production</code> and <code>test</code> environments, templates are cached by default
-</LI>
-<LI>To run different environments, set the <code>RACK_ENV</code> environment variable:
+When we want to pass processing 
+to the next matching route we use
+<code>pass</code>:
 
 <P>
 <PRE>
-RACK_ENV=production ruby my_app.rb
-</PRE>
-</LI>
-<LI>You can use predefined methods: <code>development?</code>, <code>test?</code> 
-and <code>production?</code> to check the current environment setting:
+get '/guess/:who' do
+  pass unless params[:who] == 'Frank'
+  'You got me!'
+end
 
-<P>
-<PRE>
-get '/' do
-  if settings.development?
-    "development!"
-  else
-    "not development!"
-  end
+get '/guess/*' do
+  'You missed!'
 end
 </PRE>
-</LI>
-</OL>
+The route block is immediately exited and control continues with
+the next matching route. 
+
+<P>
+If no matching route is found, a 404 is
+returned.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5350"
+<A NAME="tex2html5436"
   HREF="node156.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5344"
-  HREF="node133.html">
+<A NAME="tex2html5430"
+  HREF="node141.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5338"
+<A NAME="tex2html5424"
   HREF="node154.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5346"
-  HREF="node221.html">
+<A NAME="tex2html5432"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5348"
-  HREF="node224.html">
+<A NAME="tex2html5434"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -223,17 +202,17 @@ end
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5351"
-  HREF="node156.html">Correo</A>
-<B>Sup:</B> <A NAME="tex2html5345"
-  HREF="node133.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5339"
-  HREF="node154.html">Settings disponibles/Available Settings</A>
+<B> Sig:</B> <A NAME="tex2html5437"
+  HREF="node156.html">Triggering Another Route: calling</A>
+<B>Sup:</B> <A NAME="tex2html5431"
+  HREF="node141.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5425"
+  HREF="node154.html">halt</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-04-21</I>
+2014-04-22</I>
 </ADDRESS>
 </BODY>
 </HTML>

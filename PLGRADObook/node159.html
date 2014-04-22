@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Autentificación Básica</TITLE>
-<META NAME="description" CONTENT="Autentificación Básica">
+<TITLE>Redireccionamientos/Browser Redirect</TITLE>
+<META NAME="description" CONTENT="Redireccionamientos/Browser Redirect">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node160.html">
 <LINK REL="previous" HREF="node158.html">
-<LINK REL="up" HREF="node133.html">
+<LINK REL="up" HREF="node141.html">
 <LINK REL="next" HREF="node160.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5412"
+<A NAME="tex2html5495"
   HREF="node160.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5406"
-  HREF="node133.html">
+<A NAME="tex2html5489"
+  HREF="node141.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5400"
+<A NAME="tex2html5483"
   HREF="node158.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5408"
-  HREF="node221.html">
+<A NAME="tex2html5491"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5410"
-  HREF="node224.html">
+<A NAME="tex2html5493"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,64 +92,96 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5413"
-  HREF="node160.html">Sinatra como Middleware</A>
-<B>Sup:</B> <A NAME="tex2html5407"
-  HREF="node133.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5401"
-  HREF="node158.html">Sinatra Authentication</A>
+<B> Sig:</B> <A NAME="tex2html5496"
+  HREF="node160.html">Configuration / Configuración</A>
+<B>Sup:</B> <A NAME="tex2html5490"
+  HREF="node141.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5484"
+  HREF="node158.html">Generating URLs</A>
 <B> Con:</B> 
-<A NAME="tex2html5408"
-  HREF="node221.html">
+<A NAME="tex2html5491"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5410"
-  HREF="node224.html">
+<A NAME="tex2html5493"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION063260000000000000000"></A>
-<A NAME="section:basicauthentication"></A>
-<BR>
-Autentificación Básica
+<H1><A NAME="SECTION063180000000000000000">
+Redireccionamientos/Browser Redirect</A>
 </H1>
+
+<P>
+You can trigger a browser redirect with the <code>redirect</code> helper method:
+
+<P>
 <PRE>
-[~/srcSTW/sinatra-faq/authentication/basic(esau)]$ cat app.rb 
-require 'rubygems'
-require 'sinatra'
+get '/foo' do
+  redirect to('/bar')
+end
+</PRE>
+Any additional parameters are handled like arguments passed to <code>halt</code>:
 
-use Rack::Auth::Basic, "Restricted Area" do |username, password|
-  [username, password] == ['admin', 'admin']
+<P>
+<PRE>
+redirect to('/bar'), 303
+redirect 'http://google.com', 'wrong place, buddy'
+</PRE>
+You can also easily <code>redirect</code> back to the page the user came from with <code>redirect back</code>:
+
+<P>
+<PRE>
+get '/foo' do
+  "&lt;a href='/bar'&gt;do something&lt;/a&gt;"
 end
 
-get '/' do
-  "You're welcome"
+get '/bar' do
+  do_something
+  redirect back
 end
+</PRE>
+To pass arguments with a <code>redirect</code>, either add them to the query:
+
+<P>
+<PRE>
+redirect to('/bar?sum=42')
+</PRE>
+Or use a session:
+
+<P>
+<PRE>
+enable :sessions
 
 get '/foo' do
-  "You're also welcome"
+  session[:secret] = 'foo'
+  redirect to('/bar')
+end
+
+get '/bar' do
+  session[:secret]
 end
 </PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5412"
+<A NAME="tex2html5495"
   HREF="node160.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5406"
-  HREF="node133.html">
+<A NAME="tex2html5489"
+  HREF="node141.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5400"
+<A NAME="tex2html5483"
   HREF="node158.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5408"
-  HREF="node221.html">
+<A NAME="tex2html5491"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5410"
-  HREF="node224.html">
+<A NAME="tex2html5493"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -200,17 +232,17 @@ end
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5413"
-  HREF="node160.html">Sinatra como Middleware</A>
-<B>Sup:</B> <A NAME="tex2html5407"
-  HREF="node133.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5401"
-  HREF="node158.html">Sinatra Authentication</A>
+<B> Sig:</B> <A NAME="tex2html5496"
+  HREF="node160.html">Configuration / Configuración</A>
+<B>Sup:</B> <A NAME="tex2html5490"
+  HREF="node141.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5484"
+  HREF="node158.html">Generating URLs</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-04-21</I>
+2014-04-22</I>
 </ADDRESS>
 </BODY>
 </HTML>

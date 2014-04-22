@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Pruebas</TITLE>
-<META NAME="description" CONTENT="Pruebas">
+<TITLE>Introducción al Patrón DataMapper</TITLE>
+<META NAME="description" CONTENT="Introducción al Patrón DataMapper">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,28 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
+<LINK REL="next" HREF="node185.html">
 <LINK REL="previous" HREF="node183.html">
-<LINK REL="up" HREF="node96.html">
+<LINK REL="up" HREF="node182.html">
 <LINK REL="next" HREF="node185.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5813"
+<A NAME="tex2html5884"
   HREF="node185.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5807"
-  HREF="node96.html">
+<A NAME="tex2html5878"
+  HREF="node182.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5803"
+<A NAME="tex2html5872"
   HREF="node183.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5809"
-  HREF="node221.html">
+<A NAME="tex2html5880"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5811"
-  HREF="node224.html">
+<A NAME="tex2html5882"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -91,53 +92,112 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5814"
-  HREF="node185.html">PARTE: HERRAMIENTAS</A>
-<B>Sup:</B> <A NAME="tex2html5808"
-  HREF="node96.html">PARTE: SINATRA</A>
-<B> Ant:</B> <A NAME="tex2html5804"
-  HREF="node183.html">Sinatra::Flash</A>
+<B> Sig:</B> <A NAME="tex2html5885"
+  HREF="node185.html">Ejemplo de Uso de</A>
+<B>Sup:</B> <A NAME="tex2html5879"
+  HREF="node182.html">DataMapper y Sinatra</A>
+<B> Ant:</B> <A NAME="tex2html5873"
+  HREF="node183.html">Introducción a Los Object</A>
 <B> Con:</B> 
-<A NAME="tex2html5809"
-  HREF="node221.html">
+<A NAME="tex2html5880"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5811"
-  HREF="node224.html">
+<A NAME="tex2html5882"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION061400000000000000000">
-Pruebas</A>
+<H1><A NAME="SECTION06920000000000000000">
+Introducción al Patrón DataMapper</A>
 </H1>
+Martin Fowler 
+(<A NAME="tex2html729"
+  HREF="http://martinfowler.com/eaaCatalog/index.html">Catalog of Patterns of Enterprise Application Architecture</A>):
 
+<P>
 <OL>
-<LI>NetTuts+ tutorial: <A NAME="tex2html756"
-  HREF="http://net.tutsplus.com/tutorials/ruby/ruby-for-newbies-testing-web-apps-with-capybara-and-cucumber/">Testing Web Apps with Capybara and 
-Cucumber</A>
-Andrew Burgess on Aug 22nd 2011 with 22 Comments
+<LI>Objects and relational databases have different mechanisms for structuring
+data. 
+</LI>
+<LI>Many parts of an object, such as collections and inheritance,
+aren't present in relational databases. 
+</LI>
+<LI>When you build an
+object model with a lot of business logic it's valuable to use these
+mechanisms (creo que se refiere a la herencia, etc.) 
+to better organize the data and the behavior that goes with
+it. 
+</LI>
+<LI>Doing so leads to variant schemas; that is, the object
+schema and the relational schema don't match up.
+</LI>
+<LI>You still need to transfer data between the two schemas, and this data
+transfer becomes a complexity in its own right. 
+</LI>
+<LI>If the in-memory objects
+know about the relational database structure, changes in
+one tend to ripple to the other.
+</LI>
+<LI>The <A NAME="22209"></A><SPAN  CLASS="textbf">Data Mapper</SPAN> is a layer of software that separates the in-memory
+objects from the database. 
+</LI>
+<LI><SPAN  CLASS="textbf">Its responsibility is to transfer data between
+the two and also to isolate them from each other</SPAN>
+</LI>
+<LI>With
+Data Mapper the in-memory objects needn't know even that there's a
+database present; they need no SQL interface code, and certainly no
+knowledge of the database schema. 
+</LI>
+<LI>(The database schema is always
+ignorant of the objects that use it.) 
 </LI>
 </OL>
 
 <P>
 
+<UL>
+<LI><A NAME="tex2html730"
+  HREF="http://en.wikipedia.org/wiki/Data_mapper_pattern">DataMapper en la Wikipedia</A>
+</LI>
+<LI><A NAME="tex2html731"
+  HREF="http://martinfowler.com/eaaCatalog/dataMapper.html">Martin Fowler: DataMapper</A>
+</LI>
+<LI><A NAME="tex2html732"
+  HREF="https://github.com/crguezl/sinatra-datamapper-sample">Proyecto sinatra-datamapper-sample</A>
+en GitHub
+</LI>
+<LI>Documentación de <A NAME="tex2html733"
+  HREF="http://datamapper.org/docs/">DataMapper</A>
+</LI>
+<LI><A NAME="tex2html734"
+  HREF="http://recipes.sinatrarb.com/p/models/data_mapper">Sinatra Recipes: DataMapper</A>
+</LI>
+<LI><A NAME="tex2html735"
+  HREF="http://sinatra-book.gittr.com/#datamapper">Sinatra Book: DataMapper</A>
+</LI>
+</UL>
+
+<P>
+
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5813"
+<A NAME="tex2html5884"
   HREF="node185.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5807"
-  HREF="node96.html">
+<A NAME="tex2html5878"
+  HREF="node182.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5803"
+<A NAME="tex2html5872"
   HREF="node183.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5809"
-  HREF="node221.html">
+<A NAME="tex2html5880"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5811"
-  HREF="node224.html">
+<A NAME="tex2html5882"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -188,17 +248,17 @@ Andrew Burgess on Aug 22nd 2011 with 22 Comments
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5814"
-  HREF="node185.html">PARTE: HERRAMIENTAS</A>
-<B>Sup:</B> <A NAME="tex2html5808"
-  HREF="node96.html">PARTE: SINATRA</A>
-<B> Ant:</B> <A NAME="tex2html5804"
-  HREF="node183.html">Sinatra::Flash</A>
+<B> Sig:</B> <A NAME="tex2html5885"
+  HREF="node185.html">Ejemplo de Uso de</A>
+<B>Sup:</B> <A NAME="tex2html5879"
+  HREF="node182.html">DataMapper y Sinatra</A>
+<B> Ant:</B> <A NAME="tex2html5873"
+  HREF="node183.html">Introducción a Los Object</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-04-21</I>
+2014-04-22</I>
 </ADDRESS>
 </BODY>
 </HTML>

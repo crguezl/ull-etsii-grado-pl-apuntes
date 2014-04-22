@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Práctica: Despliegue en Heroku su Aplicación Rock, Paper,Scissors</TITLE>
-<META NAME="description" CONTENT="Práctica: Despliegue en Heroku su Aplicación Rock, Paper,Scissors">
+<TITLE>Rack::Mount</TITLE>
+<META NAME="description" CONTENT="Rack::Mount">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node129.html">
 <LINK REL="previous" HREF="node127.html">
-<LINK REL="up" HREF="node97.html">
+<LINK REL="up" HREF="node105.html">
 <LINK REL="next" HREF="node129.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4850"
+<A NAME="tex2html4928"
   HREF="node129.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4844"
-  HREF="node97.html">
+<A NAME="tex2html4922"
+  HREF="node105.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4838"
+<A NAME="tex2html4916"
   HREF="node127.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4846"
-  HREF="node221.html">
+<A NAME="tex2html4924"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4848"
-  HREF="node224.html">
+<A NAME="tex2html4926"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,57 +92,129 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4851"
-  HREF="node129.html">Faking Sinatra with Rack</A>
-<B>Sup:</B> <A NAME="tex2html4845"
-  HREF="node97.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4839"
-  HREF="node127.html">Despliegue de una Aplicación</A>
+<B> Sig:</B> <A NAME="tex2html4929"
+  HREF="node129.html">Rack::URLMap</A>
+<B>Sup:</B> <A NAME="tex2html4923"
+  HREF="node105.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4917"
+  HREF="node127.html">Rack::Cascade</A>
 <B> Con:</B> 
-<A NAME="tex2html4846"
-  HREF="node221.html">
+<A NAME="tex2html4924"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4848"
-  HREF="node224.html">
+<A NAME="tex2html4926"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION061310000000000000000"></A>
-   <A NAME="18553"></A>
-  
-<A NAME="practica:despliegueenherokurps"></A>
-<BR>
-Práctica: Despliegue en Heroku su Aplicación Rock, Paper,Scissors
+<H1><A NAME="SECTION061230000000000000000">
+Rack::Mount</A>
 </H1>
 
 <P>
-Despliegue en Heroku la practica realizada en la sección
-<I>Añada Pruebas a Rock, Paper,Scissors</I>
-<A HREF="node125.html#practica:rpsconsessionsypruebas">15.28</A>.
-Repase la sección 
-<I>Despliegue en Heroku</I>
-<A HREF="#chapter:despliegueenheroku"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>
+
+<OL>
+<LI>A <A NAME="19441"></A><SPAN  CLASS="textbf">router</SPAN> is similar to a Rack middleware. 
+
+<P>
+</LI>
+<LI>The main difference is
+that it doesn’t wrap a single Rack endpoint, but keeps a list of
+endpoints, just like <A NAME="tex2html608"
+  HREF="http://rack.rubyforge.org/doc/Rack/Cascade.html">Rack::Cascade</A> does. 
+
+<P>
+</LI>
+<LI>Depending on some criteria,
+usually the requested path, the router will then decide what endpoint
+to hand the request to. 
+
+<P>
+</LI>
+<LI>Most routers differ in the way they decide which endpoint to hand
+the request to. 
+
+<P>
+</LI>
+<LI>All routers meant for general usage do offer routing
+based on the path, but how complex their path matching might be
+varies. 
+
+<P>
+</LI>
+<LI>While <A NAME="tex2html609"
+  HREF="http://rack.rubyforge.org/doc/Rack/URLMap.html">Rack::URLMap</A> only matches prefixes, most other routers
+allow simple wildcard matching. 
+
+<P>
+</LI>
+<LI>Both <A NAME="tex2html610"
+  HREF="http://rack.rubyforge.org/doc/Rack/Mount.html">Rack::Mount</A>, which is used by
+Rails, and Sinatra allow arbitrary matching logic.
+
+<P>
+</LI>
+<LI>However, such flexibility comes at a price: <A NAME="tex2html611"
+  HREF="http://rack.rubyforge.org/doc/Rack/Mount.html">Rack::Mount</A> and Sinatra
+have a routing complexity of O(n), meaning that in the worst-case
+scenario an incoming request has to be matched against all the
+defined routes. 
+
+<P>
+</LI>
+<LI><A NAME="tex2html612"
+  HREF="http://rack.rubyforge.org/doc/Rack/Mount.html">Rack::Mount</A> is known to produce fast routing, however its API is
+not meant to be used directly but rather by other libraries, like
+the Rails routes DSL. 
+
+<P>
+</LI>
+</OL>
+
+<P>
+<PRE>
+[~/local/src/ruby/sinatra/rack/rack-mount]$ cat config.ru 
+require 'sinatra/base'
+require 'rack/mount'
+
+class Foo &lt; Sinatra::Base
+  get('/foo') { 'foo' }
+  get('/fou') { 'fou' }
+end
+
+class Bar &lt; Sinatra::Base
+  get('/bar') { 'bar' }
+  get('/ba')  { 'ba' }
+end
+
+Routes = Rack::Mount::RouteSet.new do |set|
+  set.add_route Foo, :path_info =&gt; %r{^/fo[ou]$}
+  set.add_route Bar, :path_info =&gt; %r{^/bar?$}
+end
+
+run Routes
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4850"
+<A NAME="tex2html4928"
   HREF="node129.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4844"
-  HREF="node97.html">
+<A NAME="tex2html4922"
+  HREF="node105.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4838"
+<A NAME="tex2html4916"
   HREF="node127.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4846"
-  HREF="node221.html">
+<A NAME="tex2html4924"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4848"
-  HREF="node224.html">
+<A NAME="tex2html4926"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -193,17 +265,17 @@ Repase la sección
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4851"
-  HREF="node129.html">Faking Sinatra with Rack</A>
-<B>Sup:</B> <A NAME="tex2html4845"
-  HREF="node97.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4839"
-  HREF="node127.html">Despliegue de una Aplicación</A>
+<B> Sig:</B> <A NAME="tex2html4929"
+  HREF="node129.html">Rack::URLMap</A>
+<B>Sup:</B> <A NAME="tex2html4923"
+  HREF="node105.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4917"
+  HREF="node127.html">Rack::Cascade</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-04-21</I>
+2014-04-22</I>
 </ADDRESS>
 </BODY>
 </HTML>

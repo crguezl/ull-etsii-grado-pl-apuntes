@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Variables</TITLE>
-<META NAME="description" CONTENT="Variables">
+<TITLE>La opción SEVERITY</TITLE>
+<META NAME="description" CONTENT="La opción SEVERITY">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node92.html">
 <LINK REL="previous" HREF="node90.html">
-<LINK REL="up" HREF="node89.html">
+<LINK REL="up" HREF="node84.html">
 <LINK REL="next" HREF="node92.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3996"
+<A NAME="tex2html4048"
   HREF="node92.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3990"
-  HREF="node89.html">
+<A NAME="tex2html4042"
+  HREF="node84.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3984"
+<A NAME="tex2html4038"
   HREF="node90.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3992"
-  HREF="node221.html">
+<A NAME="tex2html4044"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3994"
-  HREF="node224.html">
+<A NAME="tex2html4046"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,45 +91,181 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3997"
-  HREF="node92.html">Setting Values</A>
-<B>Sup:</B> <A NAME="tex2html3991"
-  HREF="node89.html">Scheem Interpreter</A>
-<B> Ant:</B> <A NAME="tex2html3985"
-  HREF="node90.html">Scheem Interpreter</A>
+<B> Sig:</B> <A NAME="tex2html4049"
+  HREF="node92.html">PARTE: CREATE YOUR OWN</A>
+<B>Sup:</B> <A NAME="tex2html4043"
+  HREF="node84.html">Transformaciones Árbol</A>
+<B> Ant:</B> <A NAME="tex2html4039"
+  HREF="node90.html">Transformaciones de Árboles con</A>
 <B> Con:</B> 
-<A NAME="tex2html3992"
-  HREF="node221.html">
+<A NAME="tex2html4044"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3994"
-  HREF="node224.html">
+<A NAME="tex2html4046"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION05420000000000000000">
-Variables</A>
+<H1><A NAME="SECTION04970000000000000000">
+La opción <TT>SEVERITY</TT></A>
 </H1>
+La opción  <TT>SEVERITY</TT>  del constructor  <TT>Parse::Eyapp::Treeregexp::new</TT> 
+controla la forma en la que se interpreta el éxito de un casamiento
+en lo que se refiere al número de hijos del nodo.
+Para ilustrar su uso consideremos el siguiente ejemplo que 
+hace uso de <code>Rule6</code> la gramática que fue introducida 
+en la sección <A HREF="#code:rule6"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> (página <A HREF="#code:rule6"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>).
+<PRE>
+nereida:~/src/perl/YappWithDefaultAction/examples&gt; cat -n numchildren.pl
+ 1  #!/usr/bin/perl -w
+ 2  use strict;
+ 3  use Rule6;
+ 4  use Data::Dumper;
+ 5  use Parse::Eyapp::Treeregexp;
+ 6  use Parse::Eyapp::Node;
+ 7
+ 8  our @all;
+ 9  my $severity = shift || 0;
+10
+11  my $transform = Parse::Eyapp::Treeregexp-&gt;new( STRING =&gt; q{
+12    zero_times_whatever: TIMES(NUM($x)) and { $x-&gt;{attr} == 0 } =&gt; { $_[0] = $NUM }
+13  },
+14  SEVERITY =&gt; $severity,
+15  );
+16
+17  $transform-&gt;generate;
+18  $Data::Dumper::Indent = 1;
+19  my $parser = new Rule6();
+20  my $t = $parser-&gt;Run;
+21  $t-&gt;s(@all);
+22  print Dumper($t);
+</PRE>
+Este programa obtiene el nivel de severidad a usar desde la línea de comandos
+(línea 9). Nótese que la especificación de <code>TIMES</code> 
+en la transformación <code>zero_times_whatever</code> este aparece con un único hijo.
+Existen varias interpretaciones de la expresión que se corresponden con los
+niveles de  <TT>SEVERITY</TT> : 
+
+<UL>
+<LI>0: Quiero decir que tiene al menos un hijo. No me importa si tiene mas
+</LI>
+<LI>1: Para que case tiene que tener exactamente un hijo
+</LI>
+<LI>2: Para que case tiene que tener exactamente un hijo. Si aparece un nodo 
+<code>TIMES</code> con un número de hijos diferente quiero ser avisado
+</LI>
+<LI>3: Para que case tiene que tener exactamente un hijo. Si aparece un nodo 
+<code>TIMES</code> con un número de hijos diferente 
+quiero que se considere un error 
+(mis nodos tiene aridad fija)
+</LI>
+</UL>
+En la siguiente ejecución
+el nivel especificado es cero. La expresión <code>0*2</code> casa y es modificada.
+<PRE>
+nereida:~/src/perl/YappWithDefaultAction/examples&gt; numchildren.pl 0
+0*2
+$VAR1 = bless( {
+  'children' =&gt; [
+    bless( {
+      'children' =&gt; [],
+      'attr' =&gt; 0,
+      'token' =&gt; 'NUM'
+    }, 'TERMINAL' )
+  ]
+}, 'NUM' );
+</PRE>
+En la siguiente ejecución el nivel especificado es uno.
+La expresión <code>0*2</code> no casa pero no se avisa ni se considera un 
+error la presencia de un nodo <code>TIMES</code> con una aridad distinta.
+<PRE>
+nereida:~/src/perl/YappWithDefaultAction/examples&gt; numchildren.pl 1
+0*2
+$VAR1 = bless( {
+  'children' =&gt; [
+    bless( {
+      'children' =&gt; [
+        bless( {
+          'children' =&gt; [],
+          'attr' =&gt; '0',
+          'token' =&gt; 'NUM'
+        }, 'TERMINAL' )
+      ]
+    }, 'NUM' ),
+    bless( {
+      'children' =&gt; [
+        bless( {
+          'children' =&gt; [],
+          'attr' =&gt; '2',
+          'token' =&gt; 'NUM'
+        }, 'TERMINAL' )
+      ]
+    }, 'NUM' )
+  ]
+}, 'TIMES' );
+</PRE>
+En la siguiente ejecución el nivel especificado es dos.
+La expresión <code>0*2</code> no casa y se avisa 
+de la presencia de un nodo <code>TIMES</code> con una aridad distinta:
+<PRE>
+nereida:~/src/perl/YappWithDefaultAction/examples&gt; numchildren.pl 2
+0*2
+Warning! found node TIMES with 2 children.
+Expected 1 children (see line 12 of numchildren.pl)"
+$VAR1 = bless( {
+  'children' =&gt; [
+    bless( {
+      'children' =&gt; [
+        bless( {
+          'children' =&gt; [],
+          'attr' =&gt; '0',
+          'token' =&gt; 'NUM'
+        }, 'TERMINAL' )
+      ]
+    }, 'NUM' ),
+    bless( {
+      'children' =&gt; [
+        bless( {
+          'children' =&gt; [],
+          'attr' =&gt; '2',
+          'token' =&gt; 'NUM'
+        }, 'TERMINAL' )
+      ]
+    }, 'NUM' )
+  ]
+}, 'TIMES' );
+</PRE>
+En la última ejecución el nivel especificado es tres.
+El programa se detiene ante
+la presencia de un nodo <code>TIMES</code> con una aridad distinta:
+<PRE>
+nereida:~/src/perl/YappWithDefaultAction/examples&gt; numchildren.pl 3
+0*2
+Error! found node TIMES with 2 children.
+Expected 1 children (see line 12 of numchildren.pl)"
+ at (eval 3) line 28
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3996"
+<A NAME="tex2html4048"
   HREF="node92.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3990"
-  HREF="node89.html">
+<A NAME="tex2html4042"
+  HREF="node84.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3984"
+<A NAME="tex2html4038"
   HREF="node90.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3992"
-  HREF="node221.html">
+<A NAME="tex2html4044"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3994"
-  HREF="node224.html">
+<A NAME="tex2html4046"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -181,17 +316,17 @@ Variables</A>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3997"
-  HREF="node92.html">Setting Values</A>
-<B>Sup:</B> <A NAME="tex2html3991"
-  HREF="node89.html">Scheem Interpreter</A>
-<B> Ant:</B> <A NAME="tex2html3985"
-  HREF="node90.html">Scheem Interpreter</A>
+<B> Sig:</B> <A NAME="tex2html4049"
+  HREF="node92.html">PARTE: CREATE YOUR OWN</A>
+<B>Sup:</B> <A NAME="tex2html4043"
+  HREF="node84.html">Transformaciones Árbol</A>
+<B> Ant:</B> <A NAME="tex2html4039"
+  HREF="node90.html">Transformaciones de Árboles con</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-04-21</I>
+2014-04-22</I>
 </ADDRESS>
 </BODY>
 </HTML>

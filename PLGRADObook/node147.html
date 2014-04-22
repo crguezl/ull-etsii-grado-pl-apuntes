@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Passing a Request</TITLE>
-<META NAME="description" CONTENT="Passing a Request">
+<TITLE>Manejo de Errores</TITLE>
+<META NAME="description" CONTENT="Manejo de Errores">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node148.html">
 <LINK REL="previous" HREF="node146.html">
-<LINK REL="up" HREF="node133.html">
+<LINK REL="up" HREF="node141.html">
 <LINK REL="next" HREF="node148.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5235"
+<A NAME="tex2html5309"
   HREF="node148.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5229"
-  HREF="node133.html">
+<A NAME="tex2html5303"
+  HREF="node141.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5223"
+<A NAME="tex2html5297"
   HREF="node146.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5231"
-  HREF="node221.html">
+<A NAME="tex2html5305"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5233"
-  HREF="node224.html">
+<A NAME="tex2html5307"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,66 +92,154 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5236"
-  HREF="node148.html">Triggering Another Route: calling</A>
-<B>Sup:</B> <A NAME="tex2html5230"
-  HREF="node133.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5224"
-  HREF="node146.html">halt</A>
+<B> Sig:</B> <A NAME="tex2html5310"
+  HREF="node148.html">The methods body, status</A>
+<B>Sup:</B> <A NAME="tex2html5304"
+  HREF="node141.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5298"
+  HREF="node146.html">Filtros</A>
 <B> Con:</B> 
-<A NAME="tex2html5231"
-  HREF="node221.html">
+<A NAME="tex2html5305"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5233"
-  HREF="node224.html">
+<A NAME="tex2html5307"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<H1><A NAME="SECTION063140000000000000000">
-Passing a Request</A>
+<UL CLASS="ChildLinks">
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html5311"
+  HREF="node147.html#SECTION06360010000000000000">not_found</A>
+<LI><A NAME="tex2html5312"
+  HREF="node147.html#SECTION06360020000000000000">error</A>
+</UL></UL></UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION06360000000000000000">
+Manejo de Errores</A>
 </H1>
-When we want to pass processing 
-to the next matching route we use
-<code>pass</code>:
+
+<P>
+
+<OL>
+<LI>The HTTP specification states that response status in the range  200-299
+indicate success in processing a request
+</LI>
+<LI>500-599 is reserved for server errors
+</LI>
+<LI>Sinatra  offers helpers for the 404 (Not Found) and 500 (Internal Server Error) status
+</LI>
+</OL>
+
+<P>
+
+<H4><A NAME="SECTION06360010000000000000">
+not_found</A>
+</H4>
+  
+
+When a <code>Sinatra::NotFound</code> exception is raised, or the response’s
+status code is 404, the <code>not_found</code> handler is invoked:
 
 <P>
 <PRE>
-get '/guess/:who' do
-  pass unless params[:who] == 'Frank'
-  'You got me!'
-end
-
-get '/guess/*' do
-  'You missed!'
+not_found do
+  'This is nowhere to be found.'
 end
 </PRE>
-The route block is immediately exited and control continues with
-the next matching route. 
 
 <P>
-If no matching route is found, a 404 is
-returned.
+
+<H4><A NAME="SECTION06360020000000000000">
+error</A>
+</H4>
+  
+
+The <code>error</code> handler is invoked any time an exception is raised from
+a route block or a filter. 
+
+<P>
+The exception object can be obtained
+from the <code>sinatra.error</code> Rack variable:
+
+<P>
+<PRE>
+error do
+  'Sorry there was a nasty error - ' + env['sinatra.error'].name
+end
+</PRE>
+Custom errors:
+
+<P>
+<PRE>
+error MyCustomError do
+  'So what happened was...' + env['sinatra.error'].message
+end
+</PRE>
+Then, if this happens:
+
+<P>
+<PRE>
+get '/' do
+  raise MyCustomError, 'something bad'
+end
+</PRE>
+You get this:
+
+<P>
+<PRE>
+So what happened was... something bad
+</PRE>
+Alternatively, you can install an error handler for a status code:
+
+<P>
+<PRE>
+error 403 do
+  'Access forbidden'
+end
+
+get '/secret' do
+  403
+end
+</PRE>
+Or a range:
+
+<P>
+<PRE>
+error 400..510 do
+  'Boom'
+end
+</PRE>
+Sinatra installs special <code>not_found</code> and <code>error</code> handlers 
+when running under the development environment to display nice stack
+traces and additional debugging information in your browser (esto es,
+en producción estos handlers son mucho mas "parcos").
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5235"
+<A NAME="tex2html5309"
   HREF="node148.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5229"
-  HREF="node133.html">
+<A NAME="tex2html5303"
+  HREF="node141.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5223"
+<A NAME="tex2html5297"
   HREF="node146.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5231"
-  HREF="node221.html">
+<A NAME="tex2html5305"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5233"
-  HREF="node224.html">
+<A NAME="tex2html5307"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -202,17 +290,17 @@ returned.
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5236"
-  HREF="node148.html">Triggering Another Route: calling</A>
-<B>Sup:</B> <A NAME="tex2html5230"
-  HREF="node133.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5224"
-  HREF="node146.html">halt</A>
+<B> Sig:</B> <A NAME="tex2html5310"
+  HREF="node148.html">The methods body, status</A>
+<B>Sup:</B> <A NAME="tex2html5304"
+  HREF="node141.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5298"
+  HREF="node146.html">Filtros</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-04-21</I>
+2014-04-22</I>
 </ADDRESS>
 </BODY>
 </HTML>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Using OAuth 2.0 to Access Google APIs</TITLE>
-<META NAME="description" CONTENT="Using OAuth 2.0 to Access Google APIs">
+<TITLE>Configurando la Base de Datos en Heroku con DataMapper. Despliegue</TITLE>
+<META NAME="description" CONTENT="Configurando la Base de Datos en Heroku con DataMapper. Despliegue">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node208.html">
 <LINK REL="previous" HREF="node206.html">
-<LINK REL="up" HREF="node201.html">
+<LINK REL="up" HREF="node203.html">
 <LINK REL="next" HREF="node208.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html6349"
+<A NAME="tex2html6396"
   HREF="node208.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html6343"
-  HREF="node201.html">
+<A NAME="tex2html6390"
+  HREF="node203.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html6337"
+<A NAME="tex2html6386"
   HREF="node206.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html6345"
-  HREF="node221.html">
+<A NAME="tex2html6392"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html6347"
-  HREF="node224.html">
+<A NAME="tex2html6394"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,103 +91,134 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html6350"
-  HREF="node208.html">Google OAuth 2.0 Playground</A>
-<B>Sup:</B> <A NAME="tex2html6344"
-  HREF="node201.html">Oauth: Google, Twitter, GitHub,</A>
-<B> Ant:</B> <A NAME="tex2html6338"
-  HREF="node206.html">The gem omniauth-google-oauth2</A>
+<B> Sig:</B> <A NAME="tex2html6397"
+  HREF="node208.html">Slim</A>
+<B>Sup:</B> <A NAME="tex2html6391"
+  HREF="node203.html">DataMapper</A>
+<B> Ant:</B> <A NAME="tex2html6387"
+  HREF="node206.html">Ejemplo de Uso de</A>
 <B> Con:</B> 
-<A NAME="tex2html6345"
-  HREF="node221.html">
+<A NAME="tex2html6392"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html6347"
-  HREF="node224.html">
+<A NAME="tex2html6394"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION07460000000000000000">
-Using OAuth 2.0 to Access Google APIs</A>
+<H1><A NAME="SECTION07240000000000000000">
+Configurando la Base de Datos en Heroku con DataMapper. Despliegue</A>
 </H1>
 
 <P>
-Véase 
-<A NAME="tex2html828"
-  HREF="https://developers.google.com/accounts/docs/OAuth2">Using OAuth 2.0 to Access Google APIs</A>.
+<A NAME="tex2html807"
+  HREF="https://devcenter.heroku.com/articles/quickstart">Heroku</A> utiliza la base de datos PostgreSQL y una URL en una variable 
+de entorno <code>ENV['DATABASE_URL']</code>.
 
 <P>
-Google APIs use the  <A NAME="tex2html829"
-  HREF="http://oauth.net/">OAuth</A>
- 2.0 protocol for authentication and
-authorization. Google supports common  <A NAME="tex2html830"
-  HREF="http://oauth.net/">OAuth</A>
- 2.0 scenarios such as those
-for web server, installed, and client-side applications.
+<PRE>
+configure :development do
+  DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/development.db")
+end
+
+configure :production do
+  DataMapper.setup(:default, ENV['DATABASE_URL'])
+end
+</PRE>
 
 <P>
-
-<OL>
-<LI><A NAME="tex2html831"
-  HREF="http://oauth.net/">OAuth</A>
- 2.0 is a relatively simple protocol. To begin, you obtain  <A NAME="tex2html832"
-  HREF="http://oauth.net/">OAuth</A>
-
-2.0 credentials from the 
-<A NAME="tex2html833"
-  HREF="https://cloud.google.com/console">Google Developers Console</A>. 
-</LI>
-<LI>See the Video in YouTube 
-<A NAME="tex2html834"
-  HREF="http://youtu.be/Im69kzhpR3I">Obtaining a developer key for the YouTube Data API v3 and the Analytics API</A>
-</LI>
-<LI>Then your client
-application requests an 
-<FONT COLOR="#0000ff"> access token</FONT> from the 
-
-<FONT COLOR="#0000ff"> Google Authorization Server</FONT>,
-extracts a token from the response, and sends the token to the 
-
-<FONT COLOR="#0000ff"> Google API</FONT> 
-that you want to access.
-</LI>
-</OL>
+Estas líneas especifican que se usa SQLite en desarrollo y PostgreSQL en producción.
+Obsérvese que el <code>Gemfile</code> debe estar coherente:
+<PRE>
+[~/sinatra/sinatra-datamapper-jump-start(master)]$ cat Gemfile
+source 'https://rubygems.org'
+gem "sinatra"
+gem "slim"
+gem "sass"
+gem "dm-core"
+gem "dm-migrations"
+gem "thin"
+gem "pg", :group =&gt; :production
+gem "dm-postgres-adapter", :group =&gt; :production
+gem "dm-sqlite-adapter", :group =&gt; :development
+</PRE>
+o mejor:
+<PRE>
+group :production do
+    gem "pg"
+    gem "dm-postgres-adapter"
+end
+</PRE>
 
 <P>
-To get access keys, go to the Google APIs Console and specify your
-<A NAME="tex2html835"
-  HREF="https://cloud.google.com/console">Google Developers Console</A>. 
-application's name and the Google APIs it will access. For simple access,
-Google generates an API key that uniquely identifies your application
-in its transactions with the Google Auth server.
+<PRE>
+heroku create ...
+</PRE>
 
 <P>
-For authorized access, you must also tell Google your website's protocol
-and domain. In return, Google generates a client ID. Your application
-submits this to the Google Auth server to get an  <A NAME="tex2html836"
-  HREF="http://oauth.net/">OAuth</A>
- 2.0 access
-token.
+<PRE>
+git push heroku master
+</PRE>
+
+<P>
+<PRE>
+heroku open
+</PRE>
+
+<P>
+<PRE>
+heroku logs --source app
+</PRE>
+
+<P>
+Ahora ejecutamos la consola de heroku:
+
+<P>
+<PRE>
+heroku run console
+</PRE>
+lo que nos abre una sesión <code>irb</code>.
+
+<P>
+Ahora creamos la base de datos en <A NAME="tex2html808"
+  HREF="https://devcenter.heroku.com/articles/quickstart">Heroku</A>:
+<PRE>
+[~/sinatra/sinatra-datamapper-jump-start(master)]$ heroku run console
+Running `console` attached to terminal... up, run.8011
+irb(main):001:0&gt; require './main'
+=&gt; true
+irb(main):002:0&gt; DataMapper.auto_migrate!
+=&gt; #&lt;DataMapper::DescendantSet:0x007fb89c878230 @descendants=#&lt;DataMapper::SubjectSet:0x007fb89c8781b8 @entries=#&lt;DataMapper::OrderedSet:0x007fb89c878190 @cache=#&lt;DataMapper::SubjectSet::NameCache:0x007fb89c878168 @cache={"Song"=&gt;0}&gt;, @entries=[Song]&gt;&gt;&gt;
+irb(main):003:0&gt;
+</PRE>
+Véase también 
+la practica TicTacToe
+<A HREF="node169.html#practica:ticatactoe">18.28</A>
+y
+el capítulo <I>Despliegue en Heroku</I> 
+<A HREF="#chapter:despliegueenheroku"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>.
+.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html6349"
+<A NAME="tex2html6396"
   HREF="node208.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html6343"
-  HREF="node201.html">
+<A NAME="tex2html6390"
+  HREF="node203.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html6337"
+<A NAME="tex2html6386"
   HREF="node206.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html6345"
-  HREF="node221.html">
+<A NAME="tex2html6392"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html6347"
-  HREF="node224.html">
+<A NAME="tex2html6394"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -239,17 +269,17 @@ token.
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html6350"
-  HREF="node208.html">Google OAuth 2.0 Playground</A>
-<B>Sup:</B> <A NAME="tex2html6344"
-  HREF="node201.html">Oauth: Google, Twitter, GitHub,</A>
-<B> Ant:</B> <A NAME="tex2html6338"
-  HREF="node206.html">The gem omniauth-google-oauth2</A>
+<B> Sig:</B> <A NAME="tex2html6397"
+  HREF="node208.html">Slim</A>
+<B>Sup:</B> <A NAME="tex2html6391"
+  HREF="node203.html">DataMapper</A>
+<B> Ant:</B> <A NAME="tex2html6387"
+  HREF="node206.html">Ejemplo de Uso de</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-04-21</I>
+2014-04-22</I>
 </ADDRESS>
 </BODY>
 </HTML>

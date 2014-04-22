@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Configurando la Base de Datos en Heroku con DataMapper. Despliegue</TITLE>
-<META NAME="description" CONTENT="Configurando la Base de Datos en Heroku con DataMapper. Despliegue">
+<TITLE>Testing en Sinatra</TITLE>
+<META NAME="description" CONTENT="Testing en Sinatra">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,28 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
+<LINK REL="next" HREF="node179.html">
 <LINK REL="previous" HREF="node177.html">
-<LINK REL="up" HREF="node174.html">
+<LINK REL="up" HREF="node104.html">
 <LINK REL="next" HREF="node179.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5730"
+<A NAME="tex2html5776"
   HREF="node179.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5724"
-  HREF="node174.html">
+<A NAME="tex2html5770"
+  HREF="node104.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5720"
+<A NAME="tex2html5764"
   HREF="node177.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5726"
-  HREF="node221.html">
+<A NAME="tex2html5772"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5728"
-  HREF="node224.html">
+<A NAME="tex2html5774"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -91,134 +92,93 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5731"
-  HREF="node179.html">Depuración en Sinatra</A>
-<B>Sup:</B> <A NAME="tex2html5725"
-  HREF="node174.html">DataMapper y Sinatra</A>
-<B> Ant:</B> <A NAME="tex2html5721"
-  HREF="node177.html">Ejemplo de Uso de</A>
+<B> Sig:</B> <A NAME="tex2html5777"
+  HREF="node179.html">CoffeeScript y Sinatra</A>
+<B>Sup:</B> <A NAME="tex2html5771"
+  HREF="node104.html">PARTE: SINATRA</A>
+<B> Ant:</B> <A NAME="tex2html5765"
+  HREF="node177.html">Aplicaciones Modulares</A>
 <B> Con:</B> 
-<A NAME="tex2html5726"
-  HREF="node221.html">
+<A NAME="tex2html5772"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5728"
-  HREF="node224.html">
+<A NAME="tex2html5774"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION06940000000000000000">
-Configurando la Base de Datos en Heroku con DataMapper. Despliegue</A>
+<H1><A NAME="SECTION06600000000000000000">
+Testing en Sinatra</A>
 </H1>
 
+<OL>
+<LI><A NAME="tex2html723"
+  HREF="http://www.sitepoint.com/build-sinatra-api-using-tdd-heroku-continuous-integration-travis/">Build a Sinatra API Using TDD, Heroku, and Continuous Integration with Travis
+by Darren Jones. Published December 9, 2013</A>
+SitePoint
+</LI>
+<LI>Código del artículo anterior
+
+</LI>
+<LI><A NAME="tex2html725"
+  HREF="http://www.millwoodonline.co.uk/blog/mini-minitest-tutorial?utm_content=buffer1e8e1&amp;utm_medium=social&amp;utm_source=twitter.com&amp;utm_campaign=buffer">Mini MiniTest Tutorial by Tim Millwood</A>
 <P>
-<A NAME="tex2html741"
-  HREF="https://devcenter.heroku.com/articles/quickstart">Heroku</A> utiliza la base de datos PostgreSQL y una URL en una variable 
-de entorno <code>ENV['DATABASE_URL']</code>.
+We'll use MiniTest::Spec, which is a functionally complete spec engine, to create a spec for a Hello World! Sinatra application. Firstly we create a folder 'spec' within the application directory. Within this, two files.
 
 <P>
 <PRE>
-configure :development do
-  DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/development.db")
-end
+ENV['RACK_ENV'] = 'test'
 
-configure :production do
-  DataMapper.setup(:default, ENV['DATABASE_URL'])
-end
-</PRE>
+require 'minitest/autorun'
+require 'rack/test'
+require_relative '../app'
 
-<P>
-Estas líneas especifican que se usa SQLite en desarrollo y PostgreSQL en producción.
-Obsérvese que el <code>Gemfile</code> debe estar coherente:
-<PRE>
-[~/sinatra/sinatra-datamapper-jump-start(master)]$ cat Gemfile
-source 'https://rubygems.org'
-gem "sinatra"
-gem "slim"
-gem "sass"
-gem "dm-core"
-gem "dm-migrations"
-gem "thin"
-gem "pg", :group =&gt; :production
-gem "dm-postgres-adapter", :group =&gt; :production
-gem "dm-sqlite-adapter", :group =&gt; :development
-</PRE>
-o mejor:
-<PRE>
-group :production do
-    gem "pg"
-    gem "dm-postgres-adapter"
+include Rack::Test::Methods
+
+def app
+  Sinatra::Application
 end
 </PRE>
 
 <P>
+The above code is to go into the file <code>spec_helper.rb</code>. It sets up the initial setting for the test. We set the <code>RACK_ENV</code> environment variable to 'test' then require '<code>minitest/autorun</code>' for MiniTest, 'rack/test' because we are testing a rack based application and our application, in this case app.rb. The Rack::Test::Methods module is included to add a number of helper methods to allow the testing of rack applications. Finally we define the application as a Sinatra Application.
+The next file <code>app_spec.rb</code> will be our spec.
 <PRE>
-heroku create ...
-</PRE>
+require_relative 'spec_helper'
 
-<P>
-<PRE>
-git push heroku master
-</PRE>
+describe 'Hello World' do
 
-<P>
-<PRE>
-heroku open
+  it 'should have hello world' do
+    get '/'
+    last_response.must_be :ok?
+    last_response.body.must_include "Hello world!"
+  end
+end
 </PRE>
-
-<P>
-<PRE>
-heroku logs --source app
-</PRE>
-
-<P>
-Ahora ejecutamos la consola de heroku:
-
-<P>
-<PRE>
-heroku run console
-</PRE>
-lo que nos abre una sesión <code>irb</code>.
-
-<P>
-Ahora creamos la base de datos en <A NAME="tex2html742"
-  HREF="https://devcenter.heroku.com/articles/quickstart">Heroku</A>:
-<PRE>
-[~/sinatra/sinatra-datamapper-jump-start(master)]$ heroku run console
-Running `console` attached to terminal... up, run.8011
-irb(main):001:0&gt; require './main'
-=&gt; true
-irb(main):002:0&gt; DataMapper.auto_migrate!
-=&gt; #&lt;DataMapper::DescendantSet:0x007fb89c878230 @descendants=#&lt;DataMapper::SubjectSet:0x007fb89c8781b8 @entries=#&lt;DataMapper::OrderedSet:0x007fb89c878190 @cache=#&lt;DataMapper::SubjectSet::NameCache:0x007fb89c878168 @cache={"Song"=&gt;0}&gt;, @entries=[Song]&gt;&gt;&gt;
-irb(main):003:0&gt;
-</PRE>
-Véase también 
-la practica TicTacToe
-<A HREF="node161.html#practica:ticatactoe">17.28</A>
-y
-el capítulo <I>Despliegue en Heroku</I> 
-<A HREF="#chapter:despliegueenheroku"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>.
-.
+Firstly the <code>spec_helper</code> file is required, we then create a describe block to describe the 'Hello World' application. Within this a single behaviour. We run a get method against the root route and check the response is ok, and that the page includes the text 'Hello World!'.
+</LI>
+</OL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5730"
+<A NAME="tex2html5776"
   HREF="node179.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5724"
-  HREF="node174.html">
+<A NAME="tex2html5770"
+  HREF="node104.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5720"
+<A NAME="tex2html5764"
   HREF="node177.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5726"
-  HREF="node221.html">
+<A NAME="tex2html5772"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5728"
-  HREF="node224.html">
+<A NAME="tex2html5774"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -269,17 +229,17 @@ el capítulo <I>Despliegue en Heroku</I>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5731"
-  HREF="node179.html">Depuración en Sinatra</A>
-<B>Sup:</B> <A NAME="tex2html5725"
-  HREF="node174.html">DataMapper y Sinatra</A>
-<B> Ant:</B> <A NAME="tex2html5721"
-  HREF="node177.html">Ejemplo de Uso de</A>
+<B> Sig:</B> <A NAME="tex2html5777"
+  HREF="node179.html">CoffeeScript y Sinatra</A>
+<B>Sup:</B> <A NAME="tex2html5771"
+  HREF="node104.html">PARTE: SINATRA</A>
+<B> Ant:</B> <A NAME="tex2html5765"
+  HREF="node177.html">Aplicaciones Modulares</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-04-21</I>
+2014-04-22</I>
 </ADDRESS>
 </BODY>
 </HTML>

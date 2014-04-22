@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Sinatra desde Dentro</TITLE>
-<META NAME="description" CONTENT="Sinatra desde Dentro">
+<TITLE>Correo</TITLE>
+<META NAME="description" CONTENT="Correo">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node169.html">
-<LINK REL="previous" HREF="node133.html">
-<LINK REL="up" HREF="node96.html">
+<LINK REL="next" HREF="node165.html">
+<LINK REL="previous" HREF="node163.html">
+<LINK REL="up" HREF="node141.html">
 <LINK REL="next" HREF="node165.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5489"
+<A NAME="tex2html5565"
   HREF="node165.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5483"
-  HREF="node96.html">
+<A NAME="tex2html5559"
+  HREF="node141.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5477"
+<A NAME="tex2html5553"
   HREF="node163.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5485"
-  HREF="node221.html">
+<A NAME="tex2html5561"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5487"
-  HREF="node224.html">
+<A NAME="tex2html5563"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,58 +92,81 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5490"
-  HREF="node165.html">tux</A>
-<B>Sup:</B> <A NAME="tex2html5484"
-  HREF="node96.html">PARTE: SINATRA</A>
-<B> Ant:</B> <A NAME="tex2html5478"
-  HREF="node163.html">Práctica: Servicio de Syntax</A>
+<B> Sig:</B> <A NAME="tex2html5566"
+  HREF="node165.html">Ambito</A>
+<B>Sup:</B> <A NAME="tex2html5560"
+  HREF="node141.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5554"
+  HREF="node163.html">Environments</A>
 <B> Con:</B> 
-<A NAME="tex2html5485"
-  HREF="node221.html">
+<A NAME="tex2html5561"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5487"
-  HREF="node224.html">
+<A NAME="tex2html5563"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION06400000000000000000">
-Sinatra desde Dentro</A>
+<H1><A NAME="SECTION063230000000000000000"></A>
+<A NAME="section:correo"></A>
+<BR>
+Correo
 </H1>
-<BR> <HR>
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
+<PRE>
+[~/srcSTW/sinatra-faq/mail(esau)]$ cat app.rb 
+require 'sinatra'
+require 'pony'
+raise "Execute:\n\t#{$0} password email_to email_from" if ARGV.length.zero?
+get '/' do
+    email = ARGV.shift
+    pass = ARGV.shift
+    Pony.mail({
+      :to =&gt; email,
+      :body =&gt; "Hello Casiano",
+      :subject =&gt; 'Howdy, Partna!',
+      :via =&gt; :smtp,
+      :via_options =&gt; {
+          :address              =&gt; 'smtp.gmail.com',
+          :port                 =&gt; '587',
+          :enable_starttls_auto =&gt; true,
+          :user_name            =&gt; ARGV.shift,
+          :password             =&gt; pass,
+          :authentication       =&gt; :plain, # :plain, :login, :cram_md5, no auth by default
+          :domain               =&gt; "localhost.localdomain" # the HELO domain provided by the client to the server
+        }
+    })
+    "Check your email at #{email}"
+end
+</PRE>
 
-<UL CLASS="ChildLinks">
-<LI><A NAME="tex2html5491"
-  HREF="node165.html">tux</A>
-<LI><A NAME="tex2html5492"
-  HREF="node166.html">Aplicación y Delegación</A>
-<LI><A NAME="tex2html5493"
-  HREF="node167.html">Helpers y Extensiones</A>
-<LI><A NAME="tex2html5494"
-  HREF="node168.html">Petición y Respuesta</A>
-</UL>
-<!--End of Table of Child-Links-->
+<P>
+
+<OL>
+<LI><A NAME="tex2html691"
+  HREF="http://www.millwoodonline.co.uk/blog/getting-started-with-sinatra">Getting started with Sinatra</A>
+</LI>
+</OL>
+
+<P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5489"
+<A NAME="tex2html5565"
   HREF="node165.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5483"
-  HREF="node96.html">
+<A NAME="tex2html5559"
+  HREF="node141.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5477"
+<A NAME="tex2html5553"
   HREF="node163.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5485"
-  HREF="node221.html">
+<A NAME="tex2html5561"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5487"
-  HREF="node224.html">
+<A NAME="tex2html5563"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -194,17 +217,17 @@ Sinatra desde Dentro</A>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5490"
-  HREF="node165.html">tux</A>
-<B>Sup:</B> <A NAME="tex2html5484"
-  HREF="node96.html">PARTE: SINATRA</A>
-<B> Ant:</B> <A NAME="tex2html5478"
-  HREF="node163.html">Práctica: Servicio de Syntax</A>
+<B> Sig:</B> <A NAME="tex2html5566"
+  HREF="node165.html">Ambito</A>
+<B>Sup:</B> <A NAME="tex2html5560"
+  HREF="node141.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5554"
+  HREF="node163.html">Environments</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-04-21</I>
+2014-04-22</I>
 </ADDRESS>
 </BODY>
 </HTML>

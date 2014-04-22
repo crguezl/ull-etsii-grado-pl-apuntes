@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Caching / Caches</TITLE>
-<META NAME="description" CONTENT="Caching / Caches">
+<TITLE>Ejemplo Simple de uso de Sinatra</TITLE>
+<META NAME="description" CONTENT="Ejemplo Simple de uso de Sinatra">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node143.html">
 <LINK REL="previous" HREF="node141.html">
-<LINK REL="up" HREF="node133.html">
+<LINK REL="up" HREF="node141.html">
 <LINK REL="next" HREF="node143.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5152"
+<A NAME="tex2html5219"
   HREF="node143.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5146"
-  HREF="node133.html">
+<A NAME="tex2html5213"
+  HREF="node141.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5140"
+<A NAME="tex2html5207"
   HREF="node141.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5148"
-  HREF="node221.html">
+<A NAME="tex2html5215"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5150"
-  HREF="node224.html">
+<A NAME="tex2html5217"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,55 +92,106 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5153"
-  HREF="node143.html">Sesiones y Cookies en</A>
-<B>Sup:</B> <A NAME="tex2html5147"
-  HREF="node133.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5141"
-  HREF="node141.html">Acceso al Objeto Request</A>
+<B> Sig:</B> <A NAME="tex2html5220"
+  HREF="node143.html">Rutas/Routes</A>
+<B>Sup:</B> <A NAME="tex2html5214"
+  HREF="node141.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5208"
+  HREF="node141.html">Fundamentos</A>
 <B> Con:</B> 
-<A NAME="tex2html5148"
-  HREF="node221.html">
+<A NAME="tex2html5215"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5150"
-  HREF="node224.html">
+<A NAME="tex2html5217"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<H1><A NAME="SECTION06390000000000000000">
-Caching / Caches</A>
+<UL CLASS="ChildLinks">
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html5221"
+  HREF="node142.html#SECTION06310010000000000000">Código</A>
+<LI><A NAME="tex2html5222"
+  HREF="node142.html#SECTION06310020000000000000">Opciones de Ejecución</A>
+</UL></UL></UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION06310000000000000000">
+Ejemplo Simple de uso de Sinatra</A>
 </H1>
-Mediante el uso del helper <code>headers</code>podemos establecer los headers que queramos
-para influir sobre la forma en la que ocurre el caching downstream.
 
 <P>
 
-<OL>
-<LI><A NAME="tex2html669"
-  HREF="http://www.mnot.net/cache_docs/">Caching Tutorial</A>
-</LI>
-</OL>
+<H4><A NAME="SECTION06310010000000000000">
+Código</A>
+</H4>
+  
+
+<PRE>
+[~/sinatra/sinatra-simple(master)]$ cat hi.rb 
+require 'sinatra'
+
+get '/hi' do
+  "Hello World!"
+end
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION06310020000000000000">
+Opciones de Ejecución</A>
+</H4>
+  
+
+<PRE>
+[~/sinatra/sinatra-simple(master)]$ ruby hi.rb --help
+Usage: hi [options]
+    -p port                          set the port (default is 4567)
+    -o addr                          set the host (default is localhost)
+    -e env                           set the environment (default is development)
+    -s server                        specify rack server/handler (default is thin)
+    -x                               turn on the mutex lock (default is off)
+</PRE>
+Sinatra can be used in threaded environments where more than a
+single request is processed at a time. 
+
+<P>
+However, not all applications
+and libraries are thread-safe and may cause intermittent errors or
+general weirdness. 
+
+<P>
+Enabling the <code>-x</code> setting causes all requests
+to synchronize on a mutex lock, ensuring that only a single request
+is processed at a time.
+
+<P>
+The mutex lock setting is disabled by default.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5152"
+<A NAME="tex2html5219"
   HREF="node143.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5146"
-  HREF="node133.html">
+<A NAME="tex2html5213"
+  HREF="node141.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5140"
+<A NAME="tex2html5207"
   HREF="node141.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5148"
-  HREF="node221.html">
+<A NAME="tex2html5215"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5150"
-  HREF="node224.html">
+<A NAME="tex2html5217"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -191,17 +242,17 @@ para influir sobre la forma en la que ocurre el caching downstream.
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5153"
-  HREF="node143.html">Sesiones y Cookies en</A>
-<B>Sup:</B> <A NAME="tex2html5147"
-  HREF="node133.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5141"
-  HREF="node141.html">Acceso al Objeto Request</A>
+<B> Sig:</B> <A NAME="tex2html5220"
+  HREF="node143.html">Rutas/Routes</A>
+<B>Sup:</B> <A NAME="tex2html5214"
+  HREF="node141.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5208"
+  HREF="node141.html">Fundamentos</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-04-21</I>
+2014-04-22</I>
 </ADDRESS>
 </BODY>
 </HTML>

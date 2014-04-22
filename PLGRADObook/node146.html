@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>halt</TITLE>
-<META NAME="description" CONTENT="halt">
+<TITLE>Filtros</TITLE>
+<META NAME="description" CONTENT="Filtros">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node147.html">
 <LINK REL="previous" HREF="node145.html">
-<LINK REL="up" HREF="node133.html">
+<LINK REL="up" HREF="node141.html">
 <LINK REL="next" HREF="node147.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5221"
+<A NAME="tex2html5291"
   HREF="node147.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5215"
-  HREF="node133.html">
+<A NAME="tex2html5285"
+  HREF="node141.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5209"
+<A NAME="tex2html5279"
   HREF="node145.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5217"
-  HREF="node221.html">
+<A NAME="tex2html5287"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5219"
-  HREF="node224.html">
+<A NAME="tex2html5289"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,84 +92,152 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5222"
-  HREF="node147.html">Passing a Request</A>
-<B>Sup:</B> <A NAME="tex2html5216"
-  HREF="node133.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5210"
-  HREF="node145.html">Uploads. Subida de Ficheros</A>
+<B> Sig:</B> <A NAME="tex2html5292"
+  HREF="node147.html">Manejo de Errores</A>
+<B>Sup:</B> <A NAME="tex2html5286"
+  HREF="node141.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5280"
+  HREF="node145.html">Vistas</A>
 <B> Con:</B> 
-<A NAME="tex2html5217"
-  HREF="node221.html">
+<A NAME="tex2html5287"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5219"
-  HREF="node224.html">
+<A NAME="tex2html5289"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<H1><A NAME="SECTION063130000000000000000">
-halt</A>
+<UL CLASS="ChildLinks">
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html5293"
+  HREF="node146.html#SECTION06350010000000000000">Before Filters</A>
+<LI><A NAME="tex2html5294"
+  HREF="node146.html#SECTION06350020000000000000">After Filters</A>
+<LI><A NAME="tex2html5295"
+  HREF="node146.html#SECTION06350030000000000000">Filters can take a Pattern</A>
+<LI><A NAME="tex2html5296"
+  HREF="node146.html#SECTION06350040000000000000">Filters can take a Condition</A>
+</UL></UL></UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION06350000000000000000">
+Filtros</A>
 </H1>
 
 <P>
-Sometimes we want to stop the program: maybe a critical error has ocurred.
-To immediately stop a request within a filter or route use:
+
+<H4><A NAME="SECTION06350010000000000000">
+Before Filters</A>
+</H4>
+  
+
+<A NAME="20735"></A><SPAN  CLASS="textbf">Before filters</SPAN> are evaluated before each request within the
+same context as the routes will be and can modify the request and
+response. 
+
+<P>
+Instance variables set in filters are accessible by routes
+and templates:
 
 <P>
 <PRE>
-halt
+before do
+  @note = 'Hi!'
+  request.path_info = '/foo/bar/baz'
+end
+
+get '/foo/*' do
+  @note #=&gt; 'Hi!'
+  params[:splat] #=&gt; 'bar/baz'
+end
 </PRE>
-You can also specify the status when halting:
+
+<P>
+
+<H4><A NAME="SECTION06350020000000000000">
+After Filters</A>
+</H4>
+  
+
+<A NAME="20741"></A><SPAN  CLASS="textbf">After filters</SPAN> are evaluated after each request within the same
+context and can also modify the request and response. 
+
+<P>
+Instance
+variables set in before filters and routes are accessible by after
+filters:
 
 <P>
 <PRE>
-halt 410
+after do
+  puts response.status
+end
 </PRE>
-Or the body:
+Note: Unless you use the <code>body</code> method rather than just returning a
+String from the routes, the body will not yet be available in the
+after filter, since it is generated later on.
 
 <P>
+
+<H4><A NAME="SECTION06350030000000000000">
+Filters can take a Pattern</A>
+</H4>
+  
+
+Filters optionally take a pattern, causing them to be evaluated
+only if the request path matches that pattern:
 <PRE>
-halt 'this will be the body'
+before '/protected/*' do
+  authenticate!
+end
+
+after '/create/:slug' do |slug|
+  session[:last_slug] = slug
+end
 </PRE>
-Or both:
 
 <P>
-<PRE>
-halt 401, 'go away!'
-</PRE>
-With headers:
 
-<P>
-<PRE>
-halt 402, {'Content-Type' =&gt; 'text/plain'}, 'revenge'
-</PRE>
-It is of course possible to combine a template with halt:
+<H4><A NAME="SECTION06350040000000000000">
+Filters can take a Condition</A>
+</H4>
+  
 
-<P>
+Like routes, filters also take conditions:
 <PRE>
-halt erb(:error)
+before :agent =&gt; /Songbird/ do
+  # ...
+end
+
+after '/blog/*', :host_name =&gt; 'example.com' do
+  # ...
+end
 </PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5221"
+<A NAME="tex2html5291"
   HREF="node147.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5215"
-  HREF="node133.html">
+<A NAME="tex2html5285"
+  HREF="node141.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5209"
+<A NAME="tex2html5279"
   HREF="node145.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5217"
-  HREF="node221.html">
+<A NAME="tex2html5287"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5219"
-  HREF="node224.html">
+<A NAME="tex2html5289"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -220,17 +288,17 @@ halt erb(:error)
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5222"
-  HREF="node147.html">Passing a Request</A>
-<B>Sup:</B> <A NAME="tex2html5216"
-  HREF="node133.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5210"
-  HREF="node145.html">Uploads. Subida de Ficheros</A>
+<B> Sig:</B> <A NAME="tex2html5292"
+  HREF="node147.html">Manejo de Errores</A>
+<B>Sup:</B> <A NAME="tex2html5286"
+  HREF="node141.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5280"
+  HREF="node145.html">Vistas</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-04-21</I>
+2014-04-22</I>
 </ADDRESS>
 </BODY>
 </HTML>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Ambito</TITLE>
-<META NAME="description" CONTENT="Ambito">
+<TITLE>Logging</TITLE>
+<META NAME="description" CONTENT="Logging">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node158.html">
 <LINK REL="previous" HREF="node156.html">
-<LINK REL="up" HREF="node133.html">
+<LINK REL="up" HREF="node141.html">
 <LINK REL="next" HREF="node158.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5378"
+<A NAME="tex2html5464"
   HREF="node158.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5372"
-  HREF="node133.html">
+<A NAME="tex2html5458"
+  HREF="node141.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5366"
+<A NAME="tex2html5452"
   HREF="node156.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5374"
-  HREF="node221.html">
+<A NAME="tex2html5460"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5376"
-  HREF="node224.html">
+<A NAME="tex2html5462"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,19 +92,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5379"
-  HREF="node158.html">Sinatra Authentication</A>
-<B>Sup:</B> <A NAME="tex2html5373"
-  HREF="node133.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5367"
-  HREF="node156.html">Correo</A>
+<B> Sig:</B> <A NAME="tex2html5465"
+  HREF="node158.html">Generating URLs</A>
+<B>Sup:</B> <A NAME="tex2html5459"
+  HREF="node141.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5453"
+  HREF="node156.html">Triggering Another Route: calling</A>
 <B> Con:</B> 
-<A NAME="tex2html5374"
-  HREF="node221.html">
+<A NAME="tex2html5460"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5376"
-  HREF="node224.html">
+<A NAME="tex2html5462"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
@@ -115,261 +115,186 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <UL CLASS="ChildLinks">
 <LI><UL>
 <LI><UL>
-<LI><A NAME="tex2html5380"
-  HREF="node157.html#SECTION063240010000000000000">Ámbito de Clase/Class Scope</A>
-<LI><A NAME="tex2html5381"
-  HREF="node157.html#SECTION063240020000000000000">Ámbito de Instancia/Instance Scope</A>
-<LI><A NAME="tex2html5382"
-  HREF="node157.html#SECTION063240030000000000000">Ejecución en el servidor</A>
-<LI><A NAME="tex2html5383"
-  HREF="node157.html#SECTION063240040000000000000">Ejecución en el cliente. Ruta: /define_route/juan</A>
-<LI><A NAME="tex2html5384"
-  HREF="node157.html#SECTION063240050000000000000">Ejecución en el cliente. Ruta: /juan</A>
+<LI><A NAME="tex2html5466"
+  HREF="node157.html#SECTION063160010000000000000">Logging a stdout y a un fichero</A>
+<LI><A NAME="tex2html5467"
+  HREF="node157.html#SECTION063160020000000000000">Ejecución</A>
+<LI><A NAME="tex2html5468"
+  HREF="node157.html#SECTION063160030000000000000">Véase</A>
 </UL></UL></UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION063240000000000000000">
-Ambito</A>
+<H1><A NAME="SECTION063160000000000000000">
+Logging</A>
 </H1>
-The scope you are currently in determines what methods and variables are available.
+In the request scope, the <code>logger</code> helper exposes a <code>Logger</code> instance:
 
 <P>
-
-<H4><A NAME="SECTION063240010000000000000">
-Ámbito de Clase/Class Scope</A>
-</H4>
-  
-
-<P>
+<PRE>
+get '/' do
+  logger.info "loading data"
+  # ...
+end
+</PRE>
 
 <OL>
-<LI>Every Sinatra application corresponds to a subclass of <A NAME="tex2html688"
-  HREF="https://github.com/sinatra/sinatra/blob/master/lib/sinatra/base.rb">Sinatra::Base</A>
+<LI>This <code>logger</code> will automatically take your Rack handler’s <code>logging</code> settings into account
 </LI>
-<LI>If you are using the top-level DSL (<code>require 'sinatra'</code>), then this class is <A NAME="tex2html689"
-  HREF="https://github.com/sinatra/sinatra/blob/master/lib/sinatra/main.rb">Sinatra::Application</A>, otherwise it is the subclass you created explicitly
-</LI>
-<LI>At class level you have methods like <code>get</code> or <code>before</code>, 
-but you cannot access the <code>request</code> or <code>session</code> objects, 
-as there is only a single application class for all requests
+<LI>If <code>logging</code> is disabled, this method will return a dummy object, so you do not have to worry in your routes and filters about it
 </LI>
 </OL>
 
 <P>
-Options created via <code>set</code> are methods at class level:
+Note that <code>logging</code> is only enabled for <code>Sinatra::Application</code>
+ by default, so if you inherit from , you probably want to enable it yourself:
 
 <P>
 <PRE>
 class MyApp &lt; Sinatra::Base
-  # Hey, I'm in the application scope!
-  set :foo, 42
-  foo # =&gt; 42
-
-  get '/foo' do
-    # Hey, I'm no longer in the application scope!
+  configure :production, :development do
+    enable :logging
   end
 end
 </PRE>
 
-<P>
-You have the application scope binding inside:
-
-<P>
-
 <OL>
-<LI>Your application class body
+<LI>To avoid any <code>logging</code> middleware to be set up, set the <code>logging</code> setting to <code>nil</code>
 </LI>
-<LI>Methods defined by extensions
+<LI>However, keep in mind that <code>logger</code> will in that case return <code>nil</code>
 </LI>
-<LI>The block passed to <code>helpers</code>
-</LI>
-<LI>Procs/blocks used as value for <code>set</code>
-</LI>
-<LI>The block passed to <code>Sinatra.new</code>
-</LI>
-</OL>
-
-<P>
-You can reach the scope object (the class) like this:
-
-<P>
-
-<OL>
-<LI>Via the object passed to configure blocks (<code>configure { |c| ... }</code>)
-</LI>
-<LI><code>settings</code> from within the request scope
+<LI>A common use case is when you want to set your own <code>logger</code>.
+Sinatra will use whatever it will find in <code>env['rack.logger']</code>
 </LI>
 </OL>
 
 <P>
 
-<H4><A NAME="SECTION063240020000000000000">
-Ámbito de Instancia/Instance Scope</A>
+<H4><A NAME="SECTION063160010000000000000">
+Logging a stdout y a un fichero</A>
 </H4>
   
 
 <P>
-For every incoming request, a new instance of your application class is created and all handler blocks run in that scope
+Véase 
+<A NAME="tex2html687"
+  HREF="http://recipes.sinatrarb.com/p/middleware/rack_commonlogger">Rack::CommonLogger</A>
+en Sinatra Recipes.
 
-<OL>
-<LI>From within this scope you can access the <code>request</code> and <code>session</code> objects or 
-</LI>
-<LI>call rendering methods like <code>erb</code> or <code>haml</code>
-</LI>
-<LI>You can access the application scope from within the <code>request</code> scope via the <code>settings</code> helper:
-</LI>
-</OL>
+<P>
+Sinatra has logging support, but it's nearly impossible to log to a file and to the stdout (like Rails does).
+
+<P>
+However, there is a little trick you can use to log to stdout and to a file:
 
 <P>
 <PRE>
-[~/sinatra/sinatra-scope]$ cat app.rb 
 require 'sinatra'
 
-class MyApp &lt; Sinatra::Base
-  # Hey, I'm in the application scope!
-  get '/define_route/:name' do
-    # Request scope for '/define_route/:name'
-    @value = 42
-    puts "Inside /define_route/:name @value = #{@value}"
-    puts self.class
+configure do
+  # logging is enabled by default in classic style applications,
+  # so `enable :logging` is not needed
+  file = File.new("#{settings.root}/log/#{settings.environment}.log", 'a+')
+  file.sync = true
+  use Rack::CommonLogger, file
+end
 
-    settings.get("/#{params[:name]}") do
-      # Request scope for "/#{params[:name]}"
-      puts "@value = &lt;#{@value}&gt;"
-      "Inside defined route #{params[:name]}"
-    end
+get '/' do
+  'Hello World'
+end
+</PRE>
+You can use the same configuration for modular style applications,
+but you have to <code>enable :logging first</code>:
 
-    "Route #{params[:name]} defined!"
+<P>
+<PRE>
+require 'sinatra/base'
+
+class SomeApp &lt; Sinatra::Base
+  configure do
+    enable :logging
+    file = File.new("#{settings.root}/log/#{settings.environment}.log", 'a+')
+    file.sync = true
+    use Rack::CommonLogger, file
   end
-  
-  run! if __FILE__ == $0
+
+  get '/' do
+    'Hello World'
+  end
+
+  run!
 end
 </PRE>
 
 <P>
 
-<H4><A NAME="SECTION063240030000000000000">
-Ejecución en el servidor</A>
+<H4><A NAME="SECTION063160020000000000000">
+Ejecución</A>
 </H4>
   
 
 <PRE>
-[~/sinatra/sinatra-scope]$ ruby app.rb 
+~/sinatra/sinatra-logging]$ tree
+.
+|-- app.rb
+`-- log
+
+1 directory, 1 file
+[~/sinatra/sinatra-logging]$ ruby app.rb 
 == Sinatra/1.4.4 has taken the stage on 4567 for development with backup from Thin
 Thin web server (v1.6.1 codename Death Proof)
 Maximum connections set to 1024
 Listening on localhost:4567, CTRL+C to stop
-Inside /define_route/:name @value = 42
-MyApp
-@value = &lt;&gt;
+</PRE>
+Consola después de visitar la página:
+<PRE>
+127.0.0.1 - - [19/Nov/2013 14:53:06] "GET / HTTP/1.1" 200 11 0.0041
+</PRE>
+
+<P>
+Fichero después de visitar la página:
+<PRE>
+[~/sinatra/sinatra-logging]$ cat log/development.log 
+127.0.0.1 - - [19/Nov/2013 14:53:06] "GET / HTTP/1.1" 200 11 0.0038
 </PRE>
 
 <P>
 
-<H4><A NAME="SECTION063240040000000000000">
-Ejecución en el cliente. Ruta: /define_route/juan</A>
+<H4><A NAME="SECTION063160030000000000000">
+Véase</A>
 </H4>
   
-
-<PRE>
-[~/sinatra/sinatra-scope]$ curl -v 'http://localhost:4567/define_route/juan'
-* Adding handle: conn: 0x7fbacb004000
-* Adding handle: send: 0
-* Adding handle: recv: 0
-* Curl_addHandleToPipeline: length: 1
-* - Conn 0 (0x7fbacb004000) send_pipe: 1, recv_pipe: 0
-* About to connect() to localhost port 4567 (#0)
-*   Trying 127.0.0.1...
-* Connected to localhost (127.0.0.1) port 4567 (#0)
-&gt; GET /define_route/juan HTTP/1.1
-&gt; User-Agent: curl/7.30.0
-&gt; Host: localhost:4567
-&gt; Accept: */*
-&gt; 
-&lt; HTTP/1.1 200 OK
-&lt; Content-Type: text/html;charset=utf-8
-&lt; Content-Length: 19
-&lt; X-XSS-Protection: 1; mode=block
-&lt; X-Content-Type-Options: nosniff
-&lt; X-Frame-Options: SAMEORIGIN
-&lt; Connection: keep-alive
-* Server thin 1.6.1 codename Death Proof is not blacklisted
-&lt; Server: thin 1.6.1 codename Death Proof
-&lt; 
-* Connection #0 to host localhost left intact
-Route juan defined!
-[~/sinatra/sinatra-scope]$
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION063240050000000000000">
-Ejecución en el cliente. Ruta: /juan</A>
-</H4>
-  
-
-<PRE>
-[~/sinatra/sinatra-scope]$ curl -v 'http://localhost:4567/juan'
-* Adding handle: conn: 0x7fbdd1800000
-* Adding handle: send: 0
-* Adding handle: recv: 0
-* Curl_addHandleToPipeline: length: 1
-* - Conn 0 (0x7fbdd1800000) send_pipe: 1, recv_pipe: 0
-* About to connect() to localhost port 4567 (#0)
-*   Trying ::1...
-*   Trying 127.0.0.1...
-* Connected to localhost (127.0.0.1) port 4567 (#0)
-&gt; GET /juan HTTP/1.1
-&gt; User-Agent: curl/7.30.0
-&gt; Host: localhost:4567
-&gt; Accept: */*
-&gt; 
-&lt; HTTP/1.1 200 OK
-&lt; Content-Type: text/html;charset=utf-8
-&lt; Content-Length: 21
-&lt; X-XSS-Protection: 1; mode=block
-&lt; X-Content-Type-Options: nosniff
-&lt; X-Frame-Options: SAMEORIGIN
-&lt; Connection: keep-alive
-* Server thin 1.6.1 codename Death Proof is not blacklisted
-&lt; Server: thin 1.6.1 codename Death Proof
-&lt; 
-* Connection #0 to host localhost left intact
-Inside defined route
-</PRE>
-You have the request scope binding inside:
-
-<P>
 
 <OL>
-<LI><code>get</code>, <code>head</code>, <code>post</code>, <code>put</code>, <code>delete</code>, <code>options</code>, <code>patch</code>, <code>link</code>, and <code>unlink</code> blocks
+<LI>el código en GitHub de 
+<A NAME="tex2html688"
+  HREF="https://github.com/rack/rack/blob/master/lib/rack/commonlogger.rb">Rack::CommonLogger</A>
 </LI>
-<LI><code>before</code> and <code>after</code> filters
-</LI>
-<LI><code>helper</code> methods
-</LI>
-<LI>templates/views
+<LI>Logging in Sinatra. StackOverflow.
+<A NAME="tex2html689"
+  HREF="http://stackoverflow.com/questions/5995854/logging-in-sinatra/5995932#5995932">Destination is set by  changing 
+</A>
+<code>env['rack.errors']</code>.  Konstantin Haase May 13 '11 at 21:18'
 </LI>
 </OL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5378"
+<A NAME="tex2html5464"
   HREF="node158.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5372"
-  HREF="node133.html">
+<A NAME="tex2html5458"
+  HREF="node141.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5366"
+<A NAME="tex2html5452"
   HREF="node156.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5374"
-  HREF="node221.html">
+<A NAME="tex2html5460"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5376"
-  HREF="node224.html">
+<A NAME="tex2html5462"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -420,17 +345,17 @@ You have the request scope binding inside:
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5379"
-  HREF="node158.html">Sinatra Authentication</A>
-<B>Sup:</B> <A NAME="tex2html5373"
-  HREF="node133.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5367"
-  HREF="node156.html">Correo</A>
+<B> Sig:</B> <A NAME="tex2html5465"
+  HREF="node158.html">Generating URLs</A>
+<B>Sup:</B> <A NAME="tex2html5459"
+  HREF="node141.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5453"
+  HREF="node156.html">Triggering Another Route: calling</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-04-21</I>
+2014-04-22</I>
 </ADDRESS>
 </BODY>
 </HTML>

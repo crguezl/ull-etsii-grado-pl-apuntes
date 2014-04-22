@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Sinatra::Flash</TITLE>
-<META NAME="description" CONTENT="Sinatra::Flash">
+<TITLE>Introducción a Los Object Relational Mappers (ORM)</TITLE>
+<META NAME="description" CONTENT="Introducción a Los Object Relational Mappers (ORM)">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node184.html">
 <LINK REL="previous" HREF="node182.html">
-<LINK REL="up" HREF="node96.html">
+<LINK REL="up" HREF="node182.html">
 <LINK REL="next" HREF="node184.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5799"
+<A NAME="tex2html5870"
   HREF="node184.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5793"
-  HREF="node96.html">
+<A NAME="tex2html5864"
+  HREF="node182.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5787"
+<A NAME="tex2html5858"
   HREF="node182.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5795"
-  HREF="node221.html">
+<A NAME="tex2html5866"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5797"
-  HREF="node224.html">
+<A NAME="tex2html5868"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,141 +92,100 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5800"
-  HREF="node184.html">Pruebas</A>
-<B>Sup:</B> <A NAME="tex2html5794"
-  HREF="node96.html">PARTE: SINATRA</A>
-<B> Ant:</B> <A NAME="tex2html5788"
-  HREF="node182.html">Rest</A>
+<B> Sig:</B> <A NAME="tex2html5871"
+  HREF="node184.html">Introducción al Patrón DataMapper</A>
+<B>Sup:</B> <A NAME="tex2html5865"
+  HREF="node182.html">DataMapper y Sinatra</A>
+<B> Ant:</B> <A NAME="tex2html5859"
+  HREF="node182.html">DataMapper y Sinatra</A>
 <B> Con:</B> 
-<A NAME="tex2html5795"
-  HREF="node221.html">
+<A NAME="tex2html5866"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5797"
-  HREF="node224.html">
+<A NAME="tex2html5868"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION061300000000000000000">
-Sinatra::Flash</A>
+<H1><A NAME="SECTION06910000000000000000">
+Introducción a Los Object Relational Mappers (ORM)</A>
 </H1>
-<A NAME="tex2html752"
-  HREF="https://github.com/SFEley/sinatra-flash">Sinatra::Flash</A>
-is an extension that lets you store information between
-requests. 
 
 <P>
-Often, when an application processes a request, it will redirect
-to another URL upon finishing, which generates another request. 
+What is a Object Relational Mapper?
 
 <P>
-This
-means that any information from the previous request is lost (due to the
-stateless nature of HTTP). 
+A simple answer is that you wrap your tables or stored procedures
+in classes in your programming language, so that instead of writing
+SQL statements to interact with your database, you use methods and
+properties of objects.
 
 <P>
-<A NAME="tex2html753"
-  HREF="https://github.com/SFEley/sinatra-flash">Sinatra::Flash</A>
-overcomes this by providing
-access to the 
-<FONT COLOR="#ff0000"> flash</FONT>—a hash-like object that stores temporary values
-such as error messages so that they can be retrieved later—usually
-on the next request. 
+In other words, instead of something like this:
 
 <P>
-It also removes the information once it’s been
-used. 
-
-<P>
-All this can be achieved via sessions (and that’s exactly how
-<A NAME="tex2html754"
-  HREF="https://github.com/SFEley/sinatra-flash">Sinatra::Flash</A>
-does it), but 
-<A NAME="tex2html755"
-  HREF="https://github.com/SFEley/sinatra-flash">Sinatra::Flash</A>
-is easy to implement and
-provides a number of helper methods.
-
-<P>
-
-<H4><A NAME="SECTION061300010000000000000">
-Ejemplo</A>
-</H4>
-  
-
 <PRE>
-[~/sinatra/sinatra-flash]$ cat app.rb 
-require 'sinatra'
-require 'sinatra/flash'
+  String sql = "SELECT ... FROM persons WHERE id = 10"
+  DbCommand cmd = new DbCommand(connection, sql);
+  Result res = cmd.Execute();
+  String name = res[0]["FIRST_NAME"];
+</PRE>
+you do something like this:
 
-enable :sessions
-
-get '/blah' do
-  # This message won't be seen until the NEXT Web request that accesses the flash collection
-  flash[:blah] = "You were feeling blah at #{Time.now}."
-
-  # Accessing the flash displays messages set from the LAST request
-  "Feeling blah again? That's too bad. #{flash[:blah]}"
-end
-
-get '/pum' do
-  # This message won't be seen until the NEXT Web request that accesses the flash collection
-  flash[:pum] = "You were feeling pum at #{Time.now}."
-
-  # Accessing the flash displays messages set from the LAST request
-  "Feeling pum again? That's too bad. #{flash[:pum]}"
-end
+<P>
+<PRE>
+  Person p = Person.Get(10);
 </PRE>
 
 <P>
-
-<H4><A NAME="SECTION061300020000000000000">
-Gemfile</A>
-</H4>
-  
-
-<PRE>
-[~/sinatra/sinatra-flash]$ cat Gemfile
-source 'https://rubygems.org'
-
-gem 'sinatra'
-gem 'sinatra-flash'
-</PRE>
+or similar code (lots of variations here). 
+The framework is what makes this code possible.
 
 <P>
-<BR> <HR>
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
+Now, benefits:
 
-<UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html5801"
-  HREF="node183.html#SECTION061300010000000000000">Ejemplo</A>
-<LI><A NAME="tex2html5802"
-  HREF="node183.html#SECTION061300020000000000000">Gemfile</A>
-</UL></UL></UL></UL>
-<!--End of Table of Child-Links-->
+<P>
+
+<OL>
+<LI>First of all, you hide the SQL away from your logic
+code
+</LI>
+<LI>This has the benefit of allowing you to more easily support
+more database engines 
+</LI>
+<LI>For instance, MS SQL Server and Oracle have
+different names on typical functions, and different ways to do
+calculations with dates.
+This difference can be put away from your
+logic code.
+</LI>
+<LI>Additionally, you can focus on writing the logic, instead of getting all the SQL right.
+</LI>
+<LI>The code will typically be more readable as well, since it doesn't
+contain all the plumbing necessary to talk to the database.
+</LI>
+</OL>
+
+<P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5799"
+<A NAME="tex2html5870"
   HREF="node184.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5793"
-  HREF="node96.html">
+<A NAME="tex2html5864"
+  HREF="node182.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5787"
+<A NAME="tex2html5858"
   HREF="node182.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5795"
-  HREF="node221.html">
+<A NAME="tex2html5866"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5797"
-  HREF="node224.html">
+<A NAME="tex2html5868"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -277,17 +236,17 @@ gem 'sinatra-flash'
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5800"
-  HREF="node184.html">Pruebas</A>
-<B>Sup:</B> <A NAME="tex2html5794"
-  HREF="node96.html">PARTE: SINATRA</A>
-<B> Ant:</B> <A NAME="tex2html5788"
-  HREF="node182.html">Rest</A>
+<B> Sig:</B> <A NAME="tex2html5871"
+  HREF="node184.html">Introducción al Patrón DataMapper</A>
+<B>Sup:</B> <A NAME="tex2html5865"
+  HREF="node182.html">DataMapper y Sinatra</A>
+<B> Ant:</B> <A NAME="tex2html5859"
+  HREF="node182.html">DataMapper y Sinatra</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-04-21</I>
+2014-04-22</I>
 </ADDRESS>
 </BODY>
 </HTML>

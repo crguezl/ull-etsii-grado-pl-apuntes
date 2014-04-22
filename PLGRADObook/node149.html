@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Logging</TITLE>
-<META NAME="description" CONTENT="Logging">
+<TITLE>Acceso al Objeto Request</TITLE>
+<META NAME="description" CONTENT="Acceso al Objeto Request">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node150.html">
 <LINK REL="previous" HREF="node148.html">
-<LINK REL="up" HREF="node133.html">
+<LINK REL="up" HREF="node141.html">
 <LINK REL="next" HREF="node150.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5263"
+<A NAME="tex2html5339"
   HREF="node150.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5257"
-  HREF="node133.html">
+<A NAME="tex2html5333"
+  HREF="node141.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5251"
+<A NAME="tex2html5327"
   HREF="node148.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5259"
-  HREF="node221.html">
+<A NAME="tex2html5335"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5261"
-  HREF="node224.html">
+<A NAME="tex2html5337"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,209 +92,62 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5264"
-  HREF="node150.html">Generating URLs</A>
-<B>Sup:</B> <A NAME="tex2html5258"
-  HREF="node133.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5252"
-  HREF="node148.html">Triggering Another Route: calling</A>
+<B> Sig:</B> <A NAME="tex2html5340"
+  HREF="node150.html">Caching / Caches</A>
+<B>Sup:</B> <A NAME="tex2html5334"
+  HREF="node141.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5328"
+  HREF="node148.html">The methods body, status</A>
 <B> Con:</B> 
-<A NAME="tex2html5259"
-  HREF="node221.html">
+<A NAME="tex2html5335"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5261"
-  HREF="node224.html">
+<A NAME="tex2html5337"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html5265"
-  HREF="node149.html#SECTION063160010000000000000">Logging a stdout y a un fichero</A>
-<LI><A NAME="tex2html5266"
-  HREF="node149.html#SECTION063160020000000000000">Ejecución</A>
-<LI><A NAME="tex2html5267"
-  HREF="node149.html#SECTION063160030000000000000">Véase</A>
-</UL></UL></UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION063160000000000000000">
-Logging</A>
+<H1><A NAME="SECTION06380000000000000000"></A>
+<A NAME="section:requestobject"></A>
+<BR>
+Acceso al Objeto Request
 </H1>
-In the request scope, the <code>logger</code> helper exposes a <code>Logger</code> instance:
+El objeto que representa la solicitud <I>the request object</I>
+es un hash con información de la solicitud: quien hizo la petición, 
+que versión de HTTP usar, etc.
 
 <P>
-<PRE>
-get '/' do
-  logger.info "loading data"
-  # ...
-end
-</PRE>
-
-<OL>
-<LI>This <code>logger</code> will automatically take your Rack handler’s <code>logging</code> settings into account
-</LI>
-<LI>If <code>logging</code> is disabled, this method will return a dummy object, so you do not have to worry in your routes and filters about it
-</LI>
-</OL>
+El objeto que representa la solicitud 
+puede ser accedido desde el nivel de solicitud:
+filtros, rutas y manejadores de error.
 
 <P>
-Note that <code>logging</code> is only enabled for <code>Sinatra::Application</code>
- by default, so if you inherit from , you probably want to enable it yourself:
-
-<P>
-<PRE>
-class MyApp &lt; Sinatra::Base
-  configure :production, :development do
-    enable :logging
-  end
-end
-</PRE>
-
-<OL>
-<LI>To avoid any <code>logging</code> middleware to be set up, set the <code>logging</code> setting to <code>nil</code>
-</LI>
-<LI>However, keep in mind that <code>logger</code> will in that case return <code>nil</code>
-</LI>
-<LI>A common use case is when you want to set your own <code>logger</code>.
-Sinatra will use whatever it will find in <code>env['rack.logger']</code>
-</LI>
-</OL>
-
+Véase <A NAME="tex2html672"
+  HREF="https://github.com/crguezl/sinatra_intro/blob/master/accesing_the_request_object.rb">https://github.com/crguezl/sinatra_intro/blob/master/accesing_the_request_object.rb</A>
 <P>
 
-<H4><A NAME="SECTION063160010000000000000">
-Logging a stdout y a un fichero</A>
-</H4>
-  
-
-<P>
-Véase 
-<A NAME="tex2html683"
-  HREF="http://recipes.sinatrarb.com/p/middleware/rack_commonlogger">Rack::CommonLogger</A>
-en Sinatra Recipes.
-
-<P>
-Sinatra has logging support, but it's nearly impossible to log to a file and to the stdout (like Rails does).
-
-<P>
-However, there is a little trick you can use to log to stdout and to a file:
-
-<P>
-<PRE>
-require 'sinatra'
-
-configure do
-  # logging is enabled by default in classic style applications,
-  # so `enable :logging` is not needed
-  file = File.new("#{settings.root}/log/#{settings.environment}.log", 'a+')
-  file.sync = true
-  use Rack::CommonLogger, file
-end
-
-get '/' do
-  'Hello World'
-end
-</PRE>
-You can use the same configuration for modular style applications,
-but you have to <code>enable :logging first</code>:
-
-<P>
-<PRE>
-require 'sinatra/base'
-
-class SomeApp &lt; Sinatra::Base
-  configure do
-    enable :logging
-    file = File.new("#{settings.root}/log/#{settings.environment}.log", 'a+')
-    file.sync = true
-    use Rack::CommonLogger, file
-  end
-
-  get '/' do
-    'Hello World'
-  end
-
-  run!
-end
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION063160020000000000000">
-Ejecución</A>
-</H4>
-  
-
-<PRE>
-~/sinatra/sinatra-logging]$ tree
-.
-|-- app.rb
-`-- log
-
-1 directory, 1 file
-[~/sinatra/sinatra-logging]$ ruby app.rb 
-== Sinatra/1.4.4 has taken the stage on 4567 for development with backup from Thin
-Thin web server (v1.6.1 codename Death Proof)
-Maximum connections set to 1024
-Listening on localhost:4567, CTRL+C to stop
-</PRE>
-Consola después de visitar la página:
-<PRE>
-127.0.0.1 - - [19/Nov/2013 14:53:06] "GET / HTTP/1.1" 200 11 0.0041
-</PRE>
-
-<P>
-Fichero después de visitar la página:
-<PRE>
-[~/sinatra/sinatra-logging]$ cat log/development.log 
-127.0.0.1 - - [19/Nov/2013 14:53:06] "GET / HTTP/1.1" 200 11 0.0038
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION063160030000000000000">
-Véase</A>
-</H4>
-  
-
-<OL>
-<LI>el código en GitHub de 
-<A NAME="tex2html684"
-  HREF="https://github.com/rack/rack/blob/master/lib/rack/commonlogger.rb">Rack::CommonLogger</A>
-</LI>
-<LI>Logging in Sinatra. StackOverflow.
-<A NAME="tex2html685"
-  HREF="http://stackoverflow.com/questions/5995854/logging-in-sinatra/5995932#5995932">Destination is set by  changing 
-</A>
-<code>env['rack.errors']</code>.  Konstantin Haase May 13 '11 at 21:18'
-</LI>
-</OL>
+<img src="request_object.png" />
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5263"
+<A NAME="tex2html5339"
   HREF="node150.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5257"
-  HREF="node133.html">
+<A NAME="tex2html5333"
+  HREF="node141.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5251"
+<A NAME="tex2html5327"
   HREF="node148.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5259"
-  HREF="node221.html">
+<A NAME="tex2html5335"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5261"
-  HREF="node224.html">
+<A NAME="tex2html5337"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -345,17 +198,17 @@ Véase</A>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5264"
-  HREF="node150.html">Generating URLs</A>
-<B>Sup:</B> <A NAME="tex2html5258"
-  HREF="node133.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5252"
-  HREF="node148.html">Triggering Another Route: calling</A>
+<B> Sig:</B> <A NAME="tex2html5340"
+  HREF="node150.html">Caching / Caches</A>
+<B>Sup:</B> <A NAME="tex2html5334"
+  HREF="node141.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5328"
+  HREF="node148.html">The methods body, status</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-04-21</I>
+2014-04-22</I>
 </ADDRESS>
 </BODY>
 </HTML>

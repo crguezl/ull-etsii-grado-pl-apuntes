@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Configuration</TITLE>
-<META NAME="description" CONTENT="Configuration">
+<TITLE>Sinatra::Flash</TITLE>
+<META NAME="description" CONTENT="Sinatra::Flash">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node192.html">
 <LINK REL="previous" HREF="node190.html">
-<LINK REL="up" HREF="node186.html">
+<LINK REL="up" HREF="node104.html">
 <LINK REL="next" HREF="node192.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html6037"
+<A NAME="tex2html6000"
   HREF="node192.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html6031"
-  HREF="node186.html">
+<A NAME="tex2html5994"
+  HREF="node104.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html6025"
+<A NAME="tex2html5988"
   HREF="node190.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html6033"
-  HREF="node221.html">
+<A NAME="tex2html5996"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html6035"
-  HREF="node224.html">
+<A NAME="tex2html5998"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,90 +92,141 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html6038"
-  HREF="node192.html">Make Heroku run non-master</A>
-<B>Sup:</B> <A NAME="tex2html6032"
-  HREF="node186.html">Heroku</A>
-<B> Ant:</B> <A NAME="tex2html6026"
-  HREF="node190.html">Troubleshooting</A>
+<B> Sig:</B> <A NAME="tex2html6001"
+  HREF="node192.html">Pruebas</A>
+<B>Sup:</B> <A NAME="tex2html5995"
+  HREF="node104.html">PARTE: SINATRA</A>
+<B> Ant:</B> <A NAME="tex2html5989"
+  HREF="node190.html">Rest</A>
 <B> Con:</B> 
-<A NAME="tex2html6033"
-  HREF="node221.html">
+<A NAME="tex2html5996"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html6035"
-  HREF="node224.html">
+<A NAME="tex2html5998"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION07150000000000000000">
-Configuration</A>
+<H1><A NAME="SECTION061300000000000000000">
+Sinatra::Flash</A>
 </H1>
+<A NAME="tex2html756"
+  HREF="https://github.com/SFEley/sinatra-flash">Sinatra::Flash</A>
+is an extension that lets you store information between
+requests. 
+
+<P>
+Often, when an application processes a request, it will redirect
+to another URL upon finishing, which generates another request. 
+
+<P>
+This
+means that any information from the previous request is lost (due to the
+stateless nature of HTTP). 
+
+<P>
+<A NAME="tex2html757"
+  HREF="https://github.com/SFEley/sinatra-flash">Sinatra::Flash</A>
+overcomes this by providing
+access to the 
+<FONT COLOR="#ff0000"> flash</FONT>—a hash-like object that stores temporary values
+such as error messages so that they can be retrieved later—usually
+on the next request. 
+
+<P>
+It also removes the information once it’s been
+used. 
+
+<P>
+All this can be achieved via sessions (and that’s exactly how
+<A NAME="tex2html758"
+  HREF="https://github.com/SFEley/sinatra-flash">Sinatra::Flash</A>
+does it), but 
+<A NAME="tex2html759"
+  HREF="https://github.com/SFEley/sinatra-flash">Sinatra::Flash</A>
+is easy to implement and
+provides a number of helper methods.
+
+<P>
+
+<H4><A NAME="SECTION061300010000000000000">
+Ejemplo</A>
+</H4>
+  
+
 <PRE>
-[~/sinatra/sinatra-datamapper-jump-start(master)]$ heroku help config 
-Usage: heroku config
+[~/sinatra/sinatra-flash]$ cat app.rb 
+require 'sinatra'
+require 'sinatra/flash'
 
- display the config vars for an app
+enable :sessions
 
- -s, --shell  # output config vars in shell format
+get '/blah' do
+  # This message won't be seen until the NEXT Web request that accesses the flash collection
+  flash[:blah] = "You were feeling blah at #{Time.now}."
 
-Examples:
+  # Accessing the flash displays messages set from the LAST request
+  "Feeling blah again? That's too bad. #{flash[:blah]}"
+end
 
- $ heroku config
- A: one
- B: two
+get '/pum' do
+  # This message won't be seen until the NEXT Web request that accesses the flash collection
+  flash[:pum] = "You were feeling pum at #{Time.now}."
 
- $ heroku config --shell
- A=one
- B=two
-
-Additional commands, type "heroku help COMMAND" for more details:
-
-  config:get KEY                            #  display a config value for an app
-  config:set KEY1=VALUE1 [KEY2=VALUE2 ...]  #  set one or more config vars
-  config:unset KEY1 [KEY2 ...]              #  unset one or more config vars
+  # Accessing the flash displays messages set from the LAST request
+  "Feeling pum again? That's too bad. #{flash[:pum]}"
+end
 </PRE>
 
 <P>
+
+<H4><A NAME="SECTION061300020000000000000">
+Gemfile</A>
+</H4>
+  
+
 <PRE>
-[~/sinatra/sinatra-datamapper-jump-start(master)]$ heroku config -s
-DATABASE_URL=postgres://bhhatrhjjhwcvt:hjgjfhgjfhjfuWH7ls_PJKK5QD@ec2-54-204-35-132.compute-1.amazonaws.com:5999/d2888888888888
-HEROKU_POSTGRESQL_BLACK_URL=postgres://bhjshfdhakwcvt:hQssnhq1y1jhgfhgls_PGNu5QD@ec2-54-204-35-132.compute-1.amazonaws.com:9999/d555555555555j
+[~/sinatra/sinatra-flash]$ cat Gemfile
+source 'https://rubygems.org'
+
+gem 'sinatra'
+gem 'sinatra-flash'
 </PRE>
 
 <P>
-<PRE>
-[~/sinatra/sinatra-datamapper-jump-start(master)]$ heroku config:set C=4
-Setting config vars and restarting crguezl-songs... done, v6
-C: 4
-[~/sinatra/sinatra-datamapper-jump-start(master)]$ heroku config:get C
-4
-[~/sinatra/sinatra-datamapper-jump-start(master)]$ heroku config:unset C
-Unsetting C and restarting crguezl-songs... done, v7
-[~/sinatra/sinatra-datamapper-jump-start(master)]$ heroku config:get C
+<BR> <HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-[~/sinatra/sinatra-datamapper-jump-start(master)]$]]
-</PRE>
-
-<P>
+<UL CLASS="ChildLinks">
+<LI><UL>
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html6002"
+  HREF="node191.html#SECTION061300010000000000000">Ejemplo</A>
+<LI><A NAME="tex2html6003"
+  HREF="node191.html#SECTION061300020000000000000">Gemfile</A>
+</UL></UL></UL></UL>
+<!--End of Table of Child-Links-->
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html6037"
+<A NAME="tex2html6000"
   HREF="node192.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html6031"
-  HREF="node186.html">
+<A NAME="tex2html5994"
+  HREF="node104.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html6025"
+<A NAME="tex2html5988"
   HREF="node190.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html6033"
-  HREF="node221.html">
+<A NAME="tex2html5996"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html6035"
-  HREF="node224.html">
+<A NAME="tex2html5998"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -226,17 +277,17 @@ Unsetting C and restarting crguezl-songs... done, v7
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html6038"
-  HREF="node192.html">Make Heroku run non-master</A>
-<B>Sup:</B> <A NAME="tex2html6032"
-  HREF="node186.html">Heroku</A>
-<B> Ant:</B> <A NAME="tex2html6026"
-  HREF="node190.html">Troubleshooting</A>
+<B> Sig:</B> <A NAME="tex2html6001"
+  HREF="node192.html">Pruebas</A>
+<B>Sup:</B> <A NAME="tex2html5995"
+  HREF="node104.html">PARTE: SINATRA</A>
+<B> Ant:</B> <A NAME="tex2html5989"
+  HREF="node190.html">Rest</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-04-21</I>
+2014-04-22</I>
 </ADDRESS>
 </BODY>
 </HTML>

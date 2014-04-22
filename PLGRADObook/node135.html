@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Rutas/Routes</TITLE>
-<META NAME="description" CONTENT="Rutas/Routes">
+<TITLE>Despliegue de una Aplicación Web en la ETSII</TITLE>
+<META NAME="description" CONTENT="Despliegue de una Aplicación Web en la ETSII">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node136.html">
 <LINK REL="previous" HREF="node134.html">
-<LINK REL="up" HREF="node133.html">
+<LINK REL="up" HREF="node105.html">
 <LINK REL="next" HREF="node136.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5034"
+<A NAME="tex2html5036"
   HREF="node136.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5028"
-  HREF="node133.html">
+<A NAME="tex2html5030"
+  HREF="node105.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5022"
+<A NAME="tex2html5024"
   HREF="node134.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5030"
-  HREF="node221.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
 <A NAME="tex2html5032"
-  HREF="node224.html">
+  HREF="node229.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html5034"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,19 +92,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5035"
-  HREF="node136.html">Ficheros Estáticos</A>
-<B>Sup:</B> <A NAME="tex2html5029"
-  HREF="node133.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5023"
-  HREF="node134.html">Ejemplo Simple de uso</A>
+<B> Sig:</B> <A NAME="tex2html5037"
+  HREF="node136.html">Práctica: Despliegue en Heroku</A>
+<B>Sup:</B> <A NAME="tex2html5031"
+  HREF="node105.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html5025"
+  HREF="node134.html">Prácticas: Centro de Cálculo</A>
 <B> Con:</B> 
-<A NAME="tex2html5030"
-  HREF="node221.html">
+<A NAME="tex2html5032"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5032"
-  HREF="node224.html">
+<A NAME="tex2html5034"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
@@ -115,331 +115,85 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <UL CLASS="ChildLinks">
 <LI><UL>
 <LI><UL>
-<LI><A NAME="tex2html5036"
-  HREF="node135.html#SECTION06320010000000000000">Aplicacion</A>
-<LI><A NAME="tex2html5037"
-  HREF="node135.html#SECTION06320020000000000000">config.ru</A>
 <LI><A NAME="tex2html5038"
-  HREF="node135.html#SECTION06320030000000000000">Rakefile</A>
-<LI><A NAME="tex2html5039"
-  HREF="node135.html#SECTION06320040000000000000">Ejecución del servidor</A>
-<LI><A NAME="tex2html5040"
-  HREF="node135.html#SECTION06320050000000000000">Ejecución de los clientes</A>
-</UL>
-</UL>
-<BR>
-<LI><A NAME="tex2html5041"
-  HREF="node135.html#SECTION06321000000000000000">Verbos HTTP en Sinatra/Base</A>
-</UL>
+  HREF="node135.html#SECTION061300010000000000000">Véase también</A>
+</UL></UL></UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION06320000000000000000"></A><A NAME="routes"></A>
-<BR>
-Rutas/Routes
+<H1><A NAME="SECTION061300000000000000000">
+Despliegue de una Aplicación Web en la ETSII</A>
 </H1>
+Para desplegar una aplicación web usaremos <code>exthost2</code> (en 2013).
 
 <P>
-Repase la sección
-<I>HTTP</I>
-<A HREF="node102.html#section:http">15.5</A>.
+Veamos que puertos están libres usando  <TT>netstat</TT> :
+<PRE>
+casiano@exthost2:~$ netstat -an | less
+</PRE>
+o bien usamos  <TT>lsof</TT> : 
+<PRE>
+lsof -i | less
+</PRE>
+y después - si es necesario - terminamos el proceso que ya estuviera escuchando en el puerto
+<PRE>
+kill -9 PID
+</PRE>
 
 <P>
-Vease el código de este ejemplo en 
-<A NAME="tex2html663"
-  HREF="https://github.com/crguezl/sinatra-simple">GitHub</A>
+Veamos una simple aplicación usando <code>rack</code>:
+<PRE>
+casiano@exthost2:~/src/ruby/simplewebapp$ cat hello.rb 
+require 'rack'
+
+app = lambda { |env| [200, {"Content-Type" =&gt; "text/plain"}, ["Hello. The time is #{Time.now}"]] }
+Rack::Handler::WEBrick.run app,:Port =&gt; 4567
+</PRE>
+La ejecutamos:
+<PRE>
+casiano@exthost2:~/src/ruby/simplewebapp$ ruby hello.rb 
+[2013-10-28 09:58:54] INFO  WEBrick 1.3.1
+[2013-10-28 09:58:54] INFO  ruby 1.9.3 (2011-10-30) [i686-linux]
+[2013-10-28 09:58:54] WARN  TCPServer Error: Address already in use - bind(2)
+[2013-10-28 09:58:54] INFO  WEBrick::HTTPServer#start: pid=16597 port=4567
+</PRE>
+Ya tenemos disponible la página en <code>exthost2</code> en el puerto correspondiente.
+
+<P>
+El acceso al servidor está limitado a
+la red de la ULL.
+
 <P>
 
-<H4><A NAME="SECTION06320010000000000000">
-Aplicacion</A>
+<H4><A NAME="SECTION061300010000000000000">
+Véase también</A>
 </H4>
   
 
-<PRE>
-[~/Dropbox/src/ruby/sinatra/sinatra-simple(master)]$ cat app.rb
-require 'sinatra/base'
-
-class App &lt; Sinatra::Base
-  get '/' do
-    "hello get!"
-  end
-
-  post '/' do
-    'hello post!'
-  end
-
-  put '/' do
-    'hello put!'
-  end
-
-  delete '/' do
-    'hello delete!'
-  end
-
-  get '/:name' do |name|
-    "hello #{name}!"
-  end
-
-  get '/:name/?:apelido1?' do |name, apellido|
-    "hello #{apellido}, #{name}!"
-  end
-end
-</PRE>
+<OL>
+<LI><I>Gemas instaladas en local</I> <A HREF="#section:gemasinstaladasenlocal"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>
+</LI>
+</OL>
 
 <P>
-In Sinatra, a route is an HTTP method paired with a URL-matching
-pattern. Each route is associated with a block
-
-<P>
-Routes are matched in the order they are defined. The first route
-that matches the request is invoked.
-
-<P>
-Route patterns may include named parameters, accessible via the params hash:
-
-<P>
-<PRE>        get '/hello/:name' do
-          # matches "GET /hello/foo" and "GET /hello/bar"
-          # params[:name] is 'foo' or 'bar'
-          "Hello #{params[:name]}!"
-        end
-</PRE>
-
-<P>
-You can also access named parameters via block parameters:
-
-<P>
-<PRE>        get '/:name' do |name|
-          "hello #{name}!"
-        end
-</PRE>
-
-<P>
-Route patterns may also include splat (or wildcard) parameters,
-accessible via the <TT>params[:splat]</TT> array:
-
-<P>
-<PRE>        get '/say/*/to/*' do
-          # matches /say/hello/to/world
-          params[:splat] # =&gt; ["hello", "world"]
-        end
-
-        get '/download/*.*' do
-          # matches /download/path/to/file.xml
-          params[:splat] # =&gt; ["path/to/file", "xml"]
-        end
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION06320020000000000000">
-config.ru</A>
-</H4>
-  
-
-<PRE>
-[~/sinatra/sinatra-simple(master)]$ cat config.ru 
-require './app'
-
-run App
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION06320030000000000000">
-Rakefile</A>
-</H4>
-  
-
-<PRE>
-[~/sinatra/sinatra-simple(master)]$ cat Rakefile 
-task :default =&gt; :server
-
-desc "run server"
-task :server do
-  sh "rackup"
-end
-
-desc "make a get / request via curl"
-task :get do
-  sh "curl -v localhost:9292"
-end
-
-desc "make a post / request via curl"
-task :post do
-  sh "curl -X POST -v -d 'ignored data' localhost:9292"
-end
-
-desc "make a put / request via curl"
-task :put do
-  sh "curl -X PUT -v localhost:9292"
-end
-
-desc "make a DELETE / request via curl"
-task :delete do
-  sh "curl -X DELETE -v localhost:9292"
-end
-
-desc "make a get /name request via curl"
-task :getname, :name do |t,h|
-  name = h[:name] or 'pepe'
-  sh "curl -v localhost:9292/#{name}"
-end
-
-desc "make a get /name/appellido request via curl"
-task :getfullname, :name, :apellido do |t,h|
-  name = h[:name] or 'pepe'
-  apellido = h[:apellido] or 'rodriguez'
-  sh "curl -v localhost:9292/#{name}/#{apellido}"
-end
-
-task :html do
-  sh "kramdown README.md &gt; README.html"
-end
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION06320040000000000000">
-Ejecución del servidor</A>
-</H4>
-  
-
-<P>
-<PRE>
-[~/sinatra/sinatra-simple(master)]$ rake server
-rackup
-&gt;&gt; Thin web server (v1.5.1 codename Straight Razor)
-&gt;&gt; Maximum connections set to 1024
-&gt;&gt; Listening on 0.0.0.0:9292, CTRL+C to stop
-127.0.0.1 - - [01/Jul/2013 20:25:16] "GET /juana HTTP/1.1" 200 12 0.0689
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION06320050000000000000">
-Ejecución de los clientes</A>
-</H4>
-  
-
-<P>
-<PRE>
-[~/Dropbox/src/ruby/sinatra/sinatra-simple(master)]$ rake getname[juana]
-{:name=&gt;"juana"}
-curl -v localhost:9292/juana
-* About to connect() to localhost port 9292 (#0)
-*   Trying ::1... Connection refused
-*   Trying 127.0.0.1... connected
-* Connected to localhost (127.0.0.1) port 9292 (#0)
-&gt; GET /juana HTTP/1.1
-&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8x zlib/1.2.5
-&gt; Host: localhost:9292
-&gt; Accept: */*
-&gt; 
-&lt; HTTP/1.1 200 OK
-&lt; Content-Type: text/html;charset=utf-8
-&lt; Content-Length: 12
-&lt; X-XSS-Protection: 1; mode=block
-&lt; X-Content-Type-Options: nosniff
-&lt; X-Frame-Options: SAMEORIGIN
-&lt; Connection: keep-alive
-&lt; Server: thin 1.5.1 codename Straight Razor
-&lt; 
-* Connection #0 to host localhost left intact
-* Closing connection #0
-hello juana!
-</PRE>
-
-<P>
-<PRE>
-[~/Dropbox/src/ruby/sinatra/sinatra-simple(master)]$ rake getfullname[Ana,Hernandez]
-curl -v localhost:9292/Ana/Hernandez
-* About to connect() to localhost port 9292 (#0)
-*   Trying ::1... Connection refused
-*   Trying 127.0.0.1... connected
-* Connected to localhost (127.0.0.1) port 9292 (#0)
-&gt; GET /Ana/Hernandez HTTP/1.1
-&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8x zlib/1.2.5
-&gt; Host: localhost:9292
-&gt; Accept: */*
-&gt; 
-&lt; HTTP/1.1 200 OK
-&lt; Content-Type: text/html;charset=utf-8
-&lt; Content-Length: 21
-&lt; X-XSS-Protection: 1; mode=block
-&lt; X-Content-Type-Options: nosniff
-&lt; X-Frame-Options: SAMEORIGIN
-&lt; Connection: keep-alive
-&lt; Server: thin 1.5.1 codename Straight Razor
-&lt; 
-* Connection #0 to host localhost left intact
-* Closing connection #0
-hello Hernandez, Ana!
-</PRE>
-
-<P>
-
-<H2><A NAME="SECTION06321000000000000000">
-Verbos HTTP en Sinatra/Base</A>
-</H2>
-
-<P>
-<A NAME="tex2html664"
-  HREF="https://github.com/sinatra/sinatra/blob/master/lib/sinatra/base.rb#L1351">Método <TT>get</TT></A>
-<PRE>
-      def get(path, opts = {}, &amp;block)
-        conditions = @conditions.dup
-        route('GET', path, opts, &amp;block)
-
-        @conditions = conditions
-        route('HEAD', path, opts, &amp;block)
-      end
-</PRE>
-
-<P>
-<PRE>
-      def put(path, opts = {}, &amp;bk)     route 'PUT',     path, opts, &amp;bk end
-      def post(path, opts = {}, &amp;bk)    route 'POST',    path, opts, &amp;bk end
-      def delete(path, opts = {}, &amp;bk)  route 'DELETE',  path, opts, &amp;bk end
-      def head(path, opts = {}, &amp;bk)    route 'HEAD',    path, opts, &amp;bk end
-      def options(path, opts = {}, &amp;bk) route 'OPTIONS', path, opts, &amp;bk end
-      def patch(path, opts = {}, &amp;bk)   route 'PATCH',   path, opts, &amp;bk end
-      def link(path, opts = {}, &amp;bk)    route 'LINK',    path, opts, &amp;bk end
-      def unlink(path, opts = {}, &amp;bk)  route 'UNLINK',  path, opts, &amp;bk end
-</PRE>
-
-<P>
-<A NAME="tex2html665"
-  HREF="https://github.com/sinatra/sinatra/blob/master/lib/sinatra/base.rb#L1563">Método <TT>route</TT></A>
-<PRE>
-      def route(verb, path, options = {}, &amp;block)
-        # Because of self.options.host
-        host_name(options.delete(:host)) if options.key?(:host)
-        enable :empty_path_info if path == "" and empty_path_info.nil?
-        signature = compile!(verb, path, block, options)
-        (@routes[verb] ||= []) &lt;&lt; signature
-        invoke_hook(:route_added, verb, path, block)
-        signature
-      end
-</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5034"
+<A NAME="tex2html5036"
   HREF="node136.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5028"
-  HREF="node133.html">
+<A NAME="tex2html5030"
+  HREF="node105.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5022"
+<A NAME="tex2html5024"
   HREF="node134.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5030"
-  HREF="node221.html">
-<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
 <A NAME="tex2html5032"
-  HREF="node224.html">
+  HREF="node229.html">
+<IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
+<A NAME="tex2html5034"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -490,17 +244,17 @@ Verbos HTTP en Sinatra/Base</A>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5035"
-  HREF="node136.html">Ficheros Estáticos</A>
-<B>Sup:</B> <A NAME="tex2html5029"
-  HREF="node133.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5023"
-  HREF="node134.html">Ejemplo Simple de uso</A>
+<B> Sig:</B> <A NAME="tex2html5037"
+  HREF="node136.html">Práctica: Despliegue en Heroku</A>
+<B>Sup:</B> <A NAME="tex2html5031"
+  HREF="node105.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html5025"
+  HREF="node134.html">Prácticas: Centro de Cálculo</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-04-21</I>
+2014-04-22</I>
 </ADDRESS>
 </BODY>
 </HTML>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Sesiones y Cookies en Sinatra</TITLE>
-<META NAME="description" CONTENT="Sesiones y Cookies en Sinatra">
+<TITLE>Rutas/Routes</TITLE>
+<META NAME="description" CONTENT="Rutas/Routes">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node144.html">
 <LINK REL="previous" HREF="node142.html">
-<LINK REL="up" HREF="node133.html">
+<LINK REL="up" HREF="node141.html">
 <LINK REL="next" HREF="node144.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5166"
+<A NAME="tex2html5235"
   HREF="node144.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5160"
-  HREF="node133.html">
+<A NAME="tex2html5229"
+  HREF="node141.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5154"
+<A NAME="tex2html5223"
   HREF="node142.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5162"
-  HREF="node221.html">
+<A NAME="tex2html5231"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5164"
-  HREF="node224.html">
+<A NAME="tex2html5233"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,19 +92,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5167"
-  HREF="node144.html">Downloads / Descargas /</A>
-<B>Sup:</B> <A NAME="tex2html5161"
-  HREF="node133.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5155"
-  HREF="node142.html">Caching / Caches</A>
+<B> Sig:</B> <A NAME="tex2html5236"
+  HREF="node144.html">Ficheros Estáticos</A>
+<B>Sup:</B> <A NAME="tex2html5230"
+  HREF="node141.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5224"
+  HREF="node142.html">Ejemplo Simple de uso</A>
 <B> Con:</B> 
-<A NAME="tex2html5162"
-  HREF="node221.html">
+<A NAME="tex2html5231"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5164"
-  HREF="node224.html">
+<A NAME="tex2html5233"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
@@ -115,323 +115,331 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <UL CLASS="ChildLinks">
 <LI><UL>
 <LI><UL>
-<LI><A NAME="tex2html5168"
-  HREF="node143.html#SECTION063100010000000000000">Introducción</A>
-<LI><A NAME="tex2html5169"
-  HREF="node143.html#SECTION063100020000000000000">Cookies</A>
-<LI><A NAME="tex2html5170"
-  HREF="node143.html#SECTION063100030000000000000">Ejemplo con Sesiones</A>
-<LI><A NAME="tex2html5171"
-  HREF="node143.html#SECTION063100040000000000000">Ejemplo con Cookies</A>
-<LI><A NAME="tex2html5172"
-  HREF="node143.html#SECTION063100050000000000000">Problemas</A>
-<LI><A NAME="tex2html5173"
-  HREF="node143.html#SECTION063100060000000000000">Véanse</A>
-</UL></UL></UL>
+<LI><A NAME="tex2html5237"
+  HREF="node143.html#SECTION06320010000000000000">Aplicacion</A>
+<LI><A NAME="tex2html5238"
+  HREF="node143.html#SECTION06320020000000000000">config.ru</A>
+<LI><A NAME="tex2html5239"
+  HREF="node143.html#SECTION06320030000000000000">Rakefile</A>
+<LI><A NAME="tex2html5240"
+  HREF="node143.html#SECTION06320040000000000000">Ejecución del servidor</A>
+<LI><A NAME="tex2html5241"
+  HREF="node143.html#SECTION06320050000000000000">Ejecución de los clientes</A>
+</UL>
+</UL>
+<BR>
+<LI><A NAME="tex2html5242"
+  HREF="node143.html#SECTION06321000000000000000">Verbos HTTP en Sinatra/Base</A>
+</UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION063100000000000000000">
-Sesiones y Cookies en Sinatra</A>
+<H1><A NAME="SECTION06320000000000000000"></A><A NAME="routes"></A>
+<BR>
+Rutas/Routes
 </H1>
 
 <P>
+Repase la sección
+<I>HTTP</I>
+<A HREF="node110.html#section:http">16.5</A>.
 
-<H4><A NAME="SECTION063100010000000000000">
-Introducción</A>
+<P>
+Vease el código de este ejemplo en 
+<A NAME="tex2html667"
+  HREF="https://github.com/crguezl/sinatra-simple">GitHub</A>
+<P>
+
+<H4><A NAME="SECTION06320010000000000000">
+Aplicacion</A>
 </H4>
   
 
-A session is used to keep state during requests. If activated, you
-have one session hash per user session:
-
-<P>
 <PRE>
-enable :sessions
+[~/Dropbox/src/ruby/sinatra/sinatra-simple(master)]$ cat app.rb
+require 'sinatra/base'
 
-get '/' do
-  "value = " &lt;&lt; session[:value].inspect
-end
-
-get '/:value' do
-  session[:value] = params[:value]
-end
-</PRE>
-
-<OL>
-<LI>Note that <code>enable :sessions</code> actually stores all data in a cookie
-</LI>
-<LI>This might not always be what you want (storing lots of data will increase your traffic, for instance)
-</LI>
-<LI>You can use any Rack session middleware: in order to do so, do not call <code>enable :sessions</code>, but instead pull in your middleware of choice as you would any other middleware:
-
-<P>
-<PRE>
-use Rack::Session::Pool, :expire_after =&gt; 2592000
-
-get '/' do
-  "value = " &lt;&lt; session[:value].inspect
-end
-
-get '/:value' do
-  session[:value] = params[:value]
-end
-</PRE>
-</LI>
-<LI>To improve security, the session data in the cookie is signed with a session secret
-</LI>
-<LI>A random secret is generated for you by Sinatra
-</LI>
-<LI>However, since this secret will change with every start of your application, you might want to set the secret yourself, so all your application instances share it:
-<PRE>
-set :session_secret, 'super secret'
-</PRE>
-If you want to configure it further, you may also store a hash with options in the sessions setting:
-<PRE>
-set :sessions, :domain =&gt; 'foo.com'
-</PRE>
-</LI>
-<LI>Just use
-<code>session.clear</code> to destroy the session.
-<PRE>
-get '/login' do
-    session[:username] = params[:username]
-    "logged in as #{session[:username]}"
+class App &lt; Sinatra::Base
+  get '/' do
+    "hello get!"
   end
 
-  get '/logout' do
-    old_user = session[:username]
-    session.clear
-    "logged out #{old_user}"
+  post '/' do
+    'hello post!'
   end
-</PRE>
-</LI>
-</OL>
 
-<P>
+  put '/' do
+    'hello put!'
+  end
 
-<H4><A NAME="SECTION063100020000000000000">
-Cookies</A>
-</H4>
-  
+  delete '/' do
+    'hello delete!'
+  end
 
-<OL>
-<LI>According to the Computer Science definition, a cookie, which is also known as an HTTP cookie, a tracking cookie, or a browser cookie, is a piece of text, no bigger than 4 kilobytes, which is stored on the user’s computer by a web server via a web browser
-</LI>
-<LI>It is a key-value pair structure, which is designed to retain specific information such as user preferences, user authentication, shopping carts, demographics, sessions, or any other data used by a website
-</LI>
-<LI>This mechanism, which was developed by Netscape in the distant 1994, provides a way to receive information from a web server and to send it back from the web browser absolutely unchanged
-</LI>
-<LI>This system complements the stateless nature of the HTTP protocol as it provides enough memory to store pieces of information during HTTP transactions
+  get '/:name' do |name|
+    "hello #{name}!"
+  end
 
-<P>
-</LI>
-<LI>When you try to access a web site, your web browser connects to a web server and it sends a request for the respective page
-</LI>
-<LI>Then the web server replies by sending the requested content and it simultaneously stores a new cookie on your computer
-</LI>
-<LI>Every time the web browser requests web pages from the web server, it always sends the respective cookies back to the web server
-</LI>
-<LI>The process takes place as described, if the web browser supports cookies and the user allows their usage
-</LI>
-<LI>Only the web server can modify one or more of the cookie values
-</LI>
-<LI>Then it sends them to the web browser upon replying to a specific request
-
-<P>
-</LI>
-<LI>According to the RFC2965 specification, cookies are case insensitive
-</LI>
-<LI>A set of defined properties is inherent to the cookie structure  Those properties include:
- an expiration date, a path and a domain
-</LI>
-<LI>The first attribute requires a date defined in <code>Wdy, DD-Mon-YYYY HH:MM:SS GMT</code> format
-</LI>
-<LI>The rest of the cookie characteristics require a <code>path</code> and/or a <code>domain</code> defined as a string
-</LI>
-<LI>Let’s take a look at this example:
-
-<P>
-<PRE>
-Cookie: key0=value0; ...; keyX=valueX; expires=Wed, 23-Sep-2009 23:59:59 GMT; path=/; domain=.yoursite.com
-</PRE>
-
-<P>
-</LI>
-<LI>When the <code>expiration</code> date is defined, your cookie will be <A NAME="19469"></A><SPAN  CLASS="textbf">persistent</SPAN> as it will reoccur in different sessions until the set <code>expiration</code> date has been reached
-</LI>
-<LI>If the <code>expiration</code> date has not been defined in the cookie, it will occur until the end of your current session or when you close your web browser
-</LI>
-<LI>If the <code>path</code> and/or the <code>domain</code> attributes have been defined in your cookie, then the web server limits the scope of the cookie to that specific <code>domain</code>, <code>sub-domain</code> or <code>path</code>
-</LI>
-</OL>
-
-<P>
-
-<H4><A NAME="SECTION063100030000000000000">
-Ejemplo con Sesiones</A>
-</H4>
-  
-
-<PRE>
-require 'rubygems'
-require 'sinatra'
-require 'haml'
-
-enable :sessions
-
-get '/' do
-  session["user"] ||= nil
-  haml :index
-end
-
-get '/introduction' do
-  haml :introduction
-end
-
-post '/introduction' do
-  session["user"] = params[:name]
-  redirect '/'
-end
-
-get '/bye' do
-  session["user"] = nil
-  haml :bye
+  get '/:name/?:apelido1?' do |name, apellido|
+    "hello #{apellido}, #{name}!"
+  end
 end
 </PRE>
 
 <P>
+In Sinatra, a route is an HTTP method paired with a URL-matching
+pattern. Each route is associated with a block
 
-<H4><A NAME="SECTION063100040000000000000">
-Ejemplo con Cookies</A>
+<P>
+Routes are matched in the order they are defined. The first route
+that matches the request is invoked.
+
+<P>
+Route patterns may include named parameters, accessible via the params hash:
+
+<P>
+<PRE>        get '/hello/:name' do
+          # matches "GET /hello/foo" and "GET /hello/bar"
+          # params[:name] is 'foo' or 'bar'
+          "Hello #{params[:name]}!"
+        end
+</PRE>
+
+<P>
+You can also access named parameters via block parameters:
+
+<P>
+<PRE>        get '/:name' do |name|
+          "hello #{name}!"
+        end
+</PRE>
+
+<P>
+Route patterns may also include splat (or wildcard) parameters,
+accessible via the <TT>params[:splat]</TT> array:
+
+<P>
+<PRE>        get '/say/*/to/*' do
+          # matches /say/hello/to/world
+          params[:splat] # =&gt; ["hello", "world"]
+        end
+
+        get '/download/*.*' do
+          # matches /download/path/to/file.xml
+          params[:splat] # =&gt; ["path/to/file", "xml"]
+        end
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION06320020000000000000">
+config.ru</A>
 </H4>
   
 
-<OL>
-<LI>The last example will demonstrate how to directly manage cookies through the 
-<code>request</code> and <code>response</code> singletons provided by Sinatra
-</LI>
-<LI>You will see in the following example that the previously described process involving the use cookies is clearly implemented
-</LI>
-<LI>This technique is recommended when your application requires to use persistent and/or scoped cookies
-</LI>
-<LI>In this example, the application uses two persistent cookies, which expire at the same time, in order to store and manage different configuration data
-</LI>
-</OL>
+<PRE>
+[~/sinatra/sinatra-simple(master)]$ cat config.ru 
+require './app'
+
+run App
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION06320030000000000000">
+Rakefile</A>
+</H4>
+  
+
+<PRE>
+[~/sinatra/sinatra-simple(master)]$ cat Rakefile 
+task :default =&gt; :server
+
+desc "run server"
+task :server do
+  sh "rackup"
+end
+
+desc "make a get / request via curl"
+task :get do
+  sh "curl -v localhost:9292"
+end
+
+desc "make a post / request via curl"
+task :post do
+  sh "curl -X POST -v -d 'ignored data' localhost:9292"
+end
+
+desc "make a put / request via curl"
+task :put do
+  sh "curl -X PUT -v localhost:9292"
+end
+
+desc "make a DELETE / request via curl"
+task :delete do
+  sh "curl -X DELETE -v localhost:9292"
+end
+
+desc "make a get /name request via curl"
+task :getname, :name do |t,h|
+  name = h[:name] or 'pepe'
+  sh "curl -v localhost:9292/#{name}"
+end
+
+desc "make a get /name/appellido request via curl"
+task :getfullname, :name, :apellido do |t,h|
+  name = h[:name] or 'pepe'
+  apellido = h[:apellido] or 'rodriguez'
+  sh "curl -v localhost:9292/#{name}/#{apellido}"
+end
+
+task :html do
+  sh "kramdown README.md &gt; README.html"
+end
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION06320040000000000000">
+Ejecución del servidor</A>
+</H4>
+  
 
 <P>
 <PRE>
-require 'sinatra'
-require 'haml'
+[~/sinatra/sinatra-simple(master)]$ rake server
+rackup
+&gt;&gt; Thin web server (v1.5.1 codename Straight Razor)
+&gt;&gt; Maximum connections set to 1024
+&gt;&gt; Listening on 0.0.0.0:9292, CTRL+C to stop
+127.0.0.1 - - [01/Jul/2013 20:25:16] "GET /juana HTTP/1.1" 200 12 0.0689
+</PRE>
 
-get '/' do
-  @@expiration_date = Time.now + (60 * 2) \
-  unless request.cookies.key?('some_options') &amp;&amp; request.cookies.key?('other_options')
-  haml :index
-end
+<P>
 
-get '/some_options' do
-  @some_cookie = request.cookies["some_options"]
-  haml :some_options
-end
+<H4><A NAME="SECTION06320050000000000000">
+Ejecución de los clientes</A>
+</H4>
+  
 
-post '/some_options' do  
-  response.set_cookie('some_options', :value =&gt; cookie_values(params), :expires =&gt; @@expiration_date)
-  redirect '/'
-end
+<P>
+<PRE>
+[~/Dropbox/src/ruby/sinatra/sinatra-simple(master)]$ rake getname[juana]
+{:name=&gt;"juana"}
+curl -v localhost:9292/juana
+* About to connect() to localhost port 9292 (#0)
+*   Trying ::1... Connection refused
+*   Trying 127.0.0.1... connected
+* Connected to localhost (127.0.0.1) port 9292 (#0)
+&gt; GET /juana HTTP/1.1
+&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8x zlib/1.2.5
+&gt; Host: localhost:9292
+&gt; Accept: */*
+&gt; 
+&lt; HTTP/1.1 200 OK
+&lt; Content-Type: text/html;charset=utf-8
+&lt; Content-Length: 12
+&lt; X-XSS-Protection: 1; mode=block
+&lt; X-Content-Type-Options: nosniff
+&lt; X-Frame-Options: SAMEORIGIN
+&lt; Connection: keep-alive
+&lt; Server: thin 1.5.1 codename Straight Razor
+&lt; 
+* Connection #0 to host localhost left intact
+* Closing connection #0
+hello juana!
+</PRE>
 
-get '/other_options' do
-  @other_cookie = request.cookies["other_options"]
-  haml :other_options
-end
+<P>
+<PRE>
+[~/Dropbox/src/ruby/sinatra/sinatra-simple(master)]$ rake getfullname[Ana,Hernandez]
+curl -v localhost:9292/Ana/Hernandez
+* About to connect() to localhost port 9292 (#0)
+*   Trying ::1... Connection refused
+*   Trying 127.0.0.1... connected
+* Connected to localhost (127.0.0.1) port 9292 (#0)
+&gt; GET /Ana/Hernandez HTTP/1.1
+&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8x zlib/1.2.5
+&gt; Host: localhost:9292
+&gt; Accept: */*
+&gt; 
+&lt; HTTP/1.1 200 OK
+&lt; Content-Type: text/html;charset=utf-8
+&lt; Content-Length: 21
+&lt; X-XSS-Protection: 1; mode=block
+&lt; X-Content-Type-Options: nosniff
+&lt; X-Frame-Options: SAMEORIGIN
+&lt; Connection: keep-alive
+&lt; Server: thin 1.5.1 codename Straight Razor
+&lt; 
+* Connection #0 to host localhost left intact
+* Closing connection #0
+hello Hernandez, Ana!
+</PRE>
 
-post '/other_options' do
-  response.set_cookie('other_options', :value =&gt; cookie_values(params),:expires =&gt; @@expiration_date)
-  redirect '/'
-end
+<P>
 
-helpers do
-  def cookie_values(parameters)
-    values = {}
-    parameters.each do |key, value|
-      case key
-      when 'options'
-        values[value] = true
-      else
-        values[key] = true
+<H2><A NAME="SECTION06321000000000000000">
+Verbos HTTP en Sinatra/Base</A>
+</H2>
+
+<P>
+<A NAME="tex2html668"
+  HREF="https://github.com/sinatra/sinatra/blob/master/lib/sinatra/base.rb#L1351">Método <TT>get</TT></A>
+<PRE>
+      def get(path, opts = {}, &amp;block)
+        conditions = @conditions.dup
+        route('GET', path, opts, &amp;block)
+
+        @conditions = conditions
+        route('HEAD', path, opts, &amp;block)
       end
-    end
-    values
-  end
-end
 </PRE>
-
-<P>
-
-<H4><A NAME="SECTION063100050000000000000">
-Problemas</A>
-</H4>
-  
-
-<OL>
-<LI><A NAME="tex2html670"
-  HREF="http://stackoverflow.com/questions/8957594/sinatra-session-gets-destroyed-automatically">I'm not sure why but my session gets wiped out every request?</A>
-</LI>
-<LI>To keep sessions consistent you need to set a session secret, e.g.:
 
 <P>
 <PRE>
-set :session_secret, 'super secret'
+      def put(path, opts = {}, &amp;bk)     route 'PUT',     path, opts, &amp;bk end
+      def post(path, opts = {}, &amp;bk)    route 'POST',    path, opts, &amp;bk end
+      def delete(path, opts = {}, &amp;bk)  route 'DELETE',  path, opts, &amp;bk end
+      def head(path, opts = {}, &amp;bk)    route 'HEAD',    path, opts, &amp;bk end
+      def options(path, opts = {}, &amp;bk) route 'OPTIONS', path, opts, &amp;bk end
+      def patch(path, opts = {}, &amp;bk)   route 'PATCH',   path, opts, &amp;bk end
+      def link(path, opts = {}, &amp;bk)    route 'LINK',    path, opts, &amp;bk end
+      def unlink(path, opts = {}, &amp;bk)  route 'UNLINK',  path, opts, &amp;bk end
 </PRE>
-When it's not set sinatra generates random one on application start
-and shotgun restarts application before every request.
-</LI>
-</OL>
 
 <P>
-
-<H4><A NAME="SECTION063100060000000000000">
-Véanse</A>
-</H4>
-  
-
-<P>
-
-<OL>
-<LI><A NAME="tex2html671"
-  HREF="http://brettu.com/ruby-daily-ruby-tips-60-simple-use-of-sessions-in-sinatra/">Daily Ruby Tips #60 – Simple Use of Sessions in Sinatra
-May 6, 2013</A>
-</LI>
-<LI>La sección <I>Cookies</I> en Rack <A HREF="node105.html#section:cookies">15.8</A>.
-</LI>
-<LI><A NAME="tex2html672"
-  HREF="http://rubylearning.com/blog/2009/09/30/cookie-based-sessions-in-sinatra/">Cookie-based Sessions in Sinatra
-by JULIO JAVIER CICCHELLI on SEPTEMBER 30, 2009</A>
-RubyLearning Blog. El código está en
-<A NAME="tex2html673"
-  HREF="http://gist.github.com/205962">un Gist en GitHub</A>
-</LI>
-</OL>
-
-<P>
+<A NAME="tex2html669"
+  HREF="https://github.com/sinatra/sinatra/blob/master/lib/sinatra/base.rb#L1563">Método <TT>route</TT></A>
+<PRE>
+      def route(verb, path, options = {}, &amp;block)
+        # Because of self.options.host
+        host_name(options.delete(:host)) if options.key?(:host)
+        enable :empty_path_info if path == "" and empty_path_info.nil?
+        signature = compile!(verb, path, block, options)
+        (@routes[verb] ||= []) &lt;&lt; signature
+        invoke_hook(:route_added, verb, path, block)
+        signature
+      end
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5166"
+<A NAME="tex2html5235"
   HREF="node144.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5160"
-  HREF="node133.html">
+<A NAME="tex2html5229"
+  HREF="node141.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5154"
+<A NAME="tex2html5223"
   HREF="node142.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5162"
-  HREF="node221.html">
+<A NAME="tex2html5231"
+  HREF="node229.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5164"
-  HREF="node224.html">
+<A NAME="tex2html5233"
+  HREF="node232.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -482,17 +490,17 @@ RubyLearning Blog. El código está en
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5167"
-  HREF="node144.html">Downloads / Descargas /</A>
-<B>Sup:</B> <A NAME="tex2html5161"
-  HREF="node133.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5155"
-  HREF="node142.html">Caching / Caches</A>
+<B> Sig:</B> <A NAME="tex2html5236"
+  HREF="node144.html">Ficheros Estáticos</A>
+<B>Sup:</B> <A NAME="tex2html5230"
+  HREF="node141.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5224"
+  HREF="node142.html">Ejemplo Simple de uso</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-04-21</I>
+2014-04-22</I>
 </ADDRESS>
 </BODY>
 </HTML>
