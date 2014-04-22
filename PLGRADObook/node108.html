@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Detectando el Proceso que está Usando un Puerto</TITLE>
-<META NAME="description" CONTENT="Detectando el Proceso que está Usando un Puerto">
+<TITLE>Rack::Response</TITLE>
+<META NAME="description" CONTENT="Rack::Response">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node109.html">
 <LINK REL="previous" HREF="node107.html">
-<LINK REL="up" HREF="node105.html">
+<LINK REL="up" HREF="node101.html">
 <LINK REL="next" HREF="node109.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4578"
+<A NAME="tex2html4542"
   HREF="node109.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4572"
-  HREF="node105.html">
+<A NAME="tex2html4536"
+  HREF="node101.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4566"
+<A NAME="tex2html4530"
   HREF="node107.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4574"
-  HREF="node229.html">
+<A NAME="tex2html4538"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4576"
-  HREF="node232.html">
+<A NAME="tex2html4540"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,101 +92,256 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4579"
-  HREF="node109.html">Usando PATH_INFO y erubis</A>
-<B>Sup:</B> <A NAME="tex2html4573"
-  HREF="node105.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4567"
-  HREF="node107.html">Analizando env con pry-debugger</A>
+<B> Sig:</B> <A NAME="tex2html4543"
+  HREF="node109.html">Cookies y Rack</A>
+<B>Sup:</B> <A NAME="tex2html4537"
+  HREF="node101.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4531"
+  HREF="node107.html">Rack::Request y Depuración con</A>
 <B> Con:</B> 
-<A NAME="tex2html4574"
-  HREF="node229.html">
+<A NAME="tex2html4538"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4576"
-  HREF="node232.html">
+<A NAME="tex2html4540"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<H1><A NAME="SECTION06130000000000000000">
-Detectando el Proceso que está Usando un Puerto</A>
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html4544"
+  HREF="node108.html#SECTION06171000000000000000">Introducción</A>
+<LI><A NAME="tex2html4545"
+  HREF="node108.html#SECTION06172000000000000000">Ejemplo Simple</A>
+<LI><A NAME="tex2html4546"
+  HREF="node108.html#SECTION06173000000000000000">Ejemplo con <TT>POST</TT></A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION06170000000000000000">
+Rack::Response</A>
 </H1>
 
 <P>
-Si intentamos ejecutar una segunda instancia del servidor mientras otra instancia esta ejecutandose 
-obtenemos un error que indica que el puerto está en uso:
+
+<H2><A NAME="SECTION06171000000000000000">
+Introducción</A>
+</H2>
+
+<P>
+<A NAME="tex2html532"
+  HREF="http://rack.rubyforge.org/doc/Rack/Response.html">Rack::Response</A> provides a convenient interface to create a Rack response.
+
+<P>
+It allows setting of headers and cookies, and provides useful
+defaults (a <code>OK</code> response containing HTML).
+
+<P>
+You can use <code>Response#write</code> to iteratively generate your response,
+but note that this is buffered by <A NAME="tex2html533"
+  HREF="http://rack.rubyforge.org/doc/Rack/Response.html">Rack::Response</A> until you call
+<code>finish</code>. 
+
+<P>
+Alternatively, the method <code>finish</code> can take a block inside which calls to write
+are synchronous with the Rack response.
+
+<P>
+Your application‘s call should end returning <code>Response#finish</code>.
+
+<P>
+
+<H2><A NAME="SECTION06172000000000000000">
+Ejemplo Simple</A>
+</H2>
 <PRE>
-[~/sinatra/sinatra-simple(master)]$ rackup
-Thin web server (v1.6.1 codename Death Proof)
-Maximum connections set to 1024
-Listening on 0.0.0.0:9292, CTRL+C to stop
-/Users/casiano/.rvm/gems/ruby-2.0.0-p247/gems/eventmachine-1.0.3/lib/eventmachine.rb:526:
-  in `start_tcp_server': no acceptor 
-  (port is in use or requires root privileges) (RuntimeError)
-  from /Users/casiano/.rvm/gems/ruby-2.0.0-p247/gems/eventmachine-1.0.3/lib/eventmachine.rb:526:
-    in `start_server'
+[~/local/src/ruby/sinatra/rack/rack-debugging(master)]$ cat body_bytesize.rb 
+require 'rack'
+require 'thin'
+
+app = lambda do |env|
+  req = Rack::Request.new env
+  res = Rack::Response.new
+
+  body = "--------------- Header ------------------\n"
+
+  if req.path_info == '/hello'
+    body &lt;&lt; "hi "
+    name = req['name']
+    body &lt;&lt; name if name 
+    body &lt;&lt; "\n"
+  else
+    body &lt;&lt; "Instead of #{req.url} visit something like "+
+            "http://localhost:8080/hello?name=Casiano\n"
+  end
+  res['Content-Type'] = 'text/plain'
+  res["Content-Length"] = body.bytesize.to_s
+  #res["Content-Length"] = Rack::Utils.bytesize(body).to_s
+  res.body = [ body ]
+  res.finish
+end
+
+Rack::Handler::Thin.run app
+</PRE>
+
+<P>
+
+<H2><A NAME="SECTION06173000000000000000">
+Ejemplo con <TT>POST</TT></A>
+</H2>
+<PRE>
+[~/local/src/ruby/sinatra/rack/rack-debugging]$ cat hello_response.rb 
+# encoding: utf-8
+require 'rack'
+require 'pry-debugger'
+
+class HelloWorld
+
+  def call env
+    req = Rack::Request.new(env)
+    res = Rack::Response.new 
+    binding.pry if ARGV[0]
+    res['Content-Type'] = 'text/html'
+    name = (req["firstname"] &amp;&amp; req["firstname"] != '') ? req["firstname"] :'World'
+    res.write &lt;&lt;-"EOS"
+      &lt;!DOCTYPE HTML&gt;
+      &lt;html&gt;
+        &lt;title&gt;Rack::Response&lt;/title&gt;
+        &lt;body&gt;
+          &lt;h1&gt;
+             Hello #{name}!
+             &lt;form action="/" method="post"&gt;
+               Your name: &lt;input type="text" name="firstname" autofocus&gt;&lt;br&gt;
+               &lt;input type="submit" value="Submit"&gt;
+             &lt;/form&gt;
+          &lt;/h1&gt;
+        &lt;/body&gt;
+      &lt;/html&gt;
+    EOS
+    res.finish
+  end
+end
+
+Rack::Server.start(
+  :app =&gt; HelloWorld.new,
+  :Port =&gt; 9292,
+  :server =&gt; 'thin'
+)
+</PRE>
+
+<P>
+<PRE>
+[~/local/src/ruby/sinatra/rack/rack-debugging]$ ruby hello_response.rb debug
+&gt;&gt; Thin web server (v1.5.1 codename Straight Razor)
+&gt;&gt; Maximum connections set to 1024
+&gt;&gt; Listening on 0.0.0.0:9292, CTRL+C to stop
+</PRE>
+
+<P>
+Ahora cuando visitamos la página <code>http://localhost:9292</code> el navegador queda a la
+espera del servidor y el servidor alcanza la línea de break.
+
+<P>
+<PRE>
+From: /Users/casiano/local/src/ruby/sinatra/rack/rack-debugging/hello_response.rb @ line 10 HelloWorld#call:
+
+     7: def call env
+     8:   req = Rack::Request.new(env)
+     9:   res = Rack::Response.new 
+ =&gt; 10:   binding.pry if ARGV[0]
+    11:   res['Content-Type'] = 'text/html'
+    12:   name = (req["firstname"] &amp;&amp; req["firstname"] != '') ? req["firstname"] :'World'
+    13:   res.write &lt;&lt;-"EOS"
+    14:     &lt;!DOCTYPE HTML&gt;
+    15:     &lt;html&gt;
+    16:       &lt;title&gt;Rack::Response&lt;/title&gt;
+    17:       &lt;body&gt;
+    18:         &lt;h1&gt;
+    19:            Hello #{name}!
+    20:            &lt;form action="/" method="post"&gt;
+    21:              Your name: &lt;input type="text" name="firstname" autofocus&gt;&lt;br&gt;
+    22:              &lt;input type="submit" value="Submit"&gt;
+    23:            &lt;/form&gt;
+    24:         &lt;/h1&gt;
+    25:       &lt;/body&gt;
+    26:     &lt;/html&gt;
+    27:   EOS
+    28:   res.finish
+    29: end
+
+[1] pry(#&lt;HelloWorld&gt;)&gt;
+</PRE>
+Consultemos los contenidos de <code>res</code>:
+<PRE>
+[1] pry(#&lt;HelloWorld&gt;)&gt; res
+=&gt; #&lt;Rack::Response:0x007fe3fb1e6180
+ @block=nil,
+ @body=[],
+ @chunked=false,
+ @header={},
+ @length=0,
+ @status=200,
+ @writer=
+  #&lt;Proc:0x007fe3fb1e5f50@/Users/casiano/.rvm/gems/ruby-1.9.3-p392/gems/rack-1.5.2/lib/rack/response.rb:27 (lambda)&gt;&gt;
+</PRE>
+Después de un par de <code>continue</code> el servidor se queda a la espera:
+<PRE>
+[3] pry(#&lt;HelloWorld&gt;)&gt; continue
 ...
+[1] pry(#&lt;HelloWorld&gt;)&gt; continue
 </PRE>
-Si sabemos en que puerto esta corriendo - como es el caso - podemos hacer algo así
-para saber el PID del proceso que lo ocupa:
+
+<P>
+
+<img src="hellonamerack.png" />
+
+<P>
+Rellenamos la entrada con un nombre (Pedro) y de nuevo el servidor alcanza el punto de ruptura:
 <PRE>
-[~/sinatra/sinatra-simple(master)]$ lsof -i :9292
-COMMAND   PID    USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
-ruby    52870 casiano    9u  IPv4 0x9f3ffc595152af29      0t0  TCP *:armtechdaemon (LISTEN)
-</PRE>
-Si no lo sabemos podemos hacer:
-<PRE>
-[~/sinatra/sinatra-simple(master)]$ ps -fA | egrep ruby
-  501 52870   565   0 11:16AM ttys003    0:00.61 ruby /Users/casiano/.rvm/gems/ruby-2.0.0-p247/bin/rackup
-  501 53230 52950   0 11:35AM ttys006    0:00.00 egrep ruby
-</PRE>
-Si tenemos privilegios suficientes podemos ahora eliminar el proceso:
-<PRE>
-[~/sinatra/sinatra-simple(master)]$ kill -9 52870
+[2] pry(#&lt;HelloWorld&gt;)&gt; req.params
+=&gt; {"firstname"=&gt;"Pedro"}
 </PRE>
 
 <P>
 <PRE>
-[~/sinatra/sinatra-simple(master)]$ rackup
-Thin web server (v1.6.1 codename Death Proof)
-Maximum connections set to 1024
-Listening on 0.0.0.0:9292, CTRL+C to stop
-Killed: 9
-</PRE>
+[7] pry(#&lt;HelloWorld&gt;)&gt; break 28
+Breakpoint 1: /Users/casiano/local/src/ruby/sinatra/rack/rack-debugging/hello_response.rb @ line 28 (Enabled) :
 
-<P>
-El comando 
-<PRE>
-$ lsof -i | egrep -i 'tcp.*(\d+.)+'
-</PRE>
-Nos da una lista bastante completa de como están nuestras conexiones.
+    26:       &lt;/html&gt;
+    27:     EOS
+ =&gt; 28:     res.finish
+    29:   end
 
-<OL>
-<LI><code>-i [i]</code>   selects  the  listing  of  files  any of whose Internet address matches the address
-                specified in i.  If no address is specified, this option selects the listing of all
-                Internet and x.25 (HP-UX) network files.
-</LI>
-</OL>
+[8] pry(#&lt;HelloWorld&gt;)&gt; continue
+Breakpoint 1. First hit.
+...
+[9] pry(#&lt;HelloWorld&gt;)&gt; res.headers
+=&gt; {"Content-Type"=&gt;"text/html", "Content-Length"=&gt;"370"}
+[10] pry(#&lt;HelloWorld&gt;)&gt;
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4578"
+<A NAME="tex2html4542"
   HREF="node109.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4572"
-  HREF="node105.html">
+<A NAME="tex2html4536"
+  HREF="node101.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4566"
+<A NAME="tex2html4530"
   HREF="node107.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4574"
-  HREF="node229.html">
+<A NAME="tex2html4538"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4576"
-  HREF="node232.html">
+<A NAME="tex2html4540"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -237,12 +392,12 @@ Nos da una lista bastante completa de como están nuestras conexiones.
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4579"
-  HREF="node109.html">Usando PATH_INFO y erubis</A>
-<B>Sup:</B> <A NAME="tex2html4573"
-  HREF="node105.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4567"
-  HREF="node107.html">Analizando env con pry-debugger</A>
+<B> Sig:</B> <A NAME="tex2html4543"
+  HREF="node109.html">Cookies y Rack</A>
+<B>Sup:</B> <A NAME="tex2html4537"
+  HREF="node101.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4531"
+  HREF="node107.html">Rack::Request y Depuración con</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

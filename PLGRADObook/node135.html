@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Despliegue de una Aplicación Web en la ETSII</TITLE>
-<META NAME="description" CONTENT="Despliegue de una Aplicación Web en la ETSII">
+<TITLE>Primeros Pasos</TITLE>
+<META NAME="description" CONTENT="Primeros Pasos">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node136.html">
-<LINK REL="previous" HREF="node134.html">
-<LINK REL="up" HREF="node105.html">
+<LINK REL="next" HREF="node137.html">
+<LINK REL="previous" HREF="node101.html">
+<LINK REL="up" HREF="node100.html">
 <LINK REL="next" HREF="node136.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5036"
+<A NAME="tex2html4981"
   HREF="node136.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5030"
-  HREF="node105.html">
+<A NAME="tex2html4975"
+  HREF="node100.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5024"
+<A NAME="tex2html4969"
   HREF="node134.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5032"
-  HREF="node229.html">
+<A NAME="tex2html4977"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5034"
-  HREF="node232.html">
+<A NAME="tex2html4979"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,108 +92,57 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5037"
-  HREF="node136.html">Práctica: Despliegue en Heroku</A>
-<B>Sup:</B> <A NAME="tex2html5031"
-  HREF="node105.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html5025"
-  HREF="node134.html">Prácticas: Centro de Cálculo</A>
+<B> Sig:</B> <A NAME="tex2html4982"
+  HREF="node136.html">Introducción</A>
+<B>Sup:</B> <A NAME="tex2html4976"
+  HREF="node100.html">PARTE: SINATRA</A>
+<B> Ant:</B> <A NAME="tex2html4970"
+  HREF="node134.html">Véase También</A>
 <B> Con:</B> 
-<A NAME="tex2html5032"
-  HREF="node229.html">
+<A NAME="tex2html4977"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5034"
-  HREF="node232.html">
+<A NAME="tex2html4979"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION06200000000000000000">
+Primeros Pasos</A>
+</H1>
+<BR> <HR>
 <!--Table of Child-Links-->
 <A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html5038"
-  HREF="node135.html#SECTION061300010000000000000">Véase también</A>
-</UL></UL></UL>
+<LI><A NAME="tex2html4983"
+  HREF="node136.html">Introducción</A>
+<UL>
+<LI><A NAME="tex2html4984"
+  HREF="node136.html#SECTION06211000000000000000">Referencias sobre Sinatra</A>
+<LI><A NAME="tex2html4985"
+  HREF="node136.html#SECTION06212000000000000000">Ejercicio: Instale la Documentación en sinatra.github.com</A>
+</UL></UL>
 <!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION061300000000000000000">
-Despliegue de una Aplicación Web en la ETSII</A>
-</H1>
-Para desplegar una aplicación web usaremos <code>exthost2</code> (en 2013).
-
-<P>
-Veamos que puertos están libres usando  <TT>netstat</TT> :
-<PRE>
-casiano@exthost2:~$ netstat -an | less
-</PRE>
-o bien usamos  <TT>lsof</TT> : 
-<PRE>
-lsof -i | less
-</PRE>
-y después - si es necesario - terminamos el proceso que ya estuviera escuchando en el puerto
-<PRE>
-kill -9 PID
-</PRE>
-
-<P>
-Veamos una simple aplicación usando <code>rack</code>:
-<PRE>
-casiano@exthost2:~/src/ruby/simplewebapp$ cat hello.rb 
-require 'rack'
-
-app = lambda { |env| [200, {"Content-Type" =&gt; "text/plain"}, ["Hello. The time is #{Time.now}"]] }
-Rack::Handler::WEBrick.run app,:Port =&gt; 4567
-</PRE>
-La ejecutamos:
-<PRE>
-casiano@exthost2:~/src/ruby/simplewebapp$ ruby hello.rb 
-[2013-10-28 09:58:54] INFO  WEBrick 1.3.1
-[2013-10-28 09:58:54] INFO  ruby 1.9.3 (2011-10-30) [i686-linux]
-[2013-10-28 09:58:54] WARN  TCPServer Error: Address already in use - bind(2)
-[2013-10-28 09:58:54] INFO  WEBrick::HTTPServer#start: pid=16597 port=4567
-</PRE>
-Ya tenemos disponible la página en <code>exthost2</code> en el puerto correspondiente.
-
-<P>
-El acceso al servidor está limitado a
-la red de la ULL.
-
-<P>
-
-<H4><A NAME="SECTION061300010000000000000">
-Véase también</A>
-</H4>
-  
-
-<OL>
-<LI><I>Gemas instaladas en local</I> <A HREF="#section:gemasinstaladasenlocal"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>
-</LI>
-</OL>
-
-<P>
-
-<P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5036"
+<A NAME="tex2html4981"
   HREF="node136.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5030"
-  HREF="node105.html">
+<A NAME="tex2html4975"
+  HREF="node100.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5024"
+<A NAME="tex2html4969"
   HREF="node134.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5032"
-  HREF="node229.html">
+<A NAME="tex2html4977"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5034"
-  HREF="node232.html">
+<A NAME="tex2html4979"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -244,12 +193,12 @@ Véase también</A>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5037"
-  HREF="node136.html">Práctica: Despliegue en Heroku</A>
-<B>Sup:</B> <A NAME="tex2html5031"
-  HREF="node105.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html5025"
-  HREF="node134.html">Prácticas: Centro de Cálculo</A>
+<B> Sig:</B> <A NAME="tex2html4982"
+  HREF="node136.html">Introducción</A>
+<B>Sup:</B> <A NAME="tex2html4976"
+  HREF="node100.html">PARTE: SINATRA</A>
+<B> Ant:</B> <A NAME="tex2html4970"
+  HREF="node134.html">Véase También</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

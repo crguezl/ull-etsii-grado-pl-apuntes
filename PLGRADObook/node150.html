@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Caching / Caches</TITLE>
-<META NAME="description" CONTENT="Caching / Caches">
+<TITLE>halt</TITLE>
+<META NAME="description" CONTENT="halt">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node151.html">
 <LINK REL="previous" HREF="node149.html">
-<LINK REL="up" HREF="node141.html">
+<LINK REL="up" HREF="node137.html">
 <LINK REL="next" HREF="node151.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5353"
+<A NAME="tex2html5312"
   HREF="node151.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5347"
-  HREF="node141.html">
+<A NAME="tex2html5306"
+  HREF="node137.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5341"
+<A NAME="tex2html5300"
   HREF="node149.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5349"
-  HREF="node229.html">
+<A NAME="tex2html5308"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5351"
-  HREF="node232.html">
+<A NAME="tex2html5310"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,55 +92,84 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5354"
-  HREF="node151.html">Sesiones y Cookies en</A>
-<B>Sup:</B> <A NAME="tex2html5348"
-  HREF="node141.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5342"
-  HREF="node149.html">Acceso al Objeto Request</A>
+<B> Sig:</B> <A NAME="tex2html5313"
+  HREF="node151.html">Passing a Request</A>
+<B>Sup:</B> <A NAME="tex2html5307"
+  HREF="node137.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5301"
+  HREF="node149.html">Uploads. Subida de Ficheros</A>
 <B> Con:</B> 
-<A NAME="tex2html5349"
-  HREF="node229.html">
+<A NAME="tex2html5308"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5351"
-  HREF="node232.html">
+<A NAME="tex2html5310"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION06390000000000000000">
-Caching / Caches</A>
+<H1><A NAME="SECTION063130000000000000000">
+halt</A>
 </H1>
-Mediante el uso del helper <code>headers</code>podemos establecer los headers que queramos
-para influir sobre la forma en la que ocurre el caching downstream.
 
 <P>
+Sometimes we want to stop the program: maybe a critical error has ocurred.
+To immediately stop a request within a filter or route use:
 
-<OL>
-<LI><A NAME="tex2html673"
-  HREF="http://www.mnot.net/cache_docs/">Caching Tutorial</A>
-</LI>
-</OL>
+<P>
+<PRE>
+halt
+</PRE>
+You can also specify the status when halting:
+
+<P>
+<PRE>
+halt 410
+</PRE>
+Or the body:
+
+<P>
+<PRE>
+halt 'this will be the body'
+</PRE>
+Or both:
+
+<P>
+<PRE>
+halt 401, 'go away!'
+</PRE>
+With headers:
+
+<P>
+<PRE>
+halt 402, {'Content-Type' =&gt; 'text/plain'}, 'revenge'
+</PRE>
+It is of course possible to combine a template with halt:
+
+<P>
+<PRE>
+halt erb(:error)
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5353"
+<A NAME="tex2html5312"
   HREF="node151.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5347"
-  HREF="node141.html">
+<A NAME="tex2html5306"
+  HREF="node137.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5341"
+<A NAME="tex2html5300"
   HREF="node149.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5349"
-  HREF="node229.html">
+<A NAME="tex2html5308"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5351"
-  HREF="node232.html">
+<A NAME="tex2html5310"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -191,12 +220,12 @@ para influir sobre la forma en la que ocurre el caching downstream.
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5354"
-  HREF="node151.html">Sesiones y Cookies en</A>
-<B>Sup:</B> <A NAME="tex2html5348"
-  HREF="node141.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5342"
-  HREF="node149.html">Acceso al Objeto Request</A>
+<B> Sig:</B> <A NAME="tex2html5313"
+  HREF="node151.html">Passing a Request</A>
+<B>Sup:</B> <A NAME="tex2html5307"
+  HREF="node137.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5301"
+  HREF="node149.html">Uploads. Subida de Ficheros</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

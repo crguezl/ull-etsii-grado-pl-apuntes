@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>DataMapper y Sinatra</TITLE>
-<META NAME="description" CONTENT="DataMapper y Sinatra">
+<TITLE>Configurando la Base de Datos en Heroku con DataMapper. Despliegue</TITLE>
+<META NAME="description" CONTENT="Configurando la Base de Datos en Heroku con DataMapper. Despliegue">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node187.html">
-<LINK REL="previous" HREF="node180.html">
-<LINK REL="up" HREF="node104.html">
+<LINK REL="previous" HREF="node181.html">
+<LINK REL="up" HREF="node178.html">
 <LINK REL="next" HREF="node183.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5831"
+<A NAME="tex2html5821"
   HREF="node183.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5825"
-  HREF="node104.html">
+<A NAME="tex2html5815"
+  HREF="node178.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5819"
+<A NAME="tex2html5811"
   HREF="node181.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5827"
-  HREF="node229.html">
+<A NAME="tex2html5817"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5829"
-  HREF="node232.html">
+<A NAME="tex2html5819"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,107 +91,134 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5832"
-  HREF="node183.html">Introducción a Los Object</A>
-<B>Sup:</B> <A NAME="tex2html5826"
-  HREF="node104.html">PARTE: SINATRA</A>
-<B> Ant:</B> <A NAME="tex2html5820"
-  HREF="node181.html">Referencias. Véase Tambien</A>
+<B> Sig:</B> <A NAME="tex2html5822"
+  HREF="node183.html">Depuración en Sinatra</A>
+<B>Sup:</B> <A NAME="tex2html5816"
+  HREF="node178.html">DataMapper y Sinatra</A>
+<B> Ant:</B> <A NAME="tex2html5812"
+  HREF="node181.html">Ejemplo de Uso de</A>
 <B> Con:</B> 
-<A NAME="tex2html5827"
-  HREF="node229.html">
+<A NAME="tex2html5817"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5829"
-  HREF="node232.html">
+<A NAME="tex2html5819"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION06900000000000000000"></A>
-<A NAME="chapter:datamapperysinatra"></A>
-<BR>
-DataMapper y Sinatra
+<H1><A NAME="SECTION06940000000000000000">
+Configurando la Base de Datos en Heroku con DataMapper. Despliegue</A>
 </H1>
 
 <P>
-<BR> <HR>
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
+<A NAME="tex2html745"
+  HREF="https://devcenter.heroku.com/articles/quickstart">Heroku</A> utiliza la base de datos PostgreSQL y una URL en una variable 
+de entorno <code>ENV['DATABASE_URL']</code>.
 
-<UL CLASS="ChildLinks">
-<LI><A NAME="tex2html5833"
-  HREF="node183.html">Introducción a Los Object Relational Mappers (ORM)</A>
-<LI><A NAME="tex2html5834"
-  HREF="node184.html">Introducción al Patrón DataMapper</A>
-<LI><A NAME="tex2html5835"
-  HREF="node185.html">Ejemplo de Uso de DataMapper</A>
-<UL>
-<LI><A NAME="tex2html5836"
-  HREF="node185.html#SECTION06930010000000000000">Donde</A>
-<LI><A NAME="tex2html5837"
-  HREF="node185.html#SECTION06930020000000000000">Enlaces</A>
-<LI><A NAME="tex2html5838"
-  HREF="node185.html#SECTION06930030000000000000">La Clase Song</A>
-<LI><A NAME="tex2html5839"
-  HREF="node185.html#SECTION06930040000000000000">DataMapper.finalize</A>
-<LI><A NAME="tex2html5840"
-  HREF="node185.html#SECTION06930050000000000000">Mas código de Song.rb</A>
-<LI><A NAME="tex2html5841"
-  HREF="node185.html#SECTION06930060000000000000">Song.create</A>
-<LI><A NAME="tex2html5842"
-  HREF="node185.html#SECTION06930070000000000000">Una sesión con pry probando DataMapper</A>
-<LI><A NAME="tex2html5843"
-  HREF="node185.html#SECTION06930080000000000000">DataMapper.setup</A>
-<LI><A NAME="tex2html5844"
-  HREF="node185.html#SECTION06930090000000000000">Multiple Data-Store Connections</A>
-<LI><A NAME="tex2html5845"
-  HREF="node185.html#SECTION069300100000000000000">El Objeto DataMapper::Adapters</A>
-<LI><A NAME="tex2html5846"
-  HREF="node185.html#SECTION069300110000000000000">Creando las tablas con DataMapper.auto_migrate!</A>
-<LI><A NAME="tex2html5847"
-  HREF="node185.html#SECTION069300120000000000000">DataMapper.auto_upgrade!</A>
-<LI><A NAME="tex2html5848"
-  HREF="node185.html#SECTION069300130000000000000">Métodos de la Clase Mapeada</A>
-<LI><A NAME="tex2html5849"
-  HREF="node185.html#SECTION069300140000000000000">El método create</A>
-<LI><A NAME="tex2html5850"
-  HREF="node185.html#SECTION069300150000000000000">first_or_create</A>
-<LI><A NAME="tex2html5851"
-  HREF="node185.html#SECTION069300160000000000000">Comprobando con sqlite3</A>
-<LI><A NAME="tex2html5852"
-  HREF="node185.html#SECTION069300170000000000000">Búsquedas y Consultas</A>
-<LI><A NAME="tex2html5853"
-  HREF="node185.html#SECTION069300180000000000000">Borrando</A>
-<LI><A NAME="tex2html5854"
-  HREF="node185.html#SECTION069300190000000000000">Búsqueda con Condiciones</A>
-<LI><A NAME="tex2html5855"
-  HREF="node185.html#SECTION069300200000000000000">Insertando SQL</A>
-<LI><A NAME="tex2html5856"
-  HREF="node185.html#SECTION069300210000000000000">main.rb</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html5857"
-  HREF="node186.html">Configurando la Base de Datos en Heroku con DataMapper. Despliegue</A>
-</UL>
-<!--End of Table of Child-Links-->
+<P>
+<PRE>
+configure :development do
+  DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/development.db")
+end
+
+configure :production do
+  DataMapper.setup(:default, ENV['DATABASE_URL'])
+end
+</PRE>
+
+<P>
+Estas líneas especifican que se usa SQLite en desarrollo y PostgreSQL en producción.
+Obsérvese que el <code>Gemfile</code> debe estar coherente:
+<PRE>
+[~/sinatra/sinatra-datamapper-jump-start(master)]$ cat Gemfile
+source 'https://rubygems.org'
+gem "sinatra"
+gem "slim"
+gem "sass"
+gem "dm-core"
+gem "dm-migrations"
+gem "thin"
+gem "pg", :group =&gt; :production
+gem "dm-postgres-adapter", :group =&gt; :production
+gem "dm-sqlite-adapter", :group =&gt; :development
+</PRE>
+o mejor:
+<PRE>
+group :production do
+    gem "pg"
+    gem "dm-postgres-adapter"
+end
+</PRE>
+
+<P>
+<PRE>
+heroku create ...
+</PRE>
+
+<P>
+<PRE>
+git push heroku master
+</PRE>
+
+<P>
+<PRE>
+heroku open
+</PRE>
+
+<P>
+<PRE>
+heroku logs --source app
+</PRE>
+
+<P>
+Ahora ejecutamos la consola de heroku:
+
+<P>
+<PRE>
+heroku run console
+</PRE>
+lo que nos abre una sesión <code>irb</code>.
+
+<P>
+Ahora creamos la base de datos en <A NAME="tex2html746"
+  HREF="https://devcenter.heroku.com/articles/quickstart">Heroku</A>:
+<PRE>
+[~/sinatra/sinatra-datamapper-jump-start(master)]$ heroku run console
+Running `console` attached to terminal... up, run.8011
+irb(main):001:0&gt; require './main'
+=&gt; true
+irb(main):002:0&gt; DataMapper.auto_migrate!
+=&gt; #&lt;DataMapper::DescendantSet:0x007fb89c878230 @descendants=#&lt;DataMapper::SubjectSet:0x007fb89c8781b8 @entries=#&lt;DataMapper::OrderedSet:0x007fb89c878190 @cache=#&lt;DataMapper::SubjectSet::NameCache:0x007fb89c878168 @cache={"Song"=&gt;0}&gt;, @entries=[Song]&gt;&gt;&gt;
+irb(main):003:0&gt;
+</PRE>
+Véase también 
+la practica TicTacToe
+<A HREF="node165.html#practica:ticatactoe">18.28</A>
+y
+el capítulo <I>Despliegue en Heroku</I> 
+<A HREF="#chapter:despliegueenheroku"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>.
+.
+
+<P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5831"
+<A NAME="tex2html5821"
   HREF="node183.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5825"
-  HREF="node104.html">
+<A NAME="tex2html5815"
+  HREF="node178.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5819"
+<A NAME="tex2html5811"
   HREF="node181.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5827"
-  HREF="node229.html">
+<A NAME="tex2html5817"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5829"
-  HREF="node232.html">
+<A NAME="tex2html5819"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -243,12 +269,12 @@ DataMapper y Sinatra
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5832"
-  HREF="node183.html">Introducción a Los Object</A>
-<B>Sup:</B> <A NAME="tex2html5826"
-  HREF="node104.html">PARTE: SINATRA</A>
-<B> Ant:</B> <A NAME="tex2html5820"
-  HREF="node181.html">Referencias. Véase Tambien</A>
+<B> Sig:</B> <A NAME="tex2html5822"
+  HREF="node183.html">Depuración en Sinatra</A>
+<B>Sup:</B> <A NAME="tex2html5816"
+  HREF="node178.html">DataMapper y Sinatra</A>
+<B> Ant:</B> <A NAME="tex2html5812"
+  HREF="node181.html">Ejemplo de Uso de</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

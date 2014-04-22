@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Ejemplo Simple de uso de Sinatra</TITLE>
-<META NAME="description" CONTENT="Ejemplo Simple de uso de Sinatra">
+<TITLE>Filtros</TITLE>
+<META NAME="description" CONTENT="Filtros">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node143.html">
 <LINK REL="previous" HREF="node141.html">
-<LINK REL="up" HREF="node141.html">
+<LINK REL="up" HREF="node137.html">
 <LINK REL="next" HREF="node143.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5219"
+<A NAME="tex2html5181"
   HREF="node143.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5213"
-  HREF="node141.html">
+<A NAME="tex2html5175"
+  HREF="node137.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5207"
+<A NAME="tex2html5169"
   HREF="node141.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5215"
-  HREF="node229.html">
+<A NAME="tex2html5177"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5217"
-  HREF="node232.html">
+<A NAME="tex2html5179"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,19 +92,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5220"
-  HREF="node143.html">Rutas/Routes</A>
-<B>Sup:</B> <A NAME="tex2html5214"
-  HREF="node141.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5208"
-  HREF="node141.html">Fundamentos</A>
+<B> Sig:</B> <A NAME="tex2html5182"
+  HREF="node143.html">Manejo de Errores</A>
+<B>Sup:</B> <A NAME="tex2html5176"
+  HREF="node137.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5170"
+  HREF="node141.html">Vistas</A>
 <B> Con:</B> 
-<A NAME="tex2html5215"
-  HREF="node229.html">
+<A NAME="tex2html5177"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5217"
-  HREF="node232.html">
+<A NAME="tex2html5179"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
@@ -115,83 +115,129 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <UL CLASS="ChildLinks">
 <LI><UL>
 <LI><UL>
-<LI><A NAME="tex2html5221"
-  HREF="node142.html#SECTION06310010000000000000">Código</A>
-<LI><A NAME="tex2html5222"
-  HREF="node142.html#SECTION06310020000000000000">Opciones de Ejecución</A>
+<LI><A NAME="tex2html5183"
+  HREF="node142.html#SECTION06350010000000000000">Before Filters</A>
+<LI><A NAME="tex2html5184"
+  HREF="node142.html#SECTION06350020000000000000">After Filters</A>
+<LI><A NAME="tex2html5185"
+  HREF="node142.html#SECTION06350030000000000000">Filters can take a Pattern</A>
+<LI><A NAME="tex2html5186"
+  HREF="node142.html#SECTION06350040000000000000">Filters can take a Condition</A>
 </UL></UL></UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION06310000000000000000">
-Ejemplo Simple de uso de Sinatra</A>
+<H1><A NAME="SECTION06350000000000000000">
+Filtros</A>
 </H1>
 
 <P>
 
-<H4><A NAME="SECTION06310010000000000000">
-Código</A>
+<H4><A NAME="SECTION06350010000000000000">
+Before Filters</A>
 </H4>
   
 
-<PRE>
-[~/sinatra/sinatra-simple(master)]$ cat hi.rb 
-require 'sinatra'
+<A NAME="20102"></A><SPAN  CLASS="textbf">Before filters</SPAN> are evaluated before each request within the
+same context as the routes will be and can modify the request and
+response. 
 
-get '/hi' do
-  "Hello World!"
+<P>
+Instance variables set in filters are accessible by routes
+and templates:
+
+<P>
+<PRE>
+before do
+  @note = 'Hi!'
+  request.path_info = '/foo/bar/baz'
+end
+
+get '/foo/*' do
+  @note #=&gt; 'Hi!'
+  params[:splat] #=&gt; 'bar/baz'
 end
 </PRE>
 
 <P>
 
-<H4><A NAME="SECTION06310020000000000000">
-Opciones de Ejecución</A>
+<H4><A NAME="SECTION06350020000000000000">
+After Filters</A>
 </H4>
   
 
+<A NAME="20108"></A><SPAN  CLASS="textbf">After filters</SPAN> are evaluated after each request within the same
+context and can also modify the request and response. 
+
+<P>
+Instance
+variables set in before filters and routes are accessible by after
+filters:
+
+<P>
 <PRE>
-[~/sinatra/sinatra-simple(master)]$ ruby hi.rb --help
-Usage: hi [options]
-    -p port                          set the port (default is 4567)
-    -o addr                          set the host (default is localhost)
-    -e env                           set the environment (default is development)
-    -s server                        specify rack server/handler (default is thin)
-    -x                               turn on the mutex lock (default is off)
+after do
+  puts response.status
+end
 </PRE>
-Sinatra can be used in threaded environments where more than a
-single request is processed at a time. 
+Note: Unless you use the <code>body</code> method rather than just returning a
+String from the routes, the body will not yet be available in the
+after filter, since it is generated later on.
 
 <P>
-However, not all applications
-and libraries are thread-safe and may cause intermittent errors or
-general weirdness. 
+
+<H4><A NAME="SECTION06350030000000000000">
+Filters can take a Pattern</A>
+</H4>
+  
+
+Filters optionally take a pattern, causing them to be evaluated
+only if the request path matches that pattern:
+<PRE>
+before '/protected/*' do
+  authenticate!
+end
+
+after '/create/:slug' do |slug|
+  session[:last_slug] = slug
+end
+</PRE>
 
 <P>
-Enabling the <code>-x</code> setting causes all requests
-to synchronize on a mutex lock, ensuring that only a single request
-is processed at a time.
 
-<P>
-The mutex lock setting is disabled by default.
+<H4><A NAME="SECTION06350040000000000000">
+Filters can take a Condition</A>
+</H4>
+  
+
+Like routes, filters also take conditions:
+<PRE>
+before :agent =&gt; /Songbird/ do
+  # ...
+end
+
+after '/blog/*', :host_name =&gt; 'example.com' do
+  # ...
+end
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5219"
+<A NAME="tex2html5181"
   HREF="node143.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5213"
-  HREF="node141.html">
+<A NAME="tex2html5175"
+  HREF="node137.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5207"
+<A NAME="tex2html5169"
   HREF="node141.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5215"
-  HREF="node229.html">
+<A NAME="tex2html5177"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5217"
-  HREF="node232.html">
+<A NAME="tex2html5179"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -242,12 +288,12 @@ The mutex lock setting is disabled by default.
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5220"
-  HREF="node143.html">Rutas/Routes</A>
-<B>Sup:</B> <A NAME="tex2html5214"
-  HREF="node141.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5208"
-  HREF="node141.html">Fundamentos</A>
+<B> Sig:</B> <A NAME="tex2html5182"
+  HREF="node143.html">Manejo de Errores</A>
+<B>Sup:</B> <A NAME="tex2html5176"
+  HREF="node137.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5170"
+  HREF="node141.html">Vistas</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

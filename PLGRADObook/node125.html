@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Construyendo Nuestro Propio Rack::Builder</TITLE>
-<META NAME="description" CONTENT="Construyendo Nuestro Propio Rack::Builder">
+<TITLE>Rack::URLMap</TITLE>
+<META NAME="description" CONTENT="Rack::URLMap">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node126.html">
 <LINK REL="previous" HREF="node124.html">
-<LINK REL="up" HREF="node105.html">
+<LINK REL="up" HREF="node101.html">
 <LINK REL="next" HREF="node126.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4883"
+<A NAME="tex2html4832"
   HREF="node126.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4877"
-  HREF="node105.html">
+<A NAME="tex2html4826"
+  HREF="node101.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4871"
+<A NAME="tex2html4820"
   HREF="node124.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4879"
-  HREF="node229.html">
+<A NAME="tex2html4828"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4881"
-  HREF="node232.html">
+<A NAME="tex2html4830"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,160 +92,136 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4884"
-  HREF="node126.html">Código de Rack::Builder</A>
-<B>Sup:</B> <A NAME="tex2html4878"
-  HREF="node105.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4872"
-  HREF="node124.html">Ejemplo de Middleware: Rack::ETag</A>
+<B> Sig:</B> <A NAME="tex2html4833"
+  HREF="node126.html">El método run de</A>
+<B>Sup:</B> <A NAME="tex2html4827"
+  HREF="node101.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4821"
+  HREF="node124.html">Rack::Mount</A>
 <B> Con:</B> 
-<A NAME="tex2html4879"
-  HREF="node229.html">
+<A NAME="tex2html4828"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4881"
-  HREF="node232.html">
+<A NAME="tex2html4830"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION061200000000000000000">
-Construyendo Nuestro Propio Rack::Builder</A>
+<H1><A NAME="SECTION061240000000000000000"></A>
+<BR>
+<A NAME="tex2html613"
+  HREF="http://rack.rubyforge.org/doc/Rack/URLMap.html">Rack::URLMap</A>
 </H1>
 
 <P>
-Véase:
+<A NAME="tex2html614"
+  HREF="http://rack.rubyforge.org/doc/Rack/URLMap.html">Rack::URLMap</A> takes a hash mapping urls or paths to apps, and
+dispatches accordingly. Support for HTTP/1.1 host names exists if
+the URLs start with http:// or https://.
 
-<OL>
-<LI><A NAME="tex2html604"
-  HREF="https://github.com/crguezl/rack-mybuilder">https://github.com/crguezl/rack-mybuilder</A>
-</LI>
-</OL>
+<P>
+<A NAME="tex2html615"
+  HREF="http://rack.rubyforge.org/doc/Rack/URLMap.html">Rack::URLMap</A> modifies the <code>SCRIPT_NAME</code> and 
+<code>PATH_INFO</code> such that the part
+relevant for dispatch is in the 
+<code>SCRIPT_NAME</code>, and the rest in the
+<code>PATH_INFO</code>. 
+This should be taken care of when you need to reconstruct
+the URL in order to create links.
+
+<P>
+<A NAME="tex2html616"
+  HREF="http://rack.rubyforge.org/doc/Rack/URLMap.html">Rack::URLMap</A>  dispatches in such a way that the longest paths are
+tried first, since they are most specific.
 
 <P>
 <PRE>
-[~/local/src/ruby/sinatra/rack/rack-builder/own(master)]$ cat mybuilder.rb 
-module Rack
-  class MyBuilder
+[~/local/src/ruby/sinatra/rack/rack-urlmap(master)]$ cat config.ru 
+app1 = lambda { |e| [200, {}, ["one\n"]]}
+app2 = lambda { |e| [200, {}, ["two\n"]]}
+app3 = lambda { |e| [200, {}, ["one + two = three\n"]]}
 
-    def initialize(&amp;block)
-      @use = []
-      instance_eval(&amp;block) if block_given?
-    end
+app = Rack::URLMap.new "/one" =&gt; app1, "/two" =&gt; app2, "/one/two" =&gt; app3
 
-    def use(middleware, *args, &amp;block)
-      @use &lt;&lt; proc { |app| middleware.new(app, *args, &amp;block) }
-    end
+run app
+</PRE>
 
-    def run(app)
-      @run = app
-    end
+<P>
+<PRE>
+[~/local/src/ruby/sinatra/rack/rack-urlmap(master)]$ cat Rakefile 
+desc "run the server"
+task :default do
+  sh "rackup"
+end
 
-    def to_app
-      @use.reverse.inject(@run) { |app, middleware| middleware[app] }
-    end
+desc "run the client with one"
+task :one do
+  sh %q{curl -v 'http://localhost:9292/one'}
+end
 
-    def call(env)
-      to_app.call(env)
-    end
+desc "run the client with two"
+task :two do
+  sh %q{curl -v 'http://localhost:9292/two'}
+end
 
-  end
+desc "run the client with one/two"
+task :onetwo do
+  sh %q{curl -v 'http://localhost:9292/one/two'}
 end
 </PRE>
 
 <P>
 <PRE>
-[~/local/src/ruby/sinatra/rack/rack-builder/own(master)]$ cat decorator.rb 
-class Decorator
-
-  def initialize(app, *options, &amp;block)
-    @app = app
-    @options = (options[0] || {})
-  end
-
-  def call(env)
-    status, headers, body = @app.call(env)
-
-    new_body = ""
-    new_body &lt;&lt; (@options[:header] || "----Header----&lt;br/&gt;")
-    body.each {|str| new_body &lt;&lt; str}
-    new_body &lt;&lt; (@options[:footer] || "&lt;br/&gt;----Footer----")
-
-    [status, headers, [new_body]]
-  end
-end
-</PRE>
-
-<P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rack-builder/own(master)]$ cat app.rb 
-require 'rack'
-require 'thin'
-
-require 'mybuilder'
-require 'decorator'
-
-app = Rack::MyBuilder.new do
-  use Decorator, :header =&gt; "&lt;strong&gt;*********** header **********&lt;/strong&gt;&lt;br/&gt;"
-
-  cheer = ARGV.shift || "&lt;h1&gt;Hello world!&lt;/h1&gt;"
-  run lambda { |env| [200, { 'Content-Type' =&gt; 'text/html' }, [ "&lt;h1&gt;#{cheer}&lt;/h1&gt;" ]]}
-end
-
-Rack::Handler::Thin.run app, :Port =&gt; 3333, :Host =&gt; 'localhost'
-</PRE>
-
-<P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rack-builder/own(master)]$ cat Rakefile 
-desc "run app server"
-task :default =&gt; :server
-
-desc "run app server"
-task :server, :greet  do |t, args|
-  cheer = args[:greet] || 'bye, bye!'
-  sh "ruby -I. app.rb #{cheer}"
-end
-</PRE>
-
-<P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rack-builder/own(master)]$ rake -T
-rake default        # run app server
-rake server[greet]  # run app server
-</PRE>
-
-<P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rack-builder/own(master)]$ rake server[tachaaaAAAAAANNN]
-ruby -I. app.rb tachaaaAAAAAANNN
+[~/local/src/ruby/sinatra/rack/rack-urlmap]$ rake
+rackup
 &gt;&gt; Thin web server (v1.5.1 codename Straight Razor)
 &gt;&gt; Maximum connections set to 1024
-&gt;&gt; Listening on localhost:3333, CTRL+C to stop
+&gt;&gt; Listening on 0.0.0.0:9292, CTRL+C to stop
+127.0.0.1 - - [17/Oct/2013 21:24:48] "GET /two HTTP/1.1" 200 - 0.0006
 </PRE>
 
 <P>
-
-<img src="myrackbuilder.png" />
+<PRE>
+[~/local/src/ruby/sinatra/rack/rack-urlmap(master)]$ rake onetwo
+curl -v 'http://localhost:9292/one/two'
+* About to connect() to localhost port 9292 (#0)
+*   Trying ::1... Connection refused
+*   Trying 127.0.0.1... connected
+* Connected to localhost (127.0.0.1) port 9292 (#0)
+&gt; GET /one/two HTTP/1.1
+&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8y zlib/1.2.5
+&gt; Host: localhost:9292
+&gt; Accept: */*
+&gt; 
+&lt; HTTP/1.1 200 OK
+&lt; Transfer-Encoding: chunked
+&lt; Connection: close
+&lt; Server: thin 1.5.1 codename Straight Razor
+&lt; 
+one + two = three
+* Closing connection #0
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4883"
+<A NAME="tex2html4832"
   HREF="node126.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4877"
-  HREF="node105.html">
+<A NAME="tex2html4826"
+  HREF="node101.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4871"
+<A NAME="tex2html4820"
   HREF="node124.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4879"
-  HREF="node229.html">
+<A NAME="tex2html4828"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4881"
-  HREF="node232.html">
+<A NAME="tex2html4830"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -296,12 +272,12 @@ ruby -I. app.rb tachaaaAAAAAANNN
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4884"
-  HREF="node126.html">Código de Rack::Builder</A>
-<B>Sup:</B> <A NAME="tex2html4878"
-  HREF="node105.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4872"
-  HREF="node124.html">Ejemplo de Middleware: Rack::ETag</A>
+<B> Sig:</B> <A NAME="tex2html4833"
+  HREF="node126.html">El método run de</A>
+<B>Sup:</B> <A NAME="tex2html4827"
+  HREF="node101.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4821"
+  HREF="node124.html">Rack::Mount</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

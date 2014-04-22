@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Downloads / Descargas / Attachments</TITLE>
-<META NAME="description" CONTENT="Downloads / Descargas / Attachments">
+<TITLE>Triggering Another Route: calling call</TITLE>
+<META NAME="description" CONTENT="Triggering Another Route: calling call">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node153.html">
 <LINK REL="previous" HREF="node151.html">
-<LINK REL="up" HREF="node141.html">
+<LINK REL="up" HREF="node137.html">
 <LINK REL="next" HREF="node153.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5387"
+<A NAME="tex2html5340"
   HREF="node153.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5381"
-  HREF="node141.html">
+<A NAME="tex2html5334"
+  HREF="node137.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5375"
+<A NAME="tex2html5328"
   HREF="node151.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5383"
-  HREF="node229.html">
+<A NAME="tex2html5336"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5385"
-  HREF="node232.html">
+<A NAME="tex2html5338"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,173 +92,69 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5388"
-  HREF="node153.html">Uploads. Subida de Ficheros</A>
-<B>Sup:</B> <A NAME="tex2html5382"
-  HREF="node141.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5376"
-  HREF="node151.html">Sesiones y Cookies en</A>
+<B> Sig:</B> <A NAME="tex2html5341"
+  HREF="node153.html">Logging</A>
+<B>Sup:</B> <A NAME="tex2html5335"
+  HREF="node137.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5329"
+  HREF="node151.html">Passing a Request</A>
 <B> Con:</B> 
-<A NAME="tex2html5383"
-  HREF="node229.html">
+<A NAME="tex2html5336"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5385"
-  HREF="node232.html">
+<A NAME="tex2html5338"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html5389"
-  HREF="node152.html#SECTION063110010000000000000">Usando attachment</A>
-<LI><A NAME="tex2html5390"
-  HREF="node152.html#SECTION063110020000000000000">Usando send_file</A>
-</UL></UL></UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION063110000000000000000">
-Downloads / Descargas / Attachments</A>
+<H1><A NAME="SECTION063150000000000000000">
+Triggering Another Route: calling <TT>call</TT></A>
 </H1>
-
-<P>
-
-<H4><A NAME="SECTION063110010000000000000">
-Usando attachment</A>
-</H4>
-  
-
-<P>
-There is a built-in <code>attachment</code> method
-that optionally takes a filename parameter. If the filename has
-an extension (<code>.jpg</code>, etc.) that extension 
-will be used to determine the <code>Content-Type</code> header for the response.
-
-<P>
-The evaluation of the route will provide the contents of the attachment.
-
-<P>
-
-<OL>
-<LI><A NAME="tex2html678"
-  HREF="http://rubydoc.info/github/sinatra/sinatra/Sinatra/Helpers#attachment-instance_method">Documentación de attachment</A>
-</LI>
-<LI><A NAME="tex2html679"
-  HREF="https://github.com/sinatra/sinatra/blob/master/lib/sinatra/base.rb#L338-L348">Código de attachment</A>
-en GitHub
-</LI>
-<LI><A NAME="tex2html680"
-  HREF="http://alfuken.tumblr.com/post/874428235/upload-and-download-files-in-sinatra">Upload and download files in Sinatra</A>
-Random Ruby Thoughts
-</LI>
-</OL>
+Sometimes <code>pass</code> is not what you want, 
+instead you would like to get the result of calling another route. 
+Simply use <code>call</code> to achieve this:
 
 <P>
 <PRE>
-[~/sinatra/sinatra-download(master)]$ cat app.rb
-require 'sinatra'
-
-before do 
-  content_type :txt
+get '/foo' do
+  status, headers, body = call env.merge("PATH_INFO" =&gt; '/bar')
+  [status, headers, body.map(&amp;:upcase)]
 end
 
-get '/attachment?' do
-  attachment 'file.txt'
-  "Here's what will be sent downstream, in an attachment called 'file.txt'." 
-end
-</PRE>
-Cuando visitamos la página con el navegador se nos abre una ventana para la descarga de
-un fichero que será guardado (por defecto) como <code>file.txt</code>.
-
-<P>
-Los contenidos de ese fichero serán:
-<PRE>
-[~/sinatra/sinatra-download(master)]$ cat ~/Downloads/file.txt 
-Here's what will be sent downstream, in an attachment called 'file.txt'.
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION063110020000000000000">
-Usando send_file</A>
-</H4>
-  
-
-<P>
-Véase la documentación del módulo 
-<A NAME="tex2html681"
-  HREF="http://sinatra.rubyforge.org/api/classes/Sinatra/Sinatra/Streaming.html#M000022"><TT>Sinatra::Streaming</TT></A>
-<P>
-<PRE>
-[~/sinatra/sinatra-download(master)]$ cat sending_file.rb 
-require 'sinatra'
-
-get '/' do
-   send_file 'foo.png', 
-              :type =&gt; 'img/png', 
-              :disposition =&gt; 'attachment', 
-              :filename =&gt;'tutu.png',
-              :stream =&gt; false
+get '/bar' do
+  "bar"
 end
 </PRE>
 
 <P>
-The options are:
+Note that in the example above, you would ease testing and increase performance by simply moving <code>"bar"</code> into a helper used by both <code>/foo</code> and <code>/bar</code>.
 
 <P>
-
-<OL>
-<LI><code>filename</code>
-file name, in response, defaults to the real file name.
-</LI>
-<LI><code>last_modified</code>
-value for Last-Modified header, defaults to the file's <code>mtime</code>.
-</LI>
-<LI><code>type</code>
-content type to use, guessed from the file extension if missing.
-</LI>
-<LI><code>disposition</code>
-used for <code>Content-Disposition</code>, possible value: <code>nil</code> (default), <code>:attachment</code> and 
-<code>:inline</code>
-</LI>
-<LI><code>length</code>
-<code>Content-Length</code> header, defaults to file size.
-</LI>
-<LI><code>status</code>
-Status code to be send. 
+If you want the request to be sent to the same application instance rather than a duplicate, use <code>call!</code> instead of <code>call</code>.
 
 <P>
-Useful when sending a static file as an
-error page. 
-If supported by the Rack handler, other means than
-streaming from the Ruby process will be used. If you use this helper
-method, Sinatra will automatically handle range requests.
-</LI>
-</OL>
+Check out the Rack specification if you want to learn more about <code>call</code>.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5387"
+<A NAME="tex2html5340"
   HREF="node153.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5381"
-  HREF="node141.html">
+<A NAME="tex2html5334"
+  HREF="node137.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5375"
+<A NAME="tex2html5328"
   HREF="node151.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5383"
-  HREF="node229.html">
+<A NAME="tex2html5336"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5385"
-  HREF="node232.html">
+<A NAME="tex2html5338"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -309,12 +205,12 @@ method, Sinatra will automatically handle range requests.
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5388"
-  HREF="node153.html">Uploads. Subida de Ficheros</A>
-<B>Sup:</B> <A NAME="tex2html5382"
-  HREF="node141.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5376"
-  HREF="node151.html">Sesiones y Cookies en</A>
+<B> Sig:</B> <A NAME="tex2html5341"
+  HREF="node153.html">Logging</A>
+<B>Sup:</B> <A NAME="tex2html5335"
+  HREF="node137.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5329"
+  HREF="node151.html">Passing a Request</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

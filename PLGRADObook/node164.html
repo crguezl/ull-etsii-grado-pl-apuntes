@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Correo</TITLE>
-<META NAME="description" CONTENT="Correo">
+<TITLE>Sinatra como Middleware</TITLE>
+<META NAME="description" CONTENT="Sinatra como Middleware">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node165.html">
 <LINK REL="previous" HREF="node163.html">
-<LINK REL="up" HREF="node141.html">
+<LINK REL="up" HREF="node137.html">
 <LINK REL="next" HREF="node165.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5565"
+<A NAME="tex2html5517"
   HREF="node165.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5559"
-  HREF="node141.html">
+<A NAME="tex2html5511"
+  HREF="node137.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5553"
+<A NAME="tex2html5505"
   HREF="node163.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5561"
-  HREF="node229.html">
+<A NAME="tex2html5513"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5563"
-  HREF="node232.html">
+<A NAME="tex2html5515"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,81 +92,146 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5566"
-  HREF="node165.html">Ambito</A>
-<B>Sup:</B> <A NAME="tex2html5560"
-  HREF="node141.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5554"
-  HREF="node163.html">Environments</A>
+<B> Sig:</B> <A NAME="tex2html5518"
+  HREF="node165.html">Práctica: TicTacToe</A>
+<B>Sup:</B> <A NAME="tex2html5512"
+  HREF="node137.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5506"
+  HREF="node163.html">Autentificación Básica</A>
 <B> Con:</B> 
-<A NAME="tex2html5561"
-  HREF="node229.html">
+<A NAME="tex2html5513"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5563"
-  HREF="node232.html">
+<A NAME="tex2html5515"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION063230000000000000000"></A>
-<A NAME="section:correo"></A>
-<BR>
-Correo
+<H1><A NAME="SECTION063270000000000000000">
+Sinatra como Middleware</A>
 </H1>
-<PRE>
-[~/srcSTW/sinatra-faq/mail(esau)]$ cat app.rb 
-require 'sinatra'
-require 'pony'
-raise "Execute:\n\t#{$0} password email_to email_from" if ARGV.length.zero?
-get '/' do
-    email = ARGV.shift
-    pass = ARGV.shift
-    Pony.mail({
-      :to =&gt; email,
-      :body =&gt; "Hello Casiano",
-      :subject =&gt; 'Howdy, Partna!',
-      :via =&gt; :smtp,
-      :via_options =&gt; {
-          :address              =&gt; 'smtp.gmail.com',
-          :port                 =&gt; '587',
-          :enable_starttls_auto =&gt; true,
-          :user_name            =&gt; ARGV.shift,
-          :password             =&gt; pass,
-          :authentication       =&gt; :plain, # :plain, :login, :cram_md5, no auth by default
-          :domain               =&gt; "localhost.localdomain" # the HELO domain provided by the client to the server
-        }
-    })
-    "Check your email at #{email}"
-end
-</PRE>
+
+<P>
+Not only is Sinatra able to use other Rack middleware, any Sinatra
+application can in turn be added in front of any Rack endpoint as
+middleware itself. 
+
+<P>
+This endpoint could be another Sinatra application,
+or any other Rack-based application (Rails/Ramaze/Camping/…):
 
 <P>
 
 <OL>
-<LI><A NAME="tex2html691"
-  HREF="http://www.millwoodonline.co.uk/blog/getting-started-with-sinatra">Getting started with Sinatra</A>
+<LI>When a request comes in, all <code>before</code> filters are triggered
+</LI>
+<LI>Then, if a route matches, the corresponding block will be executed
+</LI>
+<LI>If no route matches, the request is handed off to the wrapped application
+</LI>
+<LI>The <code>after</code> filters are executed after we've got a response back from the
+route or  the wrapped app
 </LI>
 </OL>
+Thus, our Sinatra app is a middleware.
 
 <P>
 
+<img src="rack_stack.png" />
+
+<P>
+<PRE>
+[~/sinatra/sinatra-as-middleware]$ cat app.rb
+require 'sinatra/base'
+require 'haml'
+require 'pp'
+
+class LoginScreen &lt; Sinatra::Base
+  enable :sessions
+  enable :inline_templates
+
+  get('/login') { haml :login }
+
+  post('/login') do
+    if params[:name] == 'admin' &amp;&amp; params[:password] == 'admin'
+      puts "params = "
+      pp params
+      session['user_name'] = params[:name]
+      redirect '/'
+    else
+      redirect '/login'
+    end
+  end
+end
+
+class MyApp &lt; Sinatra::Base
+  enable :inline_templates
+  # middleware will run before filters
+  use LoginScreen
+
+  before do
+    unless session['user_name']
+      halt haml :denied
+    end
+  end
+
+  get('/') do
+    haml :cheer, :locals =&gt; { :name =&gt; session['user_name'] }
+  end
+
+  run!
+end
+
+__END__
+
+@@ layout
+!!!
+%html
+  %head
+    %title Sinatra as Middleware
+  %body
+    %h1 Sinatra as Middleware
+    = yield
+
+@@ login
+%form{:action=&gt;'/login', :method=&gt;'post'}
+  %label{:for=&gt;'name'} Name
+  %input#name{:type=&gt;"text",     :name=&gt;"name", :autofocus =&gt; true }
+  %br
+  %label{:for=&gt;'password'} Password
+  %input#password{:type=&gt;"password", :name=&gt;"password"}
+  %br
+  %button#go{:type=&gt;"submit",  :name=&gt;"submit", :value=&gt;"submit"} Click me!
+
+@@ cheer
+%h1
+  Hello #{name}
+  %br
+
+@@ denied
+%h1 
+  Access denied, please 
+  %a{:href=&gt;'/login'}login.
+</PRE>
+
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5565"
+<A NAME="tex2html5517"
   HREF="node165.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5559"
-  HREF="node141.html">
+<A NAME="tex2html5511"
+  HREF="node137.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5553"
+<A NAME="tex2html5505"
   HREF="node163.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5561"
-  HREF="node229.html">
+<A NAME="tex2html5513"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5563"
-  HREF="node232.html">
+<A NAME="tex2html5515"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -217,12 +282,12 @@ end
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5566"
-  HREF="node165.html">Ambito</A>
-<B>Sup:</B> <A NAME="tex2html5560"
-  HREF="node141.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5554"
-  HREF="node163.html">Environments</A>
+<B> Sig:</B> <A NAME="tex2html5518"
+  HREF="node165.html">Práctica: TicTacToe</A>
+<B>Sup:</B> <A NAME="tex2html5512"
+  HREF="node137.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5506"
+  HREF="node163.html">Autentificación Básica</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Environments</TITLE>
-<META NAME="description" CONTENT="Environments">
+<TITLE>Autentificación Básica</TITLE>
+<META NAME="description" CONTENT="Autentificación Básica">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node164.html">
 <LINK REL="previous" HREF="node162.html">
-<LINK REL="up" HREF="node141.html">
+<LINK REL="up" HREF="node137.html">
 <LINK REL="next" HREF="node164.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5551"
+<A NAME="tex2html5503"
   HREF="node164.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5545"
-  HREF="node141.html">
+<A NAME="tex2html5497"
+  HREF="node137.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5539"
+<A NAME="tex2html5491"
   HREF="node162.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5547"
-  HREF="node229.html">
+<A NAME="tex2html5499"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5549"
-  HREF="node232.html">
+<A NAME="tex2html5501"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,87 +92,64 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5552"
-  HREF="node164.html">Correo</A>
-<B>Sup:</B> <A NAME="tex2html5546"
-  HREF="node141.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5540"
-  HREF="node162.html">Settings disponibles/Available Settings</A>
+<B> Sig:</B> <A NAME="tex2html5504"
+  HREF="node164.html">Sinatra como Middleware</A>
+<B>Sup:</B> <A NAME="tex2html5498"
+  HREF="node137.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5492"
+  HREF="node162.html">Sinatra Authentication</A>
 <B> Con:</B> 
-<A NAME="tex2html5547"
-  HREF="node229.html">
+<A NAME="tex2html5499"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5549"
-  HREF="node232.html">
+<A NAME="tex2html5501"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION063220000000000000000">
-Environments</A>
+<H1><A NAME="SECTION063260000000000000000"></A>
+<A NAME="section:basicauthentication"></A>
+<BR>
+Autentificación Básica
 </H1>
-
-<OL>
-<LI>There are three predefined environments:
- <TT>development</TT> ,  <TT>production</TT>  and  <TT>test</TT> . 
-
-<P>
-</LI>
-<LI>Environments can be set through the <code>RACK_ENV</code> environment variable. 
-
-<P>
-</LI>
-<LI>The default value is <code>development</code>
-</LI>
-<LI>In the <code>development</code> environment all templates are
-reloaded between requests, and special <code>not_found</code> and 
-<code>error</code> handlers
-display stack traces in your browser
-</LI>
-<LI>In the <code>production</code> and <code>test</code> environments, templates are cached by default
-</LI>
-<LI>To run different environments, set the <code>RACK_ENV</code> environment variable:
-
-<P>
 <PRE>
-RACK_ENV=production ruby my_app.rb
-</PRE>
-</LI>
-<LI>You can use predefined methods: <code>development?</code>, <code>test?</code> 
-and <code>production?</code> to check the current environment setting:
+[~/srcSTW/sinatra-faq/authentication/basic(esau)]$ cat app.rb 
+require 'rubygems'
+require 'sinatra'
 
-<P>
-<PRE>
+use Rack::Auth::Basic, "Restricted Area" do |username, password|
+  [username, password] == ['admin', 'admin']
+end
+
 get '/' do
-  if settings.development?
-    "development!"
-  else
-    "not development!"
-  end
+  "You're welcome"
+end
+
+get '/foo' do
+  "You're also welcome"
 end
 </PRE>
-</LI>
-</OL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5551"
+<A NAME="tex2html5503"
   HREF="node164.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5545"
-  HREF="node141.html">
+<A NAME="tex2html5497"
+  HREF="node137.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5539"
+<A NAME="tex2html5491"
   HREF="node162.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5547"
-  HREF="node229.html">
+<A NAME="tex2html5499"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5549"
-  HREF="node232.html">
+<A NAME="tex2html5501"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -223,12 +200,12 @@ end
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5552"
-  HREF="node164.html">Correo</A>
-<B>Sup:</B> <A NAME="tex2html5546"
-  HREF="node141.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5540"
-  HREF="node162.html">Settings disponibles/Available Settings</A>
+<B> Sig:</B> <A NAME="tex2html5504"
+  HREF="node164.html">Sinatra como Middleware</A>
+<B>Sup:</B> <A NAME="tex2html5498"
+  HREF="node137.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5492"
+  HREF="node162.html">Sinatra Authentication</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

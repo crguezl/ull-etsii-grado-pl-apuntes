@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Ejemplo Simple Combinando Rack::Request, Rack::Response y Middleware (Lobster)</TITLE>
-<META NAME="description" CONTENT="Ejemplo Simple Combinando Rack::Request, Rack::Response y Middleware (Lobster)">
+<TITLE>La Estructura de una Aplicación Rack</TITLE>
+<META NAME="description" CONTENT="La Estructura de una Aplicación Rack">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node116.html">
 <LINK REL="previous" HREF="node114.html">
-<LINK REL="up" HREF="node105.html">
+<LINK REL="up" HREF="node101.html">
 <LINK REL="next" HREF="node116.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4714"
+<A NAME="tex2html4668"
   HREF="node116.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4708"
-  HREF="node105.html">
+<A NAME="tex2html4662"
+  HREF="node101.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4702"
+<A NAME="tex2html4656"
   HREF="node114.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4710"
-  HREF="node229.html">
+<A NAME="tex2html4664"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4712"
-  HREF="node232.html">
+<A NAME="tex2html4666"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,228 +92,91 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4715"
-  HREF="node116.html">Práctica: Accediendo a Twitter</A>
-<B>Sup:</B> <A NAME="tex2html4709"
-  HREF="node105.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4703"
-  HREF="node114.html">Gestión de Sesiones</A>
+<B> Sig:</B> <A NAME="tex2html4669"
+  HREF="node116.html">rackup</A>
+<B>Sup:</B> <A NAME="tex2html4663"
+  HREF="node101.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4657"
+  HREF="node114.html">Redirección</A>
 <B> Con:</B> 
-<A NAME="tex2html4710"
-  HREF="node229.html">
+<A NAME="tex2html4664"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4712"
-  HREF="node232.html">
+<A NAME="tex2html4666"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION061100000000000000000">
-Ejemplo Simple Combinando Rack::Request, Rack::Response y Middleware (Lobster)</A>
+<H1><A NAME="SECTION061140000000000000000"></A>
+<A NAME="section:estructuradeunaapprack"></A>
+<BR>
+La Estructura de una Aplicación Rack
 </H1>
 
 <P>
-Este código se encuentra en
-<A NAME="tex2html542"
-  HREF="https://github.com/crguezl/rack-lobster">https://github.com/crguezl/rack-lobster</A>
+<PRE>
+[~/local/src/ruby/sinatra/rack/rack-debugging(master)]$ cat middlefoo.rb 
+require 'rack'
+
+class MiddleFoo
+  
+  def initialize(app)
+    @app = app
+  end
+
+  def call env
+    # Podemos modificar el request (env) aqui
+    env['chuchu'] = 'SYTW'
+    status, headers, body = @app.call(env)
+    # Podemos modificar la respuesta aqui
+    newbody = body.map(&amp;:upcase)
+    [status, headers, newbody]
+  end
+end
+</PRE>
+
 <P>
 <PRE>
-[~/local/src/ruby/sinatra/rack/rack-lobster(master)]$ cat lobster.rb 
-require 'rack/request'
-require 'rack/response'
+[~/local/src/ruby/sinatra/rack/rack-debugging(master)]$ cat hello_middle.rb 
+require 'rack'
+require './middlefoo'
 
-module Rack
-  class Lobster
-    LobsterString = "a lobster"
-
-    def call(env)
-      req = Request.new(env)
-
-      req.env.keys.sort.each { |x| puts "#{x} =&gt; #{req.env[x]}" }
-
-      if req.GET["flip"] == "left"
-        lobster = LobsterString.reverse
-        href = "?flip=right"
-      elsif req.GET["flip"] == "crash"
-        raise "Lobster crashed"
-      else
-        lobster = LobsterString
-        href = "?flip=left"
-      end
-
-      res = Response.new
-      res.write &lt;&lt;-"EOS"
-      &lt;title&gt;Lobstericious!&lt;/title&gt;
-      &lt;pre&gt;
-      #{lobster}
-      &lt;/pre&gt;
-      &lt;p&gt;&lt;a href='#{href}'&gt;flip!&lt;/a&gt;&lt;/p&gt;
-      &lt;p&gt;&lt;a href='?flip=crash'&gt;crash!&lt;/a&gt;&lt;/p&gt;
-      EOS
-      res.finish
-    end
+class HelloWorld
+  def call env
+    [200, {"Content-Type" =&gt; "text/plain"}, ["Hello world\nchuchu=#{env['chuchu']}\n"]]
   end
 end
 
-if $0 == __FILE__
-  require 'rack'
-  require 'rack/showexceptions'
-  Rack::Server.start(
-    :app =&gt; Rack::ShowExceptions.new(
-              Rack::Lint.new(
-                Rack::Lobster.new)), 
-    :Port =&gt; 9292,
-    :server =&gt; 'thin'
-  )
-end
+Rack::Handler::WEBrick::run MiddleFoo.new(HelloWorld.new)
 </PRE>
 
 <P>
-Véase:
-
-<OL>
-<LI><A NAME="tex2html543"
-  HREF="https://github.com/rack/rack/blob/master/lib/rack/showexceptions.rb">rack/lib/rack/showexceptions.rb</A>
-<P>
-(Rack::ShowExceptions catches all exceptions raised from the app it
-wraps.  It shows a useful backtrace with the sourcefile and
-clickable context, the whole Rack environment and the request
-data.
-
-<P>
-Be careful when you use this on public-facing sites as it could
-reveal information helpful to attackers)
-</LI>
-<LI><A NAME="tex2html544"
-  HREF="https://github.com/rack/rack/blob/master/lib/rack/lint.rb">rack/lib/rack/lint.rb</A>
-en GitHub
-
-<P>
-(Rack::Lint validates your application and the requests and
- responses according to the Rack spec)
-</LI>
-</OL>
-Tanto Rack::ShowExceptions como Rack::Lint disponen de un método <code>call</code> que recibe una variable <code>env</code> describiendo el entorno CGI.
-Esto es, se trata de aplicaciones que siguen el protocolo Rack.
-Así este código:
+Cuando ejecutamos el programa produce la salida:
 <PRE>
-  Rack::Server.start(
-    :app =&gt; Rack::ShowExceptions.new(
-              Rack::Lint.new(
-                Rack::Lobster.new)), 
-    :Port =&gt; 9292,
-    :server =&gt; 'thin'
-  )
+HELLO WORLD
+CHUCHU=SYTW
 </PRE>
-
-<P>
-construye una nueva objeto/aplicación Rack que es la composición
-de los tres Racks.
-
-<P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rack-lobster(master)]$ cat Rakefile 
-desc "run the server"
-task :default do
-  sh "ruby lobster.rb"
-end
-
-desc "run the client flip left"
-task :left do
-  sh %q{curl -v 'http://localhost:9292?flip=left'}
-end
-
-desc "run the client flip right"
-task :right do
-  sh %q{curl -v 'http://localhost:9292?flip=right'}
-end
-
-desc "run the client. Generate exception"
-task :crash do
-  sh %q{curl -v 'http://localhost:9292/?flip=crash'}
-end
-</PRE>
-
-<P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rack-lobster(master)]$ rake left
-curl -v 'http://localhost:9292?flip=left'
-* About to connect() to localhost port 9292 (#0)
-*   Trying ::1... Connection refused
-*   Trying 127.0.0.1... connected
-* Connected to localhost (127.0.0.1) port 9292 (#0)
-&gt; GET /?flip=left HTTP/1.1
-&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8y zlib/1.2.5
-&gt; Host: localhost:9292
-&gt; Accept: */*
-&gt; 
-&lt; HTTP/1.1 200 OK
-&lt; Content-Length: 168
-&lt; Connection: keep-alive
-&lt; Server: thin 1.5.1 codename Straight Razor
-&lt; 
-      &lt;title&gt;Lobstericious!&lt;/title&gt;
-      &lt;pre&gt;
-      retsbol a
-      &lt;/pre&gt;
-      &lt;p&gt;&lt;a href='?flip=right'&gt;flip!&lt;/a&gt;&lt;/p&gt;
-      &lt;p&gt;&lt;a href='?flip=crash'&gt;crash!&lt;/a&gt;&lt;/p&gt;
-* Connection #0 to host localhost left intact
-* Closing connection #0
-</PRE>
-
-<P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rack-lobster(master)]$ rake right
-curl -v 'http://localhost:9292?flip=right'
-* About to connect() to localhost port 9292 (#0)
-*   Trying ::1... Connection refused
-*   Trying 127.0.0.1... connected
-* Connected to localhost (127.0.0.1) port 9292 (#0)
-&gt; GET /?flip=right HTTP/1.1
-&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8y zlib/1.2.5
-&gt; Host: localhost:9292
-&gt; Accept: */*
-&gt; 
-&lt; HTTP/1.1 200 OK
-&lt; Content-Length: 167
-&lt; Connection: keep-alive
-&lt; Server: thin 1.5.1 codename Straight Razor
-&lt; 
-      &lt;title&gt;Lobstericious!&lt;/title&gt;
-      &lt;pre&gt;
-      a lobster
-      &lt;/pre&gt;
-      &lt;p&gt;&lt;a href='?flip=left'&gt;flip!&lt;/a&gt;&lt;/p&gt;
-      &lt;p&gt;&lt;a href='?flip=crash'&gt;crash!&lt;/a&gt;&lt;/p&gt;
-* Connection #0 to host localhost left intact
-* Closing connection #0
-</PRE>
-
-<P>
-
-<img src="rackcrash.png" width="50%" />
-
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4714"
+<A NAME="tex2html4668"
   HREF="node116.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4708"
-  HREF="node105.html">
+<A NAME="tex2html4662"
+  HREF="node101.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4702"
+<A NAME="tex2html4656"
   HREF="node114.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4710"
-  HREF="node229.html">
+<A NAME="tex2html4664"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4712"
-  HREF="node232.html">
+<A NAME="tex2html4666"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -364,12 +227,12 @@ curl -v 'http://localhost:9292?flip=right'
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4715"
-  HREF="node116.html">Práctica: Accediendo a Twitter</A>
-<B>Sup:</B> <A NAME="tex2html4709"
-  HREF="node105.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4703"
-  HREF="node114.html">Gestión de Sesiones</A>
+<B> Sig:</B> <A NAME="tex2html4669"
+  HREF="node116.html">rackup</A>
+<B>Sup:</B> <A NAME="tex2html4663"
+  HREF="node101.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4657"
+  HREF="node114.html">Redirección</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

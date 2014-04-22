@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Transformaciones Arbol con treereg</TITLE>
-<META NAME="description" CONTENT="Transformaciones Arbol con treereg">
+<TITLE>JavaScript Review </TITLE>
+<META NAME="description" CONTENT="JavaScript Review ">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node90.html">
+<LINK REL="next" HREF="node91.html">
 <LINK REL="previous" HREF="node88.html">
-<LINK REL="up" HREF="node84.html">
+<LINK REL="up" HREF="node88.html">
 <LINK REL="next" HREF="node90.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4004"
+<A NAME="tex2html3983"
   HREF="node90.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3998"
-  HREF="node84.html">
+<A NAME="tex2html3977"
+  HREF="node88.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3992"
+<A NAME="tex2html3971"
   HREF="node88.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4000"
-  HREF="node229.html">
+<A NAME="tex2html3979"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4002"
-  HREF="node232.html">
+<A NAME="tex2html3981"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,200 +92,55 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4005"
-  HREF="node90.html">Transformaciones de Árboles con</A>
-<B>Sup:</B> <A NAME="tex2html3999"
-  HREF="node84.html">Transformaciones Árbol</A>
-<B> Ant:</B> <A NAME="tex2html3993"
-  HREF="node88.html">El método m</A>
+<B> Sig:</B> <A NAME="tex2html3984"
+  HREF="node90.html">Closures</A>
+<B>Sup:</B> <A NAME="tex2html3978"
+  HREF="node88.html">PARTE: CREATE YOUR OWN</A>
+<B> Ant:</B> <A NAME="tex2html3972"
+  HREF="node88.html">PARTE: CREATE YOUR OWN</A>
 <B> Con:</B> 
-<A NAME="tex2html4000"
-  HREF="node229.html">
+<A NAME="tex2html3979"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4002"
-  HREF="node232.html">
+<A NAME="tex2html3981"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION05100000000000000000">
+JavaScript Review </A>
+</H1>
+<A NAME="tex2html493"
+  HREF="http://nathansuniversity.com/jsreview.html">http://nathansuniversity.com/jsreview.html</A>
+<P>
+<BR> <HR>
 <!--Table of Child-Links-->
 <A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html4006"
-  HREF="node89.html#SECTION04950010000000000000">Uso de los Módulos Generados</A>
-</UL></UL></UL>
+<LI><A NAME="tex2html3985"
+  HREF="node90.html">Closures</A>
+</UL>
 <!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION04950000000000000000">
-Transformaciones Arbol con <TT>treereg</TT></A>
-</H1>
-La distribución de <code>Eyapp</code> provee un conjunto de
-módulos que permiten la manipulación y transformación 
-del AST. La formas mas usual de hacerlo es escribir
-el programa de transformaciones árbol en un fichero
-separado. El tipo <code>.trg</code> se asume por defecto.
-El ejemplo que sigue trabaja en cooperación
-con el programa Eyapp presentado en la sección
-<A HREF="#section:treedirective"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>
-página <A HREF="#code:eyapprule6"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>.
-El programa árbol sustituye nodos producto por un número potencia de
-dos por nodos unarios de desplazamiento a izquierda. De este modo
-facilitamos la tarea de la generación de un código mas eficiente:
-
-<P>
-<PRE>
-pl@nereida:~/LEyapp/examples$ cat -n Shift.trg
- 1  # File: Shift.trg
- 2  {
- 3    sub log2 {
- 4      my $n = shift;
- 5      return log($n)/log(2);
- 6    }
- 7
- 8    my $power;
- 9  }
-10  mult2shift: TIMES($e, NUM($m))
-11    and { $power = log2($m-&gt;{attr}); (1 &lt;&lt; $power) == $m-&gt;{attr} } =&gt; {
-12      $_[0]-&gt;delete(1);
-13      $_[0]-&gt;{shift} = $power;
-14      $_[0]-&gt;type('SHIFTLEFT');
-15    }
-</PRE>
-Obsérvese que la variable léxica <code>$power</code> es visible en la definición
-de la transformación <code>mult2shift</code>.
-Compilamos el programa de transformaciones usando el guión  <TT>treereg</TT> :
-<PRE>
-nereida:~/src/perl/YappWithDefaultAction/examples&gt; treereg Shift
-nereida:~/src/perl/YappWithDefaultAction/examples&gt; ls -ltr | tail -1
--rw-rw----  1 pl users   1405 2006-11-06 14:09 Shift.pm
-</PRE>
-Como se ve, la compilación produce un módulo que <code>Shift.pm</code>
-que contiene el código de los
-analizadores.
-El código generado por la versión 0.2 de  <TT>treereg</TT>  es el siguiente:
-<PRE>
-pl@nereida:~/LEyapp/examples$ cat -n Shift.pm
- 1  package Shift;
- 2
- 3  # This module has been generated using Parse::Eyapp::Treereg
- 4  # from file Shift.trg. Don't modify it.
- 5  # Change Shift.trg instead.
- 6  # Copyright (c) Casiano Rodriguez-Leon 2006. Universidad de La Laguna.
- 7  # You may use it and distribute it under the terms of either
- 8  # the GNU General Public License or the Artistic License,
- 9  # as specified in the Perl README file.
-10
-11  use strict;
-12  use warnings;
-13  use Carp;
-14  use Parse::Eyapp::_TreeregexpSupport qw(until_first_match checknumchildren);
-15
-16  our @all = ( our $mult2shift, ) = Parse::Eyapp::YATW-&gt;buildpatterns(mult2shift =&gt; \&amp;mult2shift, );
-17
-18  #line 2 "Shift.trg"
-19
-20    sub log2 {
-21      my $n = shift;
-22      return log($n)/log(2);
-23    }
-24
-25    my $power;
-26
-27
-28    sub mult2shift {
-29      my $mult2shift = $_[3]; # reference to the YATW pattern object
-30      my $e;
-31      my $NUM;
-32      my $TIMES;
-33      my $m;
-34
-35      {
-36        my $child_index = 0;
-37
-38        return 0 unless (ref($TIMES = $_[$child_index]) eq 'TIMES');
-39      return 0 unless defined($e = $TIMES-&gt;child(0+$child_index));
-40      return 0 unless (ref($NUM = $TIMES-&gt;child(1+$child_index)) eq 'NUM');
-41      return 0 unless defined($m = $NUM-&gt;child(0+$child_index));
-42      return 0 unless do
-43  #line 10 "Shift.trg"
-44        { $power = log2($m-&gt;{attr}); (1 &lt;&lt; $power) == $m-&gt;{attr} };
-45
-46      } # end block of child_index
-47  #line 11 "Shift.trg"
-48    {
-49      $_[0]-&gt;delete(1);
-50      $_[0]-&gt;{shift} = $power;
-51      $_[0]-&gt;type('SHIFTLEFT');
-52    }
-53
-54    } # end of mult2shift
-55
-56
-57  1;
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION04950010000000000000">
-Uso de los Módulos Generados</A>
-</H4>
-  
-
-<P>
-El programa de análisis se limita a cargar los dos módulos generados,
-crear el analizador, llamar al método <code>Run</code> 
-para crear el árbol y proceder a las sustituciones mediante la llamada
-<code>$t-&gt;s(@Shift::all)</code>:
-<PRE>
-pl@nereida:~/LEyapp/examples$ cat -n useruleandshift.pl
- 1  #!/usr/bin/perl -w
- 2  use strict;
- 3  use Rule5;
- 4  use Parse::Eyapp::Base qw(insert_function);
- 5  use Shift;
- 6
- 7  sub SHIFTLEFT::info { $_[0]{shift} }
- 8  insert_function('TERMINAL::info', \&amp;TERMINAL::attr);
- 9
-10  my $parser = new Rule5();
-11  my $t = $parser-&gt;Run;
-12  print "***********\n",$t-&gt;str,"\n";
-13  $t-&gt;s(@Shift::all);
-14  print "***********\n",$t-&gt;str,"\n";
-</PRE>
-Cuando alimentamos el programa con la entrada <code>a=b*32</code> obtenemos la
-siguiente salida:
-<PRE>
-pl@nereida:~/LEyapp/examples$ useruleandshift.pl
-a=b*32
-***********
-ASSIGN(TERMINAL[a],TIMES(VAR(TERMINAL[b]),NUM(TERMINAL[32])))
-***********
-ASSIGN(TERMINAL[a],SHIFTLEFT[5](VAR(TERMINAL[b])))
-</PRE>
-
-<P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4004"
+<A NAME="tex2html3983"
   HREF="node90.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3998"
-  HREF="node84.html">
+<A NAME="tex2html3977"
+  HREF="node88.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3992"
+<A NAME="tex2html3971"
   HREF="node88.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4000"
-  HREF="node229.html">
+<A NAME="tex2html3979"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4002"
-  HREF="node232.html">
+<A NAME="tex2html3981"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -336,12 +191,12 @@ ASSIGN(TERMINAL[a],SHIFTLEFT[5](VAR(TERMINAL[b])))
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4005"
-  HREF="node90.html">Transformaciones de Árboles con</A>
-<B>Sup:</B> <A NAME="tex2html3999"
-  HREF="node84.html">Transformaciones Árbol</A>
-<B> Ant:</B> <A NAME="tex2html3993"
-  HREF="node88.html">El método m</A>
+<B> Sig:</B> <A NAME="tex2html3984"
+  HREF="node90.html">Closures</A>
+<B>Sup:</B> <A NAME="tex2html3978"
+  HREF="node88.html">PARTE: CREATE YOUR OWN</A>
+<B> Ant:</B> <A NAME="tex2html3972"
+  HREF="node88.html">PARTE: CREATE YOUR OWN</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

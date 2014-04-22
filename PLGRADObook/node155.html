@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Passing a Request</TITLE>
-<META NAME="description" CONTENT="Passing a Request">
+<TITLE>Redireccionamientos/Browser Redirect</TITLE>
+<META NAME="description" CONTENT="Redireccionamientos/Browser Redirect">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node156.html">
 <LINK REL="previous" HREF="node154.html">
-<LINK REL="up" HREF="node141.html">
+<LINK REL="up" HREF="node137.html">
 <LINK REL="next" HREF="node156.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5436"
+<A NAME="tex2html5385"
   HREF="node156.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5430"
-  HREF="node141.html">
+<A NAME="tex2html5379"
+  HREF="node137.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5424"
+<A NAME="tex2html5373"
   HREF="node154.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5432"
-  HREF="node229.html">
+<A NAME="tex2html5381"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5434"
-  HREF="node232.html">
+<A NAME="tex2html5383"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,66 +92,96 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5437"
-  HREF="node156.html">Triggering Another Route: calling</A>
-<B>Sup:</B> <A NAME="tex2html5431"
-  HREF="node141.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5425"
-  HREF="node154.html">halt</A>
+<B> Sig:</B> <A NAME="tex2html5386"
+  HREF="node156.html">Configuration / Configuración</A>
+<B>Sup:</B> <A NAME="tex2html5380"
+  HREF="node137.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5374"
+  HREF="node154.html">Generating URLs</A>
 <B> Con:</B> 
-<A NAME="tex2html5432"
-  HREF="node229.html">
+<A NAME="tex2html5381"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5434"
-  HREF="node232.html">
+<A NAME="tex2html5383"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION063140000000000000000">
-Passing a Request</A>
+<H1><A NAME="SECTION063180000000000000000">
+Redireccionamientos/Browser Redirect</A>
 </H1>
-When we want to pass processing 
-to the next matching route we use
-<code>pass</code>:
+
+<P>
+You can trigger a browser redirect with the <code>redirect</code> helper method:
 
 <P>
 <PRE>
-get '/guess/:who' do
-  pass unless params[:who] == 'Frank'
-  'You got me!'
-end
-
-get '/guess/*' do
-  'You missed!'
+get '/foo' do
+  redirect to('/bar')
 end
 </PRE>
-The route block is immediately exited and control continues with
-the next matching route. 
+Any additional parameters are handled like arguments passed to <code>halt</code>:
 
 <P>
-If no matching route is found, a 404 is
-returned.
+<PRE>
+redirect to('/bar'), 303
+redirect 'http://google.com', 'wrong place, buddy'
+</PRE>
+You can also easily <code>redirect</code> back to the page the user came from with <code>redirect back</code>:
+
+<P>
+<PRE>
+get '/foo' do
+  "&lt;a href='/bar'&gt;do something&lt;/a&gt;"
+end
+
+get '/bar' do
+  do_something
+  redirect back
+end
+</PRE>
+To pass arguments with a <code>redirect</code>, either add them to the query:
+
+<P>
+<PRE>
+redirect to('/bar?sum=42')
+</PRE>
+Or use a session:
+
+<P>
+<PRE>
+enable :sessions
+
+get '/foo' do
+  session[:secret] = 'foo'
+  redirect to('/bar')
+end
+
+get '/bar' do
+  session[:secret]
+end
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5436"
+<A NAME="tex2html5385"
   HREF="node156.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5430"
-  HREF="node141.html">
+<A NAME="tex2html5379"
+  HREF="node137.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5424"
+<A NAME="tex2html5373"
   HREF="node154.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5432"
-  HREF="node229.html">
+<A NAME="tex2html5381"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5434"
-  HREF="node232.html">
+<A NAME="tex2html5383"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -202,12 +232,12 @@ returned.
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5437"
-  HREF="node156.html">Triggering Another Route: calling</A>
-<B>Sup:</B> <A NAME="tex2html5431"
-  HREF="node141.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5425"
-  HREF="node154.html">halt</A>
+<B> Sig:</B> <A NAME="tex2html5386"
+  HREF="node156.html">Configuration / Configuración</A>
+<B>Sup:</B> <A NAME="tex2html5380"
+  HREF="node137.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5374"
+  HREF="node154.html">Generating URLs</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

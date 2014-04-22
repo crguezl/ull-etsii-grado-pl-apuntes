@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Make Heroku run non-master Git branch</TITLE>
-<META NAME="description" CONTENT="Make Heroku run non-master Git branch">
+<TITLE>Introducción a Los Object Relational Mappers (ORM)</TITLE>
+<META NAME="description" CONTENT="Introducción a Los Object Relational Mappers (ORM)">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node201.html">
 <LINK REL="previous" HREF="node199.html">
-<LINK REL="up" HREF="node194.html">
+<LINK REL="up" HREF="node199.html">
 <LINK REL="next" HREF="node201.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html6252"
+<A NAME="tex2html6223"
   HREF="node201.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html6246"
-  HREF="node194.html">
+<A NAME="tex2html6217"
+  HREF="node199.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html6240"
+<A NAME="tex2html6211"
   HREF="node199.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html6248"
-  HREF="node229.html">
+<A NAME="tex2html6219"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html6250"
-  HREF="node232.html">
+<A NAME="tex2html6221"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,74 +92,100 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html6253"
-  HREF="node201.html">Account Verification and add-ons</A>
-<B>Sup:</B> <A NAME="tex2html6247"
-  HREF="node194.html">Heroku</A>
-<B> Ant:</B> <A NAME="tex2html6241"
-  HREF="node199.html">Configuration</A>
+<B> Sig:</B> <A NAME="tex2html6224"
+  HREF="node201.html">Patterns Active Record y</A>
+<B>Sup:</B> <A NAME="tex2html6218"
+  HREF="node199.html">DataMapper</A>
+<B> Ant:</B> <A NAME="tex2html6212"
+  HREF="node199.html">DataMapper</A>
 <B> Con:</B> 
-<A NAME="tex2html6248"
-  HREF="node229.html">
+<A NAME="tex2html6219"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html6250"
-  HREF="node232.html">
+<A NAME="tex2html6221"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION07160000000000000000">
-Make Heroku run non-master Git branch</A>
+<H1><A NAME="SECTION07210000000000000000">
+Introducción a Los Object Relational Mappers (ORM)</A>
 </H1>
 
 <P>
-<A NAME="tex2html775"
-  HREF="http://stackoverflow.com/questions/14593538/make-heroku-run-non-master-git-branch">Make Heroku run non-master Git branch</A>
-You can push an alternative branch to Heroku using Git.
-<PRE>
-git push heroku-dev test:master
-</PRE>
-This pushes your local test branch to the remote's master branch (on Heroku).
+What is a Object Relational Mapper?
 
 <P>
-El manual de <code>git push</code> dice:
+A simple answer is that you wrap your tables or stored procedures
+in classes in your programming language, so that instead of writing
+SQL statements to interact with your database, you use methods and
+properties of objects.
 
 <P>
-To push a local branch to an established remote, you need to issue the command:
-<PRE>
-git push  &lt;REMOTENAME&gt; &lt;BRANCHNAME&gt;
-</PRE>
-This is most typically invoked as <code>git push origin master</code>. 
-
-<P>
-If you
-would like to give the branch a different name on the upstream side
-of the push, you can issue the command:
+In other words, instead of something like this:
 
 <P>
 <PRE>
-git push  &lt;REMOTENAME&gt; &lt;LOCALBRANCHNAME&gt;:&lt;REMOTEBRANCHNAME&gt;
+  String sql = "SELECT ... FROM persons WHERE id = 10"
+  DbCommand cmd = new DbCommand(connection, sql);
+  Result res = cmd.Execute();
+  String name = res[0]["FIRST_NAME"];
 </PRE>
+you do something like this:
+
+<P>
+<PRE>
+  Person p = Person.Get(10);
+</PRE>
+
+<P>
+or similar code (lots of variations here). 
+The framework is what makes this code possible.
+
+<P>
+Now, benefits:
+
+<P>
+
+<OL>
+<LI>First of all, you hide the SQL away from your logic
+code
+</LI>
+<LI>This has the benefit of allowing you to more easily support
+more database engines 
+</LI>
+<LI>For instance, MS SQL Server and Oracle have
+different names on typical functions, and different ways to do
+calculations with dates.
+This difference can be put away from your
+logic code.
+</LI>
+<LI>Additionally, you can focus on writing the logic, instead of getting all the SQL right.
+</LI>
+<LI>The code will typically be more readable as well, since it doesn't
+contain all the plumbing necessary to talk to the database.
+</LI>
+</OL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html6252"
+<A NAME="tex2html6223"
   HREF="node201.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html6246"
-  HREF="node194.html">
+<A NAME="tex2html6217"
+  HREF="node199.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html6240"
+<A NAME="tex2html6211"
   HREF="node199.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html6248"
-  HREF="node229.html">
+<A NAME="tex2html6219"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html6250"
-  HREF="node232.html">
+<A NAME="tex2html6221"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -210,12 +236,12 @@ git push  &lt;REMOTENAME&gt; &lt;LOCALBRANCHNAME&gt;:&lt;REMOTEBRANCHNAME&gt;
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html6253"
-  HREF="node201.html">Account Verification and add-ons</A>
-<B>Sup:</B> <A NAME="tex2html6247"
-  HREF="node194.html">Heroku</A>
-<B> Ant:</B> <A NAME="tex2html6241"
-  HREF="node199.html">Configuration</A>
+<B> Sig:</B> <A NAME="tex2html6224"
+  HREF="node201.html">Patterns Active Record y</A>
+<B>Sup:</B> <A NAME="tex2html6218"
+  HREF="node199.html">DataMapper</A>
+<B> Ant:</B> <A NAME="tex2html6212"
+  HREF="node199.html">DataMapper</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

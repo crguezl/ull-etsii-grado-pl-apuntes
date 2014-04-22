@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>La Estructura de una Aplicación Rack</TITLE>
-<META NAME="description" CONTENT="La Estructura de una Aplicación Rack">
+<TITLE>Middleware y la Clase Rack::Builder</TITLE>
+<META NAME="description" CONTENT="Middleware y la Clase Rack::Builder">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node120.html">
 <LINK REL="previous" HREF="node118.html">
-<LINK REL="up" HREF="node105.html">
+<LINK REL="up" HREF="node101.html">
 <LINK REL="next" HREF="node120.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4778"
+<A NAME="tex2html4740"
   HREF="node120.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4772"
-  HREF="node105.html">
+<A NAME="tex2html4734"
+  HREF="node101.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4766"
+<A NAME="tex2html4728"
   HREF="node118.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4774"
-  HREF="node229.html">
+<A NAME="tex2html4736"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4776"
-  HREF="node232.html">
+<A NAME="tex2html4738"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,91 +92,363 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4779"
-  HREF="node120.html">rackup</A>
-<B>Sup:</B> <A NAME="tex2html4773"
-  HREF="node105.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4767"
-  HREF="node118.html">Redirección</A>
+<B> Sig:</B> <A NAME="tex2html4741"
+  HREF="node120.html">Ejemplo de Middleware: Rack::ETag</A>
+<B>Sup:</B> <A NAME="tex2html4735"
+  HREF="node101.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4729"
+  HREF="node118.html">Un Ejemplo Simple: Piedra,</A>
 <B> Con:</B> 
-<A NAME="tex2html4774"
-  HREF="node229.html">
+<A NAME="tex2html4736"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4776"
-  HREF="node232.html">
+<A NAME="tex2html4738"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<H1><A NAME="SECTION061140000000000000000"></A>
-<A NAME="section:estructuradeunaapprack"></A>
+<UL CLASS="ChildLinks">
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html4742"
+  HREF="node119.html#SECTION061180010000000000000">Motivación para el método <TT>use</TT></A>
+<LI><A NAME="tex2html4743"
+  HREF="node119.html#SECTION061180020000000000000">La Clase Rack::Builder</A>
+<LI><A NAME="tex2html4744"
+  HREF="node119.html#SECTION061180030000000000000">Conversión de una Aplicación Rack a Rack::Builder</A>
+<LI><A NAME="tex2html4745"
+  HREF="node119.html#SECTION061180040000000000000">Ejemplo Simple de Uso de Rack::Builder</A>
+<LI><A NAME="tex2html4746"
+  HREF="node119.html#SECTION061180050000000000000">Ejemplo de Uso de Rack::Builder: Dos Middlewares</A>
+</UL></UL></UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION061180000000000000000"></A>
+<A NAME="section:middleware"></A>
 <BR>
-La Estructura de una Aplicación Rack
+Middleware y la Clase Rack::Builder
 </H1>
 
 <P>
+We mentioned earlier that between the server and the framework, Rack
+can be customized to your applications needs using middleware. 
+
+<P>
+The
+fundamental idea behind Rack middleware is
+
+<OL>
+<LI>come between the
+calling client and the server, 
+</LI>
+<LI>process the HTTP request before sending
+it to the server, and 
+</LI>
+<LI>processing the HTTP response before returning it
+to the client.
+</LI>
+</OL>
+
+<P>
+
+<H4><A NAME="SECTION061180010000000000000">
+Motivación para el método <TT>use</TT></A>
+</H4>
+  
+
+<P>
+Si tenemos una app Rack <code>rack_app</code> 
+y dos middlewares con nombres
+<code>MiddleWare1</code>
+y
+<code>MiddleWare2</code> que queremos usar, podemos escribir esto:
 <PRE>
-[~/local/src/ruby/sinatra/rack/rack-debugging(master)]$ cat middlefoo.rb 
+Rack::Handler::Thin.run Middleware1.new(Middleware2.new(rack_app))
+</PRE>
+Si necesitamos pasar opciones en el segundo argumento la llamada quedaría
+mas o menos como esto:
+<PRE>
+Rack::Handler::Thin.run(
+  Middleware1.new(
+    Middleware2.new(rack_app, options2),
+    options1)
+)
+</PRE>
+Si fueran mas de dos middlewares el correspondiente
+código se volverá aún mas ilegible y hace mas fácil que metamos 
+la pata cuando queramos hacer algo como  - por ejemplo -modificar 
+el orden de los middleware.
+
+<P>
+
+<H4><A NAME="SECTION061180020000000000000">
+La Clase Rack::Builder</A>
+</H4>
+  
+
+<P>
+La clase <A NAME="tex2html595"
+  HREF="http://rack.rubyforge.org/doc/Rack/Builder.html">Rack::Builder</A> implementa un pequeño DSL para facilitar
+la construcción de aplicaciones Rack.
+
+<P>
+<A NAME="tex2html596"
+  HREF="http://rack.rubyforge.org/doc/Rack/Builder.html">Rack::Builder</A> is the thing that glues various Rack middlewares
+and applications together and convert them into a single entity/rack
+application. 
+
+<P>
+A good analogy is comparing <A NAME="tex2html597"
+  HREF="http://rack.rubyforge.org/doc/Rack/Builder.html">Rack::Builder</A> 
+object with a stack, where at the very bottom is your actual rack
+application and all middlewares on top of it, and the whole stack
+itself is a rack application too.
+
+<P>
+
+<OL>
+<LI>El método <A NAME="tex2html598"
+  HREF="http://rack.rubyforge.org/doc/Rack/Builder.html#method-i-use"><TT>use</TT> </A>
+añade un middleware a la pila
+</LI>
+<LI>El método <A NAME="tex2html599"
+  HREF="http://rack.rubyforge.org/doc/Rack/Builder.html#method-i-run"><TT>run</TT> </A>
+ejecuta una aplicación
+</LI>
+<LI>El método <A NAME="tex2html600"
+  HREF="http://rack.rubyforge.org/doc/Rack/Builder.html#method-i-map"><TT>map</TT> </A>
+construye un <A NAME="tex2html601"
+  HREF="http://rack.rubyforge.org/doc/Rack/URLMap.html">Rack::URLMap</A> en la forma apropiada.
+It mounts a stack of rack application/middleware  on the specified path or URI.
+</LI>
+</OL>
+
+<P>
+
+<img src="rack_stack.png" />
+
+<P>
+
+<H4><A NAME="SECTION061180030000000000000">
+Conversión de una Aplicación Rack a Rack::Builder</A>
+</H4>
+  
+
+<P>
+Dada la aplicación:
+
+<P>
+<PRE>
+infinity = Proc.new {|env| [200, {"Content-Type" =&gt; "text/html"}, env.[inspect]] }
+Rack::Handler::Mongrel.run infinity, :Port =&gt; 9292
+</PRE>
+
+<P>
+Podemos reescribirla:
+
+<P>
+<PRE>
+[~/sinatra/rack/rack-builder/map]$ cat app_builder.rb 
 require 'rack'
 
-class MiddleFoo
+infinity = Proc.new {|env| [200, {"Content-Type" =&gt; "text/html"}, [env.inspect]]}
+builder = Rack::Builder.new
+builder.run infinity
+Rack::Handler::Thin.run builder, :Port =&gt; 9292
+</PRE>
+o bien:
+<PRE>
+[~/sinatra/rack/rack-builder/map]$ cat app_builder2.rb 
+require 'rack'
+
+infinity = Proc.new {|env| [200, {"Content-Type" =&gt; "text/html"}, [ env.inspect ]] }
+builder = Rack::Builder.new do
+  run infinity
+end
+Rack::Handler::Thin.run builder, :Port =&gt; 9292
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION061180040000000000000">
+Ejemplo Simple de Uso de Rack::Builder</A>
+</H4>
   
-  def initialize(app)
+
+<P>
+<PRE>
+[~/local/src/ruby/sinatra/rack/rack-builder/simple1]$ cat app.rb 
+require 'rack'
+require 'rack/server'
+
+app = Rack::Builder.new do
+  use Rack::CommonLogger
+  use Rack::ShowExceptions
+    use Rack::Lint
+    map "/chuchu" do
+      run lambda { |env| [ 200, {}, ["hello"]] }
+    end
+    map "/chachi" do
+      run lambda { |env| [ 200, {}, ["world"]] }
+    end
+    run lambda { |env| [ 200, {}, ["everything"]] }
+end
+
+Rack::Server.start :app =&gt; app
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION061180050000000000000">
+Ejemplo de Uso de Rack::Builder: Dos Middlewares</A>
+</H4>
+  
+
+<P>
+<PRE>
+[~/rack/rack-from-the-beginning(master)]$ cat hello_world.rb 
+# hello_world.rb
+require 'rack'
+require 'rack/server'
+
+class EnsureJsonResponse
+  def initialize(app = nil)
     @app = app
   end
 
-  def call env
-    # Podemos modificar el request (env) aqui
-    env['chuchu'] = 'SYTW'
-    status, headers, body = @app.call(env)
-    # Podemos modificar la respuesta aqui
-    newbody = body.map(&amp;:upcase)
-    [status, headers, newbody]
+  # Set the 'Accept' header to 'application/json' no matter what.
+  # Hopefully the next middleware respects the accept header :)
+  def call(env)
+    env['HTTP_ACCEPT'] = 'application/json'
+    puts "env['HTTP_ACCEPT'] = #{env['HTTP_ACCEPT']}"
+    @app.call(env) if @app
   end
+end
+
+class Timer
+  def initialize(app = nil)
+    @app = app
+  end
+
+  def call(env)
+    before = Time.now
+    status, headers, body = @app.call(env) if @app
+
+    headers['X-Timing'] = (Time.now - before).to_i.to_s
+
+    [status, headers, body]
+  end
+end
+
+class HelloWorldApp
+
+  def initialize(app = nil)
+    @app = app
+  end
+
+  def self.call(env)
+    [200, {}, ['hello world!']] 
+  end
+end
+
+# put the timer at the top so it captures everything below it
+app = Rack::Builder.new do 
+  use Timer # put the timer at the top so it captures everything below it
+  use EnsureJsonResponse
+  run HelloWorldApp
+end
+
+Rack::Server.start :app =&gt; app
+</PRE>
+
+<P>
+<PRE>
+~/rack/rack-from-the-beginning(master)]$  cat Rakefile 
+desc "run the server"
+task :default do
+  sh "rackup"
+end
+
+desc "run the server hello_world.rb"
+task :server do
+  sh "ruby hello_world.rb"
+end
+
+desc "run the client"
+task :client do
+  sh %q{curl -v 'http://localhost:9292'}
+end
+
+desc "run the client for hello_world"
+task :client2 do
+  sh %q{curl -v 'http://localhost:8080'}
 end
 </PRE>
 
 <P>
 <PRE>
-[~/local/src/ruby/sinatra/rack/rack-debugging(master)]$ cat hello_middle.rb 
-require 'rack'
-require './middlefoo'
-
-class HelloWorld
-  def call env
-    [200, {"Content-Type" =&gt; "text/plain"}, ["Hello world\nchuchu=#{env['chuchu']}\n"]]
-  end
-end
-
-Rack::Handler::WEBrick::run MiddleFoo.new(HelloWorld.new)
+[~/rack/rack-from-the-beginning(master)]$ rake server
+ruby hello_world.rb
+&gt;&gt; Thin web server (v1.5.1 codename Straight Razor)
+&gt;&gt; Maximum connections set to 1024
+&gt;&gt; Listening on 0.0.0.0:8080, CTRL+C to stop
 </PRE>
 
 <P>
-Cuando ejecutamos el programa produce la salida:
 <PRE>
-HELLO WORLD
-CHUCHU=SYTW
+[~/rack/rack-from-the-beginning(master)]$ rake client2
+curl -v 'http://localhost:8080'
+* About to connect() to localhost port 8080 (#0)
+*   Trying ::1... Connection refused
+*   Trying 127.0.0.1... connected
+* Connected to localhost (127.0.0.1) port 8080 (#0)
+&gt; GET / HTTP/1.1
+&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8y zlib/1.2.5
+&gt; Host: localhost:8080
+&gt; Accept: */*
+&gt; 
+&lt; HTTP/1.1 200 OK
+&lt; X-Timing: 0
+&lt; Connection: close
+&lt; Server: thin 1.5.1 codename Straight Razor
+&lt; 
+* Closing connection #0
+hello world!
+</PRE>
+
+<P>
+<PRE>
+[~/rack/rack-from-the-beginning(master)]$ rake server
+ruby hello_world.rb
+&gt;&gt; Thin web server (v1.5.1 codename Straight Razor)
+&gt;&gt; Maximum connections set to 1024
+&gt;&gt; Listening on 0.0.0.0:8080, CTRL+C to stop
+env['HTTP_ACCEPT'] = application/json
 </PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4778"
+<A NAME="tex2html4740"
   HREF="node120.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4772"
-  HREF="node105.html">
+<A NAME="tex2html4734"
+  HREF="node101.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4766"
+<A NAME="tex2html4728"
   HREF="node118.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4774"
-  HREF="node229.html">
+<A NAME="tex2html4736"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4776"
-  HREF="node232.html">
+<A NAME="tex2html4738"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -227,12 +499,12 @@ CHUCHU=SYTW
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4779"
-  HREF="node120.html">rackup</A>
-<B>Sup:</B> <A NAME="tex2html4773"
-  HREF="node105.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4767"
-  HREF="node118.html">Redirección</A>
+<B> Sig:</B> <A NAME="tex2html4741"
+  HREF="node120.html">Ejemplo de Middleware: Rack::ETag</A>
+<B>Sup:</B> <A NAME="tex2html4735"
+  HREF="node101.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4729"
+  HREF="node118.html">Un Ejemplo Simple: Piedra,</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

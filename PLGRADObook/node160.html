@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Configuration / Configuración</TITLE>
-<META NAME="description" CONTENT="Configuration / Configuración">
+<TITLE>Correo</TITLE>
+<META NAME="description" CONTENT="Correo">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node161.html">
 <LINK REL="previous" HREF="node159.html">
-<LINK REL="up" HREF="node141.html">
+<LINK REL="up" HREF="node137.html">
 <LINK REL="next" HREF="node161.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5509"
+<A NAME="tex2html5455"
   HREF="node161.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5503"
-  HREF="node141.html">
+<A NAME="tex2html5449"
+  HREF="node137.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5497"
+<A NAME="tex2html5443"
   HREF="node159.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5505"
-  HREF="node229.html">
+<A NAME="tex2html5451"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5507"
-  HREF="node232.html">
+<A NAME="tex2html5453"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,97 +92,81 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5510"
-  HREF="node161.html">Configuring attack protection</A>
-<B>Sup:</B> <A NAME="tex2html5504"
-  HREF="node141.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5498"
-  HREF="node159.html">Redireccionamientos/Browser Redirect</A>
+<B> Sig:</B> <A NAME="tex2html5456"
+  HREF="node161.html">Ambito</A>
+<B>Sup:</B> <A NAME="tex2html5450"
+  HREF="node137.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5444"
+  HREF="node159.html">Environments</A>
 <B> Con:</B> 
-<A NAME="tex2html5505"
-  HREF="node229.html">
+<A NAME="tex2html5451"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5507"
-  HREF="node232.html">
+<A NAME="tex2html5453"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION063190000000000000000">
-Configuration / Configuración</A>
+<H1><A NAME="SECTION063230000000000000000"></A>
+<A NAME="section:correo"></A>
+<BR>
+Correo
 </H1>
-Run once, at startup, in any environment:
-
-<P>
 <PRE>
-configure do
-  # setting one option
-  set :option, 'value'
-
-  # setting multiple options
-  set :a =&gt; 1, :b =&gt; 2
-
-  # same as `set :option, true`
-  enable :option
-
-  # same as `set :option, false`
-  disable :option
-
-  # you can also have dynamic settings with blocks
-  set(:css_dir) { File.join(views, 'css') }
-end
-</PRE>
-Run only when the environment (<code>RACK_ENV</code>
- environment variable) is set to :<code>production</code>:
-
-<P>
-<PRE>
-configure :production do
-  ...
-end
-</PRE>
-Run when the environment is set to either <code>:production</code> or <code>:test</code>:
-
-<P>
-<PRE>
-configure :production, :test do
-  ...
-end
-</PRE>
-You can access those options via settings:
-
-<P>
-<PRE>
-configure do
-  set :foo, 'bar'
-end
-
+[~/srcSTW/sinatra-faq/mail(esau)]$ cat app.rb 
+require 'sinatra'
+require 'pony'
+raise "Execute:\n\t#{$0} password email_to email_from" if ARGV.length.zero?
 get '/' do
-  settings.foo? # =&gt; true
-  settings.foo  # =&gt; 'bar'
-  ...
+    email = ARGV.shift
+    pass = ARGV.shift
+    Pony.mail({
+      :to =&gt; email,
+      :body =&gt; "Hello Casiano",
+      :subject =&gt; 'Howdy, Partna!',
+      :via =&gt; :smtp,
+      :via_options =&gt; {
+          :address              =&gt; 'smtp.gmail.com',
+          :port                 =&gt; '587',
+          :enable_starttls_auto =&gt; true,
+          :user_name            =&gt; ARGV.shift,
+          :password             =&gt; pass,
+          :authentication       =&gt; :plain, # :plain, :login, :cram_md5, no auth by default
+          :domain               =&gt; "localhost.localdomain" # the HELO domain provided by the client to the server
+        }
+    })
+    "Check your email at #{email}"
 end
 </PRE>
+
+<P>
+
+<OL>
+<LI><A NAME="tex2html691"
+  HREF="http://www.millwoodonline.co.uk/blog/getting-started-with-sinatra">Getting started with Sinatra</A>
+</LI>
+</OL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5509"
+<A NAME="tex2html5455"
   HREF="node161.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5503"
-  HREF="node141.html">
+<A NAME="tex2html5449"
+  HREF="node137.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5497"
+<A NAME="tex2html5443"
   HREF="node159.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5505"
-  HREF="node229.html">
+<A NAME="tex2html5451"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5507"
-  HREF="node232.html">
+<A NAME="tex2html5453"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -233,12 +217,12 @@ end
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5510"
-  HREF="node161.html">Configuring attack protection</A>
-<B>Sup:</B> <A NAME="tex2html5504"
-  HREF="node141.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5498"
-  HREF="node159.html">Redireccionamientos/Browser Redirect</A>
+<B> Sig:</B> <A NAME="tex2html5456"
+  HREF="node161.html">Ambito</A>
+<B>Sup:</B> <A NAME="tex2html5450"
+  HREF="node137.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5444"
+  HREF="node159.html">Environments</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

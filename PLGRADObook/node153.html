@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Uploads. Subida de Ficheros en Sinatra</TITLE>
-<META NAME="description" CONTENT="Uploads. Subida de Ficheros en Sinatra">
+<TITLE>Logging</TITLE>
+<META NAME="description" CONTENT="Logging">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node154.html">
 <LINK REL="previous" HREF="node152.html">
-<LINK REL="up" HREF="node141.html">
+<LINK REL="up" HREF="node137.html">
 <LINK REL="next" HREF="node154.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5403"
+<A NAME="tex2html5354"
   HREF="node154.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5397"
-  HREF="node141.html">
+<A NAME="tex2html5348"
+  HREF="node137.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5391"
+<A NAME="tex2html5342"
   HREF="node152.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5399"
-  HREF="node229.html">
+<A NAME="tex2html5350"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5401"
-  HREF="node232.html">
+<A NAME="tex2html5352"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,19 +92,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5404"
-  HREF="node154.html">halt</A>
-<B>Sup:</B> <A NAME="tex2html5398"
-  HREF="node141.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5392"
-  HREF="node152.html">Downloads / Descargas /</A>
+<B> Sig:</B> <A NAME="tex2html5355"
+  HREF="node154.html">Generating URLs</A>
+<B>Sup:</B> <A NAME="tex2html5349"
+  HREF="node137.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5343"
+  HREF="node152.html">Triggering Another Route: calling</A>
 <B> Con:</B> 
-<A NAME="tex2html5399"
-  HREF="node229.html">
+<A NAME="tex2html5350"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5401"
-  HREF="node232.html">
+<A NAME="tex2html5352"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
@@ -115,178 +115,186 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <UL CLASS="ChildLinks">
 <LI><UL>
 <LI><UL>
-<LI><A NAME="tex2html5405"
-  HREF="node153.html#SECTION063120010000000000000">Véase</A>
-<LI><A NAME="tex2html5406"
-  HREF="node153.html#SECTION063120020000000000000">Jerarquía de ficheros</A>
-<LI><A NAME="tex2html5407"
-  HREF="node153.html#SECTION063120030000000000000">upload.haml</A>
-<LI><A NAME="tex2html5408"
-  HREF="node153.html#SECTION063120040000000000000">app.rb</A>
-<LI><A NAME="tex2html5409"
-  HREF="node153.html#SECTION063120050000000000000">BEWARE!</A>
+<LI><A NAME="tex2html5356"
+  HREF="node153.html#SECTION063160010000000000000">Logging a stdout y a un fichero</A>
+<LI><A NAME="tex2html5357"
+  HREF="node153.html#SECTION063160020000000000000">Ejecución</A>
+<LI><A NAME="tex2html5358"
+  HREF="node153.html#SECTION063160030000000000000">Véase</A>
 </UL></UL></UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION063120000000000000000">
-Uploads. Subida de Ficheros en Sinatra</A>
+<H1><A NAME="SECTION063160000000000000000">
+Logging</A>
 </H1>
+In the request scope, the <code>logger</code> helper exposes a <code>Logger</code> instance:
 
 <P>
-
-<H4><A NAME="SECTION063120010000000000000">
-Véase</A>
-</H4>
-  
+<PRE>
+get '/' do
+  logger.info "loading data"
+  # ...
+end
+</PRE>
 
 <OL>
-<LI><A NAME="tex2html682"
-  HREF="https://github.com/crguezl/sinatra-upload">El repositorio sinatra-upload en GitHub</A>
-con el código de este ejemplo
+<LI>This <code>logger</code> will automatically take your Rack handler’s <code>logging</code> settings into account
 </LI>
-<LI><A NAME="tex2html683"
-  HREF="http://www.wooptoot.com/file-upload-with-sinatra">FILE UPLOAD WITH SINATRA</A>
-BY PANDAFOX POSTED IN RUBY, TUTORIALS
+<LI>If <code>logging</code> is disabled, this method will return a dummy object, so you do not have to worry in your routes and filters about it
 </LI>
-<LI><A NAME="tex2html684"
-  HREF="http://stackoverflow.com/questions/18860656/multiple-file-uploads-in-sinatra">Multiple file uploads in Sinatra</A>
+</OL>
+
+<P>
+Note that <code>logging</code> is only enabled for <code>Sinatra::Application</code>
+ by default, so if you inherit from , you probably want to enable it yourself:
+
+<P>
+<PRE>
+class MyApp &lt; Sinatra::Base
+  configure :production, :development do
+    enable :logging
+  end
+end
+</PRE>
+
+<OL>
+<LI>To avoid any <code>logging</code> middleware to be set up, set the <code>logging</code> setting to <code>nil</code>
+</LI>
+<LI>However, keep in mind that <code>logger</code> will in that case return <code>nil</code>
+</LI>
+<LI>A common use case is when you want to set your own <code>logger</code>.
+Sinatra will use whatever it will find in <code>env['rack.logger']</code>
 </LI>
 </OL>
 
 <P>
 
-<H4><A NAME="SECTION063120020000000000000">
-Jerarquía de ficheros</A>
+<H4><A NAME="SECTION063160010000000000000">
+Logging a stdout y a un fichero</A>
+</H4>
+  
+
+<P>
+Véase 
+<A NAME="tex2html687"
+  HREF="http://recipes.sinatrarb.com/p/middleware/rack_commonlogger">Rack::CommonLogger</A>
+en Sinatra Recipes.
+
+<P>
+Sinatra has logging support, but it's nearly impossible to log to a file and to the stdout (like Rails does).
+
+<P>
+However, there is a little trick you can use to log to stdout and to a file:
+
+<P>
+<PRE>
+require 'sinatra'
+
+configure do
+  # logging is enabled by default in classic style applications,
+  # so `enable :logging` is not needed
+  file = File.new("#{settings.root}/log/#{settings.environment}.log", 'a+')
+  file.sync = true
+  use Rack::CommonLogger, file
+end
+
+get '/' do
+  'Hello World'
+end
+</PRE>
+You can use the same configuration for modular style applications,
+but you have to <code>enable :logging first</code>:
+
+<P>
+<PRE>
+require 'sinatra/base'
+
+class SomeApp &lt; Sinatra::Base
+  configure do
+    enable :logging
+    file = File.new("#{settings.root}/log/#{settings.environment}.log", 'a+')
+    file.sync = true
+    use Rack::CommonLogger, file
+  end
+
+  get '/' do
+    'Hello World'
+  end
+
+  run!
+end
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION063160020000000000000">
+Ejecución</A>
 </H4>
   
 
 <PRE>
-[~/sinatra/sinatra-upload]$ tree
+~/sinatra/sinatra-logging]$ tree
 .
 |-- app.rb
-|-- uploads
-|   `--- README
-`--- views
-    `--- upload.haml
+`-- log
 
-2 directories, 3 files
+1 directory, 1 file
+[~/sinatra/sinatra-logging]$ ruby app.rb 
+== Sinatra/1.4.4 has taken the stage on 4567 for development with backup from Thin
+Thin web server (v1.6.1 codename Death Proof)
+Maximum connections set to 1024
+Listening on localhost:4567, CTRL+C to stop
+</PRE>
+Consola después de visitar la página:
+<PRE>
+127.0.0.1 - - [19/Nov/2013 14:53:06] "GET / HTTP/1.1" 200 11 0.0041
+</PRE>
+
+<P>
+Fichero después de visitar la página:
+<PRE>
+[~/sinatra/sinatra-logging]$ cat log/development.log 
+127.0.0.1 - - [19/Nov/2013 14:53:06] "GET / HTTP/1.1" 200 11 0.0038
 </PRE>
 
 <P>
 
-<H4><A NAME="SECTION063120030000000000000">
-upload.haml</A>
+<H4><A NAME="SECTION063160030000000000000">
+Véase</A>
 </H4>
   
 
-<P>
-The important part is not to forget to set the <code>enctype</code> 
-in your form element, otherwise you will just get the filename instead of an object:
-
-<P>
-<PRE>
-[~/sinatra/sinatra-upload(master)]$ cat views/upload.haml 
-%html
-  %body
-    %h1 File uploader!
-    %form(method="post" enctype='multipart/form-data')   
-      %input(type='file' name='myfile')    
-      %br
-      %input(type='submit' value='Upload!')
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION063120040000000000000">
-app.rb</A>
-</H4>
-  
-
-<PRE>
-[~/sinatra/sinatra-upload(master)]$ cat app.rb 
-require 'rubygems'
-require 'sinatra'
-require 'haml'
-require 'pp'
- 
-# Handle GET-request (Show the upload form)
-get "/upload?" do
-  haml :upload
-end      
-    
-# Handle POST-request (Receive and save the uploaded file)
-post "/upload" do 
-  pp params
-  File.open('uploads/' + params['myfile'][:filename], "w") do |f|
-    f.write(params['myfile'][:tempfile].read)
-  end
-  return "The file was successfully uploaded!"
-end
-[~/sinatra/sinatra-upload(master)]$
-</PRE>
-
-<P>
-As you can see, you don’t have to write much code to get this to
-work. The <code>params</code>-hash contains our uploaded element with data such
-as filename, type and the actual datafile, which can be accessed
-as a Tempfile-object. 
-
-<P>
-We read the contents from this file and store
-it into a directory called uploads, which you will have to create
-before running this script.
-
-<P>
-Here’s an example of what the <code>params</code>-hash may look like when uploading
-a picture of a cat:
-
-<P>
-<PRE>
-{
-  "myfile" =&gt; {
-    :type =&gt; "image/png",
-    :head =&gt;  "Content-Disposition: form-data;
-               name=\"myfile\";
-               filename=\"cat.png\"\r\n
-               Content-Type: image/png\r\n",
-    :name =&gt; "myfile",
-    :tempfile =&gt; #&lt;File:/var/folders/3n/3asd/-Tmp-/RackMultipart201-1476-nfw2-0&gt;,
-    :filename=&gt;"cat.png"
-  }
-}
-</PRE>
-
-<P>
-<A NAME="tex2html685"
-  HREF="http://youtu.be/7tkQUTUxJWE">File upload with sinatra. YouTube</A>
-<P>
-
-<H4><A NAME="SECTION063120050000000000000">
-BEWARE!</A>
-</H4>
-  
-
-<P>
-This script offers little to no security at all. Clients will be able to overwrite old images, fill up your harddrive and so on. So just use some common sense and do some Ruby magic to patch up the security holes yourself.
+<OL>
+<LI>el código en GitHub de 
+<A NAME="tex2html688"
+  HREF="https://github.com/rack/rack/blob/master/lib/rack/commonlogger.rb">Rack::CommonLogger</A>
+</LI>
+<LI>Logging in Sinatra. StackOverflow.
+<A NAME="tex2html689"
+  HREF="http://stackoverflow.com/questions/5995854/logging-in-sinatra/5995932#5995932">Destination is set by  changing 
+</A>
+<code>env['rack.errors']</code>.  Konstantin Haase May 13 '11 at 21:18'
+</LI>
+</OL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5403"
+<A NAME="tex2html5354"
   HREF="node154.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5397"
-  HREF="node141.html">
+<A NAME="tex2html5348"
+  HREF="node137.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5391"
+<A NAME="tex2html5342"
   HREF="node152.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5399"
-  HREF="node229.html">
+<A NAME="tex2html5350"
+  HREF="node225.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5401"
-  HREF="node232.html">
+<A NAME="tex2html5352"
+  HREF="node228.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -337,12 +345,12 @@ This script offers little to no security at all. Clients will be able to overwri
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5404"
-  HREF="node154.html">halt</A>
-<B>Sup:</B> <A NAME="tex2html5398"
-  HREF="node141.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5392"
-  HREF="node152.html">Downloads / Descargas /</A>
+<B> Sig:</B> <A NAME="tex2html5355"
+  HREF="node154.html">Generating URLs</A>
+<B>Sup:</B> <A NAME="tex2html5349"
+  HREF="node137.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5343"
+  HREF="node152.html">Triggering Another Route: calling</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
