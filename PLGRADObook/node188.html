@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Pruebas</TITLE>
-<META NAME="description" CONTENT="Pruebas">
+<TITLE>Sinatra::Flash</TITLE>
+<META NAME="description" CONTENT="Sinatra::Flash">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,28 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
+<LINK REL="next" HREF="node189.html">
 <LINK REL="previous" HREF="node187.html">
-<LINK REL="up" HREF="node100.html">
+<LINK REL="up" HREF="node101.html">
 <LINK REL="next" HREF="node189.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5904"
+<A NAME="tex2html5909"
   HREF="node189.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5898"
-  HREF="node100.html">
+<A NAME="tex2html5903"
+  HREF="node101.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5894"
+<A NAME="tex2html5897"
   HREF="node187.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5900"
-  HREF="node225.html">
+<A NAME="tex2html5905"
+  HREF="node226.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5902"
-  HREF="node228.html">
+<A NAME="tex2html5907"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -91,53 +92,141 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5905"
-  HREF="node189.html">PARTE: HERRAMIENTAS</A>
-<B>Sup:</B> <A NAME="tex2html5899"
-  HREF="node100.html">PARTE: SINATRA</A>
-<B> Ant:</B> <A NAME="tex2html5895"
-  HREF="node187.html">Sinatra::Flash</A>
+<B> Sig:</B> <A NAME="tex2html5910"
+  HREF="node189.html">Pruebas</A>
+<B>Sup:</B> <A NAME="tex2html5904"
+  HREF="node101.html">PARTE: SINATRA</A>
+<B> Ant:</B> <A NAME="tex2html5898"
+  HREF="node187.html">Rest</A>
 <B> Con:</B> 
-<A NAME="tex2html5900"
-  HREF="node225.html">
+<A NAME="tex2html5905"
+  HREF="node226.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5902"
-  HREF="node228.html">
+<A NAME="tex2html5907"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION061400000000000000000">
-Pruebas</A>
+<H1><A NAME="SECTION061300000000000000000">
+Sinatra::Flash</A>
 </H1>
+<A NAME="tex2html757"
+  HREF="https://github.com/SFEley/sinatra-flash">Sinatra::Flash</A>
+is an extension that lets you store information between
+requests. 
 
-<OL>
-<LI>NetTuts+ tutorial: <A NAME="tex2html760"
-  HREF="http://net.tutsplus.com/tutorials/ruby/ruby-for-newbies-testing-web-apps-with-capybara-and-cucumber/">Testing Web Apps with Capybara and 
-Cucumber</A>
-Andrew Burgess on Aug 22nd 2011 with 22 Comments
-</LI>
-</OL>
+<P>
+Often, when an application processes a request, it will redirect
+to another URL upon finishing, which generates another request. 
+
+<P>
+This
+means that any information from the previous request is lost (due to the
+stateless nature of HTTP). 
+
+<P>
+<A NAME="tex2html758"
+  HREF="https://github.com/SFEley/sinatra-flash">Sinatra::Flash</A>
+overcomes this by providing
+access to the 
+<FONT COLOR="#ff0000"> flash</FONT>—a hash-like object that stores temporary values
+such as error messages so that they can be retrieved later—usually
+on the next request. 
+
+<P>
+It also removes the information once it’s been
+used. 
+
+<P>
+All this can be achieved via sessions (and that’s exactly how
+<A NAME="tex2html759"
+  HREF="https://github.com/SFEley/sinatra-flash">Sinatra::Flash</A>
+does it), but 
+<A NAME="tex2html760"
+  HREF="https://github.com/SFEley/sinatra-flash">Sinatra::Flash</A>
+is easy to implement and
+provides a number of helper methods.
 
 <P>
 
+<H4><A NAME="SECTION061300010000000000000">
+Ejemplo</A>
+</H4>
+  
+
+<PRE>
+[~/sinatra/sinatra-flash]$ cat app.rb 
+require 'sinatra'
+require 'sinatra/flash'
+
+enable :sessions
+
+get '/blah' do
+  # This message won't be seen until the NEXT Web request that accesses the flash collection
+  flash[:blah] = "You were feeling blah at #{Time.now}."
+
+  # Accessing the flash displays messages set from the LAST request
+  "Feeling blah again? That's too bad. #{flash[:blah]}"
+end
+
+get '/pum' do
+  # This message won't be seen until the NEXT Web request that accesses the flash collection
+  flash[:pum] = "You were feeling pum at #{Time.now}."
+
+  # Accessing the flash displays messages set from the LAST request
+  "Feeling pum again? That's too bad. #{flash[:pum]}"
+end
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION061300020000000000000">
+Gemfile</A>
+</H4>
+  
+
+<PRE>
+[~/sinatra/sinatra-flash]$ cat Gemfile
+source 'https://rubygems.org'
+
+gem 'sinatra'
+gem 'sinatra-flash'
+</PRE>
+
+<P>
+<BR> <HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><UL>
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html5911"
+  HREF="node188.html#SECTION061300010000000000000">Ejemplo</A>
+<LI><A NAME="tex2html5912"
+  HREF="node188.html#SECTION061300020000000000000">Gemfile</A>
+</UL></UL></UL></UL>
+<!--End of Table of Child-Links-->
+
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5904"
+<A NAME="tex2html5909"
   HREF="node189.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5898"
-  HREF="node100.html">
+<A NAME="tex2html5903"
+  HREF="node101.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5894"
+<A NAME="tex2html5897"
   HREF="node187.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5900"
-  HREF="node225.html">
+<A NAME="tex2html5905"
+  HREF="node226.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5902"
-  HREF="node228.html">
+<A NAME="tex2html5907"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -188,17 +277,17 @@ Andrew Burgess on Aug 22nd 2011 with 22 Comments
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5905"
-  HREF="node189.html">PARTE: HERRAMIENTAS</A>
-<B>Sup:</B> <A NAME="tex2html5899"
-  HREF="node100.html">PARTE: SINATRA</A>
-<B> Ant:</B> <A NAME="tex2html5895"
-  HREF="node187.html">Sinatra::Flash</A>
+<B> Sig:</B> <A NAME="tex2html5910"
+  HREF="node189.html">Pruebas</A>
+<B>Sup:</B> <A NAME="tex2html5904"
+  HREF="node101.html">PARTE: SINATRA</A>
+<B> Ant:</B> <A NAME="tex2html5898"
+  HREF="node187.html">Rest</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-04-22</I>
+2014-04-23</I>
 </ADDRESS>
 </BODY>
 </HTML>

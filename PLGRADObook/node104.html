@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Detectando el Proceso que está Usando un Puerto</TITLE>
-<META NAME="description" CONTENT="Detectando el Proceso que está Usando un Puerto">
+<TITLE>Analizando env con pry-debugger</TITLE>
+<META NAME="description" CONTENT="Analizando env con pry-debugger">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node105.html">
 <LINK REL="previous" HREF="node103.html">
-<LINK REL="up" HREF="node101.html">
+<LINK REL="up" HREF="node102.html">
 <LINK REL="next" HREF="node105.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4468"
+<A NAME="tex2html4471"
   HREF="node105.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4462"
-  HREF="node101.html">
+<A NAME="tex2html4465"
+  HREF="node102.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4456"
+<A NAME="tex2html4459"
   HREF="node103.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4464"
-  HREF="node225.html">
+<A NAME="tex2html4467"
+  HREF="node226.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4466"
-  HREF="node228.html">
+<A NAME="tex2html4469"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,101 +92,259 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4469"
-  HREF="node105.html">Usando PATH_INFO y erubis</A>
-<B>Sup:</B> <A NAME="tex2html4463"
-  HREF="node101.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4457"
-  HREF="node103.html">Analizando env con pry-debugger</A>
+<B> Sig:</B> <A NAME="tex2html4472"
+  HREF="node105.html">Detectando el Proceso que</A>
+<B>Sup:</B> <A NAME="tex2html4466"
+  HREF="node102.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4460"
+  HREF="node103.html">Introducción</A>
 <B> Con:</B> 
-<A NAME="tex2html4464"
-  HREF="node225.html">
+<A NAME="tex2html4467"
+  HREF="node226.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4466"
-  HREF="node228.html">
+<A NAME="tex2html4469"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<H1><A NAME="SECTION06130000000000000000">
-Detectando el Proceso que está Usando un Puerto</A>
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html4473"
+  HREF="node104.html#SECTION06121000000000000000">Introducción</A>
+<LI><A NAME="tex2html4474"
+  HREF="node104.html#SECTION06122000000000000000">REQUEST_METHOD, QUERY_STRING y PATH_INFO</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION06120000000000000000">
+Analizando <TT>env</TT> con <TT>pry-debugger</TT></A>
 </H1>
 
 <P>
-Si intentamos ejecutar una segunda instancia del servidor mientras otra instancia esta ejecutandose 
-obtenemos un error que indica que el puerto está en uso:
-<PRE>
-[~/sinatra/sinatra-simple(master)]$ rackup
-Thin web server (v1.6.1 codename Death Proof)
-Maximum connections set to 1024
-Listening on 0.0.0.0:9292, CTRL+C to stop
-/Users/casiano/.rvm/gems/ruby-2.0.0-p247/gems/eventmachine-1.0.3/lib/eventmachine.rb:526:
-  in `start_tcp_server': no acceptor 
-  (port is in use or requires root privileges) (RuntimeError)
-  from /Users/casiano/.rvm/gems/ruby-2.0.0-p247/gems/eventmachine-1.0.3/lib/eventmachine.rb:526:
-    in `start_server'
-...
-</PRE>
-Si sabemos en que puerto esta corriendo - como es el caso - podemos hacer algo así
-para saber el PID del proceso que lo ocupa:
-<PRE>
-[~/sinatra/sinatra-simple(master)]$ lsof -i :9292
-COMMAND   PID    USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
-ruby    52870 casiano    9u  IPv4 0x9f3ffc595152af29      0t0  TCP *:armtechdaemon (LISTEN)
-</PRE>
-Si no lo sabemos podemos hacer:
-<PRE>
-[~/sinatra/sinatra-simple(master)]$ ps -fA | egrep ruby
-  501 52870   565   0 11:16AM ttys003    0:00.61 ruby /Users/casiano/.rvm/gems/ruby-2.0.0-p247/bin/rackup
-  501 53230 52950   0 11:35AM ttys006    0:00.00 egrep ruby
-</PRE>
-Si tenemos privilegios suficientes podemos ahora eliminar el proceso:
-<PRE>
-[~/sinatra/sinatra-simple(master)]$ kill -9 52870
-</PRE>
+
+<H2><A NAME="SECTION06121000000000000000">
+Introducción</A>
+</H2>
+
+<P>
+Tenemos esta sencilla aplicación:
 
 <P>
 <PRE>
-[~/sinatra/sinatra-simple(master)]$ rackup
-Thin web server (v1.6.1 codename Death Proof)
-Maximum connections set to 1024
-Listening on 0.0.0.0:9292, CTRL+C to stop
-Killed: 9
+~/local/src/ruby/sinatra/rack/rack-debugging]$ cat hello.rb 
+require 'rack'
+require 'pry-debugger'
+
+class HelloWorld
+  def call env
+    binding.pry
+    [200, {"Content-Type" =&gt; "text/plain"}, ["Hello world"]]
+  end
+end
 </PRE>
 
 <P>
-El comando 
+Arrancamos un servidor:
 <PRE>
-$ lsof -i | egrep -i 'tcp.*(\d+.)+'
+[~/local/src/ruby/sinatra/rack/rack-debugging]$ pry
+[1] pry(main)&gt; require './hello'
+=&gt; true
+[6] pry(main)&gt; Rack::Handler::WEBrick.run HelloWorld.new
+[2013-09-23 12:36:21] INFO  WEBrick 1.3.1
+[2013-09-23 12:36:21] INFO  ruby 1.9.3 (2013-02-22) [x86_64-darwin11.4.2]
+[2013-09-23 12:36:21] INFO  WEBrick::HTTPServer#start: pid=9458 port=8080
 </PRE>
-Nos da una lista bastante completa de como están nuestras conexiones.
+
+<P>
+En otra ventana arrancamos un cliente:
+<PRE>
+[~/local/src/ruby/sinatra/rack/rack-testing/bindaddress(master)]$ curl -v localhost:8080
+* About to connect() to localhost port 8080 (#0)
+*   Trying ::1... connected
+* Connected to localhost (::1) port 8080 (#0)
+&gt; GET / HTTP/1.1
+&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8y zlib/1.2.5
+&gt; Host: localhost:8080
+&gt; Accept: */*
+&gt;
+</PRE>
+
+<P>
+En la ventana del servidor ahora aparece:
+<PRE>
+From: /Users/casiano/local/src/ruby/sinatra/rack/rack-debugging/hello.rb @ line 6 HelloWorld#call:
+
+    5: def call env
+ =&gt; 6:   binding.pry
+    7:   [200, {"Content-Type" =&gt; "text/plain"}, ["Hello world"]]
+    8: end
+</PRE>
+Ahora podemos inspeccionar las variables:
+<PRE>
+[1] pry(#&lt;HelloWorld&gt;)&gt; env
+=&gt; {"GATEWAY_INTERFACE"=&gt;"CGI/1.1",
+ "PATH_INFO"=&gt;"/",
+ "QUERY_STRING"=&gt;"",
+ "REMOTE_ADDR"=&gt;"::1",
+ "REMOTE_HOST"=&gt;"localhost",
+ "REQUEST_METHOD"=&gt;"GET",
+ "REQUEST_URI"=&gt;"http://localhost:8080/",
+ "SCRIPT_NAME"=&gt;"",
+ "SERVER_NAME"=&gt;"localhost",
+ "SERVER_PORT"=&gt;"8080",
+ "SERVER_PROTOCOL"=&gt;"HTTP/1.1",
+ "SERVER_SOFTWARE"=&gt;"WEBrick/1.3.1 (Ruby/1.9.3/2013-02-22)",
+ "HTTP_USER_AGENT"=&gt;
+  "curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8y zlib/1.2.5",
+ "HTTP_HOST"=&gt;"localhost:8080",
+ "HTTP_ACCEPT"=&gt;"*/*",
+ "rack.version"=&gt;[1, 2],
+ "rack.input"=&gt;#&lt;StringIO:0x007fbba40263b0&gt;,
+ "rack.errors"=&gt;#&lt;IO:&lt;STDERR&gt;&gt;,
+ "rack.multithread"=&gt;true,
+ "rack.multiprocess"=&gt;false,
+ "rack.run_once"=&gt;false,
+ "rack.url_scheme"=&gt;"http",
+ "HTTP_VERSION"=&gt;"HTTP/1.1",
+ "REQUEST_PATH"=&gt;"/"}
+[2] pry(#&lt;HelloWorld&gt;)&gt;
+</PRE>
+Hay tres categorías de variables en <A NAME="17428"></A><SPAN  CLASS="textbf">env</SPAN>:
+
+<P>
 
 <OL>
-<LI><code>-i [i]</code>   selects  the  listing  of  files  any of whose Internet address matches the address
-                specified in i.  If no address is specified, this option selects the listing of all
-                Internet and x.25 (HP-UX) network files.
+<LI>Variables CGI
+</LI>
+<LI>Variables específicas de Rack (empiezan por <code>rack.</code>)
+</LI>
+<LI>Un tercer tipo de variables son las de la aplicación y/o el servidor.
+En este ejemplo no aparecen
 </LI>
 </OL>
+Véase <A NAME="tex2html522"
+  HREF="http://rack.rubyforge.org/doc/SPEC.html">la especificación Rack</A>.
+
+<P>
+Le indicamos al servidor que continue:
+<PRE>
+[2] pry(#&lt;HelloWorld&gt;)&gt; co&lt;TABULADOR&gt;
+cohen-poem  continue    
+[2] pry(#&lt;HelloWorld&gt;)&gt; continue
+localhost - - [23/Sep/2013:12:36:48 WEST] "GET / HTTP/1.1" 200 11
+- -&gt; /
+</PRE>
+después de entregar la respuesta el servidor cierra la conexión HTTP. Esto es así porque
+HTTP es un protocolo sin estado, esto es, no se mantiene información de la conexión entre 
+transacciones.
+En la ventana del cliente obtenemos la siguiente salida:
+<PRE>
+[~/local/src/ruby/sinatra/rack/rack-testing/bindaddress(master)]$ curl -v localhost:8080
+* About to connect() to localhost port 8080 (#0)
+*   Trying ::1... connected
+* Connected to localhost (::1) port 8080 (#0)
+&gt; GET / HTTP/1.1
+&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8y zlib/1.2.5
+&gt; Host: localhost:8080
+&gt; Accept: */*
+&gt; 
+&lt; HTTP/1.1 200 OK 
+&lt; Content-Type: text/plain
+&lt; Server: WEBrick/1.3.1 (Ruby/1.9.3/2013-02-22)
+&lt; Date: Mon, 23 Sep 2013 11:45:00 GMT
+&lt; Content-Length: 11
+&lt; Connection: Keep-Alive
+&lt; 
+* Connection #0 to host localhost left intact
+* Closing connection #0
+Hello world
+</PRE>
+
+<P>
+
+<H2><A NAME="SECTION06122000000000000000">
+REQUEST_METHOD, QUERY_STRING y PATH_INFO</A>
+</H2>
+
+<P>
+<PRE>
+[~/local/src/ruby/sinatra/rack/rack-env]$ cat app.rb 
+require 'rack'
+require 'thin'
+
+cgi_inspector = lambda do |env|
+  [200, #status
+    { 'Content-Type' =&gt; 'text/html' }, #headers
+    ["&lt;h1&gt;
+        Your request:&lt;br&gt;
+       &lt;ul&gt;
+         &lt;li&gt;http method is: #{env['REQUEST_METHOD']}
+         &lt;li&gt;path is: #{env['PATH_INFO']}
+         &lt;li&gt;Query string is: #{env['QUERY_STRING']}
+       &lt;/ul&gt;
+      &lt;/h1&gt;
+     "
+    ]
+  ]
+end
+
+Rack::Handler::Thin.run cgi_inspector, :Port =&gt; 3000
+</PRE>
+
+<P>
+Visite la página <code>localhost:3000/camino?var=4</code>.
+
+<P>
+Esta es la salida:
+<PRE>
+[~/local/src/ruby/sinatra/rack/rack-env]$ curl -v localhost:3000/camino?var=4
+* About to connect() to localhost port 3000 (#0)
+*   Trying ::1... Connection refused
+*   Trying 127.0.0.1... connected
+* Connected to localhost (127.0.0.1) port 3000 (#0)
+&gt; GET /camino?var=4 HTTP/1.1
+&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8y zlib/1.2.5
+&gt; Host: localhost:3000
+&gt; Accept: */*
+&gt; 
+&lt; HTTP/1.1 200 OK
+&lt; Content-Type: text/html
+&lt; Connection: close
+&lt; Server: thin 1.5.1 codename Straight Razor
+&lt; 
+&lt;h1&gt;
+        Your request:&lt;br&gt;
+       &lt;ul&gt;
+         &lt;li&gt;http method is: GET
+         &lt;li&gt;path is: /camino
+         &lt;li&gt;Query string is: var=4
+       &lt;/ul&gt;
+      &lt;/h1&gt;
+* Closing connection #0
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4468"
+<A NAME="tex2html4471"
   HREF="node105.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4462"
-  HREF="node101.html">
+<A NAME="tex2html4465"
+  HREF="node102.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4456"
+<A NAME="tex2html4459"
   HREF="node103.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4464"
-  HREF="node225.html">
+<A NAME="tex2html4467"
+  HREF="node226.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4466"
-  HREF="node228.html">
+<A NAME="tex2html4469"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -237,17 +395,17 @@ Nos da una lista bastante completa de como están nuestras conexiones.
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4469"
-  HREF="node105.html">Usando PATH_INFO y erubis</A>
-<B>Sup:</B> <A NAME="tex2html4463"
-  HREF="node101.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4457"
-  HREF="node103.html">Analizando env con pry-debugger</A>
+<B> Sig:</B> <A NAME="tex2html4472"
+  HREF="node105.html">Detectando el Proceso que</A>
+<B>Sup:</B> <A NAME="tex2html4466"
+  HREF="node102.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4460"
+  HREF="node103.html">Introducción</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-04-22</I>
+2014-04-23</I>
 </ADDRESS>
 </BODY>
 </HTML>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>La Estructura de una Aplicación Rack</TITLE>
-<META NAME="description" CONTENT="La Estructura de una Aplicación Rack">
+<TITLE>Redirección</TITLE>
+<META NAME="description" CONTENT="Redirección">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node116.html">
 <LINK REL="previous" HREF="node114.html">
-<LINK REL="up" HREF="node101.html">
+<LINK REL="up" HREF="node102.html">
 <LINK REL="next" HREF="node116.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4668"
+<A NAME="tex2html4673"
   HREF="node116.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4662"
-  HREF="node101.html">
+<A NAME="tex2html4667"
+  HREF="node102.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4656"
+<A NAME="tex2html4661"
   HREF="node114.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4664"
-  HREF="node225.html">
+<A NAME="tex2html4669"
+  HREF="node226.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4666"
-  HREF="node228.html">
+<A NAME="tex2html4671"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,91 +92,70 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4669"
-  HREF="node116.html">rackup</A>
-<B>Sup:</B> <A NAME="tex2html4663"
-  HREF="node101.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4657"
-  HREF="node114.html">Redirección</A>
+<B> Sig:</B> <A NAME="tex2html4674"
+  HREF="node116.html">La Estructura de una</A>
+<B>Sup:</B> <A NAME="tex2html4668"
+  HREF="node102.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4662"
+  HREF="node114.html">Ejemplo: Basic Authentication</A>
 <B> Con:</B> 
-<A NAME="tex2html4664"
-  HREF="node225.html">
+<A NAME="tex2html4669"
+  HREF="node226.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4666"
-  HREF="node228.html">
+<A NAME="tex2html4671"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION061140000000000000000"></A>
-<A NAME="section:estructuradeunaapprack"></A>
-<BR>
-La Estructura de una Aplicación Rack
+<H1><A NAME="SECTION061130000000000000000">
+Redirección</A>
 </H1>
 
 <P>
 <PRE>
-[~/local/src/ruby/sinatra/rack/rack-debugging(master)]$ cat middlefoo.rb 
+[~/local/src/ruby/sinatra/rack/rack-debugging(master)]$ cat redirect.rb 
 require 'rack'
+require 'thin'
 
-class MiddleFoo
-  
-  def initialize(app)
-    @app = app
+app = lambda do |env|
+  req = Rack::Request.new env
+  res = Rack::Response.new
+
+  if req.path_info == '/redirect'
+    res.redirect('https://plus.google.com/u/0/')
+  else
+    res.write "You did not get redirected"
   end
-
-  def call env
-    # Podemos modificar el request (env) aqui
-    env['chuchu'] = 'SYTW'
-    status, headers, body = @app.call(env)
-    # Podemos modificar la respuesta aqui
-    newbody = body.map(&amp;:upcase)
-    [status, headers, newbody]
-  end
-end
-</PRE>
-
-<P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rack-debugging(master)]$ cat hello_middle.rb 
-require 'rack'
-require './middlefoo'
-
-class HelloWorld
-  def call env
-    [200, {"Content-Type" =&gt; "text/plain"}, ["Hello world\nchuchu=#{env['chuchu']}\n"]]
-  end
+  res.finish
 end
 
-Rack::Handler::WEBrick::run MiddleFoo.new(HelloWorld.new)
-</PRE>
-
-<P>
-Cuando ejecutamos el programa produce la salida:
-<PRE>
-HELLO WORLD
-CHUCHU=SYTW
+Rack::Server.start(
+ :app =&gt; app,
+ :Port =&gt; 9292,
+ :server =&gt; 'thin'
+)
 </PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4668"
+<A NAME="tex2html4673"
   HREF="node116.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4662"
-  HREF="node101.html">
+<A NAME="tex2html4667"
+  HREF="node102.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4656"
+<A NAME="tex2html4661"
   HREF="node114.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4664"
-  HREF="node225.html">
+<A NAME="tex2html4669"
+  HREF="node226.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4666"
-  HREF="node228.html">
+<A NAME="tex2html4671"
+  HREF="node229.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -227,17 +206,17 @@ CHUCHU=SYTW
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4669"
-  HREF="node116.html">rackup</A>
-<B>Sup:</B> <A NAME="tex2html4663"
-  HREF="node101.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4657"
-  HREF="node114.html">Redirección</A>
+<B> Sig:</B> <A NAME="tex2html4674"
+  HREF="node116.html">La Estructura de una</A>
+<B>Sup:</B> <A NAME="tex2html4668"
+  HREF="node102.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4662"
+  HREF="node114.html">Ejemplo: Basic Authentication</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-04-22</I>
+2014-04-23</I>
 </ADDRESS>
 </BODY>
 </HTML>
