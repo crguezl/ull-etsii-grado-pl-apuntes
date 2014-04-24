@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Manejo de Errores</TITLE>
-<META NAME="description" CONTENT="Manejo de Errores">
+<TITLE>Filtros</TITLE>
+<META NAME="description" CONTENT="Filtros">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node145.html">
 <LINK REL="previous" HREF="node143.html">
-<LINK REL="up" HREF="node138.html">
+<LINK REL="up" HREF="node139.html">
 <LINK REL="next" HREF="node145.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5218"
+<A NAME="tex2html5219"
   HREF="node145.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5212"
-  HREF="node138.html">
+<A NAME="tex2html5213"
+  HREF="node139.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5206"
+<A NAME="tex2html5207"
   HREF="node143.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5214"
-  HREF="node226.html">
+<A NAME="tex2html5215"
+  HREF="node227.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5216"
-  HREF="node229.html">
+<A NAME="tex2html5217"
+  HREF="node230.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,19 +92,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5219"
-  HREF="node145.html">The methods body, status</A>
-<B>Sup:</B> <A NAME="tex2html5213"
-  HREF="node138.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5207"
-  HREF="node143.html">Filtros</A>
+<B> Sig:</B> <A NAME="tex2html5220"
+  HREF="node145.html">Manejo de Errores</A>
+<B>Sup:</B> <A NAME="tex2html5214"
+  HREF="node139.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5208"
+  HREF="node143.html">Vistas</A>
 <B> Con:</B> 
-<A NAME="tex2html5214"
-  HREF="node226.html">
+<A NAME="tex2html5215"
+  HREF="node227.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5216"
-  HREF="node229.html">
+<A NAME="tex2html5217"
+  HREF="node230.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
@@ -115,131 +115,129 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <UL CLASS="ChildLinks">
 <LI><UL>
 <LI><UL>
-<LI><A NAME="tex2html5220"
-  HREF="node144.html#SECTION06360010000000000000">not_found</A>
 <LI><A NAME="tex2html5221"
-  HREF="node144.html#SECTION06360020000000000000">error</A>
+  HREF="node144.html#SECTION06350010000000000000">Before Filters</A>
+<LI><A NAME="tex2html5222"
+  HREF="node144.html#SECTION06350020000000000000">After Filters</A>
+<LI><A NAME="tex2html5223"
+  HREF="node144.html#SECTION06350030000000000000">Filters can take a Pattern</A>
+<LI><A NAME="tex2html5224"
+  HREF="node144.html#SECTION06350040000000000000">Filters can take a Condition</A>
 </UL></UL></UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION06360000000000000000">
-Manejo de Errores</A>
+<H1><A NAME="SECTION06350000000000000000">
+Filtros</A>
 </H1>
 
 <P>
 
-<OL>
-<LI>The HTTP specification states that response status in the range  200-299
-indicate success in processing a request
-</LI>
-<LI>500-599 is reserved for server errors
-</LI>
-<LI>Sinatra  offers helpers for the 404 (Not Found) and 500 (Internal Server Error) status
-</LI>
-</OL>
-
-<P>
-
-<H4><A NAME="SECTION06360010000000000000">
-not_found</A>
+<H4><A NAME="SECTION06350010000000000000">
+Before Filters</A>
 </H4>
   
 
-When a <code>Sinatra::NotFound</code> exception is raised, or the response’s
-status code is 404, the <code>not_found</code> handler is invoked:
+<A NAME="20154"></A><SPAN  CLASS="textbf">Before filters</SPAN> are evaluated before each request within the
+same context as the routes will be and can modify the request and
+response. 
+
+<P>
+Instance variables set in filters are accessible by routes
+and templates:
 
 <P>
 <PRE>
-not_found do
-  'This is nowhere to be found.'
+before do
+  @note = 'Hi!'
+  request.path_info = '/foo/bar/baz'
+end
+
+get '/foo/*' do
+  @note #=&gt; 'Hi!'
+  params[:splat] #=&gt; 'bar/baz'
 end
 </PRE>
 
 <P>
 
-<H4><A NAME="SECTION06360020000000000000">
-error</A>
+<H4><A NAME="SECTION06350020000000000000">
+After Filters</A>
 </H4>
   
 
-The <code>error</code> handler is invoked any time an exception is raised from
-a route block or a filter. 
+<A NAME="20160"></A><SPAN  CLASS="textbf">After filters</SPAN> are evaluated after each request within the same
+context and can also modify the request and response. 
 
 <P>
-The exception object can be obtained
-from the <code>sinatra.error</code> Rack variable:
-
-<P>
-<PRE>
-error do
-  'Sorry there was a nasty error - ' + env['sinatra.error'].name
-end
-</PRE>
-Custom errors:
+Instance
+variables set in before filters and routes are accessible by after
+filters:
 
 <P>
 <PRE>
-error MyCustomError do
-  'So what happened was...' + env['sinatra.error'].message
+after do
+  puts response.status
 end
 </PRE>
-Then, if this happens:
+Note: Unless you use the <code>body</code> method rather than just returning a
+String from the routes, the body will not yet be available in the
+after filter, since it is generated later on.
 
 <P>
+
+<H4><A NAME="SECTION06350030000000000000">
+Filters can take a Pattern</A>
+</H4>
+  
+
+Filters optionally take a pattern, causing them to be evaluated
+only if the request path matches that pattern:
 <PRE>
-get '/' do
-  raise MyCustomError, 'something bad'
+before '/protected/*' do
+  authenticate!
+end
+
+after '/create/:slug' do |slug|
+  session[:last_slug] = slug
 end
 </PRE>
-You get this:
 
 <P>
-<PRE>
-So what happened was... something bad
-</PRE>
-Alternatively, you can install an error handler for a status code:
 
-<P>
+<H4><A NAME="SECTION06350040000000000000">
+Filters can take a Condition</A>
+</H4>
+  
+
+Like routes, filters also take conditions:
 <PRE>
-error 403 do
-  'Access forbidden'
+before :agent =&gt; /Songbird/ do
+  # ...
 end
 
-get '/secret' do
-  403
+after '/blog/*', :host_name =&gt; 'example.com' do
+  # ...
 end
 </PRE>
-Or a range:
-
-<P>
-<PRE>
-error 400..510 do
-  'Boom'
-end
-</PRE>
-Sinatra installs special <code>not_found</code> and <code>error</code> handlers 
-when running under the development environment to display nice stack
-traces and additional debugging information in your browser (esto es,
-en producción estos handlers son mucho mas "parcos").
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5218"
+<A NAME="tex2html5219"
   HREF="node145.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5212"
-  HREF="node138.html">
+<A NAME="tex2html5213"
+  HREF="node139.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5206"
+<A NAME="tex2html5207"
   HREF="node143.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5214"
-  HREF="node226.html">
+<A NAME="tex2html5215"
+  HREF="node227.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5216"
-  HREF="node229.html">
+<A NAME="tex2html5217"
+  HREF="node230.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -290,17 +288,17 @@ en producción estos handlers son mucho mas "parcos").
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5219"
-  HREF="node145.html">The methods body, status</A>
-<B>Sup:</B> <A NAME="tex2html5213"
-  HREF="node138.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5207"
-  HREF="node143.html">Filtros</A>
+<B> Sig:</B> <A NAME="tex2html5220"
+  HREF="node145.html">Manejo de Errores</A>
+<B>Sup:</B> <A NAME="tex2html5214"
+  HREF="node139.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html5208"
+  HREF="node143.html">Vistas</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-04-23</I>
+2014-04-24</I>
 </ADDRESS>
 </BODY>
 </HTML>

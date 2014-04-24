@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>halt</TITLE>
-<META NAME="description" CONTENT="halt">
+<TITLE>Uploads. Subida de Ficheros en Sinatra</TITLE>
+<META NAME="description" CONTENT="Uploads. Subida de Ficheros en Sinatra">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,7 +21,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node152.html">
 <LINK REL="previous" HREF="node150.html">
-<LINK REL="up" HREF="node138.html">
+<LINK REL="up" HREF="node139.html">
 <LINK REL="next" HREF="node152.html">
 </HEAD>
 
@@ -32,16 +32,16 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   HREF="node152.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
 <A NAME="tex2html5325"
-  HREF="node138.html">
+  HREF="node139.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
 <A NAME="tex2html5319"
   HREF="node150.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
 <A NAME="tex2html5327"
-  HREF="node226.html">
+  HREF="node227.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
 <A NAME="tex2html5329"
-  HREF="node229.html">
+  HREF="node230.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -93,65 +93,182 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  ALT="crguezl at github"></A>
 <BR>
 <B> Sig:</B> <A NAME="tex2html5332"
-  HREF="node152.html">Passing a Request</A>
+  HREF="node152.html">halt</A>
 <B>Sup:</B> <A NAME="tex2html5326"
-  HREF="node138.html">Fundamentos</A>
+  HREF="node139.html">Fundamentos</A>
 <B> Ant:</B> <A NAME="tex2html5320"
-  HREF="node150.html">Uploads. Subida de Ficheros</A>
+  HREF="node150.html">Downloads / Descargas /</A>
 <B> Con:</B> 
 <A NAME="tex2html5327"
-  HREF="node226.html">
+  HREF="node227.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
 <A NAME="tex2html5329"
-  HREF="node229.html">
+  HREF="node230.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<H1><A NAME="SECTION063130000000000000000">
-halt</A>
+<UL CLASS="ChildLinks">
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html5333"
+  HREF="node151.html#SECTION063120010000000000000">Véase</A>
+<LI><A NAME="tex2html5334"
+  HREF="node151.html#SECTION063120020000000000000">Jerarquía de ficheros</A>
+<LI><A NAME="tex2html5335"
+  HREF="node151.html#SECTION063120030000000000000">upload.haml</A>
+<LI><A NAME="tex2html5336"
+  HREF="node151.html#SECTION063120040000000000000">app.rb</A>
+<LI><A NAME="tex2html5337"
+  HREF="node151.html#SECTION063120050000000000000">BEWARE!</A>
+</UL></UL></UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION063120000000000000000">
+Uploads. Subida de Ficheros en Sinatra</A>
 </H1>
 
 <P>
-Sometimes we want to stop the program: maybe a critical error has ocurred.
-To immediately stop a request within a filter or route use:
+
+<H4><A NAME="SECTION063120010000000000000">
+Véase</A>
+</H4>
+  
+
+<OL>
+<LI><A NAME="tex2html684"
+  HREF="https://github.com/crguezl/sinatra-upload">El repositorio sinatra-upload en GitHub</A>
+con el código de este ejemplo
+</LI>
+<LI><A NAME="tex2html685"
+  HREF="http://www.wooptoot.com/file-upload-with-sinatra">FILE UPLOAD WITH SINATRA</A>
+BY PANDAFOX POSTED IN RUBY, TUTORIALS
+</LI>
+<LI><A NAME="tex2html686"
+  HREF="http://stackoverflow.com/questions/18860656/multiple-file-uploads-in-sinatra">Multiple file uploads in Sinatra</A>
+</LI>
+</OL>
+
+<P>
+
+<H4><A NAME="SECTION063120020000000000000">
+Jerarquía de ficheros</A>
+</H4>
+  
+
+<PRE>
+[~/sinatra/sinatra-upload]$ tree
+.
+|-- app.rb
+|-- uploads
+|   `--- README
+`--- views
+    `--- upload.haml
+
+2 directories, 3 files
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION063120030000000000000">
+upload.haml</A>
+</H4>
+  
+
+<P>
+The important part is not to forget to set the <code>enctype</code> 
+in your form element, otherwise you will just get the filename instead of an object:
 
 <P>
 <PRE>
-halt
+[~/sinatra/sinatra-upload(master)]$ cat views/upload.haml 
+%html
+  %body
+    %h1 File uploader!
+    %form(method="post" enctype='multipart/form-data')   
+      %input(type='file' name='myfile')    
+      %br
+      %input(type='submit' value='Upload!')
 </PRE>
-You can also specify the status when halting:
+
+<P>
+
+<H4><A NAME="SECTION063120040000000000000">
+app.rb</A>
+</H4>
+  
+
+<PRE>
+[~/sinatra/sinatra-upload(master)]$ cat app.rb 
+require 'rubygems'
+require 'sinatra'
+require 'haml'
+require 'pp'
+ 
+# Handle GET-request (Show the upload form)
+get "/upload?" do
+  haml :upload
+end      
+    
+# Handle POST-request (Receive and save the uploaded file)
+post "/upload" do 
+  pp params
+  File.open('uploads/' + params['myfile'][:filename], "w") do |f|
+    f.write(params['myfile'][:tempfile].read)
+  end
+  return "The file was successfully uploaded!"
+end
+[~/sinatra/sinatra-upload(master)]$
+</PRE>
+
+<P>
+As you can see, you don’t have to write much code to get this to
+work. The <code>params</code>-hash contains our uploaded element with data such
+as filename, type and the actual datafile, which can be accessed
+as a Tempfile-object. 
+
+<P>
+We read the contents from this file and store
+it into a directory called uploads, which you will have to create
+before running this script.
+
+<P>
+Here’s an example of what the <code>params</code>-hash may look like when uploading
+a picture of a cat:
 
 <P>
 <PRE>
-halt 410
+{
+  "myfile" =&gt; {
+    :type =&gt; "image/png",
+    :head =&gt;  "Content-Disposition: form-data;
+               name=\"myfile\";
+               filename=\"cat.png\"\r\n
+               Content-Type: image/png\r\n",
+    :name =&gt; "myfile",
+    :tempfile =&gt; #&lt;File:/var/folders/3n/3asd/-Tmp-/RackMultipart201-1476-nfw2-0&gt;,
+    :filename=&gt;"cat.png"
+  }
+}
 </PRE>
-Or the body:
 
 <P>
-<PRE>
-halt 'this will be the body'
-</PRE>
-Or both:
+<A NAME="tex2html687"
+  HREF="http://youtu.be/7tkQUTUxJWE">File upload with sinatra. YouTube</A>
+<P>
+
+<H4><A NAME="SECTION063120050000000000000">
+BEWARE!</A>
+</H4>
+  
 
 <P>
-<PRE>
-halt 401, 'go away!'
-</PRE>
-With headers:
-
-<P>
-<PRE>
-halt 402, {'Content-Type' =&gt; 'text/plain'}, 'revenge'
-</PRE>
-It is of course possible to combine a template with halt:
-
-<P>
-<PRE>
-halt erb(:error)
-</PRE>
+This script offers little to no security at all. Clients will be able to overwrite old images, fill up your harddrive and so on. So just use some common sense and do some Ruby magic to patch up the security holes yourself.
 
 <P>
 
@@ -160,16 +277,16 @@ halt erb(:error)
   HREF="node152.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
 <A NAME="tex2html5325"
-  HREF="node138.html">
+  HREF="node139.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
 <A NAME="tex2html5319"
   HREF="node150.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
 <A NAME="tex2html5327"
-  HREF="node226.html">
+  HREF="node227.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
 <A NAME="tex2html5329"
-  HREF="node229.html">
+  HREF="node230.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -221,16 +338,16 @@ halt erb(:error)
  ALT="crguezl at github"></A>
 <BR>
 <B> Sig:</B> <A NAME="tex2html5332"
-  HREF="node152.html">Passing a Request</A>
+  HREF="node152.html">halt</A>
 <B>Sup:</B> <A NAME="tex2html5326"
-  HREF="node138.html">Fundamentos</A>
+  HREF="node139.html">Fundamentos</A>
 <B> Ant:</B> <A NAME="tex2html5320"
-  HREF="node150.html">Uploads. Subida de Ficheros</A>
+  HREF="node150.html">Downloads / Descargas /</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-04-23</I>
+2014-04-24</I>
 </ADDRESS>
 </BODY>
 </HTML>
