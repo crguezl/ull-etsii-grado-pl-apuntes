@@ -173,37 +173,53 @@ Ejecución</A>
   
 
 <PRE>
+El trozo de código:
+\begin{verbatim}
+$parser-&gt;input(\"2*-3+b*0;--2\n");       # Set the input
+my $t = $parser-&gt;YYParse;
+</PRE>
+da lugar a este árbol:
+<PRE>
 [~/src/perl/parse-eyapp/examples/MatchingTrees]$ ./synopsis.pl 
 Syntax Tree:
 EXPRESSION_LIST(
   PLUS(
     TIMES(
-      NUM(
-        TERMINAL[2]
-      ),
-      UMINUS(
-        NUM(
-          TERMINAL[3]
-        )
-      ) # UMINUS
+      NUM( TERMINAL[2]),
+      UMINUS( NUM( TERMINAL[3])) # UMINUS
     ) # TIMES,
-    TIMES(
-      VAR(
-        TERMINAL[b]
-      ),
-      NUM(
-        TERMINAL[0]
-      )
-    ) # TIMES
+    TIMES( VAR( TERMINAL[b]), NUM( TERMINAL[0])) # TIMES
   ) # PLUS,
   UMINUS(
-    UMINUS(
-      NUM(
-        TERMINAL[2]
-      )
-    ) # UMINUS
+    UMINUS( NUM( TERMINAL[2])) # UMINUS
   ) # UMINUS
 ) # EXPRESSION_LIST
+</PRE>
+Al aplicar las transformaciones:
+<PRE>
+# Let us transform the tree. Define the tree-regular expressions ..
+my $p = Parse::Eyapp::Treeregexp-&gt;new( STRING =&gt; q{
+    { #  Example of support code
+      my %Op = (PLUS=&gt;'+', MINUS =&gt; '-', TIMES=&gt;'*', DIV =&gt; '/');
+    }
+    constantfold: /TIMES|PLUS|DIV|MINUS/:bin(NUM($x), NUM($y)) 
+      =&gt; { 
+        my $op = $Op{ref($bin)};
+        $x-&gt;{attr} = eval  "$x-&gt;{attr} $op $y-&gt;{attr}";
+        $_[0] = $NUM[0]; 
+      }
+    uminus: UMINUS(NUM($x)) =&gt; { $x-&gt;{attr} = -$x-&gt;{attr}; $_[0] = $NUM }
+    zero_times_whatever: TIMES(NUM($x), .) and { $x-&gt;{attr} == 0 } =&gt; { $_[0] = $NUM }
+    whatever_times_zero: TIMES(., NUM($x)) and { $x-&gt;{attr} == 0 } =&gt; { $_[0] = $NUM }
+  },
+  OUTPUTFILE=&gt; 'main.pm'
+);
+$p-&gt;generate(); # Create the tranformations
+
+$t-&gt;s($uminus); # Transform UMINUS nodes
+$t-&gt;s(@all);    # constant folding and mult. by zero
+</PRE>
+<PRE>
 Syntax Tree after transformations:
 EXPRESSION_LIST(NUM(TERMINAL[-6]),NUM(TERMINAL[2]))
 </PRE>
