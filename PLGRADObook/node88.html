@@ -28,19 +28,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3974"
+<A NAME="tex2html3976"
   HREF="node89.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3968"
+<A NAME="tex2html3970"
   HREF="node84.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3962"
+<A NAME="tex2html3964"
   HREF="node87.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3970"
+<A NAME="tex2html3972"
   HREF="node227.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3972"
+<A NAME="tex2html3974"
   HREF="node230.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -92,18 +92,18 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3975"
+<B> Sig:</B> <A NAME="tex2html3977"
   HREF="node89.html">Práctica: Transformaciones en Los</A>
-<B>Sup:</B> <A NAME="tex2html3969"
+<B>Sup:</B> <A NAME="tex2html3971"
   HREF="node84.html">Transformaciones Árbol</A>
-<B> Ant:</B> <A NAME="tex2html3963"
+<B> Ant:</B> <A NAME="tex2html3965"
   HREF="node87.html">Patrones Árbol y Transformaciones</A>
 <B> Con:</B> 
-<A NAME="tex2html3970"
+<A NAME="tex2html3972"
   HREF="node227.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3972"
+<A NAME="tex2html3974"
   HREF="node230.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
@@ -115,18 +115,20 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <UL CLASS="ChildLinks">
 <LI><UL>
 <LI><UL>
-<LI><A NAME="tex2html3976"
-  HREF="node88.html#SECTION04940010000000000000">Instalación</A>
-<LI><A NAME="tex2html3977"
-  HREF="node88.html#SECTION04940020000000000000">Donde</A>
 <LI><A NAME="tex2html3978"
-  HREF="node88.html#SECTION04940030000000000000">La gramática: Expresiones</A>
+  HREF="node88.html#SECTION04940010000000000000">Instalación</A>
 <LI><A NAME="tex2html3979"
-  HREF="node88.html#SECTION04940040000000000000">Ejecución</A>
+  HREF="node88.html#SECTION04940020000000000000">Donde</A>
 <LI><A NAME="tex2html3980"
-  HREF="node88.html#SECTION04940050000000000000">synopsis.pl</A>
+  HREF="node88.html#SECTION04940030000000000000">La gramática: Expresiones</A>
 <LI><A NAME="tex2html3981"
-  HREF="node88.html#SECTION04940060000000000000">Véase</A>
+  HREF="node88.html#SECTION04940040000000000000">Ejecución</A>
+<LI><A NAME="tex2html3982"
+  HREF="node88.html#SECTION04940050000000000000">synopsis.pl</A>
+<LI><A NAME="tex2html3983"
+  HREF="node88.html#SECTION04940060000000000000">El método <TT>s</TT></A>
+<LI><A NAME="tex2html3984"
+  HREF="node88.html#SECTION04940070000000000000">Véase</A>
 </UL></UL></UL>
 <!--End of Table of Child-Links-->
 <HR>
@@ -390,16 +392,56 @@ $t-&gt;s(@all);    # constant folding and mult. by zero
 local $Parse::Eyapp::Node::INDENT=0;
 print "\nSyntax Tree after transformations:\n",$t-&gt;str,"\n";
 </PRE>
+
+<P>
+
 <H4><A NAME="SECTION04940060000000000000">
+El método <TT>s</TT></A>
+</H4>
+  
+
+<P>
+El código de <code>s</code> está en 
+<A NAME="tex2html493"
+  HREF="https://github.com/gitpan/Parse-Eyapp/blob/master/lib/Parse/Eyapp/Node.pm">Node.pm</A>:
+<PRE>
+sub s {
+  my @patterns = @_[1..$#_];
+
+  # Make them Parse::Eyapp:YATW objects if they are CODE references
+  @patterns = map { ref($_) eq 'CODE'? 
+                      Parse::Eyapp::YATW-&gt;new(
+                        PATTERN =&gt; $_,
+                        #PATTERN_ARGS =&gt; [],
+                      )
+                      :
+                      $_
+                  } 
+                  @patterns;
+  my $changes; 
+  do { 
+    $changes = 0;
+    foreach (@patterns) {
+      $_-&gt;{CHANGES} = 0;
+      $_-&gt;s($_[0]);
+      $changes += $_-&gt;{CHANGES};
+    }
+  } while ($changes);
+}
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION04940070000000000000">
 Véase</A>
 </H4>
   
 
 <UL>
-<LI><A NAME="tex2html493"
+<LI><A NAME="tex2html494"
   HREF="http://search.cpan.org/~casiano/Parse-Eyapp-1.182/lib/Parse/Eyapp/eyapp">Parse::Eyapp</A>
 </LI>
-<LI><A NAME="tex2html494"
+<LI><A NAME="tex2html495"
   HREF="https://github.com/gitpan/Parse-Eyapp/blob/master/examples/MatchingTrees/synopsis.pl">Ejemplo de uso de Parse::Eyapp::Treeregexp</A>
 </LI>
 </UL>
@@ -407,19 +449,19 @@ Véase</A>
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3974"
+<A NAME="tex2html3976"
   HREF="node89.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3968"
+<A NAME="tex2html3970"
   HREF="node84.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3962"
+<A NAME="tex2html3964"
   HREF="node87.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3970"
+<A NAME="tex2html3972"
   HREF="node227.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3972"
+<A NAME="tex2html3974"
   HREF="node230.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -471,11 +513,11 @@ Véase</A>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3975"
+<B> Sig:</B> <A NAME="tex2html3977"
   HREF="node89.html">Práctica: Transformaciones en Los</A>
-<B>Sup:</B> <A NAME="tex2html3969"
+<B>Sup:</B> <A NAME="tex2html3971"
   HREF="node84.html">Transformaciones Árbol</A>
-<B> Ant:</B> <A NAME="tex2html3963"
+<B> Ant:</B> <A NAME="tex2html3965"
   HREF="node87.html">Patrones Árbol y Transformaciones</A>
 </DIV>
 <!--End of Navigation Panel-->
