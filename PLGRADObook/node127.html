@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Rack::URLMap</TITLE>
-<META NAME="description" CONTENT="Rack::URLMap">
+<TITLE>Rack::Mount</TITLE>
+<META NAME="description" CONTENT="Rack::Mount">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node128.html">
 <LINK REL="previous" HREF="node126.html">
-<LINK REL="up" HREF="node103.html">
+<LINK REL="up" HREF="node104.html">
 <LINK REL="next" HREF="node128.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4894"
+<A NAME="tex2html4899"
   HREF="node128.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4888"
-  HREF="node103.html">
+<A NAME="tex2html4893"
+  HREF="node104.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4882"
+<A NAME="tex2html4887"
   HREF="node126.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4890"
-  HREF="node227.html">
+<A NAME="tex2html4895"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4892"
-  HREF="node230.html">
+<A NAME="tex2html4897"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,136 +92,129 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4895"
-  HREF="node128.html">El método run de</A>
-<B>Sup:</B> <A NAME="tex2html4889"
-  HREF="node103.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4883"
-  HREF="node126.html">Rack::Mount</A>
+<B> Sig:</B> <A NAME="tex2html4900"
+  HREF="node128.html">Rack::URLMap</A>
+<B>Sup:</B> <A NAME="tex2html4894"
+  HREF="node104.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4888"
+  HREF="node126.html">Rack::Cascade</A>
 <B> Con:</B> 
-<A NAME="tex2html4890"
-  HREF="node227.html">
+<A NAME="tex2html4895"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4892"
-  HREF="node230.html">
+<A NAME="tex2html4897"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION061240000000000000000"></A>
-<BR>
-<A NAME="tex2html624"
-  HREF="http://rack.rubyforge.org/doc/Rack/URLMap.html">Rack::URLMap</A>
+<H1><A NAME="SECTION061230000000000000000">
+Rack::Mount</A>
 </H1>
 
 <P>
-<A NAME="tex2html625"
-  HREF="http://rack.rubyforge.org/doc/Rack/URLMap.html">Rack::URLMap</A> takes a hash mapping urls or paths to apps, and
-dispatches accordingly. Support for HTTP/1.1 host names exists if
-the URLs start with http:// or https://.
+
+<OL>
+<LI>A <A NAME="18970"></A><SPAN  CLASS="textbf">router</SPAN> is similar to a Rack middleware. 
 
 <P>
-<A NAME="tex2html626"
-  HREF="http://rack.rubyforge.org/doc/Rack/URLMap.html">Rack::URLMap</A> modifies the <code>SCRIPT_NAME</code> and 
-<code>PATH_INFO</code> such that the part
-relevant for dispatch is in the 
-<code>SCRIPT_NAME</code>, and the rest in the
-<code>PATH_INFO</code>. 
-This should be taken care of when you need to reconstruct
-the URL in order to create links.
+</LI>
+<LI>The main difference is
+that it doesn’t wrap a single Rack endpoint, but keeps a list of
+endpoints, just like <A NAME="tex2html620"
+  HREF="http://rack.rubyforge.org/doc/Rack/Cascade.html">Rack::Cascade</A> does. 
 
 <P>
-<A NAME="tex2html627"
-  HREF="http://rack.rubyforge.org/doc/Rack/URLMap.html">Rack::URLMap</A>  dispatches in such a way that the longest paths are
-tried first, since they are most specific.
+</LI>
+<LI>Depending on some criteria,
+usually the requested path, the router will then decide what endpoint
+to hand the request to. 
 
 <P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rack-urlmap(master)]$ cat config.ru 
-app1 = lambda { |e| [200, {}, ["one\n"]]}
-app2 = lambda { |e| [200, {}, ["two\n"]]}
-app3 = lambda { |e| [200, {}, ["one + two = three\n"]]}
-
-app = Rack::URLMap.new "/one" =&gt; app1, "/two" =&gt; app2, "/one/two" =&gt; app3
-
-run app
-</PRE>
+</LI>
+<LI>Most routers differ in the way they decide which endpoint to hand
+the request to. 
 
 <P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rack-urlmap(master)]$ cat Rakefile 
-desc "run the server"
-task :default do
-  sh "rackup"
-end
-
-desc "run the client with one"
-task :one do
-  sh %q{curl -v 'http://localhost:9292/one'}
-end
-
-desc "run the client with two"
-task :two do
-  sh %q{curl -v 'http://localhost:9292/two'}
-end
-
-desc "run the client with one/two"
-task :onetwo do
-  sh %q{curl -v 'http://localhost:9292/one/two'}
-end
-</PRE>
+</LI>
+<LI>All routers meant for general usage do offer routing
+based on the path, but how complex their path matching might be
+varies. 
 
 <P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rack-urlmap]$ rake
-rackup
-&gt;&gt; Thin web server (v1.5.1 codename Straight Razor)
-&gt;&gt; Maximum connections set to 1024
-&gt;&gt; Listening on 0.0.0.0:9292, CTRL+C to stop
-127.0.0.1 - - [17/Oct/2013 21:24:48] "GET /two HTTP/1.1" 200 - 0.0006
-</PRE>
+</LI>
+<LI>While <A NAME="tex2html621"
+  HREF="http://rack.rubyforge.org/doc/Rack/URLMap.html">Rack::URLMap</A> only matches prefixes, most other routers
+allow simple wildcard matching. 
+
+<P>
+</LI>
+<LI>Both <A NAME="tex2html622"
+  HREF="http://rack.rubyforge.org/doc/Rack/Mount.html">Rack::Mount</A>, which is used by
+Rails, and Sinatra allow arbitrary matching logic.
+
+<P>
+</LI>
+<LI>However, such flexibility comes at a price: <A NAME="tex2html623"
+  HREF="http://rack.rubyforge.org/doc/Rack/Mount.html">Rack::Mount</A> and Sinatra
+have a routing complexity of O(n), meaning that in the worst-case
+scenario an incoming request has to be matched against all the
+defined routes. 
+
+<P>
+</LI>
+<LI><A NAME="tex2html624"
+  HREF="http://rack.rubyforge.org/doc/Rack/Mount.html">Rack::Mount</A> is known to produce fast routing, however its API is
+not meant to be used directly but rather by other libraries, like
+the Rails routes DSL. 
+
+<P>
+</LI>
+</OL>
 
 <P>
 <PRE>
-[~/local/src/ruby/sinatra/rack/rack-urlmap(master)]$ rake onetwo
-curl -v 'http://localhost:9292/one/two'
-* About to connect() to localhost port 9292 (#0)
-*   Trying ::1... Connection refused
-*   Trying 127.0.0.1... connected
-* Connected to localhost (127.0.0.1) port 9292 (#0)
-&gt; GET /one/two HTTP/1.1
-&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8y zlib/1.2.5
-&gt; Host: localhost:9292
-&gt; Accept: */*
-&gt; 
-&lt; HTTP/1.1 200 OK
-&lt; Transfer-Encoding: chunked
-&lt; Connection: close
-&lt; Server: thin 1.5.1 codename Straight Razor
-&lt; 
-one + two = three
-* Closing connection #0
+[~/local/src/ruby/sinatra/rack/rack-mount]$ cat config.ru 
+require 'sinatra/base'
+require 'rack/mount'
+
+class Foo &lt; Sinatra::Base
+  get('/foo') { 'foo' }
+  get('/fou') { 'fou' }
+end
+
+class Bar &lt; Sinatra::Base
+  get('/bar') { 'bar' }
+  get('/ba')  { 'ba' }
+end
+
+Routes = Rack::Mount::RouteSet.new do |set|
+  set.add_route Foo, :path_info =&gt; %r{^/fo[ou]$}
+  set.add_route Bar, :path_info =&gt; %r{^/bar?$}
+end
+
+run Routes
 </PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4894"
+<A NAME="tex2html4899"
   HREF="node128.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4888"
-  HREF="node103.html">
+<A NAME="tex2html4893"
+  HREF="node104.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4882"
+<A NAME="tex2html4887"
   HREF="node126.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4890"
-  HREF="node227.html">
+<A NAME="tex2html4895"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4892"
-  HREF="node230.html">
+<A NAME="tex2html4897"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -272,17 +265,17 @@ one + two = three
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4895"
-  HREF="node128.html">El método run de</A>
-<B>Sup:</B> <A NAME="tex2html4889"
-  HREF="node103.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4883"
-  HREF="node126.html">Rack::Mount</A>
+<B> Sig:</B> <A NAME="tex2html4900"
+  HREF="node128.html">Rack::URLMap</A>
+<B>Sup:</B> <A NAME="tex2html4894"
+  HREF="node104.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4888"
+  HREF="node126.html">Rack::Cascade</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-04-25</I>
+2014-04-26</I>
 </ADDRESS>
 </BODY>
 </HTML>

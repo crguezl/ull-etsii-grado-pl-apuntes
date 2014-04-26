@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Introducción al Patrón DataMapper</TITLE>
-<META NAME="description" CONTENT="Introducción al Patrón DataMapper">
+<TITLE>Introducción a Los Object Relational Mappers (ORM)</TITLE>
+<META NAME="description" CONTENT="Introducción a Los Object Relational Mappers (ORM)">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node183.html">
 <LINK REL="previous" HREF="node181.html">
-<LINK REL="up" HREF="node180.html">
+<LINK REL="up" HREF="node181.html">
 <LINK REL="next" HREF="node183.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5836"
+<A NAME="tex2html5841"
   HREF="node183.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5830"
-  HREF="node180.html">
+<A NAME="tex2html5835"
+  HREF="node181.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5824"
+<A NAME="tex2html5829"
   HREF="node181.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5832"
-  HREF="node227.html">
+<A NAME="tex2html5837"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5834"
-  HREF="node230.html">
+<A NAME="tex2html5839"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,112 +92,100 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5837"
-  HREF="node183.html">Ejemplo de Uso de</A>
-<B>Sup:</B> <A NAME="tex2html5831"
-  HREF="node180.html">DataMapper y Sinatra</A>
-<B> Ant:</B> <A NAME="tex2html5825"
-  HREF="node181.html">Introducción a Los Object</A>
+<B> Sig:</B> <A NAME="tex2html5842"
+  HREF="node183.html">Introducción al Patrón DataMapper</A>
+<B>Sup:</B> <A NAME="tex2html5836"
+  HREF="node181.html">DataMapper y Sinatra</A>
+<B> Ant:</B> <A NAME="tex2html5830"
+  HREF="node181.html">DataMapper y Sinatra</A>
 <B> Con:</B> 
-<A NAME="tex2html5832"
-  HREF="node227.html">
+<A NAME="tex2html5837"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5834"
-  HREF="node230.html">
+<A NAME="tex2html5839"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION06920000000000000000">
-Introducción al Patrón DataMapper</A>
+<H1><A NAME="SECTION06910000000000000000">
+Introducción a Los Object Relational Mappers (ORM)</A>
 </H1>
-Martin Fowler 
-(<A NAME="tex2html741"
-  HREF="http://martinfowler.com/eaaCatalog/index.html">Catalog of Patterns of Enterprise Application Architecture</A>):
 
 <P>
+What is a Object Relational Mapper?
+
+<P>
+A simple answer is that you wrap your tables or stored procedures
+in classes in your programming language, so that instead of writing
+SQL statements to interact with your database, you use methods and
+properties of objects.
+
+<P>
+In other words, instead of something like this:
+
+<P>
+<PRE>
+  String sql = "SELECT ... FROM persons WHERE id = 10"
+  DbCommand cmd = new DbCommand(connection, sql);
+  Result res = cmd.Execute();
+  String name = res[0]["FIRST_NAME"];
+</PRE>
+you do something like this:
+
+<P>
+<PRE>
+  Person p = Person.Get(10);
+</PRE>
+
+<P>
+or similar code (lots of variations here). 
+The framework is what makes this code possible.
+
+<P>
+Now, benefits:
+
+<P>
+
 <OL>
-<LI>Objects and relational databases have different mechanisms for structuring
-data. 
+<LI>First of all, you hide the SQL away from your logic
+code
 </LI>
-<LI>Many parts of an object, such as collections and inheritance,
-aren't present in relational databases. 
+<LI>This has the benefit of allowing you to more easily support
+more database engines 
 </LI>
-<LI>When you build an
-object model with a lot of business logic it's valuable to use these
-mechanisms (creo que se refiere a la herencia, etc.) 
-to better organize the data and the behavior that goes with
-it. 
+<LI>For instance, MS SQL Server and Oracle have
+different names on typical functions, and different ways to do
+calculations with dates.
+This difference can be put away from your
+logic code.
 </LI>
-<LI>Doing so leads to variant schemas; that is, the object
-schema and the relational schema don't match up.
+<LI>Additionally, you can focus on writing the logic, instead of getting all the SQL right.
 </LI>
-<LI>You still need to transfer data between the two schemas, and this data
-transfer becomes a complexity in its own right. 
-</LI>
-<LI>If the in-memory objects
-know about the relational database structure, changes in
-one tend to ripple to the other.
-</LI>
-<LI>The <A NAME="21731"></A><SPAN  CLASS="textbf">Data Mapper</SPAN> is a layer of software that separates the in-memory
-objects from the database. 
-</LI>
-<LI><SPAN  CLASS="textbf">Its responsibility is to transfer data between
-the two and also to isolate them from each other</SPAN>
-</LI>
-<LI>With
-Data Mapper the in-memory objects needn't know even that there's a
-database present; they need no SQL interface code, and certainly no
-knowledge of the database schema. 
-</LI>
-<LI>(The database schema is always
-ignorant of the objects that use it.) 
+<LI>The code will typically be more readable as well, since it doesn't
+contain all the plumbing necessary to talk to the database.
 </LI>
 </OL>
 
 <P>
 
-<UL>
-<LI><A NAME="tex2html742"
-  HREF="http://en.wikipedia.org/wiki/Data_mapper_pattern">DataMapper en la Wikipedia</A>
-</LI>
-<LI><A NAME="tex2html743"
-  HREF="http://martinfowler.com/eaaCatalog/dataMapper.html">Martin Fowler: DataMapper</A>
-</LI>
-<LI><A NAME="tex2html744"
-  HREF="https://github.com/crguezl/sinatra-datamapper-sample">Proyecto sinatra-datamapper-sample</A>
-en GitHub
-</LI>
-<LI>Documentación de <A NAME="tex2html745"
-  HREF="http://datamapper.org/docs/">DataMapper</A>
-</LI>
-<LI><A NAME="tex2html746"
-  HREF="http://recipes.sinatrarb.com/p/models/data_mapper">Sinatra Recipes: DataMapper</A>
-</LI>
-<LI><A NAME="tex2html747"
-  HREF="http://sinatra-book.gittr.com/#datamapper">Sinatra Book: DataMapper</A>
-</LI>
-</UL>
-
-<P>
-
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5836"
+<A NAME="tex2html5841"
   HREF="node183.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5830"
-  HREF="node180.html">
+<A NAME="tex2html5835"
+  HREF="node181.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5824"
+<A NAME="tex2html5829"
   HREF="node181.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5832"
-  HREF="node227.html">
+<A NAME="tex2html5837"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5834"
-  HREF="node230.html">
+<A NAME="tex2html5839"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -248,17 +236,17 @@ en GitHub
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5837"
-  HREF="node183.html">Ejemplo de Uso de</A>
-<B>Sup:</B> <A NAME="tex2html5831"
-  HREF="node180.html">DataMapper y Sinatra</A>
-<B> Ant:</B> <A NAME="tex2html5825"
-  HREF="node181.html">Introducción a Los Object</A>
+<B> Sig:</B> <A NAME="tex2html5842"
+  HREF="node183.html">Introducción al Patrón DataMapper</A>
+<B>Sup:</B> <A NAME="tex2html5836"
+  HREF="node181.html">DataMapper y Sinatra</A>
+<B> Ant:</B> <A NAME="tex2html5830"
+  HREF="node181.html">DataMapper y Sinatra</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-04-25</I>
+2014-04-26</I>
 </ADDRESS>
 </BODY>
 </HTML>

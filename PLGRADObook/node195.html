@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Heroku Postgress</TITLE>
-<META NAME="description" CONTENT="Heroku Postgress">
+<TITLE>Logging</TITLE>
+<META NAME="description" CONTENT="Logging">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node196.html">
 <LINK REL="previous" HREF="node194.html">
-<LINK REL="up" HREF="node192.html">
+<LINK REL="up" HREF="node193.html">
 <LINK REL="next" HREF="node196.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html6146"
+<A NAME="tex2html6144"
   HREF="node196.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html6140"
-  HREF="node192.html">
+<A NAME="tex2html6138"
+  HREF="node193.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html6134"
+<A NAME="tex2html6132"
   HREF="node194.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html6142"
-  HREF="node227.html">
+<A NAME="tex2html6140"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html6144"
-  HREF="node230.html">
+<A NAME="tex2html6142"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,19 +92,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html6147"
-  HREF="node196.html">Troubleshooting</A>
-<B>Sup:</B> <A NAME="tex2html6141"
-  HREF="node192.html">Heroku</A>
-<B> Ant:</B> <A NAME="tex2html6135"
-  HREF="node194.html">Logging</A>
+<B> Sig:</B> <A NAME="tex2html6145"
+  HREF="node196.html">Heroku Postgress</A>
+<B>Sup:</B> <A NAME="tex2html6139"
+  HREF="node193.html">Heroku</A>
+<B> Ant:</B> <A NAME="tex2html6133"
+  HREF="node194.html">Introducción</A>
 <B> Con:</B> 
-<A NAME="tex2html6142"
-  HREF="node227.html">
+<A NAME="tex2html6140"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html6144"
-  HREF="node230.html">
+<A NAME="tex2html6142"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
@@ -115,369 +115,310 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <UL CLASS="ChildLinks">
 <LI><UL>
 <LI><UL>
+<LI><A NAME="tex2html6146"
+  HREF="node195.html#SECTION07120010000000000000">Writing to your log</A>
+<LI><A NAME="tex2html6147"
+  HREF="node195.html#SECTION07120020000000000000">To fetch your logs</A>
 <LI><A NAME="tex2html6148"
-  HREF="node195.html#SECTION07130010000000000000">Provisioning the add-on</A>
+  HREF="node195.html#SECTION07120030000000000000">Log message ordering</A>
 <LI><A NAME="tex2html6149"
-  HREF="node195.html#SECTION07130020000000000000">Create new db</A>
+  HREF="node195.html#SECTION07120040000000000000">Log history limits</A>
 <LI><A NAME="tex2html6150"
-  HREF="node195.html#SECTION07130030000000000000">Establish primary DB</A>
+  HREF="node195.html#SECTION07120050000000000000">Log format</A>
 <LI><A NAME="tex2html6151"
-  HREF="node195.html#SECTION07130040000000000000">pg:info</A>
+  HREF="node195.html#SECTION07120060000000000000">Realtime tail</A>
 <LI><A NAME="tex2html6152"
-  HREF="node195.html#SECTION07130050000000000000">pg:psql</A>
-<LI><A NAME="tex2html6153"
-  HREF="node195.html#SECTION07130060000000000000">pg:reset</A>
-<LI><A NAME="tex2html6154"
-  HREF="node195.html#SECTION07130070000000000000">pg:pull</A>
-<LI><A NAME="tex2html6155"
-  HREF="node195.html#SECTION07130080000000000000">pg:push</A>
+  HREF="node195.html#SECTION07120070000000000000">Filtering</A>
 </UL></UL></UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION07130000000000000000">
-Heroku Postgress</A>
+<H1><A NAME="SECTION07120000000000000000">
+Logging</A>
 </H1>
+Heroku aggregates three categories of logs for your app:
+
+<OL>
+<LI>App logs - Output from your application. 
 
 <P>
-Véase <A NAME="tex2html778"
-  HREF="https://devcenter.heroku.com/articles/heroku-postgresql">Heroku Postgress</A>.
+This will include logs
+generated from 
+
+<OL>
+<LI>within your application, 
+</LI>
+<LI>application server and
+</LI>
+<LI>libraries. 
+</LI>
+</OL>
+(Filter: <code>--source app</code>)
+</LI>
+<LI>System logs - 
 
 <P>
-Heroku Postgres is the SQL database service run by Heroku that is
-provisioned and managed as an add-on. 
+Messages about actions taken by the Heroku platform
+infrastructure on behalf of your app, such as: 
+
+<OL>
+<LI>restarting a crashed process, 
+</LI>
+<LI>sleeping or waking a 
+<FONT COLOR="#ff0000"> web dyno</FONT>, or 
+</LI>
+<LI>serving an error page
+due to a problem in your app. 
+</LI>
+</OL>
+(Filter: <code>--source heroku</code>)
+</LI>
+<LI>API logs - 
 
 <P>
-Heroku Postgres is accessible
-from any language with a PostgreSQL driver including all languages
-and frameworks supported by Heroku: Java, Ruby, Python, Scala, Play,
-Node.js and Clojure.
-
-<P>
-<PRE>
-[~/srcPLgrado/pegjscalc(master)]$ heroku addons
-=== pegjspl0 Configured Add-ons
-heroku-postgresql:hobby-dev  HEROKU_POSTGRESQL_BROWN
-</PRE>
-
-<P>
-In addition to a variety of management commands available via the Heroku
-CLI, Heroku Postgres features a 
-<A NAME="tex2html779"
-  HREF="https://postgres.heroku.com/databases">web dashboard</A>, 
-the ability to create
-<A NAME="tex2html780"
-  HREF="https://postgres.heroku.com/blog/past/2012/1/31/simple_data_sharing_with_data_clips/">dataclips </A>
-and several additional services on top of a fully managed
-database service.
+Messages about administrative actions taken by you and
+other developers working on your app, such as: 
 
 <P>
 
-<img src="herokudatabases.png" />
-
-<P>
-
-<H4><A NAME="SECTION07130010000000000000">
-Provisioning the add-on</A>
-</H4>
-  
-
-Many 
-<A NAME="tex2html782"
-  HREF="https://devcenter.heroku.com/articles/buildpacks">buildpacks </A>
-(what compiles your application into a runnable entity on
-Heroku) automatically provision a 
-<FONT COLOR="#ff0000"> Heroku Postgres instance for you</FONT>. 
-
-<P>
-Your
-language’s buildpack documentation will specify if any add-ons are
-automatically provisioned. 
-
-<P>
-Additionally, you can use <code>heroku addons</code> 
-to
-see if your application already has a database provisioned and what plan
-it is<A NAME="tex2html781"
-  HREF="footnode.html#foot22359"><SUP><SPAN CLASS="arabic">30</SPAN>.<SPAN CLASS="arabic">2</SPAN></SUP></A>.
+<OL>
+<LI>deploying new code,
+</LI>
+<LI>scaling the process formation, or 
+</LI>
+<LI>toggling maintenance mode. 
+</LI>
+</OL>
+(Filter: <code>--source heroku --ps api</code>)
 
 <P>
 <PRE>
-[~/srcPLgrado/pegjscalc(master)]$ heroku addons
-=== pegjspl0 Configured Add-ons
-heroku-postgresql:hobby-dev  HEROKU_POSTGRESQL_BROWN
+[~/rack/rack-rock-paper-scissors(master)]$ heroku logs --source heroku --ps api
+2013-10-23T21:33:41.105090+00:00 heroku[api]: Deploy 5ec1351 by chuchu.chachi.leon@gmail.com
+2013-10-23T21:33:41.154690+00:00 heroku[api]: Release v7 created by chuchu.chachi.leon@gmail.com
 </PRE>
+</LI>
+</OL>
 
 <P>
-If your application doesn’t yet have a database provisioned, or you
-wish to 
-<A NAME="tex2html783"
-  HREF="https://devcenter.heroku.com/articles/upgrade-heroku-postgres-with-pgbackups">upgrade your existing database</A>
-or 
-<A NAME="tex2html784"
-  HREF="https://devcenter.heroku.com/articles/heroku-postgres-follower-databases">create a master/slave setup,</A>
-you can create a new database using the CLI.
+Logplex is designed for collating and routing log messages, not for
+storage. It keeps the last 1,500 lines of consolidated logs. 
 
 <P>
-
-<H4><A NAME="SECTION07130020000000000000">
-Create new db</A>
-</H4>
-  
-
-Heroku Postgres can be attached to a Heroku application via the 
-CLI<A NAME="tex2html785"
-  HREF="footnode.html#foot22367"><SUP><SPAN CLASS="arabic">30</SPAN>.<SPAN CLASS="arabic">3</SPAN></SUP></A>:
-<PRE>
-$ heroku addons:add heroku-postgresql:dev
-Adding heroku-postgresql:dev to sushi... done, v69 (free)
-Attached as HEROKU_POSTGRESQL_RED
-Database has been created and is available
-</PRE>
-
-<P>
-Once Heroku Postgres has been added a <code>HEROKU_POSTGRESQL_COLOR_URL</code> 
-setting
-will be available in the app configuration and will contain the URL
-used to access the newly provisioned Heroku Postgres service. 
-
-<P>
-This can
-be confirmed using the <code>heroku config</code> command.
-<PRE>
-[~/srcPLgrado/pegjscalc(master)]$ heroku config
-=== pegjspl0 Config Vars
-DATABASE_URL:                postgres://moiwgreelvvujc:GL3shXGOpURyWOPrS2G8qaxzUe@ec2-23-21-101-129.compute-1.amazonaws.com:5432/dat9smslrg6g0a
-HEROKU_POSTGRESQL_BROWN_URL: postgres://moiwgreelvvujc:GL3shXGOpURyWOPrS2G8qaxzUe@ec2-23-21-101-129.compute-1.amazonaws.com:5432/dat9smslrg6g0a
-LANG:                        en_US.UTF-8
-PGBACKUPS_URL:               https://453643:cqz59jrxbbfcxj0fanhjfg0vz@pgbackups.herokuapp.com/client
-RACK_ENV:                    production
-</PRE>
+Heroku recommends using a separate service for long-term log storage; see
+Syslog drains for more information.
 
 <P>
 
-<H4><A NAME="SECTION07130030000000000000">
-Establish primary DB</A>
+<H4><A NAME="SECTION07120010000000000000">
+Writing to your log</A>
 </H4>
   
 
 <P>
-Heroku recommends using the <code>DATABASE_URL</code> config var to store
-the location
-of your primary database. 
+Anything written to standard out (stdout) or standard error (stderr)
+is captured into your logs. This means that you can log from anywhere
+in your application code with a simple output statement:
 <PRE>
-[~/srcPLgrado/pegjscalc(master)]$ head main.rb 
-require 'sinatra'
-require "sinatra/reloader" if development?
-require 'sinatra/flash'
-require 'data_mapper'
-require 'pp'
-
-# full path!
-DataMapper.setup(:default, 
-                 ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/database.db" )
+puts "Hello, logs!"
 </PRE>
-
-<P>
-In single-database setups your new database
-will have already been assigned a <code>HEROKU_POSTGRESQL_COLOR_URL</code>
-config with
-the accompanying <code>DATABASE_URL</code>. 
-
-<P>
-You may verify this via heroku config and
-verifying the value of both <code>HEROKU_POSTGRESQL_COLOR_URL</code> 
-and <code>DATABASE_URL</code>
-which should match.
+To take advantage of the realtime logging, you may need to disable
+any log buffering your application may be carrying out. For example,
+in Ruby add this to your config.ru:
+<PRE>
+$stdout.sync = true
+</PRE>
+Some frameworks send log output somewhere other than stdout by
+default. 
 
 <P>
 
-<H4><A NAME="SECTION07130040000000000000">
-pg:info</A>
+<H4><A NAME="SECTION07120020000000000000">
+To fetch your logs</A>
+</H4>
+  
+
+<PRE>
+$ heroku logs
+2010-09-16T15:13:46.677020+00:00 app[web.1]: Processing PostController#list (for 208.39.138.12 at 2010-09-16 15:13:46) [GET]
+2010-09-16T15:13:46.677023+00:00 app[web.1]: Rendering template within layouts/application
+2010-09-16T15:13:46.677902+00:00 app[web.1]: Rendering post/list
+2010-09-16T15:13:46.678990+00:00 app[web.1]: Rendered includes/_header (0.1ms)
+2010-09-16T15:13:46.698234+00:00 app[web.1]: Completed in 74ms (View: 31, DB: 40) | 200 OK [http://myapp.heroku.com/]
+2010-09-16T15:13:46.723498+00:00 heroku[router]: at=info method=GET path=/posts host=myapp.herokuapp.com fwd="204.204.204.204" dyno=web.1 connect=1ms service=18ms status=200 bytes=975
+2010-09-16T15:13:47.893472+00:00 app[worker.1]: 2 jobs processed at 16.6761 j/s, 0 failed ...
+</PRE>
+In this example, the output includes log lines from one of the app’s
+
+<FONT COLOR="#ff0000"> web dyno</FONT>s, the Heroku HTTP router, and one of the app’s workers.
+
+<P>
+The logs command retrieves 100 log lines by default.
+
+<P>
+
+<H4><A NAME="SECTION07120030000000000000">
+Log message ordering</A>
 </H4>
   
 
 <P>
-To see all PostgreSQL databases provisioned by your application and the
-identifying characteristics of each 
-(db size, status, number of tables, PG version, creation date etc…) 
-use the <code>heroku pg:info</code> command.
+When retrieving logs, you may notice that the logs are not always
+in order, especially when multiple components are involved. 
 
 <P>
-<PRE>
-[~/srcPLgrado/pegjscalc(master)]$ heroku pg:info
-=== HEROKU_POSTGRESQL_BROWN_URL (DATABASE_URL)
-Plan:        Hobby-dev
-Status:      available
-Connections: 0
-PG Version:  9.3.3
-Created:     2014-03-20 23:33 UTC
-Data Size:   6.5 MB
-Tables:      1
-Rows:        4/10000 (In compliance)
-Fork/Follow: Unsupported
-Rollback:    Unsupported
-</PRE>
+This
+is likely an artifact of distributed computing. 
 
 <P>
-To continuously monitor the status of your database, pass pg:info through the unix watch command:
-<PRE>
-[~/srcPLgrado/pegjscalc(master)]$ watch heroku pg:info
--bash: watch: no se encontró la orden
-[~/srcPLgrado/pegjscalc(master)]$ brew install watch
-[~/srcPLgrado/pegjscalc(master)]$ watch heroku pg:info
-...
-</PRE>
+Logs originate from
+many sources (router nodes, dynos, etc) and are assembled into a
+single log stream by logplex. 
+
+<P>
+It is up to the logplex user to sort
+the logs and provide the ordering required by their application,
+if any
 
 <P>
 
-<H4><A NAME="SECTION07130050000000000000">
-pg:psql</A>
+<H4><A NAME="SECTION07120040000000000000">
+Log history limits</A>
 </H4>
   
 
-<code>psql</code> is the native PostgreSQL interactive terminal and is used to execute queries and issue commands to the connected database.
-
 <P>
-To establish a <code>psql</code> session 
-with your remote database use <code>heroku pg:psql</code>.
-You must have PostgreSQL installed on your system to use heroku <code>pg:psql</code>.
-
-<P>
+You can fetch up to 1500 lines using the -num (or -n) option:
 <PRE>
-[~/srcPLgrado/pegjscalc(master)]$ heroku pg:psql
----&gt; Connecting to HEROKU_POSTGRESQL_BROWN_URL (DATABASE_URL)
-psql (9.2.6, server 9.3.3)
-WARNING: psql version 9.2, server version 9.3.
-         Some psql features might not work.
-SSL connection (cipher: DHE-RSA-AES256-SHA, bits: 256)
-Type "help" for help.
-
-pegjspl0::BROWN=&gt; \dt
-               List of relations
- Schema |     Name     | Type  |     Owner      
---------+--------------+-------+----------------
- public | pl0_programs | table | moiwgreelvvujc
-(1 row)
-
-pegjspl0::BROWN=&gt; 
-pegjspl0::BROWN=&gt; SELECT * FROM pl0_programs;
-  name  |           source            
---------+-----------------------------
- 3m2m1  |                     3-2-1\r+
-        |           
- ap1tb  | a+1*b\r                    +
-        |           
- test   |                     a+1*b\r+
-        |           \r               +
-        |           
- lolwut |                     3-2-1\r+
-        |           
-(4 rows)
+$ heroku logs -n 200
 </PRE>
-
-<P>
-If you have more than one database, specify the database to connect to as
-the first argument to the command (the database located at <code>DATABASE_URL</code>
-is used by default).
-<PRE>
-$ heroku pg:psql HEROKU_POSTGRESQL_GRAY
-Connecting to HEROKU_POSTGRESQL_GRAY... done
-...
-</PRE>
+Heroku only stores the last 1500 lines of log history. If you’d
+like to persist more than 1500 lines, use a logging add-on or create
+your own syslog drain<A NAME="tex2html778"
+  HREF="footnode.html#foot22334"><SUP><SPAN CLASS="arabic">30</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A>.
 
 <P>
 
-<H4><A NAME="SECTION07130060000000000000">
-pg:reset</A>
+<H4><A NAME="SECTION07120050000000000000">
+Log format</A>
 </H4>
   
 
- To drop and recreate your database use <code>pg:reset</code>:
+<P>
+Each line is formatted as follows:
+
+<OL>
+<LI>timestamp source[dyno]: message
+</LI>
+<LI>Timestamp - The date and time recorded at the time the log line was produced by the dyno or component. The timestamp is in the format specified by RFC5424, and includes microsecond precision.
+</LI>
+<LI>Source - 
+  
+<OL>
+<LI>All of your app’s dynos (
+<FONT COLOR="#ff0000"> web dyno</FONT>s, background workers, cron) have a source of app. 
+</LI>
+<LI>All of Heroku’s system components (HTTP router, dyno manager) have a source of heroku.
+  
+</LI>
+</OL>
+</LI>
+<LI>Dyno - The name of the dyno or component that wrote this log line.
+For example, <code>worker #3</code> appears as <code>worker.3</code>, and the Heroku HTTP
+router appears as router.
+</LI>
+<LI>Message - The content of the log line. Dynos can generate messages
+up to approximately 1024 bytes in length and longer messages will
+be truncated. 
+</LI>
+</OL>
 
 <P>
-<PRE>
-[~/srcPLgrado/pegjscalc(master)]$ heroku pg:reset DATABASE
 
- !    WARNING: Destructive Action
- !    This command will affect the app: pegjspl0
- !    To proceed, type "pegjspl0" or re-run this command with --confirm pegjspl0
-
-&gt; pegjspl0
-Resetting HEROKU_POSTGRESQL_BROWN_URL (DATABASE_URL)... done
-</PRE>
-Es necesario a continuación rearrancar el servidor:
-<PRE>
-[~/srcPLgrado/pegjscalc(master)]$ heroku ps:restart
-Restarting dynos... done
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION07130070000000000000">
-pg:pull</A>
+<H4><A NAME="SECTION07120060000000000000">
+Realtime tail</A>
 </H4>
   
 
-<code>pg:pull</code> can be used to pull remote data from a Heroku Postgres
-database to a database on your local machine. The command looks like this:
+<P>
+
+<OL>
+<LI>Similar to <code>tail -f</code>, realtime tail displays recent logs and leaves
+the session open for realtime logs to stream in. 
+</LI>
+<LI>By viewing a live
+stream of logs from your app, you can gain insight into the behavior
+of your live application and debug current problems.
+</LI>
+<LI>You may tail your logs using <code>--tail</code> (or <code>-t</code>).
 <PRE>
-[~/srcPLgrado/pegjscalc(master)]$ pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
-server starting
+$ heroku logs --tail
 </PRE>
-
-<P>
-<PRE>
-$ heroku pg:pull HEROKU_POSTGRESQL_MAGENTA mylocaldb --app sushi
-</PRE>
-This command will create a new local database named <code>mylocaldb</code> and
-then pull data from database at <code>DATABASE_URL</code> from the app 
-<code>sushi</code>. 
-
-<P>
-In
-order to prevent accidental data overwrites and loss, the local database
-must not exist. You will be prompted to drop an already existing local
-database before proceeding.
+When you are done, press Ctrl-C to close the session.
+</LI>
+</OL>
 
 <P>
 
-<H4><A NAME="SECTION07130080000000000000">
-pg:push</A>
+<H4><A NAME="SECTION07120070000000000000">
+Filtering</A>
 </H4>
   
 
-Like pull but in reverse, <code>pg:push</code> will push data from a local
-database into a remote Heroku Postgres database. The command looks
-like this:
+<P>
+If you only want to fetch logs with a certain source, a certain
+dyno, or both, you can use the <code>--source</code> (or <code>-s</code>) and
+<code>--ps</code> (or <code>-p</code>) filtering arguments:
 <PRE>
-$ heroku pg:push mylocaldb HEROKU_POSTGRESQL_MAGENTA --app sushi
+$ heroku logs --ps router
+2012-02-07T09:43:06.123456+00:00 heroku[router]: at=info method=GET path=/stylesheets/dev-center/library.css host=devcenter.heroku.com fwd="204.204.204.204" dyno=web.5 connect=1ms service=18ms status=200 bytes=13
+2012-02-07T09:43:06.123456+00:00 heroku[router]: at=info method=GET path=/articles/bundler host=devcenter.heroku.com fwd="204.204.204.204" dyno=web.6 connect=1ms service=18ms status=200 bytes=20375
 </PRE>
-This command will take the local database <code>mylocaldb</code> 
-and push it
-to the database at <code>DATABASE_URL</code> on the app <code>sushi</code>. 
-In order to
-prevent accidental data overwrites and loss, the remote database must
-be empty. You will be prompted to <code>pg:reset</code> an already a remote database
-that is not empty.
+
+<P>
+<PRE>
+$ heroku logs --source app
+2012-02-07T09:45:47.123456+00:00 app[web.1]: Rendered shared/_search.html.erb (1.0ms)
+2012-02-07T09:45:47.123456+00:00 app[web.1]: Completed 200 OK in 83ms (Views: 48.7ms | ActiveRecord: 32.2ms)
+2012-02-07T09:45:47.123456+00:00 app[worker.1]: [Worker(host:465cf64e-61c8-46d3-b480-362bfd4ecff9 pid:1)] 1 jobs processed at 23.0330 j/s, 0 failed ...
+2012-02-07T09:46:01.123456+00:00 app[web.6]: Started GET "/articles/buildpacks" for 4.1.81.209 at 2012-02-07 09:46:01 +0000
+</PRE>
+
+<P>
+<PRE>
+$ heroku logs --source app --ps worker
+2012-02-07T09:47:59.123456+00:00 app[worker.1]: [Worker(host:260cf64e-61c8-46d3-b480-362bfd4ecff9 pid:1)] Article#record_view_without_delay completed after 0.0221
+2012-02-07T09:47:59.123456+00:00 app[worker.1]: [Worker(host:260cf64e-61c8-46d3-b480-362bfd4ecff9 pid:1)] 5 jobs processed at 31.6842 j/s, 0 failed ...
+</PRE>
+
+<P>
+When filtering by dyno, either the base name, <code>--ps web</code>, or the full
+name, <code>--ps web.1</code>, may be used.
+
+<P>
+You can also combine the filtering switches with <code>--tail</code> to get a
+realtime stream of filtered output.
+<PRE>
+$ heroku logs --source app --tail
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html6146"
+<A NAME="tex2html6144"
   HREF="node196.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html6140"
-  HREF="node192.html">
+<A NAME="tex2html6138"
+  HREF="node193.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html6134"
+<A NAME="tex2html6132"
   HREF="node194.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html6142"
-  HREF="node227.html">
+<A NAME="tex2html6140"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html6144"
-  HREF="node230.html">
+<A NAME="tex2html6142"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -528,17 +469,17 @@ that is not empty.
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html6147"
-  HREF="node196.html">Troubleshooting</A>
-<B>Sup:</B> <A NAME="tex2html6141"
-  HREF="node192.html">Heroku</A>
-<B> Ant:</B> <A NAME="tex2html6135"
-  HREF="node194.html">Logging</A>
+<B> Sig:</B> <A NAME="tex2html6145"
+  HREF="node196.html">Heroku Postgress</A>
+<B>Sup:</B> <A NAME="tex2html6139"
+  HREF="node193.html">Heroku</A>
+<B> Ant:</B> <A NAME="tex2html6133"
+  HREF="node194.html">Introducción</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-04-25</I>
+2014-04-26</I>
 </ADDRESS>
 </BODY>
 </HTML>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Construyendo Nuestro Propio Rack::Builder</TITLE>
-<META NAME="description" CONTENT="Construyendo Nuestro Propio Rack::Builder">
+<TITLE>Ejemplo de Middleware: Rack::ETag</TITLE>
+<META NAME="description" CONTENT="Ejemplo de Middleware: Rack::ETag">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node124.html">
 <LINK REL="previous" HREF="node122.html">
-<LINK REL="up" HREF="node103.html">
+<LINK REL="up" HREF="node104.html">
 <LINK REL="next" HREF="node124.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4835"
+<A NAME="tex2html4840"
   HREF="node124.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4829"
-  HREF="node103.html">
+<A NAME="tex2html4834"
+  HREF="node104.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4823"
+<A NAME="tex2html4828"
   HREF="node122.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4831"
-  HREF="node227.html">
+<A NAME="tex2html4836"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4833"
-  HREF="node230.html">
+<A NAME="tex2html4838"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,160 +92,145 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4836"
-  HREF="node124.html">Código de Rack::Builder</A>
-<B>Sup:</B> <A NAME="tex2html4830"
-  HREF="node103.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4824"
-  HREF="node122.html">Ejemplo de Middleware: Rack::ETag</A>
+<B> Sig:</B> <A NAME="tex2html4841"
+  HREF="node124.html">Construyendo Nuestro Propio Rack::Builder</A>
+<B>Sup:</B> <A NAME="tex2html4835"
+  HREF="node104.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4829"
+  HREF="node122.html">Middleware y la Clase</A>
 <B> Con:</B> 
-<A NAME="tex2html4831"
-  HREF="node227.html">
+<A NAME="tex2html4836"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4833"
-  HREF="node230.html">
+<A NAME="tex2html4838"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION061200000000000000000">
-Construyendo Nuestro Propio Rack::Builder</A>
+<H1><A NAME="SECTION061190000000000000000">
+Ejemplo de Middleware: Rack::ETag</A>
 </H1>
 
 <P>
-Véase:
+An  <TT>ETag</TT>  or <A NAME="18949"></A><SPAN  CLASS="textbf">entity tag</SPAN>, is part of HTTP, the protocol for the World
+Wide Web. It is one of several mechanisms that HTTP provides for
+<A NAME="18951"></A><SPAN  CLASS="textbf">web cache validation</SPAN>, and which allows a client to make conditional
+requests. 
+
+<P>
+This allows caches to be more efficient, and saves
+bandwidth, as a web server does not need to send a full response
+if the content has not changed.
+
+<P>
+An ETag is an opaque identifier assigned by a web server to a
+specific version of a resource found at a URL. 
+
+<P>
+If the resource
+content at that URL ever changes, a new and different ETag is
+assigned. 
+
+<P>
+Used in this manner ETags are similar to fingerprints,
+and they can be quickly compared to determine if two versions of a
+resource are the same or not.
+
+<P>
 
 <OL>
-<LI><A NAME="tex2html615"
-  HREF="https://github.com/crguezl/rack-mybuilder">https://github.com/crguezl/rack-mybuilder</A>
+<LI><A NAME="tex2html614"
+  HREF="https://github.com/rack/rack/blob/master/lib/rack/etag.rb">Rack::ETag</A>
+en GitHub
+</LI>
+<LI>Documentación de <A NAME="tex2html615"
+  HREF="http://rack.rubyforge.org/doc/Rack/ETag.html">Rack::ETag</A>
 </LI>
 </OL>
 
 <P>
 <PRE>
-[~/local/src/ruby/sinatra/rack/rack-builder/own(master)]$ cat mybuilder.rb 
+require 'digest/md5'
+
 module Rack
-  class MyBuilder
+  class ETag
+    DEFAULT_CACHE_CONTROL = "max-age=0, private, must-revalidate".freeze
 
-    def initialize(&amp;block)
-      @use = []
-      instance_eval(&amp;block) if block_given?
-    end
-
-    def use(middleware, *args, &amp;block)
-      @use &lt;&lt; proc { |app| middleware.new(app, *args, &amp;block) }
-    end
-
-    def run(app)
-      @run = app
-    end
-
-    def to_app
-      @use.reverse.inject(@run) { |app, middleware| middleware[app] }
+    def initialize(app, no_cache_control = nil, cache_control = DEFAULT_CACHE_CONTROL)
+      @app = app
+      @cache_control = cache_control
+      @no_cache_control = no_cache_control
     end
 
     def call(env)
-      to_app.call(env)
+      status, headers, body = @app.call(env)
+
+      if etag_status?(status) &amp;&amp; etag_body?(body) &amp;&amp; !skip_caching?(headers)
+        digest, body = digest_body(body)
+        headers['ETag'] = %("#{digest}") if digest
+      end
+
+      unless headers['Cache-Control']
+        if digest
+          headers['Cache-Control'] = @cache_control if @cache_control
+        else
+          headers['Cache-Control'] = @no_cache_control if @no_cache_control
+        end
+      end
+
+      [status, headers, body]
     end
 
+    private
+
+      def etag_status?(status)
+        status == 200 || status == 201
+      end
+
+      def etag_body?(body)
+        !body.respond_to?(:to_path)
+      end
+
+      def skip_caching?(headers)
+        (headers['Cache-Control'] &amp;&amp; headers['Cache-Control'].include?('no-cache')) ||
+          headers.key?('ETag') || headers.key?('Last-Modified')
+      end
+
+      def digest_body(body)
+        parts = []
+        digest = nil
+
+        body.each do |part|
+          parts &lt;&lt; part
+          (digest ||= Digest::MD5.new) &lt;&lt; part unless part.empty?
+        end
+
+        [digest &amp;&amp; digest.hexdigest, parts]
+      end
   end
 end
 </PRE>
-
-<P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rack-builder/own(master)]$ cat decorator.rb 
-class Decorator
-
-  def initialize(app, *options, &amp;block)
-    @app = app
-    @options = (options[0] || {})
-  end
-
-  def call(env)
-    status, headers, body = @app.call(env)
-
-    new_body = ""
-    new_body &lt;&lt; (@options[:header] || "----Header----&lt;br/&gt;")
-    body.each {|str| new_body &lt;&lt; str}
-    new_body &lt;&lt; (@options[:footer] || "&lt;br/&gt;----Footer----")
-
-    [status, headers, [new_body]]
-  end
-end
-</PRE>
-
-<P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rack-builder/own(master)]$ cat app.rb 
-require 'rack'
-require 'thin'
-
-require 'mybuilder'
-require 'decorator'
-
-app = Rack::MyBuilder.new do
-  use Decorator, :header =&gt; "&lt;strong&gt;*********** header **********&lt;/strong&gt;&lt;br/&gt;"
-
-  cheer = ARGV.shift || "&lt;h1&gt;Hello world!&lt;/h1&gt;"
-  run lambda { |env| [200, { 'Content-Type' =&gt; 'text/html' }, [ "&lt;h1&gt;#{cheer}&lt;/h1&gt;" ]]}
-end
-
-Rack::Handler::Thin.run app, :Port =&gt; 3333, :Host =&gt; 'localhost'
-</PRE>
-
-<P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rack-builder/own(master)]$ cat Rakefile 
-desc "run app server"
-task :default =&gt; :server
-
-desc "run app server"
-task :server, :greet  do |t, args|
-  cheer = args[:greet] || 'bye, bye!'
-  sh "ruby -I. app.rb #{cheer}"
-end
-</PRE>
-
-<P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rack-builder/own(master)]$ rake -T
-rake default        # run app server
-rake server[greet]  # run app server
-</PRE>
-
-<P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rack-builder/own(master)]$ rake server[tachaaaAAAAAANNN]
-ruby -I. app.rb tachaaaAAAAAANNN
-&gt;&gt; Thin web server (v1.5.1 codename Straight Razor)
-&gt;&gt; Maximum connections set to 1024
-&gt;&gt; Listening on localhost:3333, CTRL+C to stop
-</PRE>
-
-<P>
-
-<img src="myrackbuilder.png" />
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4835"
+<A NAME="tex2html4840"
   HREF="node124.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4829"
-  HREF="node103.html">
+<A NAME="tex2html4834"
+  HREF="node104.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4823"
+<A NAME="tex2html4828"
   HREF="node122.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4831"
-  HREF="node227.html">
+<A NAME="tex2html4836"
+  HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4833"
-  HREF="node230.html">
+<A NAME="tex2html4838"
+  HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -296,17 +281,17 @@ ruby -I. app.rb tachaaaAAAAAANNN
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4836"
-  HREF="node124.html">Código de Rack::Builder</A>
-<B>Sup:</B> <A NAME="tex2html4830"
-  HREF="node103.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4824"
-  HREF="node122.html">Ejemplo de Middleware: Rack::ETag</A>
+<B> Sig:</B> <A NAME="tex2html4841"
+  HREF="node124.html">Construyendo Nuestro Propio Rack::Builder</A>
+<B>Sup:</B> <A NAME="tex2html4835"
+  HREF="node104.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html4829"
+  HREF="node122.html">Middleware y la Clase</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-04-25</I>
+2014-04-26</I>
 </ADDRESS>
 </BODY>
 </HTML>
