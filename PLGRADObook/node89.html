@@ -28,19 +28,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4013"
+<A NAME="tex2html4015"
   HREF="node90.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4007"
+<A NAME="tex2html4009"
   HREF="node84.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4001"
+<A NAME="tex2html4003"
   HREF="node88.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4009"
+<A NAME="tex2html4011"
   HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4011"
+<A NAME="tex2html4013"
   HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -92,18 +92,18 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4014"
+<B> Sig:</B> <A NAME="tex2html4016"
   HREF="node90.html">Práctica: Transformaciones en Los</A>
-<B>Sup:</B> <A NAME="tex2html4008"
+<B>Sup:</B> <A NAME="tex2html4010"
   HREF="node84.html">Transformaciones Árbol</A>
-<B> Ant:</B> <A NAME="tex2html4002"
+<B> Ant:</B> <A NAME="tex2html4004"
   HREF="node88.html">Ejemplo de Transformaciones Árbol:</A>
 <B> Con:</B> 
-<A NAME="tex2html4009"
+<A NAME="tex2html4011"
   HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4011"
+<A NAME="tex2html4013"
   HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
@@ -115,10 +115,14 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <UL CLASS="ChildLinks">
 <LI><UL>
 <LI><UL>
-<LI><A NAME="tex2html4015"
+<LI><A NAME="tex2html4017"
   HREF="node89.html#SECTION04950010000000000000">Donde</A>
-<LI><A NAME="tex2html4016"
-  HREF="node89.html#SECTION04950020000000000000">Véase</A>
+<LI><A NAME="tex2html4018"
+  HREF="node89.html#SECTION04950020000000000000">learning.html</A>
+<LI><A NAME="tex2html4019"
+  HREF="node89.html#SECTION04950030000000000000">lib/demo.js</A>
+<LI><A NAME="tex2html4020"
+  HREF="node89.html#SECTION04950040000000000000">Véase</A>
 </UL></UL></UL>
 <!--End of Table of Child-Links-->
 <HR>
@@ -154,6 +158,120 @@ origin  git@github.com:crguezl/treehugger.git (push)
 <P>
 
 <H4><A NAME="SECTION04950020000000000000">
+learning.html</A>
+</H4>
+  
+
+<PRE>
+[~/srcPLgrado/treehugger(master)]$ cat learning.html 
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;treehugger.js demo&lt;/title&gt;
+    &lt;script data-main="lib/demo" src="lib/require.js"&gt;&lt;/script&gt;
+    &lt;link rel="stylesheet" href="examples/style.css" type="text/css" /&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;h1&gt;Treehugger.js playground&lt;/h1&gt;
+    &lt;table&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Javascript&lt;/th&gt;
+      &lt;th&gt;AST&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;textarea id="code" rows="15" cols="42"&gt;var a = 10, b;
+console.log(a, b, c);&lt;/textarea&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;textarea id="ast" rows="15" cols="42" readonly style="background-color: #eee;"&gt;&lt;/textarea&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Analysis code &lt;button id="runbutton"&gt;Run&lt;/button&gt;&lt;/th&gt;
+      &lt;th&gt;Output&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;textarea id="analysis" rows="15" cols="42"&gt;var declared = {console: true};
+
+ast.traverseTopDown(
+   'VarDecl(x)', function(b) {
+      declared[b.x.value] = true;
+   },
+   'VarDeclInit(x, _)', function(b) {
+      declared[b.x.value] = true;
+   },
+   'Var(x)', function(b) {
+      if(!declared[b.x.value])
+        log("Variable " + b.x.value + " is not declared.");
+   }
+);
+&lt;/textarea&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;textarea id="output" rows="15" cols="42" readonly style="background-color: #eee;"&gt;&lt;/textarea&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION04950030000000000000">
+lib/demo.js</A>
+</H4>
+  
+
+<P>
+<PRE>
+[~/srcPLgrado/treehugger(master)]$ cat lib/demo.js 
+require({ baseUrl: "lib" }, 
+    ["treehugger/tree", 
+     "treehugger/traverse", 
+     "treehugger/js/parse", 
+     "jquery",
+     "treehugger/js/acorn", // Acorn is a JavaScript parser
+     "treehugger/js/acorn_loose" // This module provides an alternative 
+                                 // parser with the same interface as 
+                                 // `parse`, but will try to parse
+                                 // anything as JavaScript, repairing 
+                                 // syntax error the best it can.
+    ], function(tree, traverse, parsejs, jq, acorn, acorn_loose) {
+          window.acorn_loose = acorn_loose
+
+          function log(message) {
+            $("#output").val($("#output").val() + message + "\n");
+          }
+
+          function exec() {
+            var js = $("#code").val();
+            var analysisJs = $("#analysis").val();
+            $("#output").val("");   
+            
+            // https://developer.mozilla.org/en-US/docs/Web/API/Performance.now()
+            var t = performance.now(); 
+            var ast = parsejs.parse(js);
+            t -= performance.now();
+            $("#ast").val(t + "\n" + ast.toPrettyString());
+            try {
+              eval(analysisJs);
+            } catch(e) {
+              $("#output").val("JS Error");
+              console.log(e.message)
+            }
+          }
+
+          tree.Node.prototype.log = function() {
+            $("#output").val(this.toPrettyString());
+          }
+
+          require.ready(function() {
+              $("#code").keyup(exec);
+              $("#runbutton").click(exec);
+              exec();
+          });
+      }
+);
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION04950040000000000000">
 Véase</A>
 </H4>
   
@@ -182,19 +300,19 @@ YouTube.
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4013"
+<A NAME="tex2html4015"
   HREF="node90.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4007"
+<A NAME="tex2html4009"
   HREF="node84.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4001"
+<A NAME="tex2html4003"
   HREF="node88.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4009"
+<A NAME="tex2html4011"
   HREF="node228.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4011"
+<A NAME="tex2html4013"
   HREF="node231.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
@@ -246,11 +364,11 @@ YouTube.
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4014"
+<B> Sig:</B> <A NAME="tex2html4016"
   HREF="node90.html">Práctica: Transformaciones en Los</A>
-<B>Sup:</B> <A NAME="tex2html4008"
+<B>Sup:</B> <A NAME="tex2html4010"
   HREF="node84.html">Transformaciones Árbol</A>
-<B> Ant:</B> <A NAME="tex2html4002"
+<B> Ant:</B> <A NAME="tex2html4004"
   HREF="node88.html">Ejemplo de Transformaciones Árbol:</A>
 </DIV>
 <!--End of Navigation Panel-->
