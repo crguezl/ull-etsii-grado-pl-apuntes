@@ -284,6 +284,24 @@ o bien el número de <code>b</code>s es igual al número de <code>c</code>s.
 <LI>Escriba una gramática que genere dicho lenguaje
 
 <P>
+<PRE>
+  s: aeqb | beqc ;
+  aeqb: ab cs ;
+  ab: /* empty */ | 'a' ab 'b' ;
+  cs: /* empty */ | cs 'c' ;
+  beqc: as bc ;
+  bc: /* empty */ | 'b' bc 'c' ;
+  as: /* empty */ | as 'a' ;
+</PRE>
+
+<P>
+The symbol <code>aeqb</code> correspond to guess that there are the same number
+of <code>a</code>s than <code>b</code>s.  In the same way, <code>beqc</code> starts the subgrammar
+for those phrases where the number of <code>b</code>s is equal to the number
+of <code>c</code>s. The usual approach to eliminate the ambiguity by changing
+the grammar to an unambiguous one does not work.
+
+<P>
 </LI>
 <LI>Escriba un programa Jison que reconozca este lenguaje.
 </LI>
