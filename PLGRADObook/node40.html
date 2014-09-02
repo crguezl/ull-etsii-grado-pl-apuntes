@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Análisis Sintáctico Mediante Precedencia de Operadores en JavaScript</TITLE>
-<META NAME="description" CONTENT="Análisis Sintáctico Mediante Precedencia de Operadores en JavaScript">
+<TITLE>Usando Pegjs con CoffeeScript</TITLE>
+<META NAME="description" CONTENT="Usando Pegjs con CoffeeScript">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node43.html">
-<LINK REL="previous" HREF="node33.html">
-<LINK REL="up" HREF="node6.html">
+<LINK REL="next" HREF="node41.html">
+<LINK REL="previous" HREF="node39.html">
+<LINK REL="up" HREF="node28.html">
 <LINK REL="next" HREF="node41.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3074"
+<A NAME="tex2html2194"
   HREF="node41.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3068"
-  HREF="node6.html">
+<A NAME="tex2html2188"
+  HREF="node28.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3062"
+<A NAME="tex2html2182"
   HREF="node39.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3070"
-  HREF="node230.html">
+<A NAME="tex2html2190"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3072"
-  HREF="node233.html">
+<A NAME="tex2html2192"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,59 +92,145 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3075"
-  HREF="node41.html">Ejemplo Simple de Intérprete:</A>
-<B>Sup:</B> <A NAME="tex2html3069"
-  HREF="node6.html">PARTE: APUNTES DE PROCESADORES</A>
-<B> Ant:</B> <A NAME="tex2html3063"
-  HREF="node39.html">Práctica: Analizador Descendente Predictivo</A>
+<B> Sig:</B> <A NAME="tex2html2195"
+  HREF="node41.html">Práctica: Analizador de PL0</A>
+<B>Sup:</B> <A NAME="tex2html2189"
+  HREF="node28.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html2183"
+  HREF="node39.html">Un Lenguaje Dependiente del</A>
 <B> Con:</B> 
-<A NAME="tex2html3070"
-  HREF="node230.html">
+<A NAME="tex2html2190"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3072"
-  HREF="node233.html">
+<A NAME="tex2html2192"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-
-<H1><A NAME="SECTION04500000000000000000">
-Análisis Sintáctico Mediante Precedencia de Operadores en JavaScript</A>
-</H1>
-
-<P>
-<BR> <HR>
 <!--Table of Child-Links-->
 <A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html3076"
-  HREF="node41.html">Ejemplo Simple de Intérprete: Una Calculadora</A>
-<LI><A NAME="tex2html3077"
-  HREF="node42.html">Análisis Top Down Usando Precedencia de Operadores</A>
-<UL>
-<LI><A NAME="tex2html3078"
-  HREF="node42.html#SECTION04521000000000000000">Gramática de JavaScript</A>
-</UL></UL>
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html2196"
+  HREF="node40.html#SECTION044120010000000000000">Instalación de pegjs-coffee-plugin</A>
+<LI><A NAME="tex2html2197"
+  HREF="node40.html#SECTION044120020000000000000">Ejemplo Sencillo</A>
+<LI><A NAME="tex2html2198"
+  HREF="node40.html#SECTION044120030000000000000">Véase También</A>
+</UL></UL></UL>
 <!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION044120000000000000000">
+Usando Pegjs con CoffeeScript</A>
+</H1>
+
+<P>
+
+<H4><A NAME="SECTION044120010000000000000">
+Instalación de pegjs-coffee-plugin</A>
+</H4>
+  
+
+<PRE>
+[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ sudo  npm install -g pegjs-coffee-plugin
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION044120020000000000000">
+Ejemplo Sencillo</A>
+</H4>
+  
+
+<PRE>
+[~/Dropbox/src/javascript/PLgrado/pegjs-coffee-plugin/examples(master)]$ cat simple.pegjs 
+{ 
+  @reduce = (left, right)-&gt;  
+    sum = left
+    for t in right
+      op = t[0]
+      num = t[1]
+      switch op 
+        when '+' then sum += num; break
+        when '-' then sum -= num; break
+        when '*' then sum *= num; break
+        when '/' then sum /= num; break
+        else console.log("Error! "+op)
+    sum
+  
+}
+sum   = left:product right:([+-] product)* { @reduce(left, right); }
+product = left:value right:([*/] value)*   { @reduce(left, right); }
+value   = number:[0-9]+                    { parseInt(number.join(''),10) }
+        / '(' sum:sum ')'                  { sum }
+</PRE>
+
+<P>
+<PRE>
+[~/Dropbox/src/javascript/PLgrado/pegjs-coffee-plugin/examples(master)]$  cat use_simple.coffee 
+PEG = require("./simple.js")
+r = PEG.parse("2+3*(2+1)-10/2")
+console.log(r)
+</PRE>
+
+<P>
+<PRE>
+[~/Dropbox/src/javascript/PLgrado/pegjs-coffee-plugin/examples(master)]$ cat Rakefile 
+
+task :default do 
+  sh "pegcoffee simple.pegjs"
+end
+
+task :run do
+  sh "coffee use_simple.coffee"
+end
+</PRE>
+
+<P>
+<PRE>
+[~/Dropbox/src/javascript/PLgrado/pegjs-coffee-plugin/examples(master)]$ rake
+pegcoffee simple.pegjs
+[~/Dropbox/src/javascript/PLgrado/pegjs-coffee-plugin/examples(master)]$ rake run
+coffee use_simple.coffee
+6
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION044120030000000000000">
+Véase También</A>
+</H4>
+  
+
+<UL>
+<LI><A NAME="tex2html206"
+  HREF="https://github.com/Dignifiedquire/pegjs-coffee-plugin">pegjs-coffee-plugin</A>
+en GitHub
+</LI>
+</UL>
+
+<P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3074"
+<A NAME="tex2html2194"
   HREF="node41.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3068"
-  HREF="node6.html">
+<A NAME="tex2html2188"
+  HREF="node28.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3062"
+<A NAME="tex2html2182"
   HREF="node39.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3070"
-  HREF="node230.html">
+<A NAME="tex2html2190"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3072"
-  HREF="node233.html">
+<A NAME="tex2html2192"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -195,17 +281,17 @@ Análisis Sintáctico Mediante Precedencia de Operadores en JavaScript</A>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3075"
-  HREF="node41.html">Ejemplo Simple de Intérprete:</A>
-<B>Sup:</B> <A NAME="tex2html3069"
-  HREF="node6.html">PARTE: APUNTES DE PROCESADORES</A>
-<B> Ant:</B> <A NAME="tex2html3063"
-  HREF="node39.html">Práctica: Analizador Descendente Predictivo</A>
+<B> Sig:</B> <A NAME="tex2html2195"
+  HREF="node41.html">Práctica: Analizador de PL0</A>
+<B>Sup:</B> <A NAME="tex2html2189"
+  HREF="node28.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html2183"
+  HREF="node39.html">Un Lenguaje Dependiente del</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-05-12</I>
+2014-09-02</I>
 </ADDRESS>
 </BODY>
 </HTML>

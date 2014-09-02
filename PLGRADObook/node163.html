@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Correo</TITLE>
-<META NAME="description" CONTENT="Correo">
+<TITLE>CoffeeScript y Sinatra</TITLE>
+<META NAME="description" CONTENT="CoffeeScript y Sinatra">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node164.html">
 <LINK REL="previous" HREF="node162.html">
-<LINK REL="up" HREF="node140.html">
+<LINK REL="up" HREF="node88.html">
 <LINK REL="next" HREF="node164.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5576"
+<A NAME="tex2html4599"
   HREF="node164.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5570"
-  HREF="node140.html">
+<A NAME="tex2html4593"
+  HREF="node88.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5564"
+<A NAME="tex2html4587"
   HREF="node162.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5572"
-  HREF="node230.html">
+<A NAME="tex2html4595"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5574"
-  HREF="node233.html">
+<A NAME="tex2html4597"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,81 +92,76 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5577"
-  HREF="node164.html">Ambito</A>
-<B>Sup:</B> <A NAME="tex2html5571"
-  HREF="node140.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5565"
-  HREF="node162.html">Environments</A>
+<B> Sig:</B> <A NAME="tex2html4600"
+  HREF="node164.html">Openid y Sinatra</A>
+<B>Sup:</B> <A NAME="tex2html4594"
+  HREF="node88.html">PARTE: SINATRA</A>
+<B> Ant:</B> <A NAME="tex2html4588"
+  HREF="node162.html">Testing en Sinatra</A>
 <B> Con:</B> 
-<A NAME="tex2html5572"
-  HREF="node230.html">
+<A NAME="tex2html4595"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5574"
-  HREF="node233.html">
+<A NAME="tex2html4597"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION063230000000000000000"></A>
-<A NAME="section:correo"></A>
-<BR>
-Correo
+<H1><A NAME="SECTION06700000000000000000">
+CoffeeScript y Sinatra</A>
 </H1>
+
+<P>
 <PRE>
-[~/srcSTW/sinatra-faq/mail(esau)]$ cat app.rb 
+[~/Dropbox/src/ruby/sinatra/sinatra-coffeescript]$ tree
+.
+|-- app.rb
+`-- views
+    `-- application.coffee
+</PRE>
+
+<P>
+<PRE>
+1 directory, 2 files
+[~/Dropbox/src/ruby/sinatra/sinatra-coffeescript]$ cat app.rb 
+## You'll need to require coffee-script in your app
 require 'sinatra'
-require 'pony'
-raise "Execute:\n\t#{$0} password email_to email_from" if ARGV.length.zero?
-get '/' do
-    email = ARGV.shift
-    pass = ARGV.shift
-    Pony.mail({
-      :to =&gt; email,
-      :body =&gt; "Hello Casiano",
-      :subject =&gt; 'Howdy, Partna!',
-      :via =&gt; :smtp,
-      :via_options =&gt; {
-          :address              =&gt; 'smtp.gmail.com',
-          :port                 =&gt; '587',
-          :enable_starttls_auto =&gt; true,
-          :user_name            =&gt; ARGV.shift,
-          :password             =&gt; pass,
-          :authentication       =&gt; :plain, # :plain, :login, :cram_md5, no auth by default
-          :domain               =&gt; "localhost.localdomain" # the HELO domain provided by the client to the server
-        }
-    })
-    "Check your email at #{email}"
+require 'coffee-script'
+
+get '/application.js' do
+  x = coffee :application
+  "&lt;script&gt;#{x}&lt;/script&gt;"
 end
 </PRE>
 
 <P>
+<PRE>
+[~/Dropbox/src/ruby/sinatra/sinatra-coffeescript]$ cat views/application.coffee 
+alert "hello world!"
+</PRE>
 
-<OL>
-<LI><A NAME="tex2html714"
-  HREF="http://www.millwoodonline.co.uk/blog/getting-started-with-sinatra">Getting started with Sinatra</A>
-</LI>
-</OL>
+<P>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5576"
+<A NAME="tex2html4599"
   HREF="node164.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5570"
-  HREF="node140.html">
+<A NAME="tex2html4593"
+  HREF="node88.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5564"
+<A NAME="tex2html4587"
   HREF="node162.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5572"
-  HREF="node230.html">
+<A NAME="tex2html4595"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5574"
-  HREF="node233.html">
+<A NAME="tex2html4597"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -217,17 +212,17 @@ end
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5577"
-  HREF="node164.html">Ambito</A>
-<B>Sup:</B> <A NAME="tex2html5571"
-  HREF="node140.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5565"
-  HREF="node162.html">Environments</A>
+<B> Sig:</B> <A NAME="tex2html4600"
+  HREF="node164.html">Openid y Sinatra</A>
+<B>Sup:</B> <A NAME="tex2html4594"
+  HREF="node88.html">PARTE: SINATRA</A>
+<B> Ant:</B> <A NAME="tex2html4588"
+  HREF="node162.html">Testing en Sinatra</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-05-12</I>
+2014-09-02</I>
 </ADDRESS>
 </BODY>
 </HTML>

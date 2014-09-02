@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Make Heroku run non-master Git branch</TITLE>
-<META NAME="description" CONTENT="Make Heroku run non-master Git branch">
+<TITLE>Using OAuth 2.0 to Access Google APIs</TITLE>
+<META NAME="description" CONTENT="Using OAuth 2.0 to Access Google APIs">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -28,20 +28,20 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html6277"
+<A NAME="tex2html5373"
   HREF="node201.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html6271"
+<A NAME="tex2html5367"
   HREF="node194.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html6265"
+<A NAME="tex2html5361"
   HREF="node199.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html6273"
-  HREF="node230.html">
+<A NAME="tex2html5369"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html6275"
-  HREF="node233.html">
+<A NAME="tex2html5371"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,74 +92,103 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html6278"
-  HREF="node201.html">Account Verification and add-ons</A>
-<B>Sup:</B> <A NAME="tex2html6272"
-  HREF="node194.html">Heroku</A>
-<B> Ant:</B> <A NAME="tex2html6266"
-  HREF="node199.html">Configuration</A>
+<B> Sig:</B> <A NAME="tex2html5374"
+  HREF="node201.html">Google OAuth 2.0 Playground</A>
+<B>Sup:</B> <A NAME="tex2html5368"
+  HREF="node194.html">Oauth: Google, Twitter, GitHub,</A>
+<B> Ant:</B> <A NAME="tex2html5362"
+  HREF="node199.html">The gem omniauth-google-oauth2</A>
 <B> Con:</B> 
-<A NAME="tex2html6273"
-  HREF="node230.html">
+<A NAME="tex2html5369"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html6275"
-  HREF="node233.html">
+<A NAME="tex2html5371"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION07160000000000000000">
-Make Heroku run non-master Git branch</A>
+<H1><A NAME="SECTION07460000000000000000">
+Using OAuth 2.0 to Access Google APIs</A>
 </H1>
 
 <P>
-<A NAME="tex2html801"
-  HREF="http://stackoverflow.com/questions/14593538/make-heroku-run-non-master-git-branch">Make Heroku run non-master Git branch</A>
-You can push an alternative branch to Heroku using Git.
-<PRE>
-git push heroku-dev test:master
-</PRE>
-This pushes your local test branch to the remote's master branch (on Heroku).
+Véase 
+<A NAME="tex2html652"
+  HREF="https://developers.google.com/accounts/docs/OAuth2">Using OAuth 2.0 to Access Google APIs</A>.
 
 <P>
-El manual de <code>git push</code> dice:
+Google APIs use the  <A NAME="tex2html653"
+  HREF="http://oauth.net/">OAuth</A>
+ 2.0 protocol for authentication and
+authorization. Google supports common  <A NAME="tex2html654"
+  HREF="http://oauth.net/">OAuth</A>
+ 2.0 scenarios such as those
+for web server, installed, and client-side applications.
 
 <P>
-To push a local branch to an established remote, you need to issue the command:
-<PRE>
-git push  &lt;REMOTENAME&gt; &lt;BRANCHNAME&gt;
-</PRE>
-This is most typically invoked as <code>git push origin master</code>. 
+
+<OL>
+<LI><A NAME="tex2html655"
+  HREF="http://oauth.net/">OAuth</A>
+ 2.0 is a relatively simple protocol. To begin, you obtain  <A NAME="tex2html656"
+  HREF="http://oauth.net/">OAuth</A>
+
+2.0 credentials from the 
+<A NAME="tex2html657"
+  HREF="https://cloud.google.com/console">Google Developers Console</A>. 
+</LI>
+<LI>See the Video in YouTube 
+<A NAME="tex2html658"
+  HREF="http://youtu.be/Im69kzhpR3I">Obtaining a developer key for the YouTube Data API v3 and the Analytics API</A>
+</LI>
+<LI>Then your client
+application requests an 
+<FONT COLOR="#0000ff"> access token</FONT> from the 
+
+<FONT COLOR="#0000ff"> Google Authorization Server</FONT>,
+extracts a token from the response, and sends the token to the 
+
+<FONT COLOR="#0000ff"> Google API</FONT> 
+that you want to access.
+</LI>
+</OL>
 
 <P>
-If you
-would like to give the branch a different name on the upstream side
-of the push, you can issue the command:
+To get access keys, go to the Google APIs Console and specify your
+<A NAME="tex2html659"
+  HREF="https://cloud.google.com/console">Google Developers Console</A>. 
+application's name and the Google APIs it will access. For simple access,
+Google generates an API key that uniquely identifies your application
+in its transactions with the Google Auth server.
 
 <P>
-<PRE>
-git push  &lt;REMOTENAME&gt; &lt;LOCALBRANCHNAME&gt;:&lt;REMOTEBRANCHNAME&gt;
-</PRE>
+For authorized access, you must also tell Google your website's protocol
+and domain. In return, Google generates a client ID. Your application
+submits this to the Google Auth server to get an  <A NAME="tex2html660"
+  HREF="http://oauth.net/">OAuth</A>
+ 2.0 access
+token.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html6277"
+<A NAME="tex2html5373"
   HREF="node201.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html6271"
+<A NAME="tex2html5367"
   HREF="node194.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html6265"
+<A NAME="tex2html5361"
   HREF="node199.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html6273"
-  HREF="node230.html">
+<A NAME="tex2html5369"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html6275"
-  HREF="node233.html">
+<A NAME="tex2html5371"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -210,17 +239,17 @@ git push  &lt;REMOTENAME&gt; &lt;LOCALBRANCHNAME&gt;:&lt;REMOTEBRANCHNAME&gt;
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html6278"
-  HREF="node201.html">Account Verification and add-ons</A>
-<B>Sup:</B> <A NAME="tex2html6272"
-  HREF="node194.html">Heroku</A>
-<B> Ant:</B> <A NAME="tex2html6266"
-  HREF="node199.html">Configuration</A>
+<B> Sig:</B> <A NAME="tex2html5374"
+  HREF="node201.html">Google OAuth 2.0 Playground</A>
+<B>Sup:</B> <A NAME="tex2html5368"
+  HREF="node194.html">Oauth: Google, Twitter, GitHub,</A>
+<B> Ant:</B> <A NAME="tex2html5362"
+  HREF="node199.html">The gem omniauth-google-oauth2</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-05-12</I>
+2014-09-02</I>
 </ADDRESS>
 </BODY>
 </HTML>

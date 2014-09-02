@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Expresiones Regulares en Flex</TITLE>
-<META NAME="description" CONTENT="Expresiones Regulares en Flex">
+<TITLE>Análisis Sintáctico Predictivo Recursivo</TITLE>
+<META NAME="description" CONTENT="Análisis Sintáctico Predictivo Recursivo">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,6 +19,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
+<LINK REL="next" HREF="node21.html">
 <LINK REL="previous" HREF="node19.html">
 <LINK REL="up" HREF="node18.html">
 <LINK REL="next" HREF="node21.html">
@@ -27,20 +28,20 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html2279"
+<A NAME="tex2html1793"
   HREF="node21.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2273"
+<A NAME="tex2html1787"
   HREF="node18.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2269"
+<A NAME="tex2html1781"
   HREF="node19.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2275"
-  HREF="node230.html">
+<A NAME="tex2html1789"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2277"
-  HREF="node233.html">
+<A NAME="tex2html1791"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -91,19 +92,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2280"
-  HREF="node21.html">Expresiones Regulares en Perl</A>
-<B>Sup:</B> <A NAME="tex2html2274"
-  HREF="node18.html">Expresiones Regulares en C</A>
-<B> Ant:</B> <A NAME="tex2html2270"
-  HREF="node19.html">Expresiones Regulares Posix en</A>
+<B> Sig:</B> <A NAME="tex2html1794"
+  HREF="node21.html">Recursión por la Izquierda</A>
+<B>Sup:</B> <A NAME="tex2html1788"
+  HREF="node18.html">Analizadores Descendentes Predictivos en</A>
+<B> Ant:</B> <A NAME="tex2html1782"
+  HREF="node19.html">Conceptos Básicos para el</A>
 <B> Con:</B> 
-<A NAME="tex2html2275"
-  HREF="node230.html">
+<A NAME="tex2html1789"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html2277"
-  HREF="node233.html">
+<A NAME="tex2html1791"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
@@ -112,2225 +113,658 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html2281"
-  HREF="node20.html#SECTION04221000000000000000">Estructura de un programa LEX</A>
+<LI><A NAME="tex2html1795"
+  HREF="node20.html#SECTION04221000000000000000">Introducción</A>
 <UL>
-<LI><A NAME="tex2html2282"
-  HREF="node20.html#SECTION04221010000000000000">Estructura de un programa</A>
-<LI><A NAME="tex2html2283"
-  HREF="node20.html#SECTION04221020000000000000">Compilación</A>
-<LI><A NAME="tex2html2284"
-  HREF="node20.html#SECTION04221030000000000000">Ejecución</A>
-<LI><A NAME="tex2html2285"
-  HREF="node20.html#SECTION04221040000000000000">Secci&#243;n de definiciones</A>
-<LI><A NAME="tex2html2286"
-  HREF="node20.html#SECTION04221050000000000000">El Lenguaje de las Expresiones Regulares Flex</A>
-<LI><A NAME="tex2html2287"
-  HREF="node20.html#SECTION04221060000000000000">Las Acciones Semánticas</A>
+<LI><A NAME="tex2html1796"
+  HREF="node20.html#SECTION04221010000000000000">Ejemplo</A>
+<LI><A NAME="tex2html1797"
+  HREF="node20.html#SECTION04221020000000000000">Caracterización de las Gramáticas Analizables</A>
 </UL>
 <BR>
-<LI><A NAME="tex2html2288"
-  HREF="node20.html#SECTION04222000000000000000">Versi&#243;n Utilizada</A>
-<LI><A NAME="tex2html2289"
-  HREF="node20.html#SECTION04223000000000000000">Espacios en blanco dentro de la expresión regular</A>
-<LI><A NAME="tex2html2290"
-  HREF="node20.html#SECTION04224000000000000000">Ejemplo Simple</A>
-<LI><A NAME="tex2html2291"
-  HREF="node20.html#SECTION04225000000000000000">Suprimir</A>
-<LI><A NAME="tex2html2292"
-  HREF="node20.html#SECTION04226000000000000000">Declaraci&#243;n de yytext</A>
-<LI><A NAME="tex2html2293"
-  HREF="node20.html#SECTION04227000000000000000">Declaraci&#243;n de yylex()</A>
-<LI><A NAME="tex2html2294"
-  HREF="node20.html#SECTION04228000000000000000">yywrap()</A>
-<LI><A NAME="tex2html2295"
-  HREF="node20.html#SECTION04229000000000000000">unput()</A>
-<LI><A NAME="tex2html2296"
-  HREF="node20.html#SECTION042210000000000000000">input()</A>
-<LI><A NAME="tex2html2297"
-  HREF="node20.html#SECTION042211000000000000000">REJECT</A>
-<LI><A NAME="tex2html2298"
-  HREF="node20.html#SECTION042212000000000000000">yymore()</A>
-<LI><A NAME="tex2html2299"
-  HREF="node20.html#SECTION042213000000000000000">yyless()</A>
-<LI><A NAME="tex2html2300"
-  HREF="node20.html#SECTION042214000000000000000">Estados</A>
-<LI><A NAME="tex2html2301"
-  HREF="node20.html#SECTION042215000000000000000">La pila de estados</A>
-<UL>
-<LI><A NAME="tex2html2302"
-  HREF="node20.html#SECTION042215100000000000000">Ejemplo</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html2303"
-  HREF="node20.html#SECTION042216000000000000000">Final de Fichero</A>
-<LI><A NAME="tex2html2304"
-  HREF="node20.html#SECTION042217000000000000000">Uso de Dos Analizadores</A>
-<LI><A NAME="tex2html2305"
-  HREF="node20.html#SECTION042218000000000000000">La Opción <TT>outfile</TT></A>
-<LI><A NAME="tex2html2306"
-  HREF="node20.html#SECTION042219000000000000000">Leer desde una Cadena: YY_INPUT</A>
-<LI><A NAME="tex2html2307"
-  HREF="node20.html#SECTION042220000000000000000">El operador de ``trailing context'' o ``lookahead'' positivo</A>
-<LI><A NAME="tex2html2308"
-  HREF="node20.html#SECTION042221000000000000000">Manejo de directivas <TT>include</TT></A>
-<LI><A NAME="tex2html2309"
-  HREF="node20.html#SECTION042222000000000000000">An&#225;lisis Léxico desde una Cadena: <TT>yy_scan_string</TT></A>
-<LI><A NAME="tex2html2310"
-  HREF="node20.html#SECTION042223000000000000000">An&#225;lisis de la L&#305;nea de Comandos y 2 Analizadores</A>
-<LI><A NAME="tex2html2311"
-  HREF="node20.html#SECTION042224000000000000000">Declaraciones pointer y array</A>
-<LI><A NAME="tex2html2312"
-  HREF="node20.html#SECTION042225000000000000000">Las Macros <TT>YY_USER_ACTION</TT>, <TT>yy_act</TT> e <TT>YY_NUM_RULES</TT></A>
-<LI><A NAME="tex2html2313"
-  HREF="node20.html#SECTION042226000000000000000">Las opciones <TT>interactive</TT></A>
-<LI><A NAME="tex2html2314"
-  HREF="node20.html#SECTION042227000000000000000">La macro <TT>YY_BREAK</TT></A>
+<LI><A NAME="tex2html1798"
+  HREF="node20.html#SECTION04222000000000000000">Ejercicio: Recorrido del árbol en un ADPR</A>
 </UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION04220000000000000000">
-Expresiones Regulares en Flex</A>
-</H1> 
-Puede encontrar los ejemplos de este capítulo en
-<A NAME="tex2html135"
-  HREF="https://github.com/crguezl/flex-examples">https://github.com/crguezl/flex-examples</A>.
+<H1><A NAME="SECTION04220000000000000000"></A>
+<A NAME="section:predictivo"></A>
+<BR>
+Análisis Sintáctico Predictivo Recursivo
+</H1>
+La siguiente fase en la construcción del analizador es la fase de 
+análisis sintáctico. Esta toma como entrada el flujo de terminales
+y construye como salida el árbol de análisis sintáctico abstracto.
 
 <P>
-Un lenguaje regular es aquel que puede ser descrito mediante expresiones
-regulares como las que se utilizan en <code>ex</code>, <code>vi</code>, <code>sed</code>,
-<code>perl</code> y en tantas otras utilidades UNIX. Dado un lenguaje regular,
-un analizador l&#233;xico es un programa capaz de reconocer las entradas
-que pertenecen a dicho lenguaje y realizar las acciones sem&#225;nticas
-que se hayan asociado con los estados de aceptaci&#243;n.
-Un generador de analizadores l&#233;xicos es una herramienta que facilita
-la construcci&#243;n de un analizador l&#233;xico. Un generador de analizadores
-l&#233;xicos parte, por tanto, de un lenguaje adecuado para la descripci&#243;n
-de lenguajes regulares (y de su sem&#225;ntica) y produce como salida
-una funci&#243;n (en C, por ejemplo) que materializa el correspondiente
-analizador l&#233;xico.
-La mayor parte de los generadores producen a partir del conjunto de
-expresiones regulares los correspondientes tablas de los autómatas
-finitos deterministas. Utilizando dichas tablas y un algoritmo de
-simulación genérico del autómata finito determinista se obtiene el
-analizador léxico. Una vez obtenido el estado de aceptación a partir de
-la entrada es posible, mediante una sentencia <code>switch</code> ejecutar la
-acción semántica asociada con la correspondiente expresión regular.
+El árbol de análisis sintáctico abstracto es una representación  compactada del árbol 
+de análisis sintáctico concreto que contiene la misma información que éste.
+
+<P>
+Existen diferentes métodos de análisis sintáctico. La mayoría caen en una de dos categorías:
+ascendentes y descendentes. Los ascendentes construyen el árbol desde las hojas
+hacia la raíz. Los descendentes lo hacen en modo inverso. El que describiremos
+aqui es uno de los mas sencillos: se denomina método de análisis predictivo descendente 
+recursivo.
 
 <P>
 
 <H2><A NAME="SECTION04221000000000000000"></A>
-<A NAME="section:estructuraflex"></A>
+<A NAME="subsection:introduccion"></A>
 <BR>
-Estructura de un programa LEX
+Introducción
 </H2>
+En este método se asocia una subrutina con cada variable sintáctica <SPAN CLASS="MATH"><IMG
+ WIDTH="53" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.png"
+ ALT="$ A \in V$"></SPAN>. Dicha subrutina 
+(que llamaremos <code>A</code>) reconocerá el lenguaje generado desde la variable <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$ A$"></SPAN>:
+
+<P>
+<DIV ALIGN="CENTER">
+<!-- MATH
+ $L_A(G) = \{ x \in \Sigma^* : A \stackrel{*}{\Longrightarrow} x \}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="222" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
+ SRC="img39.png"
+ ALT="$ L_A(G) = \{ x \in \Sigma^* : A \stackrel{*}{\Longrightarrow} x \}$"></SPAN>
+</DIV>
+
+<P>
+En este método se escribe una rutina <code>A</code> por variable sintáctica <SPAN CLASS="MATH"><IMG
+ WIDTH="53" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.png"
+ ALT="$ A \in V$"></SPAN>. 
+Se le da a la rutina asociada el mismo nombre que a la variable sintáctica
+asociada. 
+
+<P>
+La función de la rutina <code>A</code> asociada con la variable
+<SPAN CLASS="MATH"><IMG
+ WIDTH="53" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.png"
+ ALT="$ A \in V$"></SPAN> es reconocer el lenguaje <SPAN CLASS="MATH"><IMG
+ WIDTH="43" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img40.png"
+ ALT="$ L(A)$"></SPAN> generado por <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$ A$"></SPAN>.
+
+<P>
+La estrategia general que sigue la rutina <code>A</code> para reconocer
+<SPAN CLASS="MATH"><IMG
+ WIDTH="43" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img40.png"
+ ALT="$ L(A)$"></SPAN> es decidir en términos del terminal <SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img41.png"
+ ALT="$ a$"></SPAN> en la entrada
+que regla de producción concreta <!-- MATH
+ $A \rightarrow \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.png"
+ ALT="$ A \rightarrow \alpha$"></SPAN> se aplica para
+a continuación comprobar que la entrada que sigue pertenece al lenguaje generado por 
+<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img42.png"
+ ALT="$ \alpha$"></SPAN>. 
+
+<P>
+En un analizador predictivo descendente recursivo (APDR) se asume que
+el símbolo que actualmente
+esta siendo observado (denotado habitualmente como 
+<code>lookahead</code>) permite determinar unívocamente
+que producción de <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$ A$"></SPAN> hay que aplicar. 
+
+<P>
+Una vez que se ha determinado que la regla por la que continuar la derivación
+es <!-- MATH
+ $A \rightarrow \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.png"
+ ALT="$ A \rightarrow \alpha$"></SPAN> se procede a reconocer <!-- MATH
+ $L_{\alpha}(G)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="53" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img43.png"
+ ALT="$ L_{\alpha}(G)$"></SPAN>,
+el lenguaje generado por <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img42.png"
+ ALT="$ \alpha$"></SPAN>. Si <!-- MATH
+ $\alpha = X_1 \ldots X_n$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="111" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img44.png"
+ ALT="$ \alpha = X_1 \ldots X_n$"></SPAN>,
+las apariciones de terminales <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img45.png"
+ ALT="$ X_i$"></SPAN> en <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img42.png"
+ ALT="$ \alpha$"></SPAN> son emparejadas
+con los terminales en la entrada mientras que las apariciones de variables <SPAN CLASS="MATH"><IMG
+ WIDTH="62" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img46.png"
+ ALT="$ X_i = B$"></SPAN>
+en <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img42.png"
+ ALT="$ \alpha$"></SPAN> se traducen en llamadas a la correspondiente subrutina asociada con <code>B</code>.
 
 <P>
 
 <H4><A NAME="SECTION04221010000000000000">
-Estructura de un programa</A>
+Ejemplo</A>
 </H4>
   
 
 <P>
- <TT>LEX</TT>  y  <TT>FLEX</TT>  son ejemplos de generadores léxicos.  <TT>Flex</TT> 
-lee desde la entrada est&#225;ndar si no se especifica explícitamente
-un fichero de entrada. El fichero de entrada <code>reglen.l</code> (se suele usar el tipo <code>l</code>)
-debe tener la forma:
-<BR>
-<P>
-<TT>%{              
-<BR>
-declaration C1              
-<BR>.
-<BR>.
-<BR>.
-<BR>
-<BR>
-declaration CM              
-<BR>%}              
-<BR>
-macro_name1 regular_definition1                  
-<BR>.
-<BR>.
-<BR>.
-<BR>
-<BR>
-macro_nameR regular_definitionR                  
-<BR></TT>
-<P>
-<TT>%x exclusive_state
-<BR>%s inclusive_state
-<BR>%%              
-<BR>              
-<BR>
-regular_expression1 { action1(); }              
-<BR>.
-<BR>.
-<BR>.
-<BR>
-<BR>
-regular_expressionN { actionN(); }              
-<BR>              
-<BR>%%              
-<BR>
-support_routine1() {              
-<BR>}              
-<BR>.
-<BR>.
-<BR>.
-<BR>
-<BR>
-support_routineS() {              
-<BR>}              
-<BR></TT>
+Para ilustrar el método,
+simplificaremos la gramática presentada en el ejercicio
+<A HREF="node45.html#ejercicio:tutugrammar">5.1.1</A> eliminando las declaraciones:
 
 <P>
-Como vemos,  un programa <code>LEX</code> consta de 3 secciones, separadas
-por <code>%%</code>. La primera secci&#243;n se denomina <A NAME="3685"></A><SPAN  CLASS="textit">secci&#243;n de
-definiciones</SPAN>,
-la segunda <A NAME="3687"></A><SPAN  CLASS="textit">secci&#243;n de reglas</SPAN> 
-y la tercera <A NAME="3689"></A><SPAN  CLASS="textit">secci&#243;n de c&#243;digo</SPAN>. 
-La primera y la &#250;ltima son opcionales, as&#305; el programa legal <code>LEX</code> mas simple es:
-
-<P>
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227><PRE>
-%%
-</PRE></TD>
+<BR><P></P>
+<DIV ALIGN="CENTER"><A NAME="3358"></A>
+<TABLE>
+<CAPTION><STRONG>Tabla:</STRONG>
+Una Gramática Simple</CAPTION>
+<TR><TD>
+<DIV ALIGN="CENTER">
+<BR>
+<BR>
+<TABLE CELLPADDING=3 BORDER="1" ALIGN="CENTER">
+<TR><TD ALIGN="LEFT">statements   <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> statement  ';'  statements        <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> statement</TD>
+</TR>
+<TR><TD ALIGN="LEFT">statement    <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> ID '=' expression                 <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> P  expression</TD>
+</TR>
+<TR><TD ALIGN="LEFT">expression   <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> term '+' expression               <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> term</TD>
+</TR>
+<TR><TD ALIGN="LEFT">term         <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> factor '*' term                   <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> factor</TD>
+</TR>
+<TR><TD ALIGN="LEFT">factor       <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> '(' expression ')' <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> ID <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> NUM</TD>
 </TR>
 </TABLE>
+</DIV>
+<A NAME="table:gramaticasimple"></A></TD></TR>
+</TABLE>
+</DIV><P></P>
+<BR>
+<BR>
+<BR>
 
 <P>
-que genera un analizador que copia su entrada en <code>stdout</code>.
+La secuencia de llamadas cuando se procesa la entrada mediante 
+el siguiente programa construye 
+<FONT COLOR="#ff0000"> implícitamente</FONT> el <A NAME="3565"></A><SPAN  CLASS="textbf">árbol 
+de análisis sintáctico concreto</SPAN>.
+
+<P>
+<PRE>
+parse = (input) -&gt;
+  tokens = input.tokens()
+  lookahead = tokens.shift()
+  match = (t) -&gt;
+    if lookahead.type is t
+      lookahead = tokens.shift()
+      lookahead = null  if typeof lookahead is "undefined"
+    else # Error. Throw exception
+      throw "Syntax Error. Expected #{t} found '" + 
+            lookahead.value + "' near '" + 
+            input.substr(lookahead.from) + "'"
+    return
+
+  statements = -&gt;
+    result = [statement()]
+    while lookahead and lookahead.type is ";"
+      match ";"
+      result.push statement()
+    (if result.length is 1 then result[0] else result)
+
+  statement = -&gt;
+    result = null
+    if lookahead and lookahead.type is "ID"
+      left =
+        type: "ID"
+        value: lookahead.value
+
+      match "ID"
+      match "="
+      right = expression()
+      result =
+        type: "="
+        left: left
+        right: right
+    else if lookahead and lookahead.type is "P"
+      match "P"
+      right = expression()
+      result =
+        type: "P"
+        value: right
+    else # Error!
+      throw "Syntax Error. Expected identifier but found " + 
+        (if lookahead then lookahead.value else "end of input") + 
+        " near '#{input.substr(lookahead.from)}'"
+    result
+
+  expression = -&gt;
+    result = term()
+    if lookahead and lookahead.type is "+"
+      match "+"
+      right = expression()
+      result =
+        type: "+"
+        left: result
+        right: right
+    result
+
+  term = -&gt;
+    result = factor()
+    if lookahead and lookahead.type is "*"
+      match "*"
+      right = term()
+      result =
+        type: "*"
+        left: result
+        right: right
+    result
+
+  factor = -&gt;
+    result = null
+    if lookahead.type is "NUM"
+      result =
+        type: "NUM"
+        value: lookahead.value
+
+      match "NUM"
+    else if lookahead.type is "ID"
+      result =
+        type: "ID"
+        value: lookahead.value
+
+      match "ID"
+    else if lookahead.type is "("
+      match "("
+      result = expression()
+      match ")"
+    else # Throw exception
+      throw "Syntax Error. Expected number or identifier or '(' but found " + 
+        (if lookahead then lookahead.value else "end of input") + 
+        " near '" + input.substr(lookahead.from) + "'"
+    result
+
+  tree = statements(input)
+  if lookahead?
+    throw "Syntax Error parsing statements. " + 
+      "Expected 'end of input' and found '" + 
+      input.substr(lookahead.from) + "'"  
+  tree
+</PRE>
+
+<P>
+<PRE>
+  var parse = function(input) {
+    var tokens = input.tokens();
+    var lookahead = tokens.shift();
+
+    var match = function(t) {
+      if (lookahead.type === t) {
+        lookahead = tokens.shift();
+        if (typeof lookahead === 'undefined') {
+         lookahead = null; // end of input
+        } 
+      } else { // Error. Throw exception
+          throw "Syntax Error. Expected "+t+" found '"+lookahead.value+
+                "' near '"+input.substr(lookahead.from)+"'";
+      }
+    };
+
+    var statements = function() {
+      var result = [ statement() ];
+      while (lookahead &amp;&amp; lookahead.type === ';') {
+        match(';');
+        result.push(statement());
+      }
+      return result.length === 1? result[0] : result;
+    };
+
+    var statement = function() {
+      var result = null;
+
+      if (lookahead &amp;&amp; lookahead.type === 'ID') {
+        var left = { type: 'ID', value: lookahead.value };
+        match('ID');
+        match('=');
+        right = expression();
+        result = { type: '=', left: left, right: right };
+      } else if (lookahead &amp;&amp; lookahead.type === 'P') {
+        match('P');
+        right = expression();
+        result = { type: 'P', value: right };
+      } else { // Error!
+        throw "Syntax Error. Expected identifier but found "+
+              (lookahead? lookahead.value : "end of input")+
+              " near '"+input.substr(lookahead.from)+"'";
+      }
+      return result;
+    };
+
+    var expression = function() {
+      var result = term();
+      if (lookahead &amp;&amp; lookahead.type === '+') { 
+        match('+');
+        var right = expression();
+        result = {type: '+', left: result, right: right};
+      }
+      return result;
+    };
+
+    var term = function() {
+      var result = factor();
+      if (lookahead &amp;&amp; lookahead.type === '*') { 
+        match('*');
+        var right = term();
+        result = {type: '*', left: result, right: right};
+      }
+      return result;
+    };
+
+    var factor = function() {
+      var result = null;
+
+      if (lookahead.type === 'NUM') { 
+        result = {type: 'NUM', value: lookahead.value};
+        match('NUM'); 
+      }
+      else if (lookahead.type === 'ID') {
+        result = {type: 'ID', value: lookahead.value};
+        match('ID');
+      }
+      else if (lookahead.type === '(') {
+        match('(');
+        result = expression();
+        match(')');
+      } else { // Throw exception
+        throw "Syntax Error. Expected number or identifier or '(' but found "+
+              (lookahead? lookahead.value : "end of input")+
+              " near '"+input.substr(lookahead.from)+"'";
+      }
+      return result;
+    };
+    var tree = statements(input);
+    if (lookahead != null) {
+        throw "Syntax Error parsing statements. Expected end of input and found '"+
+              input.substr(lookahead.from)+"'";
+    }
+    return tree;
+  }
+</PRE>
 
 <P>
 
 <H4><A NAME="SECTION04221020000000000000">
-Compilación</A>
+Caracterización de las Gramáticas Analizables</A>
 </H4>
   
 
-<P>
-Una vez compilado el fichero de entrada <code>regleng.l</code>
-mediante la correspondiente orden:
-
-<P>
-<code>flex reglen.l</code> 
-
-<P>
-obtenemos un fichero denominado <code>lex.yy.c</code>. Este fichero
-contiene la rutina <code>yylex()</code> que realiza el an&#225;lisis l&#233;xico
-del lenguaje descrito en <code>regleng.l</code>. Supuesto que una de las
-<code>support_routines</code> es una funci&#243;n <code>main()</code> que llama a la
-funci&#243;n <code>yylex()</code>, podemos compilar el fichero generado con un
-compilador C para obtener un ejecutable <code>a.out</code>:
-
-<P>
-<code>cc lex.yy.c -lfl</code> 
-
-<P>
-La inclusi&#243;n de la opci&#243;n <code>-fl</code> enlaza con la
-librer&#305;a de <code>flex</code>, que contiene dos funciones: <code>main</code>
-y <code>yywrap()</code>.
-
-<P>
-
-<H4><A NAME="SECTION04221030000000000000">
-Ejecución</A>
-</H4>
-  
-
-<P>
-Cuando ejecutamos el programa <code>a.out</code>, la funci&#243;n <code>yylex()</code>
-analiza las entradas, buscando la secuencia mas larga que casa con alguna
-de las expresiones regulares (<code>regular_expressionK</code>) y ejecuta la
-correspondiente acci&#243;n (<code>actionK()</code>).
-Si no se encuentra ningun  emparejamiento se ejecuta la <A NAME="3699"></A><SPAN  CLASS="textit">regla por defecto</SPAN>, que es:
-
-<P>
-<code>(.|\n)  { printf("%s",yytext); }</code>
-
-<P>
-Si encuentran dos expresiones regulares con las que la cadena mas larga
-casa, elige la que figura primera en el programa <code>lex</code>.
-Una vez que <code>yylex()</code> ha encontrado el <SPAN  CLASS="textit">token</SPAN>, esto es, el
-patr&#243;n que casa con la cadena mas larga, dicha cadena queda disponible
-a trav&#233;s del puntero global  <TT>yytext</TT> , y su longitud queda en la
-variable entera global  <TT>yyleng</TT> .
-
-<P>
-Una vez que se ha ejecutado la correspondiente acci&#243;n, <code>yylex()</code>
-contin&#250;a con el resto de la entrada, buscando por subsiguientes
-emparejamientos. Asi continúa hasta encontrar un <code>end of file</code>,
-en cuyo caso termina, retornando un cero o bien hasta que una de las
-acciones explicitamente ejecuta una sentencia <code>return</code>.
-
-<P>
-
-<H4><A NAME="SECTION04221040000000000000">
-Secci&#243;n de definiciones</A>
-</H4>
-  
-
-<P>
-La primera secci&#243;n contiene, si las hubiera,  las definiciones regulares
-y las declaraciones de los estados de arranque.
-
-<P>
-Las definiciones tiene la forma:
-
-<P>
-<SPAN  CLASS="textit">name regular_definition</SPAN>
-
-<P>
-donde <SPAN  CLASS="textit">name</SPAN> puede ser descrito mediante la expresi&#243;n regular:
-
-<P>
-<code>[a-zA-Z_][a-zA-Z_0-9-]*</code> 
-
-<P>
-La <SPAN  CLASS="textit">regular_definition</SPAN> comienza en el primer car&#225;cter no
-blanco que sigue a <SPAN  CLASS="textit">name</SPAN> y termina al final de la l&#305;nea. La
-definici&#243;n es una expresi&#243;n regular extendida. Las subsiguientes
-definiciones pueden ``llamar'' a la macro <code>{name}</code> escribi&#233;ndola
-entre llaves. La macro se expande entonces a <code>(regular_definition)</code>
-en <code>flex</code> y a <code>regular_definition</code> en <code>lex</code>.
-
-<P>
-El c&#243;digo entre los delimitadores <code>%{</code> y <code>%}</code> se copia
-verbatim al fichero de salida, situ&#225;ndose en la parte de declaraciones
-globales. Los delimitadores deben aparecer (s&#243;los) al comienzo de
-la l&#305;nea.
-
-<P>
-
-<H4><A NAME="SECTION04221050000000000000">
-El Lenguaje de las Expresiones Regulares Flex</A>
-</H4>
-  
-
-<P>
-La sint&#225;xis que puede utilizarse para la descripci&#243;n de las
-expresiones regulares es la que se conoce como ``extendida'':
-
-<P>
-
-<UL>
-<LI><code>x</code>	      Casa con 'x'
-</LI>
-<LI><code>.</code>	      Cualquier car&#225;cter, excepto <code>\n</code>.
-</LI>
-<LI><code>[xyz]</code>      Una ``clase''; en este caso una de las letras <code>x</code>, <code>y</code>, <code>z</code>
-</LI>
-<LI><code>[abj-oZ]</code>   Una ``clase'' con un rango; casa con  <code>a</code>,  <code>b</code>, cualquier letra desde  <code>j</code> hasta <code>o</code>, o una <code>Z</code>
-</LI>
-<LI><code>[^A-Z]</code>     Una ``Clase complementada'' esto es, todos los caracteres que no est&#225;n en la clase. Cualquier car&#225;cter, excepto las letras may&#250;sculas. Obs&#233;rvese que el retorno de carro <code>\n</code> casa
-con esta expresion. As&#305; es posible que, &lt;un patr&#243;n como <code>[^"]+</code> pueda casar con todo el fichero!.
-</LI>
-<LI><code>[^A-Z\n]</code>   Cualquier car&#225;cter, excepto las letras may&#250;sculas o un <code>\n</code>.
-</LI>
-<LI><P>
-<code>[[:alnum:]]</code> Casa con cualquier caracter alfanum&#233;rico. Aqui <code>[:alnum:]</code> se refiere a una de las clases predefinidas. Las otras clases son: <code>[:alpha:]</code> <code>[:blank:]</code> <code>[:cntrl:]</code> <code>[:digit:]</code> <code>[:graph:]</code> <code>[:lower:]</code> <code>[:print:]</code> <code>[:punct:]</code> <code>[:space:]</code> <code>[:upper:]</code> <code>[:xdigit:]</code>. Estas clases designan el mismo conjunto de caracteres que la correspondiente funci&#243;n C <code>isXXXX</code>.
-
-<P>
-</LI>
-<LI><code>r*</code>	Cero o mas <code>r</code>.
-</LI>
-<LI><code>r+</code>       Una o mas <code>r</code>.
-</LI>
-<LI><code>r?</code>	Cero o una  <code>r</code>.
-</LI>
-<LI><code>r{2,5}</code>     Entre 2 y 5  <code>r</code>.
-</LI>
-<LI><code>r{2,}</code>      2 o mas <code>r</code>. 
-<code>r{4}</code>	  Exactamente 4 <code>r</code>. 
-</LI>
-<LI><code>{macro_name}</code>     La expansi&#243;n de <code>macro_name</code> por su <SPAN  CLASS="textit">regular_definition</SPAN>
-</LI>
-<LI><code>"[xyz]\"foo"</code> Exactamente la cadena: [xyz]"foo
-</LI>
-<LI><code>\X</code>	      Si <code>X</code> is an <code>a</code>, <code>b</code>, <code>f</code>, <code>n</code>, <code>r</code>, <code>t</code>, o <code>v</code>, entonces, la interpretaci&#243;n ANSI-C de <code>\x</code>.  En cualquier otro caso <code>X</code>.
-</LI>
-<LI><code>\0</code>	      El car&#225;cter NUL (ASCII 0).
-</LI>
-<LI><code>\123</code>	      El car&#225;cter cuyo c&#243;digo octal es 123.
-</LI>
-<LI><code>\x2a</code>	      El car&#225;cter cuyo c&#243;digo hexadecimal es 2a.
-</LI>
-<LI><code>(r)</code>	      Los par&#233;ntesis son utilizados para cambiar la precedencia.
-</LI>
-<LI><code>rs</code>	      Concatenation
-</LI>
-<LI><code>r|s</code>	      Casa con  <code>r</code> o <code>s</code>
-</LI>
-<LI><code>r/s</code>	      Una <code>r</code> pero s&#243;lo si va seguida de una <code>s</code>. El texto casado con <code>s</code> se incluye a la hora de decidir cual es el emparejamiento mas largo, pero se devuelve a la entrada cuando se ejecuta la acci&#243;n. La acci&#243;n s&#243;lo ve el texto asociado con <code>r</code>. Este tipo de patr&#243;n se denomina <SPAN  CLASS="textit">trailing context</SPAN> o <SPAN  CLASS="textit">lookahead</SPAN> positivo.  
-</LI>
-<LI><code>^r</code>	      Casa con <code>r</code>, al comienzo de una l&#305;nea.
-                      Un <code>^</code> que no aparece al comienzo de la l&#305;nea o un <code>$</code> que no aparece al final de la l&#305;nea, pierde su naturaleza de ``ancla'' y es tratado como un car&#225;cter ordinario. Asi: <code>foo|(bar$)</code> se empareja con <code>bar$</code>. Si lo que se quer&#305;a es la otra interpretaci&#243;n, es posible escribir <code>foo|(bar\n)</code>, o bien:
-<PRE>
-foo |
-bar$   { /* action */ }
-</PRE>
-</LI>
-<LI><code>r$</code>	      Casa con <code>r</code>, al final de una l&#305;nea. Este es tambi&#233;n un operador de <SPAN  CLASS="textit">trailing context</SPAN>. Una regla no puede tener mas de un operador de <SPAN  CLASS="textit">trailing context</SPAN>. Por ejemplo, la expresi&#243;n <code>foo/bar$</code> es incorrecta.
-</LI>
-<LI><code>&lt;s&gt;r</code>	      Casa con <code>r</code>, pero s&#243;lo si se est&#225; en el estado <code>s</code>.
-</LI>
-<LI><code>&lt;s1,s2,s3&gt;r</code>    Idem, si se esta en alguno de los estados <code>s1</code>, <code>s2</code>, or <code>s3</code>
-</LI>
-<LI><code>&lt;*&gt;r</code>	      Casa con <code>r</code> cualquiera que sea el estado, incluso si este es exclusivo.
-</LI>
-<LI><code>&lt;&lt;EOF&gt;&gt;</code>        Un final de fichero.
-</LI>
-<LI><code>&lt;s1,s2&gt;&lt;&lt;EOF&gt;&gt;</code> Un final de fichero, si los estados son <code>s1</code> o <code>s2</code>
-</LI>
-</UL>
-
-<P>
-Los operadores han sido listados en orden de precedencia, de la
-mas alta a la mas baja. Por ejemplo <code>foo|bar+</code> es lo mismo que
-<code>(foo)|(ba(r)+)</code>.
-
-<P>
-
-<H4><A NAME="SECTION04221060000000000000">
-Las Acciones Semánticas</A>
-</H4>
-  
-
-<P>
-Cada patrón regular tiene su correspondiente acción asociada. El patrón
-termina en el primer espacio en blanco (sin contar aquellos que están
-entre comillas dobles o prefijados de secuencias de escape).
-Si la acción comienza con <code>{</code>, entonces se puede extender a través
-de multiples líneas, hasta la correspondiente <code>}</code>.  El programa
-<code>flex</code>  no hace un análisis del código C dentro de la acción.
-Existen tres directivas que pueden insertarse dentro de las acciones:
-<code>BEGIN</code>, <code>ECHO</code> y <code>REJECT</code>. Su uso se muestra en los
-subsiguientes ejemplos.
-
-<P>
-La secci&#243;n de c&#243;digo se copia verbatim en <code>lex.yy.c</code>. Es
-utilizada para proveer las funciones de apoyo que se requieran para la
-descripci&#243;n de las acciones asociadas con los patrones que parecen en
-la secci&#243;n de reglas.
-
-<P>
-
-<H2><A NAME="SECTION04222000000000000000">
-Versi&#243;n Utilizada</A>
-</H2>
-Todos los ejemplos que aparecen en este documento fueron
-preparados con la versi&#243;n 2.5.4 de <SPAN  CLASS="textit">flex</SPAN> en un entorno
-Linux 
-<PRE>
-$ uname -a
-Linux nereida.deioc.ull.es 2.2.12-20 #10 Mon May 8 19:40:16 WEST 2000 i686 unknown
-$ flex --version   
-flex version 2.5.4
-</PRE>
-y con la versi&#243;n 2.5.2 en un entorno Solaris
-<PRE>
-&gt; uname -a
-SunOS fonil 5.7 Generic_106541-04 sun4u sparc SUNW,Ultra-5_10
-&gt; flex --version
-flex version 2.5.2
-</PRE>
-
-<P>
-
-<H2><A NAME="SECTION04223000000000000000"></A>
-<A NAME="section:blancos"></A>
-<BR>
-Espacios en blanco dentro de la expresión regular
-</H2>
-La expresión regular va desde el comienzo de la línea hasta el primer espacio en blanco 
-no escapado. Todos los espacios en blanco que formen parte de la 
-expresión regular 
-deben ser escapados o protegidos entre comillas. Así, el siguiente
-programa produce un error en tiempo de compilación C:
-<PRE>
-&gt; cat spaces.l
-%%
-one two { printf("spaces\n"; }
-%%
-nereida:~/public_html/regexpr/lex/src&gt; flex spaces.l
-nereida:~/public_html/regexpr/lex/src&gt; gcc lex.yy.c
-spaces.l: In function `yylex':
-spaces.l:2: `two' undeclared (first use in this function)
-spaces.l:2: (Each undeclared identifier is reported only once
-spaces.l:2: for each function it appears in.)
-spaces.l:2: parse error before `{'
-spaces.l:4: case label not within a switch statement
-lex.yy.c:632: case label not within a switch statement
-lex.yy.c:635: case label not within a switch statement
-lex.yy.c:757: default label not within a switch statement
-lex.yy.c: At top level:
-lex.yy.c:762: parse error before `}'
-</PRE>
-Deberíamos escapar el blanco entre <code>one</code> y <code>two</code> o bien
-proteger la cadena poniéndola entre comillas: <code>"one two"</code>.
-
-<P>
-
-<H2><A NAME="SECTION04224000000000000000"></A>
-<A NAME="section:ejemplosimple"></A>
-<BR>
-Ejemplo Simple
-</H2>
-Este primer ejemplo sustituye las apariciones de la palabra 
-<SPAN  CLASS="textit">username</SPAN> por el <SPAN  CLASS="textit">login</SPAN> del usuario:
-<PRE>
-$ cat subst.l
-%option main
-%{
-#include &lt;unistd.h&gt;
-%}
-%%
-username    printf( "%s",  getlogin());
-%%
-$ flex -osubst.c subst.l
-$ gcc -o subst subst.c
-$ subst
-Dear username:
-Dear pl:
-</PRE>
-He presionado CTRL-D para finalizar la entrada.
-<BR>
-Observe el uso de la opci&#243;n <code>%option main</code> en el fichero
-<SPAN  CLASS="textit">subst.l</SPAN> para hacer que <SPAN  CLASS="textit">flex</SPAN> genere una funci&#243;n
-<SPAN  CLASS="textit">main</SPAN>. Tambi&#233;n merece especial
-atenci&#243;n el uso de la opci&#243;n  <code>-osubst</code> para cambiar el
-nombre del fichero de salida, que por defecto ser&#225; <SPAN  CLASS="textit">lex.yy.c</SPAN>.
-
-<P>
-
-<H2><A NAME="SECTION04225000000000000000"></A>
-<A NAME="section:suprimir"></A>
-<BR>
-Suprimir
-</H2>
-Al igual que en <SPAN  CLASS="textit">sed</SPAN> y <SPAN  CLASS="textit">awk</SPAN>, es muy sencillo
-suprimir las apariciones de una expresi&#243;n regular. 
-<PRE>
-$ cat delete.l
-/* delete all entries of zap me */
-%%
-"zap me"
-$ flex delete.l ; gcc lex.yy.c -lfl; a.out
-this is zap me a first zap me phrase
-this is  a first  phrase
-</PRE>
-
-<P>
-
-<H2><A NAME="SECTION04226000000000000000"></A>
-<A NAME="section:yytextdec"></A>
-<BR>
-Declaraci&#243;n de yytext
-</H2>
-En la sección de definiciones es posible utilizar las directivas
-<code>%pointer</code> o <code>%array</code>. Estas directivas hacen que  <TT>yytext</TT> 
-se declare como un puntero o un <SPAN  CLASS="textit">array</SPAN> respectivamente.
-La opción por defecto es declararlo como un puntero, salvo que se haya
-usado la opción <code>-l</code> en la línea de comandos, para garantizar una
-mayor compatibilidad con <code>LEX</code>.
-Sin embargo, y aunque la opci&#243;n  <code>%pointer</code> es la mas eficiente
-(el análisis es mas rápido y se evitan los <SPAN  CLASS="textit">buffer overflow</SPAN>),
-limita la posible manipulaci&#243;n de <SPAN  CLASS="textit">yytext</SPAN> y de las llamadas
-a <code>unput()</code>.
-<PRE>
-$ cat yytextp.l
-%%
-hello {
-        strcat(yytext, " world");
-        printf("\n%d: %s\n",strlen(yytext),yytext);
-      }
-$ flex yytextp.l ; gcc lex.yy.c -lfl ; a.out
-hello
- 
-11: hello world
- 
-fatal flex scanner internal error--end of buffer missed
-</PRE>
-Este error no aparece si se utiliza la opci&#243;n <code>%array</code>:
-<PRE>
-$ cat yytext.l
-%array
-%%
-hello {
-        strcat(yytext, " world");
-        printf("\n%d: %s\n",strlen(yytext),yytext);
-      }
-$ flex yytext.l; gcc lex.yy.c -lfl; a.out
-hello
- 
-11: hello world
-</PRE>
-
-<P>
-Además, algunos programs <code>LEX</code>  modifican directamente <code>yytext</code>, utilizando la declaración:
-
-<P>
-<code>extern char yytext[]</code>
-
-<P>
-que es incompatible con la directiva <code>%pointer</code> (pero correcta con <code>%array</code>).
-La directiva <code>%array</code> define <code>yytext</code> como un <SPAN  CLASS="textit">array</SPAN> de tamaño <code>YYLMAX</code>.
-Si deseamos trabajar con un mayor tamaño, basta con redefinir <code>YYLMAX</code>.
-
-<P>
-
-<H2><A NAME="SECTION04227000000000000000"></A>
-<A NAME="section:yylexdec"></A>
-<BR>
-Declaraci&#243;n de yylex()
-</H2>
-Por defecto la funci&#243;n <SPAN  CLASS="textit">yylex()</SPAN> que realiza el an&#225;lisis l&#233;xico es
-declarada como  <code>int yylex()</code>. Es posible cambiar la declaraci&#243;n
-por defecto utilizando la macro <SPAN  CLASS="textit">YY_DECL</SPAN>. En el siguiente ejemplo
-la definici&#243;n:
-<PRE>
-#define YY_DECL char *scanner(int *numcount, int *idcount)
-</PRE>
-hace que la rutina de an&#225;lisis l&#233;xico pase a llamarse 
-<SPAN  CLASS="textit">scanner</SPAN> y tenga dos parametros de entrada, retornando
-un valor de tipo <code>char *</code>.
-<PRE>
-$ cat decl.l
-%{
-#define YY_DECL char *scanner(int *numcount, int *idcount)
-%}
- 
-num [0-9]+
-id [a-z]+
-%%
-{num} {(*numcount)++;}
-halt  {return ((char *) strdup(yytext));}
-{id}  {(*idcount)++;}
-%%
-main() {
-  int a,b;
-  char *t;
- 
-  a = 0; b = 0;
-  t = scanner(&amp;a, &amp;b);
-  printf("numcount = %d, idcount = %d, yytext = %s\n",a,b,t);
-  t = scanner(&amp;a, &amp;b);
-  printf("numcount = %d, idcount = %d, yytext = %s\n",a,b,t);
-}
- 
-int yywrap() {
-  return 1;
-}
-</PRE>
-La ejecuci&#243;n del programa anterior produce la siguiente salida:
-<PRE>
-$ decl
-a b 1 2 3 halt
-     numcount = 3, idcount = 2, yytext = halt
- 
-e 4 5 f
- 
-numcount = 5, idcount = 4, yytext = (null)
-$ decl
-a b 1 2 3 halt
-     numcount = 3, idcount = 2, yytext = halt
- 
-e 4 f 5 halt
-    numcount = 5, idcount = 4, yytext = halt
-</PRE>
-
-<P>
-
-<H2><A NAME="SECTION04228000000000000000">
-yywrap()</A>
-</H2>
-Cuando el analizador l&#233;xico alcanza el final del fichero, el
-comportamiento en las subsiguientes llamadas a <SPAN  CLASS="textit">yylex</SPAN>
-resulta indefinido.  En el momento en que  <SPAN  CLASS="textit">yylex()</SPAN>
-alcanza el final del fichero llama a la funci&#243;n <SPAN  CLASS="textit">yywrap</SPAN>, la cual retorna un
-valor de 0 o 1 seg&#250;n haya mas entrada o no. Si el valor es 0,
-la funci&#243;n <SPAN  CLASS="textit">yylex</SPAN> asume que la propia <SPAN  CLASS="textit">yywrap</SPAN>
-se ha encargado de abrir el nuevo fichero y asignarselo
-a  <TT>yyin</TT> .  Otra manera de continuar es haciendo uso de
-la funci&#243;n <SPAN  CLASS="textit">yyrestart(FILE *file)</SPAN>. 
-El siguiente ejemplo cuenta el n&#250;mero de l&#305;neas, palabras y
-caracteres en una lista de ficheros proporcionados como entrada.
-
-<P>
-<PRE>
-%{
-unsigned long charCount = 0, wordCount = 0, lineCount = 0;
-%}
-
-word [^ \t\n]+ 
-eol \n 
-
-%%
-{word} { wordCount++; charCount += yyleng; }
-{eol} { charCount++; lineCount++; }
-. charCount++;
-
-%%
-
-char **fileList;
-unsigned nFiles;
-unsigned currentFile = 0;
-unsigned long totalCC = 0;
-unsigned long totalWC = 0;
-unsigned long totalLC = 0;
-
-main ( int argc, char **argv) {
-  FILE *file;
-
-  fileList = argv + 1; nFiles = argc - 1;
-
-  if (nFiles == 0) {
-    fprintf(stderr,"Usage is:\n%s file1 file2 file3 ...\n",argv[0]);
-    exit(1);
-  }
-  file = fopen (fileList[0], "r");
-  if (!file) {
-      fprintf (stderr, "could not open %s\n", argv[1]);
-      exit (1);
-  }
-  currentFile = 1; yyrestart(file);
-  yylex ();
-  printf ("%8lu %8lu %8lu %s\n", lineCount, wordCount,
-    charCount, fileList[currentFile - 1]);
-  if (argc &gt; 2) {
-      totalCC += charCount; totalWC += wordCount; totalLC += lineCount;
-      printf ("%8lu %8lu %8lu total\n", totalLC, totalWC, totalCC);
-  }
-  return 0;
-}
-
-int yywrap () {
-  FILE *file;
-
-  if (currentFile &lt; nFiles) {
-     printf ("%8lu %8lu %8lu %s\n", lineCount, wordCount,
-       charCount, fileList[currentFile - 1]);
-     totalCC += charCount; totalWC += wordCount; totalLC += lineCount;
-     charCount = wordCount = lineCount = 0;
-     fclose (yyin);
-
-     while (fileList[currentFile] != (char *) 0) {
-       file = fopen (fileList[currentFile++], "r");
-       if (file != NULL) { yyrestart(file); break; }
-	  fprintf (stderr, "could not open %s\n", fileList[currentFile - 1]);
-     }
-     return (file ? 0 : 1);
-    }
-    return 1;
-}
-</PRE>
-
-<P>
-La figura muestra el proceso de compilaci&#243;n y la ejecuci&#243;n:
-<PRE>
-$ flex countlwc.l;gcc lex.yy.c; a.out *.l
-      58      179     1067 ape-05.l
-      88      249     1759 countlwc.l
-      11       21      126 magic.l
-       9       17      139 mgrep.l
-       9       16      135 mlg.l
-       5       15      181 ml.l
-       7       12       87 subst.l
-     187      509     3494 total
-</PRE>
-La diferencia esencial entre asignar <SPAN  CLASS="textit">yyin</SPAN> o llamar a la
-funci&#243;n <SPAN  CLASS="textit">yyrestart</SPAN> es que esta &#250;ltima puede ser utilizada para
-conmutar entre ficheros en medio de un an&#225;lisis l&#233;xico. El
-funcionamiento del programa anterior no se modifica si se 
-se intercambian asignaciones a <SPAN  CLASS="textit">yyin</SPAN> (<SPAN  CLASS="textit">yyin = file</SPAN>)
-y llamadas a <SPAN  CLASS="textit">yyrestart(file)</SPAN>.
-
-<P>
-
-<H2><A NAME="SECTION04229000000000000000">
-unput()</A>
-</H2>
-La funci&#243;n <SPAN  CLASS="textit">unput(c)</SPAN> coloca el car&#225;cter <SPAN  CLASS="textit">c</SPAN> en el flujo
-de entrada, de manera que ser&#225; el primer car&#225;cter le&#305;do en pr&#243;xima
-ocasi&#243;n.
-<PRE>
-$ cat unput2.l
-%array
-%%
-[a-z] {unput(toupper(yytext[0]));}
-[A-Z] ECHO;
-%%
-$ flex unput2.l ; gcc lex.yy.c -lfl;a.out
-abcd
-ABCD
-</PRE>
-Un problema importante con <SPAN  CLASS="textit">unput</SPAN> es que, cuando se utiliza la
-opci&#243;n <code>%pointer</code>, las llamadas a <SPAN  CLASS="textit">unput</SPAN> destruyen los
-contenidos de <SPAN  CLASS="textit">yytext</SPAN>. Es por eso que, en el siguiente ejemplo se
-hace una copia de <SPAN  CLASS="textit">yytext</SPAN>. La otra alternativa es, por supuesto,
-usar la opci&#243;n <code>%array</code>.
-<PRE>
-$ cat unput.l
-%%
-[0-9]+ {
-  int i;
-  char *yycopy = (char *) strdup(yytext);
- 
-  unput(')');
-  for(i=strlen(yycopy)-1; i&gt;=0; --i)
-    unput(yycopy[i]);
-  unput('(');
-  free(yycopy);
-}
-\([0-9]+\) printf("Num inside parenthesis: %s\n",yytext);
-.|\n
-$ flex unput.l ; gcc lex.yy.c -lfl ; a.out
-32
-Num inside parenthesis: (32)
-(43)
-Num inside parenthesis: (43)
-</PRE>
-
-<P>
-
-<H2><A NAME="SECTION042210000000000000000"></A>
-<A NAME="section:input"></A>
-<BR>
-input()
-</H2>
-La funci&#243;n <SPAN  CLASS="textit">input()</SPAN> lee desde el flujo de entrada 
-el siguiente car&#225;cter. Normalmente la utilizaremos si queremos 
-tomar ``personalmente el control''  del an&#225;lisis. El ejemplo 
-permite ``engullir'' los comentarios (no anidados):
-<PRE>
-$ cat input.l
-%%
-"/*" {
-        int c;
-        for(;;) {
-          while ((c=input()) != '*' &amp;&amp; c != EOF)
-            ;
-          if (c == '*')  {
-            while ((c = input()) == '*')
-              ;
-            if (c == '/') break;
-          }
-          if (c == EOF) {
-            fprintf(stderr,"Error: EOF in comment");
-            yyterminate();
-          }
-        }
-      }
-</PRE>
-La funci&#243;n <code>yyterminate()</code> termina la rutina de an&#225;lisis l&#233;xico y devuelve un cero indicándole a la rutina que llama que todo se ha acabado. 
-Por defecto, <code>yyterminate()</code> es llamada cuando se encuentra 
-un final de fichero. Es una macro y puede ser redefinida.
-<PRE>
-$ flex input.l ; gcc lex.yy.c -lfl ; a.out
-hello /* world */
-hello
-unfinished /* comment
-unfinished Error: EOF in comment
-</PRE>
-He presionado CTRL-D despu&#233;s de entrar la palabra <SPAN  CLASS="textit">comment</SPAN>.
-
-<P>
-
-<H2><A NAME="SECTION042211000000000000000">
-REJECT</A>
-</H2>
-La directiva  <code>REJECT</code> le indica al analizador que proceda con la 
-siguiente regla que casa con un prefijo de la entrada. Como es habitual en
-<SPAN  CLASS="textit">flex</SPAN>, se elige la siguiente regla que casa  con la cadena mas
-larga. Consideremos el siguiente ejemplo:
-<PRE>
-$ cat reject.l
-%%
-a    |
-ab   |
-abc  |
-abcd ECHO; REJECT; printf("Never seen\n");
-.|\n
-</PRE>
-La salida es:
-<PRE>
-$ gcc lex.yy.c -lfl;a.out
-abcd
-abcdabcaba
-</PRE>
-Observe que <code>REJECT</code> supone un cambio en el flujo de control:
-El c&#243;digo que figura despu&#233;s de <code>REJECT</code> no es ejecutado.
-
-<P>
-
-<H2><A NAME="SECTION042212000000000000000">
-yymore()</A>
-</H2>
-La funci&#243;n <code>yymore()</code> hace que, en vez de vaciar <SPAN  CLASS="textit">yytext</SPAN>
-para el siguiente <SPAN  CLASS="textit">matching</SPAN>, el valor actual se mantenga,
-concatenando el valor actual de <SPAN  CLASS="textit">yytext</SPAN> con el siguiente:
-<PRE>
-$ cat yymore.l
-%%
-mega- ECHO; yymore();
-kludge ECHO;
- 
-$ flex yymore.l ; gcc lex.yy.c -lfl ; a.out
-mega-kludge
-mega-mega-kludge
-</PRE>
-La variable <code>yyleng</code> no deber&#305;a ser modificada si se hace uso de la
-funci&#243;n <code>yymore()</code>.
-
-<P>
-
-<H2><A NAME="SECTION042213000000000000000">
-yyless()</A>
-</H2>
-La funci&#243;n <code>yyless(n)</code> permite retrasar el puntero de lectura  
-de manera que apunta al car&#225;cter <SPAN  CLASS="textit">n</SPAN> de <SPAN  CLASS="textit">yytext</SPAN>. 
-Veamos un ejemplo:
-<PRE>
-$ cat yyless.l
-%%
-foobar ECHO; yyless(4);
-[a-z]+ ECHO;
- 
-$ flex yyless.l; gcc lex.yy.c -lfl; a.out
-foobar
-foobarar
-</PRE>
-Veamos un ejemplo mas ``real''. supongamos que tenemos que reconocer 
-las cadenas entre comillas dobles, pero que pueden aparecer en las
-mismas secuencias de escape <code>\"</code>. La estrategia general del algoritmo
-es utilizar la expresión regular <code>\"[^"]+\"</code> y examinar si
-los dos últimos  carácteres en <code>yytext</code> son <code>\"</code>. En tal caso, 
-se concatena la cadena actual (sin la <code>"</code> final) como prefijo para
-el próximo emparejamiento (utilizando <code>yymore</code>). 
-La eliminación de la <code>"</code> se hace a través de la ejecución de 
-<code>yyless(yyleng-1)</code>, que al mismo tiempo garantiza que el próximo emparejamiento 
-tendrá lugar con este mismo patrón <code>\"[^"]+\"</code>.
-<PRE>
-$ cat quotes.l
-%%
-\"[^"]+\" {
-            printf("Processing string. %d: %s\n",yyleng,yytext);
-            if (yytext[yyleng-2] =='\\') {
-             yyless(yyleng-1); /* so that it will match next time */
-             yymore(); /* concatenate  with current yytext */
-             printf("After yyless. %d: %s\n",yyleng,yytext);
-            } else {
-              printf("Finished. The string is: %s\n",yytext);
-            }
-          }
-</PRE>
-El ejemplo no puede entenderse si no se tiene en cuenta que
-<code>yyless(yyleng-1)</code> actualiza los valores de <SPAN  CLASS="textit">yyleng</SPAN> 
-y <SPAN  CLASS="textit">yytext</SPAN>, como muestra la salida.
-<BR>¿Qu&#233; ocurre si intercambiamos las posiciones de <code>yymore()</code>
-e <code>yyless(yyleng-1)</code> en el c&#243;digo? &gt;Cambiara la salida? 
-La respuesta es que no. Parece que la concatenaci&#243;n se hace con el valor
-final de <SPAN  CLASS="textit">yytext</SPAN> y no con el valor que este ten&#305;a en el momento de
-la llamada a <SPAN  CLASS="textit">yymore</SPAN>.
-<BR>
-Otra observaci&#243;n  a tener en cuenta es que <SPAN  CLASS="textit">yyless()</SPAN>
-es una macro y que, por tanto,
-s&#243;lo puede ser utilizada dentro del fichero <SPAN  CLASS="textit">lex</SPAN> y no en otros
-ficheros fuentes.
-
-<P>
-En general, el uso de estas funciones  nos puede resolver el problema
-de reconocer l&#305;mites que de otra forma ser&#305;an dif&#305;ciles de expresar
-con una expresi&#243;n regular.
-<PRE>
-$ flex quotes.l ; gcc lex.yy.c -lfl ; a.out
-"Hello \"Peter\", nice to meet you"
-Procesing string. 9: "Hello \"
-After yyless. 8: "Hello \
-Procesing string. 16: "Hello \"Peter\"
-After yyless. 15: "Hello \"Peter\
-Procesing string. 35: "Hello \"Peter\", nice to meet you"
-Finished. The string is: "Hello \"Peter\", nice to meet you"
-</PRE>
-
-<P>
-
-<H2><A NAME="SECTION042214000000000000000">
-Estados</A>
-</H2>
-Las expresiones regulares pueden ser prefijadas mediante <SPAN  CLASS="textit">estados</SPAN>.
-Los estados o condiciones de arranque, se denotan mediante un
-identificador entre &#225;ngulos y se declaran
-en la parte de las definiciones. Las declaraciones se hacen mediante 
-<code>%s</code> para los estados ``inclusivos'' o bien <code>%x</code> para los estados ``exclusivos'',
-seguidos de los nombres de los estados. No pueden haber caracteres en blanco antes de la declaración.
-Un <SPAN  CLASS="textit">estado</SPAN> se activa mediante la 
-acci&#243;n BEGIN <SPAN  CLASS="textit">estado</SPAN>. A partir de ese momento, las reglas que esten
-prefijadas con el estado pasan a estar activas. En el caso de que el estado
-sea inclusivo, las reglas no prefijadas tambi&#233;n permanecen activas.
-Los estados exclusivos son especialmente útiles para especificar ``sub analizadores''
-que analizan porciones de la entrada cuya estructura ``sintáctica'' es diferente
-de la del resto de la entrada.
-
-<P>
-El ejemplo ``absorbe'' los comentarios, conservando el numero de
-l&#305;neas del fichero en la variable <code>linenum</code>
-
-<P>
-<PRE>
-$ cat comments.l
-%option noyywrap
-%{
-  int linenum = 0;
-%}
-%x comment
-%%
- 
-"/*" BEGIN(comment); printf("comment=%d, YY_START = %d, YYSTATE = %d",comment,YY_START,YYSTATE);
-&lt;comment&gt;[^*\n]* /* eat anything that is not a star * /
-&lt;comment&gt;"*"+[^*/\n]* /* eat up starts not followed by / */
-&lt;comment&gt;\n ++linenum; /* update number of lines */
-&lt;comment&gt;"*"+"/" BEGIN(0);
- 
-\n ECHO; linenum++;
-.  ECHO;
-%%
-main() {
-  yylex();
-  printf("\n%d lines\n",linenum);
-}
-</PRE>
-La opción <code>noyywrap</code> hace que <code>yylex()</code> no llame a la función <code>yywrap()</code>
-al final del fichero y que asuma que no hay mas entrada por procesar.
-
-<P>
-Los estados se traducen por enteros, pudiendo ser manipulados como tales.
-La macro <code>INITIAL</code> puede utilizarse para referirse al estado 0.
-Las macros <code>YY_START</code> y <code>YYSTATE</code> contienen el valor del estado actual.
-<PRE>
-$ flex comments.l ; gcc lex.yy.c ; a.out &lt; hello.c
-main() &lt;%
-int a&lt;:1:&gt;; comment=1, YY_START = 1, YYSTATE = 1
-  a&lt;:0:&gt; = 4; comment=1, YY_START = 1, YYSTATE = 1
-  printf("hello world! a(0) is %d\n",a&lt;:0:&gt;);
-%&gt;
- 
-6 lines     
-$ cat hello.c
-main() &lt;%
-int a&lt;:1:&gt;; /* a comment */
-  a&lt;:0:&gt; = 4; /* a comment in
-                 two lines */
-  printf("hello world! a(0) is %d\n",a&lt;:0:&gt;);
-%&gt;                                  
-</PRE>
-En <SPAN  CLASS="textit">flex</SPAN> es posible asociar un &#225;mbito con los estados o 
-condiciones iniciales. Basta con colocar entre llaves las 
-parejas <SPAN  CLASS="textit">patr&#243;n acci&#243;n</SPAN> gobernadas por ese estado.
-El siguiente ejemplo procesa las cadenas <SPAN  CLASS="textit">C</SPAN>:
-<PRE>
-$ cat ststring.l
-%option main
-%x str
-%{
-#define MAX_STR_CONST 256
- 
-  char string_buffer[MAX_STR_CONST];
-  char *string_buf_ptr;
-%}
- 
-%%
-\"  string_buf_ptr  = string_buffer; BEGIN(str);
-&lt;str&gt;{
-\"             {BEGIN (INITIAL); *string_buf_ptr = '\0'; printf("%s",string_buffer); }
-\n             { printf("Error: non terminated string\n"); exit(1); }
-\\[0-7]{1,3}   { int result; /* octal escape sequence */
-                        (void) sscanf(yytext+1,"%o",&amp;result);
-                         if (result &gt; 0xff) {printf("Error: constant out of bounds\n"); exit(2); }
-                         *string_buf_ptr++ = result;
-                    }
-\\[0-9]+       { printf("Error: bad escape sequence\n"); exit(2); }
-\\n            {*string_buf_ptr++ = '\n';}
-\\t            {*string_buf_ptr++ = '\t';}
-\\b            {*string_buf_ptr++ = '\b';}
-\\r            {*string_buf_ptr++ = '\r';}
-\\f            {*string_buf_ptr++ = '\f';}
-\\(.|\n)       {*string_buf_ptr++ = yytext[1];}
-[^\\\n\"]+     {char *yptr = yytext; while(*yptr) *string_buf_ptr++ = *yptr++; }
-}
-(.|\n)
-%%                            
-$ flex ststring.l ; gcc lex.yy.c ; a.out &lt; hello.c
-        hello
-world! a(0) is %d
-$ cat hello.c
-main() &lt;%
-int a&lt;:1:&gt;; /* a comment */
-  a&lt;:0:&gt; = 4; /* a comment in
-                 two lines */
-  printf("\thell\157\nworld! a(0) is %d\n",a&lt;:0:&gt;);
-%&gt;                                   
-</PRE>
-Obsérve la conducta del programa ante las siguientes entradas:
-
-<UL>
-<LI>Entrada:
-<PRE>
-"hello \
-dolly"
-</PRE>
-¿Cuál será la salida? ¿Que patrón del programa anterior es el que casa aqui?
-</LI>
-<LI>Entrada:
-<code>"hello\ndolly"</code>.
-¿Cuál será la salida? ¿Que patrón del programa anterior es el que casa aqui?
-</LI>
-<LI><PRE>|
-"hello
-</PRE>
-Donde hay un retorno del carro después de <code>hello</code>.
-¿Cuál será la salida? </LI>
-</UL>
-
-<P>
-
-<H2><A NAME="SECTION042215000000000000000">
-La pila de estados</A>
-</H2>
-Mediante el uso de la opción
-
-<P>
-<code>%option stack</code>
-
-<P>
-tendremos acceso a una pila de estados y a tres rutinas para  manipularla:
-<BR>
-<UL>
-<LI><code>void yy_push_state(int new_state)</code>
-<BR>
-Empuja el estado actual y bifurca a <code>new_state</code>.
-<BR></LI>
-<LI><code>void yy_pop_state()</code>
-<BR>
-Saca el estado en el <SPAN  CLASS="textit">top</SPAN> de la pila y bifurca a el mismo.
-<BR></LI>
-<LI><code>int yy_top_state()</code>
-<BR>
-Nos devuelve el estado en el <SPAN  CLASS="textit">top</SPAN> de la pila, sin alterar
-los contenidos de la misma.
-</LI>
-</UL>
-
-<P>
-
-<H3><A NAME="SECTION042215100000000000000">
-Ejemplo</A>
-</H3>
-El siguiente programa <code>flex</code> utiliza las funciones de la pila
-de estados para reconocer el lenguaje (no regular) 
-<!-- MATH
- $\{a^n b^n\ /\ n \in N\}$
+Como vemos en el ejemplo, el análisis predictivo confía en que, si estamos
+ejecutando la entrada del procedimiento <code>A</code>,
+el cuál está asociado con la variable <SPAN CLASS="MATH"><IMG
+ WIDTH="53" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.png"
+ ALT="$ A \in V$"></SPAN>, el símbolo terminal
+que esta en la entrada <SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img41.png"
+ ALT="$ a$"></SPAN> determine de manera unívoca la regla
+de producción <!-- MATH
+ $A \rightarrow a \alpha$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="125" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img3.png"
- ALT="$ \{a^n b^n / n \in N\}$"></SPAN>
+ WIDTH="65" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img47.png"
+ ALT="$ A \rightarrow a \alpha$"></SPAN> que debe ser procesada.
+
+<P>
+Si se piensa, esta condición requiere que todas las partes derechas <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img42.png"
+ ALT="$ \alpha$"></SPAN> de
+las reglas <!-- MATH
+ $A \rightarrow \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.png"
+ ALT="$ A \rightarrow \alpha$"></SPAN> de <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$ A$"></SPAN> 
+<FONT COLOR="#ff0000"> comiencen</FONT> por diferentes símbolos.
+Para formalizar esta idea, introduciremos el concepto de
+conjunto <!-- MATH
+ $FIRST(\alpha)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="90" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img48.png"
+ ALT="$ FIRST(\alpha)$"></SPAN>:
+
+<P>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Dada una gramática 
+<!-- MATH
+ $G=(\Sigma,V,P,S)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$ G =(\Sigma,V,P,S)$"></SPAN> y un símbolo <!-- MATH
+ $\alpha \in (V \cup \Sigma)^*$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="104" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img49.png"
+ ALT="$ \alpha \in (V \cup \Sigma)^*$"></SPAN> se define el conjunto 
+<!-- MATH
+ $FIRST(\alpha)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="90" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img48.png"
+ ALT="$ FIRST(\alpha)$"></SPAN> como:
+</I>
+<P>
+<I><!-- MATH
+ $FIRST(\alpha) = \left \{ b \in \Sigma :  \alpha  \stackrel{*}{\Longrightarrow}  b \beta \right \}
+\cup N(\alpha)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="319" HEIGHT="50" ALIGN="MIDDLE" BORDER="0"
+ SRC="img50.png"
+ ALT="$ FIRST(\alpha) = \left \{ b \in \Sigma : \alpha \stackrel{*}{\Longrightarrow} b \beta \right \}
+\cup N(\alpha)$"></SPAN> 
+</I>
+<P>
+<I>donde:
+</I>
+<P>
+<I><!-- MATH
+ $N(\alpha) = \left \{ \begin{array}{ll}
+                         \left \{ \epsilon \right \}& \mbox{si $\alpha \stackrel{*}{\Longrightarrow} \epsilon$} \\
+                         \emptyset & \mbox{en otro caso} 
+                      \end{array}
+             \right.$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="232" HEIGHT="63" ALIGN="MIDDLE" BORDER="0"
+ SRC="img51.png"
+ ALT="$ N(\alpha) = \left \{ \begin{array}{ll}
+\left \{ \epsilon \right \}&amp; \mbox{si ...
+...htarrow} \epsilon$} \\
+\emptyset &amp; \mbox{en otro caso}
+\end{array} \right. $"></SPAN> 
+</I>
+<P></DIV><P></P>
+
+<P>
+Podemos reformular ahora nuestra afirmación anterior en estos términos:
+Si <!-- MATH
+ $A \rightarrow \gamma_1 \mid \ldots \mid \gamma_n$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="129" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img52.png"
+ ALT="$ A \rightarrow \gamma_1 \mid \ldots \mid \gamma_n$"></SPAN> y los conjuntos <!-- MATH
+ $FIRST(\gamma_i)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="93" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img53.png"
+ ALT="$ FIRST(\gamma_i)$"></SPAN> son 
+disjuntos podemos construir el procedimiento para la variable <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$ A$"></SPAN> siguiendo
+este seudocódigo:
 
 <P>
 <PRE>
-%option main
-%option noyywrap
-%option stack
-%{
-#include &lt;stdio.h&gt;
-#include  &lt;stdlib.h&gt;
-%}
-%x estado_a
-%%
-^a { yy_push_state(estado_a);}
-&lt;estado_a&gt;{
-a      { yy_push_state(estado_a); }
-b      { yy_pop_state();  }
-b[^b\n]+    {   printf ("Error\n"); 
-        while (YYSTATE != INITIAL)
-          yy_pop_state();
-        while (input() != '\n') ;
-      }
-(.|\n)  {  printf ("Error\n"); 
-        while (YYSTATE != INITIAL)
-          yy_pop_state();
-        while (input() != '\n') ;
-      }
+A = function() {
+  if (lookahead in FIRST(gamma_1)) { imitar gamma_1 }
+  else if (lookahead in FIRST(gamma_2)) { imitar gamma_2 }
+  ...
+  else (lookahead in FIRST(gamma_n)) { imitar gamma_n }
 }
-.      {  printf ("Error\n");
-        while (input() != '\n') ;
-      }
-\n      { printf("Aceptar\n");}
-%%
 </PRE>
 
 <P>
-
-<H2><A NAME="SECTION042216000000000000000">
-Final de Fichero</A>
-</H2>
-El patrón <code>&lt;&lt;EOF&gt;&gt;</code> permite asociar acciones que se deban 
-ejecutar cuando se ha encontrado un <SPAN  CLASS="textit">end of file</SPAN> y la 
-macro <code>yywrap()</code> ha devuelto un valor no nulo. 
-
-<P>
-Cualquiera que sea, la acción asociada deberá de optar por una de estas 
-cuatro alternativas:
+Donde si <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img54.png"
+ ALT="$ \gamma_j$"></SPAN> es <!-- MATH
+ $X_1 \ldots X_k$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="76" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img55.png"
+ ALT="$ X_1 \ldots X_k$"></SPAN> el código <code>gamma_j</code> consiste
+en una secuencia <!-- MATH
+ $i = 1 \ldots k$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="79" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img56.png"
+ ALT="$ i = 1 \ldots k$"></SPAN> de llamadas de uno de estos dos tipos:
 
 <UL>
-<LI>Asignar <code>yyin</code> a un nuevo fichero de entrada
+<LI>Llamar a la subrutina <code>X_i</code> si <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img45.png"
+ ALT="$ X_i$"></SPAN> es una variable sintáctica
 </LI>
-<LI>Ejecutar <code>return</code>
-</LI>
-<LI>Ejecutar <code>yyterminate()</code> (véase  la sección <A HREF="#section:input">2.2.10</A>)
-</LI>
-<LI>Cambiar de <SPAN  CLASS="textit">buffer</SPAN> de entrada utilizando la función
-<code>yy_switch_buffer</code> (véase  la sección <A HREF="#section:include">2.2.21</A>).
+<LI>Hacer una llamada a <code>match(X_i)</code> si <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img45.png"
+ ALT="$ X_i$"></SPAN> es un terminal
 </LI>
 </UL>
 
 <P>
-El patrón <code>&lt;&lt;EOF&gt;&gt;</code> no puede usarse con otras expresiones regulares. Sin embargo, es correcto prefijarlo con estados.
 
-<P>
-Si  <code>&lt;&lt;EOF&gt;&gt;</code> aparece sin condiciones de arranque, la regla se aplica a todos los estados que no tienen una regla  <code>&lt;&lt;EOF&gt;&gt;</code> específica.
-Si lo que se quiere es que la regla se restringa al ámbito del estado inicial se deberá escribir:
-
-<P>
-<code>&lt;INITIAL&gt;&lt;&lt;EOF&gt;&gt;</code> 
-
-<P>
-Sigue un programa que reconoce los comentarios anidados en C.
-Para detectar comentarios incacabados usaremos  <code>&lt;&lt;EOF&gt;&gt;</code>.
-<A NAME="nestedcomments"></A><PRE>
-%option stack
-%x comment
-%%
-"/*"   { yy_push_state(comment); }
-(.|\n) ECHO;
-&lt;comment&gt;"/*"     { yy_push_state(comment); } 
-&lt;comment&gt;"*/"     { yy_pop_state(); } 
-&lt;comment&gt;(.|\n)   ;
-&lt;comment&gt;&lt;&lt;EOF&gt;&gt;  { fprintf(stderr,"Error\n"); exit(1); }
-%%
-</PRE>
-
-<P>
-<PRE>
-$ cat hello.c
-main() {
-int a[1]; /* a /* nested comment */. */
-  a[0] = 4; /* a  /* nested comment in
-                 /* two */ lines  */ *****/
-}                                                   
-$ flex nestedcom.l ; gcc lex.yy.c -lfl ; a.out &lt; hello.c
-main() {
-int a[1];
-  a[0] = 4;
-}
-$ cat hello4.c
-main() {
-int a[1]; /* a /* nested comment */. */
-  a[0] = 4; /* an  /* incorrectly nested comment in
-                 /* two  lines  */ *****/
-}
-$ a.out &lt; hello4.c
-main() {
-int a[1];
-Error
-  a[0] = 4;
-</PRE>
-
-<P>
-
-<H2><A NAME="SECTION042217000000000000000">
-Uso de Dos Analizadores</A>
-</H2>
-La opción <code>-Pprefix</code> de flex cambia el prefijo por defecto <code>yy</code>
-para todas las variables globales y funciones. Por ejemplo 
-<code>-Pfoo</code> cambia el nombre de  <code>yytext</code> <code>footext</code>.  
-También cambia el nombre del fichero de salida 
-de  <code>lex.yy.c</code>  a <code>lex.foo.c</code>.  
-Sigue la lista de identificadores afectados:
-<PRE> 
-yy_create_buffer
-yy_delete_buffer
-yy_flex_debug
-yy_init_buffer
-yy_flush_buffer
-yy_load_buffer_state
-yy_switch_to_buffer
-yyin
-yyleng
-yylex
-yylineno
-yyout
-yyrestart
-yytext
-yywrap
-</PRE> 
-Desde dentro del analizador léxico puedes referirte a las 
-variables globales y funciones por cualquiera de los nombres,
-pero externamente tienen el nombre cambiado.
-Esta opción nos permite enlazar diferentes programas flex en un mismo ejecutable.
-
-<P>
-Sigue un ejemplo de uso de dos analizadores l&#233;xicos dentro del mismo programa:
-<PRE>
-$ cat one.l
-%%
-one {printf("1\n"); return 1;}
-.   {printf("First analyzer: %s\n",yytext);}
-%%
- 
-int onewrap(void) {
-  return 1;
-}
- 
-$ cat two.l
-%%
-two {printf("2\n"); return 2;}
-.   {printf("Second analyzer: %s\n",yytext);}
-%%
-int twowrap(void) {
-  return 1;
-}
-$ cat onetwo.c
-main() {
-  onelex();
-  twolex();
-}
-</PRE>
-Como hemos mencionado, la compilaci&#243;n <SPAN  CLASS="textit">flex</SPAN> se debe realizar con el opci&#243;n <code>-P</code>,
-que cambia el prefijo por defecto <code>yy</code> de las funciones
-y variables accesibles por el usuario.
-El mismo efecto puede conseguirse utilizando la opción <code>prefix</code>, escribiendo
-<code>%option prefix="one"</code> y <code>%option prefix="two"</code> en los respectivos programas 
-<code>one.l</code> y <code>two.l</code>. 
-<PRE>
-$ flex -Pone one.l
-$ flex -Ptwo two.l
-$ ls -ltr | tail -2
--rw-rw----   1 pl       casiano     36537 Nov  7 09:52 lex.one.c
--rw-rw----   1 pl       casiano     36524 Nov  7 09:52 lex.two.c
-$ gcc onetwo.c lex.one.c lex.two.c
-$ a.out
-two
-First analyzer: t
-First analyzer: w
-First analyzer: o
- 
-one
-1
-one
-Second analyzer: o
-Second analyzer: n
-Second analyzer: e
- 
-two
-2
-$
-</PRE>
-
-<P>
-
-<H2><A NAME="SECTION042218000000000000000">
-La Opción <TT>outfile</TT></A>
-</H2>
-Es posible utilizar la opción <code>-ooutput.c</code>  para escribir el 
-analizador léxico en el fichero <code>output.c</code> en vez de  en <code>lex.yy.c</code>.
-El mismo efecto puede obtenerse usando la opción <code>outfile="output.c"</code> dentro
-del programa <code>lex</code>.
-
-<P>
-
-<H2><A NAME="SECTION042219000000000000000">
-Leer desde una Cadena: YY_INPUT</A>
-</H2>
-En general, la rutina que hace el an&#225;lisis l&#233;xico,
-<SPAN  CLASS="textit">yylex()</SPAN>, lee su entrada a trav&#233;s de la macro
-<code>YY_INPUT</code>. Esta macro es llamada con tres par&#225;metros
-<DIV ALIGN="CENTER">
-<code>YY_INPUT(buf,result,max)</code> 
-
-</DIV>
-el primero, <SPAN  CLASS="textit">buf</SPAN> es utilizado para guardar la entrada.
-el tercero <SPAN  CLASS="textit">max</SPAN> indica el n&#250;mero de caracteres que <SPAN  CLASS="textit">yylex()</SPAN>
-pretende leer de la entrada. El segundo <SPAN  CLASS="textit">result</SPAN> contendr&#225; el n&#250;mero 
-de caracteres realmente le&#305;dos. Para poder leer desde una cadena
-(<SPAN  CLASS="textit">string</SPAN>) basta
-con modificar <code>YY_INPUT</code> para que copie los datos de la cadena en
-el <SPAN  CLASS="textit">buffer</SPAN> pasado como par&#225;metro a <code>YY_INPUT</code>. 
-Sigue un ejemplo: 
-<PRE>
-$ cat string.l
-%{
-#undef YY_INPUT
-#define YY_INPUT(b,r,m) (r = yystringinput(b,m))
-#define min(a,b) ((a&lt;b)?(a):(b))
-%}
- 
-%%
-[0-9]+ printf("Num-");
-[a-zA-Z][a-zA-Z_0-9]* printf("Id-");
-[ \t]+
-. printf("%c-",yytext[0]);
-%%
- 
-extern char string[];
-extern char *yyinputptr;
-extern char *yyinputlim;
- 
-int yystringinput(char *buf, int maxsize) {
-  int n = min(maxsize, yyinputlim-yyinputptr);
- 
-  if (n &gt; 0) {
-    memcpy(buf, yyinputptr, n);
-    yyinputptr += n;
-  }
-  return n;
-}
- 
-int yywrap() { return 1; }
-</PRE>
-Este es el fichero conteniendo la funci&#243;n <SPAN  CLASS="textit">main</SPAN>:
-<PRE>
-$ cat stringmain.c
-char string[] = "one=1;two=2";
-char *yyinputptr;
-char *yyinputlim;
- 
-main() {
-  yyinputptr = string;
-  yyinputlim = string + strlen(string);
-  yylex();
-  printf("\n");
-}
-</PRE>
-Y esta es la salida:
-<PRE>
-$ a.out
-Id-=-Num-;-Id-=-Num-
-</PRE>
-La cadena <code>string = "one=1;two=2"</code> definida en la línea 2 ha sido utilizada 
-como entrada para el análisis léxico.
-
-<P>
-
-<H2><A NAME="SECTION042220000000000000000">
-El operador de ``trailing context'' o ``lookahead'' positivo</A>
-</H2>
-En el lenguaje FORTRAN original los ``blancos'' no eran significativos
-y no se distinguía entre mayúsculas y minúsculas.
-Así pues la cadena <code>do i = 1, 10</code> es equivalente a la cadena
-<code>DOI=1,10</code>. Un conocido conflicto ocurre entre una cadena 
-con la estructura <code>do i = 1.10</code> (esto es <code>DOI=1.10</code>) y  
-la cadena anterior. En la primera <code>DO</code> e <code>I</code> son dos
-``tokens'' diferentes, el primero correspondiendo a la palabra reservada que indica un bucle. En la segunda, <code>DOI</code> constituye un único ``token''
-y la sentencia se refiere a una asignación.
-El conflicto puede resolverse utilizando el operador de ``trailing'' <code>r/s</code>. 
-Como se mencionó, el operador de ``trailing''<code>r/s</code> permite reconocer una <code>r</code> pero s&#243;lo si va seguida de una <code>s</code>. El texto casado con <code>s</code> se incluye a la hora de decidir cual es el emparejamiento mas largo, pero se devuelve a la entrada cuando se ejecuta la acci&#243;n. La acci&#243;n s&#243;lo ve el texto asociado con <code>r</code>.  El fichero <code>fortran4.l</code> ilustra una posible solución:
-<PRE>
- cat fortran4.l
-%array
-%{
-#include &lt;string.h&gt;
-#undef YY_INPUT
-#define YY_INPUT(buf,result,max) (result = my_input(buf,max))
-%}
-number [0-9]+
-integer [+-]?{number}
-float ({integer}\.{number}?|\.{number})(E{integer})?
-label [A-Z0-9]+
-id   [A-Z]{label}*
-%%
-DO/{label}={number}\, { printf("do loop\n"); }
-{id} { printf("Identifier %s\n",yytext); }
-{number} { printf("Num %d\n",atoi(yytext)); }
-{float} { printf("Float %f\n",atof(yytext)); }
-(.|\n)
-%%
-
-int my_input(char *buf, int max)
-{
-  char *q1, *q2, *p = (char *) malloc(max);
-  int i;
-  if ('\0' != fgets(p,max,yyin)) {
-    for(i=0, q1=buf, q2=p;(*q2 != '\0');q2++) {
-      if (*q2 != ' ') { *q1++ = toupper(*q2); i++; };
-    }
-    free(p);
-    return i;
-  }
-  else exit(1);
-}
-</PRE>
-La función 
-
-<P>
-<code>char *fgets(char *s, int size, FILE *stream)</code> 
-
-<P>
-lee a lo mas uno menos que <code>size</code> caracteres desde <code>stream</code> y los almacena en el <SPAN  CLASS="textit">buffer</SPAN>
-apuntado por <code>s</code>. La lectura termina después de un  <code>EOF</code> o un retorno de carro.
-Si se lee un <code>\n</code>, se almacena en el <SPAN  CLASS="textit">buffer</SPAN>. La función pone un carácter nulo <code>\0</code> 
-como último carácter en el <SPAN  CLASS="textit">buffer</SPAN>.
-
-<P>
-A continuación, puedes ver los detalles de una ejecución:
-<PRE>
-$ flex fortran4.l; gcc lex.yy.c -lfl; a.out
-do j = 1 . 10
-Identifier DOJ
-Float 1.100000
-do k = 1, 5
-do loop
-Identifier K
-Num 1
-Num 5
-</PRE>
-
-<P>
-
-<H2><A NAME="SECTION042221000000000000000"></A>
-<A NAME="section:include"></A>
+<H2><A NAME="SECTION04222000000000000000"></A>
+   <A NAME="3574"></A>
 <BR>
-Manejo de directivas <TT>include</TT>
+Ejercicio: Recorrido del árbol en un ADPR
 </H2>
-El analisis l&#233;xico de algunos lenguajes requiere que, durante la
-ejecuci&#243;n, se realice la lectura desde
-diferentes ficheros de entrada. El ejemplo t&#305;pico es el manejo de las
-directivas <SPAN  CLASS="textit">include file</SPAN> existentes en la mayor&#305;a de los lenguajes de
-programaci&#243;n.
-<BR>¿Donde est&#225; el problema? La dificultad reside en que los
-analizadores generados por <SPAN  CLASS="textit">flex</SPAN>
-proveen almacenamiento intermedio (<SPAN  CLASS="textit">buffers</SPAN>) para aumentar el
-rendimiento. No basta con reescribir nuestro propio <SPAN  CLASS="textit">YY_INPUT</SPAN> de
-manera que tenga en cuenta con que fichero se esta trabajando. 
-El analizador s&#243;lo llama a <SPAN  CLASS="textit">YY_INPUT</SPAN> cuando alcanza el final de su
-<SPAN  CLASS="textit">buffer</SPAN>, lo cual puede ocurrir bastante despu&#233;s de haber
-encontrado la sentencia <SPAN  CLASS="textit">include</SPAN> que requiere el cambio de
-fichero de entrada.
-<PRE>
-$ cat include.l
-%x incl
-%{
-#define yywrap() 1
-#define MAX_INCLUDE_DEPTH 10
-YY_BUFFER_STATE include_stack[MAX_INCLUDE_DEPTH];
-int include_stack_ptr = 0;
-%}
-%%
-include          BEGIN(incl);
-.                ECHO;
-&lt;incl&gt;[ \t]*
-&lt;incl&gt;[^ \t\n]+  { /* got the file name */
-                   if (include_stack_ptr &gt;= MAX_INCLUDE_DEPTH) {
-                     fprintf(stderr,"Includes nested too deeply\n");
-                     exit(1);
-                   }
-                   include_stack[include_stack_ptr++] = YY_CURRENT_BUFFER;
-                   yyin = fopen(yytext,"r");
-                   if (!yyin) {
-                     fprintf(stderr,"File %s not found\n",yytext);
-                     exit(1);
-                   }
-                   yy_switch_to_buffer(yy_create_buffer(yyin, YY_BUF_SIZE));
-                   BEGIN(INITIAL);
-                 }
-&lt;&lt;EOF&gt;&gt; {
-          if ( --include_stack_ptr &lt; 0) {
-            yyterminate();
-          } else {
-            yy_delete_buffer(YY_CURRENT_BUFFER);
-            yy_switch_to_buffer(include_stack[include_stack_ptr]);
-          }
-        }
-%%
-main(int argc, char ** argv) {
- 
-  yyin = fopen(argv[1],"r");
-  yylex();
-}
-</PRE>
-La funci&#243;n <code>yy_create_buffer(yyin, YY_BUF_SIZE));</code> crea  un <SPAN  CLASS="textit">buffer</SPAN>
-lo suficientemente grande para mantener <code>YY_BUF_SIZE</code> caracteres. Devuelve un 
-<code>YY_BUFFER_STATE</code>, que puede ser pasado a otras rutinas. <code>YY_BUFFER_STATE</code> es un puntero a
-una estructura de datos opaca (<code>struct yy_buffer_state</code>) que contiene la informaci&#243;n para la manipulaci&#243;n
-del <SPAN  CLASS="textit">buffer</SPAN>. Es posible por tanto inicializar un puntero <code>YY_BUFFER_STATE</code>
-usando la expresión <code>((YY_BUFFER_STATE) 0)</code>.
-
-<P>
-La funci&#243;n <code>yy_switch_to_buffer(YY_BUFFER_STATE new_buffer);</code> conmuta la entrada 
-del analizador l&#233;xico. La funci&#243;n <code>void yy_delete_buffer( YY_BUFFER_STATE buffer )</code>
-se usa para recuperar la memoria consumida por un <SPAN  CLASS="textit">buffer</SPAN>.  Tambi&#233;n se pueden limpiar 
-los contenidos actuales de un buffer llamando a:
-<code>void yy_flush_buffer( YY_BUFFER_STATE buffer )</code>
-
-<P>
-La regla especial <code>&lt;&lt;EOF&gt;&gt;</code> indica la acci&#243;n a ejecutar cuando 
-se ha encontrado un final de fichero e <code>yywrap()</code> retorna un valor
-distinto de cero. Cualquiera que sea la acci&#243;n asociada, esta debe terminar 
-con uno de estos cuatro supuestos:
-
-<OL>
-<LI>Asignar <code>yyin</code> a un nuevo fichero de entrada.
-</LI>
-<LI>Ejecutar <code>return</code>.
-</LI>
-<LI>Ejecutar <code>yyterminate()</code>.
-</LI>
-<LI>Cambiar a un nuevo buffer usando <code>yy_switch_to_buffer()</code>.
-
-<P>
-La regla <code>&lt;&lt;EOF&gt;&gt;</code> no se puede mezclar con otros patrones.
-</LI>
-</OL>
-
-<P>
-Este es el resultado de una ejecuci&#243;n del programa:
-<PRE>
-$ cat hello.c
-#include hello2.c
-main() &lt;%
-int a&lt;:1:&gt;; /* a comment */
-  a&lt;:0:&gt; = 4; /* a comment in
-                 two lines */
-  printf("\thell\157\nworld! a(0) is %d\n",a&lt;:0:&gt;);
-%&gt;
-$ cat hello2.c
-#include hello3.c
-/* file hello2.c  */
-$ cat hello3.c
-/*
-third file
-*/
-$ flex include.l ; gcc lex.yy.c ; a.out hello.c
-##/*
-third file
-*/
- 
-/* file hello2.c  */
- 
-main() &lt;%
-int a&lt;:1:&gt;; /* a comment */
-  a&lt;:0:&gt; = 4; /* a comment in
-                 two lines */
-  printf("\thell\157\nworld! a(0) is %d\n",a&lt;:0:&gt;);
-%&gt;                                                            
-</PRE>
-Una alternativa a usar el patrón <code>&lt;&lt;EOF&gt;&gt;</code>
-es dejar la responsabilidad de recuperar el <SPAN  CLASS="textit">buffer</SPAN> anterior
-a <code>yywrap()</code>. En tal caso suprimiríamos esta parajea patrón-acción
-y reescribiríamos <code>yywrap()</code>:
-<PRE>
-%x incl
-%{
-#define MAX_INCLUDE_DEPTH 10
-YY_BUFFER_STATE include_stack[MAX_INCLUDE_DEPTH];
-int include_stack_ptr = 0;
-%}
-%%
-include          BEGIN(incl);
-.                ECHO;
-&lt;incl&gt;[ \t]*
-&lt;incl&gt;[^ \t\n]+  { /* got the file name */
-                   if (include_stack_ptr &gt;= MAX_INCLUDE_DEPTH) {
-		     fprintf(stderr,"Includes nested too deeply\n");
-		     exit(1);
-		   }
-		   include_stack[include_stack_ptr++] = YY_CURRENT_BUFFER;
-		   yyin = fopen(yytext,"r");
-		   if (!yyin) {
-		     fprintf(stderr,"File %s not found\n",yytext);
-		     exit(1);
-		   }
-		   yy_switch_to_buffer(yy_create_buffer(yyin, YY_BUF_SIZE));
-		   BEGIN(INITIAL);
-		 }
-%%
-main(int argc, char ** argv) {
-
-  yyin = fopen(argv[1],"r");
-  yylex();
-}
-
-int yywrap() {
-  if ( --include_stack_ptr &lt; 0) { 
-    return 1;
-  } else {
-    yy_delete_buffer(YY_CURRENT_BUFFER);
-    yy_switch_to_buffer(include_stack[include_stack_ptr]);
-    return 0;
-  }
-}
-</PRE>
-
-<P>
-
-<H2><A NAME="SECTION042222000000000000000">
-An&#225;lisis Léxico desde una Cadena: <TT>yy_scan_string</TT></A>
-</H2>
-El objetivo de este ejercicio es mostrar como realizar un
-an&#225;lisis l&#233;xico de los argumentos pasados en la l&#305;nea de
-comandos. Para ello <SPAN  CLASS="textit">flex</SPAN> provee la funci&#243;n <code>yy_scan_string(const char * str)</code>.
-Esta rutina crea un nuevo <SPAN  CLASS="textit">buffer</SPAN> de entrada y devuelve el correspondiente
-manejador <code>YY_BUFFER_STATE</code> asociado con la cadena
-<code>str</code>. Esta cadena debe estar terminada por un car&#225;cter <code>\0</code>. 
-Podemos liberar la memoria asociada con
-dicho <SPAN  CLASS="textit">buffer</SPAN> utilizando <code>yy_delete_buffer(BUFFER)</code>.
-La siguiente llamada a <code>yylex()</code> realizar&#225; el an&#225;lisis l&#233;xico
-de la cadena <code>str</code>.
-
-<P>
-<PRE>
-$ cat scan_str.l
-%%
-[0-9]+     printf("num\n");
-[a-zA-Z]+  printf("Id\n");
-%%
-main(int argc, char ** argv) {
-int i;
- 
-  for(i=1;i&lt;argc;i++) {
-    yy_scan_string(argv[i]);
-    yylex();
-    yy_delete_buffer(YY_CURRENT_BUFFER);
-  }
-}
- 
-int yywrap() { return 1; }
-$ flex scan_str.l ; gcc lex.yy.c ; a.out Hello World! 1234
-Id
-Id
-!num
-</PRE>
-Alternativamente, la función <code>main()</code> podría haber sido escrita asi:
-<PRE>
-main(int argc, char ** argv) {
-int i;
-YY_BUFFER_STATE p;
-
-  for(i=1;i&lt;argc;i++) {
-    p = yy_scan_string(argv[i]);
-    yylex();
-    yy_delete_buffer(p);
-  }
-}
-</PRE>
-La funci&#243;n <code>yy_scan_bytes(const char * bytes, int len)</code> hace lo mismo que 
-<code>yy_scan_string</code> pero en vez de una cadena terminada en
-el car&#225;cter nulo, se usa la longitud <code>len</code>.
-Ambas funciones <code>yy_scan_string(const char * str)</code> y
-<code>yy_scan_bytes(const char * bytes, int len)</code> hacen una copia
-de la cadena pasada como argumento.
-
-<P>
-Estas dos funciones crean una copia de la cadena original. Es mejor que sea asi, ya que <code>yylex()</code>
-modifica los contenidos del <SPAN  CLASS="textit">buffer</SPAN> de trabajo. Si queremos evitar la copia,
-podemos usar 
-
-<P>
-<code>yy_scan_buffer(char *base, yy_size_t size)</code>,
-
-<P>
-la cual trabaja directamente con el <SPAN  CLASS="textit">buffer</SPAN> que comienza en <code>base</code>, 
-de tamaño <code>size</code> <SPAN  CLASS="textit">bytes</SPAN>, los últimos dos de los cuáles deben
-ser <code>YY_END_OF_BUFFER_CHAR</code> (ASCII  NUL).   
-Estos dos últimos <SPAN  CLASS="textit">bytes</SPAN> no son ``escaneados''. El área de rastreo va
-desde <code>base[0]</code> a <code>base[size-2]</code>, inclusive.
-Si nos olvidamos de hacerlo de este modo y no establecemos los dos <SPAN  CLASS="textit">bytes</SPAN> finales,
-la función <code>yy_scan_buffer()</code> devuelve un puntero nulo
-y no llega a crear el nuevo buffer de entrada.
-El tipo  <code>yy_size_t</code> es un tipo entero.
-Como cabe esperar, <code>size</code> se refiere al tamaño del <SPAN  CLASS="textit">buffer</SPAN>.
-
-<P>
-
-<H2><A NAME="SECTION042223000000000000000">
-An&#225;lisis de la L&#305;nea de Comandos y 2 Analizadores</A>
-</H2>
-El objetivo de este ejercicio es mostrar como realizar un
-an&#225;lisis l&#233;xico de los argumentos pasados en la l&#305;nea de
-comandos.  Para ello dise&#241;aremos una librer&#305;a que proporcionar&#225; un 
-funci&#243;n <code>yylexarg(argc,argv)</code> que hace el an&#225;lisis
-de la l&#305;nea de acuerdo con la especificaci&#243;n
-<SPAN  CLASS="textit">flex</SPAN> correspondiente. En el ejemplo, esta descripci&#243;n del analizador l&#233;xico
-es proporcionada en el fichero <SPAN  CLASS="textit">fl.l</SPAN>.  Para complicar un poco mas
-las cosas, supondremos que queremos hacer el an&#225;lisis l&#233;xico
-de un fichero (especificado en la l&#305;nea de comandos) seg&#250;n 
-se especifica en un segundo analizador l&#233;xico <SPAN  CLASS="textit">trivial.l</SPAN>.
-El siguiente ejemplo de ejecuci&#243;n muestra la conducta del programa:
-<PRE>
-$ fl -v -V -f tokens.h
-verbose mode is on
-version 1.0
-File name is: tokens.h
-Analyzing tokens.h
-#-id-blanks-id-blanks-int-blanks-#-id-blanks-id-blanks-int-blanks-#-id-blanks-id-blanks
--int-blanks-#-id-blanks-id-blanks-int-blanks-#-id-blanks-id-blanks-int-blanks-
-</PRE>
-Los contenidos del fichero <SPAN  CLASS="textit">Makefile</SPAN> definen las dependencias 
-y la estructura de la aplicaci&#243;n:
-<PRE>
-$ cat Makefile
-LIBS=-lflarg
-CC=gcc -g
-LIBPATH=-L. -L~/lib
-INCLUDES=-I. -I~/include
- 
-fl: main.c lex.arg.c lex.yy.c libflarg.a tokens.h
-        $(CC) $(LIBPATH) $(INCLUDES) main.c lex.arg.c lex.yy.c $(LIBS) -o fl
-lex.arg.c: fl.l
-        flex -Parg fl.l
-lex.yy.c: trivial.l tokens.h
-        flex trivial.l
-libflarg.a: flarg.o
-        ar r libflarg.a flarg.o
-flarg.o: flarg.c
-        $(CC) -c flarg.c
-clean:                                 
-$ make clean;make
-rm lex.arg.c lex.yy.c *.o  fl
-flex -Parg fl.l
-flex trivial.l
-gcc -g -c flarg.c
-ar r libflarg.a flarg.o
-gcc -g -L. -L~/lib -I. -I~/include main.c lex.arg.c lex.yy.c -lflarg -o fl
-</PRE>
-Observa el uso de la opci&#243;n <code>-Parg</code> en la traducci&#243;n del fichero 
-<SPAN  CLASS="textit">fl.l</SPAN>. As&#305; no solo el fichero generado por <SPAN  CLASS="textit">flex</SPAN>, sino todas las variables
-y rutinas accesibles estar&#225;n prefijadas por <SPAN  CLASS="textit">arg</SPAN> en vez de <SPAN  CLASS="textit">yy</SPAN>. 
-La librer&#305;a la denominamos <SPAN  CLASS="textit">libflarg.a</SPAN>. (<SPAN  CLASS="textit">flarg</SPAN> 
-por <SPAN ID="txt3606">fl</SPAN>ex <SPAN ID="txt3607">arg</SPAN>uments). 
-El correspondiente fichero cabecera ser&#225; <SPAN  CLASS="textit">flarg.h</SPAN>.
-Los fuentes de las rutinas que compondr&#225;n la 
-librer&#305;a se mantendr&#225;n en el fichero <SPAN  CLASS="textit">flarg.c</SPAN>.
-
-<P>
-Lo que haremos ser&#225; redefinir <code>YY_INPUT(buf, result, max)</code> para que
-lea su entrada desde la l&#305;nea de argumentos.
-<PRE>
-$ cat flarg.h
-int yyarglex(int argc, char **argv);
-int YY_input_from_argv(char *buf, int max);
-int argwrap(void);
- 
-#undef YY_INPUT
-#define YY_INPUT(buf,result,max) (result = YY_input_from_argv(buf,max))
-</PRE>
-La funci&#243;n <code>int YY_input_from_argv(char *buf, int max)</code> utiliza los punteros
-<code>char **YY_targv</code> y <code>char **YY_arglim</code> para moverse a trav&#233;s
-de la familia de argumentos. Mientras que el primero es utilizado para el
-recorrido, el segundo marca el l&#305;mite final. Su inicializaci&#243;n ocurre en
-
-<P>
-<DIV ALIGN="CENTER">
-<code>yyarglex(int argc, char **argv)</code>
-
-</DIV>
-con las asignaciones:
-<PRE>
-  YY_targv = argv+1;
-  YY_arglim = argv+argc;
-</PRE>
-
-<P>
-despues, de lo cual, se llama al analizador l&#233;xico generado, <SPAN  CLASS="textit">arglex</SPAN> .
-
-<P>
-<PRE>
-$ cat flarg.c
-char **YY_targv;
-char **YY_arglim;
- 
-int YY_input_from_argv(char *buf, int max)
-{
-  static unsigned offset = 0;
- 
-  int len, copylen;
- 
-    if (YY_targv &gt;= YY_arglim) return 0;        /* EOF */
-    len = strlen(*YY_targv)-offset;     /* amount of current arg */
-    if(len &gt;= max) {copylen = max-1; offset += copylen; }
-    else copylen = len;
-    if(len &gt; 0) memcpy(buf, YY_targv[0]+offset, copylen);
-    if(YY_targv[0][offset+copylen] == '\0') {   /* end of arg */
-      buf[copylen] = ' '; copylen++; offset = 0; YY_targv++;
-    }
-    return copylen;
-}
- 
-int yyarglex(int argc, char **argv) {
-  YY_targv = argv+1;
-  YY_arglim = argv+argc;
-  return arglex();
-}
- 
-int argwrap(void) {
-  return 1;
-}
-</PRE>
-El fichero <SPAN  CLASS="textit">fl.l</SPAN> contiene el analizador l&#233;xico de la l&#305;nea de comandos:
-<PRE>
-$ cat fl.l
-%{
-unsigned verbose;
-unsigned thereisfile;
-char *progName;
-char fileName[256];
-#include "flarg.h"
-#include "tokens.h"
-%}
- 
-%%
--h      |
-"-?"    |
--help   { printf("usage is: %s [-help | -h | -? ] [-verbose | -v]"
-         " [-Version | -V]"
-         " [-f filename]\n", progName);
-        }
- 
--v      |
--verbose { printf("verbose mode is on\n"); verbose = 1; }
- 
--V      |
--version { printf("version 1.0\n"); }
- 
--f[[:blank:]]+[^ \t\n]+ {
-              strcpy(fileName,argtext+3);
-              printf("File name is: %s\n",fileName);
-              thereisfile = 1;
-            }
-.
- 
-\n
-</PRE>
-Observe el uso de la clase <code>[:blank:]</code> para reconocer
-los blancos. Las clases son las mismas que las introducidas
-en <SPAN  CLASS="textit">gawk</SPAN>.
-
-<P>
-El an&#225;lisis l&#233;xico del fichero que se lee despu&#233;s de procesar la
-l&#305;nea de comandos es descrito en <SPAN  CLASS="textit">trivial.l</SPAN>.
-Partiendo de <SPAN  CLASS="textit">trivial.l</SPAN>, la ejecuci&#243;n del <SPAN  CLASS="textit">Makefile</SPAN>
-da lugar a la construcci&#243;n por parte de <SPAN  CLASS="textit">flex</SPAN> del fichero 
-<SPAN  CLASS="textit">lex.yy.c</SPAN> conteniendo la rutina <SPAN  CLASS="textit">yylex</SPAN>.
-<PRE>
-$ cat trivial.l
-%{
-#include "tokens.h"
-%}
-digit [0-9]
-id [a-zA-Z][a-zA-Z0-9]+
-blanks [ \t\n]+
-operator [+*/-]
-%%
-{digit}+ {return INTTOKEN; }
-{digit}+"."{digit}+ {return FLOATTOKEN; }
-{id} {return IDTOKEN;}
-{operator} {return OPERATORTOKEN;}
-{blanks} {return BLANKTOKEN;}
-. {return (int) yytext[0];}
-%%
-int yywrap() {
-  return 1;
-}
-</PRE>
-El fichero <SPAN  CLASS="textit">tokens.h</SPAN> contiene la definici&#243;n de los <SPAN  CLASS="textit">tokens</SPAN>
-y es compartido con <SPAN  CLASS="textit">main.c</SPAN>. 
-<PRE>
-$ cat tokens.h
-#define INTTOKEN  256
-#define FLOATTOKEN 257
-#define IDTOKEN 258
-#define OPERATORTOKEN 259
-#define BLANKTOKEN 260
-</PRE>
-Nos queda por presentar el fichero <SPAN  CLASS="textit">main.c</SPAN>:
-<PRE>
-$ cat main.c
-#include &lt;stdio.h&gt;
-#include "flarg.h"
-#include "tokens.h"
-extern unsigned verbose;
-extern unsigned thereisfile;
-extern char *progName;
-extern char fileName[256];
-extern FILE * yyin;
- 
-main(int argc, char **argv) {
-  unsigned lookahead;
-  FILE * file;
- 
-  progName = *argv;
-  yyarglex(argc,argv);
-  if (thereisfile) {
-    if (verbose) printf("Analyzing %s\n",fileName);
-    file = (fopen(fileName,"r"));
-    if (file == NULL) exit(1);
-    yyin = file;
-    while (lookahead = yylex()) {
-      switch (lookahead) {
-        case INTTOKEN:
-            printf("int-");
-            break;
-          case FLOATTOKEN:
-            printf("float-");
-            break;
-          case IDTOKEN:
-            printf("id-");
-            break;
-          case OPERATORTOKEN:
-            printf("operator-");
-            break;
-          case BLANKTOKEN:
-            printf("blanks-");
-            break;
-          default: printf("%c-",lookahead);
-       }
-    } /* while */
-    printf("\n");
-  } /* if */
-}
-</PRE>
-
-<P>
-
-<H2><A NAME="SECTION042224000000000000000">
-Declaraciones pointer y array</A>
-</H2>
-Como se coment&#243;, las opciones <code>%pointer</code> y <code>%array</code>
-controlan la definici&#243;n que
-<SPAN  CLASS="textit">flex</SPAN> hace de <SPAN  CLASS="textit">yytext</SPAN>. en el caso en que eligamos la opci&#243;n 
-<code>%array</code> la variable <code>YYLMAX</code> controla el tama&#241;o del
-<SPAN  CLASS="textit">array</SPAN>. Supongamos que en el fichero <SPAN  CLASS="textit">trivial.l</SPAN> del ejemplo
-anterior introducimos las siguientes modificaciones:
-<PRE>
-$ cat trivial.l
-%array
-%{
-#undef YYLMAX
-#define YYLMAX 4
-#include "tokens.h"
-%}
-digit [0-9]
-id [a-zA-Z][a-zA-Z0-9]+
-blanks [ \t\n]+
-operator [+*/-]
-%%
-{digit}+ {return INTTOKEN; }
-{digit}+"."{digit}+ {return FLOATTOKEN; }
-{id} {return IDTOKEN;}
-{operator} {return OPERATORTOKEN;}
-{blanks} {return BLANKTOKEN;}
-. {return (int) yytext[0];}
-%%
-int yywrap() {
-  return 1;
-  }
-</PRE>
-En tal caso, la definici&#243;n excesivamente peque&#241;a de YYLMAX provoca
-un error en tiempo de ejecuci&#243;n:
-<PRE>
-$ fl -V -f tokens.h
-version 1.0
-File name is: tokens.h
-token too large, exceeds YYLMAX
-</PRE>
-
-<P>
-
-<H2><A NAME="SECTION042225000000000000000">
-Las Macros <TT>YY_USER_ACTION</TT>, <TT>yy_act</TT> e <TT>YY_NUM_RULES</TT></A>
-</H2>
-La macro <code>YY_USER_ACTION</code> permite ejecutar una acción inmediatamente después del ``emparejamiento'' y antes de  la ejecución de la acción asociada.
-cuando se la invoca, la variable <code>yy_act</code> contiene el número de la regla que ha emparejado (las reglas se numeran a partir de uno). La macro <code>YY_NUM_RULES</code> contiene el número de reglas, incluyendo la regla por defecto.
-
-<P>
-El siguiente programa aprovecha
-dichas macros para mostrar las frecuencias de uso de las reglas.
-<PRE>
-$ cat user_action.l
-%array
-%{
-#include &lt;string.h&gt;
- 
-int ctrl[YY_NUM_RULES];
-#undef YY_USER_ACTION
-#define YY_USER_ACTION { ++ctrl[yy_act]; }
-%}
-number [0-9]+
-id   [a-zA-Z_]+[a-zA-Z0-9_]*
-whites [ \t\n]+
-%%
-{id}
-{number}
-{whites}
-.
-%%
- 
-int yywrap() {
-  int i;
- 
-  for(i=1;i&lt;YY_NUM_RULES;i++)
-    printf("Rule %d: %d occurrences\n",i,ctrl[i]);
-}
-                                                  
-$ flex user_action.l ; gcc lex.yy.c -lfl ; a.out
-a=b+2*(c-4)
-Rule 1: 3 occurrences
-Rule 2: 2 occurrences
-Rule 3: 1 occurrences
-Rule 4: 6 occurrences
-</PRE>
-
-<P>
-
-<H2><A NAME="SECTION042226000000000000000">
-Las opciones <TT>interactive</TT></A>
-</H2>
-La opción <code>option always-interactive</code>  hace que <code>flex</code> genere un analizador que considera que su entrada es ``interactiva''. Concretamente, el analizador para cada nuevo fichero de entrada, intenta determinar si se trata de un a entrada interactiva o desde fichero haciendo una llamada a la función <code>isatty()</code>.  Vea un ejemplo de uso de esta función:
-
-<P>
-<PRE>
-$ cat isatty.c
-#include &lt;unistd.h&gt;
-#include &lt;stdio.h&gt;
-main() {
- 
-  if (isatty(0))
-    printf("interactive\n");
-  else
-    printf("non interactive\n");
-}
-$ gcc isatty.c; a.out
-interactive
-$ a.out &lt; isatty.c
-non interactive
-$
-</PRE>
-cuando se usa la opción <code>option always-interactive</code>, se elimina esta llamada.
-
-<P>
-
-<H2><A NAME="SECTION042227000000000000000">
-La macro <TT>YY_BREAK</TT></A>
-</H2>
-Las acciones asociadas con los patrones se agrupan en 
-la rutina de análisis léxico <code>yylex()</code> en una sentencia
-<code>switch</code> y se separan mediante llamadas a la
-macro <code>YY_BREAK</code>. Asi, al compilar con
-<code>flex</code> el siguiente fichero <code>.l</code>
-<PRE>
-$ cat interactive.l
-%%
-. printf("::%c",yytext[0]);
-\n printf("::%c",yytext[0]);      
-</PRE>
-tenemos el fichero de salida <code>lex.yy.c</code>
-que aparece a continuación (hemos omitido 
-las líneas de código en las que estamos menos interesados, 
-sustituyendolas por puntos suspensivos)
-<PRE>
-/* A lexical scanner generated by flex */
-....
-#define YY_NUM_RULES 3
-#line 1 "interactive.l"
-#define INITIAL 0
-#line 363 "lex.yy.c"
-....
-YY_DECL {
- ....
-#line 1 "interactive.l"
-#line 516 "lex.yy.c"
- ....
- if ( yy_init ) {
-   yy_init = 0;
-#ifdef YY_USER_INIT
-   YY_USER_INIT;
-#endif
-   if ( ! yy_start ) yy_start = 1;  /* first start state */
-   if ( ! yyin ) yyin = stdin;
-   if ( ! yyout ) yyout = stdout;
-   if ( ! yy_current_buffer ) yy_current_buffer = yy_create_buffer( yyin, YY_BUF_SIZE );
-   yy_load_buffer_state();
- }
- while ( 1 )    /* loops until end-of-file is reached */ {
-   ............................
-yy_match:
-   do {
-    .....
-   }
-   ............
-yy_find_action:
-   ............
-   YY_DO_BEFORE_ACTION;
-   do_action:  /* This label is used only to access EOF actions. */
-     switch ( yy_act ) { /* beginning of action switch */
-       case 0: 
-         ...................
-         goto yy_find_action;
-     case 1:
-     YY_RULE_SETUP
-     #line 2 "interactive.l"
-     printf("::%c",yytext[0]);
-       YY_BREAK
-     case 2:
-     YY_RULE_SETUP
-     #line 3 "interactive.l"
-     printf("::%c",yytext[0]);
-       YY_BREAK
-     case 3:
-     YY_RULE_SETUP
-     #line 4 "interactive.l"
-     ECHO;
-       YY_BREAK
-     #line 614 "lex.yy.c"
-     case YY_STATE_EOF(INITIAL):
-       yyterminate();
-       case YY_END_OF_BUFFER:
-         { .....  }
-     default:
-       YY_FATAL_ERROR("fatal flex scanner internal error--no action found");
-  } /* end of action switch */
- } /* end of scanning one token */
-} /* end of yylex */
-
-#if YY_MAIN
-int main()
-  { yylex(); return 0; }
-#endif
-#line 4 "interactive.l"
-</PRE>
-Por defecto, la macro 
+  
+¿En que forma es recorrido el árbol de análisis sintáctico concreto en un 
+analizador descendente predictivo recursivo? ¿En que orden son visitados los nodos?
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html2279"
+<A NAME="tex2html1793"
   HREF="node21.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2273"
+<A NAME="tex2html1787"
   HREF="node18.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2269"
+<A NAME="tex2html1781"
   HREF="node19.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2275"
-  HREF="node230.html">
+<A NAME="tex2html1789"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2277"
-  HREF="node233.html">
+<A NAME="tex2html1791"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -2381,17 +815,17 @@ Por defecto, la macro
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2280"
-  HREF="node21.html">Expresiones Regulares en Perl</A>
-<B>Sup:</B> <A NAME="tex2html2274"
-  HREF="node18.html">Expresiones Regulares en C</A>
-<B> Ant:</B> <A NAME="tex2html2270"
-  HREF="node19.html">Expresiones Regulares Posix en</A>
+<B> Sig:</B> <A NAME="tex2html1794"
+  HREF="node21.html">Recursión por la Izquierda</A>
+<B>Sup:</B> <A NAME="tex2html1788"
+  HREF="node18.html">Analizadores Descendentes Predictivos en</A>
+<B> Ant:</B> <A NAME="tex2html1782"
+  HREF="node19.html">Conceptos Básicos para el</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-05-12</I>
+2014-09-02</I>
 </ADDRESS>
 </BODY>
 </HTML>

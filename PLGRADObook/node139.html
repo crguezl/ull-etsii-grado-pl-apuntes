@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Introducción</TITLE>
-<META NAME="description" CONTENT="Introducción">
+<TITLE>Passing a Request</TITLE>
+<META NAME="description" CONTENT="Passing a Request">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,28 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
+<LINK REL="next" HREF="node140.html">
 <LINK REL="previous" HREF="node138.html">
-<LINK REL="up" HREF="node138.html">
+<LINK REL="up" HREF="node125.html">
 <LINK REL="next" HREF="node140.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5117"
+<A NAME="tex2html4245"
   HREF="node140.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5111"
-  HREF="node138.html">
+<A NAME="tex2html4239"
+  HREF="node125.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5107"
+<A NAME="tex2html4233"
   HREF="node138.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5113"
-  HREF="node230.html">
+<A NAME="tex2html4241"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5115"
-  HREF="node233.html">
+<A NAME="tex2html4243"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -91,108 +92,66 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5118"
-  HREF="node140.html">Fundamentos</A>
-<B>Sup:</B> <A NAME="tex2html5112"
-  HREF="node138.html">Primeros Pasos</A>
-<B> Ant:</B> <A NAME="tex2html5108"
-  HREF="node138.html">Primeros Pasos</A>
+<B> Sig:</B> <A NAME="tex2html4246"
+  HREF="node140.html">Triggering Another Route: calling</A>
+<B>Sup:</B> <A NAME="tex2html4240"
+  HREF="node125.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html4234"
+  HREF="node138.html">halt</A>
 <B> Con:</B> 
-<A NAME="tex2html5113"
-  HREF="node230.html">
+<A NAME="tex2html4241"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5115"
-  HREF="node233.html">
+<A NAME="tex2html4243"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><A NAME="tex2html5119"
-  HREF="node139.html#SECTION06211000000000000000">Referencias sobre Sinatra</A>
-<LI><A NAME="tex2html5120"
-  HREF="node139.html#SECTION06212000000000000000">Ejercicio: Instale la Documentación en sinatra.github.com</A>
-</UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION06210000000000000000">
-Introducción</A>
+<H1><A NAME="SECTION063140000000000000000">
+Passing a Request</A>
 </H1>
+When we want to pass processing 
+to the next matching route we use
+<code>pass</code>:
 
 <P>
+<PRE>
+get '/guess/:who' do
+  pass unless params[:who] == 'Frank'
+  'You got me!'
+end
 
-<H2><A NAME="SECTION06211000000000000000">
-Referencias sobre Sinatra</A>
-</H2>
-
-<UL>
-<LI><A NAME="tex2html682"
-  HREF="http://spring493.deliciousrobots.com/">Ruby/Sinatra Class Page</A>
-</LI>
-<LI><A NAME="tex2html683"
-  HREF="https://vimeo.com/32363543">Sinatra introduction de Ben Schwarz </A>
-</LI>
-<LI><A NAME="tex2html684"
-  HREF="https://vimeo.com/5403424">How to create a Twilio app on Heroku
-de Morten Baga </A>
-</LI>
-<LI><A NAME="tex2html685"
-  HREF="https://vimeo.com/album/2121090/video/51898788">ArrrrCamp #6 - Aleksander Dabrowski - Sinatra autopsy</A>
-Vimeo
-</LI>
-</UL>
+get '/guess/*' do
+  'You missed!'
+end
+</PRE>
+The route block is immediately exited and control continues with
+the next matching route. 
 
 <P>
-Referencias sobre Rack:
-
-<UL>
-<LI><A NAME="tex2html686"
-  HREF="https://github.com/rack/rack/wiki">Rackup Wiki</A>
-</LI>
-<LI><A NAME="tex2html687"
-  HREF="https://vimeo.com/46906591">Understanding Rack de Tekpub Productions</A>
-</LI>
-</UL>
-
-<P>
-
-<H2><A NAME="SECTION06212000000000000000"></A>
-   <A NAME="20138"></A>
-<BR>
-Ejercicio: Instale la Documentación en sinatra.github.com
-</H2>
-  
-Instale la documentación de Sinatra en 
-<A NAME="tex2html688"
-  HREF="https://github.com/sinatra/sinatra.github.com">https://github.com/sinatra/sinatra.github.com</A>
-<P>
-A la hora de empezar la jerarquía de una aplicación sinatra se puede seguir la 
-estructura propuesta por 
-<A NAME="tex2html689"
-  HREF="https://github.com/leemartin/sinatra-stack">Lee Martin en sinatra-stack</A>
+If no matching route is found, a 404 is
+returned.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5117"
+<A NAME="tex2html4245"
   HREF="node140.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5111"
-  HREF="node138.html">
+<A NAME="tex2html4239"
+  HREF="node125.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5107"
+<A NAME="tex2html4233"
   HREF="node138.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5113"
-  HREF="node230.html">
+<A NAME="tex2html4241"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5115"
-  HREF="node233.html">
+<A NAME="tex2html4243"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -243,17 +202,17 @@ estructura propuesta por
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5118"
-  HREF="node140.html">Fundamentos</A>
-<B>Sup:</B> <A NAME="tex2html5112"
-  HREF="node138.html">Primeros Pasos</A>
-<B> Ant:</B> <A NAME="tex2html5108"
-  HREF="node138.html">Primeros Pasos</A>
+<B> Sig:</B> <A NAME="tex2html4246"
+  HREF="node140.html">Triggering Another Route: calling</A>
+<B>Sup:</B> <A NAME="tex2html4240"
+  HREF="node125.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html4234"
+  HREF="node138.html">halt</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-05-12</I>
+2014-09-02</I>
 </ADDRESS>
 </BODY>
 </HTML>

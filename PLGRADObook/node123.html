@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Ejemplo de Middleware: Rack::ETag</TITLE>
-<META NAME="description" CONTENT="Ejemplo de Middleware: Rack::ETag">
+<TITLE>Primeros Pasos</TITLE>
+<META NAME="description" CONTENT="Primeros Pasos">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node124.html">
-<LINK REL="previous" HREF="node122.html">
-<LINK REL="up" HREF="node104.html">
+<LINK REL="next" HREF="node125.html">
+<LINK REL="previous" HREF="node89.html">
+<LINK REL="up" HREF="node88.html">
 <LINK REL="next" HREF="node124.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4880"
+<A NAME="tex2html3900"
   HREF="node124.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4874"
-  HREF="node104.html">
+<A NAME="tex2html3894"
+  HREF="node88.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4868"
+<A NAME="tex2html3888"
   HREF="node122.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4876"
-  HREF="node230.html">
+<A NAME="tex2html3896"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4878"
-  HREF="node233.html">
+<A NAME="tex2html3898"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,145 +92,57 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4881"
-  HREF="node124.html">Construyendo Nuestro Propio Rack::Builder</A>
-<B>Sup:</B> <A NAME="tex2html4875"
-  HREF="node104.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4869"
-  HREF="node122.html">Middleware y la Clase</A>
+<B> Sig:</B> <A NAME="tex2html3901"
+  HREF="node124.html">Introducción</A>
+<B>Sup:</B> <A NAME="tex2html3895"
+  HREF="node88.html">PARTE: SINATRA</A>
+<B> Ant:</B> <A NAME="tex2html3889"
+  HREF="node122.html">Véase También</A>
 <B> Con:</B> 
-<A NAME="tex2html4876"
-  HREF="node230.html">
+<A NAME="tex2html3896"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4878"
-  HREF="node233.html">
+<A NAME="tex2html3898"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION061190000000000000000">
-Ejemplo de Middleware: Rack::ETag</A>
+<H1><A NAME="SECTION06200000000000000000">
+Primeros Pasos</A>
 </H1>
+<BR> <HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<P>
-An  <TT>ETag</TT>  or <A NAME="19094"></A><SPAN  CLASS="textbf">entity tag</SPAN>, is part of HTTP, the protocol for the World
-Wide Web. It is one of several mechanisms that HTTP provides for
-<A NAME="19096"></A><SPAN  CLASS="textbf">web cache validation</SPAN>, and which allows a client to make conditional
-requests. 
-
-<P>
-This allows caches to be more efficient, and saves
-bandwidth, as a web server does not need to send a full response
-if the content has not changed.
-
-<P>
-An ETag is an opaque identifier assigned by a web server to a
-specific version of a resource found at a URL. 
-
-<P>
-If the resource
-content at that URL ever changes, a new and different ETag is
-assigned. 
-
-<P>
-Used in this manner ETags are similar to fingerprints,
-and they can be quickly compared to determine if two versions of a
-resource are the same or not.
-
-<P>
-
-<OL>
-<LI><A NAME="tex2html624"
-  HREF="https://github.com/rack/rack/blob/master/lib/rack/etag.rb">Rack::ETag</A>
-en GitHub
-</LI>
-<LI>Documentación de <A NAME="tex2html625"
-  HREF="http://rack.rubyforge.org/doc/Rack/ETag.html">Rack::ETag</A>
-</LI>
-</OL>
-
-<P>
-<PRE>
-require 'digest/md5'
-
-module Rack
-  class ETag
-    DEFAULT_CACHE_CONTROL = "max-age=0, private, must-revalidate".freeze
-
-    def initialize(app, no_cache_control = nil, cache_control = DEFAULT_CACHE_CONTROL)
-      @app = app
-      @cache_control = cache_control
-      @no_cache_control = no_cache_control
-    end
-
-    def call(env)
-      status, headers, body = @app.call(env)
-
-      if etag_status?(status) &amp;&amp; etag_body?(body) &amp;&amp; !skip_caching?(headers)
-        digest, body = digest_body(body)
-        headers['ETag'] = %("#{digest}") if digest
-      end
-
-      unless headers['Cache-Control']
-        if digest
-          headers['Cache-Control'] = @cache_control if @cache_control
-        else
-          headers['Cache-Control'] = @no_cache_control if @no_cache_control
-        end
-      end
-
-      [status, headers, body]
-    end
-
-    private
-
-      def etag_status?(status)
-        status == 200 || status == 201
-      end
-
-      def etag_body?(body)
-        !body.respond_to?(:to_path)
-      end
-
-      def skip_caching?(headers)
-        (headers['Cache-Control'] &amp;&amp; headers['Cache-Control'].include?('no-cache')) ||
-          headers.key?('ETag') || headers.key?('Last-Modified')
-      end
-
-      def digest_body(body)
-        parts = []
-        digest = nil
-
-        body.each do |part|
-          parts &lt;&lt; part
-          (digest ||= Digest::MD5.new) &lt;&lt; part unless part.empty?
-        end
-
-        [digest &amp;&amp; digest.hexdigest, parts]
-      end
-  end
-end
-</PRE>
-
-<P>
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html3902"
+  HREF="node124.html">Introducción</A>
+<UL>
+<LI><A NAME="tex2html3903"
+  HREF="node124.html#SECTION06211000000000000000">Referencias sobre Sinatra</A>
+<LI><A NAME="tex2html3904"
+  HREF="node124.html#SECTION06212000000000000000">Ejercicio: Instale la Documentación en sinatra.github.com</A>
+</UL></UL>
+<!--End of Table of Child-Links-->
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4880"
+<A NAME="tex2html3900"
   HREF="node124.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4874"
-  HREF="node104.html">
+<A NAME="tex2html3894"
+  HREF="node88.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4868"
+<A NAME="tex2html3888"
   HREF="node122.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4876"
-  HREF="node230.html">
+<A NAME="tex2html3896"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4878"
-  HREF="node233.html">
+<A NAME="tex2html3898"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -281,17 +193,17 @@ end
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4881"
-  HREF="node124.html">Construyendo Nuestro Propio Rack::Builder</A>
-<B>Sup:</B> <A NAME="tex2html4875"
-  HREF="node104.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4869"
-  HREF="node122.html">Middleware y la Clase</A>
+<B> Sig:</B> <A NAME="tex2html3901"
+  HREF="node124.html">Introducción</A>
+<B>Sup:</B> <A NAME="tex2html3895"
+  HREF="node88.html">PARTE: SINATRA</A>
+<B> Ant:</B> <A NAME="tex2html3889"
+  HREF="node122.html">Véase También</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-05-12</I>
+2014-09-02</I>
 </ADDRESS>
 </BODY>
 </HTML>

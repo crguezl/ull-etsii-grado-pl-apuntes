@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Not Predicate: Comentarios Anidados</TITLE>
-<META NAME="description" CONTENT="Not Predicate: Comentarios Anidados">
+<TITLE>Práctica: Calculadora con Funciones</TITLE>
+<META NAME="description" CONTENT="Práctica: Calculadora con Funciones">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node54.html">
 <LINK REL="previous" HREF="node52.html">
-<LINK REL="up" HREF="node43.html">
+<LINK REL="up" HREF="node44.html">
 <LINK REL="next" HREF="node54.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3364"
+<A NAME="tex2html2471"
   HREF="node54.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3358"
-  HREF="node43.html">
+<A NAME="tex2html2465"
+  HREF="node44.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3352"
+<A NAME="tex2html2459"
   HREF="node52.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3360"
-  HREF="node230.html">
+<A NAME="tex2html2467"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3362"
-  HREF="node233.html">
+<A NAME="tex2html2469"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,154 +92,108 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3365"
-  HREF="node54.html">Un Lenguaje Dependiente del</A>
-<B>Sup:</B> <A NAME="tex2html3359"
-  HREF="node43.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html3353"
-  HREF="node52.html">Dangling else: Asociando un</A>
+<B> Sig:</B> <A NAME="tex2html2472"
+  HREF="node54.html">Práctica: Calculadora con Análisis</A>
+<B>Sup:</B> <A NAME="tex2html2466"
+  HREF="node44.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html2460"
+  HREF="node52.html">Práctica: Traducción de Infijo</A>
 <B> Con:</B> 
-<A NAME="tex2html3360"
-  HREF="node230.html">
+<A NAME="tex2html2467"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3362"
-  HREF="node233.html">
+<A NAME="tex2html2469"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html3366"
-  HREF="node53.html#SECTION046100010000000000000">Pascal_comments.pegjs</A>
-<LI><A NAME="tex2html3367"
-  HREF="node53.html#SECTION046100020000000000000">use_pascal_comments.js</A>
-<LI><A NAME="tex2html3368"
-  HREF="node53.html#SECTION046100030000000000000">Ejecución</A>
-<LI><A NAME="tex2html3369"
-  HREF="node53.html#SECTION046100040000000000000">Donde</A>
-</UL></UL></UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION046100000000000000000">
-Not Predicate: Comentarios Anidados</A>
+<H1><A NAME="SECTION04590000000000000000"></A>
+   <A NAME="6334"></A>
+<BR>
+Práctica: Calculadora  con Funciones
 </H1>
-The following recursive  <A NAME="tex2html410"
-  HREF="http://pegjs.majda.cz/">PEG.js</A>
-
-program  matches Pascal-style nested comment syntax:
-<PRE>
-(* which can (* nest *) like this *)
-</PRE>
 
 <P>
-
-<H4><A NAME="SECTION046100010000000000000">
-Pascal_comments.pegjs</A>
-</H4>
-  
-
-<PRE>
-$ cat pascal_comments.pegjs 
-/* Pascal nested comments */
-
-P     =   prog:N+                          { return prog; }
-N     =   chars:$(!Begin ANY)+             { return chars;}
-        / C
-C     = Begin chars:T* End                 { return chars.join(''); }
-T     =   C 
-        / (!Begin !End char:ANY)           { return char;}
-Begin = '(*'
-End   = '*)'
-ANY   =   'z'    /* any character */       { return 'z';  }
-        / char:[^z]                        { return char; }
-</PRE>
+Añada funciones y sentencias de llamada a función a la práctica de traducción 
+de infijo a postfijo
+<A HREF="node52.html#section:calculadoraampliada">5.8</A>. Sigue un ejemplo de traducción:
 
 <P>
-
-<H4><A NAME="SECTION046100020000000000000">
-use_pascal_comments.js</A>
-</H4>
-  
-
-<PRE>
-$ cat use_pascal_comments.js 
-var PEG = require("./pascal_comments.js");
-var r = PEG.parse(
-  "not bla bla (* pascal (* nested *) comment *)"+
-  " pum pum (* another comment *)");
-console.log(r);
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION046100030000000000000">
-Ejecución</A>
-</H4>
-  
-
-<PRE>
-$ ../bin/pegjs pascal_comments.pegjs 
-$ node use_pascal_comments.js 
-[ 'not bla bla ',
-  ' pascal  nested  comment ',
-  ' pum pum ',
-  ' another comment ' ]
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION046100040000000000000">
-Donde</A>
-</H4>
-  
-
-<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><PRE>
+def f(x) { x + 1 }
+def g(a, b) { a * f(b) }
+c = 3;
+f(1+c);
+g(3, 4)
+</PRE></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><PRE>
+:f      args :x
+        $x
+        1
+        +
+        return
+:g      args :a,:b
+        $a
+        $b
+        call :f
+        *
+        return
+:main:
+        3
+        &amp;c
+        =
+        1
+        c
+        +
+        call :f
+        3
+        4
+        call :g
+</PRE></TD>
+</TR>
+</TABLE>
 
 <UL>
-<LI><PRE>
-[~/srcPLgrado/pegjs/examples(master)]$ pwd -P
-/Users/casiano/local/src/javascript/PLgrado/pegjs/examples
-</PRE>
-
-<P>
+<LI>Las funciones retornan la última expresión evaluada
 </LI>
-<LI><PRE>
-[~/srcPLgrado/pegjs/examples(master)]$ git remote -v
-dmajda  https://github.com/dmajda/pegjs.git (fetch)
-dmajda  https://github.com/dmajda/pegjs.git (push)
-origin  git@github.com:crguezl/pegjs.git (fetch)
-origin  git@github.com:crguezl/pegjs.git (push)
-</PRE>
+<LI>Es un error llamar a una función con un número de argumentos 
+distinto que el número de parámetros con el que fué declarada
 </LI>
-<LI><A NAME="tex2html411"
-  HREF="https://github.com/crguezl/pegjs/tree/master/examples">https://github.com/crguezl/pegjs/tree/master/examples</A>
+<LI>En la llamada, los argumentos se empujan en la pila.
+Después la instrucción <code>call :etiqueta</code> llama a
+la función con el nombre dado por la <code>etiqueta</code>
+</LI>
+<LI>Dentro de la función los argumentos se sitúan por encima del puntero 
+base. La pseudo-instrucción <code>args, p1, p2, ...</code> da nombre a los 
+parámetros empujados. Dentro del cuerpo de la función nos referimos a ellos
+prefijándolos con <code>$</code>.
+</LI>
+<LI>La instrucción <code>return</code> limpia la pila dejándola en su estado anterior 
+y retorna la última expresión evaluada
 </LI>
 </UL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3364"
+<A NAME="tex2html2471"
   HREF="node54.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3358"
-  HREF="node43.html">
+<A NAME="tex2html2465"
+  HREF="node44.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3352"
+<A NAME="tex2html2459"
   HREF="node52.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3360"
-  HREF="node230.html">
+<A NAME="tex2html2467"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3362"
-  HREF="node233.html">
+<A NAME="tex2html2469"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -290,17 +244,17 @@ origin  git@github.com:crguezl/pegjs.git (push)
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3365"
-  HREF="node54.html">Un Lenguaje Dependiente del</A>
-<B>Sup:</B> <A NAME="tex2html3359"
-  HREF="node43.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html3353"
-  HREF="node52.html">Dangling else: Asociando un</A>
+<B> Sig:</B> <A NAME="tex2html2472"
+  HREF="node54.html">Práctica: Calculadora con Análisis</A>
+<B>Sup:</B> <A NAME="tex2html2466"
+  HREF="node44.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html2460"
+  HREF="node52.html">Práctica: Traducción de Infijo</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-05-12</I>
+2014-09-02</I>
 </ADDRESS>
 </BODY>
 </HTML>

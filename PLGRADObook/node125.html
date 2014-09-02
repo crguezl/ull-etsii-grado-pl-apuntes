@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Código de Rack::Builder</TITLE>
-<META NAME="description" CONTENT="Código de Rack::Builder">
+<TITLE>Fundamentos</TITLE>
+<META NAME="description" CONTENT="Fundamentos">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node126.html">
-<LINK REL="previous" HREF="node124.html">
-<LINK REL="up" HREF="node104.html">
+<LINK REL="next" HREF="node156.html">
+<LINK REL="previous" HREF="node123.html">
+<LINK REL="up" HREF="node88.html">
 <LINK REL="next" HREF="node126.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4908"
+<A NAME="tex2html3931"
   HREF="node126.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4902"
-  HREF="node104.html">
+<A NAME="tex2html3925"
+  HREF="node88.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4896"
+<A NAME="tex2html3919"
   HREF="node124.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4904"
-  HREF="node230.html">
+<A NAME="tex2html3927"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4906"
-  HREF="node233.html">
+<A NAME="tex2html3929"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,200 +92,254 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4909"
-  HREF="node126.html">Rack::Cascade</A>
-<B>Sup:</B> <A NAME="tex2html4903"
-  HREF="node104.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4897"
-  HREF="node124.html">Construyendo Nuestro Propio Rack::Builder</A>
+<B> Sig:</B> <A NAME="tex2html3932"
+  HREF="node126.html">Ejemplo Simple de uso</A>
+<B>Sup:</B> <A NAME="tex2html3926"
+  HREF="node88.html">PARTE: SINATRA</A>
+<B> Ant:</B> <A NAME="tex2html3920"
+  HREF="node124.html">Introducción</A>
 <B> Con:</B> 
-<A NAME="tex2html4904"
-  HREF="node230.html">
+<A NAME="tex2html3927"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4906"
-  HREF="node233.html">
+<A NAME="tex2html3929"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION061210000000000000000">
-Código de </A><A NAME="tex2html627"
-  HREF="http://rack.rubyforge.org/doc/Rack/Builder.html">Rack::Builder</A>
+<H1><A NAME="SECTION06300000000000000000">
+Fundamentos</A>
 </H1>
-Tomado de 
-<A NAME="tex2html628"
-  HREF="https://github.com/rack/rack/blob/master/lib/rack/builder.rb">https://github.com/rack/rack/blob/master/lib/rack/builder.rb</A>:
-<PRE>
-module Rack
-  # Rack::Builder implements a small DSL to iteratively construct Rack
-  # applications.
-  #
-  # Example:
-  #
-  #  require 'rack/lobster'
-  #  app = Rack::Builder.new do
-  #    use Rack::CommonLogger
-  #    use Rack::ShowExceptions
-  #    map "/lobster" do
-  #      use Rack::Lint
-  #      run Rack::Lobster.new
-  #    end
-  #  end
-  #
-  #  run app
-  #
-  # Or
-  #
-  #  app = Rack::Builder.app do
-  #    use Rack::CommonLogger
-  #    run lambda { |env| [200, {'Content-Type' =&gt; 'text/plain'}, ['OK']] }
-  #  end
-  #
-  #  run app
-  #
-  # +use+ adds middleware to the stack, +run+ dispatches to an application.
-  # You can use +map+ to construct a Rack::URLMap in a convenient way.
+<BR> <HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-  class Builder
-    def self.parse_file(config, opts = Server::Options.new)
-      options = {}
-      if config =~ /\.ru$/
-        cfgfile = ::File.read(config)
-        if cfgfile[/^#\\(.*)/] &amp;&amp; opts
-          options = opts.parse! $1.split(/\s+/)
-        end
-        cfgfile.sub!(/^__END__\n.*\Z/m, '')
-        app = new_from_string cfgfile, config
-      else
-        require config
-        app = Object.const_get(::File.basename(config, '.rb').capitalize)
-      end
-      return app, options
-    end
-
-    def self.new_from_string(builder_script, file="(rackup)")
-      eval "Rack::Builder.new {\n" + builder_script + "\n}.to_app",
-        TOPLEVEL_BINDING, file, 0
-    end
-
-    def initialize(default_app = nil,&amp;block)
-      @use, @map, @run = [], nil, default_app
-      instance_eval(&amp;block) if block_given?
-    end
-
-    def self.app(default_app = nil, &amp;block)
-      self.new(default_app, &amp;block).to_app
-    end
-
-    # Specifies middleware to use in a stack.
-    #
-    #   class Middleware
-    #     def initialize(app)
-    #       @app = app
-    #     end
-    #
-    #     def call(env)
-    #       env["rack.some_header"] = "setting an example"
-    #       @app.call(env)
-    #     end
-    #   end
-    #
-    #   use Middleware
-    #   run lambda { |env| [200, { "Content-Type =&gt; "text/plain" }, ["OK"]] }
-    #
-    # All requests through to this application will first be processed by the middleware class.
-    # The +call+ method in this example sets an additional environment key which then can be
-    # referenced in the application if required.
-    def use(middleware, *args, &amp;block)
-      if @map
-        mapping, @map = @map, nil
-        @use &lt;&lt; proc { |app| generate_map app, mapping }
-      end
-      @use &lt;&lt; proc { |app| middleware.new(app, *args, &amp;block) }
-    end
-
-    # Takes an argument that is an object that responds to #call and returns a Rack response.
-    # The simplest form of this is a lambda object:
-    #
-    #   run lambda { |env| [200, { "Content-Type" =&gt; "text/plain" }, ["OK"]] }
-    #
-    # However this could also be a class:
-    #
-    #   class Heartbeat
-    #     def self.call(env)
-    #      [200, { "Content-Type" =&gt; "text/plain" }, ["OK"]]
-    #    end
-    #   end
-    #
-    #   run Heartbeat
-    def run(app)
-      @run = app
-    end
-
-    # Creates a route within the application.
-    #
-    #   Rack::Builder.app do
-    #     map '/' do
-    #       run Heartbeat
-    #     end
-    #   end
-    #
-    # The +use+ method can also be used here to specify middleware to run under a specific path:
-    #
-    #   Rack::Builder.app do
-    #     map '/' do
-    #       use Middleware
-    #       run Heartbeat
-    #     end
-    #   end
-    #
-    # This example includes a piece of middleware which will run before requests hit +Heartbeat+.
-    #
-    def map(path, &amp;block)
-      @map ||= {}
-      @map[path] = block
-    end
-
-    def to_app
-      app = @map ? generate_map(@run, @map) : @run
-      fail "missing run or map statement" unless app
-      @use.reverse.inject(app) { |a,e| e[a] }
-    end
-
-    def call(env)
-      to_app.call(env)
-    end
-
-    private
-
-    def generate_map(default_app, mapping)
-      mapped = default_app ? {'/' =&gt; default_app} : {}
-      mapping.each { |r,b| mapped[r] = self.class.new(default_app, &amp;b) }
-      URLMap.new(mapped)
-    end
-  end
-end
-</PRE>
-
-<P>
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html3933"
+  HREF="node126.html">Ejemplo Simple de uso de Sinatra</A>
+<UL>
+<LI><A NAME="tex2html3934"
+  HREF="node126.html#SECTION06310010000000000000">Código</A>
+<LI><A NAME="tex2html3935"
+  HREF="node126.html#SECTION06310020000000000000">Opciones de Ejecución</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html3936"
+  HREF="node127.html">Rutas/Routes</A>
+<UL>
+<LI><A NAME="tex2html3937"
+  HREF="node127.html#SECTION06320010000000000000">Aplicacion</A>
+<LI><A NAME="tex2html3938"
+  HREF="node127.html#SECTION06320020000000000000">config.ru</A>
+<LI><A NAME="tex2html3939"
+  HREF="node127.html#SECTION06320030000000000000">Rakefile</A>
+<LI><A NAME="tex2html3940"
+  HREF="node127.html#SECTION06320040000000000000">Ejecución del servidor</A>
+<LI><A NAME="tex2html3941"
+  HREF="node127.html#SECTION06320050000000000000">Ejecución de los clientes</A>
+<LI><A NAME="tex2html3942"
+  HREF="node127.html#SECTION06321000000000000000">Verbos HTTP en Sinatra/Base</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html3943"
+  HREF="node128.html">Ficheros Estáticos</A>
+<LI><A NAME="tex2html3944"
+  HREF="node129.html">Vistas</A>
+<UL>
+<LI><A NAME="tex2html3945"
+  HREF="node129.html#SECTION06341000000000000000">Templates Inline</A>
+<LI><A NAME="tex2html3946"
+  HREF="node129.html#SECTION06342000000000000000">Named Templates</A>
+<LI><A NAME="tex2html3947"
+  HREF="node129.html#SECTION06343000000000000000">Templates Externos</A>
+<LI><A NAME="tex2html3948"
+  HREF="node129.html#SECTION06344000000000000000">Templates Externos en Subcarpetas</A>
+<LI><A NAME="tex2html3949"
+  HREF="node129.html#SECTION06345000000000000000">Variables en las Vistas</A>
+<UL>
+<LI><A NAME="tex2html3950"
+  HREF="node129.html#SECTION06345010000000000000">Comunicación vía variables de instancia</A>
+</UL>
+<LI><A NAME="tex2html3951"
+  HREF="node129.html#SECTION06346000000000000000">Pasando variables a la vista explícitamente via un hash</A>
+<LI><A NAME="tex2html3952"
+  HREF="node129.html#SECTION06347000000000000000">Opciones pasadas a los Métodos de los Templates</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html3953"
+  HREF="node130.html">Filtros</A>
+<UL>
+<LI><A NAME="tex2html3954"
+  HREF="node130.html#SECTION06350010000000000000">Before Filters</A>
+<LI><A NAME="tex2html3955"
+  HREF="node130.html#SECTION06350020000000000000">After Filters</A>
+<LI><A NAME="tex2html3956"
+  HREF="node130.html#SECTION06350030000000000000">Filters can take a Pattern</A>
+<LI><A NAME="tex2html3957"
+  HREF="node130.html#SECTION06350040000000000000">Filters can take a Condition</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html3958"
+  HREF="node131.html">Manejo de Errores</A>
+<UL>
+<LI><A NAME="tex2html3959"
+  HREF="node131.html#SECTION06360010000000000000">not_found</A>
+<LI><A NAME="tex2html3960"
+  HREF="node131.html#SECTION06360020000000000000">error</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html3961"
+  HREF="node132.html">The methods body, status and headers</A>
+<LI><A NAME="tex2html3962"
+  HREF="node133.html">Acceso al Objeto Request</A>
+<LI><A NAME="tex2html3963"
+  HREF="node134.html">Caching / Caches</A>
+<LI><A NAME="tex2html3964"
+  HREF="node135.html">Sesiones y Cookies en Sinatra</A>
+<UL>
+<LI><A NAME="tex2html3965"
+  HREF="node135.html#SECTION063100010000000000000">Introducción</A>
+<LI><A NAME="tex2html3966"
+  HREF="node135.html#SECTION063100020000000000000">Cookies</A>
+<LI><A NAME="tex2html3967"
+  HREF="node135.html#SECTION063100030000000000000">Ejemplo con Sesiones</A>
+<LI><A NAME="tex2html3968"
+  HREF="node135.html#SECTION063100040000000000000">Ejemplo con Cookies</A>
+<LI><A NAME="tex2html3969"
+  HREF="node135.html#SECTION063100050000000000000">Problemas</A>
+<LI><A NAME="tex2html3970"
+  HREF="node135.html#SECTION063100060000000000000">Véanse</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html3971"
+  HREF="node136.html">Downloads / Descargas / Attachments</A>
+<UL>
+<LI><A NAME="tex2html3972"
+  HREF="node136.html#SECTION063110010000000000000">Usando attachment</A>
+<LI><A NAME="tex2html3973"
+  HREF="node136.html#SECTION063110020000000000000">Usando send_file</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html3974"
+  HREF="node137.html">Uploads. Subida de Ficheros en Sinatra</A>
+<UL>
+<LI><A NAME="tex2html3975"
+  HREF="node137.html#SECTION063120010000000000000">Véase</A>
+<LI><A NAME="tex2html3976"
+  HREF="node137.html#SECTION063120020000000000000">Jerarquía de ficheros</A>
+<LI><A NAME="tex2html3977"
+  HREF="node137.html#SECTION063120030000000000000">upload.haml</A>
+<LI><A NAME="tex2html3978"
+  HREF="node137.html#SECTION063120040000000000000">app.rb</A>
+<LI><A NAME="tex2html3979"
+  HREF="node137.html#SECTION063120050000000000000">BEWARE!</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html3980"
+  HREF="node138.html">halt</A>
+<LI><A NAME="tex2html3981"
+  HREF="node139.html">Passing a Request</A>
+<LI><A NAME="tex2html3982"
+  HREF="node140.html">Triggering Another Route: calling <TT>call</TT></A>
+<LI><A NAME="tex2html3983"
+  HREF="node141.html">Logging</A>
+<UL>
+<LI><A NAME="tex2html3984"
+  HREF="node141.html#SECTION063160010000000000000">Logging a stdout y a un fichero</A>
+<LI><A NAME="tex2html3985"
+  HREF="node141.html#SECTION063160020000000000000">Ejecución</A>
+<LI><A NAME="tex2html3986"
+  HREF="node141.html#SECTION063160030000000000000">Véase</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html3987"
+  HREF="node142.html">Generating URLs</A>
+<LI><A NAME="tex2html3988"
+  HREF="node143.html">Redireccionamientos/Browser Redirect</A>
+<LI><A NAME="tex2html3989"
+  HREF="node144.html">Configuration / Configuración</A>
+<LI><A NAME="tex2html3990"
+  HREF="node145.html">Configuring attack protection</A>
+<LI><A NAME="tex2html3991"
+  HREF="node146.html">Settings disponibles/Available Settings</A>
+<LI><A NAME="tex2html3992"
+  HREF="node147.html">Environments</A>
+<LI><A NAME="tex2html3993"
+  HREF="node148.html">Correo</A>
+<LI><A NAME="tex2html3994"
+  HREF="node149.html">Ambito</A>
+<UL>
+<LI><A NAME="tex2html3995"
+  HREF="node149.html#SECTION063240010000000000000">Ámbito de Clase/Class Scope</A>
+<LI><A NAME="tex2html3996"
+  HREF="node149.html#SECTION063240020000000000000">Ámbito de Instancia/Instance Scope</A>
+<LI><A NAME="tex2html3997"
+  HREF="node149.html#SECTION063240030000000000000">Ejecución en el servidor</A>
+<LI><A NAME="tex2html3998"
+  HREF="node149.html#SECTION063240040000000000000">Ejecución en el cliente. Ruta: /define_route/juan</A>
+<LI><A NAME="tex2html3999"
+  HREF="node149.html#SECTION063240050000000000000">Ejecución en el cliente. Ruta: /juan</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html4000"
+  HREF="node150.html">Sinatra Authentication</A>
+<UL>
+<LI><A NAME="tex2html4001"
+  HREF="node150.html#SECTION063251000000000000000">Referencias</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html4002"
+  HREF="node151.html">Autentificación Básica</A>
+<LI><A NAME="tex2html4003"
+  HREF="node152.html">Sinatra como Middleware</A>
+<LI><A NAME="tex2html4004"
+  HREF="node153.html">Práctica: TicTacToe</A>
+<UL>
+<LI><A NAME="tex2html4005"
+  HREF="node153.html#SECTION063280010000000000000">Referencias</A>
+<LI><A NAME="tex2html4006"
+  HREF="node153.html#SECTION063280020000000000000">Estructura</A>
+<LI><A NAME="tex2html4007"
+  HREF="node153.html#SECTION063280030000000000000">Rakefile</A>
+<LI><A NAME="tex2html4008"
+  HREF="node153.html#SECTION063280040000000000000">HAML</A>
+<LI><A NAME="tex2html4009"
+  HREF="node153.html#SECTION063280050000000000000">HTML generado</A>
+<LI><A NAME="tex2html4010"
+  HREF="node153.html#SECTION063280060000000000000">SASS</A>
+<LI><A NAME="tex2html4011"
+  HREF="node153.html#SECTION063280070000000000000">Procfile</A>
+<LI><A NAME="tex2html4012"
+  HREF="node153.html#SECTION063280080000000000000">Gemfile</A>
+<LI><A NAME="tex2html4013"
+  HREF="node153.html#SECTION063280090000000000000">La Aplicación</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html4014"
+  HREF="node154.html">Práctica: TicTacToe usando DataMapper</A>
+<LI><A NAME="tex2html4015"
+  HREF="node155.html">Práctica: Servicio de Syntax Highlighting</A>
+</UL>
+<!--End of Table of Child-Links-->
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4908"
+<A NAME="tex2html3931"
   HREF="node126.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4902"
-  HREF="node104.html">
+<A NAME="tex2html3925"
+  HREF="node88.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4896"
+<A NAME="tex2html3919"
   HREF="node124.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4904"
-  HREF="node230.html">
+<A NAME="tex2html3927"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4906"
-  HREF="node233.html">
+<A NAME="tex2html3929"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -336,17 +390,17 @@ end
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4909"
-  HREF="node126.html">Rack::Cascade</A>
-<B>Sup:</B> <A NAME="tex2html4903"
-  HREF="node104.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4897"
-  HREF="node124.html">Construyendo Nuestro Propio Rack::Builder</A>
+<B> Sig:</B> <A NAME="tex2html3932"
+  HREF="node126.html">Ejemplo Simple de uso</A>
+<B>Sup:</B> <A NAME="tex2html3926"
+  HREF="node88.html">PARTE: SINATRA</A>
+<B> Ant:</B> <A NAME="tex2html3920"
+  HREF="node124.html">Introducción</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-05-12</I>
+2014-09-02</I>
 </ADDRESS>
 </BODY>
 </HTML>

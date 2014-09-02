@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Análisis Descendente mediante Parsing Expresion Grammars en JavaScript</TITLE>
-<META NAME="description" CONTENT="Análisis Descendente mediante Parsing Expresion Grammars en JavaScript">
+<TITLE>Práctica: Inventando un Lenguaje: Tortoise</TITLE>
+<META NAME="description" CONTENT="Práctica: Inventando un Lenguaje: Tortoise">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node59.html">
-<LINK REL="previous" HREF="node40.html">
-<LINK REL="up" HREF="node6.html">
+<LINK REL="previous" HREF="node42.html">
+<LINK REL="up" HREF="node28.html">
 <LINK REL="next" HREF="node44.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3118"
+<A NAME="tex2html2240"
   HREF="node44.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3112"
-  HREF="node6.html">
+<A NAME="tex2html2234"
+  HREF="node28.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3106"
+<A NAME="tex2html2230"
   HREF="node42.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3114"
-  HREF="node230.html">
+<A NAME="tex2html2236"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3116"
-  HREF="node233.html">
+<A NAME="tex2html2238"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,213 +91,140 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3119"
-  HREF="node44.html">Introducción a los PEGs</A>
-<B>Sup:</B> <A NAME="tex2html3113"
-  HREF="node6.html">PARTE: APUNTES DE PROCESADORES</A>
-<B> Ant:</B> <A NAME="tex2html3107"
-  HREF="node42.html">Análisis Top Down Usando</A>
+<B> Sig:</B> <A NAME="tex2html2241"
+  HREF="node44.html">Análisis Sintáctico Ascendente en</A>
+<B>Sup:</B> <A NAME="tex2html2235"
+  HREF="node28.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html2231"
+  HREF="node42.html">Práctica: Ambiguedad en C++</A>
 <B> Con:</B> 
-<A NAME="tex2html3114"
-  HREF="node230.html">
+<A NAME="tex2html2236"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3116"
-  HREF="node233.html">
+<A NAME="tex2html2238"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-
-<H1><A NAME="SECTION04600000000000000000">
-Análisis Descendente mediante Parsing Expresion Grammars en JavaScript</A>
-</H1>
-  <BR> <HR>
 <!--Table of Child-Links-->
 <A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html3120"
-  HREF="node44.html">Introducción a los PEGs</A>
-<UL>
-<LI><A NAME="tex2html3121"
-  HREF="node44.html#SECTION04611000000000000000">Syntax</A>
-<LI><A NAME="tex2html3122"
-  HREF="node44.html#SECTION04612000000000000000">Semantics</A>
-<LI><A NAME="tex2html3123"
-  HREF="node44.html#SECTION04613000000000000000">Implementing parsers from parsing expression grammars</A>
-<LI><A NAME="tex2html3124"
-  HREF="node44.html#SECTION04614000000000000000">Lexical Analysis</A>
-<LI><A NAME="tex2html3125"
-  HREF="node44.html#SECTION04615000000000000000">Left recursion</A>
-<LI><A NAME="tex2html3126"
-  HREF="node44.html#SECTION04616000000000000000">Referencias y Documentación</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html3127"
-  HREF="node45.html">PEGJS</A>
-<UL>
-<LI><A NAME="tex2html3128"
-  HREF="node45.html#SECTION04620010000000000000">What is</A>
-<LI><A NAME="tex2html3129"
-  HREF="node45.html#SECTION04620020000000000000">Installation</A>
-<LI><A NAME="tex2html3130"
-  HREF="node45.html#SECTION04620030000000000000">El compilador de línea de comandos</A>
-<LI><A NAME="tex2html3131"
-  HREF="node45.html#SECTION04620040000000000000">Using it</A>
-<LI><A NAME="tex2html3132"
-  HREF="node45.html#SECTION04620050000000000000">Opciones: allowedStartRules</A>
-<LI><A NAME="tex2html3133"
-  HREF="node45.html#SECTION04620060000000000000">Opciones: output</A>
-<LI><A NAME="tex2html3134"
-  HREF="node45.html#SECTION04620070000000000000">Opciones: plugin</A>
-<LI><A NAME="tex2html3135"
-  HREF="node45.html#SECTION04620080000000000000">cache</A>
-<LI><A NAME="tex2html3136"
-  HREF="node45.html#SECTION04620090000000000000">optimize</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html3137"
-  HREF="node46.html">Un Ejemplo Sencillo</A>
-<UL>
-<LI><A NAME="tex2html3138"
-  HREF="node46.html#SECTION04630010000000000000">Donde</A>
-<LI><A NAME="tex2html3139"
-  HREF="node46.html#SECTION04630020000000000000">arithmetics.pegjs</A>
-<LI><A NAME="tex2html3140"
-  HREF="node46.html#SECTION04630030000000000000">main.js</A>
-<LI><A NAME="tex2html3141"
-  HREF="node46.html#SECTION04630040000000000000">Rakefile</A>
-<LI><A NAME="tex2html3142"
-  HREF="node46.html#SECTION04630050000000000000">Compilación</A>
-<LI><A NAME="tex2html3143"
-  HREF="node46.html#SECTION04631000000000000000">Asociación Incorrecta para la Resta y la División</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html3144"
-  HREF="node47.html">Acciones Intermedias</A>
-<LI><A NAME="tex2html3145"
-  HREF="node48.html">PegJS en los Browser</A>
-<UL>
-<LI><A NAME="tex2html3146"
-  HREF="node48.html#SECTION04650010000000000000">Donde</A>
-<LI><A NAME="tex2html3147"
-  HREF="node48.html#SECTION04650020000000000000">Versiones para Browser</A>
-<LI><A NAME="tex2html3148"
-  HREF="node48.html#SECTION04650030000000000000">La opción -e de pegjs</A>
-<LI><A NAME="tex2html3149"
-  HREF="node48.html#SECTION04650040000000000000">Compilación</A>
-<LI><A NAME="tex2html3150"
-  HREF="node48.html#SECTION04650050000000000000">calc.js</A>
-<LI><A NAME="tex2html3151"
-  HREF="node48.html#SECTION04650060000000000000">arithmetic.pegjs</A>
-<LI><A NAME="tex2html3152"
-  HREF="node48.html#SECTION04650070000000000000">calculator.html</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html3153"
-  HREF="node49.html">Eliminación de la Recursividad por la Izquierda en PEGs</A>
-<UL>
-<LI><A NAME="tex2html3154"
-  HREF="node49.html#SECTION04660010000000000000">Donde</A>
-<LI><A NAME="tex2html3155"
-  HREF="node49.html#SECTION04660020000000000000">PEGjs Coffee Plugin</A>
-<LI><A NAME="tex2html3156"
-  HREF="node49.html#SECTION04660030000000000000">Un Esquema de Traducción Recursivo por la Izquierda</A>
-<LI><A NAME="tex2html3157"
-  HREF="node49.html#SECTION04660040000000000000">Métodología</A>
-<LI><A NAME="tex2html3158"
-  HREF="node49.html#SECTION04660050000000000000">Solución</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html3159"
-  HREF="node50.html">Eliminando la Recursividad por la Izquierda en la Calculadora</A>
-<LI><A NAME="tex2html3160"
-  HREF="node51.html">Eliminación de la Recursividad por la Izquierda y Atributos Heredados</A>
-<UL>
-<LI><A NAME="tex2html3161"
-  HREF="node51.html#SECTION04681000000000000000">Eliminación de la Recursión por la Izquierda en la Gramática</A>
-<LI><A NAME="tex2html3162"
-  HREF="node51.html#SECTION04682000000000000000">Eliminación de la Recursión por la Izquierda en un Esquema de Traducción</A>
-<LI><A NAME="tex2html3163"
-  HREF="node51.html#SECTION04683000000000000000">Eliminación de la Recursividad por la Izquierda en PEGJS</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html3164"
-  HREF="node52.html"><FONT COLOR="#ff0000"> Dangling else</FONT>: Asociando un else con su if mas cercano</A>
-<UL>
-<LI><A NAME="tex2html3165"
-  HREF="node52.html#SECTION04690010000000000000">danglingelse.pegjs</A>
-<LI><A NAME="tex2html3166"
-  HREF="node52.html#SECTION04690020000000000000">use_danglingelse.js</A>
-<LI><A NAME="tex2html3167"
-  HREF="node52.html#SECTION04690030000000000000">Ejecución</A>
-<LI><A NAME="tex2html3168"
-  HREF="node52.html#SECTION04690040000000000000">Donde</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html3169"
-  HREF="node53.html">Not Predicate: Comentarios Anidados</A>
-<UL>
-<LI><A NAME="tex2html3170"
-  HREF="node53.html#SECTION046100010000000000000">Pascal_comments.pegjs</A>
-<LI><A NAME="tex2html3171"
-  HREF="node53.html#SECTION046100020000000000000">use_pascal_comments.js</A>
-<LI><A NAME="tex2html3172"
-  HREF="node53.html#SECTION046100030000000000000">Ejecución</A>
-<LI><A NAME="tex2html3173"
-  HREF="node53.html#SECTION046100040000000000000">Donde</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html3174"
-  HREF="node54.html">Un Lenguaje Dependiente del Contexto</A>
-<LI><A NAME="tex2html3175"
-  HREF="node55.html">Usando Pegjs con CoffeeScript</A>
-<UL>
-<LI><A NAME="tex2html3176"
-  HREF="node55.html#SECTION046120010000000000000">Instalación de pegjs-coffee-plugin</A>
-<LI><A NAME="tex2html3177"
-  HREF="node55.html#SECTION046120020000000000000">Ejemplo Sencillo</A>
-<LI><A NAME="tex2html3178"
-  HREF="node55.html#SECTION046120030000000000000">Véase También</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html3179"
-  HREF="node56.html">Práctica: Analizador de PL0 Ampliado Usando PEG.js</A>
-<UL>
-<LI><A NAME="tex2html3180"
-  HREF="node56.html#SECTION046130010000000000000">Donde</A>
-<LI><A NAME="tex2html3181"
-  HREF="node56.html#SECTION046130020000000000000">Tareas</A>
-<LI><A NAME="tex2html3182"
-  HREF="node56.html#SECTION046130030000000000000">Referencias para esta Práctica</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html3183"
-  HREF="node57.html">Práctica: Ambiguedad en C++</A>
-<LI><A NAME="tex2html3184"
-  HREF="node58.html">Práctica: Inventando un Lenguaje: Tortoise</A>
-<UL>
-<LI><A NAME="tex2html3185"
-  HREF="node58.html#SECTION046150010000000000000">Recursos</A>
-</UL></UL>
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html2242"
+  HREF="node43.html#SECTION044150010000000000000">Recursos</A>
+</UL></UL></UL>
 <!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION044150000000000000000"></A>
+   <A NAME="4913"></A>
+<BR>
+Práctica: Inventando un Lenguaje: Tortoise
+</H1>
+
+<P>
+El objetivo de esta práctica es crear un lenguaje de programación 
+imperativa sencillo de estilo <A NAME="tex2html211"
+  HREF="http://en.wikipedia.org/wiki/Logo_programming_language">LOGO</A>.
+Para ello lea el capítulo
+<A NAME="tex2html212"
+  HREF="http://nathansuniversity.com/turtle.html">Inventing a Language - Tortoise</A>
+del 
+<A NAME="tex2html213"
+  HREF="http://nathansuniversity.com/turtle.html">curso PL101: Create Your Own Programming Language</A>
+de 
+<A NAME="tex2html214"
+  HREF="http://nathansjslessons.appspot.com/">Nathan Whitehead</A>.
+Haga todos los ejercicios e implemente el lenguaje descrito.
+
+<P>
+Puede encontrar una solución a la práctica en GitHub en el repositorio
+<A NAME="tex2html215"
+  HREF="https://github.com/dingram/pl101">pl101</A>
+de 
+<A NAME="tex2html216"
+  HREF="http://www.dmi.me.uk/blog/">Dave Ingram</A>. Usela como guía cuando se sienta desorientado.
+
+<P>
+
+<H4><A NAME="SECTION044150010000000000000">
+Recursos</A>
+</H4>
+  
+
+<UL>
+<LI><A NAME="tex2html217"
+  HREF="http://nathansuniversity.com/turtle.html">Inventing a Language - Tortoise</A>
+por Nathan Whitehead
+</LI>
+<LI>Repositorio
+<A NAME="tex2html218"
+  HREF="https://github.com/dingram/pl101">dingram / pl101 en GitHub</A>
+con las soluciones a esta práctica. 
+
+<P>
+
+<UL>
+<LI>Blog de <A NAME="tex2html219"
+  HREF="http://www.dmi.me.uk/blog/">dingram (Dave Ingram)</A>
+</LI>
+</UL>
+</LI>
+<LI>Repositorio
+<A NAME="tex2html220"
+  HREF="https://github.com/PatrixCR/PL101">PatrixCR / PL101 en GitHub</A>
+con las soluciones a esta práctica. 
+
+<P>
+</LI>
+<LI>Repositorio
+<A NAME="tex2html221"
+  HREF="https://github.com/cndreisbach/PL101">Clinton N. Dreisbach/ PL101 en GitHub</A>
+con contenidos del curso PL101
+
+<P>
+</LI>
+<LI><A NAME="tex2html222"
+  HREF="http://nathansuniversity.com/vanilla/discussion/79/lesson-6-inventing-a-language-for-turtle-graphics/p1">Foro</A>
+<P>
+</LI>
+<LI>Sobre Nathan Whitehead
+  
+<UL>
+<LI><A NAME="tex2html223"
+  HREF="http://nathansjslessons.appspot.com/">Nathan's Lessons</A>
+</LI>
+<LI><A NAME="tex2html224"
+  HREF="https://github.com/nwhitehead">Nathan Whitehead en GitHub</A>
+</LI>
+<LI><A NAME="tex2html225"
+  HREF="http://www.youtube.com/user/NathanWhitehead">Nathan in YouTube</A>
+</LI>
+</UL>
+</LI>
+</UL>
+
+<P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3118"
+<A NAME="tex2html2240"
   HREF="node44.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3112"
-  HREF="node6.html">
+<A NAME="tex2html2234"
+  HREF="node28.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3106"
+<A NAME="tex2html2230"
   HREF="node42.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3114"
-  HREF="node230.html">
+<A NAME="tex2html2236"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3116"
-  HREF="node233.html">
+<A NAME="tex2html2238"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -349,17 +275,17 @@ Análisis Descendente mediante Parsing Expresion Grammars en JavaScript</A>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3119"
-  HREF="node44.html">Introducción a los PEGs</A>
-<B>Sup:</B> <A NAME="tex2html3113"
-  HREF="node6.html">PARTE: APUNTES DE PROCESADORES</A>
-<B> Ant:</B> <A NAME="tex2html3107"
-  HREF="node42.html">Análisis Top Down Usando</A>
+<B> Sig:</B> <A NAME="tex2html2241"
+  HREF="node44.html">Análisis Sintáctico Ascendente en</A>
+<B>Sup:</B> <A NAME="tex2html2235"
+  HREF="node28.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html2231"
+  HREF="node42.html">Práctica: Ambiguedad en C++</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-05-12</I>
+2014-09-02</I>
 </ADDRESS>
 </BODY>
 </HTML>

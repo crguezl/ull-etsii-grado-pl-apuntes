@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Configurando la Base de Datos en Heroku con DataMapper. Despliegue</TITLE>
-<META NAME="description" CONTENT="Configurando la Base de Datos en Heroku con DataMapper. Despliegue">
+<TITLE>Make Heroku run non-master Git branch</TITLE>
+<META NAME="description" CONTENT="Make Heroku run non-master Git branch">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,28 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
+<LINK REL="next" HREF="node186.html">
 <LINK REL="previous" HREF="node184.html">
-<LINK REL="up" HREF="node181.html">
+<LINK REL="up" HREF="node179.html">
 <LINK REL="next" HREF="node186.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5942"
+<A NAME="tex2html5075"
   HREF="node186.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5936"
-  HREF="node181.html">
+<A NAME="tex2html5069"
+  HREF="node179.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5932"
+<A NAME="tex2html5063"
   HREF="node184.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5938"
-  HREF="node230.html">
+<A NAME="tex2html5071"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5940"
-  HREF="node233.html">
+<A NAME="tex2html5073"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -91,134 +92,74 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5943"
-  HREF="node186.html">Depuración en Sinatra</A>
-<B>Sup:</B> <A NAME="tex2html5937"
-  HREF="node181.html">DataMapper y Sinatra</A>
-<B> Ant:</B> <A NAME="tex2html5933"
-  HREF="node184.html">Ejemplo de Uso de</A>
+<B> Sig:</B> <A NAME="tex2html5076"
+  HREF="node186.html">Account Verification and add-ons</A>
+<B>Sup:</B> <A NAME="tex2html5070"
+  HREF="node179.html">Heroku</A>
+<B> Ant:</B> <A NAME="tex2html5064"
+  HREF="node184.html">Configuration</A>
 <B> Con:</B> 
-<A NAME="tex2html5938"
-  HREF="node230.html">
+<A NAME="tex2html5071"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5940"
-  HREF="node233.html">
+<A NAME="tex2html5073"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION06940000000000000000">
-Configurando la Base de Datos en Heroku con DataMapper. Despliegue</A>
+<H1><A NAME="SECTION07160000000000000000">
+Make Heroku run non-master Git branch</A>
 </H1>
 
 <P>
-<A NAME="tex2html768"
-  HREF="https://devcenter.heroku.com/articles/quickstart">Heroku</A> utiliza la base de datos PostgreSQL y una URL en una variable 
-de entorno <code>ENV['DATABASE_URL']</code>.
+<A NAME="tex2html595"
+  HREF="http://stackoverflow.com/questions/14593538/make-heroku-run-non-master-git-branch">Make Heroku run non-master Git branch</A>
+You can push an alternative branch to Heroku using Git.
+<PRE>
+git push heroku-dev test:master
+</PRE>
+This pushes your local test branch to the remote's master branch (on Heroku).
+
+<P>
+El manual de <code>git push</code> dice:
+
+<P>
+To push a local branch to an established remote, you need to issue the command:
+<PRE>
+git push  &lt;REMOTENAME&gt; &lt;BRANCHNAME&gt;
+</PRE>
+This is most typically invoked as <code>git push origin master</code>. 
+
+<P>
+If you
+would like to give the branch a different name on the upstream side
+of the push, you can issue the command:
 
 <P>
 <PRE>
-configure :development do
-  DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/development.db")
-end
-
-configure :production do
-  DataMapper.setup(:default, ENV['DATABASE_URL'])
-end
+git push  &lt;REMOTENAME&gt; &lt;LOCALBRANCHNAME&gt;:&lt;REMOTEBRANCHNAME&gt;
 </PRE>
-
-<P>
-Estas líneas especifican que se usa SQLite en desarrollo y PostgreSQL en producción.
-Obsérvese que el <code>Gemfile</code> debe estar coherente:
-<PRE>
-[~/sinatra/sinatra-datamapper-jump-start(master)]$ cat Gemfile
-source 'https://rubygems.org'
-gem "sinatra"
-gem "slim"
-gem "sass"
-gem "dm-core"
-gem "dm-migrations"
-gem "thin"
-gem "pg", :group =&gt; :production
-gem "dm-postgres-adapter", :group =&gt; :production
-gem "dm-sqlite-adapter", :group =&gt; :development
-</PRE>
-o mejor:
-<PRE>
-group :production do
-    gem "pg"
-    gem "dm-postgres-adapter"
-end
-</PRE>
-
-<P>
-<PRE>
-heroku create ...
-</PRE>
-
-<P>
-<PRE>
-git push heroku master
-</PRE>
-
-<P>
-<PRE>
-heroku open
-</PRE>
-
-<P>
-<PRE>
-heroku logs --source app
-</PRE>
-
-<P>
-Ahora ejecutamos la consola de heroku:
-
-<P>
-<PRE>
-heroku run console
-</PRE>
-lo que nos abre una sesión <code>irb</code>.
-
-<P>
-Ahora creamos la base de datos en <A NAME="tex2html769"
-  HREF="https://devcenter.heroku.com/articles/quickstart">Heroku</A>:
-<PRE>
-[~/sinatra/sinatra-datamapper-jump-start(master)]$ heroku run console
-Running `console` attached to terminal... up, run.8011
-irb(main):001:0&gt; require './main'
-=&gt; true
-irb(main):002:0&gt; DataMapper.auto_migrate!
-=&gt; #&lt;DataMapper::DescendantSet:0x007fb89c878230 @descendants=#&lt;DataMapper::SubjectSet:0x007fb89c8781b8 @entries=#&lt;DataMapper::OrderedSet:0x007fb89c878190 @cache=#&lt;DataMapper::SubjectSet::NameCache:0x007fb89c878168 @cache={"Song"=&gt;0}&gt;, @entries=[Song]&gt;&gt;&gt;
-irb(main):003:0&gt;
-</PRE>
-Véase también 
-la practica TicTacToe
-<A HREF="node168.html#practica:ticatactoe">18.28</A>
-y
-el capítulo <I>Despliegue en Heroku</I> 
-<A HREF="#chapter:despliegueenheroku"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>.
-.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5942"
+<A NAME="tex2html5075"
   HREF="node186.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5936"
-  HREF="node181.html">
+<A NAME="tex2html5069"
+  HREF="node179.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5932"
+<A NAME="tex2html5063"
   HREF="node184.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5938"
-  HREF="node230.html">
+<A NAME="tex2html5071"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5940"
-  HREF="node233.html">
+<A NAME="tex2html5073"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -269,17 +210,17 @@ el capítulo <I>Despliegue en Heroku</I>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5943"
-  HREF="node186.html">Depuración en Sinatra</A>
-<B>Sup:</B> <A NAME="tex2html5937"
-  HREF="node181.html">DataMapper y Sinatra</A>
-<B> Ant:</B> <A NAME="tex2html5933"
-  HREF="node184.html">Ejemplo de Uso de</A>
+<B> Sig:</B> <A NAME="tex2html5076"
+  HREF="node186.html">Account Verification and add-ons</A>
+<B>Sup:</B> <A NAME="tex2html5070"
+  HREF="node179.html">Heroku</A>
+<B> Ant:</B> <A NAME="tex2html5064"
+  HREF="node184.html">Configuration</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-05-12</I>
+2014-09-02</I>
 </ADDRESS>
 </BODY>
 </HTML>

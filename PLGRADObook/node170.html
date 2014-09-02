@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Práctica: Servicio de Syntax Highlighting</TITLE>
-<META NAME="description" CONTENT="Práctica: Servicio de Syntax Highlighting">
+<TITLE>Configurando la Base de Datos en Heroku con DataMapper. Despliegue</TITLE>
+<META NAME="description" CONTENT="Configurando la Base de Datos en Heroku con DataMapper. Despliegue">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -20,27 +20,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
 <LINK REL="previous" HREF="node169.html">
-<LINK REL="up" HREF="node140.html">
+<LINK REL="up" HREF="node166.html">
 <LINK REL="next" HREF="node171.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5687"
+<A NAME="tex2html4740"
   HREF="node171.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5681"
-  HREF="node140.html">
+<A NAME="tex2html4734"
+  HREF="node166.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5677"
+<A NAME="tex2html4730"
   HREF="node169.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5683"
-  HREF="node230.html">
+<A NAME="tex2html4736"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5685"
-  HREF="node233.html">
+<A NAME="tex2html4738"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -91,299 +91,134 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5688"
-  HREF="node171.html">Sinatra desde Dentro</A>
-<B>Sup:</B> <A NAME="tex2html5682"
-  HREF="node140.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5678"
-  HREF="node169.html">Práctica: TicTacToe usando DataMapper</A>
+<B> Sig:</B> <A NAME="tex2html4741"
+  HREF="node171.html">Depuración en Sinatra</A>
+<B>Sup:</B> <A NAME="tex2html4735"
+  HREF="node166.html">DataMapper y Sinatra</A>
+<B> Ant:</B> <A NAME="tex2html4731"
+  HREF="node169.html">Ejemplo de Uso de</A>
 <B> Con:</B> 
-<A NAME="tex2html5683"
-  HREF="node230.html">
+<A NAME="tex2html4736"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5685"
-  HREF="node233.html">
+<A NAME="tex2html4738"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION063300000000000000000"></A>
-   <A NAME="21518"></A>
-<BR>
-Práctica: Servicio de Syntax Highlighting
+<H1><A NAME="SECTION06940000000000000000">
+Configurando la Base de Datos en Heroku con DataMapper. Despliegue</A>
 </H1>
-  
-Construya una aplicación que provee syntax higlighting
-para un código que se vuelca en un formulario.
-Use la gema <A NAME="tex2html738"
-  HREF="http://syntaxi.rubyforge.org/">syntaxi</A>.
 
 <P>
-El siguiente ejemplo muestra como funciona la gema <code>syntaxi</code>:
+<A NAME="tex2html562"
+  HREF="https://devcenter.heroku.com/articles/quickstart">Heroku</A> utiliza la base de datos PostgreSQL y una URL en una variable 
+de entorno <code>ENV['DATABASE_URL']</code>.
 
 <P>
 <PRE>
-[~/rubytesting/syntax_highlighting]$ cat ex_syntaxi.rb 
-require 'syntaxi'
-text = &lt;&lt;"EOF"
-[code lang="ruby"]
-  def foo
-    puts 'bar'
-  end
-[/code]
-EOF
-formatted_text = Syntaxi.new(text).process
-puts formatted_text
-</PRE>
-Ejecución:
-<PRE>
-[~/rubytesting/syntax_highlighting]$ ruby ex_syntaxi.rb 
-&lt;pre&gt;
-&lt;code&gt;
-&lt;span class="line_number"&gt;1&lt;/span&gt; &lt;span class="keyword"&gt;def &lt;/span&gt;&lt;span class="method"&gt;foo&lt;/span&gt;
-&lt;span class="line_number"&gt;2&lt;/span&gt; &lt;span class="ident"&gt;puts&lt;/span&gt; 
-&lt;span class="punct"&gt;'&lt;/span&gt;&lt;span class="string"&gt;bar&lt;/span&gt;&lt;span class="punct"&gt;'&lt;/span&gt;
-&lt;span class="line_number"&gt;3&lt;/span&gt; &lt;span class="keyword"&gt;end&lt;/span&gt;
-&lt;/code&gt;
-&lt;/pre&gt;
-</PRE>
-La gema <code>syntaxi</code> usa la gema <code>syntax</code>:
-<PRE>
-[~/rubytesting/syntax_highlighting]$ gem which syntaxi/Users/casiano/.rvm/gems/ruby-1.9.2-head/gems/syntaxi-0.5.0/lib/syntaxi.rb
-[~/rubytesting/syntax_highlighting]$ grep "require.*'" /Users/casiano/.rvm/gems/ruby-1.9.2-head/gems/syntaxi-0.5.0/lib/syntaxi.rb 
-require 'syntax/convertors/html'
-</PRE>
-Es en esta gema que se definen las hojas de estilo:
-<PRE>
-[~/rubytesting/syntax_highlighting]$ gem which syntax
-/Users/casiano/.rvm/gems/ruby-1.9.2-head/gems/syntax-1.0.0/lib/syntax.rb
-[~/rubytesting/syntax_highlighting]$ tree /Users/casiano/.rvm/gems/ruby-1.9.2-head/gems/syntax-1.0.0/
-/Users/casiano/.rvm/gems/ruby-1.9.2-head/gems/syntax-1.0.0/
-|-- data
-|   |-- ruby.css
-|   |-- xml.css
-|   `-- yaml.css
-|-- lib
-|   |-- syntax
-|   |   |-- common.rb
-|   |   |-- convertors
-|   |   |   |-- abstract.rb
-|   |   |   `-- html.rb
-|   |   |-- lang
-|   |   |   |-- ruby.rb
-|   |   |   |-- xml.rb
-|   |   |   `-- yaml.rb
-|   |   `-- version.rb
-|   `-- syntax.rb
-`-- test
-    |-- ALL-TESTS.rb
-    |-- syntax
-    |   |-- tc_ruby.rb
-    |   |-- tc_xml.rb
-    |   |-- tc_yaml.rb
-    |   `-- tokenizer_testcase.rb
-    `-- tc_syntax.rb
+configure :development do
+  DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/development.db")
+end
 
-7 directories, 17 files
+configure :production do
+  DataMapper.setup(:default, ENV['DATABASE_URL'])
+end
 </PRE>
 
 <P>
-En el esquema incompleto que sigue se ha hecho para el lenguaje
-Ruby. Añada que se pueda elegir el lenguaje a colorear (xml, yaml).
-
-<P>
+Estas líneas especifican que se usa SQLite en desarrollo y PostgreSQL en producción.
+Obsérvese que el <code>Gemfile</code> debe estar coherente:
 <PRE>
-$ tree -A
-.
-|-- Gemfile
-|-- Gemfile.lock
-|-- toopaste.rb
-`-- views
-    |-- layout.erb
-    |-- new.erb
-    `-- show.erb
-</PRE>
-
-<P>
-<PRE>
-$ cat Gemfile
+[~/sinatra/sinatra-datamapper-jump-start(master)]$ cat Gemfile
 source 'https://rubygems.org'
-
-# Specify your gem's dependencies in my-gem.gemspec
-# gemspec
-# gem 'guard'
-# gem 'guard-rspec'
-# gem 'guard-bundler'
-# gem 'rb-fsevent', '~&gt; 0.9.1''
-
-gem 'syntaxi'
+gem "sinatra"
+gem "slim"
+gem "sass"
+gem "dm-core"
+gem "dm-migrations"
+gem "thin"
+gem "pg", :group =&gt; :production
+gem "dm-postgres-adapter", :group =&gt; :production
+gem "dm-sqlite-adapter", :group =&gt; :development
 </PRE>
-
-<P>
-Este es un fragmento de la aplicación:
+o mejor:
 <PRE>
-[~/srcSTW/syntax_highlighting(withoutdm)]$ cat  toopaste.rb 
-require 'sinatra'
-require 'syntaxi'
-
-class String
-  def formatted_body
-    source = "[code lang='ruby']
-                #{self}
-              [/code]"
-    html = Syntaxi.new(source).process
-    %Q{
-      &lt;div class="syntax syntax_ruby"&gt;
-        #{html}
-      &lt;/div&gt;
-    }
-  end
-end
-
-get '/' do
-  erb :new
-end
-
-post '/' do
-  .....
+group :production do
+    gem "pg"
+    gem "dm-postgres-adapter"
 end
 </PRE>
-Una versión simple de lo que puede ser <code>new.erb</code>:
-<PRE>
-[~/srcSTW/syntax_highlighting(withoutdm)]$ cat views/new.erb 
-&lt;div class="snippet"&gt;
-  &lt;form action="/" method="POST"&gt;
-    &lt;textarea name="body" id="body" rows="20"&gt;&lt;/textarea&gt;
-    &lt;br/&gt;&lt;input type="submit" value="Save"/&gt;
-  &lt;/form&gt;
-&lt;/div&gt;
-</PRE>
-
-<P>
-Véase la página  HTML generada por el programa para la entrada <code>a = 5</code>:
-<PRE>
-&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
-&lt;html xmlns="http://www.w3.org/1999/xhtml"&gt;
-&lt;head&gt;
-  &lt;title&gt;Toopaste!&lt;/title&gt;
-  &lt;style&gt;
-    html {
-      background-color: #eee;
-    }
-    .snippet {
-      margin: 5px;
-    }
-    .snippet textarea, .snippet .sbody {
-      border: 5px dotted #eee;
-      padding: 5px;
-      width: 700px;
-      color: #fff;
-      background-color: #333;
-    }
-    .snippet textarea {
-      padding: 20px;
-    }
-    .snippet input, .snippet .sdate {
-      margin-top: 5px;
-    }
-
-    /* Syntax highlighting */
-    #content .syntax_ruby .normal {}
-    #content .syntax_ruby .comment { color: #CCC; font-style: italic; border: none; margin: none; }
-    #content .syntax_ruby .keyword { color: #C60; font-weight: bold; }
-    #content .syntax_ruby .method { color: #9FF; }
-    #content .syntax_ruby .class { color: #074; }
-    #content .syntax_ruby .module { color: #050; }
-    #content .syntax_ruby .punct { color: #0D0; font-weight: bold; }
-    #content .syntax_ruby .symbol { color: #099; }
-    #content .syntax_ruby .string { color: #C03; }
-    #content .syntax_ruby .char { color: #F07; }
-    #content .syntax_ruby .ident { color: #0D0; }
-    #content .syntax_ruby .constant { color: #07F; }
-    #content .syntax_ruby .regex { color: #B66; }
-    #content .syntax_ruby .number { color: #FF0; }
-    #content .syntax_ruby .attribute { color: #7BB; }
-    #content .syntax_ruby .global { color: #7FB; }
-    #content .syntax_ruby .expr { color: #909; }
-    #content .syntax_ruby .escape { color: #277; }
-    #content .syntax {
-      background-color: #333;
-      padding: 2px;
-      margin: 5px;
-      margin-left: 1em;
-      margin-bottom: 1em;
-    }
-    #content .syntax .line_number {
-      text-align: right;
-      font-family: monospace;
-      padding-right: 1em;
-      color: #999;
-    }
-  &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-  &lt;div class="snippet"&gt;
-  &lt;div class="snippet"&gt;
-  &lt;div class="sbody" id="content"&gt;
-      &lt;div class="syntax syntax_ruby"&gt;
-        &lt;pre&gt;
-           &lt;code&gt;
-              &lt;span class="line_number"&gt;1&lt;/span&gt;  
-              &lt;span class="ident"&gt;a&lt;/span&gt; 
-              &lt;span class="punct"&gt;=&lt;/span&gt; 
-              &lt;span class="number"&gt;5&lt;/span&gt;
-            &lt;/code&gt;
-         &lt;/pre&gt;
-      &lt;/div&gt;
-  &lt;/div&gt;
-  &lt;br/&gt;&lt;a href="/"&gt;New Paste!&lt;/a&gt;
-&lt;/div&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</PRE>
-
-<P>
-La gema
 
 <P>
 <PRE>
+heroku create ...
 </PRE>
-Una versión resumida de <code>layout.erb</code>:
+
+<P>
 <PRE>
-[~/srcSTW/syntax_highlighting(withoutdm)]$ cat views/layout.erb 
-&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
-&lt;html xmlns="http://www.w3.org/1999/xhtml"&gt;
-&lt;head&gt;
-  &lt;title&gt;&lt;%= @title || 'Toopaste!' %&gt;&lt;/title&gt;
-  &lt;style&gt;
-    ..............
-  &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-  &lt;%= yield %&gt;
-&lt;/body&gt;
-&lt;/html&gt;
+git push heroku master
 </PRE>
+
+<P>
+<PRE>
+heroku open
+</PRE>
+
+<P>
+<PRE>
+heroku logs --source app
+</PRE>
+
+<P>
+Ahora ejecutamos la consola de heroku:
+
+<P>
+<PRE>
+heroku run console
+</PRE>
+lo que nos abre una sesión <code>irb</code>.
+
+<P>
+Ahora creamos la base de datos en <A NAME="tex2html563"
+  HREF="https://devcenter.heroku.com/articles/quickstart">Heroku</A>:
+<PRE>
+[~/sinatra/sinatra-datamapper-jump-start(master)]$ heroku run console
+Running `console` attached to terminal... up, run.8011
+irb(main):001:0&gt; require './main'
+=&gt; true
+irb(main):002:0&gt; DataMapper.auto_migrate!
+=&gt; #&lt;DataMapper::DescendantSet:0x007fb89c878230 @descendants=#&lt;DataMapper::SubjectSet:0x007fb89c8781b8 @entries=#&lt;DataMapper::OrderedSet:0x007fb89c878190 @cache=#&lt;DataMapper::SubjectSet::NameCache:0x007fb89c878168 @cache={"Song"=&gt;0}&gt;, @entries=[Song]&gt;&gt;&gt;
+irb(main):003:0&gt;
+</PRE>
+Véase también 
+la practica TicTacToe
+<A HREF="node153.html#practica:ticatactoe">16.28</A>
+y
+el capítulo <I>Despliegue en Heroku</I> 
+<A HREF="#chapter:despliegueenheroku"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>.
+.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5687"
+<A NAME="tex2html4740"
   HREF="node171.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5681"
-  HREF="node140.html">
+<A NAME="tex2html4734"
+  HREF="node166.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5677"
+<A NAME="tex2html4730"
   HREF="node169.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5683"
-  HREF="node230.html">
+<A NAME="tex2html4736"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5685"
-  HREF="node233.html">
+<A NAME="tex2html4738"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -434,17 +269,17 @@ Una versión resumida de <code>layout.erb</code>:
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5688"
-  HREF="node171.html">Sinatra desde Dentro</A>
-<B>Sup:</B> <A NAME="tex2html5682"
-  HREF="node140.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5678"
-  HREF="node169.html">Práctica: TicTacToe usando DataMapper</A>
+<B> Sig:</B> <A NAME="tex2html4741"
+  HREF="node171.html">Depuración en Sinatra</A>
+<B>Sup:</B> <A NAME="tex2html4735"
+  HREF="node166.html">DataMapper y Sinatra</A>
+<B> Ant:</B> <A NAME="tex2html4731"
+  HREF="node169.html">Ejemplo de Uso de</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-05-12</I>
+2014-09-02</I>
 </ADDRESS>
 </BODY>
 </HTML>

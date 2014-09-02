@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Settings disponibles/Available Settings</TITLE>
-<META NAME="description" CONTENT="Settings disponibles/Available Settings">
+<TITLE>Aplicaciones Modulares</TITLE>
+<META NAME="description" CONTENT="Aplicaciones Modulares">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -20,28 +20,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
 <LINK REL="next" HREF="node162.html">
-<LINK REL="previous" HREF="node160.html">
-<LINK REL="up" HREF="node140.html">
+<LINK REL="previous" HREF="node156.html">
+<LINK REL="up" HREF="node88.html">
 <LINK REL="next" HREF="node162.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5548"
+<A NAME="tex2html4571"
   HREF="node162.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5542"
-  HREF="node140.html">
+<A NAME="tex2html4565"
+  HREF="node88.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5536"
+<A NAME="tex2html4559"
   HREF="node160.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5544"
-  HREF="node230.html">
+<A NAME="tex2html4567"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5546"
-  HREF="node233.html">
+<A NAME="tex2html4569"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,156 +92,69 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5549"
-  HREF="node162.html">Environments</A>
-<B>Sup:</B> <A NAME="tex2html5543"
-  HREF="node140.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5537"
-  HREF="node160.html">Configuring attack protection</A>
+<B> Sig:</B> <A NAME="tex2html4572"
+  HREF="node162.html">Testing en Sinatra</A>
+<B>Sup:</B> <A NAME="tex2html4566"
+  HREF="node88.html">PARTE: SINATRA</A>
+<B> Ant:</B> <A NAME="tex2html4560"
+  HREF="node160.html">Petición y Respuesta</A>
 <B> Con:</B> 
-<A NAME="tex2html5544"
-  HREF="node230.html">
+<A NAME="tex2html4567"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5546"
-  HREF="node233.html">
+<A NAME="tex2html4569"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION063210000000000000000">
-Settings disponibles/Available Settings</A>
+<H1><A NAME="SECTION06500000000000000000">
+Aplicaciones Modulares</A>
 </H1>
 
-<OL>
-<LI><code>absolute_redirects</code>
-If disabled, Sinatra will allow relative redirects, however, Sinatra will no longer conform with RFC 2616 (HTTP 1.1), which only allows absolute redirects.
+<P>
+Las aplicaciones normales Sinatra se denominan <A NAME="14113"></A><SPAN  CLASS="textbf">alicaciones clásicas sinatra</SPAN>
+y viven en <A NAME="tex2html536"
+  HREF="https://github.com/sinatra/sinatra/blob/master/lib/sinatra/base.rb">Sinatra::Application</A>,
+que es una subclase de <A NAME="tex2html537"
+  HREF="https://github.com/sinatra/sinatra/blob/master/lib/sinatra/base.rb">Sinatra::Base</A>.
 
 <P>
-Enable if your app is running behind a reverse proxy that has not been set up properly. Note that the <code>url</code> helper will still produce absolute URLs, unless you pass in <code>false</code> as the second parameter.
-Disabled by default.
+En las aplicaciones clásicas Sinatra extiende la clase <code>Object</code> en el momento 
+de cargarse lo que, en cierto modo, contamina el espacio de nombres global. Eso dificulta que nuestra aplicación 
+pueda ser distribuída como una gema y que se puedan tener varias aplicaciones clásicas 
+en un único proceso.
 
 <P>
-</LI>
-<LI><code>add_charsets</code>
-mime types the <code>content_type</code> helper will automatically add the charset info to. 
+Una aplicación Sinatra se dice una <A NAME="14119"></A><SPAN  CLASS="textbf">aplicación modular sinatra</SPAN>
+si no hace uso de <A NAME="tex2html538"
+  HREF="https://github.com/sinatra/sinatra/blob/master/lib/sinatra/base.rb">Sinatra::Application</A>,
+renunciando al DSL de alto nivel proveído por Sinatra,
+sino que hereda de <A NAME="tex2html539"
+  HREF="https://github.com/sinatra/sinatra/blob/master/lib/sinatra/base.rb">Sinatra::Base</A>.
 
 <P>
-You should add to it rather than overriding this option: 
-<PRE>
-settings.add_charsets &lt;&lt; "application/foobar"
-</PRE>
-</LI>
-<LI><code>app_file</code>
-Path to the main application file, used to detect project root, views and public folder and inline templates.
-</LI>
-<LI><code>bind</code>
-IP address to bind to (default: 0.0.0.0 or localhost if your <code>environment</code> is set to 
-<code>development</code>). Only used for built-in server.
-</LI>
-<LI><code>default_encoding</code>
-encoding to assume if unknown (defaults to "utf-8").
-</LI>
-<LI><code>dump_errors</code>
-display errors in the log.
-</LI>
-<LI><code>environment</code>
-current environment, defaults to <code>ENV['RACK_ENV']</code>, 
-or <code>development</code> if not available.
-</LI>
-<LI><code>logging</code>
-use the logger.
-</LI>
-<LI><code>lock</code>
-Places a lock around every request, only running processing on request per Ruby process concurrently.
-Enabled if your app is not thread-safe. Disabled per default.
-</LI>
-<LI><code>method_override</code>
-use <code>_method magic</code> to allow put/delete forms in browsers that don't support it.
-</LI>
-<LI><code>port</code>
-Port to listen on. Only used for built-in server.
-</LI>
-<LI><code>prefixed_redirects</code>
-Whether or not to insert <code>request.script_name</code> into redirects if no absolute path is given. That way redirect '/foo' would behave like redirect to('/foo'). Disabled per default.
-</LI>
-<LI><code>protection</code>
-Whether or not to enable web attack protections. See protection section above.
-</LI>
-<LI><code>public_dir</code>
-Alias for <code>public_folder</code>. See below.
-</LI>
-<LI><code>public_folder</code>
-Path to the folder public files are served from. Only used if static file serving is enabled (see static setting below). Inferred from <code>app_file</code> setting if not set.
-</LI>
-<LI><code>reload_templates</code>
-Whether or not to reload templates between requests. Enabled in development mode.
-</LI>
-<LI><code>root</code>
-Path to project root folder. Inferred from <code>app_file</code> setting if not set.
-</LI>
-<LI><code>raise_errors</code>
-raise exceptions (will stop application). Enabled by default when environment is set to "test", disabled otherwise.
-</LI>
-<LI><code>run</code>
-if enabled, Sinatra will handle starting the web server, do not enable if using rackup or other means.
-</LI>
-<LI><code>running</code>
-is the built-in server running now? do not change this setting!
-</LI>
-<LI><code>server</code>
-Server or list of servers to use for built-in server. order indicates priority, default depends on Ruby implementation.
-</LI>
-<LI><code>sessions</code>
-Enable cookie-based sessions support using Rack::Session::Cookie. See 'Using Sessions' section for more information.
-</LI>
-<LI><code>show_exceptions</code>
-Show a stack trace in the browser when an exception happens. Enabled by default when environment is set to "development", disabled otherwise.
-Can also be set to <code>:after_handler</code> to trigger app-specified error handling before showing a stack trace in the browser.
-</LI>
-<LI><code>static</code>
-Whether Sinatra should handle serving static files.
-Disable when using a server able to do this on its own.
-Disabling will boost performance.
-Enabled per default in classic style, disabled for modular apps.
-</LI>
-<LI><code>static_cache_control</code>
-When Sinatra is serving static files, set this to add Cache-Control headers to the responses. 
-Uses the <code>cache_control</code> helper. Disabled by default.
-Use an explicit array when setting multiple values: 
-<PRE>
-set :static_cache_control, [:public, :max_age =&gt; 300]
-</PRE>
-</LI>
-<LI><code>threaded</code>
-If set to true, will tell Thin to use EventMachine.defer for processing the request.
-</LI>
-<LI><code>views</code>
-Path to the views folder. Inferred from <code>app_file</code> setting if not set.
-</LI>
-<LI><code>x_cascade</code>
-Whether or not to set the X-Cascade header if no route matches. Defaults to true.
-</LI>
-</OL>
+Podemos combinar una aplicación clásica  con una modular, pero sólo puede haber una aplicación clásica por proceso.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5548"
+<A NAME="tex2html4571"
   HREF="node162.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5542"
-  HREF="node140.html">
+<A NAME="tex2html4565"
+  HREF="node88.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5536"
+<A NAME="tex2html4559"
   HREF="node160.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5544"
-  HREF="node230.html">
+<A NAME="tex2html4567"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5546"
-  HREF="node233.html">
+<A NAME="tex2html4569"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -292,17 +205,17 @@ Whether or not to set the X-Cascade header if no route matches. Defaults to true
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5549"
-  HREF="node162.html">Environments</A>
-<B>Sup:</B> <A NAME="tex2html5543"
-  HREF="node140.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5537"
-  HREF="node160.html">Configuring attack protection</A>
+<B> Sig:</B> <A NAME="tex2html4572"
+  HREF="node162.html">Testing en Sinatra</A>
+<B>Sup:</B> <A NAME="tex2html4566"
+  HREF="node88.html">PARTE: SINATRA</A>
+<B> Ant:</B> <A NAME="tex2html4560"
+  HREF="node160.html">Petición y Respuesta</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-05-12</I>
+2014-09-02</I>
 </ADDRESS>
 </BODY>
 </HTML>

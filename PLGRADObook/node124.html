@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Construyendo Nuestro Propio Rack::Builder</TITLE>
-<META NAME="description" CONTENT="Construyendo Nuestro Propio Rack::Builder">
+<TITLE>Introducción</TITLE>
+<META NAME="description" CONTENT="Introducción">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node125.html">
 <LINK REL="previous" HREF="node123.html">
-<LINK REL="up" HREF="node104.html">
+<LINK REL="up" HREF="node123.html">
 <LINK REL="next" HREF="node125.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4894"
+<A NAME="tex2html3915"
   HREF="node125.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4888"
-  HREF="node104.html">
+<A NAME="tex2html3909"
+  HREF="node123.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4882"
+<A NAME="tex2html3905"
   HREF="node123.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4890"
-  HREF="node230.html">
+<A NAME="tex2html3911"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4892"
-  HREF="node233.html">
+<A NAME="tex2html3913"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,160 +91,108 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4895"
-  HREF="node125.html">Código de Rack::Builder</A>
-<B>Sup:</B> <A NAME="tex2html4889"
-  HREF="node104.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4883"
-  HREF="node123.html">Ejemplo de Middleware: Rack::ETag</A>
+<B> Sig:</B> <A NAME="tex2html3916"
+  HREF="node125.html">Fundamentos</A>
+<B>Sup:</B> <A NAME="tex2html3910"
+  HREF="node123.html">Primeros Pasos</A>
+<B> Ant:</B> <A NAME="tex2html3906"
+  HREF="node123.html">Primeros Pasos</A>
 <B> Con:</B> 
-<A NAME="tex2html4890"
-  HREF="node230.html">
+<A NAME="tex2html3911"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4892"
-  HREF="node233.html">
+<A NAME="tex2html3913"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<H1><A NAME="SECTION061200000000000000000">
-Construyendo Nuestro Propio Rack::Builder</A>
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html3917"
+  HREF="node124.html#SECTION06211000000000000000">Referencias sobre Sinatra</A>
+<LI><A NAME="tex2html3918"
+  HREF="node124.html#SECTION06212000000000000000">Ejercicio: Instale la Documentación en sinatra.github.com</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION06210000000000000000">
+Introducción</A>
 </H1>
 
 <P>
-Véase:
 
-<OL>
-<LI><A NAME="tex2html626"
-  HREF="https://github.com/crguezl/rack-mybuilder">https://github.com/crguezl/rack-mybuilder</A>
+<H2><A NAME="SECTION06211000000000000000">
+Referencias sobre Sinatra</A>
+</H2>
+
+<UL>
+<LI><A NAME="tex2html476"
+  HREF="http://spring493.deliciousrobots.com/">Ruby/Sinatra Class Page</A>
 </LI>
-</OL>
+<LI><A NAME="tex2html477"
+  HREF="https://vimeo.com/32363543">Sinatra introduction de Ben Schwarz </A>
+</LI>
+<LI><A NAME="tex2html478"
+  HREF="https://vimeo.com/5403424">How to create a Twilio app on Heroku
+de Morten Baga </A>
+</LI>
+<LI><A NAME="tex2html479"
+  HREF="https://vimeo.com/album/2121090/video/51898788">ArrrrCamp #6 - Aleksander Dabrowski - Sinatra autopsy</A>
+Vimeo
+</LI>
+</UL>
 
 <P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rack-builder/own(master)]$ cat mybuilder.rb 
-module Rack
-  class MyBuilder
+Referencias sobre Rack:
 
-    def initialize(&amp;block)
-      @use = []
-      instance_eval(&amp;block) if block_given?
-    end
-
-    def use(middleware, *args, &amp;block)
-      @use &lt;&lt; proc { |app| middleware.new(app, *args, &amp;block) }
-    end
-
-    def run(app)
-      @run = app
-    end
-
-    def to_app
-      @use.reverse.inject(@run) { |app, middleware| middleware[app] }
-    end
-
-    def call(env)
-      to_app.call(env)
-    end
-
-  end
-end
-</PRE>
-
-<P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rack-builder/own(master)]$ cat decorator.rb 
-class Decorator
-
-  def initialize(app, *options, &amp;block)
-    @app = app
-    @options = (options[0] || {})
-  end
-
-  def call(env)
-    status, headers, body = @app.call(env)
-
-    new_body = ""
-    new_body &lt;&lt; (@options[:header] || "----Header----&lt;br/&gt;")
-    body.each {|str| new_body &lt;&lt; str}
-    new_body &lt;&lt; (@options[:footer] || "&lt;br/&gt;----Footer----")
-
-    [status, headers, [new_body]]
-  end
-end
-</PRE>
-
-<P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rack-builder/own(master)]$ cat app.rb 
-require 'rack'
-require 'thin'
-
-require 'mybuilder'
-require 'decorator'
-
-app = Rack::MyBuilder.new do
-  use Decorator, :header =&gt; "&lt;strong&gt;*********** header **********&lt;/strong&gt;&lt;br/&gt;"
-
-  cheer = ARGV.shift || "&lt;h1&gt;Hello world!&lt;/h1&gt;"
-  run lambda { |env| [200, { 'Content-Type' =&gt; 'text/html' }, [ "&lt;h1&gt;#{cheer}&lt;/h1&gt;" ]]}
-end
-
-Rack::Handler::Thin.run app, :Port =&gt; 3333, :Host =&gt; 'localhost'
-</PRE>
-
-<P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rack-builder/own(master)]$ cat Rakefile 
-desc "run app server"
-task :default =&gt; :server
-
-desc "run app server"
-task :server, :greet  do |t, args|
-  cheer = args[:greet] || 'bye, bye!'
-  sh "ruby -I. app.rb #{cheer}"
-end
-</PRE>
-
-<P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rack-builder/own(master)]$ rake -T
-rake default        # run app server
-rake server[greet]  # run app server
-</PRE>
-
-<P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rack-builder/own(master)]$ rake server[tachaaaAAAAAANNN]
-ruby -I. app.rb tachaaaAAAAAANNN
-&gt;&gt; Thin web server (v1.5.1 codename Straight Razor)
-&gt;&gt; Maximum connections set to 1024
-&gt;&gt; Listening on localhost:3333, CTRL+C to stop
-</PRE>
+<UL>
+<LI><A NAME="tex2html480"
+  HREF="https://github.com/rack/rack/wiki">Rackup Wiki</A>
+</LI>
+<LI><A NAME="tex2html481"
+  HREF="https://vimeo.com/46906591">Understanding Rack de Tekpub Productions</A>
+</LI>
+</UL>
 
 <P>
 
-<img src="myrackbuilder.png" />
+<H2><A NAME="SECTION06212000000000000000"></A>
+   <A NAME="12609"></A>
+<BR>
+Ejercicio: Instale la Documentación en sinatra.github.com
+</H2>
+  
+Instale la documentación de Sinatra en 
+<A NAME="tex2html482"
+  HREF="https://github.com/sinatra/sinatra.github.com">https://github.com/sinatra/sinatra.github.com</A>
+<P>
+A la hora de empezar la jerarquía de una aplicación sinatra se puede seguir la 
+estructura propuesta por 
+<A NAME="tex2html483"
+  HREF="https://github.com/leemartin/sinatra-stack">Lee Martin en sinatra-stack</A>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4894"
+<A NAME="tex2html3915"
   HREF="node125.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4888"
-  HREF="node104.html">
+<A NAME="tex2html3909"
+  HREF="node123.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4882"
+<A NAME="tex2html3905"
   HREF="node123.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4890"
-  HREF="node230.html">
+<A NAME="tex2html3911"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4892"
-  HREF="node233.html">
+<A NAME="tex2html3913"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -296,17 +243,17 @@ ruby -I. app.rb tachaaaAAAAAANNN
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4895"
-  HREF="node125.html">Código de Rack::Builder</A>
-<B>Sup:</B> <A NAME="tex2html4889"
-  HREF="node104.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4883"
-  HREF="node123.html">Ejemplo de Middleware: Rack::ETag</A>
+<B> Sig:</B> <A NAME="tex2html3916"
+  HREF="node125.html">Fundamentos</A>
+<B>Sup:</B> <A NAME="tex2html3910"
+  HREF="node123.html">Primeros Pasos</A>
+<B> Ant:</B> <A NAME="tex2html3906"
+  HREF="node123.html">Primeros Pasos</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-05-12</I>
+2014-09-02</I>
 </ADDRESS>
 </BODY>
 </HTML>

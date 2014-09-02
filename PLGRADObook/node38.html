@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Eliminación de la Recursión por la Izquierda en un Esquema de Traducción</TITLE>
-<META NAME="description" CONTENT="Eliminación de la Recursión por la Izquierda en un Esquema de Traducción">
+<TITLE>Not Predicate: Comentarios Anidados</TITLE>
+<META NAME="description" CONTENT="Not Predicate: Comentarios Anidados">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node39.html">
 <LINK REL="previous" HREF="node37.html">
-<LINK REL="up" HREF="node33.html">
+<LINK REL="up" HREF="node28.html">
 <LINK REL="next" HREF="node39.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3041"
+<A NAME="tex2html2162"
   HREF="node39.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3035"
-  HREF="node33.html">
+<A NAME="tex2html2156"
+  HREF="node28.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3029"
+<A NAME="tex2html2150"
   HREF="node37.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3037"
-  HREF="node230.html">
+<A NAME="tex2html2158"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3039"
-  HREF="node233.html">
+<A NAME="tex2html2160"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,165 +92,154 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3042"
-  HREF="node39.html">Práctica: Analizador Descendente Predictivo</A>
-<B>Sup:</B> <A NAME="tex2html3036"
-  HREF="node33.html">Analizadores Descendentes Predictivos en</A>
-<B> Ant:</B> <A NAME="tex2html3030"
-  HREF="node37.html">Esquemas de Traducción</A>
+<B> Sig:</B> <A NAME="tex2html2163"
+  HREF="node39.html">Un Lenguaje Dependiente del</A>
+<B>Sup:</B> <A NAME="tex2html2157"
+  HREF="node28.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html2151"
+  HREF="node37.html">Dangling else: Asociando un</A>
 <B> Con:</B> 
-<A NAME="tex2html3037"
-  HREF="node230.html">
+<A NAME="tex2html2158"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3039"
-  HREF="node233.html">
+<A NAME="tex2html2160"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<H1><A NAME="SECTION04450000000000000000"></A>
-<A NAME="section:eliminarecesquem"></A>
-<BR>
-Eliminación de la Recursión por la Izquierda en un Esquema de Traducción
+<UL CLASS="ChildLinks">
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html2164"
+  HREF="node38.html#SECTION044100010000000000000">Pascal_comments.pegjs</A>
+<LI><A NAME="tex2html2165"
+  HREF="node38.html#SECTION044100020000000000000">use_pascal_comments.js</A>
+<LI><A NAME="tex2html2166"
+  HREF="node38.html#SECTION044100030000000000000">Ejecución</A>
+<LI><A NAME="tex2html2167"
+  HREF="node38.html#SECTION044100040000000000000">Donde</A>
+</UL></UL></UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION044100000000000000000">
+Not Predicate: Comentarios Anidados</A>
 </H1>
-La eliminación de la recursión por la izquierda es sólo un paso: debe 
-ser extendida a esquemas de traducción, 
-de manera que no sólo se preserve el lenguaje
-sino la secuencia de acciones. Supongamos que tenemos un esquema de
-traducción de la forma:
+The following recursive  <A NAME="tex2html204"
+  HREF="http://pegjs.majda.cz/">PEG.js</A>
+
+program  matches Pascal-style nested comment syntax:
+<PRE>
+(* which can (* nest *) like this *)
+</PRE>
 
 <P>
-<BR>
-<BR>
-<TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $A   \rightarrow A \alpha$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="69" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img67.png"
- ALT="$ A \rightarrow A \alpha$"></SPAN></TD>
-<TD ALIGN="LEFT"><code>{ alpha_action }</code></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $A   \rightarrow A \beta$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="69" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img76.png"
- ALT="$ A \rightarrow A \beta$"></SPAN></TD>
-<TD ALIGN="LEFT"><code>{ beta_action }</code></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $A   \rightarrow \gamma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img26.png"
- ALT="$ A \rightarrow \gamma$"></SPAN></TD>
-<TD ALIGN="LEFT"><code>{ gamma_action }</code></TD>
-</TR>
-</TABLE>
-<BR>
-<BR>
+
+<H4><A NAME="SECTION044100010000000000000">
+Pascal_comments.pegjs</A>
+</H4>
+  
+
+<PRE>
+$ cat pascal_comments.pegjs 
+/* Pascal nested comments */
+
+P     =   prog:N+                          { return prog; }
+N     =   chars:$(!Begin ANY)+             { return chars;}
+        / C
+C     = Begin chars:T* End                 { return chars.join(''); }
+T     =   C 
+        / (!Begin !End char:ANY)           { return char;}
+Begin = '(*'
+End   = '*)'
+ANY   =   'z'    /* any character */       { return 'z';  }
+        / char:[^z]                        { return char; }
+</PRE>
 
 <P>
-para una sentencia como <!-- MATH
- $\gamma \beta \alpha$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="37" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img77.png"
- ALT="$ \gamma \beta \alpha$"></SPAN> la secuencia de
-acciones será: 
+
+<H4><A NAME="SECTION044100020000000000000">
+use_pascal_comments.js</A>
+</H4>
+  
+
+<PRE>
+$ cat use_pascal_comments.js 
+var PEG = require("./pascal_comments.js");
+var r = PEG.parse(
+  "not bla bla (* pascal (* nested *) comment *)"+
+  " pum pum (* another comment *)");
+console.log(r);
+</PRE>
 
 <P>
-<DIV ALIGN="CENTER">
-<code>gamma_action  beta_action alpha_action</code>
 
-</DIV>
+<H4><A NAME="SECTION044100030000000000000">
+Ejecución</A>
+</H4>
+  
 
-<P>
-¿Cómo construir un esquema de traducción para la gramática resultante
-de eliminar la recursión por la izquierda que ejecute las acciones
-asociadas en el mismo orden?. Supongamos para simplificar,
-que las acciones no dependen
-de atributos ni computan atributos, sino que actúan sobre
-variables globales. En tal caso, la siguiente
-ubicación de las acciones da lugar a que se ejecuten en el mismo
-orden:
-
-<P>
-<BR>
-<BR>
-<TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $A   \rightarrow \gamma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img26.png"
- ALT="$ A \rightarrow \gamma$"></SPAN> <code>{ gamma_action }</code> <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img78.png"
- ALT="$ R$"></SPAN></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $R   \rightarrow \beta$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="56" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img79.png"
- ALT="$ R \rightarrow \beta$"></SPAN> <code> { beta_action }</code> <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img78.png"
- ALT="$ R$"></SPAN></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $R   \rightarrow \alpha$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="57" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img80.png"
- ALT="$ R \rightarrow \alpha$"></SPAN> <code> { alpha_action }</code> <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img78.png"
- ALT="$ R$"></SPAN></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $R   \rightarrow \epsilon$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="52" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img81.png"
- ALT="$ R \rightarrow \epsilon$"></SPAN></TD>
-</TR>
-</TABLE>
+<PRE>
+$ ../bin/pegjs pascal_comments.pegjs 
+$ node use_pascal_comments.js 
+[ 'not bla bla ',
+  ' pascal  nested  comment ',
+  ' pum pum ',
+  ' another comment ' ]
+</PRE>
 
 <P>
-Si hay atributos en juego, la estrategia para construir un
-esquema de traducción equivalente para la gramática resultante
-de eliminar la recursividad por la izquierda se complica.
+
+<H4><A NAME="SECTION044100040000000000000">
+Donde</A>
+</H4>
+  
+
+<P>
+
+<UL>
+<LI><PRE>
+[~/srcPLgrado/pegjs/examples(master)]$ pwd -P
+/Users/casiano/local/src/javascript/PLgrado/pegjs/examples
+</PRE>
+
+<P>
+</LI>
+<LI><PRE>
+[~/srcPLgrado/pegjs/examples(master)]$ git remote -v
+dmajda  https://github.com/dmajda/pegjs.git (fetch)
+dmajda  https://github.com/dmajda/pegjs.git (push)
+origin  git@github.com:crguezl/pegjs.git (fetch)
+origin  git@github.com:crguezl/pegjs.git (push)
+</PRE>
+</LI>
+<LI><A NAME="tex2html205"
+  HREF="https://github.com/crguezl/pegjs/tree/master/examples">https://github.com/crguezl/pegjs/tree/master/examples</A>
+</LI>
+</UL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3041"
+<A NAME="tex2html2162"
   HREF="node39.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3035"
-  HREF="node33.html">
+<A NAME="tex2html2156"
+  HREF="node28.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3029"
+<A NAME="tex2html2150"
   HREF="node37.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3037"
-  HREF="node230.html">
+<A NAME="tex2html2158"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3039"
-  HREF="node233.html">
+<A NAME="tex2html2160"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -301,17 +290,17 @@ de eliminar la recursividad por la izquierda se complica.
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3042"
-  HREF="node39.html">Práctica: Analizador Descendente Predictivo</A>
-<B>Sup:</B> <A NAME="tex2html3036"
-  HREF="node33.html">Analizadores Descendentes Predictivos en</A>
-<B> Ant:</B> <A NAME="tex2html3030"
-  HREF="node37.html">Esquemas de Traducción</A>
+<B> Sig:</B> <A NAME="tex2html2163"
+  HREF="node39.html">Un Lenguaje Dependiente del</A>
+<B>Sup:</B> <A NAME="tex2html2157"
+  HREF="node28.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html2151"
+  HREF="node37.html">Dangling else: Asociando un</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-05-12</I>
+2014-09-02</I>
 </ADDRESS>
 </BODY>
 </HTML>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>rackup</TITLE>
-<META NAME="description" CONTENT="rackup">
+<TITLE>Despliegue de una Aplicación Web en la ETSII</TITLE>
+<META NAME="description" CONTENT="Despliegue de una Aplicación Web en la ETSII">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node120.html">
 <LINK REL="previous" HREF="node118.html">
-<LINK REL="up" HREF="node104.html">
+<LINK REL="up" HREF="node89.html">
 <LINK REL="next" HREF="node120.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4803"
+<A NAME="tex2html3845"
   HREF="node120.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4797"
-  HREF="node104.html">
+<A NAME="tex2html3839"
+  HREF="node89.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4791"
+<A NAME="tex2html3833"
   HREF="node118.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4799"
-  HREF="node230.html">
+<A NAME="tex2html3841"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4801"
-  HREF="node233.html">
+<A NAME="tex2html3843"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,19 +92,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4804"
-  HREF="node120.html">Rack::Static</A>
-<B>Sup:</B> <A NAME="tex2html4798"
-  HREF="node104.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4792"
-  HREF="node118.html">La Estructura de una</A>
+<B> Sig:</B> <A NAME="tex2html3846"
+  HREF="node120.html">Práctica: Despliegue en Heroku</A>
+<B>Sup:</B> <A NAME="tex2html3840"
+  HREF="node89.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html3834"
+  HREF="node118.html">Prácticas: Centro de Cálculo</A>
 <B> Con:</B> 
-<A NAME="tex2html4799"
-  HREF="node230.html">
+<A NAME="tex2html3841"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4801"
-  HREF="node233.html">
+<A NAME="tex2html3843"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
@@ -115,332 +115,85 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <UL CLASS="ChildLinks">
 <LI><UL>
 <LI><UL>
-<LI><A NAME="tex2html4805"
-  HREF="node119.html#SECTION061150010000000000000">Introducción</A>
-<LI><A NAME="tex2html4806"
-  HREF="node119.html#SECTION061150020000000000000">Ejemplo de uso</A>
-<LI><A NAME="tex2html4807"
-  HREF="node119.html#SECTION061150030000000000000">Ejecución</A>
-<LI><A NAME="tex2html4808"
-  HREF="node119.html#SECTION061150040000000000000">Opciones del ejecutable <TT>rackup</TT></A>
-<LI><A NAME="tex2html4809"
-  HREF="node119.html#SECTION061150050000000000000">Especificación de Opciones en la primera línea</A>
+<LI><A NAME="tex2html3847"
+  HREF="node119.html#SECTION061300010000000000000">Véase también</A>
 </UL></UL></UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION061150000000000000000">
-rackup</A>
+<H1><A NAME="SECTION061300000000000000000">
+Despliegue de una Aplicación Web en la ETSII</A>
 </H1>
+Para desplegar una aplicación web usaremos <code>exthost2</code> (en 2013).
+
+<P>
+Veamos que puertos están libres usando  <TT>netstat</TT> :
+<PRE>
+casiano@exthost2:~$ netstat -an | less
+</PRE>
+o bien usamos  <TT>lsof</TT> : 
+<PRE>
+lsof -i | less
+</PRE>
+y después - si es necesario - terminamos el proceso que ya estuviera escuchando en el puerto
+<PRE>
+kill -9 PID
+</PRE>
+
+<P>
+Veamos una simple aplicación usando <code>rack</code>:
+<PRE>
+casiano@exthost2:~/src/ruby/simplewebapp$ cat hello.rb 
+require 'rack'
+
+app = lambda { |env| [200, {"Content-Type" =&gt; "text/plain"}, ["Hello. The time is #{Time.now}"]] }
+Rack::Handler::WEBrick.run app,:Port =&gt; 4567
+</PRE>
+La ejecutamos:
+<PRE>
+casiano@exthost2:~/src/ruby/simplewebapp$ ruby hello.rb 
+[2013-10-28 09:58:54] INFO  WEBrick 1.3.1
+[2013-10-28 09:58:54] INFO  ruby 1.9.3 (2011-10-30) [i686-linux]
+[2013-10-28 09:58:54] WARN  TCPServer Error: Address already in use - bind(2)
+[2013-10-28 09:58:54] INFO  WEBrick::HTTPServer#start: pid=16597 port=4567
+</PRE>
+Ya tenemos disponible la página en <code>exthost2</code> en el puerto correspondiente.
+
+<P>
+El acceso al servidor está limitado a
+la red de la ULL.
 
 <P>
 
-<H4><A NAME="SECTION061150010000000000000">
-Introducción</A>
+<H4><A NAME="SECTION061300010000000000000">
+Véase también</A>
 </H4>
   
 
 <OL>
-<LI>The <A NAME="tex2html576"
-  HREF="http://rack.rubyforge.org/doc/">Rack</A> gem gives you a 
-rackup command which lets you start your app on
-any supported application server. 
-
-<P>
-</LI>
-<LI>rackup is a useful tool for
-running Rack applications, which uses the <A NAME="tex2html577"
-  HREF="http://rack.rubyforge.org/doc/Rack/Builder.html">Rack::Builder</A> DSL to
-configure middleware and build up applications easily. 
-
-<P>
-</LI>
-<LI>rackup
-automatically figures out the environment it is run in, and runs
-your application as FastCGI, CGI, or standalone with Mongrel or
-WEBrick, all from the same configuration.
+<LI><I>Gemas instaladas en local</I> <A HREF="#section:gemasinstaladasenlocal"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>
 </LI>
 </OL>
 
 <P>
-De hecho este es todo el código del ejecutable 
-<A NAME="tex2html578"
-  HREF="https://github.com/rack/rack/blob/master/bin/rackup">rackup</A>
-<PRE>
-#!/usr/bin/env ruby
-
-require "rack"
-Rack::Server.start
-</PRE>
-
-<P>
-El método  <TT>start</TT> 
-starts a new rack server (like running rackup). This will parse <code>ARGV</code> and
-provide standard <code>ARGV</code> rackup options, defaulting to load <code>config.ru</code>.
-
-<P>
-Providing an option hash will prevent <code>ARGV</code> parsing and will not include
-any default options.
-
-<P>
-This method can be used to very easily launch a CGI application, for
-example:
-
-<P>
-<PRE>
-  Rack::Server.start(
-    :app =&gt; lambda do |e|
-      [200, {'Content-Type' =&gt; 'text/html'}, ['hello world']]
-    end,
-    :server =&gt; 'cgi'
-  )
-</PRE>
-
-<P>
-Further options available here are documented on <A NAME="tex2html579"
-  HREF="http://rack.rubyforge.org/doc/Rack/Server.html">Rack::Server</A><code>#initialize</code>
-(véase el código en 
-<A NAME="tex2html580"
-  HREF="https://github.com/rack/rack/blob/master/lib/rack/server.rb">Rack::Server</A>
-):
-<PRE>
-    def self.start(options = nil)
-      new(options).start
-    end
-</PRE>
-
-<P>
-como se ve, el código 
-de
-
-<A NAME="tex2html581"
-  HREF="https://github.com/rack/rack/blob/master/lib/rack/server.rb">Rack::Server</A>
-
-está en
-Github.
-
-<P>
-The Options of <code>start</code> and <code>new</code>  may include:
-
-<OL>
-<LI><code>:app</code>
-    a rack application to run (overrides :config)
-</LI>
-<LI><code>:config</code>
-    a rackup configuration file path to load (.ru)
-</LI>
-<LI><code>:environment</code>
-    this selects the middleware that will be wrapped around
-    your application. Default options available are:
-    
-<OL>
-<LI>development: CommonLogger, ShowExceptions, and Lint
-</LI>
-<LI>deployment: CommonLogger
-</LI>
-<LI>none: no extra middleware
-    
-</LI>
-</OL>
-    note: when the server is a cgi server, CommonLogger is not included.
-</LI>
-<LI><code>:server</code>
-    choose a specific Rack::Handler, e.g. cgi, fcgi, webrick
-</LI>
-<LI><code>:daemonize</code>
-    if true, the server will daemonize itself (fork, detach, etc)
-</LI>
-<LI><code>:pid</code>
-    path to write a pid file after daemonize
-</LI>
-<LI><code>:Host</code>
-    the host address to bind to (used by supporting Rack::Handler)
-</LI>
-<LI><code>:Port</code>
-    the port to bind to (used by supporting Rack::Handler)
-</LI>
-<LI><code>:AccessLog</code>
-    webrick acess log options (or supporting Rack::Handler)
-</LI>
-<LI><code>:debug</code>
-    turn on debug output <code>($DEBUG = true)</code>
-</LI>
-<LI><code>:warn</code>
-    turn on warnings (<code>$-w = true</code>)
-</LI>
-<LI><code>:include</code>
-    add given paths to <code>$LOAD_PATH</code>
-</LI>
-<LI><code>:require</code>
-    require the given libraries
-</LI>
-</OL>
-
-<P>
-
-<H4><A NAME="SECTION061150020000000000000">
-Ejemplo de uso</A>
-</H4>
-  
-
-<P>
-Si no se especifica, <code>rackup</code> busca un fichero con nombre <code>config.ru</code>.
-<PRE>
-[~/local/src/ruby/sinatra/rack/rackup/simple(master)]$ cat config.ru 
-require './myapp'
-run MyApp.new
-</PRE>
-
-<P>
-Esta es la aplicación:
-<PRE>
-[~/local/src/ruby/sinatra/rack/rackup/simple(master)]$ cat myapp.rb 
-class MyApp
-  def call env
-    [200, {"Content-Type" =&gt; "text/html"}, ["Hello Rack Participants"]] 
-  end
-end
-</PRE>
-
-<P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rackup/simple(master)]$ cat Rakefile 
-task :default =&gt; :server
-
-desc "run server"
-task :server do
-  sh "rackup"
-end
-
-desc "run client via curl"
-task :client do
-  sh "curl -v localhost:9292"
-end
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION061150030000000000000">
-Ejecución</A>
-</H4>
-  
-
-<P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rackup/simple(master)]$ rackup
-&gt;&gt; Thin web server (v1.5.1 codename Straight Razor)
-&gt;&gt; Maximum connections set to 1024
-&gt;&gt; Listening on 0.0.0.0:9292, CTRL+C to stop
-</PRE>
-
-<P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rackup/simple(master)]$ curl -v localhost:9292
-* About to connect() to localhost port 9292 (#0)
-*   Trying ::1... Connection refused
-*   Trying 127.0.0.1... connected
-* Connected to localhost (127.0.0.1) port 9292 (#0)
-&gt; GET / HTTP/1.1
-&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8y zlib/1.2.5
-&gt; Host: localhost:9292
-&gt; Accept: */*
-&gt; 
-&lt; HTTP/1.1 200 OK
-&lt; Content-Type: text/html
-&lt; Transfer-Encoding: chunked
-&lt; Connection: close
-&lt; Server: thin 1.5.1 codename Straight Razor
-&lt; 
-* Closing connection #0
-Hello Rack Participants
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION061150040000000000000">
-Opciones del ejecutable <TT>rackup</TT></A>
-</H4>
-  
-
-<OL>
-<LI>Véase <A NAME="tex2html582"
-  HREF="http://manpages.debian.net/cgi-bin/man.cgi?query=rackup"><TT>rackup</TT></A>.
-</LI>
-</OL>
-
-<P>
-<PRE>
-[~]$ rackup --help
-Usage: rackup [ruby options] [rack options] [rackup config]
-
-Ruby options:
-  -e, --eval LINE          evaluate a LINE of code
-  -d, --debug              set debugging flags (set $DEBUG to true)
-  -w, --warn               turn warnings on for your script
-  -I, --include PATH       specify $LOAD_PATH (may be used more than once)
-  -r, --require LIBRARY    require the library, before executing your script
-
-Rack options:
-  -s, --server SERVER      serve using SERVER (webrick/mongrel)
-  -o, --host HOST          listen on HOST (default: 0.0.0.0)
-  -p, --port PORT          use PORT (default: 9292)
-  -O NAME[=VALUE],         pass VALUE to the server as option NAME. 
-                           If no VALUE, sets it to true. 
-                           Run 
-                           'rackup -s SERVER -h' 
-                           to get a list of options for SERVER
-      --option
-  -E, --env ENVIRONMENT    use ENVIRONMENT for defaults (default: development)
-  -D, --daemonize          run daemonized in the background
-  -P, --pid FILE           file to store PID (default: rack.pid)
-
-Common options:
-  -h, -?, --help           Show this message
-      --version            Show version
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION061150050000000000000">
-Especificación de Opciones en la primera línea</A>
-</H4>
-  
-
-Si la primera línea de un fichero <code>config.ru</code> empieza por <code>\#</code> es tratada 
-como una línea de opciones permitiendo así que los argumentos de  <TT>rackup</TT> 
-se especifiquen en el fichero de configuración:
-
-<P>
-<PRE>
-#\-w -p 8765
-
-use Rack::Reloader, 0
-use Rack::ContentLength
-
-app = proc do |env|
-  [200, {'content-Type' =&gt; 'text/plain' }, ['a']]
-end
-
-run app
-</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4803"
+<A NAME="tex2html3845"
   HREF="node120.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4797"
-  HREF="node104.html">
+<A NAME="tex2html3839"
+  HREF="node89.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4791"
+<A NAME="tex2html3833"
   HREF="node118.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4799"
-  HREF="node230.html">
+<A NAME="tex2html3841"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4801"
-  HREF="node233.html">
+<A NAME="tex2html3843"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -491,17 +244,17 @@ run app
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4804"
-  HREF="node120.html">Rack::Static</A>
-<B>Sup:</B> <A NAME="tex2html4798"
-  HREF="node104.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4792"
-  HREF="node118.html">La Estructura de una</A>
+<B> Sig:</B> <A NAME="tex2html3846"
+  HREF="node120.html">Práctica: Despliegue en Heroku</A>
+<B>Sup:</B> <A NAME="tex2html3840"
+  HREF="node89.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html3834"
+  HREF="node118.html">Prácticas: Centro de Cálculo</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-05-12</I>
+2014-09-02</I>
 </ADDRESS>
 </BODY>
 </HTML>

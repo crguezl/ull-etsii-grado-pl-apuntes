@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Esquemas de Traducción</TITLE>
-<META NAME="description" CONTENT="Esquemas de Traducción">
+<TITLE>Ejemplo de Transformaciones Árbol: Parse::Eyapp::TreeRegexp</TITLE>
+<META NAME="description" CONTENT="Ejemplo de Transformaciones Árbol: Parse::Eyapp::TreeRegexp">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node74.html">
 <LINK REL="previous" HREF="node72.html">
-<LINK REL="up" HREF="node59.html">
+<LINK REL="up" HREF="node69.html">
 <LINK REL="next" HREF="node74.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3754"
+<A NAME="tex2html2819"
   HREF="node74.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3748"
-  HREF="node59.html">
+<A NAME="tex2html2813"
+  HREF="node69.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3742"
+<A NAME="tex2html2807"
   HREF="node72.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3750"
-  HREF="node230.html">
+<A NAME="tex2html2815"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3752"
-  HREF="node233.html">
+<A NAME="tex2html2817"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,174 +92,389 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3755"
-  HREF="node74.html">Manejo en jison de</A>
-<B>Sup:</B> <A NAME="tex2html3749"
-  HREF="node59.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html3743"
-  HREF="node72.html">Precedencia y Asociatividad</A>
+<B> Sig:</B> <A NAME="tex2html2820"
+  HREF="node74.html">Treehugger</A>
+<B>Sup:</B> <A NAME="tex2html2814"
+  HREF="node69.html">Transformaciones Árbol</A>
+<B> Ant:</B> <A NAME="tex2html2808"
+  HREF="node72.html">Patrones Árbol y Transformaciones</A>
 <B> Con:</B> 
-<A NAME="tex2html3750"
-  HREF="node230.html">
+<A NAME="tex2html2815"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3752"
-  HREF="node233.html">
+<A NAME="tex2html2817"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<H1><A NAME="SECTION047140000000000000000">
-Esquemas de Traducción</A>
+<UL CLASS="ChildLinks">
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html2821"
+  HREF="node73.html#SECTION04740010000000000000">Instalación</A>
+<LI><A NAME="tex2html2822"
+  HREF="node73.html#SECTION04740020000000000000">Donde</A>
+<LI><A NAME="tex2html2823"
+  HREF="node73.html#SECTION04740030000000000000">La gramática: Expresiones</A>
+<LI><A NAME="tex2html2824"
+  HREF="node73.html#SECTION04740040000000000000">Ejecución</A>
+<LI><A NAME="tex2html2825"
+  HREF="node73.html#SECTION04740050000000000000">synopsis.pl</A>
+<LI><A NAME="tex2html2826"
+  HREF="node73.html#SECTION04740060000000000000">El método <TT>s</TT></A>
+<LI><A NAME="tex2html2827"
+  HREF="node73.html#SECTION04740070000000000000">Véase</A>
+</UL></UL></UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION04740000000000000000">
+Ejemplo de Transformaciones Árbol: Parse::Eyapp::TreeRegexp</A>
 </H1>
-Un <A NAME="15109"></A><SPAN  CLASS="textbf">esquema de traducción</SPAN> es una gramática independiente del
-contexto en la cuál se han asociado atributos a los símbolos de la gramática.
-Un atributo queda caracterizado por un identificador
-o nombre y un tipo o clase. Además se han insertado acciones, esto es,
-código JavaScript/Perl/Python/C, ...en medio de las partes derechas.
-En ese código es posible referenciar los atributos de los
-símbolos de la gramática como variables del lenguaje subyacente.
 
 <P>
-Recuerde que el orden en que se evalúan los fragmentos de código
-es el de un recorrido primero-profundo del árbol de análisis sintáctico.
-Mas específicamente, considerando a las acciones como hijos-hoja del nodo,
-el recorrido que realiza un esquema de traducción es:
+
+<H4><A NAME="SECTION04740010000000000000">
+Instalación</A>
+</H4>
+  
 
 <P>
 <PRE>
- 1     function esquema_de_traduccion(node) {
- 2 
- 3       for(c in node.children) { # de izquierda a derecha
- 4         child = node.children[i];
- 5         if (child.instanceof('SemanticAction') { # si es una acción semántica
- 6           child.execute;
- 7         }
- 8         else { esquema_de_traduccion(child) }
- 9       }
-10     }
+[~/jison/jison-aSb(master)]$ sudo cpan Parse::Eyapp
 </PRE>
 
 <P>
-Obsérvese que, como el bucle recorre a los hijos
-de izquierda a derecha, se debe dar la siguiente
-condición para que un esquema  de traducción funcione:
 
-<P>
-Para cualquier regla de producción aumentada con acciones, de la forma 
-
-<P>
-<DIV ALIGN="CENTER">
-<!-- MATH
- $A \rightarrow X_1 \ldots X_j$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="115" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img208.png"
- ALT="$ A \rightarrow X_1 \ldots X_j$"></SPAN><code>{ action(A{b}, X</code><SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img209.png"
- ALT="$ _1$"></SPAN><code>{c}</code><SPAN CLASS="MATH"><IMG
- WIDTH="25" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img210.png"
- ALT="$ \ldots$"></SPAN><code> X</code><SPAN CLASS="MATH"><IMG
- WIDTH="14" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img211.png"
- ALT="$ _n$"></SPAN><code>{d})}</code><!-- MATH
- $X_{j+1} \ldots X_n$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="93" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img212.png"
- ALT="$ X_{j+1} \ldots X_n$"></SPAN>
-</DIV>
-
-<P>
-debe ocurrir que los atributos evaluados en
-la acción insertada después de <SPAN CLASS="MATH"><IMG
- WIDTH="26" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img213.png"
- ALT="$ X_j$"></SPAN> 
-dependan de atributos y variables que fueron computadas durante
-la visita de los hermanos izquierdos o de sus ancestros.
-En particular no deberían depender de atributos asociados
-con las variables <!-- MATH
- $X_{j+1} \ldots X_n$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="93" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img212.png"
- ALT="$ X_{j+1} \ldots X_n$"></SPAN>. Ello no significa que
-no sea correcto evaluar atributos de <!-- MATH
- $X_{j+1} \ldots X_n$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="93" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img212.png"
- ALT="$ X_{j+1} \ldots X_n$"></SPAN>
-en esa acción.
-
-<P>
-Por ejemplo, el siguiente esquema no satisface el requisito:
-
-<center>
-<img src="wrongtranslationscheme.png" width="50%"/>
-</center>
-
-<P>
-porque cuando vas a ejecutar la acción <code>{ console.log(A.in) }</code> 
-el atributo <code>A.in</code> no ha sido computado.
-
-<P>
-Los atributos de cada símbolo de la gramática <!-- MATH
- $X \in V \cup \Sigma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="88" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img214.png"
- ALT="$ X \in V \cup \Sigma$"></SPAN>
-se dividen en dos grupos disjuntos: <A NAME="15111"></A><SPAN  CLASS="textbf">atributos sintetizados</SPAN>
-y <A NAME="15113"></A><SPAN  CLASS="textbf">atributos heredados</SPAN>: 
+<H4><A NAME="SECTION04740020000000000000">
+Donde</A>
+</H4>
+  
 
 <P>
 
 <UL>
-<LI>Un atributo de <SPAN CLASS="MATH"><IMG
- WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img215.png"
- ALT="$ X$"></SPAN> es un <A NAME="15115"></A><SPAN  CLASS="textbf">atributo heredado</SPAN> 
-si depende de atributos de su padre y hermános en el árbol.
+<LI><PRE>
+[~/src/perl/parse-eyapp/examples/MatchingTrees]$ pwd -P
+/Users/casiano/local/src/perl/parse-eyapp/examples/MatchingTrees
+</PRE>
 </LI>
-<LI>Un <A NAME="15117"></A><SPAN  CLASS="textbf">atributo sintetizado</SPAN> es aquél tal que el valor del atributo depende
-de los valores de los atributos de los hijos, 
-es decir en tal caso <SPAN CLASS="MATH"><IMG
- WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img215.png"
- ALT="$ X$"></SPAN> ha de ser una variable sintáctica
-y los atributos en la parte derecha de la regla semántica deben
-ser atributos de símbolos en la parte derecha de la regla de producción 
-asociada.
+<LI><A NAME="tex2html290"
+  HREF="http://search.cpan.org/~casiano/Parse-Eyapp-1.182/lib/Parse/Eyapp/eyapp">Parse::Eyapp</A>
+</LI>
+<LI><A NAME="tex2html291"
+  HREF="https://github.com/gitpan/Parse-Eyapp/blob/master/examples/MatchingTrees/synopsis.pl">Ejemplo de uso de Parse::Eyapp::Treeregexp</A>
+</LI>
+<LI><A NAME="tex2html292"
+  HREF="https://github.com/gitpan/Parse-Eyapp/blob/master/lib/Parse/Eyapp/MatchingTrees.pod">Tree Matching and Tree Substitution</A>
+</LI>
+<LI><A NAME="tex2html293"
+  HREF="https://github.com/gitpan/Parse-Eyapp/blob/master/lib/Parse/Eyapp/Node.pm#L149-L172">Node.pm</A>
+(Véase el método <code>s</code>)
+</LI>
+</UL>
+
+<P>
+
+<H4><A NAME="SECTION04740030000000000000">
+La gramática: Expresiones</A>
+</H4>
+  
+
+<P>
+<PRE>
+my $grammar = q{
+  %lexer {
+      m{\G\s+}gc;
+      m{\G([0-9]+(?:\.[0-9]+)?)}gc and return('NUM',$1);
+      m{\G([A-Za-z][A-Za-z0-9_]*)}gc and return('VAR',$1);
+      m{\G(.)}gcs and return($1,$1);
+  }
+
+  %right  '='     # Lowest precedence
+  %left   '-' '+' # + and - have more precedence than = Disambiguate a-b-c as (a-b)-c
+  %left   '*' '/' # * and / have more precedence than + Disambiguate a/b/c as (a/b)/c
+  %left   NEG     # Disambiguate -a-b as (-a)-b and not as -(a-b)
+  %tree           # Let us build an abstract syntax tree ...
+
+  %%
+  line: 
+      exp &lt;%name EXPRESSION_LIST + ';'&gt;  
+        { $_[1] } /* list of expressions separated by ';' */
+  ;
+
+  /* The %name directive defines the name of the
+     class to which the node being built belongs */
+  exp:
+      %name NUM  
+      NUM            
+    | %name VAR   
+      VAR         
+    | %name ASSIGN 
+      VAR '=' exp 
+    | %name PLUS 
+      exp '+' exp    
+    | %name MINUS 
+      exp '-' exp 
+    | %name TIMES  
+      exp '*' exp 
+    | %name DIV     
+      exp '/' exp 
+    | %name UMINUS 
+      '-' exp %prec NEG 
+    | '(' exp ')'  
+        { $_[2] }  /* Let us simplify a bit the tree */
+  ;
+
+  %%
+}; # end grammar
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION04740040000000000000">
+Ejecución</A>
+</H4>
+  
+
+<PRE>
+El trozo de código:
+\begin{verbatim}
+$parser-&gt;input(\"2*-3+b*0;--2\n");       # Set the input
+my $t = $parser-&gt;YYParse;
+</PRE>
+da lugar a este árbol:
+<PRE>
+[~/src/perl/parse-eyapp/examples/MatchingTrees]$ ./synopsis.pl 
+Syntax Tree:
+EXPRESSION_LIST(
+  PLUS(
+    TIMES(
+      NUM( TERMINAL[2]),
+      UMINUS( NUM( TERMINAL[3])) # UMINUS
+    ) # TIMES,
+    TIMES( VAR( TERMINAL[b]), NUM( TERMINAL[0])) # TIMES
+  ) # PLUS,
+  UMINUS(
+    UMINUS( NUM( TERMINAL[2])) # UMINUS
+  ) # UMINUS
+) # EXPRESSION_LIST
+</PRE>
+Al aplicar las transformaciones:
+<PRE>
+# Let us transform the tree. Define the tree-regular expressions ..
+my $p = Parse::Eyapp::Treeregexp-&gt;new( STRING =&gt; q{
+    { #  Example of support code
+      my %Op = (PLUS=&gt;'+', MINUS =&gt; '-', TIMES=&gt;'*', DIV =&gt; '/');
+    }
+    constantfold: /TIMES|PLUS|DIV|MINUS/:bin(NUM($x), NUM($y)) 
+      =&gt; { 
+        my $op = $Op{ref($bin)};
+        $x-&gt;{attr} = eval  "$x-&gt;{attr} $op $y-&gt;{attr}";
+        $_[0] = $NUM[0]; 
+      }
+    uminus: UMINUS(NUM($x)) =&gt; { $x-&gt;{attr} = -$x-&gt;{attr}; $_[0] = $NUM }
+    zero_times_whatever: TIMES(NUM($x), .) and { $x-&gt;{attr} == 0 } =&gt; { $_[0] = $NUM }
+    whatever_times_zero: TIMES(., NUM($x)) and { $x-&gt;{attr} == 0 } =&gt; { $_[0] = $NUM }
+  },
+  OUTPUTFILE=&gt; 'main.pm'
+);
+$p-&gt;generate(); # Create the tranformations
+
+$t-&gt;s($uminus); # Transform UMINUS nodes
+$t-&gt;s(@all);    # constant folding and mult. by zero
+</PRE>
+Obtenemos el árbol:
+<PRE>
+Syntax Tree after transformations:
+EXPRESSION_LIST(NUM(TERMINAL[-6]),NUM(TERMINAL[2]))
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION04740050000000000000">
+synopsis.pl</A>
+</H4>
+  
+
+<P>
+<PRE>
+[~/src/perl/parse-eyapp/examples/MatchingTrees]$ cat synopsis.pl 
+#!/usr/bin/perl -w
+use strict;
+use Parse::Eyapp;
+use Parse::Eyapp::Treeregexp;
+
+sub TERMINAL::info {
+  $_[0]{attr}
+}
+
+my $grammar = q{
+  %lexer {
+      m{\G\s+}gc;
+      m{\G([0-9]+(?:\.[0-9]+)?)}gc and return('NUM',$1);
+      m{\G([A-Za-z][A-Za-z0-9_]*)}gc and return('VAR',$1);
+      m{\G(.)}gcs and return($1,$1);
+  }
+
+  %right  '='     # Lowest precedence
+  %left   '-' '+' # + and - have more precedence than = Disambiguate a-b-c as (a-b)-c
+  %left   '*' '/' # * and / have more precedence than + Disambiguate a/b/c as (a/b)/c
+  %left   NEG     # Disambiguate -a-b as (-a)-b and not as -(a-b)
+  %tree           # Let us build an abstract syntax tree ...
+
+  %%
+  line: 
+      exp &lt;%name EXPRESSION_LIST + ';'&gt;  
+        { $_[1] } /* list of expressions separated by ';' */
+  ;
+
+  /* The %name directive defines the name of the
+     class to which the node being built belongs */
+  exp:
+      %name NUM  
+      NUM            
+    | %name VAR   
+      VAR         
+    | %name ASSIGN 
+      VAR '=' exp 
+    | %name PLUS 
+      exp '+' exp    
+    | %name MINUS 
+      exp '-' exp 
+    | %name TIMES  
+      exp '*' exp 
+    | %name DIV     
+      exp '/' exp 
+    | %name UMINUS 
+      '-' exp %prec NEG 
+    | '(' exp ')'  
+        { $_[2] }  /* Let us simplify a bit the tree */
+  ;
+
+  %%
+}; # end grammar
+
+our (@all, $uminus);
+
+Parse::Eyapp-&gt;new_grammar( # Create the parser package/class
+  input=&gt;$grammar,    
+  classname=&gt;'Calc', # The name of the package containing the parser
+); 
+my $parser = Calc-&gt;new();                # Create a parser
+$parser-&gt;input(\"2*-3+b*0;--2\n");       # Set the input
+my $t = $parser-&gt;YYParse;                # Parse it!
+local $Parse::Eyapp::Node::INDENT=2;
+print "Syntax Tree:",$t-&gt;str;
+
+# Let us transform the tree. Define the tree-regular expressions ..
+my $p = Parse::Eyapp::Treeregexp-&gt;new( STRING =&gt; q{
+    { #  Example of support code
+      my %Op = (PLUS=&gt;'+', MINUS =&gt; '-', TIMES=&gt;'*', DIV =&gt; '/');
+    }
+    constantfold: /TIMES|PLUS|DIV|MINUS/:bin(NUM($x), NUM($y)) 
+      =&gt; { 
+        my $op = $Op{ref($bin)};
+        $x-&gt;{attr} = eval  "$x-&gt;{attr} $op $y-&gt;{attr}";
+        $_[0] = $NUM[0]; 
+      }
+    uminus: UMINUS(NUM($x)) =&gt; { $x-&gt;{attr} = -$x-&gt;{attr}; $_[0] = $NUM }
+    zero_times_whatever: TIMES(NUM($x), .) and { $x-&gt;{attr} == 0 } =&gt; { $_[0] = $NUM }
+    whatever_times_zero: TIMES(., NUM($x)) and { $x-&gt;{attr} == 0 } =&gt; { $_[0] = $NUM }
+  },
+  OUTPUTFILE=&gt; 'main.pm'
+);
+$p-&gt;generate(); # Create the tranformations
+
+$t-&gt;s($uminus); # Transform UMINUS nodes
+$t-&gt;s(@all);    # constant folding and mult. by zero
+
+local $Parse::Eyapp::Node::INDENT=0;
+print "\nSyntax Tree after transformations:\n",$t-&gt;str,"\n";
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION04740060000000000000">
+El método <TT>s</TT></A>
+</H4>
+  
+
+<P>
+El código de <code>s</code> está en 
+<A NAME="tex2html294"
+  HREF="https://github.com/gitpan/Parse-Eyapp/blob/master/lib/Parse/Eyapp/Node.pm">lib/Parse/Eyapp/Node.pm</A>:
+<PRE>
+sub s {
+  my @patterns = @_[1..$#_];
+
+  # Make them Parse::Eyapp:YATW objects if they are CODE references
+  @patterns = map { ref($_) eq 'CODE'? 
+                      Parse::Eyapp::YATW-&gt;new(
+                        PATTERN =&gt; $_,
+                        #PATTERN_ARGS =&gt; [],
+                      )
+                      :
+                      $_
+                  } 
+                  @patterns;
+  my $changes; 
+  do { 
+    $changes = 0;
+    foreach (@patterns) {
+      $_-&gt;{CHANGES} = 0;
+      $_-&gt;s($_[0]);
+      $changes += $_-&gt;{CHANGES};
+    }
+  } while ($changes);
+}
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION04740070000000000000">
+Véase</A>
+</H4>
+  
+
+<UL>
+<LI><A NAME="tex2html295"
+  HREF="http://search.cpan.org/~casiano/Parse-Eyapp-1.182/lib/Parse/Eyapp/eyapp">Parse::Eyapp</A>
+</LI>
+<LI><A NAME="tex2html296"
+  HREF="https://github.com/gitpan/Parse-Eyapp/blob/master/examples/MatchingTrees/synopsis.pl">Ejemplo de uso de Parse::Eyapp::Treeregexp</A>
+</LI>
+<LI><A NAME="tex2html297"
+  HREF="https://github.com/gitpan/Parse-Eyapp/blob/master/lib/Parse/Eyapp/MatchingTrees.pod">Tree Matching and Tree Substitution</A>
+</LI>
+<LI><A NAME="tex2html298"
+  HREF="https://github.com/gitpan/Parse-Eyapp/blob/master/lib/Parse/Eyapp/Node.pm#L149-L172">Node.pm</A>
+(Véase el método <code>s</code>)
 </LI>
 </UL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3754"
+<A NAME="tex2html2819"
   HREF="node74.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3748"
-  HREF="node59.html">
+<A NAME="tex2html2813"
+  HREF="node69.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3742"
+<A NAME="tex2html2807"
   HREF="node72.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3750"
-  HREF="node230.html">
+<A NAME="tex2html2815"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3752"
-  HREF="node233.html">
+<A NAME="tex2html2817"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -310,17 +525,17 @@ asociada.
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3755"
-  HREF="node74.html">Manejo en jison de</A>
-<B>Sup:</B> <A NAME="tex2html3749"
-  HREF="node59.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html3743"
-  HREF="node72.html">Precedencia y Asociatividad</A>
+<B> Sig:</B> <A NAME="tex2html2820"
+  HREF="node74.html">Treehugger</A>
+<B>Sup:</B> <A NAME="tex2html2814"
+  HREF="node69.html">Transformaciones Árbol</A>
+<B> Ant:</B> <A NAME="tex2html2808"
+  HREF="node72.html">Patrones Árbol y Transformaciones</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-05-12</I>
+2014-09-02</I>
 </ADDRESS>
 </BODY>
 </HTML>

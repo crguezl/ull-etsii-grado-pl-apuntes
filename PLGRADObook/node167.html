@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Sinatra como Middleware</TITLE>
-<META NAME="description" CONTENT="Sinatra como Middleware">
+<TITLE>Introducción a Los Object Relational Mappers (ORM)</TITLE>
+<META NAME="description" CONTENT="Introducción a Los Object Relational Mappers (ORM)">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node168.html">
 <LINK REL="previous" HREF="node166.html">
-<LINK REL="up" HREF="node140.html">
+<LINK REL="up" HREF="node166.html">
 <LINK REL="next" HREF="node168.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5638"
+<A NAME="tex2html4679"
   HREF="node168.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5632"
-  HREF="node140.html">
+<A NAME="tex2html4673"
+  HREF="node166.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5626"
+<A NAME="tex2html4667"
   HREF="node166.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5634"
-  HREF="node230.html">
+<A NAME="tex2html4675"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5636"
-  HREF="node233.html">
+<A NAME="tex2html4677"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,146 +92,100 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5639"
-  HREF="node168.html">Práctica: TicTacToe</A>
-<B>Sup:</B> <A NAME="tex2html5633"
-  HREF="node140.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5627"
-  HREF="node166.html">Autentificación Básica</A>
+<B> Sig:</B> <A NAME="tex2html4680"
+  HREF="node168.html">Introducción al Patrón DataMapper</A>
+<B>Sup:</B> <A NAME="tex2html4674"
+  HREF="node166.html">DataMapper y Sinatra</A>
+<B> Ant:</B> <A NAME="tex2html4668"
+  HREF="node166.html">DataMapper y Sinatra</A>
 <B> Con:</B> 
-<A NAME="tex2html5634"
-  HREF="node230.html">
+<A NAME="tex2html4675"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5636"
-  HREF="node233.html">
+<A NAME="tex2html4677"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION063270000000000000000">
-Sinatra como Middleware</A>
+<H1><A NAME="SECTION06910000000000000000">
+Introducción a Los Object Relational Mappers (ORM)</A>
 </H1>
 
 <P>
-Not only is Sinatra able to use other Rack middleware, any Sinatra
-application can in turn be added in front of any Rack endpoint as
-middleware itself. 
+What is a Object Relational Mapper?
 
 <P>
-This endpoint could be another Sinatra application,
-or any other Rack-based application (Rails/Ramaze/Camping/…):
+A simple answer is that you wrap your tables or stored procedures
+in classes in your programming language, so that instead of writing
+SQL statements to interact with your database, you use methods and
+properties of objects.
+
+<P>
+In other words, instead of something like this:
+
+<P>
+<PRE>
+  String sql = "SELECT ... FROM persons WHERE id = 10"
+  DbCommand cmd = new DbCommand(connection, sql);
+  Result res = cmd.Execute();
+  String name = res[0]["FIRST_NAME"];
+</PRE>
+you do something like this:
+
+<P>
+<PRE>
+  Person p = Person.Get(10);
+</PRE>
+
+<P>
+or similar code (lots of variations here). 
+The framework is what makes this code possible.
+
+<P>
+Now, benefits:
 
 <P>
 
 <OL>
-<LI>When a request comes in, all <code>before</code> filters are triggered
+<LI>First of all, you hide the SQL away from your logic
+code
 </LI>
-<LI>Then, if a route matches, the corresponding block will be executed
+<LI>This has the benefit of allowing you to more easily support
+more database engines 
 </LI>
-<LI>If no route matches, the request is handed off to the wrapped application
+<LI>For instance, MS SQL Server and Oracle have
+different names on typical functions, and different ways to do
+calculations with dates.
+This difference can be put away from your
+logic code.
 </LI>
-<LI>The <code>after</code> filters are executed after we've got a response back from the
-route or  the wrapped app
+<LI>Additionally, you can focus on writing the logic, instead of getting all the SQL right.
+</LI>
+<LI>The code will typically be more readable as well, since it doesn't
+contain all the plumbing necessary to talk to the database.
 </LI>
 </OL>
-Thus, our Sinatra app is a middleware.
 
 <P>
-
-<img src="rack_stack.png" />
-
-<P>
-<PRE>
-[~/sinatra/sinatra-as-middleware]$ cat app.rb
-require 'sinatra/base'
-require 'haml'
-require 'pp'
-
-class LoginScreen &lt; Sinatra::Base
-  enable :sessions
-  enable :inline_templates
-
-  get('/login') { haml :login }
-
-  post('/login') do
-    if params[:name] == 'admin' &amp;&amp; params[:password] == 'admin'
-      puts "params = "
-      pp params
-      session['user_name'] = params[:name]
-      redirect '/'
-    else
-      redirect '/login'
-    end
-  end
-end
-
-class MyApp &lt; Sinatra::Base
-  enable :inline_templates
-  # middleware will run before filters
-  use LoginScreen
-
-  before do
-    unless session['user_name']
-      halt haml :denied
-    end
-  end
-
-  get('/') do
-    haml :cheer, :locals =&gt; { :name =&gt; session['user_name'] }
-  end
-
-  run!
-end
-
-__END__
-
-@@ layout
-!!!
-%html
-  %head
-    %title Sinatra as Middleware
-  %body
-    %h1 Sinatra as Middleware
-    = yield
-
-@@ login
-%form{:action=&gt;'/login', :method=&gt;'post'}
-  %label{:for=&gt;'name'} Name
-  %input#name{:type=&gt;"text",     :name=&gt;"name", :autofocus =&gt; true }
-  %br
-  %label{:for=&gt;'password'} Password
-  %input#password{:type=&gt;"password", :name=&gt;"password"}
-  %br
-  %button#go{:type=&gt;"submit",  :name=&gt;"submit", :value=&gt;"submit"} Click me!
-
-@@ cheer
-%h1
-  Hello #{name}
-  %br
-
-@@ denied
-%h1 
-  Access denied, please 
-  %a{:href=&gt;'/login'}login.
-</PRE>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5638"
+<A NAME="tex2html4679"
   HREF="node168.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5632"
-  HREF="node140.html">
+<A NAME="tex2html4673"
+  HREF="node166.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5626"
+<A NAME="tex2html4667"
   HREF="node166.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5634"
-  HREF="node230.html">
+<A NAME="tex2html4675"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5636"
-  HREF="node233.html">
+<A NAME="tex2html4677"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -282,17 +236,17 @@ __END__
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5639"
-  HREF="node168.html">Práctica: TicTacToe</A>
-<B>Sup:</B> <A NAME="tex2html5633"
-  HREF="node140.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5627"
-  HREF="node166.html">Autentificación Básica</A>
+<B> Sig:</B> <A NAME="tex2html4680"
+  HREF="node168.html">Introducción al Patrón DataMapper</A>
+<B>Sup:</B> <A NAME="tex2html4674"
+  HREF="node166.html">DataMapper y Sinatra</A>
+<B> Ant:</B> <A NAME="tex2html4668"
+  HREF="node166.html">DataMapper y Sinatra</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-05-12</I>
+2014-09-02</I>
 </ADDRESS>
 </BODY>
 </HTML>

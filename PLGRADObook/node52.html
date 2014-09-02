@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Dangling else: Asociando un else con su if mas cercano</TITLE>
-<META NAME="description" CONTENT="Dangling else: Asociando un else con su if mas cercano">
+<TITLE>Práctica: Traducción de Infijo a Postfijo</TITLE>
+<META NAME="description" CONTENT="Práctica: Traducción de Infijo a Postfijo">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node53.html">
 <LINK REL="previous" HREF="node51.html">
-<LINK REL="up" HREF="node43.html">
+<LINK REL="up" HREF="node44.html">
 <LINK REL="next" HREF="node53.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3346"
+<A NAME="tex2html2457"
   HREF="node53.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3340"
-  HREF="node43.html">
+<A NAME="tex2html2451"
+  HREF="node44.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3334"
+<A NAME="tex2html2445"
   HREF="node51.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3342"
-  HREF="node230.html">
+<A NAME="tex2html2453"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3344"
-  HREF="node233.html">
+<A NAME="tex2html2455"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,219 +92,128 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3347"
-  HREF="node53.html">Not Predicate: Comentarios Anidados</A>
-<B>Sup:</B> <A NAME="tex2html3341"
-  HREF="node43.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html3335"
-  HREF="node51.html">Eliminación de la Recursividad</A>
+<B> Sig:</B> <A NAME="tex2html2458"
+  HREF="node53.html">Práctica: Calculadora con Funciones</A>
+<B>Sup:</B> <A NAME="tex2html2452"
+  HREF="node44.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html2446"
+  HREF="node51.html">Práctica: Análisis de Ámbito</A>
 <B> Con:</B> 
-<A NAME="tex2html3342"
-  HREF="node230.html">
+<A NAME="tex2html2453"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3344"
-  HREF="node233.html">
+<A NAME="tex2html2455"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html3348"
-  HREF="node52.html#SECTION04690010000000000000">danglingelse.pegjs</A>
-<LI><A NAME="tex2html3349"
-  HREF="node52.html#SECTION04690020000000000000">use_danglingelse.js</A>
-<LI><A NAME="tex2html3350"
-  HREF="node52.html#SECTION04690030000000000000">Ejecución</A>
-<LI><A NAME="tex2html3351"
-  HREF="node52.html#SECTION04690040000000000000">Donde</A>
-</UL></UL></UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION04690000000000000000">
-
-<FONT COLOR="#ff0000"> Dangling else</FONT>: Asociando un else con su if mas cercano</A>
+<H1><A NAME="SECTION04580000000000000000"></A>
+   <A NAME="6332"></A>
+  
+<A NAME="section:calculadoraampliada"></A>
+<BR>
+Práctica: Traducción de Infijo a Postfijo
 </H1>
+Modifique el programa Jison realizado en la práctica 
+<A HREF="node47.html#subsectionpractica:calculadora">5.3.1</A>
+para traducir de infijo a postfijo. 
+Añada los operadores de comparación e igualdad.
+Por ejemplo
 
 <P>
-The dangling else is a problem in computer programming in which an
-optional <code>else clause</code> in an <code>If–then(–else)</code> statement results in nested
-conditionals being ambiguous. 
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170>Infijo</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170>Postfijo</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><code>a = 3+2*4</code></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><code> 3 2 4 * + &amp;a = </code></TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><code>b = a == 11</code></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><code> a 11 == &amp;b = </code></TD>
+</TR>
+</TABLE>
+</DIV>
+En estas traducciones la notación 
+<code>&amp;a</code> indica la dirección de la variable <code>a</code>
+y <code>a</code> indica el valor almacenado en la variable <code>a</code>.
 
 <P>
-Formally, the reference context-free
-grammar of the language is ambiguous, meaning there is more than one
-correct parse tree.
+Añada sentencias 
+<code>if</code> ...
+<code>then</code> e <code>if</code> ... <code>then</code> ... <code>else</code>
 
 <P>
-In many programming languages one may write conditionally executed code
-in two forms: 
+Para realizar la traducción de estas sentencias
+añada 
+instrucciones <code>jmp label</code> y <code>jmpz label</code> (por <I>jump if zero</I>)
+y etiquetas:
 
 <P>
-the <code>if-then</code> form, and the <code>if-then-else</code> form – the 
-<code>else</code>
-clause is optional:
-<PRE>
-              if a then s
-              if a then s1 else s2
-</PRE>
-
-<P>
-This gives rise to an ambiguity in interpretation when there are nested
-statements, specifically whenever an <code>if-then</code> form appears as <code>s1</code>
-in an <code>if-then-else</code> form:
-<PRE>
-              if a then if b then s else s2
-</PRE>
-In this example, <code>s</code> is unambiguously executed when <code>a</code> is
-<code>true</code> and <code>b</code> is <code>true</code>, but one may interpret <code>s2</code>
-as being executed when <code>a</code> is <code>false</code> 
-
-<UL>
-<LI>(thus attaching the
-<code>else</code> to the first <code>if</code>) or when 
-</LI>
-<LI><code>a</code> is <code>true</code>
-and <code>b</code> is <code>false</code> (thus attaching the <code>else</code> to the
-second <code>if</code>). 
-</LI>
-</UL>
-In other words, one may see the previous statement
-as either of the following expressions:
-<PRE>
-if a then (if b then s) else s2
-</PRE>
-      or
-<PRE>
-if a then (if b then s else s2)
-</PRE>
-
-<P>
-This is a problem that often comes up in compiler construction,
-especially scannerless parsing. 
-
-<P>
-The convention when dealing with
-the dangling <code>else</code> is to attach the <code>else</code> to the nearby
-<code>if</code> statement.
-
-<P>
-Programming languages like Pascal and C follow this
-convention, so there is no ambiguity in the semantics of the language,
-though the use of a parser generator may lead to ambiguous grammars. 
-In
-these cases 
-<FONT COLOR="#ff0000"> alternative grouping is accomplished by explicit blocks</FONT>,
-such as <code>begin...end</code> in Pascal and <code>{...}</code> in C.
-
-<P>
-Here follows a solution in PEG.js:
-
-<P>
-
-<H4><A NAME="SECTION04690010000000000000">
-danglingelse.pegjs</A>
-</H4>
-  
-
-<PRE>
-$ cat danglingelse.pegjs 
-/*
-S ← 'if' C 'then' S 'else' S / 'if' C 'then' S
-*/
-
-S =   if C:C then S1:S else S2:S { return [ 'ifthenelse', C, S1, S2 ]; }
-    / if C:C then S:S            { return [ 'ifthen', C, S]; }
-    / O                          { return 'O'; }
-_ = ' '*
-C = _'c'_                        { return 'c'; }
-O = _'o'_                        { return 'o'; }
-else = _'else'_                 
-if = _'if'_
-then = _'then'_
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION04690020000000000000">
-use_danglingelse.js</A>
-</H4>
-  
-
-<P>
-<PRE>
-$ cat use_danglingelse.js 
-var PEG = require("./danglingelse.js");
-var r = PEG.parse("if c then if c then o else o");
-console.log(r);
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION04690030000000000000">
-Ejecución</A>
-</H4>
-  
-
-<PRE>
-$ ../bin/pegjs danglingelse.pegjs 
-$ node use_danglingelse.js 
-[ 'ifthen', 'c', [ 'ifthenelse', 'c', 'O', 'O' ] ]
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION04690040000000000000">
-Donde</A>
-</H4>
-  
-
-<P>
-
-<UL>
-<LI><PRE>
-[~/srcPLgrado/pegjs/examples(master)]$ pwd -P
-/Users/casiano/local/src/javascript/PLgrado/pegjs/examples
-</PRE>
-
-<P>
-</LI>
-<LI><PRE>
-[~/srcPLgrado/pegjs/examples(master)]$ git remote -v
-dmajda  https://github.com/dmajda/pegjs.git (fetch)
-dmajda  https://github.com/dmajda/pegjs.git (push)
-origin  git@github.com:crguezl/pegjs.git (fetch)
-origin  git@github.com:crguezl/pegjs.git (push)
-</PRE>
-</LI>
-<LI><A NAME="tex2html409"
-  HREF="https://github.com/crguezl/pegjs/tree/master/examples">https://github.com/crguezl/pegjs/tree/master/examples</A>
-</LI>
-</UL>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>Infijo</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170>Postfijo</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227><PRE>
+a = (2+5)*3;
+if a == 0 then b = 5 else b = 3;
+c = b + 1;
+</PRE></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><PRE>
+        2
+        5
+        +
+        3
+        *
+        &amp;a
+        =
+        a
+        0
+        ==
+        jmpz else1
+        5
+        &amp;b
+        =
+        jmp endif0
+:else1
+        3
+        &amp;b
+        =
+:endif0
+        b
+        1
+        +
+        &amp;c
+        =
+</PRE></TD>
+</TR>
+</TABLE>
+</DIV>
+Parta del repositorio 
+<A NAME="tex2html266"
+  HREF="https://github.com/crguezl/jison-simple-html-calc">https://github.com/crguezl/jison-simple-html-calc</A>.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3346"
+<A NAME="tex2html2457"
   HREF="node53.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3340"
-  HREF="node43.html">
+<A NAME="tex2html2451"
+  HREF="node44.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3334"
+<A NAME="tex2html2445"
   HREF="node51.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3342"
-  HREF="node230.html">
+<A NAME="tex2html2453"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3344"
-  HREF="node233.html">
+<A NAME="tex2html2455"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -355,17 +264,17 @@ origin  git@github.com:crguezl/pegjs.git (push)
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3347"
-  HREF="node53.html">Not Predicate: Comentarios Anidados</A>
-<B>Sup:</B> <A NAME="tex2html3341"
-  HREF="node43.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html3335"
-  HREF="node51.html">Eliminación de la Recursividad</A>
+<B> Sig:</B> <A NAME="tex2html2458"
+  HREF="node53.html">Práctica: Calculadora con Funciones</A>
+<B>Sup:</B> <A NAME="tex2html2452"
+  HREF="node44.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html2446"
+  HREF="node51.html">Práctica: Análisis de Ámbito</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-05-12</I>
+2014-09-02</I>
 </ADDRESS>
 </BODY>
 </HTML>

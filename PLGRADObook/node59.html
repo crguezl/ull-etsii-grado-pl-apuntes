@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Análisis Sintáctico Ascendente en JavaScript</TITLE>
-<META NAME="description" CONTENT="Análisis Sintáctico Ascendente en JavaScript">
+<TITLE>Manejo en jison de Atributos Heredados</TITLE>
+<META NAME="description" CONTENT="Manejo en jison de Atributos Heredados">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node81.html">
-<LINK REL="previous" HREF="node43.html">
-<LINK REL="up" HREF="node6.html">
+<LINK REL="next" HREF="node60.html">
+<LINK REL="previous" HREF="node58.html">
+<LINK REL="up" HREF="node44.html">
 <LINK REL="next" HREF="node60.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3457"
+<A NAME="tex2html2566"
   HREF="node60.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3451"
-  HREF="node6.html">
+<A NAME="tex2html2560"
+  HREF="node44.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3445"
+<A NAME="tex2html2554"
   HREF="node58.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3453"
-  HREF="node230.html">
+<A NAME="tex2html2562"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3455"
-  HREF="node233.html">
+<A NAME="tex2html2564"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,214 +92,411 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3458"
-  HREF="node60.html">Conceptos Básicos para el</A>
-<B>Sup:</B> <A NAME="tex2html3452"
-  HREF="node6.html">PARTE: APUNTES DE PROCESADORES</A>
-<B> Ant:</B> <A NAME="tex2html3446"
-  HREF="node58.html">Práctica: Inventando un Lenguaje:</A>
+<B> Sig:</B> <A NAME="tex2html2567"
+  HREF="node60.html">Definición Dirigida por la</A>
+<B>Sup:</B> <A NAME="tex2html2561"
+  HREF="node44.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html2555"
+  HREF="node58.html">Esquemas de Traducción</A>
 <B> Con:</B> 
-<A NAME="tex2html3453"
-  HREF="node230.html">
+<A NAME="tex2html2562"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3455"
-  HREF="node233.html">
+<A NAME="tex2html2564"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION04700000000000000000">
-Análisis Sintáctico Ascendente en JavaScript</A>
+<H1><A NAME="SECTION045150000000000000000"></A>
+<A NAME="section:heredados"></A>
+<BR>
+Manejo en <TT>jison</TT> de Atributos Heredados
 </H1>
-<BR> <HR>
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><A NAME="tex2html3459"
-  HREF="node60.html">Conceptos Básicos para el Análisis Sintáctico</A>
+<P>
+Supongamos  que <code>jison</code> esta inmerso 
+en la construcción de la antiderivación a derechas y que la forma sentencial
+derecha en ese momento es:
+
+<P>
+<DIV ALIGN="CENTER">
+<!-- MATH
+ $X_m \ldots X_1 X_0 Y_1 \ldots  Y_n a_1 \ldots a_0$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="225" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img207.png"
+ ALT="$ X_m \ldots X_1 X_0 Y_1 \ldots Y_n a_1 \ldots a_0$"></SPAN>
+</DIV>
+
+<P>
+y que el mango es <!-- MATH
+ $B \rightarrow Y_1 \ldots  Y_n$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="109" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img208.png"
+ ALT="$ B \rightarrow Y_1 \ldots Y_n$"></SPAN> y en la entrada quedan por 
+procesar <!-- MATH
+ $a_1 \ldots a_0$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="65" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img209.png"
+ ALT="$ a_1 \ldots a_0$"></SPAN>.
+
+<P>
+No es posible acceder en <code>jison</code> a los valores de los atributos de los estados en la pila
+del analizador que se encuentran ``por debajo'' o si se quiere
+``a la izquierda'' de los estados asociados
+con la regla por la que se reduce. 
+
+<P>
+Vamos a usar un pequeño hack para acceder a los atributos asociados con símbolos vistos 
+en el pasado "remoto":
+<PRE>
+[~/jison/jison-inherited(grammar)]$ cat inherited.jison 
+%lex
+%%
+\s+                           {}
+(global|local|integer|float)  { return yytext; }
+[a-zA-Z_]\w*                  { return 'id'; }
+.                             { return yytext; }
+/lex
+%%
+D 
+  : C T L 
+  ;
+
+C
+  : global
+  | local
+  ; 
+  
+T
+  : integer
+  | float
+;
+
+L 
+  : L ',' id    { 
+                  console.log("L -&gt; L ',' id ("+yytext+")");
+                  var s =  eval('$$');
+                  console.log(s);
+                }
+  | id          {
+                  console.log("L -&gt; id ("+yytext+")");
+                  var s =  eval('$$');
+                  console.log(s);
+                }
+  ;
+%%
+</PRE>
+
+<P>
+Veamos un ejemplo de ejecución:
+
+<P>
+<PRE>
+[~/jison/jison-inherited(grammar)]$ cat input.txt 
+global integer a, b, c
+[~/jison/jison-inherited(grammar)]$ node inherited.js input.txt 
+L -&gt; id (a)
+[ null, 'global', 'integer', 'a' ]
+L -&gt; L ',' id (b)
+[ null, 'global', 'integer', 'a', ',', 'b' ]
+L -&gt; L ',' id (c)
+[ null, 'global', 'integer', 'a', ',', 'c' ]
+</PRE>
+
+<P>
+Esta forma de acceder a los atributos es especialmente útil cuando se 
+trabaja con <A NAME="7590"></A><SPAN  CLASS="textbf">atributos heredados</SPAN>. Esto es, cuando un atributo
+de un nodo del árbol sintáctico se computa en términos
+de valores de atributos de su padre y/o sus hermanos.
+Ejemplos de atributos heredados son la clase y tipo en la declaración
+de variables. 
+
+<P>
+Es importante darse cuenta que en cualquier derivación a derechas
+desde<code>D</code>, cuando se reduce por una de las reglas 
+
+<P>
+<DIV ALIGN="CENTER">
+L <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> id <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> L<SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img200.png"
+ ALT="$ _1$"></SPAN> ',' id
+
+</DIV>
+
+<P>
+el símbolo a la izquierda de L es T y el que esta a la izquierda de T es C.
+Considere, por ejemplo la derivación a derechas:
+
+<P>
+<DIV ALIGN="CENTER">
+D <!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img210.png"
+ ALT="$ \Longrightarrow$"></SPAN> C T L <!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img210.png"
+ ALT="$ \Longrightarrow$"></SPAN> C T L, id <!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img210.png"
+ ALT="$ \Longrightarrow$"></SPAN> C T L, id, id
+<!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img210.png"
+ ALT="$ \Longrightarrow$"></SPAN> C T id, id, id <!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img210.png"
+ ALT="$ \Longrightarrow$"></SPAN> 
+<BR><!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img210.png"
+ ALT="$ \Longrightarrow$"></SPAN> C float id, id, id <!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img210.png"
+ ALT="$ \Longrightarrow$"></SPAN> local float id, id, id
+
+</DIV>
+
+<P>
+Observe que el orden de recorrido de <code>jison</code> es:
+<DIV ALIGN="CENTER">
+local float id, id, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img211.png"
+ ALT="$ \Longleftarrow$"></SPAN> C float id, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img211.png"
+ ALT="$ \Longleftarrow$"></SPAN>
+C T id, id, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img211.png"
+ ALT="$ \Longleftarrow$"></SPAN>
+<BR><!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img211.png"
+ ALT="$ \Longleftarrow$"></SPAN> C T L, id, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img211.png"
+ ALT="$ \Longleftarrow$"></SPAN> C T L, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img211.png"
+ ALT="$ \Longleftarrow$"></SPAN> C T L <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img211.png"
+ ALT="$ \Longleftarrow$"></SPAN> D
+
+</DIV>
+
+<P>
+en la antiderivación, cuando el mango es una de las dos reglas 
+para listas de identificadores, L <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> id y L <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> L, id 
+es decir durante las tres ultimas antiderivaciones:
+
+<P>
+<DIV ALIGN="CENTER">
+C T L, id, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img211.png"
+ ALT="$ \Longleftarrow$"></SPAN> C T L, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img211.png"
+ ALT="$ \Longleftarrow$"></SPAN> C T L <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img211.png"
+ ALT="$ \Longleftarrow$"></SPAN> D
+
+</DIV>
+
+<P>
+las variables a la izquierda del mango son
+T y C. Esto ocurre siempre. 
+Estas observaciones nos conducen al siguiente
+programa <code>jison</code>: 
+
+<P>
+<PRE>
+[~/jison/jison-inherited(deepstack)]$ cat inherited.jison 
+%lex
+%%
+\s+                           {}
+(global|local|integer|float)  { return yytext; }
+[a-zA-Z_]\w*                  { return 'id'; }
+.                             { return yytext; }
+/lex
+%%
+D 
+  : C T L 
+  ;
+
+C
+  : global
+  | local
+  ; 
+  
+T
+  : integer
+  | float
+  ;
+
+L 
+  : L ',' id    { 
+                  var s =  eval('$$');
+                  var b0 = s.length - 3;
+
+                  console.log("L -&gt; L ',' id ("+yytext+")");
+                  console.log($id + ' is of type ' + s[b0-1]);
+                  console.log(s[b0] + ' is of class ' + s[b0-2]);
+                }
+  | id          {
+                  var s =  eval('$$');
+                  var b0 = s.length - 1;
+
+                  console.log("L -&gt; id ("+yytext+")");
+                  console.log($id + ' is of type ' + s[b0-1]);
+                  console.log(s[b0] + ' is of class ' + s[b0-2]);
+                }
+  ;
+%%
+</PRE>
+
+<P>
+A continuación sigue un ejemplo de ejecución:
+
+<P>
+<PRE>
+[~/jison/jison-inherited(deepstack)]$ node inherited.js input.txt 
+L -&gt; id (a)
+a is of type integer
+a is of class global
+L -&gt; L ',' id (b)
+b is of type integer
+a is of class global
+L -&gt; L ',' id (c)
+c is of type integer
+a is of class global
+</PRE>
+
+<P>
+En este caso, existen varias alternativas simples
+a esta solución:
+
 <UL>
-<LI><A NAME="tex2html3460"
-  HREF="node60.html#SECTION04711000000000000000">Ejercicio</A>
+<LI>Montar la lista de identificadores  en un array y ponerles el tipo y la clase de "golpe"
+ en la regla de producción superior <code>D : C T L ;</code>
+</LI>
+<LI>usar variables visibles (globales o atributos del objeto parser, por ejemplo) 
+como <code>current_type</code>, <code>current_class</code>
+<PRE>
+C
+  : global { current_class = 'global'; }
+  | local  { current_class = 'local'; }
+</PRE>
+y depués accederlas en las reglas de <code>L</code>
+</LI>
+<LI>La que posiblemente sea la mejor estrategia general: construir 
+el árbol de análisis sintáctico. Posteriormente podemos recorrer
+el árbol como queramos y tantas veces como queramos.
+</LI>
 </UL>
-<BR>
-<LI><A NAME="tex2html3461"
-  HREF="node61.html">Ejemplo Simple en Jison</A>
-<UL>
-<LI><A NAME="tex2html3462"
-  HREF="node61.html#SECTION04720010000000000000">Gramática</A>
-<LI><A NAME="tex2html3463"
-  HREF="node61.html#SECTION04720020000000000000">basic2_lex.jison</A>
-<LI><A NAME="tex2html3464"
-  HREF="node61.html#SECTION04720030000000000000">index.html</A>
-<LI><A NAME="tex2html3465"
-  HREF="node61.html#SECTION04720040000000000000">Rakefile</A>
-<LI><A NAME="tex2html3466"
-  HREF="node61.html#SECTION04720050000000000000">Véase También</A>
-<LI><A NAME="tex2html3467"
-  HREF="node61.html#SECTION04720060000000000000">global.css</A>
-<LI><A NAME="tex2html3468"
-  HREF="node61.html#SECTION04721000000000000000">Véase También</A>
-<LI><A NAME="tex2html3469"
-  HREF="node61.html#SECTION04722000000000000000">Práctica: Secuencia de Asignaciones Simples</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html3470"
-  HREF="node62.html">Ejemplo en Jison: Calculadora Simple</A>
-<UL>
-<LI><A NAME="tex2html3471"
-  HREF="node62.html#SECTION04730010000000000000">calculator.jison</A>
-<LI><A NAME="tex2html3472"
-  HREF="node62.html#SECTION04730020000000000000">main.js</A>
-<LI><A NAME="tex2html3473"
-  HREF="node62.html#SECTION04730030000000000000">calculator.html</A>
-<LI><A NAME="tex2html3474"
-  HREF="node62.html#SECTION04730040000000000000">Rakefile</A>
-<LI><A NAME="tex2html3475"
-  HREF="node62.html#SECTION04730050000000000000">global.css</A>
-<LI><A NAME="tex2html3476"
-  HREF="node62.html#SECTION04730060000000000000">test/assert.html</A>
-<LI><A NAME="tex2html3477"
-  HREF="node62.html#SECTION04730070000000000000">test/test.css</A>
-<LI><A NAME="tex2html3478"
-  HREF="node62.html#SECTION04730080000000000000">test/test.html</A>
-<LI><A NAME="tex2html3479"
-  HREF="node62.html#SECTION04731000000000000000">Práctica: Calculadora con Listas de Expresiones y Variables</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html3480"
-  HREF="node63.html">Conceptos Básicos del Análisis LR</A>
-<LI><A NAME="tex2html3481"
-  HREF="node64.html">Construcción de las Tablas para el Análisis SLR</A>
-<UL>
-<LI><A NAME="tex2html3482"
-  HREF="node64.html#SECTION04751000000000000000">Los conjuntos de Primeros y Siguientes</A>
-<LI><A NAME="tex2html3483"
-  HREF="node64.html#SECTION04752000000000000000">Construcción de las Tablas</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html3484"
-  HREF="node65.html">Práctica: Analizador de PL0 Usando Jison</A>
-<UL>
-<LI><A NAME="tex2html3485"
-  HREF="node65.html#SECTION04760010000000000000">Donde</A>
-<LI><A NAME="tex2html3486"
-  HREF="node65.html#SECTION04760020000000000000">Tareas</A>
-<LI><A NAME="tex2html3487"
-  HREF="node65.html#SECTION04760030000000000000">Referencias para esta Práctica</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html3488"
-  HREF="node66.html">Práctica: Análisis de Ámbito en PL0</A>
-<UL>
-<LI><A NAME="tex2html3489"
-  HREF="node66.html#SECTION04770010000000000000">Objetivos</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html3490"
-  HREF="node67.html">Práctica: Traducción de Infijo a Postfijo</A>
-<LI><A NAME="tex2html3491"
-  HREF="node68.html">Práctica: Calculadora  con Funciones</A>
-<LI><A NAME="tex2html3492"
-  HREF="node69.html">Práctica: Calculadora con Análisis de Ámbito</A>
-<LI><A NAME="tex2html3493"
-  HREF="node70.html">Algoritmo de Análisis LR</A>
-<LI><A NAME="tex2html3494"
-  HREF="node71.html">El módulo Generado por <TT>jison</TT></A>
-<UL>
-<LI><A NAME="tex2html3495"
-  HREF="node71.html#SECTION047121000000000000000">Version</A>
-<LI><A NAME="tex2html3496"
-  HREF="node71.html#SECTION047122000000000000000">Gramática Inicial</A>
-<LI><A NAME="tex2html3497"
-  HREF="node71.html#SECTION047123000000000000000">Tablas</A>
-<LI><A NAME="tex2html3498"
-  HREF="node71.html#SECTION047124000000000000000">Acciones Semánticas</A>
-<LI><A NAME="tex2html3499"
-  HREF="node71.html#SECTION047125000000000000000">Tabla de Acciones y GOTOs</A>
-<LI><A NAME="tex2html3500"
-  HREF="node71.html#SECTION047126000000000000000">defaultActions</A>
-<LI><A NAME="tex2html3501"
-  HREF="node71.html#SECTION047127000000000000000">Reducciones</A>
-<LI><A NAME="tex2html3502"
-  HREF="node71.html#SECTION047128000000000000000">Desplazamientos/Shifts</A>
-<LI><A NAME="tex2html3503"
-  HREF="node71.html#SECTION047129000000000000000">Manejo de Errores</A>
-<LI><A NAME="tex2html3504"
-  HREF="node71.html#SECTION0471210000000000000000">Analizador Léxico</A>
-<LI><A NAME="tex2html3505"
-  HREF="node71.html#SECTION0471211000000000000000">Exportación</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html3506"
-  HREF="node72.html">Precedencia y Asociatividad</A>
-<LI><A NAME="tex2html3507"
-  HREF="node73.html">Esquemas de Traducción</A>
-<LI><A NAME="tex2html3508"
-  HREF="node74.html">Manejo en <TT>jison</TT> de Atributos Heredados</A>
-<LI><A NAME="tex2html3509"
-  HREF="node75.html">Definición Dirigida por la Sintáxis</A>
-<LI><A NAME="tex2html3510"
-  HREF="node76.html">Ejercicios: Casos de Estudio</A>
-<UL>
-<LI><A NAME="tex2html3511"
-  HREF="node76.html#SECTION047171000000000000000">Un mal diseño</A>
-<UL>
-<LI><A NAME="tex2html3512"
-  HREF="node76.html#SECTION047171010000000000000">Donde</A>
-</UL>
-<LI><A NAME="tex2html3513"
-  HREF="node76.html#SECTION047172000000000000000">Gramática no LR(1)</A>
-<UL>
-<LI><A NAME="tex2html3514"
-  HREF="node76.html#SECTION047172010000000000000">Donde</A>
-</UL>
-<LI><A NAME="tex2html3515"
-  HREF="node76.html#SECTION047173000000000000000">Un Lenguaje Intrínsecamente Ambiguo</A>
-<UL>
-<LI><A NAME="tex2html3516"
-  HREF="node76.html#SECTION047173010000000000000">Donde</A>
-</UL>
-<LI><A NAME="tex2html3517"
-  HREF="node76.html#SECTION047174000000000000000">Conflicto reduce-reduce</A>
-<UL>
-<LI><A NAME="tex2html3518"
-  HREF="node76.html#SECTION047174010000000000000">Solución</A>
-<LI><A NAME="tex2html3519"
-  HREF="node76.html#SECTION047174020000000000000">Donde</A>
-<LI><A NAME="tex2html3520"
-  HREF="node76.html#SECTION047174030000000000000">Véase</A>
-</UL>
-</UL>
-<BR>
-<LI><A NAME="tex2html3521"
-  HREF="node77.html">Recuperación de Errores</A>
-<LI><A NAME="tex2html3522"
-  HREF="node78.html">Depuración en <TT>jison</TT></A>
-<LI><A NAME="tex2html3523"
-  HREF="node79.html">Construcción del Árbol Sintáctico</A>
-<LI><A NAME="tex2html3524"
-  HREF="node80.html">Consejos a seguir al escribir un programa <TT>jison</TT></A>
-</UL>
-<!--End of Table of Child-Links-->
+
+<P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3457"
+<A NAME="tex2html2566"
   HREF="node60.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3451"
-  HREF="node6.html">
+<A NAME="tex2html2560"
+  HREF="node44.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3445"
+<A NAME="tex2html2554"
   HREF="node58.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3453"
-  HREF="node230.html">
+<A NAME="tex2html2562"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3455"
-  HREF="node233.html">
+<A NAME="tex2html2564"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -350,17 +547,17 @@ Análisis Sintáctico Ascendente en JavaScript</A>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3458"
-  HREF="node60.html">Conceptos Básicos para el</A>
-<B>Sup:</B> <A NAME="tex2html3452"
-  HREF="node6.html">PARTE: APUNTES DE PROCESADORES</A>
-<B> Ant:</B> <A NAME="tex2html3446"
-  HREF="node58.html">Práctica: Inventando un Lenguaje:</A>
+<B> Sig:</B> <A NAME="tex2html2567"
+  HREF="node60.html">Definición Dirigida por la</A>
+<B>Sup:</B> <A NAME="tex2html2561"
+  HREF="node44.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html2555"
+  HREF="node58.html">Esquemas de Traducción</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-05-12</I>
+2014-09-02</I>
 </ADDRESS>
 </BODY>
 </HTML>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Análisis Sintáctico Ascendente en Ruby</TITLE>
-<META NAME="description" CONTENT="Análisis Sintáctico Ascendente en Ruby">
+<TITLE>Scheem Interpreter</TITLE>
+<META NAME="description" CONTENT="Scheem Interpreter">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node84.html">
-<LINK REL="previous" HREF="node59.html">
-<LINK REL="up" HREF="node6.html">
+<LINK REL="next" HREF="node86.html">
+<LINK REL="previous" HREF="node80.html">
+<LINK REL="up" HREF="node76.html">
 <LINK REL="next" HREF="node82.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3874"
+<A NAME="tex2html2956"
   HREF="node82.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3868"
-  HREF="node6.html">
+<A NAME="tex2html2950"
+  HREF="node76.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3862"
+<A NAME="tex2html2944"
   HREF="node80.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3870"
-  HREF="node230.html">
+<A NAME="tex2html2952"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3872"
-  HREF="node233.html">
+<A NAME="tex2html2954"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,77 +92,104 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3875"
-  HREF="node82.html">La Calculadora</A>
-<B>Sup:</B> <A NAME="tex2html3869"
-  HREF="node6.html">PARTE: APUNTES DE PROCESADORES</A>
-<B> Ant:</B> <A NAME="tex2html3863"
-  HREF="node80.html">Consejos a seguir al</A>
+<B> Sig:</B> <A NAME="tex2html2957"
+  HREF="node82.html">Scheem Interpreter</A>
+<B>Sup:</B> <A NAME="tex2html2951"
+  HREF="node76.html">PARTE: CREATE YOUR OWN</A>
+<B> Ant:</B> <A NAME="tex2html2945"
+  HREF="node80.html">Parsing</A>
 <B> Con:</B> 
-<A NAME="tex2html3870"
-  HREF="node230.html">
+<A NAME="tex2html2952"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3872"
-  HREF="node233.html">
+<A NAME="tex2html2954"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION04800000000000000000">
-Análisis Sintáctico Ascendente en Ruby</A>
+<H1><A NAME="SECTION05400000000000000000">
+Scheem Interpreter</A>
 </H1>
-
+<A NAME="tex2html313"
+  HREF="http://nathansuniversity.com/scheem.html">http://nathansuniversity.com/scheem.html</A>
 <P>
 <BR> <HR>
 <!--Table of Child-Links-->
 <A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html3876"
-  HREF="node82.html">La Calculadora</A>
+<LI><A NAME="tex2html2958"
+  HREF="node82.html">Scheem Interpreter</A>
+<LI><A NAME="tex2html2959"
+  HREF="node83.html">Variables</A>
+<LI><A NAME="tex2html2960"
+  HREF="node84.html">Setting Values</A>
+<LI><A NAME="tex2html2961"
+  HREF="node85.html">Putting Things Together</A>
 <UL>
-<LI><A NAME="tex2html3877"
-  HREF="node82.html#SECTION04811000000000000000">Uso desde Línea de Comandos</A>
-<LI><A NAME="tex2html3878"
-  HREF="node82.html#SECTION04812000000000000000">Análisis Léxico con <TT>rexical</TT></A>
-<LI><A NAME="tex2html3879"
-  HREF="node82.html#SECTION04813000000000000000">Análisis Sintáctico</A>
+<LI><A NAME="tex2html2962"
+  HREF="node85.html#SECTION05441000000000000000">Unit Testing: Mocha</A>
 <UL>
-<LI><A NAME="tex2html3880"
-  HREF="node82.html#SECTION04813010000000000000">Precedencias</A>
-<LI><A NAME="tex2html3881"
-  HREF="node82.html#SECTION04813020000000000000">Atributos</A>
-<LI><A NAME="tex2html3882"
-  HREF="node82.html#SECTION04813030000000000000">Declaring Tokens</A>
-<LI><A NAME="tex2html3883"
-  HREF="node82.html#SECTION04813040000000000000">Opciones</A>
-<LI><A NAME="tex2html3884"
-  HREF="node82.html#SECTION04813050000000000000">User Code Block</A>
+<LI><A NAME="tex2html2963"
+  HREF="node85.html#SECTION05441010000000000000">Introducción</A>
+<LI><A NAME="tex2html2964"
+  HREF="node85.html#SECTION05441020000000000000">mocha init</A>
+<LI><A NAME="tex2html2965"
+  HREF="node85.html#SECTION05441030000000000000">Browser support</A>
+<LI><A NAME="tex2html2966"
+  HREF="node85.html#SECTION05441040000000000000">TDD</A>
+<LI><A NAME="tex2html2967"
+  HREF="node85.html#SECTION05441050000000000000">Véase</A>
+</UL>
+<LI><A NAME="tex2html2968"
+  HREF="node85.html#SECTION05442000000000000000">Karma</A>
+<UL>
+<LI><A NAME="tex2html2969"
+  HREF="node85.html#SECTION05442010000000000000">Using Karma with Mocha</A>
+<LI><A NAME="tex2html2970"
+  HREF="node85.html#SECTION05442020000000000000">Load HTML files with Karma</A>
+</UL>
+<LI><A NAME="tex2html2971"
+  HREF="node85.html#SECTION05443000000000000000">Grunt</A>
+<UL>
+<LI><A NAME="tex2html2972"
+  HREF="node85.html#SECTION05443100000000000000">package.json</A>
+<LI><A NAME="tex2html2973"
+  HREF="node85.html#SECTION05443200000000000000">Gruntfile</A>
+<UL>
+<LI><A NAME="tex2html2974"
+  HREF="node85.html#SECTION05443210000000000000">An example Gruntfile</A>
+<LI><A NAME="tex2html2975"
+  HREF="node85.html#SECTION05443220000000000000">The "wrapper" function</A>
+<LI><A NAME="tex2html2976"
+  HREF="node85.html#SECTION05443230000000000000">Project and task configuration</A>
+<LI><A NAME="tex2html2977"
+  HREF="node85.html#SECTION05443240000000000000">A simple Grunt.js example</A>
 </UL>
 </UL>
-<BR>
-<LI><A NAME="tex2html3885"
-  HREF="node83.html">Véase También</A>
-</UL>
+<LI><A NAME="tex2html2978"
+  HREF="node85.html#SECTION05444000000000000000">GitHub Project Pages</A>
+</UL></UL>
 <!--End of Table of Child-Links-->
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3874"
+<A NAME="tex2html2956"
   HREF="node82.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3868"
-  HREF="node6.html">
+<A NAME="tex2html2950"
+  HREF="node76.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3862"
+<A NAME="tex2html2944"
   HREF="node80.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3870"
-  HREF="node230.html">
+<A NAME="tex2html2952"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3872"
-  HREF="node233.html">
+<A NAME="tex2html2954"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -213,17 +240,17 @@ Análisis Sintáctico Ascendente en Ruby</A>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3875"
-  HREF="node82.html">La Calculadora</A>
-<B>Sup:</B> <A NAME="tex2html3869"
-  HREF="node6.html">PARTE: APUNTES DE PROCESADORES</A>
-<B> Ant:</B> <A NAME="tex2html3863"
-  HREF="node80.html">Consejos a seguir al</A>
+<B> Sig:</B> <A NAME="tex2html2957"
+  HREF="node82.html">Scheem Interpreter</A>
+<B>Sup:</B> <A NAME="tex2html2951"
+  HREF="node76.html">PARTE: CREATE YOUR OWN</A>
+<B> Ant:</B> <A NAME="tex2html2945"
+  HREF="node80.html">Parsing</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-05-12</I>
+2014-09-02</I>
 </ADDRESS>
 </BODY>
 </HTML>

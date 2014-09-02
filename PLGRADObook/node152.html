@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Uploads. Subida de Ficheros en Sinatra</TITLE>
-<META NAME="description" CONTENT="Uploads. Subida de Ficheros en Sinatra">
+<TITLE>Sinatra como Middleware</TITLE>
+<META NAME="description" CONTENT="Sinatra como Middleware">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node153.html">
 <LINK REL="previous" HREF="node151.html">
-<LINK REL="up" HREF="node140.html">
+<LINK REL="up" HREF="node125.html">
 <LINK REL="next" HREF="node153.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5414"
+<A NAME="tex2html4436"
   HREF="node153.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5408"
-  HREF="node140.html">
+<A NAME="tex2html4430"
+  HREF="node125.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5402"
+<A NAME="tex2html4424"
   HREF="node151.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5410"
-  HREF="node230.html">
+<A NAME="tex2html4432"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5412"
-  HREF="node233.html">
+<A NAME="tex2html4434"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,201 +92,146 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5415"
-  HREF="node153.html">halt</A>
-<B>Sup:</B> <A NAME="tex2html5409"
-  HREF="node140.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5403"
-  HREF="node151.html">Downloads / Descargas /</A>
+<B> Sig:</B> <A NAME="tex2html4437"
+  HREF="node153.html">Práctica: TicTacToe</A>
+<B>Sup:</B> <A NAME="tex2html4431"
+  HREF="node125.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html4425"
+  HREF="node151.html">Autentificación Básica</A>
 <B> Con:</B> 
-<A NAME="tex2html5410"
-  HREF="node230.html">
+<A NAME="tex2html4432"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5412"
-  HREF="node233.html">
+<A NAME="tex2html4434"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html5416"
-  HREF="node152.html#SECTION063120010000000000000">Véase</A>
-<LI><A NAME="tex2html5417"
-  HREF="node152.html#SECTION063120020000000000000">Jerarquía de ficheros</A>
-<LI><A NAME="tex2html5418"
-  HREF="node152.html#SECTION063120030000000000000">upload.haml</A>
-<LI><A NAME="tex2html5419"
-  HREF="node152.html#SECTION063120040000000000000">app.rb</A>
-<LI><A NAME="tex2html5420"
-  HREF="node152.html#SECTION063120050000000000000">BEWARE!</A>
-</UL></UL></UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION063120000000000000000">
-Uploads. Subida de Ficheros en Sinatra</A>
+<H1><A NAME="SECTION063270000000000000000">
+Sinatra como Middleware</A>
 </H1>
 
 <P>
+Not only is Sinatra able to use other Rack middleware, any Sinatra
+application can in turn be added in front of any Rack endpoint as
+middleware itself. 
 
-<H4><A NAME="SECTION063120010000000000000">
-Véase</A>
-</H4>
-  
+<P>
+This endpoint could be another Sinatra application,
+or any other Rack-based application (Rails/Ramaze/Camping/…):
+
+<P>
 
 <OL>
-<LI><A NAME="tex2html705"
-  HREF="https://github.com/crguezl/sinatra-upload">El repositorio sinatra-upload en GitHub</A>
-con el código de este ejemplo
+<LI>When a request comes in, all <code>before</code> filters are triggered
 </LI>
-<LI><A NAME="tex2html706"
-  HREF="http://www.wooptoot.com/file-upload-with-sinatra">FILE UPLOAD WITH SINATRA</A>
-BY PANDAFOX POSTED IN RUBY, TUTORIALS
+<LI>Then, if a route matches, the corresponding block will be executed
 </LI>
-<LI><A NAME="tex2html707"
-  HREF="http://stackoverflow.com/questions/18860656/multiple-file-uploads-in-sinatra">Multiple file uploads in Sinatra</A>
+<LI>If no route matches, the request is handed off to the wrapped application
+</LI>
+<LI>The <code>after</code> filters are executed after we've got a response back from the
+route or  the wrapped app
 </LI>
 </OL>
+Thus, our Sinatra app is a middleware.
 
 <P>
 
-<H4><A NAME="SECTION063120020000000000000">
-Jerarquía de ficheros</A>
-</H4>
-  
-
-<PRE>
-[~/sinatra/sinatra-upload]$ tree
-.
-|-- app.rb
-|-- uploads
-|   `--- README
-`--- views
-    `--- upload.haml
-
-2 directories, 3 files
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION063120030000000000000">
-upload.haml</A>
-</H4>
-  
-
-<P>
-The important part is not to forget to set the <code>enctype</code> 
-in your form element, otherwise you will just get the filename instead of an object:
+<img src="rack_stack.png" />
 
 <P>
 <PRE>
-[~/sinatra/sinatra-upload(master)]$ cat views/upload.haml 
-%html
-  %body
-    %h1 File uploader!
-    %form(method="post" enctype='multipart/form-data')   
-      %input(type='file' name='myfile')    
-      %br
-      %input(type='submit' value='Upload!')
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION063120040000000000000">
-app.rb</A>
-</H4>
-  
-
-<PRE>
-[~/sinatra/sinatra-upload(master)]$ cat app.rb 
-require 'rubygems'
-require 'sinatra'
+[~/sinatra/sinatra-as-middleware]$ cat app.rb
+require 'sinatra/base'
 require 'haml'
 require 'pp'
- 
-# Handle GET-request (Show the upload form)
-get "/upload?" do
-  haml :upload
-end      
-    
-# Handle POST-request (Receive and save the uploaded file)
-post "/upload" do 
-  pp params
-  File.open('uploads/' + params['myfile'][:filename], "w") do |f|
-    f.write(params['myfile'][:tempfile].read)
+
+class LoginScreen &lt; Sinatra::Base
+  enable :sessions
+  enable :inline_templates
+
+  get('/login') { haml :login }
+
+  post('/login') do
+    if params[:name] == 'admin' &amp;&amp; params[:password] == 'admin'
+      puts "params = "
+      pp params
+      session['user_name'] = params[:name]
+      redirect '/'
+    else
+      redirect '/login'
+    end
   end
-  return "The file was successfully uploaded!"
 end
-[~/sinatra/sinatra-upload(master)]$
+
+class MyApp &lt; Sinatra::Base
+  enable :inline_templates
+  # middleware will run before filters
+  use LoginScreen
+
+  before do
+    unless session['user_name']
+      halt haml :denied
+    end
+  end
+
+  get('/') do
+    haml :cheer, :locals =&gt; { :name =&gt; session['user_name'] }
+  end
+
+  run!
+end
+
+__END__
+
+@@ layout
+!!!
+%html
+  %head
+    %title Sinatra as Middleware
+  %body
+    %h1 Sinatra as Middleware
+    = yield
+
+@@ login
+%form{:action=&gt;'/login', :method=&gt;'post'}
+  %label{:for=&gt;'name'} Name
+  %input#name{:type=&gt;"text",     :name=&gt;"name", :autofocus =&gt; true }
+  %br
+  %label{:for=&gt;'password'} Password
+  %input#password{:type=&gt;"password", :name=&gt;"password"}
+  %br
+  %button#go{:type=&gt;"submit",  :name=&gt;"submit", :value=&gt;"submit"} Click me!
+
+@@ cheer
+%h1
+  Hello #{name}
+  %br
+
+@@ denied
+%h1 
+  Access denied, please 
+  %a{:href=&gt;'/login'}login.
 </PRE>
-
-<P>
-As you can see, you don’t have to write much code to get this to
-work. The <code>params</code>-hash contains our uploaded element with data such
-as filename, type and the actual datafile, which can be accessed
-as a Tempfile-object. 
-
-<P>
-We read the contents from this file and store
-it into a directory called uploads, which you will have to create
-before running this script.
-
-<P>
-Here’s an example of what the <code>params</code>-hash may look like when uploading
-a picture of a cat:
-
-<P>
-<PRE>
-{
-  "myfile" =&gt; {
-    :type =&gt; "image/png",
-    :head =&gt;  "Content-Disposition: form-data;
-               name=\"myfile\";
-               filename=\"cat.png\"\r\n
-               Content-Type: image/png\r\n",
-    :name =&gt; "myfile",
-    :tempfile =&gt; #&lt;File:/var/folders/3n/3asd/-Tmp-/RackMultipart201-1476-nfw2-0&gt;,
-    :filename=&gt;"cat.png"
-  }
-}
-</PRE>
-
-<P>
-<A NAME="tex2html708"
-  HREF="http://youtu.be/7tkQUTUxJWE">File upload with sinatra. YouTube</A>
-<P>
-
-<H4><A NAME="SECTION063120050000000000000">
-BEWARE!</A>
-</H4>
-  
-
-<P>
-This script offers little to no security at all. Clients will be able to overwrite old images, fill up your harddrive and so on. So just use some common sense and do some Ruby magic to patch up the security holes yourself.
-
-<P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5414"
+<A NAME="tex2html4436"
   HREF="node153.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5408"
-  HREF="node140.html">
+<A NAME="tex2html4430"
+  HREF="node125.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5402"
+<A NAME="tex2html4424"
   HREF="node151.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5410"
-  HREF="node230.html">
+<A NAME="tex2html4432"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5412"
-  HREF="node233.html">
+<A NAME="tex2html4434"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -337,17 +282,17 @@ This script offers little to no security at all. Clients will be able to overwri
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5415"
-  HREF="node153.html">halt</A>
-<B>Sup:</B> <A NAME="tex2html5409"
-  HREF="node140.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5403"
-  HREF="node151.html">Downloads / Descargas /</A>
+<B> Sig:</B> <A NAME="tex2html4437"
+  HREF="node153.html">Práctica: TicTacToe</A>
+<B>Sup:</B> <A NAME="tex2html4431"
+  HREF="node125.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html4425"
+  HREF="node151.html">Autentificación Básica</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-05-12</I>
+2014-09-02</I>
 </ADDRESS>
 </BODY>
 </HTML>

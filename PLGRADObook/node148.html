@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Acceso al Objeto Request</TITLE>
-<META NAME="description" CONTENT="Acceso al Objeto Request">
+<TITLE>Correo</TITLE>
+<META NAME="description" CONTENT="Correo">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node149.html">
 <LINK REL="previous" HREF="node147.html">
-<LINK REL="up" HREF="node140.html">
+<LINK REL="up" HREF="node125.html">
 <LINK REL="next" HREF="node149.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5350"
+<A NAME="tex2html4374"
   HREF="node149.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5344"
-  HREF="node140.html">
+<A NAME="tex2html4368"
+  HREF="node125.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5338"
+<A NAME="tex2html4362"
   HREF="node147.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5346"
-  HREF="node230.html">
+<A NAME="tex2html4370"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5348"
-  HREF="node233.html">
+<A NAME="tex2html4372"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,62 +92,81 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5351"
-  HREF="node149.html">Caching / Caches</A>
-<B>Sup:</B> <A NAME="tex2html5345"
-  HREF="node140.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5339"
-  HREF="node147.html">The methods body, status</A>
+<B> Sig:</B> <A NAME="tex2html4375"
+  HREF="node149.html">Ambito</A>
+<B>Sup:</B> <A NAME="tex2html4369"
+  HREF="node125.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html4363"
+  HREF="node147.html">Environments</A>
 <B> Con:</B> 
-<A NAME="tex2html5346"
-  HREF="node230.html">
+<A NAME="tex2html4370"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5348"
-  HREF="node233.html">
+<A NAME="tex2html4372"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION06380000000000000000"></A>
-<A NAME="section:requestobject"></A>
+<H1><A NAME="SECTION063230000000000000000"></A>
+<A NAME="section:correo"></A>
 <BR>
-Acceso al Objeto Request
+Correo
 </H1>
-El objeto que representa la solicitud <I>the request object</I>
-es un hash con información de la solicitud: quien hizo la petición, 
-que versión de HTTP usar, etc.
+<PRE>
+[~/srcSTW/sinatra-faq/mail(esau)]$ cat app.rb 
+require 'sinatra'
+require 'pony'
+raise "Execute:\n\t#{$0} password email_to email_from" if ARGV.length.zero?
+get '/' do
+    email = ARGV.shift
+    pass = ARGV.shift
+    Pony.mail({
+      :to =&gt; email,
+      :body =&gt; "Hello Casiano",
+      :subject =&gt; 'Howdy, Partna!',
+      :via =&gt; :smtp,
+      :via_options =&gt; {
+          :address              =&gt; 'smtp.gmail.com',
+          :port                 =&gt; '587',
+          :enable_starttls_auto =&gt; true,
+          :user_name            =&gt; ARGV.shift,
+          :password             =&gt; pass,
+          :authentication       =&gt; :plain, # :plain, :login, :cram_md5, no auth by default
+          :domain               =&gt; "localhost.localdomain" # the HELO domain provided by the client to the server
+        }
+    })
+    "Check your email at #{email}"
+end
+</PRE>
 
 <P>
-El objeto que representa la solicitud 
-puede ser accedido desde el nivel de solicitud:
-filtros, rutas y manejadores de error.
 
-<P>
-Véase <A NAME="tex2html695"
-  HREF="https://github.com/crguezl/sinatra_intro/blob/master/accesing_the_request_object.rb">https://github.com/crguezl/sinatra_intro/blob/master/accesing_the_request_object.rb</A>
-<P>
-
-<img src="request_object.png" />
+<OL>
+<LI><A NAME="tex2html508"
+  HREF="http://www.millwoodonline.co.uk/blog/getting-started-with-sinatra">Getting started with Sinatra</A>
+</LI>
+</OL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5350"
+<A NAME="tex2html4374"
   HREF="node149.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5344"
-  HREF="node140.html">
+<A NAME="tex2html4368"
+  HREF="node125.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5338"
+<A NAME="tex2html4362"
   HREF="node147.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5346"
-  HREF="node230.html">
+<A NAME="tex2html4370"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5348"
-  HREF="node233.html">
+<A NAME="tex2html4372"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -198,17 +217,17 @@ Véase <A NAME="tex2html695"
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5351"
-  HREF="node149.html">Caching / Caches</A>
-<B>Sup:</B> <A NAME="tex2html5345"
-  HREF="node140.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5339"
-  HREF="node147.html">The methods body, status</A>
+<B> Sig:</B> <A NAME="tex2html4375"
+  HREF="node149.html">Ambito</A>
+<B>Sup:</B> <A NAME="tex2html4369"
+  HREF="node125.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html4363"
+  HREF="node147.html">Environments</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-05-12</I>
+2014-09-02</I>
 </ADDRESS>
 </BODY>
 </HTML>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Práctica: Despliegue en Heroku su Aplicación Rock, Paper,Scissors</TITLE>
-<META NAME="description" CONTENT="Práctica: Despliegue en Heroku su Aplicación Rock, Paper,Scissors">
+<TITLE>Sesiones y Cookies en Sinatra</TITLE>
+<META NAME="description" CONTENT="Sesiones y Cookies en Sinatra">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node136.html">
 <LINK REL="previous" HREF="node134.html">
-<LINK REL="up" HREF="node104.html">
+<LINK REL="up" HREF="node125.html">
 <LINK REL="next" HREF="node136.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5062"
+<A NAME="tex2html4176"
   HREF="node136.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5056"
-  HREF="node104.html">
+<A NAME="tex2html4170"
+  HREF="node125.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5050"
+<A NAME="tex2html4164"
   HREF="node134.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5058"
-  HREF="node230.html">
+<A NAME="tex2html4172"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5060"
-  HREF="node233.html">
+<A NAME="tex2html4174"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,57 +92,346 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5063"
-  HREF="node136.html">Faking Sinatra with Rack</A>
-<B>Sup:</B> <A NAME="tex2html5057"
-  HREF="node104.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html5051"
-  HREF="node134.html">Despliegue de una Aplicación</A>
+<B> Sig:</B> <A NAME="tex2html4177"
+  HREF="node136.html">Downloads / Descargas /</A>
+<B>Sup:</B> <A NAME="tex2html4171"
+  HREF="node125.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html4165"
+  HREF="node134.html">Caching / Caches</A>
 <B> Con:</B> 
-<A NAME="tex2html5058"
-  HREF="node230.html">
+<A NAME="tex2html4172"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5060"
-  HREF="node233.html">
+<A NAME="tex2html4174"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<H1><A NAME="SECTION061310000000000000000"></A>
-   <A NAME="20074"></A>
-  
-<A NAME="practica:despliegueenherokurps"></A>
-<BR>
-Práctica: Despliegue en Heroku su Aplicación Rock, Paper,Scissors
+<UL CLASS="ChildLinks">
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html4178"
+  HREF="node135.html#SECTION063100010000000000000">Introducción</A>
+<LI><A NAME="tex2html4179"
+  HREF="node135.html#SECTION063100020000000000000">Cookies</A>
+<LI><A NAME="tex2html4180"
+  HREF="node135.html#SECTION063100030000000000000">Ejemplo con Sesiones</A>
+<LI><A NAME="tex2html4181"
+  HREF="node135.html#SECTION063100040000000000000">Ejemplo con Cookies</A>
+<LI><A NAME="tex2html4182"
+  HREF="node135.html#SECTION063100050000000000000">Problemas</A>
+<LI><A NAME="tex2html4183"
+  HREF="node135.html#SECTION063100060000000000000">Véanse</A>
+</UL></UL></UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION063100000000000000000">
+Sesiones y Cookies en Sinatra</A>
 </H1>
 
 <P>
-Despliegue en Heroku la practica realizada en la sección
-<I>Añada Pruebas a Rock, Paper,Scissors</I>
-<A HREF="node132.html#practica:rpsconsessionsypruebas">16.28</A>.
-Repase la sección 
-<I>Despliegue en Heroku</I>
-<A HREF="#chapter:despliegueenheroku"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>
+
+<H4><A NAME="SECTION063100010000000000000">
+Introducción</A>
+</H4>
+  
+
+A session is used to keep state during requests. If activated, you
+have one session hash per user session:
+
+<P>
+<PRE>
+enable :sessions
+
+get '/' do
+  "value = " &lt;&lt; session[:value].inspect
+end
+
+get '/:value' do
+  session[:value] = params[:value]
+end
+</PRE>
+
+<OL>
+<LI>Note that <code>enable :sessions</code> actually stores all data in a cookie
+</LI>
+<LI>This might not always be what you want (storing lots of data will increase your traffic, for instance)
+</LI>
+<LI>You can use any Rack session middleware: in order to do so, do not call <code>enable :sessions</code>, but instead pull in your middleware of choice as you would any other middleware:
+
+<P>
+<PRE>
+use Rack::Session::Pool, :expire_after =&gt; 2592000
+
+get '/' do
+  "value = " &lt;&lt; session[:value].inspect
+end
+
+get '/:value' do
+  session[:value] = params[:value]
+end
+</PRE>
+</LI>
+<LI>To improve security, the session data in the cookie is signed with a session secret
+</LI>
+<LI>A random secret is generated for you by Sinatra
+</LI>
+<LI>However, since this secret will change with every start of your application, you might want to set the secret yourself, so all your application instances share it:
+<PRE>
+set :session_secret, 'super secret'
+</PRE>
+If you want to configure it further, you may also store a hash with options in the sessions setting:
+<PRE>
+set :sessions, :domain =&gt; 'foo.com'
+</PRE>
+</LI>
+<LI>Just use
+<code>session.clear</code> to destroy the session.
+<PRE>
+get '/login' do
+    session[:username] = params[:username]
+    "logged in as #{session[:username]}"
+  end
+
+  get '/logout' do
+    old_user = session[:username]
+    session.clear
+    "logged out #{old_user}"
+  end
+</PRE>
+</LI>
+</OL>
+
+<P>
+
+<H4><A NAME="SECTION063100020000000000000">
+Cookies</A>
+</H4>
+  
+
+<OL>
+<LI>According to the Computer Science definition, a cookie, which is also known as an HTTP cookie, a tracking cookie, or a browser cookie, is a piece of text, no bigger than 4 kilobytes, which is stored on the user’s computer by a web server via a web browser
+</LI>
+<LI>It is a key-value pair structure, which is designed to retain specific information such as user preferences, user authentication, shopping carts, demographics, sessions, or any other data used by a website
+</LI>
+<LI>This mechanism, which was developed by Netscape in the distant 1994, provides a way to receive information from a web server and to send it back from the web browser absolutely unchanged
+</LI>
+<LI>This system complements the stateless nature of the HTTP protocol as it provides enough memory to store pieces of information during HTTP transactions
+
+<P>
+</LI>
+<LI>When you try to access a web site, your web browser connects to a web server and it sends a request for the respective page
+</LI>
+<LI>Then the web server replies by sending the requested content and it simultaneously stores a new cookie on your computer
+</LI>
+<LI>Every time the web browser requests web pages from the web server, it always sends the respective cookies back to the web server
+</LI>
+<LI>The process takes place as described, if the web browser supports cookies and the user allows their usage
+</LI>
+<LI>Only the web server can modify one or more of the cookie values
+</LI>
+<LI>Then it sends them to the web browser upon replying to a specific request
+
+<P>
+</LI>
+<LI>According to the RFC2965 specification, cookies are case insensitive
+</LI>
+<LI>A set of defined properties is inherent to the cookie structure  Those properties include:
+ an expiration date, a path and a domain
+</LI>
+<LI>The first attribute requires a date defined in <code>Wdy, DD-Mon-YYYY HH:MM:SS GMT</code> format
+</LI>
+<LI>The rest of the cookie characteristics require a <code>path</code> and/or a <code>domain</code> defined as a string
+</LI>
+<LI>Let’s take a look at this example:
+
+<P>
+<PRE>
+Cookie: key0=value0; ...; keyX=valueX; expires=Wed, 23-Sep-2009 23:59:59 GMT; path=/; domain=.yoursite.com
+</PRE>
+
+<P>
+</LI>
+<LI>When the <code>expiration</code> date is defined, your cookie will be <A NAME="13461"></A><SPAN  CLASS="textbf">persistent</SPAN> as it will reoccur in different sessions until the set <code>expiration</code> date has been reached
+</LI>
+<LI>If the <code>expiration</code> date has not been defined in the cookie, it will occur until the end of your current session or when you close your web browser
+</LI>
+<LI>If the <code>path</code> and/or the <code>domain</code> attributes have been defined in your cookie, then the web server limits the scope of the cookie to that specific <code>domain</code>, <code>sub-domain</code> or <code>path</code>
+</LI>
+</OL>
+
+<P>
+
+<H4><A NAME="SECTION063100030000000000000">
+Ejemplo con Sesiones</A>
+</H4>
+  
+
+<PRE>
+require 'rubygems'
+require 'sinatra'
+require 'haml'
+
+enable :sessions
+
+get '/' do
+  session["user"] ||= nil
+  haml :index
+end
+
+get '/introduction' do
+  haml :introduction
+end
+
+post '/introduction' do
+  session["user"] = params[:name]
+  redirect '/'
+end
+
+get '/bye' do
+  session["user"] = nil
+  haml :bye
+end
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION063100040000000000000">
+Ejemplo con Cookies</A>
+</H4>
+  
+
+<OL>
+<LI>The last example will demonstrate how to directly manage cookies through the 
+<code>request</code> and <code>response</code> singletons provided by Sinatra
+</LI>
+<LI>You will see in the following example that the previously described process involving the use cookies is clearly implemented
+</LI>
+<LI>This technique is recommended when your application requires to use persistent and/or scoped cookies
+</LI>
+<LI>In this example, the application uses two persistent cookies, which expire at the same time, in order to store and manage different configuration data
+</LI>
+</OL>
+
+<P>
+<PRE>
+require 'sinatra'
+require 'haml'
+
+get '/' do
+  @@expiration_date = Time.now + (60 * 2) \
+  unless request.cookies.key?('some_options') &amp;&amp; request.cookies.key?('other_options')
+  haml :index
+end
+
+get '/some_options' do
+  @some_cookie = request.cookies["some_options"]
+  haml :some_options
+end
+
+post '/some_options' do  
+  response.set_cookie('some_options', :value =&gt; cookie_values(params), :expires =&gt; @@expiration_date)
+  redirect '/'
+end
+
+get '/other_options' do
+  @other_cookie = request.cookies["other_options"]
+  haml :other_options
+end
+
+post '/other_options' do
+  response.set_cookie('other_options', :value =&gt; cookie_values(params),:expires =&gt; @@expiration_date)
+  redirect '/'
+end
+
+helpers do
+  def cookie_values(parameters)
+    values = {}
+    parameters.each do |key, value|
+      case key
+      when 'options'
+        values[value] = true
+      else
+        values[key] = true
+      end
+    end
+    values
+  end
+end
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION063100050000000000000">
+Problemas</A>
+</H4>
+  
+
+<OL>
+<LI><A NAME="tex2html491"
+  HREF="http://stackoverflow.com/questions/8957594/sinatra-session-gets-destroyed-automatically">I'm not sure why but my session gets wiped out every request?</A>
+</LI>
+<LI>To keep sessions consistent you need to set a session secret, e.g.:
+
+<P>
+<PRE>
+set :session_secret, 'super secret'
+</PRE>
+When it's not set sinatra generates random one on application start
+and shotgun restarts application before every request.
+</LI>
+</OL>
+
+<P>
+
+<H4><A NAME="SECTION063100060000000000000">
+Véanse</A>
+</H4>
+  
+
+<P>
+
+<OL>
+<LI><A NAME="tex2html492"
+  HREF="http://brettu.com/ruby-daily-ruby-tips-60-simple-use-of-sessions-in-sinatra/">Daily Ruby Tips #60 – Simple Use of Sessions in Sinatra
+May 6, 2013</A>
+</LI>
+<LI>La sección <I>Cookies</I> en Rack <A HREF="node97.html#section:cookies">14.8</A>.
+</LI>
+<LI><A NAME="tex2html493"
+  HREF="http://rubylearning.com/blog/2009/09/30/cookie-based-sessions-in-sinatra/">Cookie-based Sessions in Sinatra
+by JULIO JAVIER CICCHELLI on SEPTEMBER 30, 2009</A>
+RubyLearning Blog. El código está en
+<A NAME="tex2html494"
+  HREF="http://gist.github.com/205962">un Gist en GitHub</A>
+</LI>
+</OL>
+
+<P>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5062"
+<A NAME="tex2html4176"
   HREF="node136.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5056"
-  HREF="node104.html">
+<A NAME="tex2html4170"
+  HREF="node125.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5050"
+<A NAME="tex2html4164"
   HREF="node134.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5058"
-  HREF="node230.html">
+<A NAME="tex2html4172"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5060"
-  HREF="node233.html">
+<A NAME="tex2html4174"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -193,17 +482,17 @@ Repase la sección
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5063"
-  HREF="node136.html">Faking Sinatra with Rack</A>
-<B>Sup:</B> <A NAME="tex2html5057"
-  HREF="node104.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html5051"
-  HREF="node134.html">Despliegue de una Aplicación</A>
+<B> Sig:</B> <A NAME="tex2html4177"
+  HREF="node136.html">Downloads / Descargas /</A>
+<B>Sup:</B> <A NAME="tex2html4171"
+  HREF="node125.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html4165"
+  HREF="node134.html">Caching / Caches</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-05-12</I>
+2014-09-02</I>
 </ADDRESS>
 </BODY>
 </HTML>

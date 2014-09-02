@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Closures</TITLE>
-<META NAME="description" CONTENT="Closures">
+<TITLE>Usando PATH_INFO y erubis para construir una aplicación (Noah Gibbs)</TITLE>
+<META NAME="description" CONTENT="Usando PATH_INFO y erubis para construir una aplicación (Noah Gibbs)">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,28 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
+<LINK REL="next" HREF="node94.html">
 <LINK REL="previous" HREF="node92.html">
-<LINK REL="up" HREF="node92.html">
+<LINK REL="up" HREF="node89.html">
 <LINK REL="next" HREF="node94.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4116"
+<A NAME="tex2html3401"
   HREF="node94.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4110"
-  HREF="node92.html">
+<A NAME="tex2html3395"
+  HREF="node89.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4106"
+<A NAME="tex2html3389"
   HREF="node92.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4112"
-  HREF="node230.html">
+<A NAME="tex2html3397"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4114"
-  HREF="node233.html">
+<A NAME="tex2html3399"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -91,47 +92,197 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4117"
-  HREF="node94.html">Your First Compiler</A>
-<B>Sup:</B> <A NAME="tex2html4111"
-  HREF="node92.html">JavaScript Review</A>
-<B> Ant:</B> <A NAME="tex2html4107"
-  HREF="node92.html">JavaScript Review</A>
+<B> Sig:</B> <A NAME="tex2html3402"
+  HREF="node94.html">HTTP</A>
+<B>Sup:</B> <A NAME="tex2html3396"
+  HREF="node89.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html3390"
+  HREF="node92.html">Detectando el Proceso que</A>
 <B> Con:</B> 
-<A NAME="tex2html4112"
-  HREF="node230.html">
+<A NAME="tex2html3397"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4114"
-  HREF="node233.html">
+<A NAME="tex2html3399"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<H1><A NAME="SECTION05110000000000000000">
-Closures</A>
+<UL CLASS="ChildLinks">
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html3403"
+  HREF="node93.html#SECTION06140010000000000000">config.ru</A>
+<LI><A NAME="tex2html3404"
+  HREF="node93.html#SECTION06140020000000000000">Template erb</A>
+<LI><A NAME="tex2html3405"
+  HREF="node93.html#SECTION06140030000000000000">Arrancando el Servidor</A>
+<LI><A NAME="tex2html3406"
+  HREF="node93.html#SECTION06140040000000000000">Ejecutando un cliente</A>
+<LI><A NAME="tex2html3407"
+  HREF="node93.html#SECTION06140050000000000000">Logs del servidor</A>
+<LI><A NAME="tex2html3408"
+  HREF="node93.html#SECTION06140060000000000000">Véase</A>
+</UL></UL></UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION06140000000000000000">
+Usando <TT>PATH_INFO</TT> y <TT>erubis</TT> para construir una aplicación (Noah Gibbs)</A>
 </H1>
-<A NAME="tex2html516"
-  HREF="http://nathansjslessons.appspot.com/">http://nathansjslessons.appspot.com/</A>
+
+<P>
+
+<H4><A NAME="SECTION06140010000000000000">
+config.ru</A>
+</H4>
+  
+
+<P>
+<PRE>
+[~/local/src/ruby/sinatra/rack/hangout-framework(master)]$ cat config.ru 
+require "erubis"
+
+use Rack::ContentType
+
+def output(text, options = {})
+  [ options[:status] || 200,
+    {}, [ text ].flatten ]
+end
+
+def from_erb(file, vars = {})
+  eruby = Erubis::Eruby.new File.read(file)
+  output eruby.result vars
+end
+
+run proc { |env|
+  path = env['PATH_INFO']
+  if path =~ %r{^/foo}
+    from_erb "template.html.erb"
+  else
+    output "Not found!", :status =&gt; 400
+  end
+}
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION06140020000000000000">
+Template erb</A>
+</H4>
+  
+
+<P>
+<PRE>
+[~/local/src/ruby/sinatra/rack/hangout-framework(master)]$ cat template.html.erb 
+&lt;p&gt; A template! &lt;/p&gt;
+&lt;% 10.times do -%&gt; &lt;p&gt; Pretty cool! &lt;/p&gt; &lt;% end -%&gt;
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION06140030000000000000">
+Arrancando el Servidor</A>
+</H4>
+  
+
+<PRE>
+[~/local/src/ruby/sinatra/rack/hangout-framework(master)]$ rackup
+&gt;&gt; Thin web server (v1.5.1 codename Straight Razor)
+&gt;&gt; Maximum connections set to 1024
+&gt;&gt; Listening on 0.0.0.0:9292, CTRL+C to stop}
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION06140040000000000000">
+Ejecutando un cliente</A>
+</H4>
+  
+
+<PRE>
+[~/local/src/ruby/sinatra/rack/hangout-framework(master)]$ curl -v http://localhost:9292/foochazam
+* About to connect() to localhost port 9292 (#0)
+*   Trying ::1... Connection refused
+*   Trying 127.0.0.1... connected
+* Connected to localhost (127.0.0.1) port 9292 (#0)
+&gt; GET /foochazam HTTP/1.1
+&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8y zlib/1.2.5
+&gt; Host: localhost:9292
+&gt; Accept: */*
+&gt; 
+&lt; HTTP/1.1 200 OK
+&lt; Content-Type: text/html
+&lt; Transfer-Encoding: chunked
+&lt; Connection: close
+&lt; Server: thin 1.5.1 codename Straight Razor
+&lt; 
+&lt;p&gt; A template! &lt;/p&gt;
+ &lt;p&gt; Pretty cool! &lt;/p&gt;  &lt;p&gt; Pretty cool! &lt;/p&gt;  &lt;p&gt; Pretty cool! &lt;/p&gt;  
+ &lt;p&gt; Pretty cool! &lt;/p&gt;  &lt;p&gt; Pretty cool! &lt;/p&gt;  &lt;p&gt; Pretty cool! &lt;/p&gt;  
+ &lt;p&gt; Pretty cool! &lt;/p&gt;  &lt;p&gt; Pretty cool! &lt;/p&gt;  &lt;p&gt; Pretty cool! &lt;/p&gt;  
+ &lt;p&gt; Pretty cool! &lt;/p&gt; 
+* Closing connection #0
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION06140050000000000000">
+Logs del servidor</A>
+</H4>
+  
+
+<P>
+<PRE>
+[~/local/src/ruby/sinatra/rack/hangout-framework(master)]$ rackup
+&gt;&gt; Thin web server (v1.5.1 codename Straight Razor)
+&gt;&gt; Maximum connections set to 1024
+&gt;&gt; Listening on 0.0.0.0:9292, CTRL+C to stop
+ 127.0.0.1 - - [20/Oct/2013 12:22:37] "GET /foochazam HTTP/1.1" 200 - 0.0014
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION06140060000000000000">
+Véase</A>
+</H4>
+  
+
+<P>
+
+<OL>
+<LI><A NAME="tex2html339"
+  HREF="http://www.kuwata-lab.com/erubis/">erubis</A>
+</LI>
+<LI>Noah Gibbs <A NAME="tex2html340"
+  HREF="https://github.com/noahgibbs/hangout-framework">Demo Rack framework for March 6th, 2013 Ruby Hangout.</A>
+</LI>
+<LI><A NAME="tex2html341"
+  HREF="http://youtu.be/evDJMLb1d28">Ruby Hangout 3-13 Noah Gibbs</A>
+</LI>
+</OL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4116"
+<A NAME="tex2html3401"
   HREF="node94.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4110"
-  HREF="node92.html">
+<A NAME="tex2html3395"
+  HREF="node89.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4106"
+<A NAME="tex2html3389"
   HREF="node92.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4112"
-  HREF="node230.html">
+<A NAME="tex2html3397"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4114"
-  HREF="node233.html">
+<A NAME="tex2html3399"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -182,17 +333,17 @@ Closures</A>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4117"
-  HREF="node94.html">Your First Compiler</A>
-<B>Sup:</B> <A NAME="tex2html4111"
-  HREF="node92.html">JavaScript Review</A>
-<B> Ant:</B> <A NAME="tex2html4107"
-  HREF="node92.html">JavaScript Review</A>
+<B> Sig:</B> <A NAME="tex2html3402"
+  HREF="node94.html">HTTP</A>
+<B>Sup:</B> <A NAME="tex2html3396"
+  HREF="node89.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html3390"
+  HREF="node92.html">Detectando el Proceso que</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-05-12</I>
+2014-09-02</I>
 </ADDRESS>
 </BODY>
 </HTML>

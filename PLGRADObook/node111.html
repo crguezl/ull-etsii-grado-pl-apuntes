@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Rack::Response</TITLE>
-<META NAME="description" CONTENT="Rack::Response">
+<TITLE>Rack::Cascade</TITLE>
+<META NAME="description" CONTENT="Rack::Cascade">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node112.html">
 <LINK REL="previous" HREF="node110.html">
-<LINK REL="up" HREF="node104.html">
+<LINK REL="up" HREF="node89.html">
 <LINK REL="next" HREF="node112.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4663"
+<A NAME="tex2html3720"
   HREF="node112.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4657"
-  HREF="node104.html">
+<A NAME="tex2html3714"
+  HREF="node89.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4651"
+<A NAME="tex2html3708"
   HREF="node110.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4659"
-  HREF="node230.html">
+<A NAME="tex2html3716"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4661"
-  HREF="node233.html">
+<A NAME="tex2html3718"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,19 +92,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4664"
-  HREF="node112.html">Cookies y Rack</A>
-<B>Sup:</B> <A NAME="tex2html4658"
-  HREF="node104.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4652"
-  HREF="node110.html">Rack::Request y Depuración con</A>
+<B> Sig:</B> <A NAME="tex2html3721"
+  HREF="node112.html">Rack::Mount</A>
+<B>Sup:</B> <A NAME="tex2html3715"
+  HREF="node89.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html3709"
+  HREF="node110.html">Código de Rack::Builder</A>
 <B> Con:</B> 
-<A NAME="tex2html4659"
-  HREF="node230.html">
+<A NAME="tex2html3716"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4661"
-  HREF="node233.html">
+<A NAME="tex2html3718"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
@@ -113,235 +113,185 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html4665"
-  HREF="node111.html#SECTION06171000000000000000">Introducción</A>
-<LI><A NAME="tex2html4666"
-  HREF="node111.html#SECTION06172000000000000000">Ejemplo Simple</A>
-<LI><A NAME="tex2html4667"
-  HREF="node111.html#SECTION06173000000000000000">Ejemplo con <TT>POST</TT></A>
-</UL>
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html3722"
+  HREF="node111.html#SECTION061220010000000000000">Ejemplo</A>
+<LI><A NAME="tex2html3723"
+  HREF="node111.html#SECTION061220020000000000000">Código del Constructor</A>
+<LI><A NAME="tex2html3724"
+  HREF="node111.html#SECTION061220030000000000000">Código de <TT>call</TT></A>
+</UL></UL></UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION06170000000000000000">
-Rack::Response</A>
+<H1><A NAME="SECTION061220000000000000000">
+Rack::Cascade</A>
 </H1>
 
 <P>
-
-<H2><A NAME="SECTION06171000000000000000">
-Introducción</A>
-</H2>
-
-<P>
-<A NAME="tex2html554"
-  HREF="http://rack.rubyforge.org/doc/Rack/Response.html">Rack::Response</A> provides a convenient interface to create a Rack response.
-
-<P>
-It allows setting of headers and cookies, and provides useful
-defaults (a <code>OK</code> response containing HTML).
-
-<P>
-You can use <code>Response#write</code> to iteratively generate your response,
-but note that this is buffered by <A NAME="tex2html555"
-  HREF="http://rack.rubyforge.org/doc/Rack/Response.html">Rack::Response</A> until you call
-<code>finish</code>. 
-
-<P>
-Alternatively, the method <code>finish</code> can take a block inside which calls to write
-are synchronous with the Rack response.
-
-<P>
-Your application‘s call should end returning <code>Response#finish</code>.
+<A NAME="tex2html423"
+  HREF="http://rack.rubyforge.org/doc/Rack/Cascade.html">Rack::Cascade</A> 
+tries an request on several apps, and returns the first response
+that is not 404 (or in a list of configurable status codes).
 
 <P>
 
-<H2><A NAME="SECTION06172000000000000000">
-Ejemplo Simple</A>
-</H2>
+<H4><A NAME="SECTION061220010000000000000">
+Ejemplo</A>
+</H4>
+  
+
+<P>
 <PRE>
-[~/local/src/ruby/sinatra/rack/rack-debugging(master)]$ cat body_bytesize.rb 
-require 'rack'
-require 'thin'
-
-app = lambda do |env|
-  req = Rack::Request.new env
-  res = Rack::Response.new
-
-  body = "--------------- Header ------------------\n"
-
-  if req.path_info == '/hello'
-    body &lt;&lt; "hi "
-    name = req['name']
-    body &lt;&lt; name if name 
-    body &lt;&lt; "\n"
-  else
-    body &lt;&lt; "Instead of #{req.url} visit something like "+
-            "http://localhost:8080/hello?name=Casiano\n"
-  end
-  res['Content-Type'] = 'text/plain'
-  res["Content-Length"] = body.bytesize.to_s
-  #res["Content-Length"] = Rack::Utils.bytesize(body).to_s
-  res.body = [ body ]
-  res.finish
-end
-
-Rack::Handler::Thin.run app
-</PRE>
-
-<P>
-
-<H2><A NAME="SECTION06173000000000000000">
-Ejemplo con <TT>POST</TT></A>
-</H2>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rack-debugging]$ cat hello_response.rb 
-# encoding: utf-8
-require 'rack'
-require 'pry-debugger'
-
-class HelloWorld
-
-  def call env
-    req = Rack::Request.new(env)
-    res = Rack::Response.new 
-    binding.pry if ARGV[0]
-    res['Content-Type'] = 'text/html'
-    name = (req["firstname"] &amp;&amp; req["firstname"] != '') ? req["firstname"] :'World'
-    res.write &lt;&lt;-"EOS"
-      &lt;!DOCTYPE HTML&gt;
-      &lt;html&gt;
-        &lt;title&gt;Rack::Response&lt;/title&gt;
-        &lt;body&gt;
-          &lt;h1&gt;
-             Hello #{name}!
-             &lt;form action="/" method="post"&gt;
-               Your name: &lt;input type="text" name="firstname" autofocus&gt;&lt;br&gt;
-               &lt;input type="submit" value="Submit"&gt;
-             &lt;/form&gt;
-          &lt;/h1&gt;
-        &lt;/body&gt;
-      &lt;/html&gt;
-    EOS
-    res.finish
-  end
-end
-
-Rack::Server.start(
-  :app =&gt; HelloWorld.new,
-  :Port =&gt; 9292,
-  :server =&gt; 'thin'
-)
+[~/local/src/ruby/sinatra/rack/rack-cascade]$ cat cascade2.ru 
+statuses = [200,404]
+apps = [
+  lambda {|env| 
+    status = statuses.sample
+    [status, {}, ["I'm the first app. Status = #{status}\n"]]
+  }, 
+  lambda {|env| 
+    status = statuses.sample
+    [status, {}, ["I'm the second app. Status = #{status}\n"]]
+  }, 
+  lambda {|env| 
+    status = statuses.sample
+    [status, {}, ["I'm the last app. Status = #{status}\n"]]
+  } 
+]
+use Rack::ContentLength 
+use Rack::ContentType 
+run Rack::Cascade.new(apps)
 </PRE>
 
 <P>
 <PRE>
-[~/local/src/ruby/sinatra/rack/rack-debugging]$ ruby hello_response.rb debug
-&gt;&gt; Thin web server (v1.5.1 codename Straight Razor)
-&gt;&gt; Maximum connections set to 1024
-&gt;&gt; Listening on 0.0.0.0:9292, CTRL+C to stop
-</PRE>
-
-<P>
-Ahora cuando visitamos la página <code>http://localhost:9292</code> el navegador queda a la
-espera del servidor y el servidor alcanza la línea de break.
-
-<P>
-<PRE>
-From: /Users/casiano/local/src/ruby/sinatra/rack/rack-debugging/hello_response.rb @ line 10 HelloWorld#call:
-
-     7: def call env
-     8:   req = Rack::Request.new(env)
-     9:   res = Rack::Response.new 
- =&gt; 10:   binding.pry if ARGV[0]
-    11:   res['Content-Type'] = 'text/html'
-    12:   name = (req["firstname"] &amp;&amp; req["firstname"] != '') ? req["firstname"] :'World'
-    13:   res.write &lt;&lt;-"EOS"
-    14:     &lt;!DOCTYPE HTML&gt;
-    15:     &lt;html&gt;
-    16:       &lt;title&gt;Rack::Response&lt;/title&gt;
-    17:       &lt;body&gt;
-    18:         &lt;h1&gt;
-    19:            Hello #{name}!
-    20:            &lt;form action="/" method="post"&gt;
-    21:              Your name: &lt;input type="text" name="firstname" autofocus&gt;&lt;br&gt;
-    22:              &lt;input type="submit" value="Submit"&gt;
-    23:            &lt;/form&gt;
-    24:         &lt;/h1&gt;
-    25:       &lt;/body&gt;
-    26:     &lt;/html&gt;
-    27:   EOS
-    28:   res.finish
-    29: end
-
-[1] pry(#&lt;HelloWorld&gt;)&gt;
-</PRE>
-Consultemos los contenidos de <code>res</code>:
-<PRE>
-[1] pry(#&lt;HelloWorld&gt;)&gt; res
-=&gt; #&lt;Rack::Response:0x007fe3fb1e6180
- @block=nil,
- @body=[],
- @chunked=false,
- @header={},
- @length=0,
- @status=200,
- @writer=
-  #&lt;Proc:0x007fe3fb1e5f50@/Users/casiano/.rvm/gems/ruby-1.9.3-p392/gems/rack-1.5.2/lib/rack/response.rb:27 (lambda)&gt;&gt;
-</PRE>
-Después de un par de <code>continue</code> el servidor se queda a la espera:
-<PRE>
-[3] pry(#&lt;HelloWorld&gt;)&gt; continue
-...
-[1] pry(#&lt;HelloWorld&gt;)&gt; continue
-</PRE>
-
-<P>
-
-<img src="hellonamerack.png" />
-
-<P>
-Rellenamos la entrada con un nombre (Pedro) y de nuevo el servidor alcanza el punto de ruptura:
-<PRE>
-[2] pry(#&lt;HelloWorld&gt;)&gt; req.params
-=&gt; {"firstname"=&gt;"Pedro"}
+[~/local/src/ruby/sinatra/rack/rack-cascade]$ rake client
+curl -v 'http://localhost:9292'
+* About to connect() to localhost port 9292 (#0)
+*   Trying 127.0.0.1... connected
+* Connected to localhost (127.0.0.1) port 9292 (#0)
+&gt; GET / HTTP/1.1
+&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8y zlib/1.2.5
+&gt; Host: localhost:9292
+&gt; Accept: */*
+&gt; 
+&lt; HTTP/1.1 200 OK
+&lt; Content-Type: text/html
+&lt; Content-Length: 33
+&lt; Connection: keep-alive
+&lt; Server: thin 1.5.1 codename Straight Razor
+&lt; 
+I'm the second app. Status = 200
+* Connection #0 to host localhost left intact
+* Closing connection #0
 </PRE>
 
 <P>
 <PRE>
-[7] pry(#&lt;HelloWorld&gt;)&gt; break 28
-Breakpoint 1: /Users/casiano/local/src/ruby/sinatra/rack/rack-debugging/hello_response.rb @ line 28 (Enabled) :
+[~/local/src/ruby/sinatra/rack/rack-cascade]$ rake client
+curl -v 'http://localhost:9292'
+* About to connect() to localhost port 9292 (#0)
+*   Trying 127.0.0.1... connected
+* Connected to localhost (127.0.0.1) port 9292 (#0)
+&gt; GET / HTTP/1.1
+&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8y zlib/1.2.5
+&gt; Host: localhost:9292
+&gt; Accept: */*
+&gt; 
+&lt; HTTP/1.1 200 OK
+&lt; Content-Type: text/html
+&lt; Content-Length: 31
+&lt; Connection: keep-alive
+&lt; Server: thin 1.5.1 codename Straight Razor
+&lt; 
+I'm the last app. Status = 200
+* Connection #0 to host localhost left intact
+* Closing connection #0
+</PRE>
 
-    26:       &lt;/html&gt;
-    27:     EOS
- =&gt; 28:     res.finish
-    29:   end
+<P>
+<PRE>
+[~/local/src/ruby/sinatra/rack/rack-cascade]$ rake client
+curl -v 'http://localhost:9292'
+* About to connect() to localhost port 9292 (#0)
+*   Trying 127.0.0.1... connected
+* Connected to localhost (127.0.0.1) port 9292 (#0)
+&gt; GET / HTTP/1.1
+&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8y zlib/1.2.5
+&gt; Host: localhost:9292
+&gt; Accept: */*
+&gt; 
+&lt; HTTP/1.1 200 OK
+&lt; Content-Type: text/html
+&lt; Content-Length: 32
+&lt; Connection: keep-alive
+&lt; Server: thin 1.5.1 codename Straight Razor
+&lt; 
+I'm the first app. Status = 200
+* Connection #0 to host localhost left intact
+* Closing connection #0]
+</PRE>
 
-[8] pry(#&lt;HelloWorld&gt;)&gt; continue
-Breakpoint 1. First hit.
-...
-[9] pry(#&lt;HelloWorld&gt;)&gt; res.headers
-=&gt; {"Content-Type"=&gt;"text/html", "Content-Length"=&gt;"370"}
-[10] pry(#&lt;HelloWorld&gt;)&gt;
+<P>
+
+<H4><A NAME="SECTION061220020000000000000">
+Código del Constructor</A>
+</H4>
+  
+
+<P>
+<PRE>
+        # File lib/rack/cascade.rb, line 11
+11:     def initialize(apps, catch=404)
+12:       @apps = []; @has_app = {}
+13:       apps.each { |app| add app }
+14: 
+15:       @catch = {}
+16:       [*catch].each { |status| @catch[status] = true }
+17:     end
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION061220030000000000000">
+Código de <TT>call</TT></A>
+</H4>
+  
+
+<P>
+<PRE>
+        # File lib/rack/cascade.rb, line 19
+19:     def call(env)
+20:       result = NotFound
+21: 
+22:       @apps.each do |app|
+23:         result = app.call(env)
+24:         break unless @catch.include?(result[0].to_i)
+25:       end
+26: 
+27:       result
+28:     end
 </PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4663"
+<A NAME="tex2html3720"
   HREF="node112.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4657"
-  HREF="node104.html">
+<A NAME="tex2html3714"
+  HREF="node89.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4651"
+<A NAME="tex2html3708"
   HREF="node110.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4659"
-  HREF="node230.html">
+<A NAME="tex2html3716"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4661"
-  HREF="node233.html">
+<A NAME="tex2html3718"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -392,17 +342,17 @@ Breakpoint 1. First hit.
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4664"
-  HREF="node112.html">Cookies y Rack</A>
-<B>Sup:</B> <A NAME="tex2html4658"
-  HREF="node104.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4652"
-  HREF="node110.html">Rack::Request y Depuración con</A>
+<B> Sig:</B> <A NAME="tex2html3721"
+  HREF="node112.html">Rack::Mount</A>
+<B>Sup:</B> <A NAME="tex2html3715"
+  HREF="node89.html">Rack, un Webserver Ruby</A>
+<B> Ant:</B> <A NAME="tex2html3709"
+  HREF="node110.html">Código de Rack::Builder</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-05-12</I>
+2014-09-02</I>
 </ADDRESS>
 </BODY>
 </HTML>

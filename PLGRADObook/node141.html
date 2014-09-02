@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Ejemplo Simple de uso de Sinatra</TITLE>
-<META NAME="description" CONTENT="Ejemplo Simple de uso de Sinatra">
+<TITLE>Logging</TITLE>
+<META NAME="description" CONTENT="Logging">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node142.html">
 <LINK REL="previous" HREF="node140.html">
-<LINK REL="up" HREF="node140.html">
+<LINK REL="up" HREF="node125.html">
 <LINK REL="next" HREF="node142.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5230"
+<A NAME="tex2html4273"
   HREF="node142.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5224"
-  HREF="node140.html">
+<A NAME="tex2html4267"
+  HREF="node125.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5218"
+<A NAME="tex2html4261"
   HREF="node140.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5226"
-  HREF="node230.html">
+<A NAME="tex2html4269"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5228"
-  HREF="node233.html">
+<A NAME="tex2html4271"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,19 +92,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5231"
-  HREF="node142.html">Rutas/Routes</A>
-<B>Sup:</B> <A NAME="tex2html5225"
-  HREF="node140.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5219"
-  HREF="node140.html">Fundamentos</A>
+<B> Sig:</B> <A NAME="tex2html4274"
+  HREF="node142.html">Generating URLs</A>
+<B>Sup:</B> <A NAME="tex2html4268"
+  HREF="node125.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html4262"
+  HREF="node140.html">Triggering Another Route: calling</A>
 <B> Con:</B> 
-<A NAME="tex2html5226"
-  HREF="node230.html">
+<A NAME="tex2html4269"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5228"
-  HREF="node233.html">
+<A NAME="tex2html4271"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
@@ -115,83 +115,186 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <UL CLASS="ChildLinks">
 <LI><UL>
 <LI><UL>
-<LI><A NAME="tex2html5232"
-  HREF="node141.html#SECTION06310010000000000000">Código</A>
-<LI><A NAME="tex2html5233"
-  HREF="node141.html#SECTION06310020000000000000">Opciones de Ejecución</A>
+<LI><A NAME="tex2html4275"
+  HREF="node141.html#SECTION063160010000000000000">Logging a stdout y a un fichero</A>
+<LI><A NAME="tex2html4276"
+  HREF="node141.html#SECTION063160020000000000000">Ejecución</A>
+<LI><A NAME="tex2html4277"
+  HREF="node141.html#SECTION063160030000000000000">Véase</A>
 </UL></UL></UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION06310000000000000000">
-Ejemplo Simple de uso de Sinatra</A>
+<H1><A NAME="SECTION063160000000000000000">
+Logging</A>
 </H1>
+In the request scope, the <code>logger</code> helper exposes a <code>Logger</code> instance:
+
+<P>
+<PRE>
+get '/' do
+  logger.info "loading data"
+  # ...
+end
+</PRE>
+
+<OL>
+<LI>This <code>logger</code> will automatically take your Rack handler’s <code>logging</code> settings into account
+</LI>
+<LI>If <code>logging</code> is disabled, this method will return a dummy object, so you do not have to worry in your routes and filters about it
+</LI>
+</OL>
+
+<P>
+Note that <code>logging</code> is only enabled for <code>Sinatra::Application</code>
+ by default, so if you inherit from , you probably want to enable it yourself:
+
+<P>
+<PRE>
+class MyApp &lt; Sinatra::Base
+  configure :production, :development do
+    enable :logging
+  end
+end
+</PRE>
+
+<OL>
+<LI>To avoid any <code>logging</code> middleware to be set up, set the <code>logging</code> setting to <code>nil</code>
+</LI>
+<LI>However, keep in mind that <code>logger</code> will in that case return <code>nil</code>
+</LI>
+<LI>A common use case is when you want to set your own <code>logger</code>.
+Sinatra will use whatever it will find in <code>env['rack.logger']</code>
+</LI>
+</OL>
 
 <P>
 
-<H4><A NAME="SECTION06310010000000000000">
-Código</A>
+<H4><A NAME="SECTION063160010000000000000">
+Logging a stdout y a un fichero</A>
 </H4>
   
 
+<P>
+Véase 
+<A NAME="tex2html504"
+  HREF="http://recipes.sinatrarb.com/p/middleware/rack_commonlogger">Rack::CommonLogger</A>
+en Sinatra Recipes.
+
+<P>
+Sinatra has logging support, but it's nearly impossible to log to a file and to the stdout (like Rails does).
+
+<P>
+However, there is a little trick you can use to log to stdout and to a file:
+
+<P>
 <PRE>
-[~/sinatra/sinatra-simple(master)]$ cat hi.rb 
 require 'sinatra'
 
-get '/hi' do
-  "Hello World!"
+configure do
+  # logging is enabled by default in classic style applications,
+  # so `enable :logging` is not needed
+  file = File.new("#{settings.root}/log/#{settings.environment}.log", 'a+')
+  file.sync = true
+  use Rack::CommonLogger, file
+end
+
+get '/' do
+  'Hello World'
+end
+</PRE>
+You can use the same configuration for modular style applications,
+but you have to <code>enable :logging first</code>:
+
+<P>
+<PRE>
+require 'sinatra/base'
+
+class SomeApp &lt; Sinatra::Base
+  configure do
+    enable :logging
+    file = File.new("#{settings.root}/log/#{settings.environment}.log", 'a+')
+    file.sync = true
+    use Rack::CommonLogger, file
+  end
+
+  get '/' do
+    'Hello World'
+  end
+
+  run!
 end
 </PRE>
 
 <P>
 
-<H4><A NAME="SECTION06310020000000000000">
-Opciones de Ejecución</A>
+<H4><A NAME="SECTION063160020000000000000">
+Ejecución</A>
 </H4>
   
 
 <PRE>
-[~/sinatra/sinatra-simple(master)]$ ruby hi.rb --help
-Usage: hi [options]
-    -p port                          set the port (default is 4567)
-    -o addr                          set the host (default is localhost)
-    -e env                           set the environment (default is development)
-    -s server                        specify rack server/handler (default is thin)
-    -x                               turn on the mutex lock (default is off)
+~/sinatra/sinatra-logging]$ tree
+.
+|-- app.rb
+`-- log
+
+1 directory, 1 file
+[~/sinatra/sinatra-logging]$ ruby app.rb 
+== Sinatra/1.4.4 has taken the stage on 4567 for development with backup from Thin
+Thin web server (v1.6.1 codename Death Proof)
+Maximum connections set to 1024
+Listening on localhost:4567, CTRL+C to stop
 </PRE>
-Sinatra can be used in threaded environments where more than a
-single request is processed at a time. 
+Consola después de visitar la página:
+<PRE>
+127.0.0.1 - - [19/Nov/2013 14:53:06] "GET / HTTP/1.1" 200 11 0.0041
+</PRE>
 
 <P>
-However, not all applications
-and libraries are thread-safe and may cause intermittent errors or
-general weirdness. 
+Fichero después de visitar la página:
+<PRE>
+[~/sinatra/sinatra-logging]$ cat log/development.log 
+127.0.0.1 - - [19/Nov/2013 14:53:06] "GET / HTTP/1.1" 200 11 0.0038
+</PRE>
 
 <P>
-Enabling the <code>-x</code> setting causes all requests
-to synchronize on a mutex lock, ensuring that only a single request
-is processed at a time.
 
-<P>
-The mutex lock setting is disabled by default.
+<H4><A NAME="SECTION063160030000000000000">
+Véase</A>
+</H4>
+  
+
+<OL>
+<LI>el código en GitHub de 
+<A NAME="tex2html505"
+  HREF="https://github.com/rack/rack/blob/master/lib/rack/commonlogger.rb">Rack::CommonLogger</A>
+</LI>
+<LI>Logging in Sinatra. StackOverflow.
+<A NAME="tex2html506"
+  HREF="http://stackoverflow.com/questions/5995854/logging-in-sinatra/5995932#5995932">Destination is set by  changing 
+</A>
+<code>env['rack.errors']</code>.  Konstantin Haase May 13 '11 at 21:18'
+</LI>
+</OL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5230"
+<A NAME="tex2html4273"
   HREF="node142.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5224"
-  HREF="node140.html">
+<A NAME="tex2html4267"
+  HREF="node125.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5218"
+<A NAME="tex2html4261"
   HREF="node140.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5226"
-  HREF="node230.html">
+<A NAME="tex2html4269"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5228"
-  HREF="node233.html">
+<A NAME="tex2html4271"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -242,17 +345,17 @@ The mutex lock setting is disabled by default.
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5231"
-  HREF="node142.html">Rutas/Routes</A>
-<B>Sup:</B> <A NAME="tex2html5225"
-  HREF="node140.html">Fundamentos</A>
-<B> Ant:</B> <A NAME="tex2html5219"
-  HREF="node140.html">Fundamentos</A>
+<B> Sig:</B> <A NAME="tex2html4274"
+  HREF="node142.html">Generating URLs</A>
+<B>Sup:</B> <A NAME="tex2html4268"
+  HREF="node125.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html4262"
+  HREF="node140.html">Triggering Another Route: calling</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-05-12</I>
+2014-09-02</I>
 </ADDRESS>
 </BODY>
 </HTML>

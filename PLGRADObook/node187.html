@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Depurando una Ejecución con Ruby</TITLE>
-<META NAME="description" CONTENT="Depurando una Ejecución con Ruby">
+<TITLE>Véase</TITLE>
+<META NAME="description" CONTENT="Véase">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -20,27 +20,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
 <LINK REL="previous" HREF="node186.html">
-<LINK REL="up" HREF="node186.html">
+<LINK REL="up" HREF="node179.html">
 <LINK REL="next" HREF="node188.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html5969"
+<A NAME="tex2html5101"
   HREF="node188.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5963"
-  HREF="node186.html">
+<A NAME="tex2html5095"
+  HREF="node179.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5959"
+<A NAME="tex2html5091"
   HREF="node186.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5965"
-  HREF="node230.html">
+<A NAME="tex2html5097"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5967"
-  HREF="node233.html">
+<A NAME="tex2html5099"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -91,170 +91,88 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5970"
-  HREF="node188.html">Envío de SMSs y</A>
-<B>Sup:</B> <A NAME="tex2html5964"
-  HREF="node186.html">Depuración en Sinatra</A>
-<B> Ant:</B> <A NAME="tex2html5960"
-  HREF="node186.html">Depuración en Sinatra</A>
+<B> Sig:</B> <A NAME="tex2html5102"
+  HREF="node188.html">DataMapper</A>
+<B>Sup:</B> <A NAME="tex2html5096"
+  HREF="node179.html">Heroku</A>
+<B> Ant:</B> <A NAME="tex2html5092"
+  HREF="node186.html">Account Verification and add-ons</A>
 <B> Con:</B> 
-<A NAME="tex2html5965"
-  HREF="node230.html">
+<A NAME="tex2html5097"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html5967"
-  HREF="node233.html">
+<A NAME="tex2html5099"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION061010000000000000000"></A>
-<A NAME="section:depuracionsinatra"></A>
-<BR>
-Depurando una Ejecución con Ruby
+<H1><A NAME="SECTION07180000000000000000">
+Véase</A>
 </H1>
 
-<P>
-<PRE>
-[~/sinatra/sinatra-debug/example1]$ ls 
-Gemfile           Rakefile          my_sinatra.rb
-Gemfile.lock      config.ru         rackmiddleware.rb
-</PRE>
+<UL>
+<LI><A NAME="tex2html597"
+  HREF="https://devcenter.heroku.com/articles/getting-started-with-ruby">Heroku: Getting Started with Ruby on Heroku</A>
+</LI>
+<LI><A NAME="tex2html598"
+  HREF="http://www.sitepoint.com/get-started-with-sinatra-on-heroku/">SitePoint: Get Started with Sinatra on Heroku by Jagadish Thaker.
+Published August 12, 2013</A>
+</LI>
+<LI><A NAME="tex2html599"
+  HREF="https://devcenter.heroku.com/articles/rack">Deploying Rack-based Apps</A>
+</LI>
+<LI><A NAME="tex2html600"
+  HREF="https://devcenter.heroku.com/categories/ruby">Heroku: List of Published Articles for Ruby</A>
+</LI>
+<LI>Foreman
 
-<P>
-<PRE>
-[~/sinatra/sinatra-debug/example1]$ cat Gemfile
-source 'http://rubygems.org'
-
-group :development, :test do
-  gem 'awesome_print'
-  gem 'racksh'
-  gem 'debugger'
-  gem 'pry'
-  gem 'pry-debugger'
-end
-</PRE>
-
-<P>
-<PRE>
-[~/sinatra/sinatra-debug/example1]$ cat my_sinatra.rb 
-# my_sinatra.rb
-require 'debugger'
-require 'sinatra'
-require './rackmiddleware'
-use RackMiddleware
-get '/:p' do |x|
-   # debugger
-  "Welcome to #{x}"
-end
-</PRE>
-
-<P>
-<PRE>
-[~/sinatra/sinatra-debug/example1]$ cat rackmiddleware.rb 
-class RackMiddleware
-  def initialize(appl)
-    @appl = appl
-  end
-
-  def call(env)
-    debugger
-    start = Time.now
-    status, headers, body = @appl.call(env) # call our Sinatra app
-    stop = Time.now
-    puts "Response Time: #{stop-start}" # display on console
-    [status, headers, body]
-  end
-end
-</PRE>
-
-<P>
-<PRE>
-[~/sinatra/sinatra-debug/example1]$ ruby my_sinatra.rb 
-== Sinatra/1.4.3 has taken the stage on 4567 for development with backup from Thin
-&gt;&gt; Thin web server (v1.5.1 codename Straight Razor)
-&gt;&gt; Maximum connections set to 1024
-&gt;&gt; Listening on localhost:4567, CTRL+C to stop
-</PRE>
-
-<P>
-Al conectar al servidor queda en espera:
-<PRE>
-[~/sinatra/sinatra-debug]$ curl 'http://localhost:4567/canarias'
-</PRE>
-
-<P>
-En la otra terminal el servidor se detiene en el primer breakpoint señalado:
-<PRE>
-[~/sinatra/sinatra-debug/example1]$ ruby my_sinatra.rb 
-== Sinatra/1.4.3 has taken the stage on 4567 for development with backup from Thin
-&gt;&gt; Thin web server (v1.5.1 codename Straight Razor)
-&gt;&gt; Maximum connections set to 1024
-&gt;&gt; Listening on localhost:4567, CTRL+C to stop
-/Users/casiano/Dropbox/src/ruby/sinatra/sinatra-debug/example1/rackmiddleware.rb:8
-start = Time.now
-
-[3, 12] in /Users/casiano/Dropbox/src/ruby/sinatra/sinatra-debug/example1/rackmiddleware.rb
-   3      @appl = appl
-   4    end
-   5  
-   6    def call(env)
-   7      debugger
-=&gt; 8      start = Time.now
-   9      status, headers, body = @appl.call(env) # call our Sinatra app
-   10      stop = Time.now
-   11      puts "Response Time: #{stop-start}" # display on console
-   12      [status, headers, body]
-</PRE>
-
-<P>
-Ahora podemos ir paso a paso e inspeccionar variables:
-<PRE>
-(rdb:1) p start
-2013-07-04 15:40:11 +0100
-(rdb:1) n
-/Users/casiano/Dropbox/src/ruby/sinatra/sinatra-debug/example1/rackmiddleware.rb:10
-stop = Time.now
-
-[5, 14] in /Users/casiano/Dropbox/src/ruby/sinatra/sinatra-debug/example1/rackmiddleware.rb
-   5  
-   6    def call(env)
-   7      debugger
-   8      start = Time.now
-   9      status, headers, body = @appl.call(env) # call our Sinatra app
-=&gt; 10      stop = Time.now
-   11      puts "Response Time: #{stop-start}" # display on console
-   12      [status, headers, body]
-   13    end
-   14  end
-(rdb:1) p body
-["Welcome to canarias"]
-(rdb:1) p status
-200
-(rdb:1) p headers
-{"Content-Type"=&gt;"text/html;charset=utf-8", "Content-Length"=&gt;"19"}
-</PRE>
-
-<P>
+<OL>
+<LI><A NAME="tex2html601"
+  HREF="http://blog.daviddollar.org/2011/05/06/introducing-foreman.html">Introducing Foreman</A>
+by David Dollar
+</LI>
+<LI><A NAME="tex2html602"
+  HREF="http://ddollar.github.io/foreman/">Foreman man pages</A>
+</LI>
+<LI><A NAME="tex2html603"
+  HREF="http://adam.heroku.com/past/2011/5/9/applying_the_unix_process_model_to_web_apps/">Applying the Unix Process Model to Web Apps</A>
+by Adam Wiggins
+</LI>
+</OL>
+</LI>
+<LI><A NAME="tex2html604"
+  HREF="https://vimeo.com/25814869">Ruby Kickstart - Session 6 de Joshua Cheek</A>
+(Vimeo)
+</LI>
+<LI><A NAME="tex2html605"
+  HREF="https://github.com/crguezl/sinatra-rock-paper-scissors">sinatra-rock-paper-scissors</A>
+</LI>
+<LI><A NAME="tex2html606"
+  HREF="http://www.neilmiddleton.com/the-procfile-is-your-friend/">The Procfile is your friend</A>
+13 January, 2012. Neil Middleton
+</LI>
+</UL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html5969"
+<A NAME="tex2html5101"
   HREF="node188.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html5963"
-  HREF="node186.html">
+<A NAME="tex2html5095"
+  HREF="node179.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html5959"
+<A NAME="tex2html5091"
   HREF="node186.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html5965"
-  HREF="node230.html">
+<A NAME="tex2html5097"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html5967"
-  HREF="node233.html">
+<A NAME="tex2html5099"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -305,17 +223,17 @@ stop = Time.now
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html5970"
-  HREF="node188.html">Envío de SMSs y</A>
-<B>Sup:</B> <A NAME="tex2html5964"
-  HREF="node186.html">Depuración en Sinatra</A>
-<B> Ant:</B> <A NAME="tex2html5960"
-  HREF="node186.html">Depuración en Sinatra</A>
+<B> Sig:</B> <A NAME="tex2html5102"
+  HREF="node188.html">DataMapper</A>
+<B>Sup:</B> <A NAME="tex2html5096"
+  HREF="node179.html">Heroku</A>
+<B> Ant:</B> <A NAME="tex2html5092"
+  HREF="node186.html">Account Verification and add-ons</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-05-12</I>
+2014-09-02</I>
 </ADDRESS>
 </BODY>
 </HTML>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Rack::Cascade</TITLE>
-<META NAME="description" CONTENT="Rack::Cascade">
+<TITLE>Ejemplo Simple de uso de Sinatra</TITLE>
+<META NAME="description" CONTENT="Ejemplo Simple de uso de Sinatra">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node127.html">
 <LINK REL="previous" HREF="node125.html">
-<LINK REL="up" HREF="node104.html">
+<LINK REL="up" HREF="node125.html">
 <LINK REL="next" HREF="node127.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html4922"
+<A NAME="tex2html4028"
   HREF="node127.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4916"
-  HREF="node104.html">
+<A NAME="tex2html4022"
+  HREF="node125.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4910"
+<A NAME="tex2html4016"
   HREF="node125.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4918"
-  HREF="node230.html">
+<A NAME="tex2html4024"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4920"
-  HREF="node233.html">
+<A NAME="tex2html4026"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,19 +92,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4923"
-  HREF="node127.html">Rack::Mount</A>
-<B>Sup:</B> <A NAME="tex2html4917"
-  HREF="node104.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4911"
-  HREF="node125.html">Código de Rack::Builder</A>
+<B> Sig:</B> <A NAME="tex2html4029"
+  HREF="node127.html">Rutas/Routes</A>
+<B>Sup:</B> <A NAME="tex2html4023"
+  HREF="node125.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html4017"
+  HREF="node125.html">Fundamentos</A>
 <B> Con:</B> 
-<A NAME="tex2html4918"
-  HREF="node230.html">
+<A NAME="tex2html4024"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html4920"
-  HREF="node233.html">
+<A NAME="tex2html4026"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
@@ -115,183 +115,83 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <UL CLASS="ChildLinks">
 <LI><UL>
 <LI><UL>
-<LI><A NAME="tex2html4924"
-  HREF="node126.html#SECTION061220010000000000000">Ejemplo</A>
-<LI><A NAME="tex2html4925"
-  HREF="node126.html#SECTION061220020000000000000">Código del Constructor</A>
-<LI><A NAME="tex2html4926"
-  HREF="node126.html#SECTION061220030000000000000">Código de <TT>call</TT></A>
+<LI><A NAME="tex2html4030"
+  HREF="node126.html#SECTION06310010000000000000">Código</A>
+<LI><A NAME="tex2html4031"
+  HREF="node126.html#SECTION06310020000000000000">Opciones de Ejecución</A>
 </UL></UL></UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION061220000000000000000">
-Rack::Cascade</A>
+<H1><A NAME="SECTION06310000000000000000">
+Ejemplo Simple de uso de Sinatra</A>
 </H1>
 
 <P>
-<A NAME="tex2html629"
-  HREF="http://rack.rubyforge.org/doc/Rack/Cascade.html">Rack::Cascade</A> 
-tries an request on several apps, and returns the first response
-that is not 404 (or in a list of configurable status codes).
 
-<P>
-
-<H4><A NAME="SECTION061220010000000000000">
-Ejemplo</A>
+<H4><A NAME="SECTION06310010000000000000">
+Código</A>
 </H4>
   
 
-<P>
 <PRE>
-[~/local/src/ruby/sinatra/rack/rack-cascade]$ cat cascade2.ru 
-statuses = [200,404]
-apps = [
-  lambda {|env| 
-    status = statuses.sample
-    [status, {}, ["I'm the first app. Status = #{status}\n"]]
-  }, 
-  lambda {|env| 
-    status = statuses.sample
-    [status, {}, ["I'm the second app. Status = #{status}\n"]]
-  }, 
-  lambda {|env| 
-    status = statuses.sample
-    [status, {}, ["I'm the last app. Status = #{status}\n"]]
-  } 
-]
-use Rack::ContentLength 
-use Rack::ContentType 
-run Rack::Cascade.new(apps)
-</PRE>
+[~/sinatra/sinatra-simple(master)]$ cat hi.rb 
+require 'sinatra'
 
-<P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rack-cascade]$ rake client
-curl -v 'http://localhost:9292'
-* About to connect() to localhost port 9292 (#0)
-*   Trying 127.0.0.1... connected
-* Connected to localhost (127.0.0.1) port 9292 (#0)
-&gt; GET / HTTP/1.1
-&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8y zlib/1.2.5
-&gt; Host: localhost:9292
-&gt; Accept: */*
-&gt; 
-&lt; HTTP/1.1 200 OK
-&lt; Content-Type: text/html
-&lt; Content-Length: 33
-&lt; Connection: keep-alive
-&lt; Server: thin 1.5.1 codename Straight Razor
-&lt; 
-I'm the second app. Status = 200
-* Connection #0 to host localhost left intact
-* Closing connection #0
-</PRE>
-
-<P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rack-cascade]$ rake client
-curl -v 'http://localhost:9292'
-* About to connect() to localhost port 9292 (#0)
-*   Trying 127.0.0.1... connected
-* Connected to localhost (127.0.0.1) port 9292 (#0)
-&gt; GET / HTTP/1.1
-&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8y zlib/1.2.5
-&gt; Host: localhost:9292
-&gt; Accept: */*
-&gt; 
-&lt; HTTP/1.1 200 OK
-&lt; Content-Type: text/html
-&lt; Content-Length: 31
-&lt; Connection: keep-alive
-&lt; Server: thin 1.5.1 codename Straight Razor
-&lt; 
-I'm the last app. Status = 200
-* Connection #0 to host localhost left intact
-* Closing connection #0
-</PRE>
-
-<P>
-<PRE>
-[~/local/src/ruby/sinatra/rack/rack-cascade]$ rake client
-curl -v 'http://localhost:9292'
-* About to connect() to localhost port 9292 (#0)
-*   Trying 127.0.0.1... connected
-* Connected to localhost (127.0.0.1) port 9292 (#0)
-&gt; GET / HTTP/1.1
-&gt; User-Agent: curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8y zlib/1.2.5
-&gt; Host: localhost:9292
-&gt; Accept: */*
-&gt; 
-&lt; HTTP/1.1 200 OK
-&lt; Content-Type: text/html
-&lt; Content-Length: 32
-&lt; Connection: keep-alive
-&lt; Server: thin 1.5.1 codename Straight Razor
-&lt; 
-I'm the first app. Status = 200
-* Connection #0 to host localhost left intact
-* Closing connection #0]
+get '/hi' do
+  "Hello World!"
+end
 </PRE>
 
 <P>
 
-<H4><A NAME="SECTION061220020000000000000">
-Código del Constructor</A>
+<H4><A NAME="SECTION06310020000000000000">
+Opciones de Ejecución</A>
 </H4>
   
 
-<P>
 <PRE>
-        # File lib/rack/cascade.rb, line 11
-11:     def initialize(apps, catch=404)
-12:       @apps = []; @has_app = {}
-13:       apps.each { |app| add app }
-14: 
-15:       @catch = {}
-16:       [*catch].each { |status| @catch[status] = true }
-17:     end
+[~/sinatra/sinatra-simple(master)]$ ruby hi.rb --help
+Usage: hi [options]
+    -p port                          set the port (default is 4567)
+    -o addr                          set the host (default is localhost)
+    -e env                           set the environment (default is development)
+    -s server                        specify rack server/handler (default is thin)
+    -x                               turn on the mutex lock (default is off)
 </PRE>
+Sinatra can be used in threaded environments where more than a
+single request is processed at a time. 
 
 <P>
-
-<H4><A NAME="SECTION061220030000000000000">
-Código de <TT>call</TT></A>
-</H4>
-  
+However, not all applications
+and libraries are thread-safe and may cause intermittent errors or
+general weirdness. 
 
 <P>
-<PRE>
-        # File lib/rack/cascade.rb, line 19
-19:     def call(env)
-20:       result = NotFound
-21: 
-22:       @apps.each do |app|
-23:         result = app.call(env)
-24:         break unless @catch.include?(result[0].to_i)
-25:       end
-26: 
-27:       result
-28:     end
-</PRE>
+Enabling the <code>-x</code> setting causes all requests
+to synchronize on a mutex lock, ensuring that only a single request
+is processed at a time.
+
+<P>
+The mutex lock setting is disabled by default.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html4922"
+<A NAME="tex2html4028"
   HREF="node127.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html4916"
-  HREF="node104.html">
+<A NAME="tex2html4022"
+  HREF="node125.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html4910"
+<A NAME="tex2html4016"
   HREF="node125.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html4918"
-  HREF="node230.html">
+<A NAME="tex2html4024"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html4920"
-  HREF="node233.html">
+<A NAME="tex2html4026"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -342,17 +242,17 @@ Código de <TT>call</TT></A>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html4923"
-  HREF="node127.html">Rack::Mount</A>
-<B>Sup:</B> <A NAME="tex2html4917"
-  HREF="node104.html">Rack, un Webserver Ruby</A>
-<B> Ant:</B> <A NAME="tex2html4911"
-  HREF="node125.html">Código de Rack::Builder</A>
+<B> Sig:</B> <A NAME="tex2html4029"
+  HREF="node127.html">Rutas/Routes</A>
+<B>Sup:</B> <A NAME="tex2html4023"
+  HREF="node125.html">Fundamentos</A>
+<B> Ant:</B> <A NAME="tex2html4017"
+  HREF="node125.html">Fundamentos</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-05-12</I>
+2014-09-02</I>
 </ADDRESS>
 </BODY>
 </HTML>

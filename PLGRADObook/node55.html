@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Usando Pegjs con CoffeeScript</TITLE>
-<META NAME="description" CONTENT="Usando Pegjs con CoffeeScript">
+<TITLE>Algoritmo de Análisis LR</TITLE>
+<META NAME="description" CONTENT="Algoritmo de Análisis LR">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node56.html">
 <LINK REL="previous" HREF="node54.html">
-<LINK REL="up" HREF="node43.html">
+<LINK REL="up" HREF="node44.html">
 <LINK REL="next" HREF="node56.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html3396"
+<A NAME="tex2html2499"
   HREF="node56.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3390"
-  HREF="node43.html">
+<A NAME="tex2html2493"
+  HREF="node44.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3384"
+<A NAME="tex2html2487"
   HREF="node54.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3392"
-  HREF="node230.html">
+<A NAME="tex2html2495"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3394"
-  HREF="node233.html">
+<A NAME="tex2html2497"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -92,145 +92,134 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3397"
-  HREF="node56.html">Práctica: Analizador de PL0</A>
-<B>Sup:</B> <A NAME="tex2html3391"
-  HREF="node43.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html3385"
-  HREF="node54.html">Un Lenguaje Dependiente del</A>
+<B> Sig:</B> <A NAME="tex2html2500"
+  HREF="node56.html">El módulo Generado por</A>
+<B>Sup:</B> <A NAME="tex2html2494"
+  HREF="node44.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html2488"
+  HREF="node54.html">Práctica: Calculadora con Análisis</A>
 <B> Con:</B> 
-<A NAME="tex2html3392"
-  HREF="node230.html">
+<A NAME="tex2html2495"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html3394"
-  HREF="node233.html">
+<A NAME="tex2html2497"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html3398"
-  HREF="node55.html#SECTION046120010000000000000">Instalación de pegjs-coffee-plugin</A>
-<LI><A NAME="tex2html3399"
-  HREF="node55.html#SECTION046120020000000000000">Ejemplo Sencillo</A>
-<LI><A NAME="tex2html3400"
-  HREF="node55.html#SECTION046120030000000000000">Véase También</A>
-</UL></UL></UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION046120000000000000000">
-Usando Pegjs con CoffeeScript</A>
+<H1><A NAME="SECTION045110000000000000000"></A>
+<A NAME="section:algoritmoLR"></A>
+<BR>
+Algoritmo de Análisis LR
 </H1>
+Asi  pues la tabla de transiciones del autómata nos genera dos tablas:
+la tabla de acciones y la de saltos.
+El  algoritmo  de análisis sintáctico <SPAN  CLASS="textbf">LR</SPAN> en el  que 
+se basa <SPAN  CLASS="textbf">jison</SPAN> utiliza una pila y dos tablas 
+para analizar la entrada. Como se ha visto, la tabla  de acciones contiene cuatro tipo de acciones: 
 
+<OL>
+<LI>Desplazar (<SPAN  CLASS="textbf">shift</SPAN>)
+</LI>
+<LI>Reducir (<SPAN  CLASS="textbf">reduce</SPAN>)
+</LI>
+<LI>Aceptar
+</LI>
+<LI>Error
+</LI>
+</OL>
+El algoritmo utiliza una pila en la que se guardan los estados
+del autómata. De este modo se evita tener que ``comenzar'' 
+el procesado de la forma sentencial derecha resultante
+después de una reducción (antiderivación).
 <P>
-
-<H4><A NAME="SECTION046120010000000000000">
-Instalación de pegjs-coffee-plugin</A>
-</H4>
-  
-
-<PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ sudo  npm install -g pegjs-coffee-plugin
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION046120020000000000000">
-Ejemplo Sencillo</A>
-</H4>
-  
-
-<PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs-coffee-plugin/examples(master)]$ cat simple.pegjs 
-{ 
-  @reduce = (left, right)-&gt;  
-    sum = left
-    for t in right
-      op = t[0]
-      num = t[1]
-      switch op 
-        when '+' then sum += num; break
-        when '-' then sum -= num; break
-        when '*' then sum *= num; break
-        when '/' then sum /= num; break
-        else console.log("Error! "+op)
-    sum
-  
-}
-sum   = left:product right:([+-] product)* { @reduce(left, right); }
-product = left:value right:([*/] value)*   { @reduce(left, right); }
-value   = number:[0-9]+                    { parseInt(number.join(''),10) }
-        / '(' sum:sum ')'                  { sum }
-</PRE>
-
-<P>
-<PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs-coffee-plugin/examples(master)]$  cat use_simple.coffee 
-PEG = require("./simple.js")
-r = PEG.parse("2+3*(2+1)-10/2")
-console.log(r)
-</PRE>
-
-<P>
-<PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs-coffee-plugin/examples(master)]$ cat Rakefile 
-
-task :default do 
-  sh "pegcoffee simple.pegjs"
-end
-
-task :run do
-  sh "coffee use_simple.coffee"
-end
-</PRE>
-
-<P>
-<PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs-coffee-plugin/examples(master)]$ rake
-pegcoffee simple.pegjs
-[~/Dropbox/src/javascript/PLgrado/pegjs-coffee-plugin/examples(master)]$ rake run
-coffee use_simple.coffee
-6
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION046120030000000000000">
-Véase También</A>
-</H4>
-  
+<DIV><A NAME="alg:parser"><B>Algoritmo  <SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">11</SPAN>.<SPAN CLASS="arabic">1</SPAN></B></A> &nbsp; 
+<I>Análizador LR
+</I><PRE>
+ push(s0);
+ b = yylex();
+ for( ; ; ;) {
+   s = top(0); a = b;
+   switch (action[s][a]) {
+     case "shift t" : 
+       t.attr = a.attr;
+       push(t); 
+       b = yylex();
+       break;
+     case "reduce A -&gt;alpha" : 
+       eval(Sem{A -&gt; alpha}(top(|alpha|-1).attr, ... , top(0).attr)); 
+       pop(|alpha|); 
+       push(goto[top(0)][A]); 
+       break;
+     case "accept" : return (1); 
+     default : yyerror("syntax error");
+   }
+ }
+</PRE></DIV><P></P>
 
 <UL>
-<LI><A NAME="tex2html412"
-  HREF="https://github.com/Dignifiedquire/pegjs-coffee-plugin">pegjs-coffee-plugin</A>
-en GitHub
+<LI>Como es habitual, <SPAN CLASS="MATH"><IMG
+ WIDTH="24" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img198.png"
+ ALT="$ \vert x\vert$"></SPAN> denota la longitud de la cadena <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.png"
+ ALT="$ x$"></SPAN>.
+</LI>
+<LI>La función <code>top(k)</code> devuelve el elemento que ocupa la 
+posición <code>k</code> desde el <SPAN  CLASS="textbf">top</SPAN> de la pila (esto es, está a profundidad <code>k</code>).
+</LI>
+<LI>La función <code>pop(k)</code> extrae <code>k</code> elementos de la pila.
+</LI>
+<LI>La notación <code>state.attr</code> hace referencia al atributo
+asociado con cada estado, el cual desde el punto de vista del programador
+esta asociado con el correspondiente símbolo de la parte derecha de la regla. 
+Nótese que cada estado que está en la pila es el resultado de una transición con
+un símbolo. El atributo de ese símbolo es guardado en el objeto estado
+cada vez que ocurre una transición.
+
+<P>
+</LI>
+<LI>Denotamos por <code>Sem {reduce A -&gt; alpha}</code>
+el código de la acción semántica asociada con la regla <!-- MATH
+ $A \rightarrow \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.png"
+ ALT="$ A \rightarrow \alpha$"></SPAN>.
 </LI>
 </UL>
 
 <P>
+Todos los analizadores LR comparten, salvo pequeñas
+excepciones, el mismo algoritmo
+de análisis. Lo que más los diferencia es la forma en 
+la que construyen las tablas.
+En <code>jison</code>
+la construcción de las tablas de <SPAN  CLASS="textbf">acciones</SPAN> y <SPAN  CLASS="textbf">gotos</SPAN>
+se realiza  por defecto mediante el algoritmo <SPAN  CLASS="textbf">LALR</SPAN>.
+
+<P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html3396"
+<A NAME="tex2html2499"
   HREF="node56.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html3390"
-  HREF="node43.html">
+<A NAME="tex2html2493"
+  HREF="node44.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html3384"
+<A NAME="tex2html2487"
   HREF="node54.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html3392"
-  HREF="node230.html">
+<A NAME="tex2html2495"
+  HREF="node215.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html3394"
-  HREF="node233.html">
+<A NAME="tex2html2497"
+  HREF="node218.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/~plgrado/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -281,17 +270,17 @@ en GitHub
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html3397"
-  HREF="node56.html">Práctica: Analizador de PL0</A>
-<B>Sup:</B> <A NAME="tex2html3391"
-  HREF="node43.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html3385"
-  HREF="node54.html">Un Lenguaje Dependiente del</A>
+<B> Sig:</B> <A NAME="tex2html2500"
+  HREF="node56.html">El módulo Generado por</A>
+<B>Sup:</B> <A NAME="tex2html2494"
+  HREF="node44.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html2488"
+  HREF="node54.html">Práctica: Calculadora con Análisis</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2014-05-12</I>
+2014-09-02</I>
 </ADDRESS>
 </BODY>
 </HTML>
