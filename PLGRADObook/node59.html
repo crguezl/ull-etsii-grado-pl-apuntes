@@ -103,25 +103,21 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BR>
 Manejo en <TT>jison</TT> de Atributos Heredados
 </H1>
-
 <P>
-Supongamos  que <code>jison</code> esta inmerso 
+<I>Supongamos  que <code>jison</code> esta inmerso 
 en la construcción de la antiderivación a derechas y que la forma sentencial
 derecha en ese momento es:
-
+</I>
 <P>
-<DIV ALIGN="CENTER">
-<!-- MATH
+<DIV ALIGN="CENTER"><I><!-- MATH
  $X_m \ldots X_1 X_0 Y_1 \ldots  Y_n a_1 \ldots a_0$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="225" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
  SRC="img207.png"
- ALT="$ X_m \ldots X_1 X_0 Y_1 \ldots Y_n a_1 \ldots a_0$"></SPAN>
-</DIV>
-
+ ALT="$ X_m \ldots X_1 X_0 Y_1 \ldots Y_n a_1 \ldots a_0$"></SPAN></I></DIV>
 <P>
-y que el mango es <!-- MATH
+<I>y que el mango es <!-- MATH
  $B \rightarrow Y_1 \ldots  Y_n$
  -->
 <SPAN CLASS="MATH"><IMG
@@ -135,17 +131,17 @@ procesar <!-- MATH
  WIDTH="65" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
  SRC="img209.png"
  ALT="$ a_1 \ldots a_0$"></SPAN>.
-
+</I>
 <P>
-No es posible acceder en <code>jison</code> a los valores de los atributos de los estados en la pila
+<I>No es posible acceder en <code>jison</code> a los valores de los atributos de los estados en la pila
 del analizador que se encuentran ``por debajo'' o si se quiere
 ``a la izquierda'' de los estados asociados
 con la regla por la que se reduce. 
-
+</I>
 <P>
-Vamos a usar un pequeño hack para acceder a los atributos asociados con símbolos vistos 
+<I>Vamos a usar un pequeño hack para acceder a los atributos asociados con símbolos vistos 
 en el pasado "remoto":
-<PRE>
+</I><PRE>
 [~/jison/jison-inherited(grammar)]$ cat inherited.jison 
 %lex
 %%
@@ -183,12 +179,10 @@ L
   ;
 %%
 </PRE>
-
 <P>
-Veamos un ejemplo de ejecución:
-
-<P>
-<PRE>
+<I>Veamos un ejemplo de ejecución:
+</I>
+<P><PRE>
 [~/jison/jison-inherited(grammar)]$ cat input.txt 
 global integer a, b, c
 [~/jison/jison-inherited(grammar)]$ node inherited.js input.txt 
@@ -199,22 +193,20 @@ L -&gt; L ',' id (b)
 L -&gt; L ',' id (c)
 [ null, 'global', 'integer', 'a', ',', 'c' ]
 </PRE>
-
 <P>
-Esta forma de acceder a los atributos es especialmente útil cuando se 
-trabaja con <A NAME="8163"></A><SPAN  CLASS="textbf">atributos heredados</SPAN>. Esto es, cuando un atributo
+<I>Esta forma de acceder a los atributos es especialmente útil cuando se 
+trabaja con <A NAME="8175"></A><SPAN  CLASS="textbf">atributos heredados</SPAN>. Esto es, cuando un atributo
 de un nodo del árbol sintáctico se computa en términos
 de valores de atributos de su padre y/o sus hermanos.
 Ejemplos de atributos heredados son la clase y tipo en la declaración
 de variables. 
-
+</I>
 <P>
-Es importante darse cuenta que en cualquier derivación a derechas
+<I>Es importante darse cuenta que en cualquier derivación a derechas
 desde<code>D</code>, cuando se reduce por una de las reglas 
-
+</I>
 <P>
-<DIV ALIGN="CENTER">
-L <!-- MATH
+<DIV ALIGN="CENTER"><I>L <!-- MATH
  $\rightarrow$
  -->
 <SPAN CLASS="MATH"><IMG
@@ -227,16 +219,13 @@ L <!-- MATH
  WIDTH="12" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
  SRC="img200.png"
  ALT="$ _1$"></SPAN> ',' id
-
-</DIV>
-
+</I></DIV>
 <P>
-el símbolo a la izquierda de L es T y el que esta a la izquierda de T es C.
+<I>el símbolo a la izquierda de L es T y el que esta a la izquierda de T es C.
 Considere, por ejemplo la derivación a derechas:
-
+</I>
 <P>
-<DIV ALIGN="CENTER">
-D <!-- MATH
+<DIV ALIGN="CENTER"><I>D <!-- MATH
  $\Longrightarrow$
  -->
 <SPAN CLASS="MATH"><IMG
@@ -281,13 +270,11 @@ D <!-- MATH
  WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
  SRC="img210.png"
  ALT="$ \Longrightarrow$"></SPAN> local float id, id, id
-
-</DIV>
-
+</I></DIV>
 <P>
-Observe que el orden de recorrido de <code>jison</code> es:
-<DIV ALIGN="CENTER">
-local float id, id, id <!-- MATH
+<I>Observe que el orden de recorrido de <code>jison</code> es:
+</I>
+<DIV ALIGN="CENTER"><I>local float id, id, id <!-- MATH
  $\Longleftarrow$
  -->
 <SPAN CLASS="MATH"><IMG
@@ -332,11 +319,9 @@ C T id, id, id <!-- MATH
  WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
  SRC="img211.png"
  ALT="$ \Longleftarrow$"></SPAN> D
-
-</DIV>
-
+</I></DIV>
 <P>
-en la antiderivación, cuando el mango es una de las dos reglas 
+<I>en la antiderivación, cuando el mango es una de las dos reglas 
 para listas de identificadores, L <!-- MATH
  $\rightarrow$
  -->
@@ -351,10 +336,9 @@ para listas de identificadores, L <!-- MATH
  SRC="img35.png"
  ALT="$ \rightarrow$"></SPAN> L, id 
 es decir durante las tres ultimas antiderivaciones:
-
+</I>
 <P>
-<DIV ALIGN="CENTER">
-C T L, id, id <!-- MATH
+<DIV ALIGN="CENTER"><I>C T L, id, id <!-- MATH
  $\Longleftarrow$
  -->
 <SPAN CLASS="MATH"><IMG
@@ -373,17 +357,14 @@ C T L, id, id <!-- MATH
  WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
  SRC="img211.png"
  ALT="$ \Longleftarrow$"></SPAN> D
-
-</DIV>
-
+</I></DIV>
 <P>
-las variables a la izquierda del mango son
+<I>las variables a la izquierda del mango son
 T y C. Esto ocurre siempre. 
 Estas observaciones nos conducen al siguiente
 programa <code>jison</code>: 
-
-<P>
-<PRE>
+</I>
+<P><PRE>
 [~/jison/jison-inherited(deepstack)]$ cat inherited.jison 
 %lex
 %%
@@ -427,12 +408,10 @@ L
   ;
 %%
 </PRE>
-
 <P>
-A continuación sigue un ejemplo de ejecución:
-
-<P>
-<PRE>
+<I>A continuación sigue un ejemplo de ejecución:
+</I>
+<P><PRE>
 [~/jison/jison-inherited(deepstack)]$ node inherited.js input.txt 
 L -&gt; id (a)
 a is of type integer
@@ -444,11 +423,10 @@ L -&gt; L ',' id (c)
 c is of type integer
 a is of class global
 </PRE>
-
 <P>
-En este caso, existen varias alternativas simples
+<I>En este caso, existen varias alternativas simples
 a esta solución:
-
+</I>
 <UL>
 <LI>Montar la lista de identificadores  en un array y ponerles el tipo y la clase de "golpe"
  en la regla de producción superior <code>D : C T L ;</code>
@@ -467,9 +445,7 @@ el árbol de análisis sintáctico. Posteriormente podemos recorrer
 el árbol como queramos y tantas veces como queramos.
 </LI>
 </UL>
-
 <P>
-
 <DIV CLASS="navigation"><HR>
 <A NAME="tex2html1938"
   HREF="node60.html">

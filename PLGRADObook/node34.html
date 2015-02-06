@@ -120,16 +120,11 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <H1><A NAME="SECTION04460000000000000000">
 Eliminación de la Recursividad por la Izquierda en PEGs</A>
 </H1>
-
 <P>
-
 <H4><A NAME="SECTION04460010000000000000">
 Donde</A>
 </H4>
-  
-
 <P>
-
 <UL>
 <LI><PRE>
 [~/srcPLgrado/pegjs-coffee-plugin/examples(master)]$ pwd -P
@@ -148,23 +143,19 @@ origin  git@github.com:crguezl/pegjs-coffee-plugin.git (push)
   HREF="https://github.com/crguezl/pegjs-coffee-plugin/tree/master/examples">https://github.com/crguezl/pegjs-coffee-plugin/tree/master/examples</A>
 </LI>
 </UL>
-
 <P>
-
 <H4><A NAME="SECTION04460020000000000000">
 PEGjs Coffee Plugin</A>
-</H4>
-  
+</H4><I>
 
 <A NAME="tex2html229"
   HREF="https://github.com/Dignifiedquire/pegjs-coffee-plugin">PEGjs Coffee Plugin </A>
 is a plugin for PEG.js to use CoffeeScript in actions.
-
+</I>
 <P>
-Veamos un ejemplo de uso via la API:
-
-<P>
-<PRE>
+<I>Veamos un ejemplo de uso via la API:
+</I>
+<P><PRE>
 [~/srcPLgrado/pegjs/examples(master)]$ cat plugin.coffee 
 #!/usr/bin/env coffee
 PEG = require 'pegjs'
@@ -178,29 +169,23 @@ parser = PEG.buildParser grammar, plugins: [coffee]
 r = parser.parse "hello world"
 console.log(r)
 </PRE>
-
-<P>
-<PRE>
+<P><PRE>
 [~/srcPLgrado/pegjs/examples(master)]$ coffee plugin.coffee 
 3
 2
 1
 hello world!
 </PRE>
-
 <P>
-
 <H4><A NAME="SECTION04460030000000000000">
 Un Esquema de Traducción Recursivo por la Izquierda</A>
-</H4>
-  
+</H4><I>
 
 Consideremos el siguiente esquema de traducción implementado en  <A NAME="tex2html230"
   HREF="http://zaach.github.io/jison/">Jison</A>
 :
-
-<P>
-<PRE>
+</I>
+<P><PRE>
 [~/srcPLgrado/pegjs-coffee-plugin/examples(master)]$ cat leftrec.jison 
 /*
 Exercise: Find a PEG equivalent to the following left-recursive
@@ -225,69 +210,58 @@ A : A 'x' { $$ = do_x($1, $2); }
   | 'y'   { $$ = do_y($1); }
 ;
 </PRE>
-
-<P>
-<PRE>
+<P><PRE>
 [~/srcPLgrado/pegjs-coffee-plugin/examples(master)]$ jison leftrec.jison 
 [~/srcPLgrado/pegjs-coffee-plugin/examples(master)]$ ls -ltr leftrec.j*
 -rw-r--r--  1 casiano  staff    441 18 mar 20:22 leftrec.jison
 -rw-r--r--  1 casiano  staff  20464 18 mar 20:34 leftrec.js
 </PRE>
-
-<P>
-<PRE>
+<P><PRE>
 [~/srcPLgrado/pegjs-coffee-plugin/examples(master)]$ cat main_leftrec.js 
 var parser = require('./leftrec');
 input = "y x x x";
 var r = parser.parse(input);
 </PRE>
-
-<P>
-<PRE>
+<P><PRE>
 [~/srcPLgrado/pegjs-coffee-plugin/examples(master)]$ node main_leftrec.js 
 A -&gt; 'y'   do_y(y)
 A -&gt; A 'x' do_x(y, x)
 A -&gt; A 'x' do_x(yx, x)
 A -&gt; A 'x' do_x(yxx, x)
 </PRE>
-
 <P>
-
 <H4><A NAME="SECTION04460040000000000000">
 Métodología</A>
 </H4>
-  
-
 <P>
-Es posible modificar la gramática para eliminar la recursión por 
+<I>Es posible modificar la gramática para eliminar la recursión por 
 la izquierda. En este apartado nos limitaremos al caso de recursión 
 por la izquierda directa. 
 La generalización al caso de recursión por la izquierda no-directa
 se reduce a la iteración de la solución propuesta 
 para el caso directo.
-
+</I>
 <P>
-Consideremos una variable <SPAN CLASS="MATH"><IMG
+<I>Consideremos una variable <SPAN CLASS="MATH"><IMG
  WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
  SRC="img1.png"
  ALT="$ A$"></SPAN> con dos producciones:
-
+</I>
 <P>
+<I>
 <BR>
 <BR>
-<DIV ALIGN="CENTER">
-<!-- MATH
+</I>
+<DIV ALIGN="CENTER"><I><!-- MATH
  $A   \rightarrow A \alpha |\ \beta$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="91" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
  SRC="img87.png"
  ALT="$ A \rightarrow A \alpha \vert \beta$"></SPAN> 
-
-</DIV>
-
+</I></DIV>
 <P>
-donde <!-- MATH
+<I>donde <!-- MATH
  $\alpha, \beta \in (V \cup \Sigma)^*$
  -->
 <SPAN CLASS="MATH"><IMG
@@ -298,31 +272,27 @@ donde <!-- MATH
  SRC="img1.png"
  ALT="$ A$"></SPAN>.
 Estas dos producciones pueden ser sustituidas por:
-
+</I>
 <P>
+<I>
 <BR>
 <BR>
-<DIV ALIGN="CENTER">
-<!-- MATH
+</I>
+<DIV ALIGN="CENTER"><I><!-- MATH
  $A   \rightarrow \beta \alpha *$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="76" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
  SRC="img89.png"
- ALT="$ A \rightarrow \beta \alpha * $"></SPAN>
-</DIV>
-
+ ALT="$ A \rightarrow \beta \alpha * $"></SPAN></I></DIV>
 <P>
+<I>
 eliminando así la recursión por la izquierda.
-
+</I>
 <P>
-
 <H4><A NAME="SECTION04460050000000000000">
 Solución</A>
-</H4>
-  
-
-<PRE>
+</H4><PRE>
 [~/pegjs-coffee-remove-left(master)]$ cat -n remove_left_recursive.pegjs 
      1  /*
      2  
@@ -346,16 +316,12 @@ Solución</A>
     20          a
     21       }
 </PRE>
-
-<P>
-<PRE>
+<P><PRE>
 [~/pegjs-coffee-remove-left(master)]$ pegjs --plugin pegjs-coffee-plugin remove_left_recursive.pegjs 
 [~/pegjs-coffee-remove-left(master)]$ ls -ltr | tail -1
 -rw-rw-r--  1 casiano  staff   8919  3 jun 10:42 remove_left_recursive.js
 </PRE>
-
-<P>
-<PRE>
+<P><PRE>
 [~/pegjs-coffee-remove-left(master)]$ cat use_remove_left.coffee 
 PEG = require("./remove_left_recursive.js")
 inputs = [
@@ -369,9 +335,7 @@ for input in inputs
   r = PEG.parse input
   console.log("result = #{r}\n")
 </PRE>
-
-<P>
-<PRE>
+<P><PRE>
 [~/pegjs-coffee-remove-left(master)]$ coffee use_remove_left.coffee 
 input = yxx
 do_y(y)
@@ -390,9 +354,7 @@ do_x(yx, x)
 do_x(yxx, x)
 result = yxxx
 </PRE>
-
 <P>
-
 <DIV CLASS="navigation"><HR>
 <A NAME="tex2html1466"
   HREF="node35.html">

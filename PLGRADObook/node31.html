@@ -125,15 +125,10 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <H1><A NAME="SECTION04430000000000000000">
 Un Ejemplo Sencillo</A>
 </H1>
-
 <P>
-
 <H4><A NAME="SECTION04430010000000000000">
 Donde</A>
-</H4>
-  
-
-<PRE>
+</H4><PRE>
 [~/srcPLgrado/pegjs/examples(master)]$ pwd -P
 /Users/casiano/local/src/javascript/PLgrado/pegjs/examples
 [~/srcPLgrado/pegjs/examples(master)]$ git remote -v
@@ -142,19 +137,15 @@ dmajda  https://github.com/dmajda/pegjs.git (push)
 origin  git@github.com:crguezl/pegjs.git (fetch)
 origin  git@github.com:crguezl/pegjs.git (push)
 </PRE>
-
 <P>
-<A NAME="tex2html222"
+<I><A NAME="tex2html222"
   HREF="https://github.com/crguezl/pegjs/blob/master/examples/arithmetics.pegjs">https://github.com/crguezl/pegjs/blob/master/examples/arithmetics.pegjs</A>
+</I>
 <P>
-
 <H4><A NAME="SECTION04430020000000000000">
 arithmetics.pegjs</A>
 </H4>
-  
-
-<P>
-<PRE>
+<P><PRE>
 [~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat arithmetics.pegjs 
 /*
  * Classic example grammar, which recognizes simple arithmetic expressions like
@@ -190,10 +181,10 @@ DIV = _"/"_
 LEFTPAR = _"("_
 RIGHTPAR = _")"_
 NUMBER = _ digits:$[0-9]+ _ { return parseInt(digits, 10); }
-</PRE>
+</PRE><I>
 There are several types of parsing expressions, some of them containing
 subexpressions and thus forming a recursive structure:
-
+</I>
 <UL>
 <LI><PRE>
 expression *
@@ -219,31 +210,21 @@ Try to match the expression. If the match succeeds,
 <FONT COLOR="#ff0000"> return the matched string instead of the match result</FONT>.
 </LI>
 </UL>
-
 <P>
-
 <H4><A NAME="SECTION04430030000000000000">
 main.js</A>
 </H4>
-  
-
-<P>
-<PRE>
+<P><PRE>
 [~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat main.js 
 var PEG = require("./arithmetics.js");
 var r = PEG.parse("(2+9-1)/2");
 console.log(r);
 </PRE>
-
 <P>
-
 <H4><A NAME="SECTION04430040000000000000">
 Rakefile</A>
 </H4>
-  
-
-<P>
-<PRE>
+<P><PRE>
 [~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat Rakefile 
 PEGJS = "../bin/pegjs"
 task :default =&gt; :run
@@ -258,31 +239,22 @@ task :run =&gt; :compile do
   sh "node main.js"
 end
 </PRE>
-
 <P>
-
 <H4><A NAME="SECTION04430050000000000000">
 Compilación</A>
-</H4>
-  
-
-<PRE>
+</H4><PRE>
 [~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ rake
 ../bin/pegjs arithmetics.pegjs
 node main.js
 5
 </PRE>
-
 <P>
-
 <H2><A NAME="SECTION04431000000000000000">
 Asociación Incorrecta para la Resta y la División</A>
 </H2>
-
-<P>
-<P>
+<P><P>
 <DIV><B>Definición  <SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">3</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Una <A NAME="5359"></A><SPAN  CLASS="textbf">gramática es recursiva por la izquierda</SPAN> cuando existe una derivación
+<I>Una <A NAME="5371"></A><SPAN  CLASS="textbf">gramática es recursiva por la izquierda</SPAN> cuando existe una derivación
 <!-- MATH
  $A \stackrel{*}{\Longrightarrow} A \alpha$
  -->
@@ -301,9 +273,8 @@ una regla de producción de la forma <!-- MATH
  SRC="img58.png"
  ALT="$ A \rightarrow A \alpha$"></SPAN>. 
 En este caso se dice que la recursión por la izquierda es directa.</I></DIV><P></P>
-
 <P>
-Cuando la gramática es <A NAME="5361"></A><SPAN  CLASS="textbf">recursiva por la izquierda</SPAN>, 
+<I>Cuando la gramática es <A NAME="5373"></A><SPAN  CLASS="textbf">recursiva por la izquierda</SPAN>, 
 el método 
 de análisis recursivo descendente predictivo no funciona. 
 En ese caso, el procedimiento
@@ -312,11 +283,11 @@ En ese caso, el procedimiento
  SRC="img1.png"
  ALT="$ A$"></SPAN> ciclaría para siempre sin llegar a consumir ningún 
 terminal. 
-
+</I>
 <P>
-Es por eso que hemos escrito las reglas de la calculadora con recursividad
+<I>Es por eso que hemos escrito las reglas de la calculadora con recursividad
 a derechas, 
-<PRE>
+</I><PRE>
 additive
   = left:multiplicative PLUS right:additive { return left + right; }
   / left:multiplicative MINUS right:additive { return left - right; }
@@ -327,27 +298,21 @@ multiplicative
   / left:primary DIV right:multiplicative { return left / right; }
   / primary
 </PRE>
-
 <P>
-pero eso da lugar a árboles hundidos hacia la derecha y a una
+<I>pero eso da lugar a árboles hundidos hacia la derecha y a una
 aplicación de las reglas semánticas errónea:
-
-<P>
-<PRE>
+</I>
+<P><PRE>
 [~/pegjs/examples(master)]$ cat main.js 
 var PEG = require("./arithmetics.js");
 var r = PEG.parse("5-3-2");
 console.log(r);
 </PRE>
-
-<P>
-<PRE>
+<P><PRE>
 [~/pegjs/examples(master)]$ node main.js
 4
 </PRE>
-
 <P>
-
 <DIV CLASS="navigation"><HR>
 <A NAME="tex2html1411"
   HREF="node32.html">

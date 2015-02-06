@@ -120,24 +120,22 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <H1><A NAME="SECTION04410000000000000000">
 Introducción a los PEGs</A>
 </H1>
-
 <P>
-In computer science, a <A NAME="5265"></A><SPAN  CLASS="textbf">parsing expression grammar</SPAN>, or <A NAME="5267"></A><SPAN  CLASS="textbf">PEG</SPAN>, is a type of
+<I>In computer science, a <A NAME="5277"></A><SPAN  CLASS="textbf">parsing expression grammar</SPAN>, or <A NAME="5279"></A><SPAN  CLASS="textbf">PEG</SPAN>, is a type of
 analytic formal grammar, i.e. it describes a formal language in terms
 of a set of rules for recognizing strings in the language.
-
+</I>
 <P>
-The formalism was introduced by 
+<I>The formalism was introduced by 
 <A NAME="tex2html206"
   HREF="https://pdos.csail.mit.edu/papers/parsing:popl04.pdf">Bryan Ford in 2004 </A>
 and is closely related to the family of top-down parsing languages introduced in the early 1970s. 
-
+</I>
 <P>
-Syntactically, PEGs also look similar to
+<I>Syntactically, PEGs also look similar to
 context-free grammars (CFGs), but they have a different interpretation: 
-
+</I>
 <P>
-
 <UL>
 <LI>the choice operator selects the first match in PEG, while it is ambiguous in CFG. 
 </LI>
@@ -145,24 +143,22 @@ context-free grammars (CFGs), but they have a different interpretation:
 to be done in practice, e.g. by a recursive descent parser.
 </LI>
 </UL>
-
 <P>
-Unlike CFGs, PEGs cannot be <SPAN ID="txt4782">ambiguous</SPAN>; 
+<I>Unlike CFGs, PEGs cannot be <SPAN ID="txt4794">ambiguous</SPAN>; 
 <I>if a string parses, it has exactly
 one valid parse tree</I>. 
-
+</I>
 <P>
-It is conjectured that there exist context-free
+<I>It is conjectured that there exist context-free
 languages that cannot be parsed by a PEG, but this is
 not yet proven. 
-
+</I>
 <P>
-
 <H2><A NAME="SECTION04411000000000000000">
 Syntax</A>
-</H2>
+</H2><I>
 Formally, a parsing expression grammar consists of:
-
+</I>
 <UL>
 <LI>A finite set <SPAN CLASS="MATH"><IMG
  WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
@@ -188,9 +184,8 @@ Formally, a parsing expression grammar consists of:
  ALT="$ e_S$"></SPAN> termed the starting expression.
 </LI>
 </UL>
-
 <P>
-Each parsing rule in <SPAN CLASS="MATH"><IMG
+<I>Each parsing rule in <SPAN CLASS="MATH"><IMG
  WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
  SRC="img13.png"
  ALT="$ P$"></SPAN> 
@@ -207,12 +202,12 @@ where <SPAN CLASS="MATH"><IMG
  ALT="$ A$"></SPAN> is a nonterminal symbol and <SPAN CLASS="MATH"><IMG
  WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
  SRC="img77.png"
- ALT="$ e$"></SPAN> is a <A NAME="5269"></A><SPAN  CLASS="textbf">parsing expression</SPAN>. 
-
+ ALT="$ e$"></SPAN> is a <A NAME="5281"></A><SPAN  CLASS="textbf">parsing expression</SPAN>. 
+</I>
 <P>
-A parsing expression is a hierarchical expression similar to a regular expression, which is
+<I>A parsing expression is a hierarchical expression similar to a regular expression, which is
 constructed in the following fashion:
-
+</I>
 <OL>
 <LI>An atomic parsing expression consists of:
 
@@ -280,20 +275,16 @@ expression can be constructed using the following operators:
 </OL>
 </LI>
 </OL>
-
 <P>
-
 <H2><A NAME="SECTION04412000000000000000">
 Semantics</A>
 </H2>
-
 <P>
-The fundamental difference between context-free grammars and parsing
+<I>The fundamental difference between context-free grammars and parsing
 expression grammars is that the PEG's choice operator is 
 <FONT COLOR="#ff0000"> ordered</FONT>:
-
+</I>
 <P>
-
 <OL>
 <LI>If
 the first alternative succeeds, the second alternative is
@@ -341,112 +332,103 @@ fails and fails if <SPAN CLASS="MATH"><IMG
  ALT="$ e$"></SPAN> succeeds, <I>again consuming no input in either case</I>.
 </LI>
 </OL>
-
 <P>
-
 <H2><A NAME="SECTION04413000000000000000">
 Implementing parsers from parsing expression grammars</A>
 </H2>
-
 <P>
-Any parsing expression grammar can be converted directly into a <A NAME="5271"></A><SPAN  CLASS="textbf">recursive descent parser</SPAN>. 
-
+<I>Any parsing expression grammar can be converted directly into a <A NAME="5283"></A><SPAN  CLASS="textbf">recursive descent parser</SPAN>. 
+</I>
 <P>
-Due to the unlimited lookahead capability that the grammar formalism
+<I>Due to the unlimited lookahead capability that the grammar formalism
 provides, however, the resulting parser 
 <FONT COLOR="#ff0000"> could exhibit exponential time
 performance in the worst case</FONT>.
-
+</I>
 <P>
-It is possible to obtain better performance for any parsing expression
+<I>It is possible to obtain better performance for any parsing expression
 grammar by converting its recursive descent parser into 
 <FONT COLOR="#ff0000"> a 
 <A NAME="tex2html207"
   HREF="http://bford.info/pub/lang/packrat-icfp02/">packrat parser</A>,
 which always runs in linear time</FONT>, at the cost of substantially greater
 storage space requirements. 
-
+</I>
 <P>
-<I>A packrat parser is a form of parser
+<I><I>A packrat parser is a form of parser
 similar to a recursive descent parser in construction, except that
-during the parsing process <SPAN ID="cbox5254">
+during the parsing process <SPAN ID="cbox5266">
 <FONT COLOR="#ee82ee"> it memoizes</FONT></SPAN>
 the intermediate results of all
 invocations of the mutually recursive parsing functions</I>, ensuring that
 each parsing function is only invoked at most once at a given input
 position. 
-
+</I>
 <P>
-Because of this memoization, a packrat parser has the ability
+<I>Because of this memoization, a packrat parser has the ability
 to parse many context-free grammars and any parsing expression grammar
 (including some that do not represent context-free languages) in linear
 time. 
-
+</I>
 <P>
-Examples of memoized recursive descent parsers are known from at
+<I>Examples of memoized recursive descent parsers are known from at
 least as early as 1993. 
-
+</I>
 <P>
-Note that this analysis of the performance
+<I>Note that this analysis of the performance
 of a packrat parser <B>assumes that enough memory is available to hold all
 of the memoized results</B>; in practice, if there were not enough memory,
 some parsing functions might have to be invoked more than once at the
 same input position, and consequently the parser could take more than
 linear time.
-
+</I>
 <P>
-It is also possible to build LL parsers and LR parsers from parsing
+<I>It is also possible to build LL parsers and LR parsers from parsing
 expression grammars, with better worst-case performance than a recursive
 descent parser, but the unlimited lookahead capability of the grammar
 formalism is then lost. Therefore, not all languages that can be expressed
 using parsing expression grammars can be parsed by LL or LR parsers.
-
+</I>
 <P>
-
 <H2><A NAME="SECTION04414000000000000000">
 Lexical Analysis</A>
 </H2>
-
 <P>
-Parsers for languages expressed as a CFG, such as LR parsers, require a
+<I>Parsers for languages expressed as a CFG, such as LR parsers, require a
 separate tokenization step to be done first, which breaks up the input
 based on the location of spaces, punctuation, etc. 
-
+</I>
 <P>
-The tokenization is
+<I>The tokenization is
 necessary because of the way these parsers use lookahead to parse CFGs
 that meet certain requirements in linear time. 
-
+</I>
 <P>
-PEGs do
+<I>PEGs do
 not require tokenization to be a separate step, and tokenization rules
 can be written in the same way as any other grammar rule.
-
+</I>
 <P>
-
 <H2><A NAME="SECTION04415000000000000000">
 Left recursion</A>
 </H2>
-
 <P>
-PEGs cannot express left-recursive rules where a rule refers to itself
+<I>PEGs cannot express left-recursive rules where a rule refers to itself
 without moving forward in the string. 
  For example, the following left-recursive CFG rule:
-<PRE>
+</I><PRE>
 string-of-a -&gt; string-of-a 'a' | 'a'
-</PRE>
+</PRE><I>
 can be rewritten in a PEG using the plus operator:
-<PRE>
+</I><PRE>
 string-of-a &lt;- 'a'+
-</PRE>
+</PRE><I>
 The process of rewriting indirectly left-recursive rules is complex in some packrat parsers, especially when semantic actions are involved.
-
+</I>
 <P>
-
 <H2><A NAME="SECTION04416000000000000000">
 Referencias y Documentación</A>
 </H2>
-
 <UL>
 <LI>Véase <A NAME="tex2html208"
   HREF="http://en.wikipedia.org/wiki/Parsing_expression_grammar">Parsing Expression Grammar</A>
@@ -476,9 +458,7 @@ Véanse [<A
   HREF="http://nathansuniversity.com/pegs.html">PL101: Create Your Own Programming Language: Parsing</A>
 </LI>
 </UL>
-
 <P>
-
 <DIV CLASS="navigation"><HR>
 <A NAME="tex2html1368"
   HREF="node30.html">

@@ -120,29 +120,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="section:predictivo"></A>
 <BR>
 Análisis Sintáctico Predictivo Recursivo
-</H1>
+</H1><I>
 La siguiente fase en la construcción del analizador es la fase de 
 análisis sintáctico. Esta toma como entrada el flujo de terminales
 y construye como salida el árbol de análisis sintáctico abstracto.
-
+</I>
 <P>
-El árbol de análisis sintáctico abstracto es una representación  compactada del árbol 
+<I>El árbol de análisis sintáctico abstracto es una representación  compactada del árbol 
 de análisis sintáctico concreto que contiene la misma información que éste.
-
+</I>
 <P>
-Existen diferentes métodos de análisis sintáctico. La mayoría caen en una de dos categorías:
+<I>Existen diferentes métodos de análisis sintáctico. La mayoría caen en una de dos categorías:
 ascendentes y descendentes. Los ascendentes construyen el árbol desde las hojas
 hacia la raíz. Los descendentes lo hacen en modo inverso. El que describiremos
 aqui es uno de los mas sencillos: se denomina método de análisis predictivo descendente 
 recursivo.
-
+</I>
 <P>
-
 <H2><A NAME="SECTION04221000000000000000"></A>
 <A NAME="subsection:introduccion"></A>
 <BR>
 Introducción
-</H2>
+</H2><I>
 En este método se asocia una subrutina con cada variable sintáctica <SPAN CLASS="MATH"><IMG
  WIDTH="53" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
  SRC="img38.png"
@@ -151,28 +150,25 @@ En este método se asocia una subrutina con cada variable sintáctica <SPAN CLAS
  WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
  SRC="img1.png"
  ALT="$ A$"></SPAN>:
-
+</I>
 <P>
-<DIV ALIGN="CENTER">
-<!-- MATH
+<DIV ALIGN="CENTER"><I><!-- MATH
  $L_A(G) = \{ x \in \Sigma^* : A \stackrel{*}{\Longrightarrow} x \}$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="222" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
  SRC="img39.png"
- ALT="$ L_A(G) = \{ x \in \Sigma^* : A \stackrel{*}{\Longrightarrow} x \}$"></SPAN>
-</DIV>
-
+ ALT="$ L_A(G) = \{ x \in \Sigma^* : A \stackrel{*}{\Longrightarrow} x \}$"></SPAN></I></DIV>
 <P>
-En este método se escribe una rutina <code>A</code> por variable sintáctica <SPAN CLASS="MATH"><IMG
+<I>En este método se escribe una rutina <code>A</code> por variable sintáctica <SPAN CLASS="MATH"><IMG
  WIDTH="53" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
  SRC="img38.png"
  ALT="$ A \in V$"></SPAN>. 
 Se le da a la rutina asociada el mismo nombre que a la variable sintáctica
 asociada. 
-
+</I>
 <P>
-La función de la rutina <code>A</code> asociada con la variable
+<I>La función de la rutina <code>A</code> asociada con la variable
 <SPAN CLASS="MATH"><IMG
  WIDTH="53" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
  SRC="img38.png"
@@ -183,9 +179,9 @@ La función de la rutina <code>A</code> asociada con la variable
  WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
  SRC="img1.png"
  ALT="$ A$"></SPAN>.
-
+</I>
 <P>
-La estrategia general que sigue la rutina <code>A</code> para reconocer
+<I>La estrategia general que sigue la rutina <code>A</code> para reconocer
 <SPAN CLASS="MATH"><IMG
  WIDTH="43" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
  SRC="img40.png"
@@ -205,9 +201,9 @@ a continuación comprobar que la entrada que sigue pertenece al lenguaje generad
  WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
  SRC="img42.png"
  ALT="$ \alpha$"></SPAN>. 
-
+</I>
 <P>
-En un analizador predictivo descendente recursivo (APDR) se asume que
+<I>En un analizador predictivo descendente recursivo (APDR) se asume que
 el símbolo que actualmente
 esta siendo observado (denotado habitualmente como 
 <code>lookahead</code>) permite determinar unívocamente
@@ -215,9 +211,9 @@ que producción de <SPAN CLASS="MATH"><IMG
  WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
  SRC="img1.png"
  ALT="$ A$"></SPAN> hay que aplicar. 
-
+</I>
 <P>
-Una vez que se ha determinado que la regla por la que continuar la derivación
+<I>Una vez que se ha determinado que la regla por la que continuar la derivación
 es <!-- MATH
  $A \rightarrow \alpha$
  -->
@@ -256,22 +252,19 @@ en <SPAN CLASS="MATH"><IMG
  WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
  SRC="img42.png"
  ALT="$ \alpha$"></SPAN> se traducen en llamadas a la correspondiente subrutina asociada con <code>B</code>.
-
+</I>
 <P>
-
 <H4><A NAME="SECTION04221010000000000000">
 Ejemplo</A>
 </H4>
-  
-
 <P>
-Para ilustrar el método,
+<I>Para ilustrar el método,
 simplificaremos la gramática presentada en el ejercicio
 <A HREF="node45.html#ejercicio:tutugrammar">5.1.1</A> eliminando las declaraciones:
-
+</I>
 <P>
 <BR><P></P>
-<DIV ALIGN="CENTER"><A NAME="3931"></A>
+<DIV ALIGN="CENTER"><A NAME="3943"></A>
 <TABLE>
 <CAPTION><STRONG>Tabla:</STRONG>
 Una Gramática Simple</CAPTION>
@@ -343,18 +336,17 @@ Una Gramática Simple</CAPTION>
 <A NAME="table:gramaticasimple"></A></TD></TR>
 </TABLE>
 </DIV><P></P>
+<BR><I>
 <BR>
 <BR>
-<BR>
-
+</I>
 <P>
-La secuencia de llamadas cuando se procesa la entrada mediante 
+<I>La secuencia de llamadas cuando se procesa la entrada mediante 
 el siguiente programa construye 
-<FONT COLOR="#ff0000"> implícitamente</FONT> el <A NAME="4138"></A><SPAN  CLASS="textbf">árbol 
+<FONT COLOR="#ff0000"> implícitamente</FONT> el <A NAME="4150"></A><SPAN  CLASS="textbf">árbol 
 de análisis sintáctico concreto</SPAN>.
-
-<P>
-<PRE>
+</I>
+<P><PRE>
 parse = (input) -&gt;
   tokens = input.tokens()
   lookahead = tokens.shift()
@@ -454,9 +446,7 @@ parse = (input) -&gt;
       input.substr(lookahead.from) + "'"  
   tree
 </PRE>
-
-<P>
-<PRE>
+<P><PRE>
   var parse = function(input) {
     var tokens = input.tokens();
     var lookahead = tokens.shift();
@@ -553,13 +543,10 @@ parse = (input) -&gt;
     return tree;
   }
 </PRE>
-
 <P>
-
 <H4><A NAME="SECTION04221020000000000000">
 Caracterización de las Gramáticas Analizables</A>
-</H4>
-  
+</H4><I>
 
 Como vemos en el ejemplo, el análisis predictivo confía en que, si estamos
 ejecutando la entrada del procedimiento <code>A</code>,
@@ -578,9 +565,9 @@ de producción <!-- MATH
  WIDTH="65" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
  SRC="img47.png"
  ALT="$ A \rightarrow a \alpha$"></SPAN> que debe ser procesada.
-
+</I>
 <P>
-Si se piensa, esta condición requiere que todas las partes derechas <SPAN CLASS="MATH"><IMG
+<I>Si se piensa, esta condición requiere que todas las partes derechas <SPAN CLASS="MATH"><IMG
  WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
  SRC="img42.png"
  ALT="$ \alpha$"></SPAN> de
@@ -603,9 +590,8 @@ conjunto <!-- MATH
  WIDTH="90" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
  SRC="img48.png"
  ALT="$ FIRST(\alpha)$"></SPAN>:
-
-<P>
-<P>
+</I>
+<P><P>
 <DIV><B>Definición  <SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
 <I>Dada una gramática 
 <!-- MATH
@@ -661,9 +647,8 @@ conjunto <!-- MATH
 \end{array} \right. $"></SPAN> 
 </I>
 <P></DIV><P></P>
-
 <P>
-Podemos reformular ahora nuestra afirmación anterior en estos términos:
+<I>Podemos reformular ahora nuestra afirmación anterior en estos términos:
 Si <!-- MATH
  $A \rightarrow \gamma_1 \mid \ldots \mid \gamma_n$
  -->
@@ -682,9 +667,8 @@ disjuntos podemos construir el procedimiento para la variable <SPAN CLASS="MATH"
  SRC="img1.png"
  ALT="$ A$"></SPAN> siguiendo
 este seudocódigo:
-
-<P>
-<PRE>
+</I>
+<P><PRE>
 A = function() {
   if (lookahead in FIRST(gamma_1)) { imitar gamma_1 }
   else if (lookahead in FIRST(gamma_2)) { imitar gamma_2 }
@@ -692,9 +676,8 @@ A = function() {
   else (lookahead in FIRST(gamma_n)) { imitar gamma_n }
 }
 </PRE>
-
 <P>
-Donde si <SPAN CLASS="MATH"><IMG
+<I>Donde si <SPAN CLASS="MATH"><IMG
  WIDTH="21" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
  SRC="img54.png"
  ALT="$ \gamma_j$"></SPAN> es <!-- MATH
@@ -711,7 +694,7 @@ en una secuencia <!-- MATH
  WIDTH="79" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
  SRC="img56.png"
  ALT="$ i = 1 \ldots k$"></SPAN> de llamadas de uno de estos dos tipos:
-
+</I>
 <UL>
 <LI>Llamar a la subrutina <code>X_i</code> si <SPAN CLASS="MATH"><IMG
  WIDTH="25" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
@@ -724,20 +707,17 @@ en una secuencia <!-- MATH
  ALT="$ X_i$"></SPAN> es un terminal
 </LI>
 </UL>
-
 <P>
-
 <H2><A NAME="SECTION04222000000000000000"></A>
-   <A NAME="4147"></A>
+   <A NAME="4159"></A>
 <BR>
 Ejercicio: Recorrido del árbol en un ADPR
-</H2>
+</H2><I>
   
 ¿En que forma es recorrido el árbol de análisis sintáctico concreto en un 
 analizador descendente predictivo recursivo? ¿En que orden son visitados los nodos?
-
+</I>
 <P>
-
 <DIV CLASS="navigation"><HR>
 <A NAME="tex2html1165"
   HREF="node21.html">

@@ -102,13 +102,13 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="section:selecciondecodigo"></A>
 <BR>
 Selección de Código y Gramáticas Árbol
-</H1>
+</H1><I>
 La generación de código es la fase en la que a partir de la 
-<A NAME="9174"></A><SPAN  CLASS="textbf">Representación intermedia</SPAN> o <A NAME="9176"></A><SPAN  CLASS="textbf">IR</SPAN> se genera 
+<A NAME="9186"></A><SPAN  CLASS="textbf">Representación intermedia</SPAN> o <A NAME="9188"></A><SPAN  CLASS="textbf">IR</SPAN> se genera 
 una secuencia de instrucciones para la máquina objeto.
 Esta tarea conlleva diversas subtareas, entre ellas destacan
 tres: 
-
+</I>
 <UL>
 <LI>La selección de instrucciones o selección de código, 
 </LI>
@@ -118,24 +118,21 @@ y
 <LI>La planificación de las instrucciones.
 </LI>
 </UL>
-
 <P>
-El problema de la <A NAME="9178"></A><SPAN  CLASS="textbf">selección de código</SPAN> surge de que
+<I>El problema de la <A NAME="9190"></A><SPAN  CLASS="textbf">selección de código</SPAN> surge de que
 la mayoría de las máquinas suelen tener una gran variedad de instrucciones,
 habitualmente cientos y muchas instrucciones admiten mas de una decena de modos de 
 direccionamiento.
 En consecuencia, 
-
+</I>
 <P>
-<DIV ALIGN="CENTER">
+<DIV ALIGN="CENTER"></DIV>
 <BLOCKQUOTE>
-There Is More Than One Way To Do It (The Translation)
-
-</BLOCKQUOTE>
-</DIV>
-
+<DIV ALIGN="CENTER"><I>There Is More Than One Way To Do It (The Translation)
+</I></DIV></BLOCKQUOTE>
+<DIV ALIGN="CENTER"></DIV>
 <P>
-<SPAN  CLASS="textbf">Es posible asociar 
+<I><SPAN  CLASS="textbf">Es posible asociar 
 una gramática árbol con 
 el juego de instrucciones de una máquina</SPAN>. 
 Las partes derechas de las reglas de producción de esta gramática vienen determinadas
@@ -154,283 +151,314 @@ Una instrucción deja su resultado en cierto lugar, normalmente un registro o
 memoria. La idea es que las variables sintácticas en los lados izquierdos
 de las reglas representan los lugares
 en los cuales las instrucciones dejan sus resultados.
-
+</I>
 <P>
-Ademas, a cada instrucción le asociamos un coste:
-
+<I>Ademas, a cada instrucción le asociamos un coste:
+</I>
 <P>
-<DIV ALIGN="CENTER">
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="CENTER" COLSPAN=3><SPAN>Gramática Arbol Para un Juego de Instrucciones Simple</SPAN></TD>
+<DIV ALIGN="CENTER"><TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="CENTER" COLSPAN=3><I>
+<SPAN>Gramática Arbol Para un Juego de Instrucciones Simple</SPAN></I></TD>
 </TR>
-<TR><TD ALIGN="LEFT">Producción</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=120>Instrucción</TD>
-<TD ALIGN="LEFT">Coste</TD>
-</TR>
-<TR><TD ALIGN="LEFT">R <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img35.png"
- ALT="$ \rightarrow$"></SPAN> NUM</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=120><code>LOADC R, NUM</code></TD>
-<TD ALIGN="LEFT">1</TD>
-</TR>
-<TR><TD ALIGN="LEFT">R <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img35.png"
- ALT="$ \rightarrow$"></SPAN> M</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=120><code>LOADM R, M</code></TD>
-<TD ALIGN="LEFT">3</TD>
-</TR>
-<TR><TD ALIGN="LEFT">M <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img35.png"
- ALT="$ \rightarrow$"></SPAN> R</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=120><code>STOREM M, R</code></TD>
-<TD ALIGN="LEFT">3</TD>
-</TR>
-<TR><TD ALIGN="LEFT">R <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img35.png"
- ALT="$ \rightarrow$"></SPAN> PLUS(R,M)</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=120><code>PLUSM R, M</code></TD>
-<TD ALIGN="LEFT">3</TD>
-</TR>
-<TR><TD ALIGN="LEFT">R <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img35.png"
- ALT="$ \rightarrow$"></SPAN> PLUS(R,R)</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=120><code>PLUSR R, R</code></TD>
-<TD ALIGN="LEFT">1</TD>
-</TR>
-<TR><TD ALIGN="LEFT">R <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img35.png"
- ALT="$ \rightarrow$"></SPAN> TIMES(R,M)</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=120><code>TIMESM R, M</code></TD>
-<TD ALIGN="LEFT">6</TD>
-</TR>
-<TR><TD ALIGN="LEFT">R <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img35.png"
- ALT="$ \rightarrow$"></SPAN> TIMES(R,R)</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=120><code>TIMESR R, R</code></TD>
-<TD ALIGN="LEFT">4</TD>
-</TR>
-<TR><TD ALIGN="LEFT">R <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img35.png"
- ALT="$ \rightarrow$"></SPAN> PLUS(R,TIMES(NUM,R))</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=120><code>PLUSCR R, NUM, R</code></TD>
-<TD ALIGN="LEFT">4</TD>
-</TR>
-<TR><TD ALIGN="LEFT">R <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img35.png"
- ALT="$ \rightarrow$"></SPAN> TIMES(R,TIMES(NUM,R))</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=120><code>TIMESCR R, NUM, R</code></TD>
-<TD ALIGN="LEFT">5</TD>
-</TR>
-</TABLE>
-</DIV>
+<TR><TD ALIGN="LEFT"><I> 
 
+ Producción                                </I></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=120><I>   Instrucción           </I></TD>
+<TD ALIGN="LEFT"><I> Coste </I></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I> 
+
+ R <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> NUM                  </I></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=120><I>   <code>LOADC R, NUM</code>    </I></TD>
+<TD ALIGN="LEFT"><I>   1   </I></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I> 
+
+ R <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> M                    </I></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=120><I>   <code>LOADM R, M</code>     </I></TD>
+<TD ALIGN="LEFT"><I>   3</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I> 
+
+ M <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> R                    </I></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=120><I>   <code>STOREM M, R</code>     </I></TD>
+<TD ALIGN="LEFT"><I>   3</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I> 
+
+ R <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> PLUS(R,M)            </I></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=120><I>   <code>PLUSM R, M</code>     </I></TD>
+<TD ALIGN="LEFT"><I>   3</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I> 
+
+ R <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> PLUS(R,R)            </I></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=120><I>   <code>PLUSR R, R</code>     </I></TD>
+<TD ALIGN="LEFT"><I>  1</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I> 
+
+  R <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> TIMES(R,M)          </I></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=120><I>   <code>TIMESM R, M</code>    </I></TD>
+<TD ALIGN="LEFT"><I>   6</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I> 
+
+ R <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> TIMES(R,R)           </I></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=120><I>   <code>TIMESR R, R</code>   </I></TD>
+<TD ALIGN="LEFT"><I>  4</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I> 
+
+ R <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> PLUS(R,TIMES(NUM,R)) </I></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=120><I> <code>PLUSCR R, NUM, R</code> </I></TD>
+<TD ALIGN="LEFT"><I> 4</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I> 
+
+ R <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> TIMES(R,TIMES(NUM,R)) </I></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=120><I>  <code>TIMESCR R, NUM, R</code> </I></TD>
+<TD ALIGN="LEFT"><I> 5</I></TD>
+</TR>
+</TABLE></DIV>
 <P>
-Consideremos la IR consistente en el AST generado por el front-end del compilador
+<I>Consideremos la IR consistente en el AST generado por el front-end del compilador
 para la expresión <code>x+3*(7*y)</code>:
-
-<P>
-<PRE>
+</I>
+<P><PRE>
                            PLUS(M[x],TIMES(N[3],TIMES(N[7],M[y])
 </PRE>
-
 <P>
-Construyamos una derivación a izquierdas para el árbol anterior:
-
+<I>Construyamos una derivación a izquierdas para el árbol anterior:
+</I>
 <P>
-<DIV ALIGN="CENTER">
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="CENTER" COLSPAN=4><SPAN> Una derivación árbol a izquierdas para <!-- MATH
+<DIV ALIGN="CENTER"><TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="CENTER" COLSPAN=4><I>
+<SPAN> Una derivación árbol a izquierdas para <!-- MATH
  $P(M,T(N,T(N,M)))$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="174" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
  SRC="img308.png"
- ALT="$ P(M,T(N,T(N,M)))$"></SPAN></SPAN></TD>
+ ALT="$ P(M,T(N,T(N,M)))$"></SPAN></SPAN></I></TD>
 </TR>
-<TR><TD ALIGN="LEFT">Derivación</TD>
-<TD ALIGN="LEFT">Producción</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>Instrucción</TD>
-<TD ALIGN="RIGHT">Coste</TD>
+<TR><TD ALIGN="LEFT"><I> 
+
+Derivación                            </I></TD>
+<TD ALIGN="LEFT"><I> Producción                 </I></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85><I> Instrucción          </I></TD>
+<TD ALIGN="RIGHT"><I> Coste</I></TD>
 </TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
+<TR><TD ALIGN="LEFT"><I> 
+
+<!-- MATH
  $R \Longrightarrow$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="51" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
  SRC="img309.png"
- ALT="$ R \Longrightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT">R <!-- MATH
+ ALT="$ R \Longrightarrow$"></SPAN> </I></TD>
+<TD ALIGN="LEFT"><I> R <!-- MATH
  $\rightarrow$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
  SRC="img35.png"
- ALT="$ \rightarrow$"></SPAN> PLUS(R,R)</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85><code>PLUSR R, R</code></TD>
-<TD ALIGN="RIGHT">1</TD>
+ ALT="$ \rightarrow$"></SPAN> PLUS(R,R)  </I></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85><I>   <code>PLUSR R, R</code>  </I></TD>
+<TD ALIGN="RIGHT"><I> 1</I></TD>
 </TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
+<TR><TD ALIGN="LEFT"><I> 
+
+<!-- MATH
  $P(R,R) \Longrightarrow$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="99" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
  SRC="img310.png"
- ALT="$ P(R,R) \Longrightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT">R <!-- MATH
+ ALT="$ P(R,R) \Longrightarrow$"></SPAN> </I></TD>
+<TD ALIGN="LEFT"><I> R <!-- MATH
  $\rightarrow$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
  SRC="img35.png"
- ALT="$ \rightarrow$"></SPAN> M</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85><code>LOADM R, M</code></TD>
-<TD ALIGN="RIGHT">3</TD>
+ ALT="$ \rightarrow$"></SPAN> M          </I></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85><I>   <code>LOADM R, M</code>  </I></TD>
+<TD ALIGN="RIGHT"><I> 3</I></TD>
 </TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
+<TR><TD ALIGN="LEFT"><I>  
+
+<!-- MATH
  $P(M,R) \Longrightarrow$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="104" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
  SRC="img311.png"
- ALT="$ P(M,R) \Longrightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT">R <!-- MATH
+ ALT="$ P(M,R) \Longrightarrow$"></SPAN> </I></TD>
+<TD ALIGN="LEFT"><I> R <!-- MATH
  $\rightarrow$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
  SRC="img35.png"
- ALT="$ \rightarrow$"></SPAN> TIMES(R,R)</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85><code>TIMESR R, R</code></TD>
-<TD ALIGN="RIGHT">4</TD>
+ ALT="$ \rightarrow$"></SPAN> TIMES(R,R) </I></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85><I>  <code>TIMESR R, R</code>  </I></TD>
+<TD ALIGN="RIGHT"><I> 4</I></TD>
 </TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
+<TR><TD ALIGN="LEFT"><I> 
+
+<!-- MATH
  $P(M, T(R, R)) \Longrightarrow$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="151" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
  SRC="img312.png"
- ALT="$ P(M, T(R, R)) \Longrightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT">R <!-- MATH
+ ALT="$ P(M, T(R, R)) \Longrightarrow$"></SPAN> </I></TD>
+<TD ALIGN="LEFT"><I> R <!-- MATH
  $\rightarrow$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
  SRC="img35.png"
- ALT="$ \rightarrow$"></SPAN> NUM</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85><code>LOADC R, NUM</code></TD>
-<TD ALIGN="RIGHT">1</TD>
+ ALT="$ \rightarrow$"></SPAN> NUM        </I></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85><I>  <code>LOADC R, NUM</code> </I></TD>
+<TD ALIGN="RIGHT"><I> 1</I></TD>
 </TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
+<TR><TD ALIGN="LEFT"><I> 
+
+<!-- MATH
  $P(M, T(N, R)) \Longrightarrow$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="153" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
  SRC="img313.png"
- ALT="$ P(M, T(N, R)) \Longrightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT">R <!-- MATH
+ ALT="$ P(M, T(N, R)) \Longrightarrow$"></SPAN> </I></TD>
+<TD ALIGN="LEFT"><I> R <!-- MATH
  $\rightarrow$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
  SRC="img35.png"
- ALT="$ \rightarrow$"></SPAN> TIMES(R,R)</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85><code>TIMESR R, R</code></TD>
-<TD ALIGN="RIGHT">4</TD>
+ ALT="$ \rightarrow$"></SPAN> TIMES(R,R) </I></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85><I>  <code>TIMESR R, R</code>  </I></TD>
+<TD ALIGN="RIGHT"><I> 4</I></TD>
 </TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
+<TR><TD ALIGN="LEFT"><I> 
+
+<!-- MATH
  $P(M, T(N, T(R, R))) \Longrightarrow$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="200" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
  SRC="img314.png"
- ALT="$ P(M, T(N, T(R, R))) \Longrightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT">R <!-- MATH
+ ALT="$ P(M, T(N, T(R, R))) \Longrightarrow$"></SPAN> </I></TD>
+<TD ALIGN="LEFT"><I> R <!-- MATH
  $\rightarrow$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
  SRC="img35.png"
- ALT="$ \rightarrow$"></SPAN> NUM</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85><code>LOADC R, NUM</code></TD>
-<TD ALIGN="RIGHT">1</TD>
+ ALT="$ \rightarrow$"></SPAN> NUM        </I></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85><I>  <code>LOADC R, NUM</code> </I></TD>
+<TD ALIGN="RIGHT"><I> 1</I></TD>
 </TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
+<TR><TD ALIGN="LEFT"><I> 
+
+<!-- MATH
  $P(M, T(N, T(N, R))) \Longrightarrow$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="202" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
  SRC="img315.png"
- ALT="$ P(M, T(N, T(N, R))) \Longrightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT">R <!-- MATH
+ ALT="$ P(M, T(N, T(N, R))) \Longrightarrow$"></SPAN> </I></TD>
+<TD ALIGN="LEFT"><I> R <!-- MATH
  $\rightarrow$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
  SRC="img35.png"
- ALT="$ \rightarrow$"></SPAN> M</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85><code>LOADM R, M</code></TD>
-<TD ALIGN="RIGHT">3</TD>
+ ALT="$ \rightarrow$"></SPAN> M          </I></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85><I>  <code>LOADM R, M</code>   </I></TD>
+<TD ALIGN="RIGHT"><I> 3</I></TD>
 </TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
+<TR><TD ALIGN="LEFT"><I> 
+
+<!-- MATH
  $P(M,T(N,T(N,M)))$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="174" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
  SRC="img308.png"
- ALT="$ P(M,T(N,T(N,M)))$"></SPAN></TD>
-<TD ALIGN="LEFT">&nbsp;</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>&nbsp;</TD>
-<TD ALIGN="RIGHT">Total: 17</TD>
+ ALT="$ P(M,T(N,T(N,M)))$"></SPAN> </I></TD>
+<TD></TD>
+<TD></TD>
+<TD ALIGN="RIGHT"><I> Total: 17</I></TD>
 </TR>
-</TABLE>
-</DIV>
-
+</TABLE></DIV>
 <P>
-Obsérvese que, si asumimos por ahora que hay suficientes registros, la secuencia
+<I>Obsérvese que, si asumimos por ahora que hay suficientes registros, la secuencia
 de instrucciones resultante en la tercera columna de la tabla si se lee en orden inverso
 (esto es, si se sigue el orden de instrucciones asociadas a las reglas de producción
 en orden de anti-derivación)
 y se hace una asignación correcta de registros nos da una traducción correcta
 de la expresión <code>x+3*(7*y)</code>:
-
-<P>
-<PRE>
+</I>
+<P><PRE>
 LOADM R, M         # y 
 LOADC R, NUM       # 7
 TIMESR R, R        # 7*y
@@ -439,156 +467,161 @@ TIMESR R, R        # 3*(7*y)
 LOADM R, M         # x
 PLUSR R, R         # x+3*(7*y)
 </PRE>
-
 <P>
-La gramática anterior es ambigua. El árbol de <code>x+3*(7*y)</code>
+<I>La gramática anterior es ambigua. El árbol de <code>x+3*(7*y)</code>
 puede ser generado también mediante la siguiente derivación 
 a izquierdas:
-
+</I>
 <P>
-<DIV ALIGN="CENTER">
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="CENTER" COLSPAN=4><SPAN> Otra derivación árbol a izquierdas para <!-- MATH
+<DIV ALIGN="CENTER"><TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="CENTER" COLSPAN=4><I>
+<SPAN> Otra derivación árbol a izquierdas para <!-- MATH
  $P(M,T(N,T(N,M)))$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="174" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
  SRC="img308.png"
- ALT="$ P(M,T(N,T(N,M)))$"></SPAN></SPAN></TD>
+ ALT="$ P(M,T(N,T(N,M)))$"></SPAN></SPAN></I></TD>
 </TR>
-<TR><TD ALIGN="LEFT">Derivación</TD>
-<TD ALIGN="LEFT">Producción</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113>Instrucción</TD>
-<TD ALIGN="RIGHT">Coste</TD>
+<TR><TD ALIGN="LEFT"><I> 
+
+Derivación                            </I></TD>
+<TD ALIGN="LEFT"><I> Producción                 </I></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113><I> Instrucción     </I></TD>
+<TD ALIGN="RIGHT"><I> Coste </I></TD>
 </TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
+<TR><TD ALIGN="LEFT"><I> 
+
+<!-- MATH
  $R \Longrightarrow$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="51" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
  SRC="img309.png"
- ALT="$ R \Longrightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT">R <!-- MATH
+ ALT="$ R \Longrightarrow$"></SPAN> </I></TD>
+<TD ALIGN="LEFT"><I> R <!-- MATH
  $\rightarrow$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
  SRC="img35.png"
- ALT="$ \rightarrow$"></SPAN> PLUS(R,TIMES(NUM,R))</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113><code>PLUSCR R, NUM, R</code></TD>
-<TD ALIGN="RIGHT">4</TD>
+ ALT="$ \rightarrow$"></SPAN> PLUS(R,TIMES(NUM,R)) </I></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113><I> <code>PLUSCR R, NUM, R</code> </I></TD>
+<TD ALIGN="RIGHT"><I> 4</I></TD>
 </TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
+<TR><TD ALIGN="LEFT"><I> 
+
+<!-- MATH
  $P(R,T(N,R)) \Longrightarrow$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="148" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
  SRC="img316.png"
- ALT="$ P(R,T(N,R)) \Longrightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT">R <!-- MATH
+ ALT="$ P(R,T(N,R)) \Longrightarrow$"></SPAN> </I></TD>
+<TD ALIGN="LEFT"><I> R <!-- MATH
  $\rightarrow$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
  SRC="img35.png"
- ALT="$ \rightarrow$"></SPAN> M</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113><code>LOADM R, M</code></TD>
-<TD ALIGN="RIGHT">3</TD>
+ ALT="$ \rightarrow$"></SPAN> M                    </I></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113><I>   <code>LOADM R, M</code>     </I></TD>
+<TD ALIGN="RIGHT"><I> 3</I></TD>
 </TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
+<TR><TD ALIGN="LEFT"><I> 
+
+<!-- MATH
  $P(M,T(N,R)) \Longrightarrow$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="153" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
  SRC="img313.png"
- ALT="$ P(M, T(N, R)) \Longrightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT">R <!-- MATH
+ ALT="$ P(M, T(N, R)) \Longrightarrow$"></SPAN> </I></TD>
+<TD ALIGN="LEFT"><I> R <!-- MATH
  $\rightarrow$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
  SRC="img35.png"
- ALT="$ \rightarrow$"></SPAN> TIMES(R,M)</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113><code>TIMESM R, M</code></TD>
-<TD ALIGN="RIGHT">6</TD>
+ ALT="$ \rightarrow$"></SPAN> TIMES(R,M)           </I></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113><I>   <code>TIMESM R, M</code>    </I></TD>
+<TD ALIGN="RIGHT"><I> 6</I></TD>
 </TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
+<TR><TD ALIGN="LEFT"><I> 
+
+<!-- MATH
  $P(M,T(N,T(R,M)))$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="172" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
  SRC="img317.png"
- ALT="$ P(M,T(N,T(R,M))) $"></SPAN></TD>
-<TD ALIGN="LEFT">R <!-- MATH
+ ALT="$ P(M,T(N,T(R,M))) $"></SPAN> </I></TD>
+<TD ALIGN="LEFT"><I> R <!-- MATH
  $\rightarrow$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
  SRC="img35.png"
- ALT="$ \rightarrow$"></SPAN> NUM</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113><code>LOADC R, NUM</code></TD>
-<TD ALIGN="RIGHT">1</TD>
+ ALT="$ \rightarrow$"></SPAN> NUM                  </I></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113><I>   <code>LOADC R, NUM</code>   </I></TD>
+<TD ALIGN="RIGHT"><I> 1</I></TD>
 </TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
+<TR><TD ALIGN="LEFT"><I> 
+
+<!-- MATH
  $P(M,T(N,T(N,M)))$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="174" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
  SRC="img308.png"
- ALT="$ P(M,T(N,T(N,M)))$"></SPAN></TD>
-<TD ALIGN="LEFT">&nbsp;</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113>&nbsp;</TD>
-<TD ALIGN="RIGHT">Total: 14</TD>
+ ALT="$ P(M,T(N,T(N,M)))$"></SPAN> </I></TD>
+<TD></TD>
+<TD></TD>
+<TD ALIGN="RIGHT"><I> Total: 14</I></TD>
 </TR>
-</TABLE>
-</DIV>
-
+</TABLE></DIV>
 <P>
-La nueva secuencia de instrucciones para <code>x+3*(7*y)</code> es:
-
-<P>
-<PRE>
+<I>La nueva secuencia de instrucciones para <code>x+3*(7*y)</code> es:
+</I>
+<P><PRE>
 LOADC R, NUM        # 7
 TIMESM R, M         # 7*y
 LOADM R, M          # x
 PLUSCR R, NUM, R    # x+3*(7*y)
 </PRE>
-
 <P>
-Cada antiderivación a izquierdas produce una secuencia de instrucciones que es una traducción
+<I>Cada antiderivación a izquierdas produce una secuencia de instrucciones que es una traducción
 legal del AST de <code>x+3*(7*y)</code>. 
-
+</I>
 <P>
-<SPAN  CLASS="textbf">El problema de la selección de código óptima
+<I><SPAN  CLASS="textbf">El problema de la selección de código óptima
 puede aproximarse resolviendo 
 el problema de  encontrar la derivación árbol óptima que produce el árbol
 de entrada (en representación intermedia IR)</SPAN>
-
-<P>
-<P>
+</I>
+<P><P>
 <DIV><B>Definición  <SPAN CLASS="arabic">7</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Un <A NAME="9180"></A><SPAN  CLASS="textbf">generador de generadores de código</SPAN> es una componente software que toma como
+<I>Un <A NAME="9192"></A><SPAN  CLASS="textbf">generador de generadores de código</SPAN> es una componente software que toma como
 entrada una especificación de la plataforma objeto -por ejemplo mediante una gramática
 árbol- y genera un módulo que es utilizado por el compilador. Este módulo
 lee la representación intermedia (habitualmente un árbol) y 
 retorna código máquina como resultado.</I></DIV><P></P>
-
 <P>
-Un ejemplo de generador de generadores de código 
+<I>Un ejemplo de generador de generadores de código 
 es 
 <A NAME="tex2html314"
   HREF="http://code.google.com/p/iburg/">iburg</A>
 [<A
  HREF="node92.html#Proebsting">7</A>].
-
+</I>
 <P>
-Véase también el libro 
+<I>Véase también el libro 
 <A NAME="tex2html315"
   HREF="http://www.bytelabs.org/pub/papers/hburg07.pdf">Automatic Code Generation Using Dynamic Programming Techniques</A>
 y la página <A NAME="tex2html316"
   HREF="http://www.bytelabs.org/hburg.html">http://www.bytelabs.org/hburg.html</A>
-<P>
-<P>
+</I>
+<P><P>
 <DIV><B>Ejercicio  <SPAN CLASS="arabic">7</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
 <I>Responda a las siguientes preguntas:
 </I>
@@ -618,9 +651,7 @@ las cuatro componentes de la gramática <!-- MATH
 que se pueda aplicar la aproximación presentada en esta sección?
 </LI>
 </UL></DIV><P></P>
-
 <P>
-
 <DIV CLASS="navigation"><HR>
 <A NAME="tex2html2159"
   HREF="node72.html">

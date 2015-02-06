@@ -101,52 +101,49 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <H1><A NAME="SECTION04440000000000000000">
 Acciones Intermedias</A>
 </H1>
-
 <P>
-Supongamos que queremos poner una acción semántica intermedia
+<I>Supongamos que queremos poner una acción semántica intermedia
 en un programa  <A NAME="tex2html223"
   HREF="http://pegjs.majda.cz/">PEG.js</A>
 :
-<PRE>
+</I><PRE>
 [~/srcPLgrado/pegjs/examples(master)]$ cat direct_intermedia.pegjs 
 a = 'a'+ { console.log("acción intermedia"); } 'b'+ { 
                      console.log("acción final"); 
                      return "hello world!";
                    }
-</PRE>
+</PRE><I>
 Al compilar nos da un mensjae de error:
-<PRE>
+</I><PRE>
 [~/srcPLgrado/pegjs/examples(master)]$ pegjs direct_intermedia.pegjs 
 1:48: Expected "/", ";", end of input or identifier but "'" found.
-</PRE>
+</PRE><I>
 La solución consiste en introducir una variable sintáctica en medio que derive a la palabra vacía y que tenga asociada la correspondiente acción semántica:
-<PRE>
+</I><PRE>
 [~/srcPLgrado/pegjs/examples(master)]$ cat intermedia.pegjs 
 a = 'a'+ temp 'b'+ { 
                      console.log("acción final"); 
                      return "hello world!";
                    }
 temp = { console.log("acción intermedia"); }
-</PRE>
+</PRE><I>
 Este es el progrma que usa el parser generado:
-<PRE>
+</I><PRE>
 [~/srcPLgrado/pegjs/examples(master)]$ cat main_intermedia.js 
 var parser = require("intermedia");
 var input = process.argv[2] || 'aabb';
 var result = parser.parse(input);
 console.log(result);
-</PRE>
+</PRE><I>
 al ejecutar tenemos:
-<PRE>
+</I><PRE>
 [~/srcPLgrado/pegjs/examples(master)]$ pegjs intermedia.pegjs 
 [~/srcPLgrado/pegjs/examples(master)]$ node main_intermedia.js 
 acción intermedia
 acción final
 hello world!
 </PRE>
-
 <P>
-
 <DIV CLASS="navigation"><HR>
 <A NAME="tex2html1431"
   HREF="node33.html">

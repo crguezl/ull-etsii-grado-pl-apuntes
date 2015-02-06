@@ -125,13 +125,10 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <H1><A NAME="SECTION04610000000000000000">
 La Calculadora</A>
 </H1>
-
 <P>
-
 <H2><A NAME="SECTION04611000000000000000">
 Uso desde Línea de Comandos</A>
-</H2>
-<PRE>
+</H2><PRE>
 [~/src/PL/rexical/sample(master)]$ racc --help
 Usage: racc [options] &lt;input&gt;
     -o, --output-file=PATH           output file name [&lt;input&gt;.tab.rb]
@@ -155,9 +152,7 @@ Usage: racc [options] &lt;input&gt;
         --copyright                  Prints copyright and quit.
         --help                       Prints this message and quit.
 </PRE>
-
-<P>
-<PRE>
+<P><PRE>
 [~/Dropbox/src/PL/rexical/sample(master)]$ cat -n Rakefile 
      1  task :default =&gt; %W{racc rex} do
      2    sh "ruby calc3.tab.rb"
@@ -171,13 +166,10 @@ Usage: racc [options] &lt;input&gt;
     10    sh "rex calc3.rex"
     11  end
 </PRE>
-
 <P>
-
 <H2><A NAME="SECTION04612000000000000000">
 Análisis Léxico con <TT>rexical</TT></A>
-</H2>
-<PRE>
+</H2><PRE>
 [~/Dropbox/src/PL/rexical/sample(master)]$ cat -n calc3.rex
      1  #
      2  # calc3.rex
@@ -195,13 +187,10 @@ Análisis Léxico con <TT>rexical</TT></A>
     14  inner
     15  end
 </PRE>
-
 <P>
-
 <H2><A NAME="SECTION04613000000000000000">
 Análisis Sintáctico</A>
-</H2>
-<PRE>
+</H2><PRE>
 [~/Dropbox/src/PL/rexical/sample(master)]$ cat -n calc3.racc 
      1  #
      2  # A simple calculator, version 3.
@@ -251,19 +240,16 @@ Análisis Sintáctico</A>
     46    end
     47  end
 </PRE>
-
 <P>
-
 <H4><A NAME="SECTION04613010000000000000">
 Precedencias</A>
-</H4>
-  
+</H4><I>
 
 <code>right</code> is yacc's <code>%right</code>, <code>left</code> is yacc's <code>%left</code>.
-
+</I>
 <P>
-<code>= SYMBOL</code>  means yacc's <code>%prec SYMBOL</code>:
-<PRE>
+<I><code>= SYMBOL</code>  means yacc's <code>%prec SYMBOL</code>:
+</I><PRE>
 prechigh
   nonassoc '++'
   left     '*' '/'
@@ -271,9 +257,7 @@ prechigh
   right    '='
 preclow
 </PRE>
-
-<P>
-<PRE>
+<P><PRE>
 rule
   exp: exp '*' exp
      | exp '-' exp
@@ -281,18 +265,14 @@ rule
          :
          :
 </PRE>
-
 <P>
-
 <H4><A NAME="SECTION04613020000000000000">
 Atributos</A>
-</H4>
-  
+</H4><I>
 
 You can use following special local variables in action.
-
+</I>
 <P>
-
 <OL>
 <LI><PRE>
 result ($$)
@@ -314,39 +294,29 @@ _values (...$-2,$-1,$0)
 A stack of values. DO NOT MODIFY this stack unless you know what you are doing.
 </LI>
 </OL>
-
 <P>
-
 <H4><A NAME="SECTION04613030000000000000">
 Declaring Tokens</A>
-</H4>
-  
+</H4><I>
 
 By declaring tokens, you can avoid bugs. 
-
-<P>
-<PRE>
+</I>
+<P><PRE>
 token NUM ID IF
 </PRE>
-
 <P>
-
 <H4><A NAME="SECTION04613040000000000000">
 Opciones</A>
 </H4>
-  
-
 <P>
-You can write options for racc command in your racc file.
-
-<P>
-<PRE>
+<I>You can write options for racc command in your racc file.
+</I>
+<P><PRE>
 options OPTION OPTION ...
-</PRE>
+</PRE><I>
 Options are:
-
+</I>
 <P>
-
 <OL>
 <LI><PRE>
 omit_action_call
@@ -361,29 +331,24 @@ result_var
 use/does not use local variable "result"
 </LI>
 </OL>
-
 <P>
-You can use <code>no_</code> prefix to invert its meanings.
-
+<I>You can use <code>no_</code> prefix to invert its meanings.
+</I>
 <P>
-
 <H4><A NAME="SECTION04613050000000000000">
 User Code Block</A>
 </H4>
-  
-
 <P>
-"User Code Block" is a Ruby source code which is copied to output. There are three user code block, 
+<I>"User Code Block" is a Ruby source code which is copied to output. There are three user code block, 
 "header" 
 "inner" 
 and "
 footer".
-
+</I>
 <P>
-Format of user code is like this:
-
-<P>
-<PRE>
+<I>Format of user code is like this:
+</I>
+<P><PRE>
 ---- header
   ruby statement
   ruby statement
@@ -393,13 +358,12 @@ Format of user code is like this:
   ruby statement
      :
      :
-</PRE>
+</PRE><I>
 If four <code>-</code> exist on line head, 
 racc treat it as beginning of user code block. 
 A name of user code must be one word.
-
+</I>
 <P>
-
 <DIV CLASS="navigation"><HR>
 <A NAME="tex2html2068"
   HREF="node68.html">

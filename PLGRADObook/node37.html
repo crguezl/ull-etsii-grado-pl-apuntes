@@ -119,41 +119,39 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <FONT COLOR="#ff0000"> Dangling else</FONT>: Asociando un else con su if mas cercano</A>
 </H1>
-
 <P>
-The dangling else is a problem in computer programming in which an
+<I>The dangling else is a problem in computer programming in which an
 optional <code>else clause</code> in an <code>If–then(–else)</code> statement results in nested
 conditionals being ambiguous. 
-
+</I>
 <P>
-Formally, the reference context-free
+<I>Formally, the reference context-free
 grammar of the language is ambiguous, meaning there is more than one
 correct parse tree.
-
+</I>
 <P>
-In many programming languages one may write conditionally executed code
+<I>In many programming languages one may write conditionally executed code
 in two forms: 
-
+</I>
 <P>
-the <code>if-then</code> form, and the <code>if-then-else</code> form – the 
+<I>the <code>if-then</code> form, and the <code>if-then-else</code> form – the 
 <code>else</code>
 clause is optional:
-<PRE>
+</I><PRE>
               if a then s
               if a then s1 else s2
 </PRE>
-
 <P>
-This gives rise to an ambiguity in interpretation when there are nested
+<I>This gives rise to an ambiguity in interpretation when there are nested
 statements, specifically whenever an <code>if-then</code> form appears as <code>s1</code>
 in an <code>if-then-else</code> form:
-<PRE>
+</I><PRE>
               if a then if b then s else s2
-</PRE>
+</PRE><I>
 In this example, <code>s</code> is unambiguously executed when <code>a</code> is
 <code>true</code> and <code>b</code> is <code>true</code>, but one may interpret <code>s2</code>
 as being executed when <code>a</code> is <code>false</code> 
-
+</I>
 <UL>
 <LI>(thus attaching the
 <code>else</code> to the first <code>if</code>) or when 
@@ -162,46 +160,41 @@ as being executed when <code>a</code> is <code>false</code>
 and <code>b</code> is <code>false</code> (thus attaching the <code>else</code> to the
 second <code>if</code>). 
 </LI>
-</UL>
+</UL><I>
 In other words, one may see the previous statement
 as either of the following expressions:
-<PRE>
+</I><PRE>
 if a then (if b then s) else s2
-</PRE>
+</PRE><I>
       or
-<PRE>
+</I><PRE>
 if a then (if b then s else s2)
 </PRE>
-
 <P>
-This is a problem that often comes up in compiler construction,
+<I>This is a problem that often comes up in compiler construction,
 especially scannerless parsing. 
-
+</I>
 <P>
-The convention when dealing with
+<I>The convention when dealing with
 the dangling <code>else</code> is to attach the <code>else</code> to the nearby
 <code>if</code> statement.
-
+</I>
 <P>
-Programming languages like Pascal and C follow this
+<I>Programming languages like Pascal and C follow this
 convention, so there is no ambiguity in the semantics of the language,
 though the use of a parser generator may lead to ambiguous grammars. 
 In
 these cases 
 <FONT COLOR="#ff0000"> alternative grouping is accomplished by explicit blocks</FONT>,
 such as <code>begin...end</code> in Pascal and <code>{...}</code> in C.
-
+</I>
 <P>
-Here follows a solution in PEG.js:
-
+<I>Here follows a solution in PEG.js:
+</I>
 <P>
-
 <H4><A NAME="SECTION04490010000000000000">
 danglingelse.pegjs</A>
-</H4>
-  
-
-<PRE>
+</H4><PRE>
 $ cat danglingelse.pegjs 
 /*
 S ← 'if' C 'then' S 'else' S / 'if' C 'then' S
@@ -217,44 +210,29 @@ else = _'else'_
 if = _'if'_
 then = _'then'_
 </PRE>
-
 <P>
-
 <H4><A NAME="SECTION04490020000000000000">
 use_danglingelse.js</A>
 </H4>
-  
-
-<P>
-<PRE>
+<P><PRE>
 $ cat use_danglingelse.js 
 var PEG = require("./danglingelse.js");
 var r = PEG.parse("if c then if c then o else o");
 console.log(r);
 </PRE>
-
 <P>
-
 <H4><A NAME="SECTION04490030000000000000">
 Ejecución</A>
-</H4>
-  
-
-<PRE>
+</H4><PRE>
 $ ../bin/pegjs danglingelse.pegjs 
 $ node use_danglingelse.js 
 [ 'ifthen', 'c', [ 'ifthenelse', 'c', 'O', 'O' ] ]
 </PRE>
-
 <P>
-
 <H4><A NAME="SECTION04490040000000000000">
 Donde</A>
 </H4>
-  
-
 <P>
-
 <UL>
 <LI><PRE>
 [~/srcPLgrado/pegjs/examples(master)]$ pwd -P
@@ -275,9 +253,7 @@ origin  git@github.com:crguezl/pegjs.git (push)
   HREF="https://github.com/crguezl/pegjs/tree/master/examples">https://github.com/crguezl/pegjs/tree/master/examples</A>
 </LI>
 </UL>
-
 <P>
-
 <DIV CLASS="navigation"><HR>
 <A NAME="tex2html1516"
   HREF="node38.html">

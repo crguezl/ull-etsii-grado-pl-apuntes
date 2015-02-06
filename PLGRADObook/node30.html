@@ -128,57 +128,47 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <H1><A NAME="SECTION04420000000000000000">
 PEGJS</A>
 </H1>
-
 <P>
-
 <H4><A NAME="SECTION04420010000000000000">
 What is</A>
 </H4>
-  
-
 <P>
- <A NAME="tex2html215"
+<I> <A NAME="tex2html215"
   HREF="http://pegjs.majda.cz/">PEG.js</A>
  is a parser generator for JavaScript that produces 
 parsers. 
-
+</I>
 <P>
- <A NAME="tex2html216"
+<I> <A NAME="tex2html216"
   HREF="http://pegjs.majda.cz/">PEG.js</A>
  generates a parser from a Parsing Expression Grammar 
 describing a language.
-
+</I>
 <P>
-We can specify what the parser returns (using semantic actions on matched
+<I>We can specify what the parser returns (using semantic actions on matched
 parts of the input). 
-
+</I>
 <P>
-
 <H4><A NAME="SECTION04420020000000000000">
 Installation</A>
 </H4>
-  
-
 <P>
-To use the pegjs command, install  <A NAME="tex2html217"
+<I>To use the pegjs command, install  <A NAME="tex2html217"
   HREF="http://pegjs.majda.cz/">PEG.js</A>
  globally:
-
-<P>
-<PRE>
+</I>
+<P><PRE>
 $ npm install -g pegjs
-</PRE>
+</PRE><I>
 To use the JavaScript API, install  <A NAME="tex2html218"
   HREF="http://pegjs.majda.cz/">PEG.js</A>
  locally:
-
-<P>
-<PRE>
+</I>
+<P><PRE>
 $ npm install pegjs
 </PRE>
-
 <P>
-To use it from the browser, download the 
+<I>To use it from the browser, download the 
  <A NAME="tex2html219"
   HREF="http://pegjs.majda.cz/">PEG.js</A>
 
@@ -187,16 +177,12 @@ library (
   HREF="https://github.com/dmajda/pegjs/releases/download/v0.8.0/peg-0.8.0.js">regular </A>
 or <A NAME="tex2html221"
   HREF="https://github.com/dmajda/pegjs/releases/download/v0.8.0/peg-0.8.0.min.js">minified version</A>).
-
+</I>
 <P>
-
 <H4><A NAME="SECTION04420030000000000000">
 El compilador de línea de comandos</A>
 </H4>
-  
-
-<P>
-<PRE>
+<P><PRE>
 [~/srcPLgrado/pegjs/examples(master)]$ pegjs --help
 Usage: pegjs [options] [--] [&lt;input_file&gt;] [&lt;output_file&gt;]
 
@@ -227,16 +213,11 @@ Options:
   -v, --version                      print version information and exit
   -h, --help                         print help and exit
 </PRE>
-
 <P>
-
 <H4><A NAME="SECTION04420040000000000000">
 Using it</A>
 </H4>
-  
-
-<P>
-<PRE>
+<P><PRE>
 [~/srcPLgrado/pegjs/examples(master)]$ node
 &gt; PEG = require("pegjs")
 { VERSION: '0.8.0',
@@ -251,57 +232,50 @@ Using it</A>
         generate: [Object] },
      compile: [Function] },
   buildParser: [Function] }
-</PRE>
-<PRE>
+</PRE><PRE>
 &gt; parser = PEG.buildParser("start = ('a' / 'b')+")
 { SyntaxError: [Function: SyntaxError],
   parse: [Function: parse] }
 </PRE>
-
 <P>
-Using the generated parser is simple — just call its <code>parse</code> method
+<I>Using the generated parser is simple — just call its <code>parse</code> method
 and pass an input string as a parameter. 
-
+</I>
 <P>
-The method will return 
-
+<I>The method will return 
+</I>
 <UL>
 <LI>a parse result or 
 </LI>
 <LI>throw an 
 <FONT COLOR="#ff0000"> exception</FONT> if the input is invalid.  
 </LI>
-</UL>
+</UL><I>
 You can tweak parser behavior by passing a second parameter with
 an <code>options</code> object to the <code>parse</code> method. 
-
+</I>
 <P>
-Only one option is currently supported:
-
+<I>Only one option is currently supported:
+</I>
 <P>
-<code>startRule</code> which is the name of the rule to start parsing from.
-
-<P>
-<PRE>
+<I><code>startRule</code> which is the name of the rule to start parsing from.
+</I>
+<P><PRE>
 &gt; parser.parse("abba"); 
 [ 'a', 'b', 'b', 'a' ]
 &gt;
 </PRE>
-
 <P>
-
 <H4><A NAME="SECTION04420050000000000000">
 Opciones: allowedStartRules</A>
-</H4>
-  
+</H4><I>
 
 Specifying
 
 <FONT COLOR="#ff0000"> allowedStartRules</FONT> we can set the
 rules the parser will be allowed to start parsing from (default: the first rule in the grammar).
-
-<P>
-<PRE>
+</I>
+<P><PRE>
 [~/srcPLgrado/pegjs/examples(master)]$ cat allowedstartrules.js 
 var PEG = require("pegjs");
 var grammar = "a = 'hello' b\nb = 'world'"; //"a = 'hello' b\nb='world';
@@ -324,9 +298,7 @@ catch(e) {
   console.log(e);
 }
 </PRE>
-
-<P>
-<PRE>
+<P><PRE>
 [~/srcPLgrado/pegjs/examples(master)]$ node allowedstartrules.js 
 a = 'hello' b
 b = 'world'
@@ -342,11 +314,10 @@ Error!!!!
   column: 1,
   name: 'SyntaxError' }
 </PRE>
-
 <P>
-The 
+<I>The 
 <FONT COLOR="#ff0000"> exception</FONT> contains
-
+</I>
 <UL>
 <LI>message 
 </LI>
@@ -362,25 +333,22 @@ The
 </LI>
 <LI>name
 </LI>
-</UL>
+</UL><I>
 and properties with more details about the error.
-
+</I>
 <P>
-
 <H4><A NAME="SECTION04420060000000000000">
 Opciones: output</A>
 </H4>
-  
-
 <P>
-When
+<I>When
 <code>output</code>
 is set to 
 <FONT COLOR="#ff0000"> parser</FONT>, the method will return generated parser object; if
 set to 
 <FONT COLOR="#0000ff"> source</FONT>, it will return parser source code as a string (default:
 <code>parser</code>).
-<PRE>
+</I><PRE>
 &gt; PEG = require("pegjs")
 &gt; grammar = "a = 'hello' b\nb='world'"
 'a = \'hello\' b\nb=\'world\''
@@ -401,21 +369,17 @@ undefined
    * http://pegjs.majda.cz/
    */
 </PRE>
-
 <P>
-
 <H4><A NAME="SECTION04420070000000000000">
 Opciones: plugin</A>
-</H4>
-  
+</H4><I>
 
 La opción 
 
 <FONT COLOR="#ff0000"> plugins</FONT>
 indica que plugin se van a usar.
-
-<P>
-<PRE>
+</I>
+<P><PRE>
 [~/srcPLgrado/pegjs/examples(master)]$ cat plugin.coffee 
 #!/usr/bin/env coffee
 PEG = require 'pegjs'
@@ -428,40 +392,30 @@ _ = [ \t]+      { console.log 3 }
 parser = PEG.buildParser grammar, plugins: [coffee]
 r = parser.parse "hello world"
 </PRE>
-
-<P>
-<PRE>
+<P><PRE>
 [~/srcPLgrado/pegjs/examples(master)]$ ./plugin.coffee 
 3
 2
 1
 </PRE>
-
 <P>
-
 <H4><A NAME="SECTION04420080000000000000">
 cache</A>
 </H4>
-  
-
 <P>
-If <code>true</code>, makes the parser cache results, avoiding exponential parsing
+<I>If <code>true</code>, makes the parser cache results, avoiding exponential parsing
 time in pathological cases but making the parser slower (default:
 <code>false</code>).
-
+</I>
 <P>
-
 <H4><A NAME="SECTION04420090000000000000">
 optimize</A>
 </H4>
-  
-
 <P>
-Selects between optimizing the generated parser for parsing speed
+<I>Selects between optimizing the generated parser for parsing speed
 (<code>speed</code>) or code size (<code>size</code>) (default: <code>speed</code>).
-
+</I>
 <P>
-
 <DIV CLASS="navigation"><HR>
 <A NAME="tex2html1388"
   HREF="node31.html">

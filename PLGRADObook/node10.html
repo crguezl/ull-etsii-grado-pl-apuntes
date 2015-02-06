@@ -140,86 +140,71 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <HR>
 
 <H1><A NAME="SECTION04130000000000000000"></A>
-   <A NAME="2855"></A>
+   <A NAME="2859"></A>
   
 <A NAME="sectionpractica:csv"></A>
 <BR>
 Práctica: Comma Separated Values. CSV
 </H1>
-
 <P>
-
 <H4><A NAME="SECTION04130010000000000000">
 Donde</A>
 </H4>
-  
-
-<P>
-<PRE>
+<P><PRE>
 [~/srcPLgrado/csv(master)]$ pwd -P
 /Users/casiano/local/src/javascript/PLgrado/csv
 </PRE>
-
 <P>
-Véase
+<I>Véase
 <A NAME="tex2html53"
   HREF="https://bitbucket.org/casiano/pl-grado-csv/src">https://bitbucket.org/casiano/pl-grado-csv/src</A>
 y
 <A NAME="tex2html54"
   HREF="https://github.com/crguezl/csv">https://github.com/crguezl/csv</A>.
-
+</I>
 <P>
-
 <H4><A NAME="SECTION04130020000000000000">
 Introducción al formato CSV</A>
 </H4>
-  
-
 <P>
-Véase <A NAME="tex2html55"
+<I>Véase <A NAME="tex2html55"
   HREF="http://en.wikipedia.org/wiki/Comma-separated_values">Comma Separated Values</A>
 en la Wikipedia:
-
+</I>
 <P>
-<I>A comma-separated values (CSV) file stores tabular data (numbers
+<I><I>A comma-separated values (CSV) file stores tabular data (numbers
 and text) in plain-text form. 
  A CSV file consists of any number of
 records, separated by line breaks of some kind; each record consists
 of fields, separated by a comma. All records have an identical
 sequence of fields.</I>
-
+</I>
 <P>
-
 <H4><A NAME="SECTION04130030000000000000">
 Ejemplo de ejecución</A>
 </H4>
-  
-
 <P>
-Véase la página en 
+<I>Véase la página en 
 <A NAME="tex2html56"
   HREF="http://crguezl.github.io/csv/">http://crguezl.github.io/csv/</A>.
 Pruebe a dar como entrada cualquiera de estas dos
-<PRE>
+</I><PRE>
 [~/srcPLgrado/csv(gh-pages)]$ cat input.txt 
 "producto",           "precio"
 "camisa",             "4,3"
 "libro de O\"Reilly", "7,2"
 </PRE>
-
-<P>
-<PRE>
+<P><PRE>
 [~/srcPLgrado/csv(gh-pages)]$ cat input2.txt 
 "producto",           "precio"  "fecha"
 "camisa",             "4,3",    "14/01"
 "libro de O\"Reilly", "7,2"     "13/02"
 </PRE>
-
 <P>
-Pruebe también a dar alguna entrada errónea.
-
+<I>Pruebe también a dar alguna entrada errónea.
+</I>
 <P>
-
+<I>
 <DIV ALIGN="CENTER"><A NAME="figure:csv"></A><A NAME="1213"></A>
 <TABLE>
 <CAPTION ALIGN="BOTTOM"><STRONG>Figura:</STRONG>
@@ -233,63 +218,59 @@ Ejemplo de pantalla de La aplicación para el Análisis de Datos en Formato CSV<
 \end{figure}"></TD></TR>
 </TABLE>
 </DIV>
-
+</I>
 <P>
-
 <H4><A NAME="SECTION04130040000000000000">
 Aproximación al análisis mediante expresiones regulares de CSV</A>
-</H4>
-  
+</H4><I>
 
 Una primera aproximación sería hacer <code>split</code> por las comas:
-<PRE>
+</I><PRE>
 &gt; x = '"earth",1,"moon",9.374'
 '"earth",1,"moon",9.374'
 &gt; y = x.split(/,/)
 [ '"earth"', '1', '"moon"', '9.374' ]
 </PRE>
-
 <P>
-Esta solución deja las comillas dobles en los campos entrecomillados. 
+<I>Esta solución deja las comillas dobles en los campos entrecomillados. 
 Peor aún, los campos entrecomillados pueden contener comas, en cuyo 
 caso la división proporcionada por <code>split</code> sería errónea:
-<PRE>
+</I><PRE>
 &gt; x = '"earth, mars",1,"moon, fobos",9.374'
 '"earth, mars",1,"moon, fobos",9.374'
 &gt; y = x.split(/,/)
 [ '"earth', ' mars"', '1', '"moon', ' fobos"', '9.374' ]
 </PRE>
-
 <P>
-La siguiente expresión regular reconoce cadenas de comillas dobles
+<I>La siguiente expresión regular reconoce cadenas de comillas dobles
 con secuencias de escape seguidas opcionalmente de una coma:
-<PRE>
+</I><PRE>
 &gt; x = '"earth, mars",1,"moon, fobos",9.374'
 '"earth, mars",1,"moon, fobos",9.374'
 &gt; r = /"((?:[^"\\]|\\.)*)"\s*,?/g
 /"((?:[^"\\]|\\.)*)"\s*,?/g
 &gt; w = x.match(r)
 [ '"earth, mars",', '"moon, fobos",' ]
-</PRE>
+</PRE><I>
 If your regular expression uses the <code>g</code> flag, you can use the <code>exec</code> 
 or <code>match</code> methods
 multiple times to find successive matches in the same string. When
 you do so, the search starts at the substring of string specified by the
 regular expression's <code>lastIndex</code> property.
-
+</I>
 <P>
-Javascript sub-matches stop working when the <code>g</code> modifier is set:
-<PRE>
+<I>Javascript sub-matches stop working when the <code>g</code> modifier is set:
+</I><PRE>
 &gt; text = 'test test test test'
 'test test test test'
 &gt; text.match(/t(e)(s)t/)
 [ 'test', 'e', 's', index: 0, input: 'test test test test' ]
 &gt; text.match(/t(e)(s)t/g)
 [ 'test', 'test', 'test', 'test' ]
-</PRE>
+</PRE><I>
 Sin embargo el método <code>exec</code> de las expresiones regulares si que 
 conserva las subexpresiones que casan con los paréntesis:
-<PRE>
+</I><PRE>
 &gt; r = /t(e)(s)t/g
 /t(e)(s)t/g
 &gt; text = 'test test test test'
@@ -302,14 +283,14 @@ conserva las subexpresiones que casan con los paréntesis:
 [ 'test', 'e', 's', index: 10, input: 'test test test test' ]
 [ 'test', 'e', 's', index: 15, input: 'test test test test' ]
 undefined
-</PRE>
+</PRE><I>
 Another catch to remember is that <code>exec()</code> doesn't return the matches in
 one big array: it keeps returning matches until it runs out, in which
 case it returns <code>null</code>.
-
+</I>
 <P>
-Véase
-
+<I>Véase
+</I>
 <UL>
 <LI><A NAME="tex2html57"
   HREF="http://stackoverflow.com/questions/844001/javascript-regex-and-submatches">Javascript Regex and Submatches</A>
@@ -320,12 +301,11 @@ en StackOverflow.
 <A HREF="node12.html#section:ejercicioslastindex">1.5</A>
 </LI>
 </UL>
-
 <P>
-Esta otra expresión regular <code>/([^,]+),?|\s*,/</code> actúa de forma parecida al <code>split</code>. 
+<I>Esta otra expresión regular <code>/([^,]+),?|\s*,/</code> actúa de forma parecida al <code>split</code>. 
 Reconoce secuencias no vacías de caracteres que no contienen comas seguidas opcionalmente
 de una coma o bien una sóla coma (precedida opcionalmente de blancos):
-<PRE>
+</I><PRE>
 &gt; x = '"earth, mars",1,"moon, fobos",9.374'
 '"earth, mars",1,"moon, fobos",9.374'
 &gt; r = /([^,]+),?|\s*,/g
@@ -333,26 +313,24 @@ de una coma o bien una sóla coma (precedida opcionalmente de blancos):
 &gt; w = x.match(r)
 [ '"earth,', ' mars",', '1,', '"moon,', ' fobos",', '9.374' ]
 </PRE>
-
 <P>
-La siguiente expresión regular es la unión de dos: 
-
+<I>La siguiente expresión regular es la unión de dos: 
+</I>
 <UL>
 <LI>Cadenas de dobles comillas seguidas de una coma opcional entre espacios en blanco
 </LI>
 <LI>Cadenas que no tienen comas
 </LI>
-</UL>
-<PRE>
+</UL><PRE>
 &gt;  x = '"earth, mars",1,"moon, fobos",9.374'
 '"earth, mars",1,"moon, fobos",9.374'
 &gt; r = /\s*"((?:[^"\\]|\\.)*)"\s*,?|\s*([^,]+),?|\s*,/g
 /\s*"((?:[^"\\]|\\.)*)"\s*,?|\s*([^,]+),?|\s*,/g
 &gt; w = x.match(r)
 [ '"earth, mars",', '1,', '"moon, fobos",', '9.374' ]
-</PRE>
+</PRE><I>
 El operador <code>|</code> trabaja en circuito corto:
-<PRE>
+</I><PRE>
 &gt; r = /(ba?)|(b)/
 /(ba?)|(b)/
 &gt; r.exec("ba")
@@ -362,10 +340,9 @@ El operador <code>|</code> trabaja en circuito corto:
 &gt; r.exec("ba")
 [ 'b', 'b', undefined, index: 0, input: 'ba' ]
 </PRE>
-
 <P>
-Si usamos <code>exec</code> tenemos:
-<PRE>
+<I>Si usamos <code>exec</code> tenemos:
+</I><PRE>
 &gt; x = '"earth, mars",1,"moon, fobos",9.374'
 '"earth, mars",1,"moon, fobos",9.374'
 &gt; r = /\s*"((?:[^"\\]|\\.)*)"\s*,?|\s*([^,]+),?|\s*,/g
@@ -381,9 +358,7 @@ Si usamos <code>exec</code> tenemos:
   input: '"earth, mars",1,"moon, fobos",9.374' ]
 undefined
 </PRE>
-
 <P>
-
 <OL>
 <LI><A NAME="tex2html58"
   HREF="https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Regexp">RegExp Objects</A>
@@ -546,15 +521,10 @@ console.log(f2c(arg));
 </PRE>
 </LI>
 </OL>
-
 <P>
-
 <H4><A NAME="SECTION04130050000000000000">
 index.html</A>
-</H4>
-  
-
-<PRE>
+</H4><PRE>
 &lt;html&gt;
   &lt;head&gt;
      &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8"&gt;
@@ -581,26 +551,21 @@ index.html</A>
   &lt;/body&gt;
 &lt;/html&gt;
 </PRE>
-
 <P>
-
 <H4><A NAME="SECTION04130060000000000000">
 jQuery</A>
 </H4>
-  
-
 <P>
-<A NAME="tex2html63"
+<I><A NAME="tex2html63"
   HREF="http://jquery.com/">jQuery</A>
 (<A NAME="tex2html64"
   HREF="http://jquery.com/download/">Descarga la librería</A>)
-
+</I>
 <P>
-<A NAME="2882"></A><SPAN  CLASS="textbf">jQuery</SPAN> is a cross-platform JavaScript library designed to simplify
+<I><A NAME="2886"></A><SPAN  CLASS="textbf">jQuery</SPAN> is a cross-platform JavaScript library designed to simplify
 the client-side scripting of HTML. 
-
+</I>
 <P>
-
 <UL>
 <LI>It was released in January 2006
 at BarCamp NYC by John Resig. 
@@ -633,16 +598,11 @@ and <A NAME="tex2html66"
   HREF="http://en.wikipedia.org/wiki/Dojo_Toolkit">Dojo</A>.
 </LI>
 </UL>
-
 <P>
-
 <H4><A NAME="SECTION04130070000000000000">
 How JQuery Works</A>
 </H4>
-  
-
 <P>
-
 <UL>
 <LI>Véase
   <A NAME="tex2html67"
@@ -658,9 +618,7 @@ en GitHub
 </PRE>
 </LI>
 </UL>
-
-<P>
-<PRE>
+<P><PRE>
 ~/javascript/jquery(master)]$ cat index.html 
 &lt;!doctype html&gt;
 &lt;html&gt;
@@ -679,24 +637,20 @@ en GitHub
 &lt;/body&gt;
 &lt;/html&gt;
 </PRE>
-
 <P>
-To ensure that their code runs after the browser finishes loading the document, many JavaScript programmers wrap their code in an onload function:
-
-<P>
-<PRE>
+<I>To ensure that their code runs after the browser finishes loading the document, many JavaScript programmers wrap their code in an onload function:
+</I>
+<P><PRE>
 window.onload = function() { alert( "welcome" ); }
 </PRE>
-
 <P>
-Unfortunately, the code doesn't run until all images are finished downloading, including banner ads. To run code as soon as the document is ready to be manipulated, jQuery has a statement known as the ready event:
-
-<P>
-<PRE>
+<I>Unfortunately, the code doesn't run until all images are finished downloading, including banner ads. To run code as soon as the document is ready to be manipulated, jQuery has a statement known as the ready event:
+</I>
+<P><PRE>
 $( document ).ready(function() {
     // Your code here.
 });
-</PRE>
+</PRE><I>
 For <code>click</code> and most other events, you can prevent the default
 behavior by calling 
 <A NAME="tex2html69"
@@ -704,9 +658,8 @@ behavior by calling
 in the event handler.
 If this method is called, the default action of the event will not be triggered.
 For example, clicked anchors will not take the browser to a new URL.
-
-<P>
-<PRE>
+</I>
+<P><PRE>
 [~/javascript/jquery(master)]$ cat index2.html 
 &lt;!doctype html&gt;
 &lt;html&gt;
@@ -729,19 +682,18 @@ For example, clicked anchors will not take the browser to a new URL.
     &lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;
-</PRE>
+</PRE><I>
 Borrowing from CSS 1–3, and then adding its own, jQuery offers a powerful set of tools for matching a set of elements in a document.
-
+</I>
 <P>
-See jQuery <A NAME="tex2html70"
+<I>See jQuery <A NAME="tex2html70"
   HREF="http://api.jquery.com/category/selectors/">Category: Selectors</A>.
-
+</I>
 <P>
-Another common task is adding or removing a class.
+<I>Another common task is adding or removing a class.
 jQuery also provides some handy effects.
-
-<P>
-<PRE>
+</I>
+<P><PRE>
 [~/javascript/jquery(master)]$ cat index3.html 
 &lt;!doctype html&gt;
 &lt;html&gt;
@@ -772,7 +724,6 @@ jQuery also provides some handy effects.
 &lt;/body&gt;
 &lt;/html&gt;
 </PRE>
-
 <UL>
 <LI>In JavaScript <code>this</code> always refers to the <I>owner</I> of the function
 we're executing, or rather, <I>to the object that a function is a method of</I>.
@@ -821,22 +772,21 @@ $( "p" ).removeClass( "myClass noClass" ).addClass( "yourClass" );
 <P>
 </LI>
 </UL>
-
 <P>
-JavaScript enables you to freely
-pass functions around to be executed at a later time. A <A NAME="2892"></A><SPAN  CLASS="textbf">callback</SPAN> is a
+<I>JavaScript enables you to freely
+pass functions around to be executed at a later time. A <A NAME="2896"></A><SPAN  CLASS="textbf">callback</SPAN> is a
 function that is passed as an argument to another function and is usually 
 executed
 after its parent function has completed. 
-
+</I>
 <P>
-Callbacks are special because
+<I>Callbacks are special because
 they wait to execute until their parent finishes or some event occurs. 
-
+</I>
 <P>
-Meanwhile, the
+<I>Meanwhile, the
 browser can be executing other functions or doing all sorts of other work.
-<PRE>
+</I><PRE>
 [~/javascript/jquery(master)]$ cat app.rb
 require 'sinatra'
 
@@ -887,9 +837,7 @@ __END__
 @@tutu
   &lt;h1&gt;Not an Ajax Request!&lt;/h1&gt;
 </PRE>
-
 <P>
-
 <UL>
 <LI><code>jQuery.get( url [, data ] [, success(data, textStatus, jqXHR) ] [, dataType ] )</code>
 load data from the server using a HTTP GET request.
@@ -930,45 +878,40 @@ The type of data expected from the server. Default: Intelligent Guess
 (<code>xml</code>, <code>json</code>, <code>script</code>, <code>or</code> <code>html</code>).
 </LI>
 </UL>
-
 <P>
-To use callbacks, it is important to know how to pass them into their parent function.
-
+<I>To use callbacks, it is important to know how to pass them into their parent function.
+</I>
 <P>
-Executing callbacks with arguments can be tricky.
-
+<I>Executing callbacks with arguments can be tricky.
+</I>
 <P>
-This code example will not work:
-
-<P>
-<PRE>
+<I>This code example will not work:
+</I>
+<P><PRE>
 $.get( "myhtmlpage.html", myCallBack( param1, param2 ) );
-</PRE>
+</PRE><I>
 The reason this fails is that the code executes 
-
-<P>
-<PRE>
+</I>
+<P><PRE>
 myCallBack( param1, param2)
 </PRE>
-
 <P>
-immediately and then passes <code>myCallBack()</code>'s return value as the second
+<I>immediately and then passes <code>myCallBack()</code>'s return value as the second
 parameter to <code>$.get()</code>. 
-
+</I>
 <P>
-We actually want to pass the function <code>myCallBack</code>,
+<I>We actually want to pass the function <code>myCallBack</code>,
 not <code>myCallBack( param1, param2 )</code>'s return value (which might or might not
 be a function). 
-
+</I>
 <P>
-So, how to pass in <code>myCallBack()</code> and include arguments?
-
+<I>So, how to pass in <code>myCallBack()</code> and include arguments?
+</I>
 <P>
-To defer executing <code>myCallBack()</code> with its parameters, you can use
+<I>To defer executing <code>myCallBack()</code> with its parameters, you can use
 an anonymous function as a wrapper.
-
-<P>
-<PRE>
+</I>
+<P><PRE>
 [~/javascript/jquery(master)]$ cat app2.rb
 require 'sinatra'
 
@@ -1026,16 +969,15 @@ __END__
         });
     });
   &lt;/script&gt;
-</PRE>
+</PRE><I>
 El ejemplo en <code>app2.rb</code> puede verse desplegado en Heroku:
 <A NAME="tex2html72"
   HREF="http://jquery-tutorial.herokuapp.com/">http://jquery-tutorial.herokuapp.com/</A>
+</I>
 <P>
-
 <H4><A NAME="SECTION04130080000000000000">
 JSON.stringify()</A>
-</H4>
-  
+</H4><I>
 
 <A NAME="parrafo:jsonstringify"></A>The
 <A NAME="tex2html73"
@@ -1043,10 +985,10 @@ JSON.stringify()</A>
 method converts a value to  <TT>JSON</TT> , optionally replacing values
 if a <code>replacer function</code> is specified, or optionally including only the
 specified properties if a <code>replacer array</code> is specified.
-
+</I>
 <P>
-<code>JSON.stringify(value[, replacer [, space]])</code>
-
+<I><code>JSON.stringify(value[, replacer [, space]])</code>
+</I>
 <UL>
 <LI><code>value</code>
 
@@ -1073,30 +1015,26 @@ The value to convert to a JSON string.
 Causes the resulting string to be pretty-printed.
 </LI>
 </UL>
-
 <P>
-See another example of use in
+<I>See another example of use in
 <A NAME="tex2html74"
   HREF="http://jsfiddle.net/casiano/j7tsF/">http://jsfiddle.net/casiano/j7tsF/</A>.
 To learn to use JSFiddle wath the YouTube video 
 <A NAME="tex2html75"
   HREF="http://youtu.be/Iw4f-yRf7RU">How to use JSFiddle by Jason Diamond</A>
+</I>
 <P>
-
 <H4><A NAME="SECTION04130090000000000000">
 Underscore</A>
 </H4>
-  
-
 <P>
-<A NAME="tex2html76"
+<I><A NAME="tex2html76"
   HREF="http://underscorejs.org/">Underscore</A>:
 is a utility-belt library for JavaScript that provides a
 lot of the functional programming support that you would expect in
 Ruby.
-
+</I>
 <P>
-
 <UL>
 <LI>Underscore provides functions that support 
 methods like: 
@@ -1113,9 +1051,7 @@ function binding, javascript templating, deep equality testing, and so
 on. 
 </LI>
 </UL>
-
 <P>
-
 <UL>
 <LI>Cargando la librería:
 <PRE>
@@ -1218,16 +1154,11 @@ true
 </PRE>
 </LI>
 </UL>
-
 <P>
-
 <H4><A NAME="SECTION041300100000000000000">
 Templates en Underscore</A>
 </H4>
-  
-
 <P>
-
 <UL>
 <LI><A NAME="tex2html77"
   HREF="http://underscorejs.org/#template">Underscore: template</A>
@@ -1237,11 +1168,11 @@ Templates en Underscore</A>
 <P>
 Compiles JavaScript templates into functions that can be evaluated for
 rendering. Useful for rendering complicated bits of HTML from a JavaScript 
-object or from <A NAME="2907"></A><SPAN  CLASS="textbf">JSON</SPAN> data
+object or from <A NAME="2911"></A><SPAN  CLASS="textbf">JSON</SPAN> data
 sources.
 
 <P>
-JSON, or <A NAME="2909"></A><SPAN  CLASS="textbf">JavaScript Object Notation</SPAN>, is an open standard format
+JSON, or <A NAME="2913"></A><SPAN  CLASS="textbf">JavaScript Object Notation</SPAN>, is an open standard format
 that uses human-readable text to transmit data objects consisting of
 attribute–value pairs. It is used primarily to transmit data between
 a server and web application, as an alternative to XML.
@@ -1461,30 +1392,25 @@ _.template("Using 'with': &lt;%= data.answer %&gt;", {answer: 'no'}, {variable: 
 <P>
 </LI>
 </UL>
-
 <P>
-
 <H4><A NAME="SECTION041300110000000000000">
 Content delivery network or content distribution network (CDN)</A>
 </H4>
-  
-
 <P>
-Una CDN que provee <code>underscore</code> esta en 
+<I>Una CDN que provee <code>underscore</code> esta en 
 <A NAME="tex2html80"
   HREF="http://cdnjs.com/">http://cdnjs.com/</A>:
-<PRE>
+</I><PRE>
 &lt;script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"&gt;&lt;/script&gt;
 &lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"&gt;&lt;/script&gt;
 </PRE>
-
 <P>
-A content delivery network or content distribution network (CDN) is a
+<I>A content delivery network or content distribution network (CDN) is a
 large distributed system of servers deployed in multiple data centers
 across the Internet. The goal of a CDN is to serve content to end-users
 with high availability and high performance. CDNs serve a large fraction
 of the Internet content today, including 
-
+</I>
 <UL>
 <LI>web objects (text, graphics and scripts), 
 </LI>
@@ -1494,19 +1420,15 @@ of the Internet content today, including
 streaming media, and social networks.
 </LI>
 </UL>
-
 <P>
-Google provee también un servicio CDN para los desarrolladores en
+<I>Google provee también un servicio CDN para los desarrolladores en
 <A NAME="tex2html81"
   HREF="https://developers.google.com/speed/libraries/devguide">https://developers.google.com/speed/libraries/devguide</A>.
-
+</I>
 <P>
-
 <H4><A NAME="SECTION041300120000000000000">
 textarea, autofocus y button</A>
 </H4>
-  
-
 <OL>
 <LI><A NAME="tex2html82"
   HREF="http://www.w3schools.com/tags/tag_textarea.asp">textarea</A>:
@@ -1515,7 +1437,7 @@ textarea, autofocus y button</A>
 The <code>&lt;textarea&gt;</code> tag defines a multi-line text input control.
 
 <P>
-A <A NAME="2919"></A><SPAN  CLASS="textbf">text area</SPAN> can hold an unlimited number of characters, and the text
+A <A NAME="2923"></A><SPAN  CLASS="textbf">text area</SPAN> can hold an unlimited number of characters, and the text
 renders in a fixed-width font (usually Courier).
 
 <P>
@@ -1555,21 +1477,16 @@ Inside a <code>&lt;button&gt;</code> element you can put content, like text or i
 <P>
 </LI>
 </OL>
-
 <P>
-
 <H4><A NAME="SECTION041300130000000000000">
 Local Storage (HTML5 Web Storage)</A>
 </H4>
-  
-
 <P>
-<A NAME="2925"></A><SPAN  CLASS="textbf">Web storage</SPAN> and <A NAME="2927"></A><SPAN  CLASS="textbf">DOM storage</SPAN> 
+<I><A NAME="2929"></A><SPAN  CLASS="textbf">Web storage</SPAN> and <A NAME="2931"></A><SPAN  CLASS="textbf">DOM storage</SPAN> 
 (document object model) are web application
 software methods and protocols used for storing data in a web browser. 
-
+</I>
 <P>
-
 <UL>
 <LI>Web storage supports persistent data storage, similar to cookies but with
 a greatly enhanced capacity and no information stored in the HTTP
@@ -1584,8 +1501,8 @@ parecido, pero con el limite de 100kb.
 
 <P>
 </LI>
-<LI>There are two main web storage types: <A NAME="2929"></A><SPAN  CLASS="textbf">local storage</SPAN>
-and <A NAME="2931"></A><SPAN  CLASS="textbf">session storage</SPAN>, behaving similarly to persistent cookies and session
+<LI>There are two main web storage types: <A NAME="2933"></A><SPAN  CLASS="textbf">local storage</SPAN>
+and <A NAME="2935"></A><SPAN  CLASS="textbf">session storage</SPAN>, behaving similarly to persistent cookies and session
 cookies respectively.
 </LI>
 <LI>Unlike cookies, which can be accessed by both the server and client side, web storage falls exclusively under the purview of client-side scripting
@@ -1600,10 +1517,9 @@ each other's DOM with no specific restrictions, but prevents access to
 DOM on different sites.
 </LI>
 </UL>
-
 <P>
-Véase:
-
+<I>Véase:
+</I>
 <UL>
 <LI>Ejemplo en  GitHub:
 <A NAME="tex2html86"
@@ -1633,31 +1549,25 @@ by Dan Cruickshank
 Chapter 10. Section 2: LocalStorage
 </LI>
 </UL>
-
 <P>
-While Chrome does not provide a UI for clearing localStorage, there is an API that will either clear a specific key or the entire localStorage object on a website.
-
-<P>
-<PRE>
+<I>While Chrome does not provide a UI for clearing localStorage, there is an API that will either clear a specific key or the entire localStorage object on a website.
+</I>
+<P><PRE>
 //Clears the value of MyKey
 window.localStorage.clear("MyKey");
 
 //Clears all the local storage data
 window.localStorage.clear();
-</PRE>
+</PRE><I>
 Once done, localStorage will be cleared. Note that this affects
 all web pages on a single domain, so if you clear localStorage for
 <code>jsfiddle.net/index.html</code> (assuming that's the page you're on), then it
 clears it for all other pages on that site. 
-
+</I>
 <P>
-
 <H4><A NAME="SECTION041300140000000000000">
 global.css</A>
-</H4>
-  
-
-<PRE>
+</H4><PRE>
 html *
 {
    font-size: large; 
@@ -1685,9 +1595,7 @@ body
  background-color:#b0c4de;  /* blue */
 }
 </PRE>
-
 <P>
-
 <OL>
 <LI><A NAME="tex2html92"
   HREF="http://www.genbetadev.com/desarrollo-web/introduccion-a-las-pseudo-clases-de-css3">Introducción a las pseudo clases de CSS3</A>
@@ -1718,7 +1626,7 @@ basándonos en el lenguaje o que tipo de etiqueta no son
 <LI><A NAME="tex2html93"
   HREF="http://www.w3.org/TR/CSS2/selector.html#pattern-matching">CSS pattern matching</A>
 <P>
-In CSS, <A NAME="2939"></A><SPAN  CLASS="textbf">pattern matching</SPAN> rules determine which style rules apply
+In CSS, <A NAME="2943"></A><SPAN  CLASS="textbf">pattern matching</SPAN> rules determine which style rules apply
 to elements in the document tree. 
 These patterns, called selectors,
 may range from simple element names to rich contextual patterns. If all
@@ -1773,16 +1681,12 @@ See
 <P>
 </LI>
 </OL>
-
 <P>
-
 <H4><A NAME="SECTION041300150000000000000">
 csv.js</A>
 </H4>
-  
-
 <P>
-
+<I>
     <pre>
 <span class="c1">// See http://en.wikipedia.org/wiki/Comma-separated_values</span>
 <span class="s2">"use strict"</span><span class="p">;</span> <span class="c1">// Use ECMAScript 5 strict mode in browsers that support it</span>
@@ -1851,31 +1755,23 @@ csv.js</A>
   <span class="p">}</span>
 <span class="p">};</span>
     </pre>
-
+</I>
 <P>
-
 <OL>
 <LI><A NAME="tex2html97"
   HREF="http://docs.jquery.com/Tutorials:Getting_Started_with_jQuery">Tutorials:Getting Started with jQuery</A>
 </LI>
 </OL>
-
 <P>
-
 <H4><A NAME="SECTION041300160000000000000">
 Tareas</A>
 </H4>
-  
-
 <P>
-
 <UL>
 <LI>Añada pruebas usando Mocha y Chai
 </LI>
 </UL>
-
 <P>
-
 <DIV CLASS="navigation"><HR>
 <A NAME="tex2html972"
   HREF="node11.html">
