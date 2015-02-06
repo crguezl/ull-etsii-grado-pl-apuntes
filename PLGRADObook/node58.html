@@ -100,22 +100,23 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <H1><A NAME="SECTION045140000000000000000">
 Esquemas de Traducción</A>
-</H1><I>
-Un <A NAME="8165"></A><SPAN  CLASS="textbf">esquema de traducción</SPAN> es una gramática independiente del
+</H1>
+Un <A NAME="8169"></A><SPAN  CLASS="textbf">esquema de traducción</SPAN> es una gramática independiente del
 contexto en la cuál se han asociado atributos a los símbolos de la gramática.
 Un atributo queda caracterizado por un identificador
 o nombre y un tipo o clase. Además se han insertado acciones, esto es,
 código JavaScript/Perl/Python/C, ...en medio de las partes derechas.
 En ese código es posible referenciar los atributos de los
 símbolos de la gramática como variables del lenguaje subyacente.
-</I>
+
 <P>
-<I>Recuerde que el orden en que se evalúan los fragmentos de código
+Recuerde que el orden en que se evalúan los fragmentos de código
 es el de un recorrido primero-profundo del árbol de análisis sintáctico.
 Mas específicamente, considerando a las acciones como hijos-hoja del nodo,
 el recorrido que realiza un esquema de traducción es:
-</I>
-<P><PRE>
+
+<P>
+<PRE>
  1     function esquema_de_traduccion(node) {
  2 
  3       for(c in node.children) { # de izquierda a derecha
@@ -127,16 +128,18 @@ el recorrido que realiza un esquema de traducción es:
  9       }
 10     }
 </PRE>
+
 <P>
-<I>Obsérvese que, como el bucle recorre a los hijos
+Obsérvese que, como el bucle recorre a los hijos
 de izquierda a derecha, se debe dar la siguiente
 condición para que un esquema  de traducción funcione:
-</I>
+
 <P>
-<I>Para cualquier regla de producción aumentada con acciones, de la forma 
-</I>
+Para cualquier regla de producción aumentada con acciones, de la forma 
+
 <P>
-<DIV ALIGN="CENTER"><I><!-- MATH
+<DIV ALIGN="CENTER">
+<!-- MATH
  $A \rightarrow X_1 \ldots X_j$
  -->
 <SPAN CLASS="MATH"><IMG
@@ -157,9 +160,11 @@ condición para que un esquema  de traducción funcione:
 <SPAN CLASS="MATH"><IMG
  WIDTH="93" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
  SRC="img203.png"
- ALT="$ X_{j+1} \ldots X_n$"></SPAN></I></DIV>
+ ALT="$ X_{j+1} \ldots X_n$"></SPAN>
+</DIV>
+
 <P>
-<I>debe ocurrir que los atributos evaluados en
+debe ocurrir que los atributos evaluados en
 la acción insertada después de <SPAN CLASS="MATH"><IMG
  WIDTH="26" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
  SRC="img204.png"
@@ -182,38 +187,39 @@ no sea correcto evaluar atributos de <!-- MATH
  SRC="img203.png"
  ALT="$ X_{j+1} \ldots X_n$"></SPAN>
 en esa acción.
-</I>
+
 <P>
-<I>Por ejemplo, el siguiente esquema no satisface el requisito:
+Por ejemplo, el siguiente esquema no satisface el requisito:
 
 <center>
 <img src="wrongtranslationscheme.png" width="50%"/>
 </center>
-</I>
+
 <P>
-<I>porque cuando vas a ejecutar la acción <code>{ console.log(A.in) }</code> 
+porque cuando vas a ejecutar la acción <code>{ console.log(A.in) }</code> 
 el atributo <code>A.in</code> no ha sido computado.
-</I>
+
 <P>
-<I>Los atributos de cada símbolo de la gramática <!-- MATH
+Los atributos de cada símbolo de la gramática <!-- MATH
  $X \in V \cup \Sigma$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="88" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
  SRC="img205.png"
  ALT="$ X \in V \cup \Sigma$"></SPAN>
-se dividen en dos grupos disjuntos: <A NAME="8167"></A><SPAN  CLASS="textbf">atributos sintetizados</SPAN>
-y <A NAME="8169"></A><SPAN  CLASS="textbf">atributos heredados</SPAN>: 
-</I>
+se dividen en dos grupos disjuntos: <A NAME="8171"></A><SPAN  CLASS="textbf">atributos sintetizados</SPAN>
+y <A NAME="8173"></A><SPAN  CLASS="textbf">atributos heredados</SPAN>: 
+
 <P>
+
 <UL>
 <LI>Un atributo de <SPAN CLASS="MATH"><IMG
  WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
  SRC="img206.png"
- ALT="$ X$"></SPAN> es un <A NAME="8171"></A><SPAN  CLASS="textbf">atributo heredado</SPAN> 
+ ALT="$ X$"></SPAN> es un <A NAME="8175"></A><SPAN  CLASS="textbf">atributo heredado</SPAN> 
 si depende de atributos de su padre y hermános en el árbol.
 </LI>
-<LI>Un <A NAME="8173"></A><SPAN  CLASS="textbf">atributo sintetizado</SPAN> es aquél tal que el valor del atributo depende
+<LI>Un <A NAME="8177"></A><SPAN  CLASS="textbf">atributo sintetizado</SPAN> es aquél tal que el valor del atributo depende
 de los valores de los atributos de los hijos, 
 es decir en tal caso <SPAN CLASS="MATH"><IMG
  WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
@@ -224,7 +230,9 @@ ser atributos de símbolos en la parte derecha de la regla de producción
 asociada.
 </LI>
 </UL>
+
 <P>
+
 <DIV CLASS="navigation"><HR>
 <A NAME="tex2html1924"
   HREF="node59.html">

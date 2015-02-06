@@ -113,7 +113,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <H1><A NAME="SECTION04480000000000000000">
 Eliminación de la Recursividad por la Izquierda y Atributos Heredados</A>
-</H1><I>
+</H1>
 La sección anterior da una forma sencilla de resolver el problema respetando la semántica.
 Si no se dispone de operadores de repetición la cosa se vuelve mas complicada.
 Las siguientes secciones muestran una solución para transformar un esquema de traducción
@@ -122,41 +122,43 @@ respetando el orden en el que se ejecutan las acciones semánticas.
 Por último se ilustra como se puede aplicar esta técnica en <code>pegjs</code> (aunque 
 obviamente es mucho mejor
 usar la ilustrada anteriormente).
-</I>
+
 <P>
+
 <H2><A NAME="SECTION04481000000000000000"></A>
 <A NAME="subsection:eliminaleftrec"></A>
 <BR>
 Eliminación de la Recursión por la Izquierda en la Gramática
-</H2><I>
+</H2>
 Es posible modificar la gramática para eliminar la recursión por 
 la izquierda. En este apartado nos limitaremos al caso de recursión 
 por la izquierda directa. 
 La generalización al caso de recursión por la izquierda no-directa
 se reduce a la iteración de la solución propuesta 
 para el caso directo.
-</I>
+
 <P>
-<I>Consideremos una variable <SPAN CLASS="MATH"><IMG
+Consideremos una variable <SPAN CLASS="MATH"><IMG
  WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
  SRC="img1.png"
  ALT="$ A$"></SPAN> con dos producciones:
-</I>
+
 <P>
-<I>
 <BR>
 <BR>
-</I>
-<DIV ALIGN="CENTER"><I><!-- MATH
+<DIV ALIGN="CENTER">
+<!-- MATH
  $A   \rightarrow A \alpha |\ \beta$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="91" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
  SRC="img87.png"
  ALT="$ A \rightarrow A \alpha \vert \beta$"></SPAN> 
-</I></DIV>
+
+</DIV>
+
 <P>
-<I>donde <!-- MATH
+donde <!-- MATH
  $\alpha, \beta \in (V \cup \Sigma)^*$
  -->
 <SPAN CLASS="MATH"><IMG
@@ -167,37 +169,36 @@ para el caso directo.
  SRC="img1.png"
  ALT="$ A$"></SPAN>.
 Estas dos producciones pueden ser sustituidas por:
-</I>
+
 <P>
-<I>
 <BR>
 <BR>
-</I>
-<DIV ALIGN="CENTER"><TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><I>
-<!-- MATH
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><!-- MATH
  $A   \rightarrow \beta R$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="69" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
  SRC="img90.png"
- ALT="$ A \rightarrow \beta R$"></SPAN></I></TD>
+ ALT="$ A \rightarrow \beta R$"></SPAN></TD>
 </TR>
-<TR><TD ALIGN="LEFT"><I> 
-<!-- MATH
+<TR><TD ALIGN="LEFT"><!-- MATH
  $R   \rightarrow  \alpha R\ |\ \epsilon$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="93" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
  SRC="img91.png"
- ALT="$ R \rightarrow \alpha R \vert \epsilon$"></SPAN></I></TD>
+ ALT="$ R \rightarrow \alpha R \vert \epsilon$"></SPAN></TD>
 </TR>
-</TABLE></DIV>
+</TABLE>
+</DIV>
+
 <P>
-<I>
 eliminando así la recursión por la izquierda.
-</I>
-<P><P>
+
+<P>
+<P>
 <DIV><B>Definición  <SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">8</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
 <I>La producción <!-- MATH
  $R   \rightarrow  \alpha R$
@@ -205,13 +206,15 @@ eliminando así la recursión por la izquierda.
 <SPAN CLASS="MATH"><IMG
  WIDTH="70" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
  SRC="img92.png"
- ALT="$ R \rightarrow \alpha R$"></SPAN> se dice <A NAME="5427"></A><SPAN  CLASS="textbf">recursiva por la derecha</SPAN>.</I></DIV><P></P>
+ ALT="$ R \rightarrow \alpha R$"></SPAN> se dice <A NAME="5431"></A><SPAN  CLASS="textbf">recursiva por la derecha</SPAN>.</I></DIV><P></P>
+
 <P>
-<I>Las producciones recursivas por la derecha dan lugar a árboles
+Las producciones recursivas por la derecha dan lugar a árboles
 que se hunden hacia la derecha. Es mas difícil traducir desde esta clase
 de árboles operadores como el menos, que son asociativos a izquierdas.
-</I>
-<P><P>
+
+<P>
+<P>
 <DIV><B>Ejercicio  <SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">8</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
 <I>Elimine la recursión por la izquierda de la gramática 
 </I>
@@ -244,60 +247,57 @@ de árboles operadores como el menos, que son asociativos a izquierdas.
 <BR>
 </I>
 <P></DIV><P></P>
+
 <P>
+
 <H2><A NAME="SECTION04482000000000000000"></A>
 <A NAME="subsection:eliminarecesquem"></A>
 <BR>
 Eliminación de la Recursión por la Izquierda en un Esquema de Traducción
-</H2><I>
+</H2>
 La eliminación de la recursión por la izquierda es sólo un paso: debe 
 ser extendida a esquemas de traducción, 
 de manera que no sólo se preserve el lenguaje
 sino la secuencia de acciones. Supongamos que tenemos un esquema de
 traducción de la forma:
-</I>
+
 <P>
-<I>
 <BR>
 <BR>
-</I><TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><I>
-<!-- MATH
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><!-- MATH
  $A   \rightarrow A \alpha$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="69" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
  SRC="img58.png"
- ALT="$ A \rightarrow A \alpha$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I> <code>{ alpha_action }</code></I></TD>
+ ALT="$ A \rightarrow A \alpha$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ alpha_action }</code></TD>
 </TR>
-<TR><TD ALIGN="LEFT"><I> 
-<!-- MATH
+<TR><TD ALIGN="LEFT"><!-- MATH
  $A   \rightarrow A \beta$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="69" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
  SRC="img67.png"
- ALT="$ A \rightarrow A \beta$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I> <code>{ beta_action }</code></I></TD>
+ ALT="$ A \rightarrow A \beta$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ beta_action }</code></TD>
 </TR>
-<TR><TD ALIGN="LEFT"><I> 
-<!-- MATH
+<TR><TD ALIGN="LEFT"><!-- MATH
  $A   \rightarrow \gamma$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
  SRC="img16.png"
- ALT="$ A \rightarrow \gamma$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I> <code>{ gamma_action }</code>
-</I></TD>
+ ALT="$ A \rightarrow \gamma$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ gamma_action }</code></TD>
 </TR>
-</TABLE><I>
+</TABLE>
 <BR>
 <BR>
-</I>
+
 <P>
-<I>para una sentencia como <!-- MATH
+para una sentencia como <!-- MATH
  $\gamma \beta \alpha$
  -->
 <SPAN CLASS="MATH"><IMG
@@ -305,12 +305,15 @@ traducción de la forma:
  SRC="img68.png"
  ALT="$ \gamma \beta \alpha$"></SPAN> la secuencia de
 acciones será: 
-</I>
+
 <P>
-<DIV ALIGN="CENTER"><I><code>gamma_action  beta_action alpha_action</code>
-</I></DIV>
+<DIV ALIGN="CENTER">
+<code>gamma_action  beta_action alpha_action</code>
+
+</DIV>
+
 <P>
-<I>¿Cómo construir un esquema de traducción para la gramática resultante
+¿Cómo construir un esquema de traducción para la gramática resultante
 de eliminar la recursión por la izquierda que ejecute las acciones
 asociadas en el mismo orden?. Supongamos para simplificar,
 que las acciones no dependen
@@ -318,14 +321,12 @@ de atributos ni computan atributos, sino que actúan sobre
 variables globales. En tal caso, la siguiente
 ubicación de las acciones da lugar a que se ejecuten en el mismo
 orden:
-</I>
+
 <P>
-<I>
 <BR>
 <BR>
-</I><TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><I>
-<!-- MATH
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><!-- MATH
  $A   \rightarrow \gamma$
  -->
 <SPAN CLASS="MATH"><IMG
@@ -334,10 +335,9 @@ orden:
  ALT="$ A \rightarrow \gamma$"></SPAN> <code>{ gamma_action }</code> <SPAN CLASS="MATH"><IMG
  WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
  SRC="img69.png"
- ALT="$ R$"></SPAN></I></TD>
+ ALT="$ R$"></SPAN></TD>
 </TR>
-<TR><TD ALIGN="LEFT"><I> 
-<!-- MATH
+<TR><TD ALIGN="LEFT"><!-- MATH
  $R   \rightarrow \beta$
  -->
 <SPAN CLASS="MATH"><IMG
@@ -346,10 +346,9 @@ orden:
  ALT="$ R \rightarrow \beta$"></SPAN> <code> { beta_action }</code> <SPAN CLASS="MATH"><IMG
  WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
  SRC="img69.png"
- ALT="$ R$"></SPAN></I></TD>
+ ALT="$ R$"></SPAN></TD>
 </TR>
-<TR><TD ALIGN="LEFT"><I> 
-<!-- MATH
+<TR><TD ALIGN="LEFT"><!-- MATH
  $R   \rightarrow \alpha$
  -->
 <SPAN CLASS="MATH"><IMG
@@ -358,58 +357,53 @@ orden:
  ALT="$ R \rightarrow \alpha$"></SPAN> <code> { alpha_action }</code> <SPAN CLASS="MATH"><IMG
  WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
  SRC="img69.png"
- ALT="$ R$"></SPAN></I></TD>
+ ALT="$ R$"></SPAN></TD>
 </TR>
-<TR><TD ALIGN="LEFT"><I> 
-<!-- MATH
+<TR><TD ALIGN="LEFT"><!-- MATH
  $R   \rightarrow \epsilon$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="52" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
  SRC="img72.png"
- ALT="$ R \rightarrow \epsilon$"></SPAN> 
-</I></TD>
+ ALT="$ R \rightarrow \epsilon$"></SPAN></TD>
 </TR>
 </TABLE>
+
 <P>
-<I>Si hay atributos en juego, la estrategia para construir un
+Si hay atributos en juego, la estrategia para construir un
 esquema de traducción equivalente para la gramática resultante
 de eliminar la recursividad por la izquierda se complica.
 Consideremos de nuevo el esquema de traducción de infijo a
 postfijo de expresiones aritméticas de restas:
-</I>
+
 <P>
-<I>
 <BR>
 <BR>
-</I><TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><I>
-<!-- MATH
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><!-- MATH
  $expr   \rightarrow expr_1  -  NUM$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="179" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
  SRC="img63.png"
- ALT="$ expr \rightarrow expr_1 - NUM$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I> <code>{ $expr{T} = $expr[1]{T}." ".$NUM{VAL}." - "}</code> </I></TD>
+ ALT="$ expr \rightarrow expr_1 - NUM$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ $expr{T} = $expr[1]{T}." ".$NUM{VAL}." - "}</code></TD>
 </TR>
-<TR><TD ALIGN="LEFT"><I> 
-<!-- MATH
+<TR><TD ALIGN="LEFT"><!-- MATH
  $expr   \rightarrow NUM$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="116" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
  SRC="img64.png"
- ALT="$ expr \rightarrow NUM$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I> <code>{ $expr{T} = $NUM{VAL} }</code>
-</I></TD>
+ ALT="$ expr \rightarrow NUM$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ $expr{T} = $NUM{VAL} }</code></TD>
 </TR>
-</TABLE><I>
+</TABLE>
 <BR>
 <BR>
-</I>
+
 <P>
-<I>En este caso introducimos un atributo <code>H</code> para los nodos de la clase
+En este caso introducimos un atributo <code>H</code> para los nodos de la clase
 <SPAN CLASS="MATH"><IMG
  WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
  SRC="img94.png"
@@ -420,9 +414,8 @@ este atributo se computa en un nodo <SPAN CLASS="MATH"><IMG
  SRC="img94.png"
  ALT="$ r$"></SPAN> a partir del
 correspondiente atributo del el padre y/o de los hermanos del nodo:
-</I>
+
 <P>
-<I>
 <BR>
 <BR>
 
@@ -455,29 +448,32 @@ correspondiente atributo del el padre y/o de los hermanos del nodo:
  ALT="$ r \rightarrow \epsilon$"></SPAN> <code>{ $r{T} = $r{H} }</code>
 <BR>
 <BR>
-</I>
+
 <P>
-<I>El atributo <code>H</code> es un ejemplo de atributo heredado.
-</I>
+El atributo <code>H</code> es un ejemplo de atributo heredado.
+
 <P>
+
 <H2><A NAME="SECTION04483000000000000000">
 Eliminación de la Recursividad por la Izquierda en PEGJS</A>
 </H2>
+
 <P>
-<I>PegJS no permite acciones intermedias. Tampoco se puede acceder al atributo 
+PegJS no permite acciones intermedias. Tampoco se puede acceder al atributo 
 de la parte izquierda.
 Por eso, a la hora de implantar la solución anterior debemos introducir variables 
 sintácticas temporales que produzcan la palabra vacía y que vayan acompañadas de la acción semántica
 correspondiente.
-</I>
+
 <P>
-<I>Además nos obliga a usar variables visibles por todas las reglas semánticas para emular el acceso
+Además nos obliga a usar variables visibles por todas las reglas semánticas para emular el acceso
 a los atributos de la parte izquierda de una regla de proudcción.
-</I>
+
 <P>
-<I>El siguiente ejemplo ilustra como eliminar la reucrusión por la izquierda respetando la asociatividad de la oepración de diferencia:
-</I>
-<P><PRE>
+El siguiente ejemplo ilustra como eliminar la reucrusión por la izquierda respetando la asociatividad de la oepración de diferencia:
+
+<P>
+<PRE>
 [~/pegjs/examples(master)]$ cat inherited.pegjs 
 {
   var h = 0, number = 0;
@@ -493,7 +489,9 @@ NUMBER = _ digits:$[0-9]+ _  { number = parseInt(digits, 10); return number; }
 
 _ = $[ \t\n\r]*
 </PRE>
-<P><PRE>
+
+<P>
+<PRE>
 [~/pegjs/examples(master)]$ cat use_inherited.js 
 var PEG = require("./inherited.js");
 var r = PEG.parse("2-1-1");
@@ -514,7 +512,9 @@ Referenced rule "$" does not exist.
 1
 -2
 </PRE>
+
 <P>
+
 <DIV CLASS="navigation"><HR>
 <A NAME="tex2html1499"
   HREF="node37.html">

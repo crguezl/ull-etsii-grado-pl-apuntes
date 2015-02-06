@@ -121,24 +121,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <HR>
 
 <H1><A NAME="SECTION04260000000000000000"></A>
-   <A NAME="4173"></A>
+   <A NAME="4177"></A>
   
 <A NAME="practica:pl0"></A>
 <BR>
 Práctica: Analizador Descendente Predictivo Recursivo
 </H1>
+
 <P>
-<I>Partiendo del analizador sintáctico descendente predictivo recursivo para la gramática
+Partiendo del analizador sintáctico descendente predictivo recursivo para la gramática
 descrita en la sección <A HREF="node20.html#table:gramaticasimple">2.2.1</A>
-</I>
+
 <P>
+
 <H4><A NAME="SECTION04260010000000000000">
 Donde</A>
-</H4><I>
+</H4>
+  
 
 Puede encontrar la versión de la que partir en
-</I>
+
 <P>
+
 <UL>
 <LI>Despliegue en <A NAME="tex2html160"
   HREF="https://devcenter.heroku.com/articles/quickstart">Heroku</A>:
@@ -160,13 +164,16 @@ origin  git@github.com:crguezl/prdcalc.git (push)
 </PRE>
 </LI>
 </UL>
+
 <P>
+
 <H4><A NAME="SECTION04260020000000000000">
 Tareas</A>
-</H4><I>
+</H4>
+  
 
 Añada:
-</I>
+
 <UL>
 <LI>Extienda y modifique el analizador para que acepte el lenguaje 
 descrito por la gramática EBNF del 
@@ -201,16 +208,21 @@ los mismos constructos.
 <LI>Añada pruebas
 </LI>
 </UL>
+
 <P>
+
 <H4><A NAME="SECTION04260030000000000000">
 Sinatra</A>
 </H4>
+  
+
 <P>
-<I>Véase el fichero
+Véase el fichero
   <A NAME="tex2html168"
   HREF="https://github.com/crguezl/prdcalc/blob/master/main.rb">main.rb</A>.
-</I>
+
 <P>
+
 <OL>
 <LI><A NAME="tex2html169"
   HREF="http://www.sinatrarb.com/intro.html#Filters">Filters</A>
@@ -248,16 +260,21 @@ es proveído por  <A NAME="tex2html175"
   HREF="http://www.sinatrarb.com/intro.html#Views%20/%20Templates">Views / Templates</A>
 </LI>
 </OL>
+
 <P>
+
 <H4><A NAME="SECTION04260040000000000000">
 Sass</A>
 </H4>
+  
+
 <P>
-<I>Véase el fichero
+Véase el fichero
   <A NAME="tex2html177"
   HREF="https://github.com/crguezl/prdcalc/blob/master/views/styles.scss">views/styles.scss</A>.
-</I>
+
 <P>
+
 <OL>
 <LI><A NAME="tex2html178"
   HREF="http://sass-lang.com/">Sass</A>
@@ -274,13 +291,16 @@ y despliegue en Heroku
   HREF="http://css2sass.heroku.com/">http://css2sass.heroku.com/</A>)
 </LI>
 </OL>
+
 <P>
+
 <H4><A NAME="SECTION04260050000000000000">
 Slim</A>
-</H4><I>
+</H4>
+  
 
 Véanse los ficheros <code>views/*.slim</code>:
-</I>
+
 <UL>
 <LI><A NAME="tex2html182"
   HREF="https://github.com/crguezl/prdcalc/blob/master/views/layout.slim">views/layout.slim</A>
@@ -292,7 +312,9 @@ Véanse los ficheros <code>views/*.slim</code>:
   HREF="https://github.com/crguezl/prdcalc/blob/master/views/nav.slim">views/nav.slim</A>
 </LI>
 </UL>
+
 <P>
+
 <OL>
 <LI><A NAME="tex2html185"
   HREF="http://slim-lang.com/">slim</A>
@@ -309,11 +331,16 @@ Véanse los ficheros <code>views/*.slim</code>:
 (Vimeo)
 </LI>
 </OL>
+
 <P>
+
 <H4><A NAME="SECTION04260060000000000000">
 CoffeeScript</A>
 </H4>
+  
+
 <P>
+
 <OL>
 <LI><A NAME="tex2html189"
   HREF="http://coffeescript.org/">CoffeeScript</A>
@@ -326,21 +353,22 @@ CoffeeScript</A>
   HREF="http://js2coffee.org/">js2coffee.org</A>
 </LI>
 </OL>
+
 <P>
+
 <H4><A NAME="SECTION04260070000000000000">
 Construyendo Árboles con la Asociatividad Correcta</A>
-</H4><I>
+</H4>
+  
 
 Añadamos el operador <code>-</code> al código de nuestra práctica. 
 Para ello, podemos extender nuestro gramática  con una regla
 de producción:
-</I>
-<DIV ALIGN="CENTER"><I>
+<DIV ALIGN="CENTER">
 <BR>
 <BR>
-</I><TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT"><I>
-expression   <!-- MATH
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">expression   <!-- MATH
  $\rightarrow$
  -->
 <SPAN CLASS="MATH"><IMG
@@ -352,13 +380,14 @@ expression   <!-- MATH
  ALT="$ \vert$"></SPAN>term '-' expression <SPAN CLASS="MATH"><IMG
  WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
  SRC="img36.png"
- ALT="$ \vert$"></SPAN> term</I></TD>
+ ALT="$ \vert$"></SPAN> term</TD>
 </TR>
-</TABLE></DIV><I>
+</TABLE>
+</DIV>
 <BR>
 <BR>
 que da lugar a un código como el que sigue:
-</I><PRE>
+<PRE>
   expression = -&gt;
     result = term()
     if lookahead and lookahead.type is "+"
@@ -370,9 +399,9 @@ que da lugar a un código como el que sigue:
         type: "-" 
         left: result
         right: right
-</PRE><I>
+</PRE>
 Cuando le damos como entrada <code>a = 4-2-1</code> produce el siguiente AST:
-</I><PRE>
+<PRE>
 {
   "type": "=",
   "left": {
@@ -398,40 +427,37 @@ Cuando le damos como entrada <code>a = 4-2-1</code> produce el siguiente AST:
     }
   }
 }
-</PRE><I>
+</PRE>
 que se corresponde con esta parentización: <code>a = (4 - (2 - 1))</code>
-</I>
+
 <P>
-<I>Este árbol no se corresponde con la asociatividad a izquierdas  del operador 
+Este árbol no se corresponde con la asociatividad a izquierdas  del operador 
 <code>-</code>. Es un árbol que refleja una asociación a derechas (<code>a = 3</code>).
-</I>
+
 <P>
-<I>Ahora bien, el lenguaje generado por dos reglas de la forma:
+Ahora bien, el lenguaje generado por dos reglas de la forma:
 <BR>
 <BR>
-</I><TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><I>
-<!-- MATH
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><!-- MATH
  $A   \rightarrow A \alpha$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="69" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
  SRC="img58.png"
- ALT="$ A \rightarrow A \alpha$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I> <code>{ alpha_action }</code></I></TD>
+ ALT="$ A \rightarrow A \alpha$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ alpha_action }</code></TD>
 </TR>
-<TR><TD ALIGN="LEFT"><I> 
-<!-- MATH
+<TR><TD ALIGN="LEFT"><!-- MATH
  $A   \rightarrow \gamma$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
  SRC="img16.png"
- ALT="$ A \rightarrow \gamma$"></SPAN> </I></TD>
-<TD ALIGN="LEFT"><I> <code>{ gamma_action }</code>
-</I></TD>
+ ALT="$ A \rightarrow \gamma$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ gamma_action }</code></TD>
 </TR>
-</TABLE><I>
+</TABLE>
 Es <!-- MATH
  $\gamma \alpha *$
  -->
@@ -445,16 +471,17 @@ Por tanto el método asociado con <SPAN CLASS="MATH"><IMG
  WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
  SRC="img1.png"
  ALT="$ A$"></SPAN> podría reescribirse como sigue:
-</I><PRE>
+<PRE>
 A = () -&gt; 
   gamma() # imitar gamma
   gamma_action() # acción semántica asociada con gamma
   while lookahead and lookahead.type belongs to  FIRST(alpha)
     alpha() # imitar alpha
     alpha_action()
-</PRE><I>
-</I>
+</PRE>
+
 <P>
+
 <DIV CLASS="navigation"><HR>
 <A NAME="tex2html1223"
   HREF="node25.html">

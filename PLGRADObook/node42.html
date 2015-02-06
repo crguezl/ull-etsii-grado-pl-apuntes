@@ -99,10 +99,10 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <!--End of Navigation Panel-->
 
 <H1><A NAME="SECTION044140000000000000000"></A>
-   <A NAME="5496"></A>
+   <A NAME="5500"></A>
 <BR>
 Práctica: Ambiguedad en C++
-</H1><I>
+</H1>
   
 This lab illustrates a problem 
 that arises in C++.
@@ -113,28 +113,28 @@ statement has a function-style cast as its left-most subexpression.
 Since C does not support function-style casts, this ambiguity does not occur
 in C programs.
 For example, the phrase 
-</I>
+
 <P>
-<I><code>int (x) = y+z;</code> 
-</I>
+<code>int (x) = y+z;</code> 
+
 <P>
-<I>parses as either a <TT>decl</TT> or a <TT>stmt</TT>.
-</I>
+parses as either a <TT>decl</TT> or a <TT>stmt</TT>.
+
 <P>
-<I>The disambiguation rule used in C++ is that <I>if the statement can be interpreted both as a declaration and
+The disambiguation rule used in C++ is that <I>if the statement can be interpreted both as a declaration and
 as an expression, the statement is interpreted as a declaration statement.
 </I>
-</I>
+
 <P>
-<I>The following examples  disambiguate into <I>expression</I> statements when the
+The following examples  disambiguate into <I>expression</I> statements when the
 potential <I>declarator</I> is followed by an operator different from equal 
 or semicolon (<TT>type_spec</TT> stands for a type specifier):
-</I>
+
 <P>
-<DIV ALIGN="CENTER"><TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=99><I>
-expr  </I></TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=128><I> dec</I></TD>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=99>expr</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=128>dec</TD>
 </TR>
 <TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=99><PRE>
 type_spec(i)++;      
@@ -152,10 +152,11 @@ type_spec(d),e,f,g=0;
 type_spec(h)(e,3);
 </PRE></TD>
 </TR>
-</TABLE></DIV>
+</TABLE>
+</DIV>
+
 <P>
-<I>Regarding to this problem, Bjarne Stroustrup remarks:
-</I><BLOCKQUOTE><I>Consider analyzing a statement consisting of
+Regarding to this problem, Bjarne Stroustrup remarks:<BLOCKQUOTE><I>Consider analyzing a statement consisting of
 a sequence of tokens as follows:
 </I></BLOCKQUOTE><PRE>
               type_spec (dec_or_exp) tail
@@ -169,13 +170,16 @@ a parenthesized expression, that is, an initializer, <code>const</code>,
 The general cases cannot be resolved without backtracking, nested grammars
 or similar advanced parsing strategies. In particular,
 the lookahead needed to disambiguate this case is not limited.
-</I></BLOCKQUOTE>
+</I>
+</BLOCKQUOTE>
+
 <P>
-<I>The following grammar 
+The following grammar 
 depicts 
 an oversimplified version of the C++ ambiguity:
-</I>
-<P><PRE>
+
+<P>
+<PRE>
 $ cat CplusplusNested.y 
 %token ID INT NUM
 
@@ -213,10 +217,11 @@ declarator:
 
 %%
 </PRE>
+
 <P>
-<I>Escriba un programa PegJS en CoffeeScript que distinga correctamente entre declaraciones
+Escriba un programa PegJS en CoffeeScript que distinga correctamente entre declaraciones
 y sentencias. Este es un ejemplo de un programa que usa una solución al problema:
-</I><PRE>
+<PRE>
 [~/Dropbox/src/javascript/PLgrado/pegjs-coffee-plugin/examples(master)]$ cat use_cplusplus.coffee 
 PEG = require("./cplusplus.js")
 input = "int (a); int c = int (b);"
@@ -239,9 +244,9 @@ console.log("input = '#{input}'\noutput="+JSON.stringify r)
 input = "int(4);"
 r = PEG.parse(input)
 console.log("input = '#{input}'\noutput="+JSON.stringify r)
-</PRE><I>
+</PRE>
 Y este un ejemplo de salida:
-</I><PRE>
+<PRE>
 $ pegcoffee cplusplus.pegjs 
 $ coffee use_cplusplus.coffee 
 input = 'int (a); int c = int (b);'
@@ -256,7 +261,9 @@ output=["stmt"]
 input = 'int(4);'
 output=["stmt"]
 </PRE>
+
 <P>
+
 <DIV CLASS="navigation"><HR>
 <A NAME="tex2html1600"
   HREF="node43.html">

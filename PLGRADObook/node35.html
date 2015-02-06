@@ -100,7 +100,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <H1><A NAME="SECTION04470000000000000000">
 Eliminando la Recursividad por la Izquierda en la Calculadora</A>
-</H1><PRE>
+</H1>
+<PRE>
 [~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat simple.pegjs 
 /* From the Wikipedia
 Value   ← [0-9]+ / '(' Expr ')'
@@ -134,13 +135,14 @@ product = left:value right:($[*/] value)*   { return reduce(left, right); }
 value   = number:$[0-9]+                    { return parseInt(number,10); }
         / '(' sum:sum ')'                   { return sum; }
 </PRE>
+
 <P>
-<I>Es posible especificar mediante llaves  un código 
+Es posible especificar mediante llaves  un código 
 que este disponible dentro de las acciones semánticas.
-</I>
+
 <P>
-<I>Ejecución:
-</I><PRE>
+Ejecución:
+<PRE>
 [~/pegjs/examples(master)]$ cat use_simple.js 
 var PEG = require("./simple.js");
 var r = PEG.parse("2-3-4");
@@ -148,9 +150,9 @@ console.log(r);
 
 [~/pegjs/examples(master)]$ node use_simple.js 
 -5
-</PRE><I>
+</PRE>
 Veamos otra ejecución:
-</I><PRE>
+<PRE>
 [~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat use_simple.js 
 var PEG = require("./simple.js");
 var r = PEG.parse("2+3*(2+1)-10/2");
@@ -160,7 +162,9 @@ console.log(r);
 [~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ node use_simple.js 
 6
 </PRE>
+
 <P>
+
 <DIV CLASS="navigation"><HR>
 <A NAME="tex2html1485"
   HREF="node36.html">

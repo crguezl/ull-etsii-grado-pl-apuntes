@@ -102,20 +102,21 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="section:prioridades"></A>
 <BR>
 Precedencia y Asociatividad
-</H1><I>
+</H1>
 Recordemos que si al construir la tabla LALR,
 alguna de las entradas de la tabla resulta multievaluada, decimos
 que existe un conflicto.
 Si una de las acciones es de `reducción'' y la otra es de
-`desplazamiento'', se dice que hay un <A NAME="8149"></A><SPAN  CLASS="textbf">conflicto shift-reduce</SPAN> o
-<A NAME="8151"></A><SPAN  CLASS="textbf">conflicto de desplazamiento-reducción</SPAN>. Si las
+`desplazamiento'', se dice que hay un <A NAME="8153"></A><SPAN  CLASS="textbf">conflicto shift-reduce</SPAN> o
+<A NAME="8155"></A><SPAN  CLASS="textbf">conflicto de desplazamiento-reducción</SPAN>. Si las
 dos reglas indican una acción de reducción, decimos que tenemos un 
-<A NAME="8153"></A><SPAN  CLASS="textbf">conflicto reduce-reduce</SPAN> o de <A NAME="8155"></A><SPAN  CLASS="textbf">reducción-reducción</SPAN>.
+<A NAME="8157"></A><SPAN  CLASS="textbf">conflicto reduce-reduce</SPAN> o de <A NAME="8159"></A><SPAN  CLASS="textbf">reducción-reducción</SPAN>.
 En caso de que no existan indicaciones específicas <SPAN  CLASS="textbf">jison</SPAN> resuelve
 los conflictos que aparecen en la construcción de la tabla utilizando
 las siguientes reglas:
-</I>
+
 <P>
+
 <OL>
 <LI>Un conflicto <SPAN  CLASS="textbf">reduce-reduce</SPAN> se resuelve eligiendo la producción
 que se listó primero en la especificación de la gramática.
@@ -123,16 +124,18 @@ que se listó primero en la especificación de la gramática.
 <LI>Un conflicto <SPAN  CLASS="textbf">shift-reduce</SPAN> se resuelve siempre en favor del <SPAN  CLASS="textbf">shift</SPAN>
 </LI>
 </OL>
+
 <P>
-<I>Las declaraciones de precedencia y asociatividad mediante las
+Las declaraciones de precedencia y asociatividad mediante las
 palabras reservadas  <TT>%left</TT> ,  <TT>%right</TT> ,  <TT>%nonassoc</TT> 
 se utilizan para modificar estos criterios por defecto. 
 La declaración de  <TT>token</TT> s mediante la palabra
 reservada  <TT>%token</TT>  no modifica la precedencia. Si lo hacen las
 declaraciones realizadas usando las palabras  <TT>left</TT> ,  <TT>right</TT> 
 y  <TT>nonassoc</TT> . 
-</I>
+
 <P>
+
 <OL>
 <LI>Los <SPAN  CLASS="textbf">tokens</SPAN> declarados  en la misma línea
 tienen igual precedencia e igual asociatividad. 
@@ -191,11 +194,13 @@ la precedencia que deseamos. Vea el uso del <SPAN  CLASS="textbf">token</SPAN> <
 en el siguiente ejercicio.
 </LI>
 </OL>
+
 <P>
-<I>Para ilustrar las reglas anteriores usaremos el siguiente 
+Para ilustrar las reglas anteriores usaremos el siguiente 
 programa <code>jison</code>:
-</I>
-<P><PRE>
+
+<P>
+<PRE>
 [~/jison/jison-prec(ast)]$ cat -n precedencia.jison 
  1  %token NUMBER
  2  %left '@'
@@ -236,10 +241,11 @@ programa <code>jison</code>:
 37    ;
 38  
 39  %%
-</PRE><I>            
+</PRE>            
 Obsérvese la siguiente ejecución:
-</I>
-<P><PRE>
+
+<P>
+<PRE>
 [~/jison/jison-prec(ast)]$ cat input.txt 
 2@3@4
 2&amp;3&amp;4
@@ -247,11 +253,12 @@ Obsérvese la siguiente ejecución:
 [ [ '@', [ '@', 'NUMBER (2)', 'NUMBER (3)' ], 'NUMBER (4)' ],
   [ '&amp;', 'NUMBER (2)', [ '&amp;', 'NUMBER (3)', 'NUMBER (4)' ] ] ]
 </PRE>
+
 <P>
-<I>Compilamos a continuación con <code>bison</code> usando la opción <code>-v</code> para
+Compilamos a continuación con <code>bison</code> usando la opción <code>-v</code> para
 producir información sobre los conflictos y las tablas de salto y 
 de acciones:
-</I><PRE>
+<PRE>
 [~/jison/jison-prec(ast)]$ bison -v precedencia.jison 
 precedencia.jison:6.31: warning: stray `$'
 precedencia.jison:21.27: warning: stray `$'
@@ -260,11 +267,13 @@ precedencia.jison:31.36: warning: stray `$'
 precedencia.jison:35.30: warning: stray `$'
 precedencia.jison:35.35: warning: stray `$'
 </PRE>
+
 <P>
-<I>La opción <code>-v</code> genera el fichero <code>Precedencia.output</code>
+La opción <code>-v</code> genera el fichero <code>Precedencia.output</code>
 el cual contiene información detallada sobre el autómata:
-</I>
-<P><PRE>
+
+<P>
+<PRE>
 [~/jison/jison-prec(ast)]$ cat precedencia.output 
 Grammar
 
@@ -407,16 +416,18 @@ state 10
 
     $default  reduce using rule 6 (e)
 </PRE>
+
 <P>
-<I>La presencia de conflictos, aunque no siempre, en muchos casos es debida
+La presencia de conflictos, aunque no siempre, en muchos casos es debida
 a la introducción de ambiguedad en la gramática. Si el conflicto 
 es de desplazamiento-reducción se puede resolver explicitando 
 alguna regla que rompa la ambiguedad. Los conflictos de
 reducción-reducción suelen producirse por un diseño erróneo
 de la gramática. En tales casos, suele ser mas adecuado
 modificar la gramática.
-</I>
+
 <P>
+
 <DIV CLASS="navigation"><HR>
 <A NAME="tex2html1910"
   HREF="node58.html">
