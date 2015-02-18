@@ -1628,7 +1628,7 @@ Karma: Como Funciona</A>
 <P>
 
 <UL>
-<LI><A NAME="3274"></A><SPAN  CLASS="textbf">Karma</SPAN> (See 
+<LI><A NAME="3276"></A><SPAN  CLASS="textbf">Karma</SPAN> (See 
 <A NAME="tex2html49"
   HREF="http://karma-runner.github.io/0.10/intro/installation.html">Karma installation</A>)
 is essentially a tool which spawns a web server that executes source
@@ -1665,7 +1665,7 @@ the test code again.
 </LI>
 <LI>Each browser then loads the source files inside an
 <code>IFrame</code><A NAME="tex2html48"
-  HREF="footnode.html#foot3267"><SUP><SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A>, 
+  HREF="footnode.html#foot3269"><SUP><SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">1</SPAN></SUP></A>, 
 executes the tests and reports the results back to the server.
 </LI>
 <LI>The server collects the results from all of the captured browsers and presents them to the developer.
@@ -2071,6 +2071,41 @@ describe('template', function() {
   })
 })
 </PRE>
+
+<P>
+Por tanto modificamos nuestro fichero <code>tests/tests.js</code> como sigue:
+<PRE>
+[~/srcPLgrado/temperature(karma)]$ cat tests/tests.js 
+var assert = chai.assert;
+
+suite('temperature', function() {
+    setup(function(){
+      if (typeof __html__ !== 'undefined') {
+          document.body.innerHTML = __html__['tests/test.html'];
+          original = document.getElementById('original');
+          converted = document.getElementById('converted');
+      }
+    });
+
+    test('32F = 0C', function() {
+        original.value = "32F";
+        calculate();
+        assert.deepEqual(converted.innerHTML, "0.0 Celsius");
+    });
+    test('45C = 113.0 Farenheit', function() {
+        original.value = "45C";
+        calculate();
+        assert.deepEqual(converted.innerHTML, "113.0 Farenheit");
+    });
+    test('5X = error', function() {
+        original.value = "5X";
+        calculate();
+        assert.match(converted.innerHTML, /ERROR/);
+    });
+});
+</PRE>
+
+<P>
 See 
 
 <UL>
