@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Práctica: Calculadora con Funciones</TITLE>
-<META NAME="description" CONTENT="Práctica: Calculadora con Funciones">
+<TITLE>Práctica: Traducción de Infijo a Postfijo</TITLE>
+<META NAME="description" CONTENT="Práctica: Traducción de Infijo a Postfijo">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node54.html">
 <LINK REL="previous" HREF="node52.html">
-<LINK REL="up" HREF="node44.html">
+<LINK REL="up" HREF="node45.html">
 <LINK REL="next" HREF="node54.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1878"
+<A NAME="tex2html1883"
   HREF="node54.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1872"
-  HREF="node44.html">
+<A NAME="tex2html1877"
+  HREF="node45.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1866"
+<A NAME="tex2html1871"
   HREF="node52.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1874"
-  HREF="node89.html">
+<A NAME="tex2html1879"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1876"
-  HREF="node92.html">
+<A NAME="tex2html1881"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -80,108 +80,128 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1879"
-  HREF="node54.html">Práctica: Calculadora con Análisis</A>
-<B>Sup:</B> <A NAME="tex2html1873"
-  HREF="node44.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1867"
-  HREF="node52.html">Práctica: Traducción de Infijo</A>
+<B> Sig:</B> <A NAME="tex2html1884"
+  HREF="node54.html">Práctica: Calculadora con Funciones</A>
+<B>Sup:</B> <A NAME="tex2html1878"
+  HREF="node45.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html1872"
+  HREF="node52.html">Práctica: Análisis de Ámbito</A>
 <B> Con:</B> 
-<A NAME="tex2html1874"
-  HREF="node89.html">
+<A NAME="tex2html1879"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1876"
-  HREF="node92.html">
+<A NAME="tex2html1881"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION04590000000000000000"></A>
-   <A NAME="7188"></A>
+<H1><A NAME="SECTION04580000000000000000"></A>
+   <A NAME="7202"></A>
+  
+<A NAME="section:calculadoraampliada"></A>
 <BR>
-Práctica: Calculadora  con Funciones
+Práctica: Traducción de Infijo a Postfijo
 </H1>
+Modifique el programa Jison realizado en la práctica 
+<A HREF="node48.html#subsectionpractica:calculadora">5.3.1</A>
+para traducir de infijo a postfijo. 
+Añada los operadores de comparación e igualdad.
+Por ejemplo
 
 <P>
-Añada funciones y sentencias de llamada a función a la práctica de traducción 
-de infijo a postfijo
-<A HREF="node52.html#section:calculadoraampliada">5.8</A>. Sigue un ejemplo de traducción:
-
-<P>
+<DIV ALIGN="CENTER">
 <TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><PRE>
-def f(x) { x + 1 }
-def g(a, b) { a * f(b) }
-c = 3;
-f(1+c);
-g(3, 4)
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170>Infijo</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170>Postfijo</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><code>a = 3+2*4</code></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><code> 3 2 4 * + &amp;a = </code></TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><code>b = a == 11</code></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><code> a 11 == &amp;b = </code></TD>
+</TR>
+</TABLE>
+</DIV>
+En estas traducciones la notación 
+<code>&amp;a</code> indica la dirección de la variable <code>a</code>
+y <code>a</code> indica el valor almacenado en la variable <code>a</code>.
+
+<P>
+Añada sentencias 
+<code>if</code> ...
+<code>then</code> e <code>if</code> ... <code>then</code> ... <code>else</code>
+
+<P>
+Para realizar la traducción de estas sentencias
+añada 
+instrucciones <code>jmp label</code> y <code>jmpz label</code> (por <I>jump if zero</I>)
+y etiquetas:
+
+<P>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>Infijo</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170>Postfijo</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227><PRE>
+a = (2+5)*3;
+if a == 0 then b = 5 else b = 3;
+c = b + 1;
 </PRE></TD>
 <TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><PRE>
-:f      args :x
-        $x
+        2
+        5
+        +
+        3
+        *
+        &amp;a
+        =
+        a
+        0
+        ==
+        jmpz else1
+        5
+        &amp;b
+        =
+        jmp endif0
+:else1
+        3
+        &amp;b
+        =
+:endif0
+        b
         1
         +
-        return
-:g      args :a,:b
-        $a
-        $b
-        call :f
-        *
-        return
-:main:
-        3
         &amp;c
         =
-        1
-        c
-        +
-        call :f
-        3
-        4
-        call :g
 </PRE></TD>
 </TR>
 </TABLE>
-
-<UL>
-<LI>Las funciones retornan la última expresión evaluada
-</LI>
-<LI>Es un error llamar a una función con un número de argumentos 
-distinto que el número de parámetros con el que fué declarada
-</LI>
-<LI>En la llamada, los argumentos se empujan en la pila.
-Después la instrucción <code>call :etiqueta</code> llama a
-la función con el nombre dado por la <code>etiqueta</code>
-</LI>
-<LI>Dentro de la función los argumentos se sitúan por encima del puntero 
-base. La pseudo-instrucción <code>args, p1, p2, ...</code> da nombre a los 
-parámetros empujados. Dentro del cuerpo de la función nos referimos a ellos
-prefijándolos con <code>$</code>.
-</LI>
-<LI>La instrucción <code>return</code> limpia la pila dejándola en su estado anterior 
-y retorna la última expresión evaluada
-</LI>
-</UL>
+</DIV>
+Parta del repositorio 
+<A NAME="tex2html313"
+  HREF="https://github.com/crguezl/jison-simple-html-calc">https://github.com/crguezl/jison-simple-html-calc</A>.
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1878"
+<A NAME="tex2html1883"
   HREF="node54.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1872"
-  HREF="node44.html">
+<A NAME="tex2html1877"
+  HREF="node45.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1866"
+<A NAME="tex2html1871"
   HREF="node52.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1874"
-  HREF="node89.html">
+<A NAME="tex2html1879"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1876"
-  HREF="node92.html">
+<A NAME="tex2html1881"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -220,17 +240,17 @@ y retorna la última expresión evaluada
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1879"
-  HREF="node54.html">Práctica: Calculadora con Análisis</A>
-<B>Sup:</B> <A NAME="tex2html1873"
-  HREF="node44.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1867"
-  HREF="node52.html">Práctica: Traducción de Infijo</A>
+<B> Sig:</B> <A NAME="tex2html1884"
+  HREF="node54.html">Práctica: Calculadora con Funciones</A>
+<B>Sup:</B> <A NAME="tex2html1878"
+  HREF="node45.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html1872"
+  HREF="node52.html">Práctica: Análisis de Ámbito</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2015-02-18</I>
+2015-02-20</I>
 </ADDRESS>
 </BODY>
 </HTML>

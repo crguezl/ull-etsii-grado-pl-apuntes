@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Analizadores Descendentes Predictivos en JavaScript</TITLE>
-<META NAME="description" CONTENT="Analizadores Descendentes Predictivos en JavaScript">
+<TITLE>Práctica: Analizador Léxico para Un Subconjunto de JavaScript</TITLE>
+<META NAME="description" CONTENT="Práctica: Analizador Léxico para Un Subconjunto de JavaScript">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node25.html">
-<LINK REL="previous" HREF="node7.html">
-<LINK REL="up" HREF="node6.html">
+<LINK REL="previous" HREF="node17.html">
+<LINK REL="up" HREF="node7.html">
 <LINK REL="next" HREF="node19.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1153"
+<A NAME="tex2html1156"
   HREF="node19.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1147"
-  HREF="node6.html">
+<A NAME="tex2html1150"
+  HREF="node7.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1141"
+<A NAME="tex2html1146"
   HREF="node17.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1149"
-  HREF="node89.html">
+<A NAME="tex2html1152"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1151"
-  HREF="node92.html">
+<A NAME="tex2html1154"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -80,97 +79,211 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1154"
-  HREF="node19.html">Conceptos Básicos para el</A>
-<B>Sup:</B> <A NAME="tex2html1148"
-  HREF="node6.html">PARTE: APUNTES DE PROCESADORES</A>
-<B> Ant:</B> <A NAME="tex2html1142"
-  HREF="node17.html">Práctica: Analizador Léxico para</A>
+<B> Sig:</B> <A NAME="tex2html1157"
+  HREF="node19.html">Analizadores Descendentes Predictivos en</A>
+<B>Sup:</B> <A NAME="tex2html1151"
+  HREF="node7.html">Expresiones Regulares y Análisis</A>
+<B> Ant:</B> <A NAME="tex2html1147"
+  HREF="node17.html">Práctica: Ficheros INI</A>
 <B> Con:</B> 
-<A NAME="tex2html1149"
-  HREF="node89.html">
+<A NAME="tex2html1152"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1151"
-  HREF="node92.html">
+<A NAME="tex2html1154"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-
-<H1><A NAME="SECTION04200000000000000000">
-Analizadores Descendentes Predictivos en JavaScript</A>
-</H1>
-  
-<P>
-<BR> <HR>
 <!--Table of Child-Links-->
 <A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html1155"
-  HREF="node19.html">Conceptos Básicos para el Análisis Sintáctico</A>
-<UL>
-<LI><A NAME="tex2html1156"
-  HREF="node19.html#SECTION04211000000000000000">Ejercicio</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html1157"
-  HREF="node20.html">Análisis Sintáctico Predictivo Recursivo</A>
-<UL>
+<LI><UL>
+<LI><UL>
 <LI><A NAME="tex2html1158"
-  HREF="node20.html#SECTION04221000000000000000">Introducción</A>
-<UL>
+  HREF="node18.html#SECTION041110010000000000000">TDOP, Top Down Operator Precedence</A>
 <LI><A NAME="tex2html1159"
-  HREF="node20.html#SECTION04221010000000000000">Ejemplo</A>
-<LI><A NAME="tex2html1160"
-  HREF="node20.html#SECTION04221020000000000000">Caracterización de las Gramáticas Analizables</A>
-</UL>
-<LI><A NAME="tex2html1161"
-  HREF="node20.html#SECTION04222000000000000000">Ejercicio: Recorrido del árbol en un ADPR</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html1162"
-  HREF="node21.html">Recursión por la Izquierda</A>
-<LI><A NAME="tex2html1163"
-  HREF="node22.html">Esquemas de Traducción</A>
-<LI><A NAME="tex2html1164"
-  HREF="node23.html">Eliminación de la Recursión por la Izquierda en un Esquema de Traducción</A>
-<LI><A NAME="tex2html1165"
-  HREF="node24.html">Práctica: Analizador Descendente Predictivo Recursivo</A>
-<UL>
-<LI><A NAME="tex2html1166"
-  HREF="node24.html#SECTION04260010000000000000">Donde</A>
-<LI><A NAME="tex2html1167"
-  HREF="node24.html#SECTION04260020000000000000">Tareas</A>
-<LI><A NAME="tex2html1168"
-  HREF="node24.html#SECTION04260030000000000000">Sinatra</A>
-<LI><A NAME="tex2html1169"
-  HREF="node24.html#SECTION04260040000000000000">Sass</A>
-<LI><A NAME="tex2html1170"
-  HREF="node24.html#SECTION04260050000000000000">Slim</A>
-<LI><A NAME="tex2html1171"
-  HREF="node24.html#SECTION04260060000000000000">CoffeeScript</A>
-<LI><A NAME="tex2html1172"
-  HREF="node24.html#SECTION04260070000000000000">Construyendo Árboles con la Asociatividad Correcta</A>
-</UL></UL>
+  HREF="node18.html#SECTION041110020000000000000">Objetivos de la Práctica</A>
+</UL></UL></UL>
 <!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION041110000000000000000"></A>
+   <A NAME="3542"></A>
+<BR>
+Práctica: Analizador Léxico para Un Subconjunto de JavaScript
+</H1>
+
+<P>
+
+<H4><A NAME="SECTION041110010000000000000">
+TDOP, Top Down Operator Precedence</A>
+</H4>
+  
+
+Vamos a trabajar a partir de este repo de Douglas Crockford:
+
+<UL>
+<LI><A NAME="tex2html164"
+  HREF="https://github.com/douglascrockford/TDOP">https://github.com/douglascrockford/TDOP</A>
+</LI>
+<LI>Autor: 
+<A NAME="tex2html165"
+  HREF="http://www.crockford.com/">Douglas Crockford</A>, douglas@crockford.com
+
+<P>
+</LI>
+<LI>Fecha que figura en el repo: 2010-11-12
+
+<P>
+</LI>
+<LI>Descripción:
+
+<P>
+
+<UL>
+<LI><A NAME="tex2html166"
+  HREF="http://crguezl.github.io/ull-etsii-grado-pl-minijavascript/tdop.html">tdop.html</A>
+contains a description of Vaughn Pratt's Top Down Operator Precedence,
+and describes  the parser whose lexer we are going to write in 
+this lab. Is a simplified version of JavaScript.
+
+<P>
+</LI>
+<LI>The file 
+<code>index.html</code> parses <code>parse.js</code> and displays its AST. 
+</LI>
+<LI>The page depends on 
+on <code>parse.js</code> and <code>tokens.js</code>.
+</LI>
+<LI>The file <code>tdop.js</code> contains the Simplified JavaScript parser. 
+</LI>
+<LI><A NAME="tex2html167"
+  HREF="https://github.com/douglascrockford/TDOP/blob/master/tokens.js">tokens.js</A>.
+produces an array of token objects from a string.
+This is the file we are going to work in this lab.
+</LI>
+</UL>
+</LI>
+</UL>
+
+<P>
+
+<H4><A NAME="SECTION041110020000000000000">
+Objetivos de la Práctica</A>
+</H4>
+  
+
+<P>
+Douglas Crockford escribió su analizador léxico 
+<A NAME="tex2html168"
+  HREF="https://github.com/douglascrockford/TDOP/blob/master/tokens.js">tokens.js</A>
+sin usar expresiones regulares.
+Eso hace que sea extenso (268 líneas). Su analizador es un subconjunto de JS que no tiene 
+- entre otras cosas - expresiones regulares ya que
+uno de sus objetivos era que el analizador 
+se analizara a si mismo.
+
+<P>
+Reescriba el analizador léxico en <A NAME="tex2html169"
+  HREF="https://github.com/douglascrockford/TDOP/blob/master/tokens.js">tokens.js</A>.
+usando expresiones regulares.
+
+<P>
+
+<OL>
+<LI>Evite que se hagan copias de la cadena siendo procesada. Muévase dentro de la misma cadena usando
+<code>lastIndex</code>
+</LI>
+<LI>Añada botones/enlaces/menu de selección que permitan cargar un fichero específico 
+de una lista de ficheros en la <code>texarea</code> de entrada.
+
+<P>
+Vea el ejemplo en 
+<A NAME="tex2html170"
+  HREF="https://github.com/crguezl/loadfileontotexarea">https://github.com/crguezl/loadfileontotexarea</A>.
+
+<P>
+En este caso en vez de un fichero <code>index.html</code> arrancamos desde un programa Ruby <code>app.rb</code>. Para verlo en ejecución instale primero las dependencias:
+<PRE>
+[~/javascript/jquery/loadfileontotexarea(master)]$ bundle install
+Using daemons (1.1.9) 
+Using eventmachine (1.0.3) 
+Using rack (1.5.2) 
+Using rack-protection (1.5.2) 
+Using tilt (1.4.1) 
+Using sinatra (1.4.4) 
+Using thin (1.6.1) 
+Using bundler (1.3.5) 
+Your bundle is complete!
+Use `bundle show [gemname]` to see where a bundled gem is installed.
+</PRE>
+Para ejecutar puede llamar a la aplicación así:
+<PRE>
+[~/javascript/jquery/loadfileontotexarea(master)]$ bundle exec rackup
+Thin web server (v1.6.1 codename Death Proof)
+Maximum connections set to 1024
+Listening on 0.0.0.0:9292, CTRL+C to stop
+</PRE>
+Ahora visite en su navegador la URL <code>http://localhost:9292</code>.
+
+<P>
+Puede ver también la aplicación corriendo en los servidores de Heroku
+en 
+<A NAME="tex2html171"
+  HREF="http://pllexer.herokuapp.com/">http://pllexer.herokuapp.com/</A>.
+Visite los enlaces <code> withajax.html</code> y <code>withget.html</code>.
+</LI>
+<LI>Añada pruebas 
+</LI>
+<LI>Haga el despliegue de su aplicación en 
+<A NAME="tex2html172"
+  HREF="https://www.heroku.com/">Heroku</A>.
+Para ver como hacerlo siga las indicaciones en la sección
+<I>Heroku</I> <A HREF="node253.html#chapter:heroku"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> en estos apuntes
+</LI>
+<LI>Una primera solución de la que puede partir se encuentra en:
+<A NAME="tex2html173"
+  HREF="https://github.com/crguezl/ull-etsii-grado-pl-minijavascript/tree/gh-pages">https://github.com/crguezl/ull-etsii-grado-pl-minijavascript/tree/gh-pages</A>
+en github. 
+Veala en funcionamiento en 
+<A NAME="tex2html174"
+  HREF="http://crguezl.github.io/ull-etsii-grado-pl-minijavascript/">GitHub Pages</A>
+</LI>
+<LI>El método <code>tokens</code> retorna el array de tokens. Puede encontrarlo en
+<A NAME="tex2html175"
+  HREF="https://github.com/douglascrockford/TDOP/blob/master/tokens.js">tokens.js</A>.
+</LI>
+<LI>Mejore la solución en
+<A NAME="tex2html176"
+  HREF="https://github.com/crguezl/ull-etsii-grado-pl-minijavascript/tree/gh-pages">https://github.com/crguezl/ull-etsii-grado-pl-minijavascript/tree/gh-pages</A>
+</LI>
+<LI>Para esta práctica es necesario familiarizarse con la forma en que funciona la OOP
+en JS. Vea este
+<A NAME="tex2html177"
+  HREF="http://jsfiddle.net/casiano/Mw9dW/">jsfiddle</A>
+</LI>
+</OL>
+
+<P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1153"
+<A NAME="tex2html1156"
   HREF="node19.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1147"
-  HREF="node6.html">
+<A NAME="tex2html1150"
+  HREF="node7.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1141"
+<A NAME="tex2html1146"
   HREF="node17.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1149"
-  HREF="node89.html">
+<A NAME="tex2html1152"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1151"
-  HREF="node92.html">
+<A NAME="tex2html1154"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -209,17 +322,17 @@ Analizadores Descendentes Predictivos en JavaScript</A>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1154"
-  HREF="node19.html">Conceptos Básicos para el</A>
-<B>Sup:</B> <A NAME="tex2html1148"
-  HREF="node6.html">PARTE: APUNTES DE PROCESADORES</A>
-<B> Ant:</B> <A NAME="tex2html1142"
-  HREF="node17.html">Práctica: Analizador Léxico para</A>
+<B> Sig:</B> <A NAME="tex2html1157"
+  HREF="node19.html">Analizadores Descendentes Predictivos en</A>
+<B>Sup:</B> <A NAME="tex2html1151"
+  HREF="node7.html">Expresiones Regulares y Análisis</A>
+<B> Ant:</B> <A NAME="tex2html1147"
+  HREF="node17.html">Práctica: Ficheros INI</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2015-02-18</I>
+2015-02-20</I>
 </ADDRESS>
 </BODY>
 </HTML>

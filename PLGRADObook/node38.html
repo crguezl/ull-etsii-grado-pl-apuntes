@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Not Predicate: Comentarios Anidados</TITLE>
-<META NAME="description" CONTENT="Not Predicate: Comentarios Anidados">
+<TITLE>Dangling else: Asociando un else con su if mas cercano</TITLE>
+<META NAME="description" CONTENT="Dangling else: Asociando un else con su if mas cercano">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node39.html">
 <LINK REL="previous" HREF="node37.html">
-<LINK REL="up" HREF="node28.html">
+<LINK REL="up" HREF="node29.html">
 <LINK REL="next" HREF="node39.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1569"
+<A NAME="tex2html1570"
   HREF="node39.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1563"
-  HREF="node28.html">
+<A NAME="tex2html1564"
+  HREF="node29.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1557"
+<A NAME="tex2html1558"
   HREF="node37.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1565"
-  HREF="node89.html">
+<A NAME="tex2html1566"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1567"
-  HREF="node92.html">
+<A NAME="tex2html1568"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -80,19 +80,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1570"
-  HREF="node39.html">Un Lenguaje Dependiente del</A>
-<B>Sup:</B> <A NAME="tex2html1564"
-  HREF="node28.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html1558"
-  HREF="node37.html">Dangling else: Asociando un</A>
+<B> Sig:</B> <A NAME="tex2html1571"
+  HREF="node39.html">Not Predicate: Comentarios Anidados</A>
+<B>Sup:</B> <A NAME="tex2html1565"
+  HREF="node29.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html1559"
+  HREF="node37.html">Eliminación de la Recursividad</A>
 <B> Con:</B> 
-<A NAME="tex2html1565"
-  HREF="node89.html">
+<A NAME="tex2html1566"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1567"
-  HREF="node92.html">
+<A NAME="tex2html1568"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
@@ -103,87 +103,152 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <UL CLASS="ChildLinks">
 <LI><UL>
 <LI><UL>
-<LI><A NAME="tex2html1571"
-  HREF="node38.html#SECTION044100010000000000000">Pascal_comments.pegjs</A>
 <LI><A NAME="tex2html1572"
-  HREF="node38.html#SECTION044100020000000000000">use_pascal_comments.js</A>
+  HREF="node38.html#SECTION04490010000000000000">danglingelse.pegjs</A>
 <LI><A NAME="tex2html1573"
-  HREF="node38.html#SECTION044100030000000000000">Ejecución</A>
+  HREF="node38.html#SECTION04490020000000000000">use_danglingelse.js</A>
 <LI><A NAME="tex2html1574"
-  HREF="node38.html#SECTION044100040000000000000">Donde</A>
+  HREF="node38.html#SECTION04490030000000000000">Ejecución</A>
+<LI><A NAME="tex2html1575"
+  HREF="node38.html#SECTION04490040000000000000">Donde</A>
 </UL></UL></UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION044100000000000000000">
-Not Predicate: Comentarios Anidados</A>
+<H1><A NAME="SECTION04490000000000000000">
+
+<FONT COLOR="#ff0000"> Dangling else</FONT>: Asociando un else con su if mas cercano</A>
 </H1>
-The following recursive  <A NAME="tex2html250"
-  HREF="http://pegjs.majda.cz/">PEG.js</A>
 
-program  matches Pascal-style nested comment syntax:
+<P>
+The dangling else is a problem in computer programming in which an
+optional <code>else clause</code> in an <code>If–then(–else)</code> statement results in nested
+conditionals being ambiguous. 
+
+<P>
+Formally, the reference context-free
+grammar of the language is ambiguous, meaning there is more than one
+correct parse tree.
+
+<P>
+In many programming languages one may write conditionally executed code
+in two forms: 
+
+<P>
+the <code>if-then</code> form, and the <code>if-then-else</code> form – the 
+<code>else</code>
+clause is optional:
 <PRE>
-(* which can (* nest *) like this *)
+              if a then s
+              if a then s1 else s2
 </PRE>
 
 <P>
+This gives rise to an ambiguity in interpretation when there are nested
+statements, specifically whenever an <code>if-then</code> form appears as <code>s1</code>
+in an <code>if-then-else</code> form:
+<PRE>
+              if a then if b then s else s2
+</PRE>
+In this example, <code>s</code> is unambiguously executed when <code>a</code> is
+<code>true</code> and <code>b</code> is <code>true</code>, but one may interpret <code>s2</code>
+as being executed when <code>a</code> is <code>false</code> 
 
-<H4><A NAME="SECTION044100010000000000000">
-Pascal_comments.pegjs</A>
+<UL>
+<LI>(thus attaching the
+<code>else</code> to the first <code>if</code>) or when 
+</LI>
+<LI><code>a</code> is <code>true</code>
+and <code>b</code> is <code>false</code> (thus attaching the <code>else</code> to the
+second <code>if</code>). 
+</LI>
+</UL>
+In other words, one may see the previous statement
+as either of the following expressions:
+<PRE>
+if a then (if b then s) else s2
+</PRE>
+      or
+<PRE>
+if a then (if b then s else s2)
+</PRE>
+
+<P>
+This is a problem that often comes up in compiler construction,
+especially scannerless parsing. 
+
+<P>
+The convention when dealing with
+the dangling <code>else</code> is to attach the <code>else</code> to the nearby
+<code>if</code> statement.
+
+<P>
+Programming languages like Pascal and C follow this
+convention, so there is no ambiguity in the semantics of the language,
+though the use of a parser generator may lead to ambiguous grammars. 
+In
+these cases 
+<FONT COLOR="#ff0000"> alternative grouping is accomplished by explicit blocks</FONT>,
+such as <code>begin...end</code> in Pascal and <code>{...}</code> in C.
+
+<P>
+Here follows a solution in PEG.js:
+
+<P>
+
+<H4><A NAME="SECTION04490010000000000000">
+danglingelse.pegjs</A>
 </H4>
   
 
 <PRE>
-$ cat pascal_comments.pegjs 
-/* Pascal nested comments */
+$ cat danglingelse.pegjs 
+/*
+S ← 'if' C 'then' S 'else' S / 'if' C 'then' S
+*/
 
-P     =   prog:N+                          { return prog; }
-N     =   chars:$(!Begin ANY)+             { return chars;}
-        / C
-C     = Begin chars:T* End                 { return chars.join(''); }
-T     =   C 
-        / (!Begin !End char:ANY)           { return char;}
-Begin = '(*'
-End   = '*)'
-ANY   =   'z'    /* any character */       { return 'z';  }
-        / char:[^z]                        { return char; }
+S =   if C:C then S1:S else S2:S { return [ 'ifthenelse', C, S1, S2 ]; }
+    / if C:C then S:S            { return [ 'ifthen', C, S]; }
+    / O                          { return 'O'; }
+_ = ' '*
+C = _'c'_                        { return 'c'; }
+O = _'o'_                        { return 'o'; }
+else = _'else'_                 
+if = _'if'_
+then = _'then'_
 </PRE>
 
 <P>
 
-<H4><A NAME="SECTION044100020000000000000">
-use_pascal_comments.js</A>
+<H4><A NAME="SECTION04490020000000000000">
+use_danglingelse.js</A>
 </H4>
   
 
+<P>
 <PRE>
-$ cat use_pascal_comments.js 
-var PEG = require("./pascal_comments.js");
-var r = PEG.parse(
-  "not bla bla (* pascal (* nested *) comment *)"+
-  " pum pum (* another comment *)");
+$ cat use_danglingelse.js 
+var PEG = require("./danglingelse.js");
+var r = PEG.parse("if c then if c then o else o");
 console.log(r);
 </PRE>
 
 <P>
 
-<H4><A NAME="SECTION044100030000000000000">
+<H4><A NAME="SECTION04490030000000000000">
 Ejecución</A>
 </H4>
   
 
 <PRE>
-$ ../bin/pegjs pascal_comments.pegjs 
-$ node use_pascal_comments.js 
-[ 'not bla bla ',
-  ' pascal  nested  comment ',
-  ' pum pum ',
-  ' another comment ' ]
+$ ../bin/pegjs danglingelse.pegjs 
+$ node use_danglingelse.js 
+[ 'ifthen', 'c', [ 'ifthenelse', 'c', 'O', 'O' ] ]
 </PRE>
 
 <P>
 
-<H4><A NAME="SECTION044100040000000000000">
+<H4><A NAME="SECTION04490040000000000000">
 Donde</A>
 </H4>
   
@@ -206,7 +271,7 @@ origin  git@github.com:crguezl/pegjs.git (fetch)
 origin  git@github.com:crguezl/pegjs.git (push)
 </PRE>
 </LI>
-<LI><A NAME="tex2html251"
+<LI><A NAME="tex2html250"
   HREF="https://github.com/crguezl/pegjs/tree/master/examples">https://github.com/crguezl/pegjs/tree/master/examples</A>
 </LI>
 </UL>
@@ -214,20 +279,20 @@ origin  git@github.com:crguezl/pegjs.git (push)
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1569"
+<A NAME="tex2html1570"
   HREF="node39.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1563"
-  HREF="node28.html">
+<A NAME="tex2html1564"
+  HREF="node29.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1557"
+<A NAME="tex2html1558"
   HREF="node37.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1565"
-  HREF="node89.html">
+<A NAME="tex2html1566"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1567"
-  HREF="node92.html">
+<A NAME="tex2html1568"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -266,17 +331,17 @@ origin  git@github.com:crguezl/pegjs.git (push)
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1570"
-  HREF="node39.html">Un Lenguaje Dependiente del</A>
-<B>Sup:</B> <A NAME="tex2html1564"
-  HREF="node28.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html1558"
-  HREF="node37.html">Dangling else: Asociando un</A>
+<B> Sig:</B> <A NAME="tex2html1571"
+  HREF="node39.html">Not Predicate: Comentarios Anidados</A>
+<B>Sup:</B> <A NAME="tex2html1565"
+  HREF="node29.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html1559"
+  HREF="node37.html">Eliminación de la Recursividad</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2015-02-18</I>
+2015-02-20</I>
 </ADDRESS>
 </BODY>
 </HTML>

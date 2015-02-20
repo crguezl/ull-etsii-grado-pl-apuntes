@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Eliminación de la Recursión por la Izquierda en un Esquema de Traducción</TITLE>
-<META NAME="description" CONTENT="Eliminación de la Recursión por la Izquierda en un Esquema de Traducción">
+<TITLE>Esquemas de Traducción</TITLE>
+<META NAME="description" CONTENT="Esquemas de Traducción">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node24.html">
 <LINK REL="previous" HREF="node22.html">
-<LINK REL="up" HREF="node18.html">
+<LINK REL="up" HREF="node19.html">
 <LINK REL="next" HREF="node24.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1246"
+<A NAME="tex2html1251"
   HREF="node24.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1240"
-  HREF="node18.html">
+<A NAME="tex2html1245"
+  HREF="node19.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1234"
+<A NAME="tex2html1239"
   HREF="node22.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1242"
-  HREF="node89.html">
+<A NAME="tex2html1247"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1244"
-  HREF="node92.html">
+<A NAME="tex2html1249"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -80,165 +80,168 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1247"
-  HREF="node24.html">Práctica: Analizador Descendente Predictivo</A>
-<B>Sup:</B> <A NAME="tex2html1241"
-  HREF="node18.html">Analizadores Descendentes Predictivos en</A>
-<B> Ant:</B> <A NAME="tex2html1235"
-  HREF="node22.html">Esquemas de Traducción</A>
+<B> Sig:</B> <A NAME="tex2html1252"
+  HREF="node24.html">Eliminación de la Recursión</A>
+<B>Sup:</B> <A NAME="tex2html1246"
+  HREF="node19.html">Analizadores Descendentes Predictivos en</A>
+<B> Ant:</B> <A NAME="tex2html1240"
+  HREF="node22.html">Recursión por la Izquierda</A>
 <B> Con:</B> 
-<A NAME="tex2html1242"
-  HREF="node89.html">
+<A NAME="tex2html1247"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1244"
-  HREF="node92.html">
+<A NAME="tex2html1249"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION04250000000000000000"></A>
-<A NAME="section:eliminarecesquem"></A>
+<H1><A NAME="SECTION04240000000000000000"></A>
+<A NAME="section:esquemas"></A>
 <BR>
-Eliminación de la Recursión por la Izquierda en un Esquema de Traducción
+Esquemas de Traducción
 </H1>
-La eliminación de la recursión por la izquierda es sólo un paso: debe 
-ser extendida a esquemas de traducción, 
-de manera que no sólo se preserve el lenguaje
-sino la secuencia de acciones. Supongamos que tenemos un esquema de
-traducción de la forma:
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Un <A NAME="4449"></A><SPAN  CLASS="textbf">esquema de traducción</SPAN> es una gramática independiente del contexto
+en la cual se han insertado fragmentos de código en las partes derechas
+de sus reglas de producción. Los fragmentos de código asi insertados 
+se denominan <A NAME="4451"></A><SPAN  CLASS="textbf">acciones semánticas</SPAN>. Dichos fragmentos actúan, calculan
+y modifican los atributos asociados con los nodos del árbol sintáctico. 
+El orden en que se evalúan los fragmentos
+es el de un recorrido primero-profundo del árbol de análisis sintáctico.</I></DIV><P></P>
+Obsérvese que, en general, para poder aplicar un esquema de traducción hay 
+que construir el árbol sintáctico y después aplicar las acciones empotradas
+en las reglas en el orden de recorrido primero-profundo. Por supuesto, si 
+la gramática es ambigua una frase podría tener dos árboles y la ejecución de las
+acciones para ellos podría dar lugar a diferentes resultados. Si se quiere
+evitar la multiplicidad de resultados (interpretaciones semánticas)
+es necesario precisar de que árbol sintáctico concreto se esta hablando.
 
 <P>
-<BR>
-<BR>
-<TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $A   \rightarrow A \alpha$
+Por ejemplo, si en la regla <!-- MATH
+ $A \rightarrow \alpha \beta$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="69" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img58.png"
- ALT="$ A \rightarrow A \alpha$"></SPAN></TD>
-<TD ALIGN="LEFT"><code>{ alpha_action }</code></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $A   \rightarrow A \beta$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="69" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img67.png"
- ALT="$ A \rightarrow A \beta$"></SPAN></TD>
-<TD ALIGN="LEFT"><code>{ beta_action }</code></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $A   \rightarrow \gamma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img16.png"
- ALT="$ A \rightarrow \gamma$"></SPAN></TD>
-<TD ALIGN="LEFT"><code>{ gamma_action }</code></TD>
-</TR>
-</TABLE>
-<BR>
-<BR>
-
-<P>
-para una sentencia como <!-- MATH
- $\gamma \beta \alpha$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="37" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img68.png"
- ALT="$ \gamma \beta \alpha$"></SPAN> la secuencia de
-acciones será: 
+ WIDTH="67" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img59.png"
+ ALT="$ A \rightarrow \alpha \beta $"></SPAN>
+insertamos un fragmento de código:
 
 <P>
 <DIV ALIGN="CENTER">
-<code>gamma_action  beta_action alpha_action</code>
-
+<!-- MATH
+ $A \rightarrow \alpha \{ action \} \beta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="132" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img60.png"
+ ALT="$ A \rightarrow \alpha \{ action \} \beta $"></SPAN>
 </DIV>
 
 <P>
-¿Cómo construir un esquema de traducción para la gramática resultante
-de eliminar la recursión por la izquierda que ejecute las acciones
-asociadas en el mismo orden?. Supongamos para simplificar,
-que las acciones no dependen
-de atributos ni computan atributos, sino que actúan sobre
-variables globales. En tal caso, la siguiente
-ubicación de las acciones da lugar a que se ejecuten en el mismo
-orden:
+La acción <!-- MATH
+ $\{ action \}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="70" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img61.png"
+ ALT="$ \{ action \}$"></SPAN> se ejecutará después de todas las acciones
+asociadas con el recorrido del subárbol de <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img42.png"
+ ALT="$ \alpha$"></SPAN> y antes que todas
+las acciones asociadas con el recorrido del subárbol <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img62.png"
+ ALT="$ \beta$"></SPAN>.
+
+<P>
+El siguiente esquema de traducción recibe como entrada una expresión en infijo
+y produce como salida su traducción a postfijo para expresiones aritmeticas con sólo 
+restas de números:
 
 <P>
 <BR>
 <BR>
 <TABLE CELLPADDING=3>
 <TR><TD ALIGN="LEFT"><!-- MATH
- $A   \rightarrow \gamma$
+ $expr   \rightarrow expr_1  -  NUM$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img16.png"
- ALT="$ A \rightarrow \gamma$"></SPAN> <code>{ gamma_action }</code> <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img69.png"
- ALT="$ R$"></SPAN></TD>
+ WIDTH="179" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img63.png"
+ ALT="$ expr \rightarrow expr_1 - NUM$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ expr.TRA = expr[1].TRA+" "+NUM.VAL+" - "}</code></TD>
 </TR>
 <TR><TD ALIGN="LEFT"><!-- MATH
- $R   \rightarrow \beta$
+ $expr   \rightarrow NUM$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="56" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img70.png"
- ALT="$ R \rightarrow \beta$"></SPAN> <code> { beta_action }</code> <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img69.png"
- ALT="$ R$"></SPAN></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $R   \rightarrow \alpha$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="57" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img71.png"
- ALT="$ R \rightarrow \alpha$"></SPAN> <code> { alpha_action }</code> <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img69.png"
- ALT="$ R$"></SPAN></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $R   \rightarrow \epsilon$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="52" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img72.png"
- ALT="$ R \rightarrow \epsilon$"></SPAN></TD>
+ WIDTH="116" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img64.png"
+ ALT="$ expr \rightarrow NUM$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ expr.TRA = NUM.VAL }</code></TD>
 </TR>
 </TABLE>
+<BR>
+<BR>
 
 <P>
-Si hay atributos en juego, la estrategia para construir un
-esquema de traducción equivalente para la gramática resultante
-de eliminar la recursividad por la izquierda se complica.
+Las apariciones de variables sintácticas en una regla de producción se indexan
+como se ve en el ejemplo, para distinguir de que nodo del árbol de análisis estamos
+hablando. Cuando hablemos del atributo de un nodo utilizaremos el punto (<code>.</code>). 
+Aquí <code>VAL</code> es un atributo de los nodos de tipo <SPAN CLASS="MATH"><IMG
+ WIDTH="53" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img65.png"
+ ALT="$ NUM$"></SPAN> denotando
+su valor numérico y para accederlo escribiremos <code>NUM.VAL</code>.
+Análogamente <code>expr.TRA</code> denota el atributo 
+<FONT COLOR="#ff0000"> traducción</FONT> de
+los nodos de tipo <SPAN CLASS="MATH"><IMG
+ WIDTH="40" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img66.png"
+ ALT="$ expr$"></SPAN>.
+
+<P>
+<P>
+<DIV><B>Ejercicio  <SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Muestre la secuencia de acciones a la
+que da lugar el esquema de traducción anterior 
+para la frase 7 -5 -4.</I></DIV><P></P>
+
+<P>
+En este ejemplo, el cómputo del atributo <code>expr.TRA</code> depende de los atributos
+en los nodos hijos, o lo que es lo mismo, depende de los atributos de los símbolos
+en la parte derecha de la regla de producción. Esto ocurre a menudo y motiva la siguiente
+definición:
+
+<P>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
+<I>Un atributo tal que su valor en todo nodo del árbol sintáctico
+puede ser computado en términos de los atributos de los hijos del nodo se dice
+que es un <A NAME="4455"></A><SPAN  CLASS="textbf">atributo sintetizado</SPAN>.</I></DIV><P></P>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1246"
+<A NAME="tex2html1251"
   HREF="node24.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1240"
-  HREF="node18.html">
+<A NAME="tex2html1245"
+  HREF="node19.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1234"
+<A NAME="tex2html1239"
   HREF="node22.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1242"
-  HREF="node89.html">
+<A NAME="tex2html1247"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1244"
-  HREF="node92.html">
+<A NAME="tex2html1249"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -277,17 +280,17 @@ de eliminar la recursividad por la izquierda se complica.
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1247"
-  HREF="node24.html">Práctica: Analizador Descendente Predictivo</A>
-<B>Sup:</B> <A NAME="tex2html1241"
-  HREF="node18.html">Analizadores Descendentes Predictivos en</A>
-<B> Ant:</B> <A NAME="tex2html1235"
-  HREF="node22.html">Esquemas de Traducción</A>
+<B> Sig:</B> <A NAME="tex2html1252"
+  HREF="node24.html">Eliminación de la Recursión</A>
+<B>Sup:</B> <A NAME="tex2html1246"
+  HREF="node19.html">Analizadores Descendentes Predictivos en</A>
+<B> Ant:</B> <A NAME="tex2html1240"
+  HREF="node22.html">Recursión por la Izquierda</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2015-02-18</I>
+2015-02-20</I>
 </ADDRESS>
 </BODY>
 </HTML>

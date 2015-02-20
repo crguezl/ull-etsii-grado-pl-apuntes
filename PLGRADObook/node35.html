@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Eliminando la Recursividad por la Izquierda en la Calculadora</TITLE>
-<META NAME="description" CONTENT="Eliminando la Recursividad por la Izquierda en la Calculadora">
+<TITLE>Eliminación de la Recursividad por la Izquierda en PEGs</TITLE>
+<META NAME="description" CONTENT="Eliminación de la Recursividad por la Izquierda en PEGs">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,7 +21,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node36.html">
 <LINK REL="previous" HREF="node34.html">
-<LINK REL="up" HREF="node28.html">
+<LINK REL="up" HREF="node29.html">
 <LINK REL="next" HREF="node36.html">
 </HEAD>
 
@@ -32,16 +32,16 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   HREF="node36.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
 <A NAME="tex2html1514"
-  HREF="node28.html">
+  HREF="node29.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
 <A NAME="tex2html1508"
   HREF="node34.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
 <A NAME="tex2html1516"
-  HREF="node89.html">
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
 <A NAME="tex2html1518"
-  HREF="node92.html">
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -81,86 +81,314 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  ALT="crguezl at github"></A>
 <BR>
 <B> Sig:</B> <A NAME="tex2html1521"
-  HREF="node36.html">Eliminación de la Recursividad</A>
+  HREF="node36.html">Eliminando la Recursividad por</A>
 <B>Sup:</B> <A NAME="tex2html1515"
-  HREF="node28.html">Análisis Descendente mediante Parsing</A>
+  HREF="node29.html">Análisis Descendente mediante Parsing</A>
 <B> Ant:</B> <A NAME="tex2html1509"
-  HREF="node34.html">Eliminación de la Recursividad</A>
+  HREF="node34.html">PegJS en los Browser</A>
 <B> Con:</B> 
 <A NAME="tex2html1516"
-  HREF="node89.html">
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
 <A NAME="tex2html1518"
-  HREF="node92.html">
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<H1><A NAME="SECTION04470000000000000000">
-Eliminando la Recursividad por la Izquierda en la Calculadora</A>
+<UL CLASS="ChildLinks">
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html1522"
+  HREF="node35.html#SECTION04460010000000000000">Donde</A>
+<LI><A NAME="tex2html1523"
+  HREF="node35.html#SECTION04460020000000000000">PEGjs Coffee Plugin</A>
+<LI><A NAME="tex2html1524"
+  HREF="node35.html#SECTION04460030000000000000">Un Esquema de Traducción Recursivo por la Izquierda</A>
+<LI><A NAME="tex2html1525"
+  HREF="node35.html#SECTION04460040000000000000">Métodología</A>
+<LI><A NAME="tex2html1526"
+  HREF="node35.html#SECTION04460050000000000000">Solución</A>
+</UL></UL></UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION04460000000000000000">
+Eliminación de la Recursividad por la Izquierda en PEGs</A>
 </H1>
+
+<P>
+
+<H4><A NAME="SECTION04460010000000000000">
+Donde</A>
+</H4>
+  
+
+<P>
+
+<UL>
+<LI><PRE>
+[~/srcPLgrado/pegjs-coffee-plugin/examples(master)]$ pwd -P
+/Users/casiano/local/src/javascript/PLgrado/pegjs-coffee-plugin/examples
+</PRE>
+</LI>
+<LI><PRE>
+[~/srcPLgrado/pegjs-coffee-plugin/examples(master)]$ git remote -v
+dignifiedquire  git@github.com:Dignifiedquire/pegjs-coffee-plugin.git (fetch)
+dignifiedquire  git@github.com:Dignifiedquire/pegjs-coffee-plugin.git (push)
+origin  git@github.com:crguezl/pegjs-coffee-plugin.git (fetch)
+origin  git@github.com:crguezl/pegjs-coffee-plugin.git (push)
+</PRE>
+</LI>
+<LI><A NAME="tex2html247"
+  HREF="https://github.com/crguezl/pegjs-coffee-plugin/tree/master/examples">https://github.com/crguezl/pegjs-coffee-plugin/tree/master/examples</A>
+</LI>
+</UL>
+
+<P>
+
+<H4><A NAME="SECTION04460020000000000000">
+PEGjs Coffee Plugin</A>
+</H4>
+  
+
+<A NAME="tex2html248"
+  HREF="https://github.com/Dignifiedquire/pegjs-coffee-plugin">PEGjs Coffee Plugin </A>
+is a plugin for PEG.js to use CoffeeScript in actions.
+
+<P>
+Veamos un ejemplo de uso via la API:
+
+<P>
 <PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat simple.pegjs 
-/* From the Wikipedia
-Value   ← [0-9]+ / '(' Expr ')'
-Product ← Value (('*' / '/') Value)*
-Sum     ← Product (('+' / '-') Product)*
-Expr    ← Sum
+[~/srcPLgrado/pegjs/examples(master)]$ cat plugin.coffee 
+#!/usr/bin/env coffee
+PEG = require 'pegjs'
+coffee = require 'pegjs-coffee-plugin'
+grammar = """
+a = 'hello' _ b { console.log 1; "hello world!" }
+b = 'world'     { console.log 2 }
+_ = [ \t]+      { console.log 3 }
+"""
+parser = PEG.buildParser grammar, plugins: [coffee]
+r = parser.parse "hello world"
+console.log(r)
+</PRE>
+
+<P>
+<PRE>
+[~/srcPLgrado/pegjs/examples(master)]$ coffee plugin.coffee 
+3
+2
+1
+hello world!
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION04460030000000000000">
+Un Esquema de Traducción Recursivo por la Izquierda</A>
+</H4>
+  
+
+Consideremos el siguiente esquema de traducción implementado en  <A NAME="tex2html249"
+  HREF="http://zaach.github.io/jison/">Jison</A>
+:
+
+<P>
+<PRE>
+[~/srcPLgrado/pegjs-coffee-plugin/examples(master)]$ cat leftrec.jison 
+/*
+Exercise: Find a PEG equivalent to the following left-recursive
+grammar:
 */
-{ 
-  function reduce(left, right) {
-    var sum = left;
-    // console.log("sum = "+sum);
-    for(var i = 0; i &lt; right.length;i++) {
-      var t = right[i];
-      var op = t[0];
-      var num = t[1];
-      switch(op) {
-        case '+' : sum += num; break;
-        case '-' : sum -= num; break;
-        case '*' : sum *= num; break;
-        case '/' : sum /= num; break;
-        default : console.log("Error! "+op);
-      }
-      // console.log("sum = "+sum);
-    }
-    return sum;
-  }
-}
+%lex
+%%
 
-sum   = left:product right:($[+-] product)* { return reduce(left, right); }
-product = left:value right:($[*/] value)*   { return reduce(left, right); }
-value   = number:$[0-9]+                    { return parseInt(number,10); }
-        / '(' sum:sum ')'                   { return sum; }
+\s+               { /* skip whitespace */ }
+y                 { return 'y';}
+.                 { return 'x';}
+
+/lex
+
+%{
+  do_y = function(y)   { console.log("A -&gt; 'y'   do_y("+y+")"); return y; }
+  do_x = function(a, x){ console.log("A -&gt; A 'x' do_x("+a+", "+x+")"); return a+x; }
+%}
+
+%%
+A : A 'x' { $$ = do_x($1, $2); } 
+  | 'y'   { $$ = do_y($1); }
+;
 </PRE>
 
 <P>
-Es posible especificar mediante llaves  un código 
-que este disponible dentro de las acciones semánticas.
+<PRE>
+[~/srcPLgrado/pegjs-coffee-plugin/examples(master)]$ jison leftrec.jison 
+[~/srcPLgrado/pegjs-coffee-plugin/examples(master)]$ ls -ltr leftrec.j*
+-rw-r--r--  1 casiano  staff    441 18 mar 20:22 leftrec.jison
+-rw-r--r--  1 casiano  staff  20464 18 mar 20:34 leftrec.js
+</PRE>
 
 <P>
-Ejecución:
 <PRE>
-[~/pegjs/examples(master)]$ cat use_simple.js 
-var PEG = require("./simple.js");
-var r = PEG.parse("2-3-4");
-console.log(r);
-
-[~/pegjs/examples(master)]$ node use_simple.js 
--5
+[~/srcPLgrado/pegjs-coffee-plugin/examples(master)]$ cat main_leftrec.js 
+var parser = require('./leftrec');
+input = "y x x x";
+var r = parser.parse(input);
 </PRE>
-Veamos otra ejecución:
-<PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat use_simple.js 
-var PEG = require("./simple.js");
-var r = PEG.parse("2+3*(2+1)-10/2");
-console.log(r);
 
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ ../bin/pegjs simple.pegjs 
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ node use_simple.js 
-6
+<P>
+<PRE>
+[~/srcPLgrado/pegjs-coffee-plugin/examples(master)]$ node main_leftrec.js 
+A -&gt; 'y'   do_y(y)
+A -&gt; A 'x' do_x(y, x)
+A -&gt; A 'x' do_x(yx, x)
+A -&gt; A 'x' do_x(yxx, x)
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION04460040000000000000">
+Métodología</A>
+</H4>
+  
+
+<P>
+Es posible modificar la gramática para eliminar la recursión por 
+la izquierda. En este apartado nos limitaremos al caso de recursión 
+por la izquierda directa. 
+La generalización al caso de recursión por la izquierda no-directa
+se reduce a la iteración de la solución propuesta 
+para el caso directo.
+
+<P>
+Consideremos una variable <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$ A$"></SPAN> con dos producciones:
+
+<P>
+<BR>
+<BR>
+<DIV ALIGN="CENTER">
+<!-- MATH
+ $A   \rightarrow A \alpha |\ \beta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="91" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img87.png"
+ ALT="$ A \rightarrow A \alpha \vert \beta$"></SPAN> 
+
+</DIV>
+
+<P>
+donde <!-- MATH
+ $\alpha, \beta \in (V \cup \Sigma)^*$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="123" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img88.png"
+ ALT="$ \alpha, \beta \in (V \cup \Sigma)^*$"></SPAN> no comienzan por <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$ A$"></SPAN>.
+Estas dos producciones pueden ser sustituidas por:
+
+<P>
+<BR>
+<BR>
+<DIV ALIGN="CENTER">
+<!-- MATH
+ $A   \rightarrow \beta \alpha *$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="76" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img89.png"
+ ALT="$ A \rightarrow \beta \alpha * $"></SPAN>
+</DIV>
+
+<P>
+eliminando así la recursión por la izquierda.
+
+<P>
+
+<H4><A NAME="SECTION04460050000000000000">
+Solución</A>
+</H4>
+  
+
+<PRE>
+[~/pegjs-coffee-remove-left(master)]$ cat -n remove_left_recursive.pegjs 
+     1  /*
+     2  
+     3  Exercise: Find a PEG equivalent to the following left-recursive
+     4  grammar:
+     5  
+     6  A : A 'x' { $$ = do_x($1, $2); } | 'y' { $$ = do_y($1); }
+     7  
+     8  */
+     9  
+    10  {
+    11    @do_y = (y)   -&gt; console.log("do_y(#{y})"); y
+    12    @do_x = (a, x)-&gt; console.log("do_x(#{a}, #{x})"); a+x
+    13  }
+    14  
+    15  A = y:'y' xs:('x'*) 
+    16       {
+    17          a = @do_y(y)
+    18          for x in xs
+    19            a = @do_x(a, x)
+    20          a
+    21       }
+</PRE>
+
+<P>
+<PRE>
+[~/pegjs-coffee-remove-left(master)]$ pegjs --plugin pegjs-coffee-plugin remove_left_recursive.pegjs 
+[~/pegjs-coffee-remove-left(master)]$ ls -ltr | tail -1
+-rw-rw-r--  1 casiano  staff   8919  3 jun 10:42 remove_left_recursive.js
+</PRE>
+
+<P>
+<PRE>
+[~/pegjs-coffee-remove-left(master)]$ cat use_remove_left.coffee 
+PEG = require("./remove_left_recursive.js")
+inputs = [
+           "yxx"
+           "y"
+           "yxxx"
+         ]
+
+for input in inputs 
+  console.log("input = #{input}")
+  r = PEG.parse input
+  console.log("result = #{r}\n")
+</PRE>
+
+<P>
+<PRE>
+[~/pegjs-coffee-remove-left(master)]$ coffee use_remove_left.coffee 
+input = yxx
+do_y(y)
+do_x(y, x)
+do_x(yx, x)
+result = yxx
+
+input = y
+do_y(y)
+result = y
+
+input = yxxx
+do_y(y)
+do_x(y, x)
+do_x(yx, x)
+do_x(yxx, x)
+result = yxxx
 </PRE>
 
 <P>
@@ -170,16 +398,16 @@ console.log(r);
   HREF="node36.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
 <A NAME="tex2html1514"
-  HREF="node28.html">
+  HREF="node29.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
 <A NAME="tex2html1508"
   HREF="node34.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
 <A NAME="tex2html1516"
-  HREF="node89.html">
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
 <A NAME="tex2html1518"
-  HREF="node92.html">
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -219,16 +447,16 @@ console.log(r);
  ALT="crguezl at github"></A>
 <BR>
 <B> Sig:</B> <A NAME="tex2html1521"
-  HREF="node36.html">Eliminación de la Recursividad</A>
+  HREF="node36.html">Eliminando la Recursividad por</A>
 <B>Sup:</B> <A NAME="tex2html1515"
-  HREF="node28.html">Análisis Descendente mediante Parsing</A>
+  HREF="node29.html">Análisis Descendente mediante Parsing</A>
 <B> Ant:</B> <A NAME="tex2html1509"
-  HREF="node34.html">Eliminación de la Recursividad</A>
+  HREF="node34.html">PegJS en los Browser</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2015-02-18</I>
+2015-02-20</I>
 </ADDRESS>
 </BODY>
 </HTML>
