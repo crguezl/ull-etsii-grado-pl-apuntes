@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Algoritmo de Análisis LR</TITLE>
-<META NAME="description" CONTENT="Algoritmo de Análisis LR">
+<TITLE>Práctica: Inventando un Lenguaje: Tortoise</TITLE>
+<META NAME="description" CONTENT="Práctica: Inventando un Lenguaje: Tortoise">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node45.html">
 <LINK REL="previous" HREF="node43.html">
-<LINK REL="up" HREF="node33.html">
+<LINK REL="up" HREF="node29.html">
 <LINK REL="next" HREF="node45.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1403"
+<A NAME="tex2html1679"
   HREF="node45.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1397"
-  HREF="node33.html">
+<A NAME="tex2html1673"
+  HREF="node29.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1391"
+<A NAME="tex2html1669"
   HREF="node43.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1399"
-  HREF="node78.html">
+<A NAME="tex2html1675"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1401"
-  HREF="node81.html">
+<A NAME="tex2html1677"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -80,134 +79,140 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1404"
-  HREF="node45.html">El módulo Generado por</A>
-<B>Sup:</B> <A NAME="tex2html1398"
-  HREF="node33.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1392"
-  HREF="node43.html">Práctica: Calculadora con Análisis</A>
+<B> Sig:</B> <A NAME="tex2html1680"
+  HREF="node45.html">Análisis Sintáctico Ascendente en</A>
+<B>Sup:</B> <A NAME="tex2html1674"
+  HREF="node29.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html1670"
+  HREF="node43.html">Práctica: Ambiguedad en C++</A>
 <B> Con:</B> 
-<A NAME="tex2html1399"
-  HREF="node78.html">
+<A NAME="tex2html1675"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1401"
-  HREF="node81.html">
+<A NAME="tex2html1677"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<H1><A NAME="SECTION044110000000000000000"></A>
-<A NAME="section:algoritmoLR"></A>
+<UL CLASS="ChildLinks">
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html1681"
+  HREF="node44.html#SECTION044150010000000000000">Recursos</A>
+</UL></UL></UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION044150000000000000000"></A>
+   <A NAME="5928"></A>
 <BR>
-Algoritmo de Análisis LR
+Práctica: Inventando un Lenguaje: Tortoise
 </H1>
-Asi  pues la tabla de transiciones del autómata nos genera dos tablas:
-la tabla de acciones y la de saltos.
-El  algoritmo  de análisis sintáctico <SPAN  CLASS="textbf">LR</SPAN> en el  que 
-se basa <SPAN  CLASS="textbf">jison</SPAN> utiliza una pila y dos tablas 
-para analizar la entrada. Como se ha visto, la tabla  de acciones contiene cuatro tipo de acciones: 
 
-<OL>
-<LI>Desplazar (<SPAN  CLASS="textbf">shift</SPAN>)
-</LI>
-<LI>Reducir (<SPAN  CLASS="textbf">reduce</SPAN>)
-</LI>
-<LI>Aceptar
-</LI>
-<LI>Error
-</LI>
-</OL>
-El algoritmo utiliza una pila en la que se guardan los estados
-del autómata. De este modo se evita tener que ``comenzar'' 
-el procesado de la forma sentencial derecha resultante
-después de una reducción (antiderivación).
 <P>
-<DIV><A NAME="alg:parser"><B>Algoritmo  <SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">11</SPAN>.<SPAN CLASS="arabic">1</SPAN></B></A> &nbsp; 
-<I>Análizador LR
-</I><PRE>
- push(s0);
- b = yylex();
- for( ; ; ;) {
-   s = top(0); a = b;
-   switch (action[s][a]) {
-     case "shift t" : 
-       t.attr = a.attr;
-       push(t); 
-       b = yylex();
-       break;
-     case "reduce A -&gt;alpha" : 
-       eval(Sem{A -&gt; alpha}(top(|alpha|-1).attr, ... , top(0).attr)); 
-       pop(|alpha|); 
-       push(goto[top(0)][A]); 
-       break;
-     case "accept" : return (1); 
-     default : yyerror("syntax error");
-   }
- }
-</PRE></DIV><P></P>
+El objetivo de esta práctica es crear un lenguaje de programación 
+imperativa sencillo de estilo <A NAME="tex2html263"
+  HREF="http://en.wikipedia.org/wiki/Logo_programming_language">LOGO</A>.
+Para ello lea el capítulo
+<A NAME="tex2html264"
+  HREF="http://nathansuniversity.com/turtle.html">Inventing a Language - Tortoise</A>
+del 
+<A NAME="tex2html265"
+  HREF="http://nathansuniversity.com/turtle.html">curso PL101: Create Your Own Programming Language</A>
+de 
+<A NAME="tex2html266"
+  HREF="http://nathansjslessons.appspot.com/">Nathan Whitehead</A>.
+Haga todos los ejercicios e implemente el lenguaje descrito.
+
+<P>
+Puede encontrar una solución a la práctica en GitHub en el repositorio
+<A NAME="tex2html267"
+  HREF="https://github.com/dingram/pl101">pl101</A>
+de 
+<A NAME="tex2html268"
+  HREF="http://www.dmi.me.uk/blog/">Dave Ingram</A>. Usela como guía cuando se sienta desorientado.
+
+<P>
+
+<H4><A NAME="SECTION044150010000000000000">
+Recursos</A>
+</H4>
+  
 
 <UL>
-<LI>Como es habitual, <SPAN CLASS="MATH"><IMG
- WIDTH="24" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img199.png"
- ALT="$ \vert x\vert$"></SPAN> denota la longitud de la cadena <SPAN CLASS="MATH"><IMG
- WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img35.png"
- ALT="$ x$"></SPAN>.
+<LI><A NAME="tex2html269"
+  HREF="http://nathansuniversity.com/turtle.html">Inventing a Language - Tortoise</A>
+por Nathan Whitehead
 </LI>
-<LI>La función <code>top(k)</code> devuelve el elemento que ocupa la 
-posición <code>k</code> desde el <SPAN  CLASS="textbf">top</SPAN> de la pila (esto es, está a profundidad <code>k</code>).
+<LI>Repositorio
+<A NAME="tex2html270"
+  HREF="https://github.com/dingram/pl101">dingram / pl101 en GitHub</A>
+con las soluciones a esta práctica. 
+
+<P>
+
+<UL>
+<LI>Blog de <A NAME="tex2html271"
+  HREF="http://www.dmi.me.uk/blog/">dingram (Dave Ingram)</A>
 </LI>
-<LI>La función <code>pop(k)</code> extrae <code>k</code> elementos de la pila.
+</UL>
 </LI>
-<LI>La notación <code>state.attr</code> hace referencia al atributo
-asociado con cada estado, el cual desde el punto de vista del programador
-esta asociado con el correspondiente símbolo de la parte derecha de la regla. 
-Nótese que cada estado que está en la pila es el resultado de una transición con
-un símbolo. El atributo de ese símbolo es guardado en el objeto estado
-cada vez que ocurre una transición.
+<LI>Repositorio
+<A NAME="tex2html272"
+  HREF="https://github.com/PatrixCR/PL101">PatrixCR / PL101 en GitHub</A>
+con las soluciones a esta práctica. 
 
 <P>
 </LI>
-<LI>Denotamos por <code>Sem {reduce A -&gt; alpha}</code>
-el código de la acción semántica asociada con la regla <!-- MATH
- $A \rightarrow \alpha$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img13.png"
- ALT="$ A \rightarrow \alpha$"></SPAN>.
+<LI>Repositorio
+<A NAME="tex2html273"
+  HREF="https://github.com/cndreisbach/PL101">Clinton N. Dreisbach/ PL101 en GitHub</A>
+con contenidos del curso PL101
+
+<P>
+</LI>
+<LI><A NAME="tex2html274"
+  HREF="http://nathansuniversity.com/vanilla/discussion/79/lesson-6-inventing-a-language-for-turtle-graphics/p1">Foro</A>
+<P>
+</LI>
+<LI>Sobre Nathan Whitehead
+  
+<UL>
+<LI><A NAME="tex2html275"
+  HREF="http://nathansjslessons.appspot.com/">Nathan's Lessons</A>
+</LI>
+<LI><A NAME="tex2html276"
+  HREF="https://github.com/nwhitehead">Nathan Whitehead en GitHub</A>
+</LI>
+<LI><A NAME="tex2html277"
+  HREF="http://www.youtube.com/user/NathanWhitehead">Nathan in YouTube</A>
+</LI>
+</UL>
 </LI>
 </UL>
 
 <P>
-Todos los analizadores LR comparten, salvo pequeñas
-excepciones, el mismo algoritmo
-de análisis. Lo que más los diferencia es la forma en 
-la que construyen las tablas.
-En <code>jison</code>
-la construcción de las tablas de <SPAN  CLASS="textbf">acciones</SPAN> y <SPAN  CLASS="textbf">gotos</SPAN>
-se realiza  por defecto mediante el algoritmo <SPAN  CLASS="textbf">LALR</SPAN>.
-
-<P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1403"
+<A NAME="tex2html1679"
   HREF="node45.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1397"
-  HREF="node33.html">
+<A NAME="tex2html1673"
+  HREF="node29.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1391"
+<A NAME="tex2html1669"
   HREF="node43.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1399"
-  HREF="node78.html">
+<A NAME="tex2html1675"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1401"
-  HREF="node81.html">
+<A NAME="tex2html1677"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -246,12 +251,12 @@ se realiza  por defecto mediante el algoritmo <SPAN  CLASS="textbf">LALR</SPAN>.
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1404"
-  HREF="node45.html">El módulo Generado por</A>
-<B>Sup:</B> <A NAME="tex2html1398"
-  HREF="node33.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1392"
-  HREF="node43.html">Práctica: Calculadora con Análisis</A>
+<B> Sig:</B> <A NAME="tex2html1680"
+  HREF="node45.html">Análisis Sintáctico Ascendente en</A>
+<B>Sup:</B> <A NAME="tex2html1674"
+  HREF="node29.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html1670"
+  HREF="node43.html">Práctica: Ambiguedad en C++</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

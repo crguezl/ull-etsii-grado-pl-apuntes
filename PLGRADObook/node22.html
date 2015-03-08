@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>PegJS en los Browser</TITLE>
-<META NAME="description" CONTENT="PegJS en los Browser">
+<TITLE>Recursión por la Izquierda</TITLE>
+<META NAME="description" CONTENT="Recursión por la Izquierda">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node23.html">
 <LINK REL="previous" HREF="node21.html">
-<LINK REL="up" HREF="node17.html">
+<LINK REL="up" HREF="node19.html">
 <LINK REL="next" HREF="node23.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html977"
+<A NAME="tex2html1250"
   HREF="node23.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html971"
-  HREF="node17.html">
+<A NAME="tex2html1244"
+  HREF="node19.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html965"
+<A NAME="tex2html1238"
   HREF="node21.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html973"
-  HREF="node78.html">
+<A NAME="tex2html1246"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html975"
-  HREF="node81.html">
+<A NAME="tex2html1248"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -80,305 +80,81 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html978"
-  HREF="node23.html">Eliminación de la Recursividad</A>
-<B>Sup:</B> <A NAME="tex2html972"
-  HREF="node17.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html966"
-  HREF="node21.html">Acciones Intermedias</A>
+<B> Sig:</B> <A NAME="tex2html1251"
+  HREF="node23.html">Esquemas de Traducción</A>
+<B>Sup:</B> <A NAME="tex2html1245"
+  HREF="node19.html">Analizadores Descendentes Predictivos en</A>
+<B> Ant:</B> <A NAME="tex2html1239"
+  HREF="node21.html">Análisis Sintáctico Predictivo Recursivo</A>
 <B> Con:</B> 
-<A NAME="tex2html973"
-  HREF="node78.html">
+<A NAME="tex2html1246"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html975"
-  HREF="node81.html">
+<A NAME="tex2html1248"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html979"
-  HREF="node22.html#SECTION04350010000000000000">Donde</A>
-<LI><A NAME="tex2html980"
-  HREF="node22.html#SECTION04350020000000000000">Versiones para Browser</A>
-<LI><A NAME="tex2html981"
-  HREF="node22.html#SECTION04350030000000000000">La opción -e de pegjs</A>
-<LI><A NAME="tex2html982"
-  HREF="node22.html#SECTION04350040000000000000">Compilación</A>
-<LI><A NAME="tex2html983"
-  HREF="node22.html#SECTION04350050000000000000">calc.js</A>
-<LI><A NAME="tex2html984"
-  HREF="node22.html#SECTION04350060000000000000">arithmetic.pegjs</A>
-<LI><A NAME="tex2html985"
-  HREF="node22.html#SECTION04350070000000000000">calculator.html</A>
-</UL></UL></UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION04350000000000000000">
-PegJS en los Browser</A>
+<H1><A NAME="SECTION04230000000000000000"></A>
+<A NAME="section:recursionizquierda"></A>
+<BR>
+Recursión por la Izquierda
 </H1>
 
 <P>
-
-<H4><A NAME="SECTION04350010000000000000">
-Donde</A>
-</H4>
-  
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">3</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Una <A NAME="4590"></A><SPAN  CLASS="textbf">gramática es recursiva por la izquierda</SPAN> cuando existe una derivación
+<!-- MATH
+ $A \stackrel{*}{\Longrightarrow} A \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="80" HEIGHT="24" ALIGN="BOTTOM" BORDER="0"
+ SRC="img57.png"
+ ALT="$ A \stackrel{*}{\Longrightarrow} A \alpha$"></SPAN>. 
+</I>
+<P>
+<I>En particular, es recursiva por la izquierda si contiene
+una regla de producción de la forma <!-- MATH
+ $A \rightarrow A \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="69" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img58.png"
+ ALT="$ A \rightarrow A \alpha$"></SPAN>. 
+En este caso se dice que la recursión por la izquierda es directa.</I></DIV><P></P>
 
 <P>
-
-<UL>
-<LI><PRE>
-~/srcPLgrado/pegjs/examples(master)]$ pwd -P
-/Users/casiano/local/src/javascript/PLgrado/pegjs/examples
-</PRE>
-</LI>
-<LI><PRE>
-[~/srcPLgrado/pegjs/examples(master)]$ git remote -v
-dmajda  https://github.com/dmajda/pegjs.git (fetch)
-dmajda  https://github.com/dmajda/pegjs.git (push)
-origin  git@github.com:crguezl/pegjs.git (fetch)
-origin  git@github.com:crguezl/pegjs.git (push)
-</PRE>
-</LI>
-<LI><A NAME="tex2html76"
-  HREF="https://github.com/crguezl/pegjs/tree/master/examples">https://github.com/crguezl/pegjs/tree/master/examples</A>
-</LI>
-</UL>
-
-<P>
-
-<UL>
-<LI>
-</LI>
-</UL>
-
-<P>
-
-<H4><A NAME="SECTION04350020000000000000">
-Versiones para Browser</A>
-</H4>
-  
-
-Podemos usar directamente las versiones para los browser:
-
-<UL>
-<LI><A NAME="tex2html78"
-  HREF="https://github.com/dmajda/pegjs/releases/download/v0.8.0/peg-0.8.0.min.js">PEG.js — minified</A>
-</LI>
-<LI><A NAME="tex2html79"
-  HREF="https://github.com/dmajda/pegjs/releases/download/v0.8.0/peg-0.8.0.js">PEG.js — development</A>
-</LI>
-</UL>
-
-<P>
-
-<H4><A NAME="SECTION04350030000000000000">
-La opción -e de pegjs</A>
-</H4>
-  
-
-<PRE>
-[~/Dropbox/src/javascript/PLgrado/jison]$ pegjs --help
-Usage: pegjs [options] [--] [&lt;input_file&gt;] [&lt;output_file&gt;]
-
-Generates a parser from the PEG grammar specified in the &lt;input_file&gt; and
-writes it to the &lt;output_file&gt;.
-
-If the &lt;output_file&gt; is omitted, its name is generated by changing the
-&lt;input_file&gt; extension to ".js". If both &lt;input_file&gt; and &lt;output_file&gt; are
-omitted, standard input and output are used.
-
-Options:
-  -e, --export-var &lt;variable&gt;  name of the variable where the parser object
-                               will be stored (default: "module.exports")
-      --cache                  make generated parser cache results
-      --track-line-and-column  make generated parser track line and column
-  -v, --version                print version information and exit
-  -h, --help                   print help and exit
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION04350040000000000000">
-Compilación</A>
-</H4>
-  
-
-<P>
-Le indicamos que el parser se guarde en <code>calculator</code>:
-<PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ rake web
-../bin/pegjs -e calculator arithmetics.pegjs
-</PRE>
-
-<P>
-<PRE>
-[~/srcPLgrado/pegjs/examples(master)]$ head -5 arithmetics.js 
-calculator = (function() {
-  /*
-   * Generated by PEG.js 0.7.0.
-   *
-   * http://pegjs.majda.cz/
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION04350050000000000000">
-calc.js</A>
-</H4>
-  
-
-Ahora, desde el  JavaScript que llama al parser accedemos al objeto
-mediante la variable <code>calculator</code>:
-<PRE>
-[~/srcPLgrado/pegjs/examples(master)]$ cat calc.js 
-$(document).ready(function() {
-  $('#eval').click(function() {
-    try {
-      var result = calculator.parse($('#input').val());
-      $('#output').html(result);
-    } catch (e) {
-      $('#output').html('&lt;div class="error"&gt;&lt;pre&gt;\n' + String(e) + '\n&lt;/pre&gt;&lt;/div&gt;');
-    }
-  });
-
-  $("#examples").change(function(ev) {
-    var f = ev.target.files[0]; 
-    var r = new FileReader();
-    r.onload = function(e) { 
-      var contents = e.target.result;
-      
-      input.innerHTML = contents;
-    }
-    r.readAsText(f);
-  });
-
-});
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION04350060000000000000">
-arithmetic.pegjs</A>
-</H4>
-  
-
-El PEG describe una calculadora:
-<PRE>
-[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat arithmetics.pegjs 
-/*
- * Classic example grammar, which recognizes simple arithmetic expressions like
- * "2*(3+4)". The parser generated from this grammar then computes their value.
- */
-
-start
-  = additive
-
-additive
-  = left:multiplicative PLUS right:additive { return left + right; }
-  / left:multiplicative MINUS right:additive { return left - right; }
-  / multiplicative
-
-multiplicative
-  = left:primary MULT right:multiplicative { return left * right; }
-  / left:primary DIV right:multiplicative { return left / right; }
-  / primary
-
-primary
-  = integer
-  / LEFTPAR additive:additive RIGHTPAR { return additive; }
-
-integer "integer"
-  = NUMBER
-
-_ = $[ \t\n\r]*
-
-PLUS = _"+"_
-MINUS = _"-"_
-MULT = _"*"_
-DIV = _"/"_
-LEFTPAR = _"("_
-RIGHTPAR = _")"_
-NUMBER = _ digits:$[0-9]+ _ { return parseInt(digits, 10); }
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION04350070000000000000">
-calculator.html</A>
-</H4>
-  
-
-<PRE>
-[~/srcPLgrado/pegjs/examples(master)]$ cat calculator.html 
-&lt;!DOCTYPE HTML&gt;
-&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;meta charset="utf-8"&gt;
-    &lt;title&gt;pegjs&lt;/title&gt;
-    &lt;link rel="stylesheet" href="global.css" type="text/css" media="screen" charset="utf-8" /&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;h1&gt;pegjs&lt;/h1&gt;
-    &lt;div id="content"&gt;
-      &lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"&gt;&lt;/script&gt;
-      &lt;script src="arithmetics.js"&gt;&lt;/script&gt;
-      &lt;script src="calc.js"&gt;&lt;/script&gt;
-
-      &lt;p&gt;
-      Load an example:
-      &lt;input type="file" id="examples" /&gt;
-      &lt;/p&gt;
-
-      &lt;p&gt;
-      &lt;table&gt;
-        &lt;tr&gt;
-          &lt;td&gt;
-            &lt;textarea id="input" autofocus cols = "40" rows = "4"&gt;2+3*4&lt;/textarea&gt; 
-          &lt;/td&gt;
-          &lt;td class="output"&gt;
-            &lt;pre&gt;
-              &lt;span id="output"&gt;&lt;/span&gt; &lt;!-- Output goes here! --&gt; 
-            &lt;/pre&gt;
-          &lt;/td&gt;
-          &lt;td&gt;&lt;button id="eval" type="button"&gt;eval&lt;/button&gt;&lt;/td&gt;
-        &lt;/tr&gt;
-      &lt;/table&gt;
-      &lt;/p&gt;
-    &lt;/div&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-</PRE>
-
-<P>
-
-<img src="pegjs.png">
+Cuando la gramática es <A NAME="4592"></A><SPAN  CLASS="textbf">recursiva por la izquierda</SPAN>, 
+el método 
+de análisis recursivo descendente predictivo no funciona. 
+En ese caso, el procedimiento
+<code>A</code> asociado con <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$ A$"></SPAN> ciclaría para siempre sin llegar a consumir ningún 
+terminal. 
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html977"
+<A NAME="tex2html1250"
   HREF="node23.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html971"
-  HREF="node17.html">
+<A NAME="tex2html1244"
+  HREF="node19.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html965"
+<A NAME="tex2html1238"
   HREF="node21.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html973"
-  HREF="node78.html">
+<A NAME="tex2html1246"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html975"
-  HREF="node81.html">
+<A NAME="tex2html1248"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -417,12 +193,12 @@ calculator.html</A>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html978"
-  HREF="node23.html">Eliminación de la Recursividad</A>
-<B>Sup:</B> <A NAME="tex2html972"
-  HREF="node17.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html966"
-  HREF="node21.html">Acciones Intermedias</A>
+<B> Sig:</B> <A NAME="tex2html1251"
+  HREF="node23.html">Esquemas de Traducción</A>
+<B>Sup:</B> <A NAME="tex2html1245"
+  HREF="node19.html">Analizadores Descendentes Predictivos en</A>
+<B> Ant:</B> <A NAME="tex2html1239"
+  HREF="node21.html">Análisis Sintáctico Predictivo Recursivo</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Introducción a los PEGs</TITLE>
-<META NAME="description" CONTENT="Introducción a los PEGs">
+<TITLE>Práctica: Analizador Léxico para Un Subconjunto de JavaScript</TITLE>
+<META NAME="description" CONTENT="Práctica: Analizador Léxico para Un Subconjunto de JavaScript">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node19.html">
 <LINK REL="previous" HREF="node17.html">
-<LINK REL="up" HREF="node17.html">
+<LINK REL="up" HREF="node7.html">
 <LINK REL="next" HREF="node19.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html900"
+<A NAME="tex2html1169"
   HREF="node19.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html894"
-  HREF="node17.html">
+<A NAME="tex2html1163"
+  HREF="node7.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html888"
+<A NAME="tex2html1159"
   HREF="node17.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html896"
-  HREF="node78.html">
+<A NAME="tex2html1165"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html898"
-  HREF="node81.html">
+<A NAME="tex2html1167"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -80,19 +79,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html901"
-  HREF="node19.html">PEGJS</A>
-<B>Sup:</B> <A NAME="tex2html895"
-  HREF="node17.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html889"
-  HREF="node17.html">Análisis Descendente mediante Parsing</A>
+<B> Sig:</B> <A NAME="tex2html1170"
+  HREF="node19.html">Analizadores Descendentes Predictivos en</A>
+<B>Sup:</B> <A NAME="tex2html1164"
+  HREF="node7.html">Expresiones Regulares y Análisis</A>
+<B> Ant:</B> <A NAME="tex2html1160"
+  HREF="node17.html">Práctica: Ficheros INI</A>
 <B> Con:</B> 
-<A NAME="tex2html896"
-  HREF="node78.html">
+<A NAME="tex2html1165"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html898"
-  HREF="node81.html">
+<A NAME="tex2html1167"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
@@ -101,399 +100,190 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html902"
-  HREF="node18.html#SECTION04311000000000000000">Syntax</A>
-<LI><A NAME="tex2html903"
-  HREF="node18.html#SECTION04312000000000000000">Semantics</A>
-<LI><A NAME="tex2html904"
-  HREF="node18.html#SECTION04313000000000000000">Implementing parsers from parsing expression grammars</A>
-<LI><A NAME="tex2html905"
-  HREF="node18.html#SECTION04314000000000000000">Lexical Analysis</A>
-<LI><A NAME="tex2html906"
-  HREF="node18.html#SECTION04315000000000000000">Left recursion</A>
-<LI><A NAME="tex2html907"
-  HREF="node18.html#SECTION04316000000000000000">Referencias y Documentación</A>
-</UL>
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html1171"
+  HREF="node18.html#SECTION041110010000000000000">TDOP, Top Down Operator Precedence</A>
+<LI><A NAME="tex2html1172"
+  HREF="node18.html#SECTION041110020000000000000">Objetivos de la Práctica</A>
+</UL></UL></UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION04310000000000000000">
-Introducción a los PEGs</A>
+<H1><A NAME="SECTION041110000000000000000"></A>
+   <A NAME="4065"></A>
+<BR>
+Práctica: Analizador Léxico para Un Subconjunto de JavaScript
 </H1>
 
 <P>
-In computer science, a <A NAME="3212"></A><SPAN  CLASS="textbf">parsing expression grammar</SPAN>, or <A NAME="3214"></A><SPAN  CLASS="textbf">PEG</SPAN>, is a type of
-analytic formal grammar, i.e. it describes a formal language in terms
-of a set of rules for recognizing strings in the language.
+
+<H4><A NAME="SECTION041110010000000000000">
+TDOP, Top Down Operator Precedence</A>
+</H4>
+  
+
+Vamos a trabajar a partir de este repo de Douglas Crockford:
+
+<UL>
+<LI><A NAME="tex2html169"
+  HREF="https://github.com/douglascrockford/TDOP">https://github.com/douglascrockford/TDOP</A>
+</LI>
+<LI>Autor: 
+<A NAME="tex2html170"
+  HREF="http://www.crockford.com/">Douglas Crockford</A>, douglas@crockford.com
 
 <P>
-The formalism was introduced by 
-<A NAME="tex2html58"
-  HREF="https://pdos.csail.mit.edu/papers/parsing:popl04.pdf">Bryan Ford in 2004 </A>
-and is closely related to the family of top-down parsing languages introduced in the early 1970s. 
+</LI>
+<LI>Fecha que figura en el repo: 2010-11-12
 
 <P>
-Syntactically, PEGs also look similar to
-context-free grammars (CFGs), but they have a different interpretation: 
+</LI>
+<LI>Descripción:
 
 <P>
 
 <UL>
-<LI>the choice operator selects the first match in PEG, while it is ambiguous in CFG. 
+<LI><A NAME="tex2html171"
+  HREF="http://crguezl.github.io/ull-etsii-grado-pl-minijavascript/tdop.html">tdop.html</A>
+contains a description of Vaughn Pratt's Top Down Operator Precedence,
+and describes  the parser whose lexer we are going to write in 
+this lab. Is a simplified version of JavaScript.
+
+<P>
 </LI>
-<LI>This is closer to how string recognition tends
-to be done in practice, e.g. by a recursive descent parser.
+<LI>The file 
+<code>index.html</code> parses <code>parse.js</code> and displays its AST. 
+</LI>
+<LI>The page depends on 
+on <code>parse.js</code> and <code>tokens.js</code>.
+</LI>
+<LI>The file <code>tdop.js</code> contains the Simplified JavaScript parser. 
+</LI>
+<LI><A NAME="tex2html172"
+  HREF="https://github.com/douglascrockford/TDOP/blob/master/tokens.js">tokens.js</A>.
+produces an array of token objects from a string.
+This is the file we are going to work in this lab.
+</LI>
+</UL>
 </LI>
 </UL>
 
 <P>
-Unlike CFGs, PEGs cannot be <SPAN ID="txt2729">ambiguous</SPAN>; 
-<I>if a string parses, it has exactly
-one valid parse tree</I>. 
+
+<H4><A NAME="SECTION041110020000000000000">
+Objetivos de la Práctica</A>
+</H4>
+  
 
 <P>
-It is conjectured that there exist context-free
-languages that cannot be parsed by a PEG, but this is
-not yet proven. 
+Douglas Crockford escribió su analizador léxico 
+<A NAME="tex2html173"
+  HREF="https://github.com/douglascrockford/TDOP/blob/master/tokens.js">tokens.js</A>
+sin usar expresiones regulares.
+Eso hace que sea extenso (268 líneas). Su analizador es un subconjunto de JS que no tiene 
+- entre otras cosas - expresiones regulares ya que
+uno de sus objetivos era que el analizador 
+se analizara a si mismo.
 
 <P>
-
-<H2><A NAME="SECTION04311000000000000000">
-Syntax</A>
-</H2>
-Formally, a parsing expression grammar consists of:
-
-<UL>
-<LI>A finite set <SPAN CLASS="MATH"><IMG
- WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img75.png"
- ALT="$ N$"></SPAN> of nonterminal symbols.
-</LI>
-<LI>A finite set <SPAN CLASS="MATH"><IMG
- WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img9.png"
- ALT="$ \Sigma$"></SPAN> of terminal symbols that is disjoint from <SPAN CLASS="MATH"><IMG
- WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img75.png"
- ALT="$ N$"></SPAN>.
-</LI>
-<LI>A finite set <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img14.png"
- ALT="$ P$"></SPAN> of parsing rules.
-</LI>
-<LI>An expression <SPAN CLASS="MATH"><IMG
- WIDTH="23" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img76.png"
- ALT="$ e_S$"></SPAN> termed the starting expression.
-</LI>
-</UL>
-
-<P>
-Each parsing rule in <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img14.png"
- ALT="$ P$"></SPAN> 
-has the form <!-- MATH
- $A \leftarrow e$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="53" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img77.png"
- ALT="$ A \leftarrow e$"></SPAN>, 
-where <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img2.png"
- ALT="$ A$"></SPAN> is a nonterminal symbol and <SPAN CLASS="MATH"><IMG
- WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img78.png"
- ALT="$ e$"></SPAN> is a <A NAME="3216"></A><SPAN  CLASS="textbf">parsing expression</SPAN>. 
-
-<P>
-A parsing expression is a hierarchical expression similar to a regular expression, which is
-constructed in the following fashion:
-
-<OL>
-<LI>An atomic parsing expression consists of:
-
-<OL>
-<LI>any terminal symbol,
-</LI>
-<LI>any nonterminal symbol, or
-</LI>
-<LI>the empty string <SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img6.png"
- ALT="$ \epsilon$"></SPAN>.
-</LI>
-</OL>
-</LI>
-<LI>Given any existing parsing expressions <SPAN CLASS="MATH"><IMG
- WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img78.png"
- ALT="$ e$"></SPAN>, <SPAN CLASS="MATH"><IMG
- WIDTH="21" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img79.png"
- ALT="$ e_1$"></SPAN>, and <SPAN CLASS="MATH"><IMG
- WIDTH="21" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img80.png"
- ALT="$ e_2$"></SPAN>, 
-a new parsing
-expression can be constructed using the following operators:
-
-<OL>
-<LI>Sequence: <SPAN CLASS="MATH"><IMG
- WIDTH="38" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img81.png"
- ALT="$ e1 e2$"></SPAN>
-</LI>
-<LI>Ordered choice: <SPAN CLASS="MATH"><IMG
- WIDTH="47" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img82.png"
- ALT="$ e1 / e2$"></SPAN>
-</LI>
-<LI>Zero-or-more: <SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img83.png"
- ALT="$ e*$"></SPAN>
-</LI>
-<LI>One-or-more: <SPAN CLASS="MATH"><IMG
- WIDTH="27" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img84.png"
- ALT="$ e+$"></SPAN>
-</LI>
-<LI>Optional: <SPAN CLASS="MATH"><IMG
- WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img85.png"
- ALT="$ e?$"></SPAN>
-</LI>
-<LI>And-predicate: <SPAN CLASS="MATH"><IMG
- WIDTH="27" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img86.png"
- ALT="$ \&amp;e$"></SPAN>
-</LI>
-<LI>Not-predicate: <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img87.png"
- ALT="$ !e$"></SPAN>
-</LI>
-</OL>
-</LI>
-</OL>
-
-<P>
-
-<H2><A NAME="SECTION04312000000000000000">
-Semantics</A>
-</H2>
-
-<P>
-The fundamental difference between context-free grammars and parsing
-expression grammars is that the PEG's choice operator is 
-<FONT COLOR="#ff0000"> ordered</FONT>:
+Reescriba el analizador léxico en <A NAME="tex2html174"
+  HREF="https://github.com/douglascrockford/TDOP/blob/master/tokens.js">tokens.js</A>.
+usando expresiones regulares.
 
 <P>
 
 <OL>
-<LI>If
-the first alternative succeeds, the second alternative is
-ignored. 
+<LI>Evite que se hagan copias de la cadena siendo procesada. Muévase dentro de la misma cadena usando
+<code>lastIndex</code>
 </LI>
-<LI>Thus ordered choice is not commutative, unlike unordered choice as in context-free grammars.
-</LI>
-<LI>The consequence is that if a CFG is transliterated directly to a PEG,
-any ambiguity in the former is resolved by deterministically picking
-one parse tree from the possible parses. 
-</LI>
-<LI>By carefully
-choosing the order in which the grammar alternatives are specified, a programmer has a great deal of control over which parse tree is selected.
-</LI>
-<LI>PEGs can 
-<FONT COLOR="#ff0000"> look ahead</FONT> into the
-input string without actually consuming it
-</LI>
-<LI>The and-predicate expression <SPAN CLASS="MATH"><IMG
- WIDTH="27" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img86.png"
- ALT="$ \&amp;e$"></SPAN> invokes the sub-expression <SPAN CLASS="MATH"><IMG
- WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img78.png"
- ALT="$ e$"></SPAN>, 
-and then succeeds if <SPAN CLASS="MATH"><IMG
- WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img78.png"
- ALT="$ e$"></SPAN> succeeds and fails if <SPAN CLASS="MATH"><IMG
- WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img78.png"
- ALT="$ e$"></SPAN> fails, 
-<I>but in either case never consumes any input</I>.
-</LI>
-<LI>The not-predicate expression <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img87.png"
- ALT="$ !e$"></SPAN> succeeds if <SPAN CLASS="MATH"><IMG
- WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img78.png"
- ALT="$ e$"></SPAN> 
-fails and fails if <SPAN CLASS="MATH"><IMG
- WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img78.png"
- ALT="$ e$"></SPAN> succeeds, <I>again consuming no input in either case</I>.
-</LI>
-</OL>
+<LI>Añada botones/enlaces/menu de selección que permitan cargar un fichero específico 
+de una lista de ficheros en la <code>texarea</code> de entrada.
 
 <P>
-
-<H2><A NAME="SECTION04313000000000000000">
-Implementing parsers from parsing expression grammars</A>
-</H2>
-
-<P>
-Any parsing expression grammar can be converted directly into a <A NAME="3218"></A><SPAN  CLASS="textbf">recursive descent parser</SPAN>. 
+Vea el ejemplo en 
+<A NAME="tex2html175"
+  HREF="https://github.com/crguezl/loadfileontotexarea">https://github.com/crguezl/loadfileontotexarea</A>.
 
 <P>
-Due to the unlimited lookahead capability that the grammar formalism
-provides, however, the resulting parser 
-<FONT COLOR="#ff0000"> could exhibit exponential time
-performance in the worst case</FONT>.
-
-<P>
-It is possible to obtain better performance for any parsing expression
-grammar by converting its recursive descent parser into 
-<FONT COLOR="#ff0000"> a 
-<A NAME="tex2html59"
-  HREF="http://bford.info/pub/lang/packrat-icfp02/">packrat parser</A>,
-which always runs in linear time</FONT>, at the cost of substantially greater
-storage space requirements. 
-
-<P>
-<I>A packrat parser is a form of parser
-similar to a recursive descent parser in construction, except that
-during the parsing process <SPAN ID="cbox3201">
-<FONT COLOR="#ee82ee"> it memoizes</FONT></SPAN>
-the intermediate results of all
-invocations of the mutually recursive parsing functions</I>, ensuring that
-each parsing function is only invoked at most once at a given input
-position. 
-
-<P>
-Because of this memoization, a packrat parser has the ability
-to parse many context-free grammars and any parsing expression grammar
-(including some that do not represent context-free languages) in linear
-time. 
-
-<P>
-Examples of memoized recursive descent parsers are known from at
-least as early as 1993. 
-
-<P>
-Note that this analysis of the performance
-of a packrat parser <B>assumes that enough memory is available to hold all
-of the memoized results</B>; in practice, if there were not enough memory,
-some parsing functions might have to be invoked more than once at the
-same input position, and consequently the parser could take more than
-linear time.
-
-<P>
-It is also possible to build LL parsers and LR parsers from parsing
-expression grammars, with better worst-case performance than a recursive
-descent parser, but the unlimited lookahead capability of the grammar
-formalism is then lost. Therefore, not all languages that can be expressed
-using parsing expression grammars can be parsed by LL or LR parsers.
-
-<P>
-
-<H2><A NAME="SECTION04314000000000000000">
-Lexical Analysis</A>
-</H2>
-
-<P>
-Parsers for languages expressed as a CFG, such as LR parsers, require a
-separate tokenization step to be done first, which breaks up the input
-based on the location of spaces, punctuation, etc. 
-
-<P>
-The tokenization is
-necessary because of the way these parsers use lookahead to parse CFGs
-that meet certain requirements in linear time. 
-
-<P>
-PEGs do
-not require tokenization to be a separate step, and tokenization rules
-can be written in the same way as any other grammar rule.
-
-<P>
-
-<H2><A NAME="SECTION04315000000000000000">
-Left recursion</A>
-</H2>
-
-<P>
-PEGs cannot express left-recursive rules where a rule refers to itself
-without moving forward in the string. 
- For example, the following left-recursive CFG rule:
+En este caso en vez de un fichero <code>index.html</code> arrancamos desde un programa Ruby <code>app.rb</code>. Para verlo en ejecución instale primero las dependencias:
 <PRE>
-string-of-a -&gt; string-of-a 'a' | 'a'
+[~/javascript/jquery/loadfileontotexarea(master)]$ bundle install
+Using daemons (1.1.9) 
+Using eventmachine (1.0.3) 
+Using rack (1.5.2) 
+Using rack-protection (1.5.2) 
+Using tilt (1.4.1) 
+Using sinatra (1.4.4) 
+Using thin (1.6.1) 
+Using bundler (1.3.5) 
+Your bundle is complete!
+Use `bundle show [gemname]` to see where a bundled gem is installed.
 </PRE>
-can be rewritten in a PEG using the plus operator:
+Para ejecutar puede llamar a la aplicación así:
 <PRE>
-string-of-a &lt;- 'a'+
+[~/javascript/jquery/loadfileontotexarea(master)]$ bundle exec rackup
+Thin web server (v1.6.1 codename Death Proof)
+Maximum connections set to 1024
+Listening on 0.0.0.0:9292, CTRL+C to stop
 </PRE>
-The process of rewriting indirectly left-recursive rules is complex in some packrat parsers, especially when semantic actions are involved.
+Ahora visite en su navegador la URL <code>http://localhost:9292</code>.
 
 <P>
-
-<H2><A NAME="SECTION04316000000000000000">
-Referencias y Documentación</A>
-</H2>
-
-<UL>
-<LI>Véase <A NAME="tex2html60"
-  HREF="http://en.wikipedia.org/wiki/Parsing_expression_grammar">Parsing Expression Grammar</A>
+Puede ver también la aplicación corriendo en los servidores de Heroku
+en 
+<A NAME="tex2html176"
+  HREF="http://pllexer.herokuapp.com/">http://pllexer.herokuapp.com/</A>.
+Visite los enlaces <code> withajax.html</code> y <code>withget.html</code>.
 </LI>
-<LI><A NAME="tex2html61"
-  HREF="http://pegjs.majda.cz/documentation">PEG.js documentation</A>
+<LI>Añada pruebas 
 </LI>
-<LI><A NAME="tex2html62"
-  HREF="http://pegjs.majda.cz/online">Testing PEG.js Online</A>
+<LI>Haga el despliegue de su aplicación en 
+<A NAME="tex2html177"
+  HREF="https://www.heroku.com/">Heroku</A>.
+Para ver como hacerlo siga las indicaciones en la sección
+<I>Heroku</I> <A HREF="node253.html#chapter:heroku"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A> en estos apuntes
 </LI>
-<LI>Michael's Blog: <A NAME="tex2html63"
-  HREF="http://blog.mi-ernst.de/2012/05/14/javascript-parser-generators/">JavaScript Parser Generators</A>.
-The PEG.js Tutorial
+<LI>Una primera solución de la que puede partir se encuentra en:
+<A NAME="tex2html178"
+  HREF="https://github.com/crguezl/ull-etsii-grado-pl-minijavascript/tree/gh-pages">https://github.com/crguezl/ull-etsii-grado-pl-minijavascript/tree/gh-pages</A>
+en github. 
+Veala en funcionamiento en 
+<A NAME="tex2html179"
+  HREF="http://crguezl.github.io/ull-etsii-grado-pl-minijavascript/">GitHub Pages</A>
 </LI>
-<LI><A NAME="tex2html64"
-  HREF="http://bford.info/packrat/">The Packrat Parsing and 
-Parsing Expression Grammars Page</A>
+<LI>El método <code>tokens</code> retorna el array de tokens. Puede encontrarlo en
+<A NAME="tex2html180"
+  HREF="https://github.com/douglascrockford/TDOP/blob/master/tokens.js">tokens.js</A>.
 </LI>
-<LI><A NAME="tex2html65"
-  HREF="http://nathansuniversity.com/">PL101: Create Your Own Programming Language</A>.
-Véanse [<A
- HREF="node82.html#nathanuniversity">3</A>] y 
-[<A
- HREF="node82.html#nathanclosures">4</A>]
+<LI>Mejore la solución en
+<A NAME="tex2html181"
+  HREF="https://github.com/crguezl/ull-etsii-grado-pl-minijavascript/tree/gh-pages">https://github.com/crguezl/ull-etsii-grado-pl-minijavascript/tree/gh-pages</A>
 </LI>
-<LI><A NAME="tex2html66"
-  HREF="http://nathansuniversity.com/pegs.html">PL101: Create Your Own Programming Language: Parsing</A>
+<LI>Para esta práctica es necesario familiarizarse con la forma en que funciona la OOP
+en JS. Vea este
+<A NAME="tex2html182"
+  HREF="http://jsfiddle.net/casiano/Mw9dW/">jsfiddle</A>
 </LI>
-</UL>
+</OL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html900"
+<A NAME="tex2html1169"
   HREF="node19.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html894"
-  HREF="node17.html">
+<A NAME="tex2html1163"
+  HREF="node7.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html888"
+<A NAME="tex2html1159"
   HREF="node17.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html896"
-  HREF="node78.html">
+<A NAME="tex2html1165"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html898"
-  HREF="node81.html">
+<A NAME="tex2html1167"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -532,12 +322,12 @@ Véanse [<A
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html901"
-  HREF="node19.html">PEGJS</A>
-<B>Sup:</B> <A NAME="tex2html895"
-  HREF="node17.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html889"
-  HREF="node17.html">Análisis Descendente mediante Parsing</A>
+<B> Sig:</B> <A NAME="tex2html1170"
+  HREF="node19.html">Analizadores Descendentes Predictivos en</A>
+<B>Sup:</B> <A NAME="tex2html1164"
+  HREF="node7.html">Expresiones Regulares y Análisis</A>
+<B> Ant:</B> <A NAME="tex2html1160"
+  HREF="node17.html">Práctica: Ficheros INI</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

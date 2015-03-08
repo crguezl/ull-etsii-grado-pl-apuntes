@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Conceptos Básicos del Análisis LR</TITLE>
-<META NAME="description" CONTENT="Conceptos Básicos del Análisis LR">
+<TITLE>Eliminación de la Recursividad por la Izquierda y Atributos Heredados</TITLE>
+<META NAME="description" CONTENT="Eliminación de la Recursividad por la Izquierda y Atributos Heredados">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node38.html">
 <LINK REL="previous" HREF="node36.html">
-<LINK REL="up" HREF="node33.html">
+<LINK REL="up" HREF="node29.html">
 <LINK REL="next" HREF="node38.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1299"
+<A NAME="tex2html1566"
   HREF="node38.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1293"
-  HREF="node33.html">
+<A NAME="tex2html1560"
+  HREF="node29.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1287"
+<A NAME="tex2html1554"
   HREF="node36.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1295"
-  HREF="node78.html">
+<A NAME="tex2html1562"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1297"
-  HREF="node81.html">
+<A NAME="tex2html1564"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -80,580 +80,456 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1300"
-  HREF="node38.html">Construcción de las Tablas</A>
-<B>Sup:</B> <A NAME="tex2html1294"
-  HREF="node33.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1288"
-  HREF="node36.html">Ejemplo en Jison: Calculadora</A>
+<B> Sig:</B> <A NAME="tex2html1567"
+  HREF="node38.html">Dangling else: Asociando un</A>
+<B>Sup:</B> <A NAME="tex2html1561"
+  HREF="node29.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html1555"
+  HREF="node36.html">Eliminando la Recursividad por</A>
 <B> Con:</B> 
-<A NAME="tex2html1295"
-  HREF="node78.html">
+<A NAME="tex2html1562"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1297"
-  HREF="node81.html">
+<A NAME="tex2html1564"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<H1><A NAME="SECTION04440000000000000000"></A>
-<A NAME="section:conceptosbasicos"></A>
-<BR>
-Conceptos Básicos del Análisis LR
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html1568"
+  HREF="node37.html#SECTION04481000000000000000">Eliminación de la Recursión por la Izquierda en la Gramática</A>
+<LI><A NAME="tex2html1569"
+  HREF="node37.html#SECTION04482000000000000000">Eliminación de la Recursión por la Izquierda en un Esquema de Traducción</A>
+<LI><A NAME="tex2html1570"
+  HREF="node37.html#SECTION04483000000000000000">Eliminación de la Recursividad por la Izquierda en PEGJS</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION04480000000000000000">
+Eliminación de la Recursividad por la Izquierda y Atributos Heredados</A>
 </H1>
-Los analizadores generados por <code>jison</code> entran en la categoría de analizadores
-<A NAME="4757"></A><SPAN  CLASS="textbf">LR</SPAN>. Estos analizadores construyen una derivación a derechas inversa 
-(o <A NAME="4759"></A><SPAN  CLASS="textbf">antiderivación</SPAN>).
-De ahí la R en LR (del inglés <A NAME="4761"></A><SPAN  CLASS="textbf">rightmost derivation</SPAN>). El árbol sintáctico 
-es construido de las hojas hacia la raíz, siendo el último paso en la antiderivación
-la construcción de la primera derivación desde el símbolo de arranque.
+La sección anterior da una forma sencilla de resolver el problema respetando la semántica.
+Si no se dispone de operadores de repetición la cosa se vuelve mas complicada.
+Las siguientes secciones muestran una solución para transformar un esquema de traducción
+recursivo por la izquierda en otro no recursivo por la izquierda
+respetando el orden en el que se ejecutan las acciones semánticas.
+Por último se ilustra como se puede aplicar esta técnica en <code>pegjs</code> (aunque 
+obviamente es mucho mejor
+usar la ilustrada anteriormente).
 
 <P>
-Empezaremos entonces considerando las frases que pueden aparecer en una derivación
-a derechas. Tales frases consituyen el <A NAME="4763"></A><SPAN  CLASS="textbf">lenguaje de las formas sentenciales a rderechas</SPAN> <SPAN CLASS="MATH"><IMG
- WIDTH="45" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img101.png"
- ALT="$ FSD$"></SPAN>:
+
+<H2><A NAME="SECTION04481000000000000000"></A>
+<A NAME="subsection:eliminaleftrec"></A>
+<BR>
+Eliminación de la Recursión por la Izquierda en la Gramática
+</H2>
+Es posible modificar la gramática para eliminar la recursión por 
+la izquierda. En este apartado nos limitaremos al caso de recursión 
+por la izquierda directa. 
+La generalización al caso de recursión por la izquierda no-directa
+se reduce a la iteración de la solución propuesta 
+para el caso directo.
 
 <P>
-<P>
-<DIV><B>Definición  <SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Dada una gramática <!-- MATH
- $G=(\Sigma,V,P,S)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img8.png"
- ALT="$ G =(\Sigma,V,P,S)$"></SPAN> no ambigua, se denota por <SPAN CLASS="MATH"><IMG
- WIDTH="45" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img101.png"
- ALT="$ FSD$"></SPAN> 
-(lenguaje de las formas Sentenciales a Derechas) al lenguaje de 
-las sentencias que aparecen en una derivación a derechas desde el símbolo de arranque.
-</I>
-<P>
-<DIV ALIGN="CENTER"><I><!-- MATH
- $FSD = \left \{ \alpha \in (\Sigma \cup V)* : \exists S \begin{array}{c} *\\\Longrightarrow \\{\scriptstyle RM} \end{array} \alpha \right \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="291" HEIGHT="82" ALIGN="MIDDLE" BORDER="0"
- SRC="img102.png"
- ALT="$ FSD = \left \{ \alpha \in (\Sigma \cup V)* : \exists S \begin{array}{c} * \Longrightarrow  {\scriptstyle RM} \end{array} \alpha \right \}$"></SPAN></I></DIV>
-<P>
-<I>Donde la notacion RM indica una derivación a derechas (<SPAN  CLASS="textbf">rightmost</SPAN>).
-Los elementos de <SPAN CLASS="MATH"><IMG
- WIDTH="45" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img101.png"
- ALT="$ FSD$"></SPAN> se llaman ``formas sentenciales derechas''.</I></DIV><P></P>
+Consideremos una variable <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$ A$"></SPAN> con dos producciones:
 
 <P>
-Dada una gramática no ambigua <!-- MATH
- $G=(\Sigma,V,P,S)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img8.png"
- ALT="$ G =(\Sigma,V,P,S)$"></SPAN> y una frase <!-- MATH
- $x \in L(G)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="75" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img33.png"
- ALT="$ x \in L(G)$"></SPAN> el proceso
-de antiderivación consiste en encontrar la última derivación a derechas que dió lugar a 
-<SPAN CLASS="MATH"><IMG
- WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img35.png"
- ALT="$ x$"></SPAN>. Esto es, si <!-- MATH
- $x \in L(G)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="75" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img33.png"
- ALT="$ x \in L(G)$"></SPAN> es porque existe una derivación a derechas de la forma
-
-<P>
+<BR>
+<BR>
 <DIV ALIGN="CENTER">
 <!-- MATH
- $S \stackrel{*}{\Longrightarrow} y A z \Longrightarrow y w z = x$
+ $A   \rightarrow A \alpha |\ \beta$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="187" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
- SRC="img103.png"
- ALT="$ S \stackrel{*}{\Longrightarrow} y A z \Longrightarrow y w z = x$"></SPAN>. 
+ WIDTH="91" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img87.png"
+ ALT="$ A \rightarrow A \alpha \vert \beta$"></SPAN> 
 
 </DIV>
 
 <P>
-El problema es averiguar que regla <!-- MATH
- $A \rightarrow w$
+donde <!-- MATH
+ $\alpha, \beta \in (V \cup \Sigma)^*$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="58" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img104.png"
- ALT="$ A \rightarrow w$"></SPAN> se aplicó y en que lugar 
-de la cadena <SPAN CLASS="MATH"><IMG
- WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img35.png"
- ALT="$ x$"></SPAN> se aplicó. En general, si queremos antiderivar
-una forma sentencial derecha <!-- MATH
- $\beta \alpha w$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="40" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img105.png"
- ALT="$ \beta \alpha w$"></SPAN> 
-debemos averiguar por que regla <!-- MATH
- $A \rightarrow \alpha$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img13.png"
- ALT="$ A \rightarrow \alpha$"></SPAN>
-seguir y en que lugar de la forma (después de <SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img63.png"
- ALT="$ \beta$"></SPAN> en el ejemplo)
-aplicarla. 
+ WIDTH="123" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img88.png"
+ ALT="$ \alpha, \beta \in (V \cup \Sigma)^*$"></SPAN> no comienzan por <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$ A$"></SPAN>.
+Estas dos producciones pueden ser sustituidas por:
 
 <P>
+<BR>
+<BR>
 <DIV ALIGN="CENTER">
-<!-- MATH
- $S \stackrel{*}{\Longrightarrow} \beta A w \Longrightarrow \beta \alpha w$
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $A   \rightarrow \beta R$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="164" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
- SRC="img106.png"
- ALT="$ S \stackrel{*}{\Longrightarrow} \beta A w \Longrightarrow \beta \alpha w$"></SPAN>. 
-
+ WIDTH="69" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img90.png"
+ ALT="$ A \rightarrow \beta R$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $R   \rightarrow  \alpha R\ |\ \epsilon$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="93" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img91.png"
+ ALT="$ R \rightarrow \alpha R \vert \epsilon$"></SPAN></TD>
+</TR>
+</TABLE>
 </DIV>
 
 <P>
-La pareja formada por la regla y la posición 
-se denomina <A NAME="4765"></A><SPAN  CLASS="textbf">handle</SPAN>, <A NAME="4767"></A><SPAN  CLASS="textbf">mango</SPAN> o <A NAME="4769"></A><SPAN  CLASS="textbf">manecilla</SPAN> de la forma. Esta denominación viene
-de la visualización gráfica de la regla de producción como una mano
-que nos permite escalar hacia arriba en el árbol. Los ``dedos'' serían los
-símbolos en la parte derecha de la regla de producción.
+eliminando así la recursión por la izquierda.
 
 <P>
 <P>
-<DIV><B>Definición  <SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
-<I>Dada una gramática <!-- MATH
- $G=(\Sigma,V,P,S)$
+<DIV><B>Definición  <SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">8</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>La producción <!-- MATH
+ $R   \rightarrow  \alpha R$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img8.png"
- ALT="$ G =(\Sigma,V,P,S)$"></SPAN> no ambigua, y dada una forma sentencial derecha 
-<!-- MATH
- $\alpha = \beta \gamma x$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="70" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img107.png"
- ALT="$ \alpha = \beta \gamma x$"></SPAN>, con <!-- MATH
- $x \in \Sigma^*$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="56" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
- SRC="img108.png"
- ALT="$ x \in \Sigma^*$"></SPAN>, el <A NAME="4771"></A><SPAN  CLASS="textbf">mango</SPAN> o <A NAME="4773"></A><SPAN  CLASS="textbf">handle</SPAN>  de 
-<SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img43.png"
- ALT="$ \alpha$"></SPAN> es la última producción/posición  que dió lugar a <SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img43.png"
- ALT="$ \alpha$"></SPAN>:
-</I>
-<P>
-<DIV ALIGN="CENTER"><I><!-- MATH
- $S \begin{array}{c} *\\\Longrightarrow  \\{\scriptstyle RM} \end{array} \beta B x \Longrightarrow \beta \gamma x = \alpha$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="198" HEIGHT="82" ALIGN="MIDDLE" BORDER="0"
- SRC="img109.png"
- ALT="$ S \begin{array}{c} * \Longrightarrow  {\scriptstyle RM} \end{array} \beta B x \Longrightarrow \beta \gamma x = \alpha$"></SPAN></I></DIV>
-<P></DIV><P></P>
-Escribiremos: 
-<!-- MATH
- $handle(\alpha) = (B \rightarrow \gamma, \beta \gamma)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="199" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img110.png"
- ALT="$ handle(\alpha) = (B \rightarrow \gamma, \beta \gamma)$"></SPAN>. La función <SPAN CLASS="MATH"><IMG
- WIDTH="57" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img111.png"
- ALT="$ handle$"></SPAN> tiene dos componentes:
-<!-- MATH
- $handle_1(\alpha) = B \rightarrow \gamma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="164" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img112.png"
- ALT="$ handle_1(\alpha) = B \rightarrow \gamma$"></SPAN> y 
-<!-- MATH
- $handle_2(\alpha) =  \beta \gamma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="134" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img113.png"
- ALT="$ handle_2(\alpha) = \beta \gamma$"></SPAN>
+ WIDTH="70" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img92.png"
+ ALT="$ R \rightarrow \alpha R$"></SPAN> se dice <A NAME="5857"></A><SPAN  CLASS="textbf">recursiva por la derecha</SPAN>.</I></DIV><P></P>
 
 <P>
-Si dispusieramos de un procedimiento que fuera capaz de identificar el mango,
-esto es, de detectar la regla y el lugar en el que se posiciona, tendríamos un
-mecanismo para construir un analizador. 
-Lo curioso es que, a menudo es posible encontrar un autómata finito que
-reconoce el lenguaje de los prefijos <!-- MATH
- $\beta \gamma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="26" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img114.png"
- ALT="$ \beta \gamma$"></SPAN> que terminan 
-en el mango. Con mas precisión, del lenguaje:
+Las producciones recursivas por la derecha dan lugar a árboles
+que se hunden hacia la derecha. Es mas difícil traducir desde esta clase
+de árboles operadores como el menos, que son asociativos a izquierdas.
 
 <P>
 <P>
-<DIV><B>Definición  <SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">3</SPAN></B> &nbsp; 
-<I>El conjunto de <SPAN  CLASS="textbf">prefijos viables</SPAN> de una gramática G se define
-como  el conjunto:
-</I>
-<P>
-<DIV ALIGN="CENTER"><I><!-- MATH
- $PV = \left \{ \delta \in (\Sigma \cup V)* :  \exists S \begin{array}{c} *\\\Longrightarrow \\{\scriptstyle RM} \end{array} \alpha = \beta \gamma x \mbox{ y }\delta\ es\ un\ prefijo\ de\  handle_2(\alpha) = \beta \gamma \right \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="629" HEIGHT="82" ALIGN="MIDDLE" BORDER="0"
- SRC="img115.png"
- ALT="$ PV = \left \{ \delta \in (\Sigma \cup V)* : \exists S \begin{array}{c} * \Lo...
-...mbox{ y }\delta es un prefijo de handle_2(\alpha) = \beta \gamma \right \}$"></SPAN></I></DIV></DIV><P></P>
-
-<P>
-Esto es, es el lenguaje de los prefijos viables es el 
-conjunto de frases que son prefijos de 
-<!-- MATH
- $handle_2(\alpha)) =  \beta \gamma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="140" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img116.png"
- ALT="$ handle_2(\alpha)) = \beta \gamma$"></SPAN>, 
-siendo <SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img43.png"
- ALT="$ \alpha$"></SPAN> una forma sentencial derecha (<!-- MATH
- $\alpha \in FSD$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="78" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img117.png"
- ALT="$ \alpha \in FSD$"></SPAN>). Los
-elementos de <SPAN CLASS="MATH"><IMG
- WIDTH="32" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img118.png"
- ALT="$ PV$"></SPAN> se denominan prefijos viables.
-
-<P>
-Obsérvese que si se dispone de un autómata que reconoce 
-<SPAN CLASS="MATH"><IMG
- WIDTH="32" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img118.png"
- ALT="$ PV$"></SPAN> entonces se dispone de un mecanismo para investigar el lugar y 
-el aspecto que pueda tener el mango. Si damos como 
-entrada la sentencia <!-- MATH
- $\alpha = \beta \gamma x$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="70" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img107.png"
- ALT="$ \alpha = \beta \gamma x$"></SPAN>
-a dicho autómata, el autómata aceptará la cadena <!-- MATH
- $\beta \gamma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="26" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img114.png"
- ALT="$ \beta \gamma$"></SPAN> pero rechazará
-cualquier extensión del prefijo. Ahora sabemos que el mango 
-será alguna regla de producción de <SPAN CLASS="MATH"><IMG
- WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img7.png"
- ALT="$ G$"></SPAN> cuya parte derecha 
-sea un sufijo de  <!-- MATH
- $\beta \gamma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="26" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img114.png"
- ALT="$ \beta \gamma$"></SPAN>.
-
-<P>
-<P>
-<DIV><A NAME="definition:slrautomata"><B>Definición  <SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">4</SPAN></B></A> &nbsp; 
-<I>El siguiente autómata finito no determinista puede ser utilizado para
-reconocer el lenguaje de los prefijos viables PV:
-</I>
-<UL>
-<LI>Alfabeto = <!-- MATH
- $V \cup \Sigma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="51" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img30.png"
- ALT="$ V \cup \Sigma$"></SPAN>
-</LI>
-<LI>Los estados del autómata se denominan LR(0) items. Son parejas formadas
-por una regla de producción de la gramática y una posición en la parte derecha 
-de la regla de producción. Por ejemplo, <!-- MATH
- $(E \rightarrow E + E, 2)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="125" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img119.png"
- ALT="$ (E \rightarrow E + E, 2)$"></SPAN> sería un
-LR(0) item para la gramática de las expresiones.
-
-<P>
-Conjunto de Estados:
-
-<P>
-<!-- MATH
- $Q =  \left \{ (A \rightarrow \alpha, n) :  A \rightarrow \alpha \in P,\ n \le |\alpha| \right \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="309" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img120.png"
- ALT="$ Q = \left \{ (A \rightarrow \alpha, n) : A \rightarrow \alpha \in P, n \le \vert\alpha\vert \right \}$"></SPAN>
-
-<P>
-La notación <!-- MATH
- $\mid \alpha \mid$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="35" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img121.png"
- ALT="$ \mid \alpha \mid$"></SPAN> denota la longitud de la cadena <!-- MATH
- $\mid \alpha \mid$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="35" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img121.png"
- ALT="$ \mid \alpha \mid$"></SPAN>.
- En vez de la notación <!-- MATH
- $(A \rightarrow \alpha, n)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="88" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img122.png"
- ALT="$ (A \rightarrow \alpha, n)$"></SPAN> escribiremos: 
- <!-- MATH
- $A \rightarrow \beta _\uparrow \gamma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="72" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img123.png"
- ALT="$ A \rightarrow \beta _\uparrow \gamma$"></SPAN> <SPAN CLASS="MATH"><IMG
- WIDTH="34" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img124.png"
- ALT="$ = \alpha$"></SPAN>, 
- donde la flecha ocupa el lugar indicado por el número <!-- MATH
- $n = \mid \beta \mid$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="64" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img125.png"
- ALT="$ n = \mid \beta \mid$"></SPAN> :
-</LI>
-<LI>La función de transición intenta conjeturar que partes derechas de reglas de producción son viables. El conjunto de estados actual del NFA representa el conjunto de pares 
-(regla de producción, posición en la parte derecha) que tienen alguna posibilidad de
-ser aplicadas de acuerdo con la entrada procesada hasta el momento:
-
-<P>
-<DIV ALIGN="CENTER">
-<!-- MATH
- $\delta(A \rightarrow \alpha _\uparrow X \beta, X) = A \rightarrow \alpha X _\uparrow \beta\ \forall X \in  V \cup \Sigma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="342" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img126.png"
- ALT="$ \delta(A \rightarrow \alpha _\uparrow X \beta, X) = A \rightarrow \alpha X _\uparrow \beta \forall X \in V \cup \Sigma$"></SPAN> 
-</DIV>
-<P>
-<DIV ALIGN="CENTER"><!-- MATH
- $\delta(A \rightarrow \alpha _\uparrow B \beta, \epsilon) = B \rightarrow 
-_\uparrow \gamma\  \forall B \rightarrow \gamma \in  P$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="309" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img127.png"
- ALT="$ \delta(A \rightarrow \alpha _\uparrow B \beta, \epsilon) = B \rightarrow
-_\uparrow \gamma \forall B \rightarrow \gamma \in P$"></SPAN>
-</DIV>
-
-<P>
-</LI>
-<LI>Estado de arranque: Se añade la ``superregla'' <!-- MATH
- $S' \rightarrow S$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="60" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
- SRC="img128.png"
- ALT="$ S' \rightarrow S$"></SPAN> a la gramática <!-- MATH
- $G = (\Sigma,V,P,S)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img8.png"
- ALT="$ G =(\Sigma,V,P,S)$"></SPAN>. El LR(0) item 
-<!-- MATH
- $S' \rightarrow _\uparrow S$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="67" HEIGHT="35" ALIGN="MIDDLE" BORDER="0"
- SRC="img129.png"
- ALT="$ S' \rightarrow _\uparrow S$"></SPAN> es el estado de arranque.
-</LI>
-<LI>Todos los estados definidos (salvo el de muerte) son de aceptación.
-</LI>
-</UL></DIV><P></P>
-
-<P>
-Denotaremos por <SPAN CLASS="MATH"><IMG
- WIDTH="52" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img130.png"
- ALT="$ LR(0)$"></SPAN> a este autómata. Sus estados se denominan <!-- MATH
- $LR(0)-items$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="117" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img131.png"
- ALT="$ LR(0)-items$"></SPAN>. La idea es que este
-autómata nos ayuda a reconocer los prefijos viables <SPAN CLASS="MATH"><IMG
- WIDTH="32" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img118.png"
- ALT="$ PV$"></SPAN>.
-
-<P>
-Una vez que se tiene un autómata que reconoce los prefijos viables es posible construir un analizador sintáctico que construye una antiderivación a derechas. La estrategia consiste en ``alimentar'' el autómata con la forma sentencial derecha. El lugar en el que el autómata se detiene, rechazando indica el lugar exacto en el que termina el <SPAN  CLASS="textbf">handle</SPAN> de dicha forma.
-
-<P>
-<P>
-<DIV><A NAME="example:asb"><B>Ejemplo  <SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">1</SPAN></B></A> &nbsp; 
-<I>Consideremos la gramática:
+<DIV><B>Ejercicio  <SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">8</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Elimine la recursión por la izquierda de la gramática 
 </I>
 <P>
 <I>
 <BR>
 <BR>
-</I>
-<DIV ALIGN="CENTER"><TABLE CELLPADDING=3>
+</I><TABLE CELLPADDING=3>
 <TR><TD ALIGN="LEFT"><I>
-S      <!-- MATH
- $\rightarrow$
+<!-- MATH
+ $expr   \rightarrow expr  -  NUM$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img36.png"
- ALT="$ \rightarrow$"></SPAN> a S b</I></TD>
+ WIDTH="172" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img93.png"
+ ALT="$ expr \rightarrow expr - NUM$"></SPAN> </I></TD>
 </TR>
 <TR><TD ALIGN="LEFT"><I> 
-S      <!-- MATH
- $\rightarrow$
+<!-- MATH
+ $expr   \rightarrow NUM$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img36.png"
- ALT="$ \rightarrow$"></SPAN> <SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img6.png"
- ALT="$ \epsilon$"></SPAN></I></TD>
+ WIDTH="116" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img64.png"
+ ALT="$ expr \rightarrow NUM$"></SPAN> 
+</I></TD>
 </TR>
-</TABLE></DIV><I>
+</TABLE><I>
 <BR>
 <BR>
 </I>
-<P>
-<I>El lenguaje generado por esta gramática es <!-- MATH
- $L(G) = \{ a^n b^n\ :\ n \ge 0 \}$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="188" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img132.png"
- ALT="$ L(G) = \{ a^n b^n : n \ge 0 \}$"></SPAN>
-Es bien sabido que el lenguaje <SPAN CLASS="MATH"><IMG
- WIDTH="44" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img26.png"
- ALT="$ L(G)$"></SPAN> no es regular.
-La figura <A HREF="#fig:nfa">5.1</A> muestra 
-el <A NAME="4775"></A><SPAN  CLASS="textbf">autómata finito no determinista con <SPAN CLASS="MATH"><IMG
- WIDTH="12" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img6.png"
- ALT="$ \epsilon$"></SPAN>-transiciones</SPAN> 
-(<A NAME="4777"></A><SPAN  CLASS="textbf">NFA</SPAN>)
-que reconoce los prefijos viables de esta gramática, construido
-de acuerdo con el algoritmo <A HREF="#definition:slrautomata">5.4.4</A>.
-</I>
-<P>
-<I>Véase <A NAME="tex2html131"
-  HREF="https://github.com/crguezl/jison-aSb">https://github.com/crguezl/jison-aSb</A>
-para una implementación en Jison de una variante de esta gramática.
-</I>
-<P>
-<DIV ALIGN="CENTER"></DIV>
-<DIV ALIGN="CENTER"><A NAME="fig:nfa"></A><A NAME="4271"></A>
-<TABLE>
-<CAPTION ALIGN="BOTTOM"><STRONG>Figura 5.1:</STRONG>
-NFA que reconoce los prefijos viables</CAPTION>
-<TR><TD><IMG
- WIDTH="543" HEIGHT="186" BORDER="0"
- SRC="img133.png"
- ALT="\begin{figure}\centerline{\epsfig{file=chapter_bottomup/nfa.eps, width=12cm}}\end{figure}"></TD></TR>
-</TABLE>
-</DIV>
-<DIV ALIGN="CENTER"></DIV></DIV><P></P>
+<P></DIV><P></P>
 
 <P>
+
+<H2><A NAME="SECTION04482000000000000000"></A>
+<A NAME="subsection:eliminarecesquem"></A>
+<BR>
+Eliminación de la Recursión por la Izquierda en un Esquema de Traducción
+</H2>
+La eliminación de la recursión por la izquierda es sólo un paso: debe 
+ser extendida a esquemas de traducción, 
+de manera que no sólo se preserve el lenguaje
+sino la secuencia de acciones. Supongamos que tenemos un esquema de
+traducción de la forma:
+
 <P>
-<DIV><B>Ejercicio  <SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">4</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Simule el comportamiento del autómata sobre la entrada <SPAN CLASS="MATH"><IMG
- WIDTH="38" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img134.png"
- ALT="$ aabb$"></SPAN>. ¿Donde rechaza?
-¿En que estados está el autómata en el momento del rechazo?. ¿Qué etiquetas tienen?
-Haga también las
-trazas del autómata para las entradas <SPAN CLASS="MATH"><IMG
- WIDTH="50" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img135.png"
- ALT="$ aaSbb$"></SPAN> y <SPAN CLASS="MATH"><IMG
- WIDTH="33" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img136.png"
- ALT="$ aSb$"></SPAN>. ¿Que antiderivación 
-ha construido el autómata con sus sucesivos rechazos? ¿Que terminales
-se puede esperar que hayan en la entrada cuando se produce el rechazo
-del autómata?</I></DIV><P></P>
+<BR>
+<BR>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $A   \rightarrow A \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="69" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img58.png"
+ ALT="$ A \rightarrow A \alpha$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ alpha_action }</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $A   \rightarrow A \beta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="69" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img67.png"
+ ALT="$ A \rightarrow A \beta$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ beta_action }</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $A   \rightarrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$ A \rightarrow \gamma$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ gamma_action }</code></TD>
+</TR>
+</TABLE>
+<BR>
+<BR>
+
+<P>
+para una sentencia como <!-- MATH
+ $\gamma \beta \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="37" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img68.png"
+ ALT="$ \gamma \beta \alpha$"></SPAN> la secuencia de
+acciones será: 
+
+<P>
+<DIV ALIGN="CENTER">
+<code>gamma_action  beta_action alpha_action</code>
+
+</DIV>
+
+<P>
+¿Cómo construir un esquema de traducción para la gramática resultante
+de eliminar la recursión por la izquierda que ejecute las acciones
+asociadas en el mismo orden?. Supongamos para simplificar,
+que las acciones no dependen
+de atributos ni computan atributos, sino que actúan sobre
+variables globales. En tal caso, la siguiente
+ubicación de las acciones da lugar a que se ejecuten en el mismo
+orden:
+
+<P>
+<BR>
+<BR>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $A   \rightarrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$ A \rightarrow \gamma$"></SPAN> <code>{ gamma_action }</code> <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img69.png"
+ ALT="$ R$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $R   \rightarrow \beta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="56" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img70.png"
+ ALT="$ R \rightarrow \beta$"></SPAN> <code> { beta_action }</code> <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img69.png"
+ ALT="$ R$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $R   \rightarrow \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="57" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img71.png"
+ ALT="$ R \rightarrow \alpha$"></SPAN> <code> { alpha_action }</code> <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img69.png"
+ ALT="$ R$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $R   \rightarrow \epsilon$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="52" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img72.png"
+ ALT="$ R \rightarrow \epsilon$"></SPAN></TD>
+</TR>
+</TABLE>
+
+<P>
+Si hay atributos en juego, la estrategia para construir un
+esquema de traducción equivalente para la gramática resultante
+de eliminar la recursividad por la izquierda se complica.
+Consideremos de nuevo el esquema de traducción de infijo a
+postfijo de expresiones aritméticas de restas:
+
+<P>
+<BR>
+<BR>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $expr   \rightarrow expr_1  -  NUM$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="179" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img63.png"
+ ALT="$ expr \rightarrow expr_1 - NUM$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ $expr{T} = $expr[1]{T}." ".$NUM{VAL}." - "}</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $expr   \rightarrow NUM$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="116" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img64.png"
+ ALT="$ expr \rightarrow NUM$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ $expr{T} = $NUM{VAL} }</code></TD>
+</TR>
+</TABLE>
+<BR>
+<BR>
+
+<P>
+En este caso introducimos un atributo <code>H</code> para los nodos de la clase
+<SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img94.png"
+ ALT="$ r$"></SPAN> el cuál 
+acumula la traducción a postfijo hasta el momento. Observe como
+este atributo se computa en un nodo <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img94.png"
+ ALT="$ r$"></SPAN> a partir del
+correspondiente atributo del el padre y/o de los hermanos del nodo:
+
+<P>
+<BR>
+<BR>
+
+<!-- MATH
+ $expr   \rightarrow NUM$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="116" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img64.png"
+ ALT="$ expr \rightarrow NUM$"></SPAN> <code>{ $r{H} = $NUM{VAL} }</code>  <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img94.png"
+ ALT="$ r$"></SPAN> <code>{ $expr{T} = $r{T} }</code> 
+<BR><!-- MATH
+ $r   \rightarrow - NUM$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="102" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img95.png"
+ ALT="$ r \rightarrow - NUM$"></SPAN> <code>{ $r_1{H} = $r{H}." ".$NUM{VAL}." - " }</code> <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img96.png"
+ ALT="$ r_1$"></SPAN> <code>{ $r{T} = $r_1{T} }</code>
+<BR><!-- MATH
+ $r \rightarrow \epsilon$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="47" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img97.png"
+ ALT="$ r \rightarrow \epsilon$"></SPAN> <code>{ $r{T} = $r{H} }</code>
+<BR>
+<BR>
+
+<P>
+El atributo <code>H</code> es un ejemplo de atributo heredado.
+
+<P>
+
+<H2><A NAME="SECTION04483000000000000000">
+Eliminación de la Recursividad por la Izquierda en PEGJS</A>
+</H2>
+
+<P>
+PegJS no permite acciones intermedias. Tampoco se puede acceder al atributo 
+de la parte izquierda.
+Por eso, a la hora de implantar la solución anterior debemos introducir variables 
+sintácticas temporales que produzcan la palabra vacía y que vayan acompañadas de la acción semántica
+correspondiente.
+
+<P>
+Además nos obliga a usar variables visibles por todas las reglas semánticas para emular el acceso
+a los atributos de la parte izquierda de una regla de proudcción.
+
+<P>
+El siguiente ejemplo ilustra como eliminar la reucrusión por la izquierda respetando la asociatividad de la oepración de diferencia:
+
+<P>
+<PRE>
+[~/pegjs/examples(master)]$ cat inherited.pegjs 
+{
+  var h = 0, number = 0;
+}
+e = NUMBER aux1 r         { return h; }
+aux1 = /* empty */        { h = number; } 
+
+r =   '-' NUMBER  aux2 r  { return h; }
+    / /* empty */
+aux2 = /* empty */        { h -= number; }
+
+NUMBER = _ digits:$[0-9]+ _  { number = parseInt(digits, 10); return number; }
+
+_ = $[ \t\n\r]*
+</PRE>
+
+<P>
+<PRE>
+[~/pegjs/examples(master)]$ cat use_inherited.js 
+var PEG = require("./inherited.js");
+var r = PEG.parse("2-1-1");
+console.log(r);
+
+var r = PEG.parse("4-2-1");
+console.log(r);
+
+var r = PEG.parse("2-3-1");
+console.log(r);
+
+
+[~/pegjs/examples(master)]$ pegjs inherited.pegjs 
+Referenced rule "$" does not exist.
+[~/pegjs/examples(master)]$ ../bin/pegjs inherited.pegjs 
+[~/pegjs/examples(master)]$ node use_inherited.js 
+0
+1
+-2
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1299"
+<A NAME="tex2html1566"
   HREF="node38.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1293"
-  HREF="node33.html">
+<A NAME="tex2html1560"
+  HREF="node29.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1287"
+<A NAME="tex2html1554"
   HREF="node36.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1295"
-  HREF="node78.html">
+<A NAME="tex2html1562"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1297"
-  HREF="node81.html">
+<A NAME="tex2html1564"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -692,12 +568,12 @@ del autómata?</I></DIV><P></P>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1300"
-  HREF="node38.html">Construcción de las Tablas</A>
-<B>Sup:</B> <A NAME="tex2html1294"
-  HREF="node33.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1288"
-  HREF="node36.html">Ejemplo en Jison: Calculadora</A>
+<B> Sig:</B> <A NAME="tex2html1567"
+  HREF="node38.html">Dangling else: Asociando un</A>
+<B>Sup:</B> <A NAME="tex2html1561"
+  HREF="node29.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html1555"
+  HREF="node36.html">Eliminando la Recursividad por</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Análisis Descendente mediante Parsing Expresion Grammars en JavaScript</TITLE>
-<META NAME="description" CONTENT="Análisis Descendente mediante Parsing Expresion Grammars en JavaScript">
+<TITLE>Práctica: Ficheros INI</TITLE>
+<META NAME="description" CONTENT="Práctica: Ficheros INI">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node33.html">
-<LINK REL="previous" HREF="node14.html">
-<LINK REL="up" HREF="node6.html">
+<LINK REL="next" HREF="node18.html">
+<LINK REL="previous" HREF="node16.html">
+<LINK REL="up" HREF="node7.html">
 <LINK REL="next" HREF="node18.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html820"
+<A NAME="tex2html1148"
   HREF="node18.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html814"
-  HREF="node6.html">
+<A NAME="tex2html1142"
+  HREF="node7.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html808"
+<A NAME="tex2html1136"
   HREF="node16.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html816"
-  HREF="node78.html">
+<A NAME="tex2html1144"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html818"
-  HREF="node81.html">
+<A NAME="tex2html1146"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -80,213 +80,709 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html821"
-  HREF="node18.html">Introducción a los PEGs</A>
-<B>Sup:</B> <A NAME="tex2html815"
-  HREF="node6.html">PARTE: APUNTES DE PROCESADORES</A>
-<B> Ant:</B> <A NAME="tex2html809"
-  HREF="node16.html">Análisis Top Down Usando</A>
+<B> Sig:</B> <A NAME="tex2html1149"
+  HREF="node18.html">Práctica: Analizador Léxico para</A>
+<B>Sup:</B> <A NAME="tex2html1143"
+  HREF="node7.html">Expresiones Regulares y Análisis</A>
+<B> Ant:</B> <A NAME="tex2html1137"
+  HREF="node16.html">Ejercicios</A>
 <B> Con:</B> 
-<A NAME="tex2html816"
-  HREF="node78.html">
+<A NAME="tex2html1144"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html818"
-  HREF="node81.html">
+<A NAME="tex2html1146"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-
-<H1><A NAME="SECTION04300000000000000000">
-Análisis Descendente mediante Parsing Expresion Grammars en JavaScript</A>
-</H1>
-  <BR> <HR>
 <!--Table of Child-Links-->
 <A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html822"
-  HREF="node18.html">Introducción a los PEGs</A>
-<UL>
-<LI><A NAME="tex2html823"
-  HREF="node18.html#SECTION04311000000000000000">Syntax</A>
-<LI><A NAME="tex2html824"
-  HREF="node18.html#SECTION04312000000000000000">Semantics</A>
-<LI><A NAME="tex2html825"
-  HREF="node18.html#SECTION04313000000000000000">Implementing parsers from parsing expression grammars</A>
-<LI><A NAME="tex2html826"
-  HREF="node18.html#SECTION04314000000000000000">Lexical Analysis</A>
-<LI><A NAME="tex2html827"
-  HREF="node18.html#SECTION04315000000000000000">Left recursion</A>
-<LI><A NAME="tex2html828"
-  HREF="node18.html#SECTION04316000000000000000">Referencias y Documentación</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html829"
-  HREF="node19.html">PEGJS</A>
-<UL>
-<LI><A NAME="tex2html830"
-  HREF="node19.html#SECTION04320010000000000000">What is</A>
-<LI><A NAME="tex2html831"
-  HREF="node19.html#SECTION04320020000000000000">Installation</A>
-<LI><A NAME="tex2html832"
-  HREF="node19.html#SECTION04320030000000000000">El compilador de línea de comandos</A>
-<LI><A NAME="tex2html833"
-  HREF="node19.html#SECTION04320040000000000000">Using it</A>
-<LI><A NAME="tex2html834"
-  HREF="node19.html#SECTION04320050000000000000">Opciones: allowedStartRules</A>
-<LI><A NAME="tex2html835"
-  HREF="node19.html#SECTION04320060000000000000">Opciones: output</A>
-<LI><A NAME="tex2html836"
-  HREF="node19.html#SECTION04320070000000000000">Opciones: plugin</A>
-<LI><A NAME="tex2html837"
-  HREF="node19.html#SECTION04320080000000000000">cache</A>
-<LI><A NAME="tex2html838"
-  HREF="node19.html#SECTION04320090000000000000">optimize</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html839"
-  HREF="node20.html">Un Ejemplo Sencillo</A>
-<UL>
-<LI><A NAME="tex2html840"
-  HREF="node20.html#SECTION04330010000000000000">Donde</A>
-<LI><A NAME="tex2html841"
-  HREF="node20.html#SECTION04330020000000000000">arithmetics.pegjs</A>
-<LI><A NAME="tex2html842"
-  HREF="node20.html#SECTION04330030000000000000">main.js</A>
-<LI><A NAME="tex2html843"
-  HREF="node20.html#SECTION04330040000000000000">Rakefile</A>
-<LI><A NAME="tex2html844"
-  HREF="node20.html#SECTION04330050000000000000">Compilación</A>
-<LI><A NAME="tex2html845"
-  HREF="node20.html#SECTION04331000000000000000">Asociación Incorrecta para la Resta y la División</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html846"
-  HREF="node21.html">Acciones Intermedias</A>
-<LI><A NAME="tex2html847"
-  HREF="node22.html">PegJS en los Browser</A>
-<UL>
-<LI><A NAME="tex2html848"
-  HREF="node22.html#SECTION04350010000000000000">Donde</A>
-<LI><A NAME="tex2html849"
-  HREF="node22.html#SECTION04350020000000000000">Versiones para Browser</A>
-<LI><A NAME="tex2html850"
-  HREF="node22.html#SECTION04350030000000000000">La opción -e de pegjs</A>
-<LI><A NAME="tex2html851"
-  HREF="node22.html#SECTION04350040000000000000">Compilación</A>
-<LI><A NAME="tex2html852"
-  HREF="node22.html#SECTION04350050000000000000">calc.js</A>
-<LI><A NAME="tex2html853"
-  HREF="node22.html#SECTION04350060000000000000">arithmetic.pegjs</A>
-<LI><A NAME="tex2html854"
-  HREF="node22.html#SECTION04350070000000000000">calculator.html</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html855"
-  HREF="node23.html">Eliminación de la Recursividad por la Izquierda en PEGs</A>
-<UL>
-<LI><A NAME="tex2html856"
-  HREF="node23.html#SECTION04360010000000000000">Donde</A>
-<LI><A NAME="tex2html857"
-  HREF="node23.html#SECTION04360020000000000000">PEGjs Coffee Plugin</A>
-<LI><A NAME="tex2html858"
-  HREF="node23.html#SECTION04360030000000000000">Un Esquema de Traducción Recursivo por la Izquierda</A>
-<LI><A NAME="tex2html859"
-  HREF="node23.html#SECTION04360040000000000000">Métodología</A>
-<LI><A NAME="tex2html860"
-  HREF="node23.html#SECTION04360050000000000000">Solución</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html861"
-  HREF="node24.html">Eliminando la Recursividad por la Izquierda en la Calculadora</A>
-<LI><A NAME="tex2html862"
-  HREF="node25.html">Eliminación de la Recursividad por la Izquierda y Atributos Heredados</A>
-<UL>
-<LI><A NAME="tex2html863"
-  HREF="node25.html#SECTION04381000000000000000">Eliminación de la Recursión por la Izquierda en la Gramática</A>
-<LI><A NAME="tex2html864"
-  HREF="node25.html#SECTION04382000000000000000">Eliminación de la Recursión por la Izquierda en un Esquema de Traducción</A>
-<LI><A NAME="tex2html865"
-  HREF="node25.html#SECTION04383000000000000000">Eliminación de la Recursividad por la Izquierda en PEGJS</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html866"
-  HREF="node26.html"><FONT COLOR="#ff0000"> Dangling else</FONT>: Asociando un else con su if mas cercano</A>
-<UL>
-<LI><A NAME="tex2html867"
-  HREF="node26.html#SECTION04390010000000000000">danglingelse.pegjs</A>
-<LI><A NAME="tex2html868"
-  HREF="node26.html#SECTION04390020000000000000">use_danglingelse.js</A>
-<LI><A NAME="tex2html869"
-  HREF="node26.html#SECTION04390030000000000000">Ejecución</A>
-<LI><A NAME="tex2html870"
-  HREF="node26.html#SECTION04390040000000000000">Donde</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html871"
-  HREF="node27.html">Not Predicate: Comentarios Anidados</A>
-<UL>
-<LI><A NAME="tex2html872"
-  HREF="node27.html#SECTION043100010000000000000">Pascal_comments.pegjs</A>
-<LI><A NAME="tex2html873"
-  HREF="node27.html#SECTION043100020000000000000">use_pascal_comments.js</A>
-<LI><A NAME="tex2html874"
-  HREF="node27.html#SECTION043100030000000000000">Ejecución</A>
-<LI><A NAME="tex2html875"
-  HREF="node27.html#SECTION043100040000000000000">Donde</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html876"
-  HREF="node28.html">Un Lenguaje Dependiente del Contexto</A>
-<LI><A NAME="tex2html877"
-  HREF="node29.html">Usando Pegjs con CoffeeScript</A>
-<UL>
-<LI><A NAME="tex2html878"
-  HREF="node29.html#SECTION043120010000000000000">Instalación de pegjs-coffee-plugin</A>
-<LI><A NAME="tex2html879"
-  HREF="node29.html#SECTION043120020000000000000">Ejemplo Sencillo</A>
-<LI><A NAME="tex2html880"
-  HREF="node29.html#SECTION043120030000000000000">Véase También</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html881"
-  HREF="node30.html">Práctica: Analizador de PL0 Ampliado Usando PEG.js</A>
-<UL>
-<LI><A NAME="tex2html882"
-  HREF="node30.html#SECTION043130010000000000000">Donde</A>
-<LI><A NAME="tex2html883"
-  HREF="node30.html#SECTION043130020000000000000">Tareas</A>
-<LI><A NAME="tex2html884"
-  HREF="node30.html#SECTION043130030000000000000">Referencias para esta Práctica</A>
-</UL>
-<BR>
-<LI><A NAME="tex2html885"
-  HREF="node31.html">Práctica: Ambiguedad en C++</A>
-<LI><A NAME="tex2html886"
-  HREF="node32.html">Práctica: Inventando un Lenguaje: Tortoise</A>
-<UL>
-<LI><A NAME="tex2html887"
-  HREF="node32.html#SECTION043150010000000000000">Recursos</A>
-</UL></UL>
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html1150"
+  HREF="node17.html#SECTION041100010000000000000">Donde</A>
+<LI><A NAME="tex2html1151"
+  HREF="node17.html#SECTION041100020000000000000">index.html</A>
+<LI><A NAME="tex2html1152"
+  HREF="node17.html#SECTION041100030000000000000">Ficheros</A>
+<LI><A NAME="tex2html1153"
+  HREF="node17.html#SECTION041100040000000000000">global.css</A>
+<LI><A NAME="tex2html1154"
+  HREF="node17.html#SECTION041100050000000000000">Ficheros de Prueba</A>
+<LI><A NAME="tex2html1155"
+  HREF="node17.html#SECTION041100060000000000000">ini.js</A>
+<LI><A NAME="tex2html1156"
+  HREF="node17.html#SECTION041100070000000000000">Dudas sobre la Sintáxis del Formato <TT>INI</TT></A>
+<LI><A NAME="tex2html1157"
+  HREF="node17.html#SECTION041100080000000000000">Tareas</A>
+<LI><A NAME="tex2html1158"
+  HREF="node17.html#SECTION041100090000000000000">Véase</A>
+</UL></UL></UL>
 <!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION041100000000000000000"></A>
+   <A NAME="4018"></A>
+<BR>
+Práctica: Ficheros INI
+</H1>
+
+<P>
+
+<H4><A NAME="SECTION041100010000000000000">
+Donde</A>
+</H4>
+  
+
+<PRE>
+[~/srcPLgrado/ini(develop)]$ pwd -P
+/Users/casiano/local/src/javascript/PLgrado/ini
+[~/srcPLgrado/ini(develop)]$ git remote -v
+origin  ssh://git@bitbucket.org/casiano/pl-grado-ini-files.git (fetch)
+origin  ssh://git@bitbucket.org/casiano/pl-grado-ini-files.git (push)
+</PRE>
+
+<P>
+Véase
+
+<UL>
+<LI>Repositorio conteniendo el código (inicial) del analizador de ficheros <code>ini</code>:
+<A NAME="tex2html140"
+  HREF="https://github.com/crguezl/pl-grado-ini-files">https://github.com/crguezl/pl-grado-ini-files</A>
+</LI>
+<LI>Despliegue en GitHub pages:
+<A NAME="tex2html141"
+  HREF="http://crguezl.github.io/pl-grado-ini-files/">http://crguezl.github.io/pl-grado-ini-files/</A>
+</LI>
+<LI>Repositorio privado del profesor: 
+<A NAME="tex2html142"
+  HREF="https://bitbucket.org/casiano/pl-grado-ini-files/src">https://bitbucket.org/casiano/pl-grado-ini-files/src</A>.
+</LI>
+</UL>
+<H4><A NAME="SECTION041100020000000000000">
+index.html</A>
+</H4>
+  
+
+<PRE>
+[~/javascript/PLgrado/ini(master)]$ cat index.html 
+&lt;html&gt;
+  &lt;head&gt;
+     &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8"&gt;
+     &lt;title&gt;INI files&lt;/title&gt;
+     &lt;link href="global.css" rel="stylesheet" type="text/css"&gt;
+&lt;!--
+     &lt;link rel="shortcut icon" href="logo.png" /&gt;
+--&gt;
+     &lt;link rel="shortcut icon" href="etsiiull.png" type="image/x-icon"&gt;
+
+     &lt;script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"&gt;&lt;/script&gt;
+     &lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"&gt;&lt;/script&gt;
+
+     &lt;script type="text/javascript" src="ini.js"&gt;&lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;INI files&lt;/h1&gt;
+    &lt;input type="file" id="fileinput" /&gt;
+    &lt;div id="out" class="hidden"&gt;
+    &lt;table&gt;
+      &lt;tr&gt;&lt;th&gt;Original&lt;/th&gt;&lt;th&gt;Tokens&lt;/th&gt;&lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;pre class="input" id="initialinput"&gt;&lt;/pre&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;pre class="output" id="finaloutput"&gt;&lt;/pre&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION041100030000000000000">
+Ficheros</A>
+</H4>
+  
+
+<P>
+Vease
+
+<UL>
+<LI><A NAME="tex2html143"
+  HREF="http://www.html5rocks.com/en/tutorials/file/dndfiles/">Reading files in JavaScript using the File APIs</A>
+by Eric Bidelman.
+
+<P>
+Source code in 
+<A NAME="tex2html144"
+  HREF="https://github.com/crguezl/files-in-javascript-tut">files-in-javascript-tut</A>
+</LI>
+<LI><A NAME="tex2html145"
+  HREF="http://dev.w3.org/2006/webapi/FileAPI/#filereader-interface">W3C File API</A>
+</LI>
+<LI>Ejemplo <code>FileList</code> en 
+  
+<UL>
+<LI><A NAME="tex2html146"
+  HREF="https://github.com/crguezl/files-in-javascript-tut/blob/master/filelist.html">github</A>
+</LI>
+<LI>en acción en 
+  <A NAME="tex2html147"
+  HREF="http://crguezl.github.io/files-in-javascript-tut/filelist.html">gh-pages</A>.
+</LI>
+<LI>Tambien en 
+  <A NAME="tex2html148"
+  HREF="http://jsfiddle.net/casiano/GEDC9/">jsfiddle</A>
+</LI>
+<LI>o bien 
+  <PRE>
+  [~/src/javascript/fileapi/html5rocks]$ pwd -P
+  /Users/casiano/local/src/javascript/fileapi/html5rocks
+  [~/src/javascript/fileapi/html5rocks(master)]$ ls -l filelist.html 
+  -rw-r--r--  1 casiano  staff  767 15 feb 17:21 filelist.html
+</PRE>
+</LI>
+<LI>The 
+  <A NAME="tex2html149"
+  HREF="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget.addEventListener">EventTarget.addEventListener()</A>
+method 
+  <PRE>
+  target.addEventListener(type, listener[, useCapture]);
+</PRE>
+  registers the specified listener on the <code>EventTarget</code> 
+  it's called
+  on. The event target may be an Element in a document, the Document
+  itself, a Window, or any other object that supports events (such as
+  <code>XMLHttpRequest</code>).
+</LI>
+<LI><PRE>
+  &gt; date = new Date(Date.UTC(2012, 11, 12, 3, 0, 0));
+  Wed Dec 12 2012 03:00:00 GMT+0000 (WET)
+  &gt; date.toLocaleDateString()
+  "12/12/2012"
+</PRE>
+</LI>
+<LI><A NAME="tex2html150"
+  HREF="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString">Date.prototype.toLocaleDateString()</A>
+</LI>
+</UL>
+</LI>
+<LI>Ejemplo de Drag and Drop en 
+
+<UL>
+<LI><A NAME="tex2html151"
+  HREF="https://github.com/crguezl/files-in-javascript-tut/blob/master/dragandrop.html">GitHub</A>
+</LI>
+<LI><A NAME="tex2html152"
+  HREF="http://crguezl.github.io/files-in-javascript-tut/dragandrop.html">gh-pages</A>
+</LI>
+<LI><A NAME="tex2html153"
+  HREF="http://jsfiddle.net/casiano/H7U7X/">jsfiddle</A>
+</LI>
+</UL>
+o bien en:
+<PRE>
+[~/src/javascript/fileapi/html5rocks]$ pwd -P
+/Users/casiano/local/src/javascript/fileapi/html5rocks
+[~/src/javascript/fileapi/html5rocks]$ ls -l dragandrop.html 
+-rw-r--r--  1 casiano  staff  1535 15 feb 18:25 dragandrop.html
+</PRE>
+  
+<UL>
+<LI><code>stopPropagation</code> stops the event from 
+<A NAME="tex2html154"
+  HREF="http://www.w3.org/TR/DOM-Level-3-Events/#event-flow">bubbling up the event chain.</A>
+<P>
+Suppose you have a table and within that table you have an anchor
+      tag. Both the table and the anchor tag have code to handle mouse
+      clicks. When the user clicks on the anchor tag, which HTML element should
+      process the event first? Should it be the table then the anchor tag or
+      vice versa?
+
+<P>
+Formally, the event path is broken into three phases. 
+      
+<UL>
+<LI>In the <A NAME="4031"></A><SPAN  CLASS="textbf">capture phase</SPAN>, the event starts at the top of the DOM tree, and propagates through
+      to the parent of the target. 
+</LI>
+<LI>In the <A NAME="4033"></A><SPAN  CLASS="textbf">target phase</SPAN>, the event object arrives
+      at its target. This is generally where you will write your event-handling
+      code. 
+</LI>
+<LI>In the <A NAME="4035"></A><SPAN  CLASS="textbf">bubble phase</SPAN>, the event will move back up through the tree
+      until it reaches the top. Bubble phase propagation happens in reverse
+      order to the capture phase, with an event starting at the parent of
+      the target and ending up back at the top of the DOM tree. 
+</LI>
+<LI><A NAME="tex2html155"
+  HREF="http://jsfiddle.net/casiano/7Kp4L/">jsfiddle</A>
+</LI>
+</UL>
+      
+      <img src="http://www.w3.org/TR/DOM-Level-3-Events/images/eventflow.png" alt="Graphical representation of an event dispatched in a DOM tree using the DOM event flow" title="Graphical representation of an event dispatched in a DOM tree using the DOM event flow" />
+
+<P>
+These days,
+      there’s a choice to register an event in either the capture phase
+      or the bubble phase. If you register an event in the capture phase,
+      the parent element will process the event before the child element.
+
+<P>
+</LI>
+<LI><code>preventDefault</code> prevents the default action the browser makes on that event.
+  
+</LI>
+</UL>
+</LI>
+<LI>After you've obtained a <code>File</code> reference, instantiate a <code>FileReader</code> object
+    to read its contents into memory. 
+    <PRE>
+    var reader = new FileReader();
+</PRE>
+
+<P>
+to read the file we call one of the 
+<A NAME="tex2html156"
+  HREF="https://developer.mozilla.org/en-US/docs/Web/API/FileReader#Methods">readAs..</A>. For example
+<A NAME="tex2html157"
+  HREF="https://developer.mozilla.org/en-US/docs/Web/API/FileReader.readAsDataURL">readAsDataURL</A>
+is used to starts reading the contents of the specified Blob or File:
+    <PRE>
+    reader.readAsDataURL(f);
+</PRE>
+</LI>
+<LI>Methods to remember: 
+    
+<UL>
+<LI><code>FileReader.abort()</code>
+    Aborts the read operation. Upon return, the <code>readyState</code> will be DONE.
+</LI>
+<LI><code>FileReader.readAsArrayBuffer()</code>
+    Starts reading the contents of the specified <code>Blob</code>, once finished, the <code>result</code> attribute contains an <code>ArrayBuffer</code> representing the file's data.
+</LI>
+<LI><code>FileReader.readAsBinaryString()</code>
+    Starts reading the contents of the specified <code>Blob</code>, once finished, the result attribute contains the raw binary data from the file as a string.
+</LI>
+<LI><code>FileReader.readAsDataURL()</code>
+    Starts reading the contents of the specified <code>Blob</code>.
+
+<P>
+When the read operation is finished, the <code>readyState</code> becomes <code>DONE</code>, and the <code>loadend</code> is triggered. At that time, the result attribute contains a URL representing the file's data as <A NAME="tex2html158"
+  HREF="http://en.wikipedia.org/wiki/Base64">base64</A>
+encoded string.
+</LI>
+<LI><code>FileReader.readAsText()</code>
+Starts reading the contents of the specified <code>Blob</code>, once finished, the result attribute contains the contents of the file as a text string.
+</LI>
+</UL>
+Once one of these read methods is called on your <code>FileReader</code> object, the <code>onloadstart</code>, <code>onprogress</code>, <code>onload</code>, <code>onabort</code>, <code>onerror</code>, and <code>onloadend</code> can be used to track its progress.
+</LI>
+<LI>When the load finishes, 
+    the reader's
+    <code>onload</code> event is fired and its result attribute can be used to access
+    the file data.
+      <PRE>
+        reader.onload = function(e) { 
+          var contents = e.target.result;
+          
+          ....
+        }
+</PRE>
+    See 
+    
+<UL>
+<LI><A NAME="tex2html159"
+  HREF="http://jsfiddle.net/casiano/7ekt8/">jsfiddle</A>
+</LI>
+<LI><A NAME="tex2html160"
+  HREF="https://github.com/crguezl/files-in-javascript-tut/blob/master/readimages.html">GitHub</A>
+</LI>
+<LI><A NAME="tex2html161"
+  HREF="http://crguezl.github.io/files-in-javascript-tut/readimages.html">gh-pages</A>
+</LI>
+<LI>or
+    <PRE>
+    [~/src/javascript/fileapi/html5rocks]$ pwd -P
+    /Users/casiano/local/src/javascript/fileapi/html5rocks
+    [~/src/javascript/fileapi/html5rocks]$ ls -l readimages.html 
+    -rw-r--r--  1 casiano  staff  1530 15 feb 21:00 readimages.html
+</PRE>
+</LI>
+<LI><A NAME="tex2html162"
+  HREF="http://jsfiddle.net/casiano/Xadvz/#base">base64 testing image jsfiddle</A>
+</LI>
+<LI>The <code>insertBefore()</code> method inserts a node as a child, right before an existing child, which you specify. See
+    <PRE>
+    [~/src/javascript/fileapi/html5rocks]$ ls -l readimages.html 
+    -rw-r--r--  1 casiano  staff  1530 15 feb 21:00 readimages.html
+</PRE>
+</LI>
+</UL>
+</LI>
+</UL>
+
+<P>
+
+<H4><A NAME="SECTION041100040000000000000">
+global.css</A>
+</H4>
+  
+
+<P>
+<PRE>
+[~/javascript/PLgrado/ini(master)]$ cat global.css 
+html *
+{
+   font-size: large; 
+   /* The !important ensures that nothing can override what you've set in this style (unless it is also important). */
+   font-family: Arial;
+}
+
+.thumb {
+    height: 75px;
+    border: 1px solid #000;
+    margin: 10px 5px 0 0;
+  }
+
+h1            { text-align: center; font-size: x-large; }
+th, td        { vertical-align: top; text-align: left; }   
+/* #finaltable  * { color: white; background-color: black; }   */
+
+/* #finaltable table { border-collapse:collapse; } */
+/* #finaltable table, td { border:1px solid white; } */
+#finaltable:hover td { background-color: blue; } 
+tr:nth-child(odd)    { background-color:#eee; }
+tr:nth-child(even)    { background-color:#00FF66; }
+input        { text-align: right;  border: none;       }     /* Align input to the right  */
+textarea     { border: outset; border-color: white;       }                        
+table        { border: inset; border-color: white; }
+.hidden      { display: none; }
+.unhidden    { display: block; }
+table.center { margin-left:auto; margin-right:auto; }
+#result      { border-color: red; }
+tr.error       { background-color: red; }
+pre.output   { background-color: white; }
+/*
+span.repeated { background-color: red }
+span.header { background-color: blue }
+span.comments { background-color: orange }
+span.blanks { background-color: green }
+span.nameEqualValue { background-color: cyan }
+span.error { background-color: red }
+*/
+body
+{
+ background-color:#b0c4de;  /* blue */
+}
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION041100050000000000000">
+Ficheros de Prueba</A>
+</H4>
+  
+
+<P>
+<PRE>
+~/Dropbox/src/javascript/PLgrado/ini(master)]$ cat input.ini 
+; last modified 1 April 2001 by John Doe
+[owner]
+name=John Doe
+organization=Acme Widgets Inc.
+
+[database]
+; use IP address in case network name resolution is not working
+server=192.0.2.62     
+port=143
+file = "payroll.dat"
+</PRE>
+
+<P>
+<PRE>
+$ cat input2.ini 
+[special_fields] 
+required = "EmailAddr,FirstName,LastName,Mesg" 
+csvfile = "contacts.csv" 
+csvcolumns = "EmailAddr,FirstName,LastName,Mesg,Date,Time" 
+
+[email_addresses] 
+sales = "jack@yahoo.com,mary@my-sales-force.com,president@my-company.com"
+</PRE>
+
+<P>
+<PRE>
+$ cat inputerror.ini
+[owner]
+name=John Doe
+organization$Acme Widgets Inc.
+ 
+[database
+; use IP address in case network name resolution is not working
+server=192.0.2.62     
+port=143
+file = "payroll.dat"
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION041100060000000000000">
+ini.js</A>
+</H4>
+  
+
+<P>
+<PRE>
+[~/javascript/PLgrado/ini(master)]$ cat ini.js
+"use strict"; // Use ECMAScript 5 strict mode in browsers that support it
+
+$(document).ready(function() {
+   $("#fileinput").change(calculate);
+});
+
+function calculate(evt) {
+  var f = evt.target.files[0]; 
+
+  if (f) {
+    var r = new FileReader();
+    r.onload = function(e) { 
+      var contents = e.target.result;
+      
+      var tokens = lexer(contents);
+      var pretty = tokensToString(tokens);
+      
+      out.className = 'unhidden';
+      initialinput.innerHTML = contents;
+      finaloutput.innerHTML = pretty;
+    }
+    r.readAsText(f);
+  } else { 
+    alert("Failed to load file");
+  }
+}
+
+var temp = '&lt;li&gt; &lt;span class = "&lt;%= token.type %&gt;"&gt; &lt;%= match %&gt; &lt;/span&gt;\n';
+
+function tokensToString(tokens) {
+   var r = '';
+   for(var i=0; i &lt; tokens.length; i++) {
+     var t = tokens[i]
+     var s = JSON.stringify(t, undefined, 2);
+     s = _.template(temp, {token: t, match: s});
+     r += s;
+   }
+   return '&lt;ol&gt;\n'+r+'&lt;/ol&gt;';
+}
+
+function lexer(input) {
+  var blanks         = /^\s+/;
+  var iniheader      = /^\[([^\]\r\n]+)\]/;
+  var comments       = /^[;#](.*)/;
+  var nameEqualValue = /^([^=;\r\n]+)=([^;\r\n]*)/;
+  var any            = /^(.|\n)+/;
+
+  var out = [];
+  var m = null;
+
+  while (input != '') {
+    if (m = blanks.exec(input)) {
+      input = input.substr(m.index+m[0].length);
+      out.push({ type : 'blanks', match: m });
+    }
+    else if (m = iniheader.exec(input)) {
+      input = input.substr(m.index+m[0].length);
+      out.push({ type: 'header', match: m });
+    }
+    else if (m = comments.exec(input)) {
+      input = input.substr(m.index+m[0].length);
+      out.push({ type: 'comments', match: m });
+    }
+    else if (m = nameEqualValue.exec(input)) {
+      input = input.substr(m.index+m[0].length);
+      out.push({ type: 'nameEqualValue', match: m });
+    }
+    else if (m = any.exec(input)) {
+      out.push({ type: 'error', match: m });
+      input = '';
+    }
+    else {
+      alert("Fatal Error!"+substr(input,0,20));
+      input = '';
+    }
+  }
+  return out;
+}
+</PRE>
+Véase la sección <I>JSON.stringify()</I>
+<A HREF="node11.html#parrafo:jsonstringify">1.4</A>
+para saber mas sobre <code>JSON.stringify</code>.
+
+<P>
+
+<H4><A NAME="SECTION041100070000000000000">
+Dudas sobre la Sintáxis del Formato <TT>INI</TT></A>
+</H4>
+  
+
+<A NAME="parrafo:inifile"></A>La sintáxis de <code>INI</code> no está bien definida.
+Se aceptan decisiones razonables para cada una de las expresiones regulares.
+Si quiere ver un parser en acción puede
+instalar la gema <code>inifile</code> (Ruby). 
+
+<P>
+Una opción que no hemos contemplado en nuestro código es la posibilidad de hacer que una línea de asignación se expanda en varias líneas.
+En <code>inifile</code> el carácter <code>\</code> indica 
+que la línea continúa en la siguiente:
+<PRE>
+[~/javascript/PLgrado/inifile(master)]$ cat test/data/good.ini 
+[section_one]
+one = 1
+two = 2
+
+[section_two]
+three =         3
+multi = multiline \
+support
+
+; comments should be ignored
+[section three]
+four   =4
+five=5
+six =6
+
+[section_four]
+   [section_five]
+ seven and eight= 7 &amp; 8
+</PRE>
+
+<P>
+<PRE>
+[~/javascript/PLgrado/inifile(master)]$ pry
+[2] pry(main)&gt; require 'inifile'
+=&gt; true
+</PRE>
+<PRE>
+[3] pry(main)&gt; p = IniFile.new(:filename =&gt; 'test/data/good.ini')
+=&gt; #&lt;IniFile:0x007fba2f41a500
+ @_line=" seven and eight= 7 &amp; 8",
+ @_section={"seven and eight"=&gt;"7 &amp; 8"},
+ @comment=";#",
+ @content=
+  "[section_one]\none = 1\ntwo = 2\n\n[section_two]\nthree =         3\nmulti = multiline \\\nsupport\n\n; comments should be ignored\n[section three]\nfour   =4\nfive=5\nsix =6\n\n[section_four]\n   [section_five]\n seven and eight= 7 &amp; 8\n\n",
+ @default="global",
+ @encoding=nil,
+ @escape=true,
+ @filename="test/data/good.ini",
+ @ini=
+  {"section_one"=&gt;{"one"=&gt;"1", "two"=&gt;"2"},
+   "section_two"=&gt;{"three"=&gt;"3", "multi"=&gt;"multiline support"},
+   "section three"=&gt;{"four"=&gt;"4", "five"=&gt;"5", "six"=&gt;"6"},
+   "section_four"=&gt;{},
+   "section_five"=&gt;{"seven and eight"=&gt;"7 &amp; 8"}},
+ @param="="&gt;
+</PRE>
+
+<P>
+<PRE>
+[4] pry(main)&gt; p["section_two"]
+=&gt; {"three"=&gt;"3", "multi"=&gt;"multiline support"}
+[5] pry(main)&gt; p[:section_two]
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION041100080000000000000">
+Tareas</A>
+</H4>
+  
+
+<P>
+Es conveniente que consiga estos objetivos:
+
+<UL>
+<LI>Pueden comenzar haciendo un fork del repositorio
+<A NAME="tex2html163"
+  HREF="https://github.com/crguezl/pl-grado-ini-files">https://github.com/crguezl/pl-grado-ini-files</A>.
+</LI>
+<LI>La entrada debería poder leerse desde un fichero. Añada drag and drop.
+</LI>
+<LI>Use Web Storage igual que en la anterior
+</LI>
+<LI>Escriba las pruebas
+</LI>
+<LI>Use templates externos <code>underscore</code> para estructurar la salida
+</LI>
+<LI>Añada soporte para multilíneas en las asignaciones
+(Véase la sección <A HREF="#parrafo:inifile">1.10</A>)
+<PRE>
+&gt; s = 'a=b\\\nc'
+'a=b\\\nc'
+&gt; n2 = /^([^=;#\r\n]+)=((?:[^;#\r\n]*\\\n)*[^;#\r\n]*)/
+/^([^=;#\r\n]+)=((?:[^;#\r\n]*\\\n)*[^;#\r\n]*)/
+&gt; m = n2.exec(s)
+[ 'a=b\\\nc', 'a', 'b\\\nc',
+  index: 0, input: 'a=b\\\nc' ]
+&gt; d = m[2]
+'b\\\nc'
+&gt; d.replace(/\\\n/g,' ')
+'b c'
+</PRE>
+</LI>
+</UL>
+
+<P>
+
+<H4><A NAME="SECTION041100090000000000000">
+Véase</A>
+</H4>
+  
+
+<P>
+
+<OL>
+<LI><A NAME="tex2html164"
+  HREF="https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/JSON/stringify">JSON.stringify</A>
+</LI>
+<LI><A NAME="tex2html165"
+  HREF="http://www.json.org/">www.json.org</A>
+</LI>
+<LI><A NAME="tex2html166"
+  HREF="http://www.json.org/js.html">JSON in JavaScript</A>
+</LI>
+<LI><A NAME="tex2html167"
+  HREF="http://underscorejs.org/#template">Underscore: template</A>
+</LI>
+<LI><A NAME="tex2html168"
+  HREF="http://stackoverflow.com/questions/4778881/how-to-use-underscore-js-as-a-template-engine">Stackoverflow::how to use Underscore template</A>
+</LI>
+</OL>
+
+<P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html820"
+<A NAME="tex2html1148"
   HREF="node18.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html814"
-  HREF="node6.html">
+<A NAME="tex2html1142"
+  HREF="node7.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html808"
+<A NAME="tex2html1136"
   HREF="node16.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html816"
-  HREF="node78.html">
+<A NAME="tex2html1144"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html818"
-  HREF="node81.html">
+<A NAME="tex2html1146"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -325,12 +821,12 @@ Análisis Descendente mediante Parsing Expresion Grammars en JavaScript</A>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html821"
-  HREF="node18.html">Introducción a los PEGs</A>
-<B>Sup:</B> <A NAME="tex2html815"
-  HREF="node6.html">PARTE: APUNTES DE PROCESADORES</A>
-<B> Ant:</B> <A NAME="tex2html809"
-  HREF="node16.html">Análisis Top Down Usando</A>
+<B> Sig:</B> <A NAME="tex2html1149"
+  HREF="node18.html">Práctica: Analizador Léxico para</A>
+<B>Sup:</B> <A NAME="tex2html1143"
+  HREF="node7.html">Expresiones Regulares y Análisis</A>
+<B> Ant:</B> <A NAME="tex2html1137"
+  HREF="node16.html">Ejercicios</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

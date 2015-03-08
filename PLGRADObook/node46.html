@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Precedencia y Asociatividad</TITLE>
-<META NAME="description" CONTENT="Precedencia y Asociatividad">
+<TITLE>Conceptos Básicos para el Análisis Sintáctico</TITLE>
+<META NAME="description" CONTENT="Conceptos Básicos para el Análisis Sintáctico">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node47.html">
 <LINK REL="previous" HREF="node45.html">
-<LINK REL="up" HREF="node33.html">
+<LINK REL="up" HREF="node45.html">
 <LINK REL="next" HREF="node47.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1442"
+<A NAME="tex2html1774"
   HREF="node47.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1436"
-  HREF="node33.html">
+<A NAME="tex2html1768"
+  HREF="node45.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1430"
+<A NAME="tex2html1762"
   HREF="node45.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1438"
-  HREF="node78.html">
+<A NAME="tex2html1770"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1440"
-  HREF="node81.html">
+<A NAME="tex2html1772"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -80,369 +80,576 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1443"
-  HREF="node47.html">Esquemas de Traducción</A>
-<B>Sup:</B> <A NAME="tex2html1437"
-  HREF="node33.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1431"
-  HREF="node45.html">El módulo Generado por</A>
+<B> Sig:</B> <A NAME="tex2html1775"
+  HREF="node47.html">Ejemplo Simple en Jison</A>
+<B>Sup:</B> <A NAME="tex2html1769"
+  HREF="node45.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html1763"
+  HREF="node45.html">Análisis Sintáctico Ascendente en</A>
 <B> Con:</B> 
-<A NAME="tex2html1438"
-  HREF="node78.html">
+<A NAME="tex2html1770"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1440"
-  HREF="node81.html">
+<A NAME="tex2html1772"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<H1><A NAME="SECTION044130000000000000000"></A>
-<A NAME="section:prioridades"></A>
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html1776"
+  HREF="node46.html#SECTION04511000000000000000">Ejercicio</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION04510000000000000000"></A>
+<A NAME="section:conceptos"></A>
 <BR>
-Precedencia y Asociatividad
+Conceptos Básicos para el Análisis Sintáctico
 </H1>
-Recordemos que si al construir la tabla LALR,
-alguna de las entradas de la tabla resulta multievaluada, decimos
-que existe un conflicto.
-Si una de las acciones es de `reducción'' y la otra es de
-`desplazamiento'', se dice que hay un <A NAME="6084"></A><SPAN  CLASS="textbf">conflicto shift-reduce</SPAN> o
-<A NAME="6086"></A><SPAN  CLASS="textbf">conflicto de desplazamiento-reducción</SPAN>. Si las
-dos reglas indican una acción de reducción, decimos que tenemos un 
-<A NAME="6088"></A><SPAN  CLASS="textbf">conflicto reduce-reduce</SPAN> o de <A NAME="6090"></A><SPAN  CLASS="textbf">reducción-reducción</SPAN>.
-En caso de que no existan indicaciones específicas <SPAN  CLASS="textbf">jison</SPAN> resuelve
-los conflictos que aparecen en la construcción de la tabla utilizando
-las siguientes reglas:
+Suponemos que el lector de esta sección ha realizado con éxito
+un curso en teoría de autómatas y lenguajes formales.
+Las siguientes definiciones repasan los conceptos mas importantes.
 
 <P>
-
-<OL>
-<LI>Un conflicto <SPAN  CLASS="textbf">reduce-reduce</SPAN> se resuelve eligiendo la producción
-que se listó primero en la especificación de la gramática.
-</LI>
-<LI>Un conflicto <SPAN  CLASS="textbf">shift-reduce</SPAN> se resuelve siempre en favor del <SPAN  CLASS="textbf">shift</SPAN>
-</LI>
-</OL>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Dado un conjunto <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$ A$"></SPAN>, se define <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="19" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$ A^*$"></SPAN> el cierre de Kleene de <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$ A$"></SPAN> como:
+</I><!-- MATH
+ \begin{math}
+A^* = \cup_{n=0}^{\infty} A^n
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="109" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$ A^* = \cup_{n=0}^{\infty} A^n
+$"></SPAN>
+<P>
+<I>Se admite que <!-- MATH
+ $A^0 = \{ \epsilon \}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="73" HEIGHT="39" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$ A^0 = \{ \epsilon \}$"></SPAN>, donde <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$ \epsilon$"></SPAN> denota la palabra vacía, esto es
+la palabra que tiene longitud cero, formada por cero símbolos del conjunto base <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$ A$"></SPAN>.</I></DIV><P></P>
 
 <P>
-Las declaraciones de precedencia y asociatividad mediante las
-palabras reservadas  <TT>%left</TT> ,  <TT>%right</TT> ,  <TT>%nonassoc</TT> 
-se utilizan para modificar estos criterios por defecto. 
-La declaración de  <TT>token</TT> s mediante la palabra
-reservada  <TT>%token</TT>  no modifica la precedencia. Si lo hacen las
-declaraciones realizadas usando las palabras  <TT>left</TT> ,  <TT>right</TT> 
-y  <TT>nonassoc</TT> . 
-
 <P>
-
-<OL>
-<LI>Los <SPAN  CLASS="textbf">tokens</SPAN> declarados  en la misma línea
-tienen igual precedencia e igual asociatividad. 
-La precedencia es mayor cuanto mas abajo 
-su posición en
-el texto. Así, en el ejemplo de la calculadora en la sección 
-<A HREF="node98.html#section:ejemplodeuso"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>, el <SPAN  CLASS="textbf">token</SPAN> <code>*</code> tiene 
-mayor precedencia que <code>+</code> pero la misma que <code>/</code>.
-</LI>
-<LI>La precedencia de una regla <!-- MATH
+<DIV><B>Definición  <SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
+<I>Una gramática <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$ G$"></SPAN> es una cuaterna <!-- MATH
+ $G =(\Sigma,V,P,S)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$ G =(\Sigma,V,P,S)$"></SPAN>. 
+<SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img8.png"
+ ALT="$ \Sigma$"></SPAN> es el conjunto de terminales. <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$ V$"></SPAN> es un conjunto (disjunto de <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img8.png"
+ ALT="$ \Sigma$"></SPAN>)
+que se denomina conjunto de <SPAN  CLASS="textbf">variables sintácticas</SPAN> o <SPAN  CLASS="textbf">categorías gramáticales</SPAN>,
+P es un conjunto de pares de <!-- MATH
+ $V \times (V \cup \Sigma )^*$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="107" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img10.png"
+ ALT="$ V \times (V \cup \Sigma )^*$"></SPAN>. En vez de escribir
+un par usando la notación <!-- MATH
+ $(A, \alpha) \in P$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="85" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$ (A, \alpha) \in P$"></SPAN> se escribe <!-- MATH
  $A \rightarrow \alpha$
  -->
 <SPAN CLASS="MATH"><IMG
  WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.png"
+ ALT="$ A \rightarrow \alpha$"></SPAN>.
+Un elemento de <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
  SRC="img13.png"
- ALT="$ A \rightarrow \alpha$"></SPAN> se
-define como la del terminal mas a la derecha que aparece en
+ ALT="$ P$"></SPAN> se denomina producción. Por último, <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.png"
+ ALT="$ S$"></SPAN> es un símbolo del conjunto
 <SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img43.png"
- ALT="$ \alpha$"></SPAN>. En el ejemplo, la producción 
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$ V$"></SPAN> que se denomina símbolo de arranque.</I></DIV><P></P>
 
 <P>
-<DIV ALIGN="CENTER">
-<code> expr : expr '+' expr</code> 
-
-</DIV>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">3</SPAN></B> &nbsp; 
+<I>Dada una gramática <!-- MATH
+ $G=(\Sigma,V,P,S)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$ G =(\Sigma,V,P,S)$"></SPAN> y <!-- MATH
+ $\mu = \alpha A \beta \in (V \cup \Sigma)^*$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="162" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.png"
+ ALT="$ \mu = \alpha A \beta \in (V \cup \Sigma)^*$"></SPAN>
+una frase formada por variables y terminales y <!-- MATH
+ $A \rightarrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$ A \rightarrow \gamma$"></SPAN> una producción de 
+<SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img13.png"
+ ALT="$ P$"></SPAN>, decimos que  <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$ \mu$"></SPAN> deriva en un paso en  <!-- MATH
+ $\alpha \gamma \beta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="37" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.png"
+ ALT="$ \alpha \gamma \beta$"></SPAN>. Esto es, derivar 
+una cadena <!-- MATH
+ $\alpha A \beta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="40" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.png"
+ ALT="$ \alpha A \beta$"></SPAN> es sustituir 
+una variable sintáctica <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$ A$"></SPAN> de <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$ V$"></SPAN> por la parte derecha <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.png"
+ ALT="$ \gamma$"></SPAN> de una de sus reglas de producción.
+Se dice que <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$ \mu$"></SPAN> deriva en <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img21.png"
+ ALT="$ n$"></SPAN> pasos en <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.png"
+ ALT="$ \delta$"></SPAN> si deriva en <SPAN CLASS="MATH"><IMG
+ WIDTH="45" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img23.png"
+ ALT="$ n-1$"></SPAN> pasos en una cadena
+<!-- MATH
+ $\alpha A \beta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="40" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.png"
+ ALT="$ \alpha A \beta$"></SPAN> la cual deriva en un paso en <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.png"
+ ALT="$ \delta$"></SPAN>. Se escribe entonces
+que <!-- MATH
+ $\mu  \stackrel{*}{\Longrightarrow}  \delta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="61" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.png"
+ ALT="$ \mu \stackrel{*}{\Longrightarrow} \delta$"></SPAN>. Una cadena deriva en 0 pasos en si misma.
+</I>
+<P></DIV><P></P>
 
 <P>
-tiene la precedencia del <SPAN  CLASS="textbf">token</SPAN> <code>+</code>.
-</LI>
-<LI>Para decidir en un conflicto <SPAN  CLASS="textbf">shift-reduce</SPAN> se comparan la precedencia 
-de la regla con la del terminal que va a ser desplazado. Si la de la
-regla es mayor se reduce
-si la del <SPAN  CLASS="textbf">token</SPAN> es mayor, se desplaza.
-</LI>
-<LI>Si en un conflicto <SPAN  CLASS="textbf">shift-reduce</SPAN> ambos la regla y el terminal que
-va a ser desplazado tiene la misma precedencia <SPAN  CLASS="textbf">jison</SPAN> considera la
-asociatividad, si es asociativa a izquierdas, reduce y si es asociativa
-a derechas desplaza. Si no es asociativa, genera un mensaje de error.
+<P>
+<DIV><A NAME="definition:lenguajegenerado"><B>Definición  <SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">4</SPAN></B></A> &nbsp; 
+<I>Dada una gramática <!-- MATH
+ $G=(\Sigma,V,P,S)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$ G =(\Sigma,V,P,S)$"></SPAN> se denota por <SPAN CLASS="MATH"><IMG
+ WIDTH="44" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img25.png"
+ ALT="$ L(G)$"></SPAN> o lenguaje
+generado por <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$ G$"></SPAN> al lenguaje:
+</I>
+<P>
+<DIV ALIGN="CENTER"><I><!-- MATH
+ $L(G) = \{ x \in \Sigma^* : S \stackrel{*}{\Longrightarrow} x \}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="210" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.png"
+ ALT="$ L(G) = \{ x \in \Sigma^* : S \stackrel{*}{\Longrightarrow} x \}$"></SPAN></I></DIV>
+<P>
+<I>Esto es, el lenguaje generado por la gramática <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$ G$"></SPAN> esta formado por las cadenas
+de terminales que pueden ser derivados desde el símbolo de arranque.</I></DIV><P></P>
+
+<P>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">5</SPAN></B> &nbsp; 
+<I>Una derivación que comienza en el símbolo de arranque y termina en una secuencia
+formada por sólo terminales de <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img8.png"
+ ALT="$ \Sigma$"></SPAN> se dice <SPAN  CLASS="textbf">completa</SPAN>.
+</I>
+<P>
+<I>Una derivación <!-- MATH
+ $\mu  \stackrel{*}{\Longrightarrow}  \delta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="61" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.png"
+ ALT="$ \mu \stackrel{*}{\Longrightarrow} \delta$"></SPAN> 
+en la cual en cada paso <!-- MATH
+ $\alpha A x$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="39" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img27.png"
+ ALT="$ \alpha A x$"></SPAN> la regla de producción aplicada <!-- MATH
+ $A \rightarrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$ A \rightarrow \gamma$"></SPAN>
+se aplica en la variable sintáctica mas a la derecha se dice <SPAN  CLASS="textbf">una derivación a derechas</SPAN>
+</I>
+<P>
+<I>Una derivación <!-- MATH
+ $\mu  \stackrel{*}{\Longrightarrow}  \delta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="61" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.png"
+ ALT="$ \mu \stackrel{*}{\Longrightarrow} \delta$"></SPAN> 
+en la cual en cada paso <!-- MATH
+ $x A \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="39" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img28.png"
+ ALT="$ x A \alpha$"></SPAN> la regla de producción aplicada <!-- MATH
+ $A \rightarrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$ A \rightarrow \gamma$"></SPAN>
+se aplica en la variable sintáctica mas a la izquierda se dice <SPAN  CLASS="textbf">una derivación a izquierdas</SPAN></I></DIV><P></P>
+
+<P>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">6</SPAN></B> &nbsp; 
+<I>Observe que una derivación puede ser representada como un árbol cuyos nodos
+están etiquetados en <!-- MATH
+ $V \cup \Sigma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="51" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img29.png"
+ ALT="$ V \cup \Sigma$"></SPAN>. La aplicación de la regla de 
+producción <!-- MATH
+ $A \rightarrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$ A \rightarrow \gamma$"></SPAN> se traduce en asignar como hijos del nodo etiquetado con <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$ A$"></SPAN>
+a los nodos etiquetados con los símbolos <!-- MATH
+ $X_1 \ldots X_n$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="76" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img30.png"
+ ALT="$ X_1 \ldots X_n$"></SPAN> que constituyen
+la frase <!-- MATH
+ $\gamma = X_1 \ldots X_n$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="110" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img31.png"
+ ALT="$ \gamma = X_1 \ldots X_n$"></SPAN>.  
+Este árbol se llama <A NAME="7190"></A><SPAN  CLASS="textbf">árbol sintáctico concreto</SPAN> asociado 
+con la derivación.</I></DIV><P></P>
+
+<P>
+<P>
+<DIV><A NAME="definition:arbolconcreto"><B>Definición  <SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">7</SPAN></B></A> &nbsp; 
+<I>Observe que, dada una frase <!-- MATH
+ $x \in L(G)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="75" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.png"
+ ALT="$ x \in L(G)$"></SPAN> una derivación desde el
+símbolo de arranque da lugar a  un árbol. Ese árbol tiene como raíz el 
+símbolo de arranque y como hojas los terminales 
+<!-- MATH
+ $x_1 \ldots x_n$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="67" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img33.png"
+ ALT="$ x_1 \ldots x_n$"></SPAN> que forman <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.png"
+ ALT="$ x$"></SPAN>. Dicho árbol se denomina <SPAN  CLASS="textbf">árbol
+de análisis sintáctico concreto</SPAN> de <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.png"
+ ALT="$ x$"></SPAN>. Una derivación determina
+una forma de recorrido del árbol de análisis sintáctico concreto.</I></DIV><P></P>
+
+<P>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">5</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">8</SPAN></B> &nbsp; 
+<I>Una gramática <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$ G$"></SPAN> se dice ambigua si existe alguna frase <!-- MATH
+ $x \in L(G)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="75" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.png"
+ ALT="$ x \in L(G)$"></SPAN>
+con al menos dos árboles sintácticos. 
+Es claro que esta definición es equivalente a afirmar que existe 
+alguna frase <!-- MATH
+ $x \in L(G)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="75" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.png"
+ ALT="$ x \in L(G)$"></SPAN> para la cual existen dos derivaciones a 
+izquierda (derecha) distintas.</I></DIV><P></P>
+
+<P>
+
+<H2><A NAME="SECTION04511000000000000000"></A>
+<A NAME="ejercicio:tutugrammar"></A>
 <BR>
-Obsérvese que, en esta situación, la asociatividad de la regla y la del
-<SPAN  CLASS="textbf">token</SPAN> han de ser por fuerza, las mismas.  Ello es así, porque en
-<SPAN  CLASS="textbf">jison</SPAN> los <SPAN  CLASS="textbf">tokens</SPAN> con la misma precedencia se declaran en
-la misma línea y sólo se permite una declaración por línea.
+Ejercicio
+</H2>
+Dada la gramática con producciones:
 
 <P>
+<BR>
+<BR>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">program      <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> declarations  statements         <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> statements</TD>
+</TR>
+<TR><TD ALIGN="LEFT">declarations <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> declaration  ';'  declarations    <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> declaration ';'</TD>
+</TR>
+<TR><TD ALIGN="LEFT">declaration  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> INT  idlist                       <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> STRING   idlist</TD>
+</TR>
+<TR><TD ALIGN="LEFT">statements   <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> statement  ';'  statements        <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> statement</TD>
+</TR>
+<TR><TD ALIGN="LEFT">statement    <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> ID '=' expression                 <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> P  expression</TD>
+</TR>
+<TR><TD ALIGN="LEFT">expression   <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> term '+' expression               <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> term</TD>
+</TR>
+<TR><TD ALIGN="LEFT">term         <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> factor '*' term                   <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> factor</TD>
+</TR>
+<TR><TD ALIGN="LEFT">factor       <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> '(' expression ')' <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> ID <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> NUM <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> STR</TD>
+</TR>
+<TR><TD ALIGN="LEFT">idlist       <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> ID ',' idlist <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> ID</TD>
+</TR>
+</TABLE>
+<BR>
+<BR>
+
+<P>
+En esta gramática, <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img8.png"
+ ALT="$ \Sigma$"></SPAN> esta formado por los caracteres entre comillas simples y 
+los símbolos cuyos identificadores están en mayúsculas. Los restantes identificadores
+corresponden a elementos de <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$ V$"></SPAN>. El símbolo de arranque es <!-- MATH
+ $S = program$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="107" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img99.png"
+ ALT="% latex2html id marker 18458
+$ S = program$"></SPAN>.
+
+<P>
+Conteste a las siguientes cuestiones:
+
+<P>
+
+<OL>
+<LI>Describa con palabras el lenguaje generado.
 </LI>
-<LI><SPAN  CLASS="textbf"> Por tanto es imposible declarar dos <SPAN  CLASS="textbf">tokens</SPAN> con diferente
-asociatividad y la misma precedencia</SPAN>.
+<LI><A NAME="ejer:arbol"></A>Construya el árbol de análisis sintáctico
+concreto para cuatro frases del lenguaje.
 </LI>
-<LI>Es posible modificar la precedencia ``natural'' de una regla, calificándola
-con un <SPAN  CLASS="textbf">token</SPAN> específico.  para ello se escribe a la derecha de
-la regla <code>prec token</code>, donde <code>token</code> es un <SPAN  CLASS="textbf">token</SPAN> con
-la precedencia que deseamos. Vea el uso del <SPAN  CLASS="textbf">token</SPAN> <code>dummy</code>
-en el siguiente ejercicio.
+<LI>Señale a que recorridos del árbol corresponden las respectivas
+derivaciones a izquierda y a derecha en el apartado <A HREF="#ejer:arbol">2</A>.
+</LI>
+<LI>¿Es ambigua esta gramática?. Justifique su respuesta.
 </LI>
 </OL>
 
 <P>
-Para ilustrar las reglas anteriores usaremos el siguiente 
-programa <code>jison</code>:
-
-<P>
-<PRE>
-[~/jison/jison-prec(ast)]$ cat -n precedencia.jison 
- 1  %token NUMBER
- 2  %left '@'
- 3  %right '&amp;'  dummy
- 4  %%
- 5  s 
- 6      : list      { console.log($list); }
- 7      ;
- 8  
- 9  list
-10      :
-11                  {
-12                    $$ = [];
-13                  }
-14      | list '\n'
-15                  {
-16                    $$ = $1;
-17                  }
-18      | list e
-19                  {
-20                    $$ = $1;
-21                    $$.push($e);
-22                  }
-23      ;
-24  
-25  e : NUMBER
-26                  {
-27                    $$ = "NUMBER ("+yytext+")";
-28                  }
-29    | e '&amp;' e
-30                  {
-31                    $$ = [ "&amp;", $e1, $e2];
-32                  }
-33    | e '@' e %prec dummy
-34                  {
-35                    $$ = ["@", $e1, $e2];
-36                  }
-37    ;
-38  
-39  %%
-</PRE>            
-Obsérvese la siguiente ejecución:
-
-<P>
-<PRE>
-[~/jison/jison-prec(ast)]$ cat input.txt 
-2@3@4
-2&amp;3&amp;4
-[~/jison/jison-prec(ast)]$ node precedencia.js input.txt 
-[ [ '@', [ '@', 'NUMBER (2)', 'NUMBER (3)' ], 'NUMBER (4)' ],
-  [ '&amp;', 'NUMBER (2)', [ '&amp;', 'NUMBER (3)', 'NUMBER (4)' ] ] ]
-</PRE>
-
-<P>
-Compilamos a continuación con <code>bison</code> usando la opción <code>-v</code> para
-producir información sobre los conflictos y las tablas de salto y 
-de acciones:
-<PRE>
-[~/jison/jison-prec(ast)]$ bison -v precedencia.jison 
-precedencia.jison:6.31: warning: stray `$'
-precedencia.jison:21.27: warning: stray `$'
-precedencia.jison:31.31: warning: stray `$'
-precedencia.jison:31.36: warning: stray `$'
-precedencia.jison:35.30: warning: stray `$'
-precedencia.jison:35.35: warning: stray `$'
-</PRE>
-
-<P>
-La opción <code>-v</code> genera el fichero <code>Precedencia.output</code>
-el cual contiene información detallada sobre el autómata:
-
-<P>
-<PRE>
-[~/jison/jison-prec(ast)]$ cat precedencia.output 
-Grammar
-
-    0 $accept: s $end
-
-    1 s: list
-
-    2 list: /* empty */
-    3     | list '\n'
-    4     | list e
-
-    5 e: NUMBER
-    6  | e '&amp;' e
-    7  | e '@' e
-
-
-Terminals, with rules where they appear
-
-$end (0) 0
-'\n' (10) 3
-'&amp;' (38) 6
-'@' (64) 7
-error (256)
-NUMBER (258) 5
-dummy (259)
-
-
-Nonterminals, with rules where they appear
-
-$accept (8)
-    on left: 0
-s (9)
-    on left: 1, on right: 0
-list (10)
-    on left: 2 3 4, on right: 1 3 4
-e (11)
-    on left: 5 6 7, on right: 4 6 7
-
-
-state 0
-
-    0 $accept: . s $end
-
-    $default  reduce using rule 2 (list)
-
-    s     go to state 1
-    list  go to state 2
-
-
-state 1
-
-    0 $accept: s . $end
-
-    $end  shift, and go to state 3
-
-
-state 2
-
-    1 s: list .
-    3 list: list . '\n'
-    4     | list . e
-
-    NUMBER  shift, and go to state 4
-    '\n'    shift, and go to state 5
-
-    $default  reduce using rule 1 (s)
-
-    e  go to state 6
-
-
-state 3
-
-    0 $accept: s $end .
-
-    $default  accept
-
-
-state 4
-
-    5 e: NUMBER .
-
-    $default  reduce using rule 5 (e)
-
-
-state 5
-
-    3 list: list '\n' .
-
-    $default  reduce using rule 3 (list)
-
-
-state 6
-
-    4 list: list e .
-    6 e: e . '&amp;' e
-    7  | e . '@' e
-
-    '@'  shift, and go to state 7
-    '&amp;'  shift, and go to state 8
-
-    $default  reduce using rule 4 (list)
-
-
-state 7
-
-    7 e: e '@' . e
-
-    NUMBER  shift, and go to state 4
-
-    e  go to state 9
-
-
-state 8
-
-    6 e: e '&amp;' . e
-
-    NUMBER  shift, and go to state 4
-
-    e  go to state 10
-
-
-state 9
-
-    6 e: e . '&amp;' e
-    7  | e . '@' e
-    7  | e '@' e .
-
-    '&amp;'  shift, and go to state 8
-
-    $default  reduce using rule 7 (e)
-
-
-state 10
-
-    6 e: e . '&amp;' e
-    6  | e '&amp;' e .
-    7  | e . '@' e
-
-    '&amp;'  shift, and go to state 8
-
-    $default  reduce using rule 6 (e)
-</PRE>
-
-<P>
-La presencia de conflictos, aunque no siempre, en muchos casos es debida
-a la introducción de ambiguedad en la gramática. Si el conflicto 
-es de desplazamiento-reducción se puede resolver explicitando 
-alguna regla que rompa la ambiguedad. Los conflictos de
-reducción-reducción suelen producirse por un diseño erróneo
-de la gramática. En tales casos, suele ser mas adecuado
-modificar la gramática.
-
-<P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1442"
+<A NAME="tex2html1774"
   HREF="node47.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1436"
-  HREF="node33.html">
+<A NAME="tex2html1768"
+  HREF="node45.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1430"
+<A NAME="tex2html1762"
   HREF="node45.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1438"
-  HREF="node78.html">
+<A NAME="tex2html1770"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1440"
-  HREF="node81.html">
+<A NAME="tex2html1772"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -481,12 +688,12 @@ modificar la gramática.
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1443"
-  HREF="node47.html">Esquemas de Traducción</A>
-<B>Sup:</B> <A NAME="tex2html1437"
-  HREF="node33.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1431"
-  HREF="node45.html">El módulo Generado por</A>
+<B> Sig:</B> <A NAME="tex2html1775"
+  HREF="node47.html">Ejemplo Simple en Jison</A>
+<B>Sup:</B> <A NAME="tex2html1769"
+  HREF="node45.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html1763"
+  HREF="node45.html">Análisis Sintáctico Ascendente en</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

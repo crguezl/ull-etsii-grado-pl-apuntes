@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Práctica: Análisis de Ámbito en PL0</TITLE>
-<META NAME="description" CONTENT="Práctica: Análisis de Ámbito en PL0">
+<TITLE>Un Lenguaje Dependiente del Contexto</TITLE>
+<META NAME="description" CONTENT="Un Lenguaje Dependiente del Contexto">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node41.html">
 <LINK REL="previous" HREF="node39.html">
-<LINK REL="up" HREF="node33.html">
+<LINK REL="up" HREF="node29.html">
 <LINK REL="next" HREF="node41.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1346"
+<A NAME="tex2html1619"
   HREF="node41.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1340"
-  HREF="node33.html">
+<A NAME="tex2html1613"
+  HREF="node29.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1334"
+<A NAME="tex2html1607"
   HREF="node39.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1342"
-  HREF="node78.html">
+<A NAME="tex2html1615"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1344"
-  HREF="node81.html">
+<A NAME="tex2html1617"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -80,127 +80,110 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1347"
-  HREF="node41.html">Práctica: Traducción de Infijo</A>
-<B>Sup:</B> <A NAME="tex2html1341"
-  HREF="node33.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1335"
-  HREF="node39.html">Práctica: Analizador de PL0</A>
+<B> Sig:</B> <A NAME="tex2html1620"
+  HREF="node41.html">Usando Pegjs con CoffeeScript</A>
+<B>Sup:</B> <A NAME="tex2html1614"
+  HREF="node29.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html1608"
+  HREF="node39.html">Not Predicate: Comentarios Anidados</A>
 <B> Con:</B> 
-<A NAME="tex2html1342"
-  HREF="node78.html">
+<A NAME="tex2html1615"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1344"
-  HREF="node81.html">
+<A NAME="tex2html1617"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html1348"
-  HREF="node40.html#SECTION04470010000000000000">Objetivos</A>
-</UL></UL></UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION04470000000000000000"></A>
-   <A NAME="4846"></A>
-  
-<A NAME="practica:analisisdeambitopl0"></A>
-<BR>
-Práctica: Análisis de Ámbito en PL0
+<H1><A NAME="SECTION044110000000000000000">
+Un Lenguaje Dependiente del Contexto</A>
 </H1>
 
-<H4><A NAME="SECTION04470010000000000000">
-Objetivos</A>
-</H4>
-  
+<P>
+El lenguaje <!-- MATH
+ $\{ a^n b^n c^n / n \in \mathcal{N} \}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="131" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img98.png"
+ ALT="$ \{ a^n b^n c^n / n \in \mathcal{N} \}$"></SPAN> no puede ser 
+expresado mediante una gramática independiente del contexto.
 
 <P>
+<PRE>
+[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat anbncn.pegjs 
+/*
+  The following parsing expression grammar describes the classic 
+  non-context-free language : 
+               { a^nb^nc^n / n &gt;= 1 }
 
-<UL>
-<LI>Modifique la práctica anterior para que cada nodo del tipo <code>PROCEDURE</code>
-disponga de una tabla de símbolos en la que se almacenan todos las
-constantes, variables  y procedimientos declarados en el mismo.
+            S ← &amp;(A 'c') 'a'+ B !('a'/'b'/'c')
+            A ← 'a' A? 'b'
+            B ← 'b' B? 'c'
+*/
+
+S = &amp;(A 'c') 'a'+ B !('a'/'b'/'c')
+A = 'a' A? 'b'
+B = 'b' B? 'c'
+</PRE>
 
 <P>
-</LI>
-<LI>Existirá ademas una tabla de símbolos asociada con el nodo raíz 
-que representa al programa principal.
-</LI>
-<LI>Las declaraciones de constantes y variables no crean nodo, sino que se
-incorporan como información a la tabla de símbolos del procedimiento
-actual
-</LI>
-<LI>Para una entrada de la tabla de símbolos
-<code>sym["a"]</code> se guarda que clase de objeto
-es: constante, variable, procedimiento, etc.
-</LI>
-<LI>Si es un procedimiento se guarda el número de argumentos
-</LI>
-<LI>Si es una constante se guarda su valor
-</LI>
-<LI>Cada uso de un identificador (constante, variable, procedimiento)
-tiene un atributo <code>declared_in</code> que referencia en que nodo
-se declaró
-</LI>
-<LI>Si un identificador es usado y no fué declarado es un error
-</LI>
-<LI>Si se trata de una llamada a procedimiento (se ha usado <code>CALL</code> y el identificador corresponde a un <code>PROCEDURE</code>)
-se comprobará que el número 
-de argumentos coincide con el número de parámetros declarados en su 
-definición
-</LI>
-<LI>Si es un identificador de una constante, es un error
-que sea usado en la parte
-izquierda de una asignación (que no sea la de su declaración)
-</LI>
-<LI>Base de Datos
+Este ejemplo puede ser obtenido desde GitHub:
+<PRE>
+[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ git remote -v
+dmajda  https://github.com/dmajda/pegjs.git (fetch)
+dmajda  https://github.com/dmajda/pegjs.git (push)
+origin  git@github.com:crguezl/pegjs.git (fetch)
+origin  git@github.com:crguezl/pegjs.git (push)
+</PRE>
 
-<OL>
-<LI>Guarde en una tabla el nombre de usuario que guardó un programa.
-Provea una ruta para ver los programas de un usuario.
-</LI>
-<LI>Un programa <code>belongs_to</code> un usuario. Un usuario <code>has n</code> programas.
-Vea la sección
-<A NAME="tex2html144"
-  HREF="http://datamapper.org/docs/associations.html">DataMapper Associations</A>.
-</LI>
-</OL>
-</LI>
-<LI>Use la sección <code>issues</code> de su repositorio en 
-GitHub para coordinarse así como
-para llevar un histórico de las incidencias y la forma en la que
-se resolvieron. Repase el tutorial
-<A NAME="tex2html145"
-  HREF="https://guides.github.com/overviews/issues/">Mastering Issues</A>
 <P>
-</LI>
-</UL>
+Veamos un ejemplo de uso:
+<PRE>
+[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ cat use_anbncn.js 
+var PEG = require("./anbncn.js");
+var r = PEG.parse("aabbcc");
+console.log(r);
+
+try {
+  r = PEG.parse("aabbc");
+  console.log(r);
+}
+catch (e) {
+  console.log("Grr...."+e);
+}
+</PRE>
+
+<P>
+Ejecución:
+<PRE>
+[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ ../bin/pegjs anbncn.pegjs 
+
+[~/Dropbox/src/javascript/PLgrado/pegjs/examples(master)]$ node use_anbncn.js 
+[ '', [ 'a', 'a' ], [ 'b', [ 'b', '', 'c' ], 'c' ], '' ]
+Grr....SyntaxError: Expected "c" but end of input found.
+</PRE>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1346"
+<A NAME="tex2html1619"
   HREF="node41.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1340"
-  HREF="node33.html">
+<A NAME="tex2html1613"
+  HREF="node29.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1334"
+<A NAME="tex2html1607"
   HREF="node39.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1342"
-  HREF="node78.html">
+<A NAME="tex2html1615"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1344"
-  HREF="node81.html">
+<A NAME="tex2html1617"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -239,12 +222,12 @@ se resolvieron. Repase el tutorial
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1347"
-  HREF="node41.html">Práctica: Traducción de Infijo</A>
-<B>Sup:</B> <A NAME="tex2html1341"
-  HREF="node33.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1335"
-  HREF="node39.html">Práctica: Analizador de PL0</A>
+<B> Sig:</B> <A NAME="tex2html1620"
+  HREF="node41.html">Usando Pegjs con CoffeeScript</A>
+<B>Sup:</B> <A NAME="tex2html1614"
+  HREF="node29.html">Análisis Descendente mediante Parsing</A>
+<B> Ant:</B> <A NAME="tex2html1608"
+  HREF="node39.html">Not Predicate: Comentarios Anidados</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

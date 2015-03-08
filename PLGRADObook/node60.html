@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Selección de Código y Gramáticas Árbol</TITLE>
-<META NAME="description" CONTENT="Selección de Código y Gramáticas Árbol">
+<TITLE>Manejo en jison de Atributos Heredados</TITLE>
+<META NAME="description" CONTENT="Manejo en jison de Atributos Heredados">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node61.html">
 <LINK REL="previous" HREF="node59.html">
-<LINK REL="up" HREF="node58.html">
+<LINK REL="up" HREF="node45.html">
 <LINK REL="next" HREF="node61.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1691"
+<A NAME="tex2html2005"
   HREF="node61.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1685"
-  HREF="node58.html">
+<A NAME="tex2html1999"
+  HREF="node45.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1679"
+<A NAME="tex2html1993"
   HREF="node59.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1687"
-  HREF="node78.html">
+<A NAME="tex2html2001"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1689"
-  HREF="node81.html">
+<A NAME="tex2html2003"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -80,562 +80,411 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1692"
-  HREF="node61.html">Patrones Árbol y Transformaciones</A>
-<B>Sup:</B> <A NAME="tex2html1686"
-  HREF="node58.html">Transformaciones Árbol</A>
-<B> Ant:</B> <A NAME="tex2html1680"
-  HREF="node59.html">Árbol de Análisis Abstracto</A>
+<B> Sig:</B> <A NAME="tex2html2006"
+  HREF="node61.html">Definición Dirigida por la</A>
+<B>Sup:</B> <A NAME="tex2html2000"
+  HREF="node45.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html1994"
+  HREF="node59.html">Esquemas de Traducción</A>
 <B> Con:</B> 
-<A NAME="tex2html1687"
-  HREF="node78.html">
+<A NAME="tex2html2001"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1689"
-  HREF="node81.html">
+<A NAME="tex2html2003"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION04620000000000000000"></A>
-<A NAME="section:selecciondecodigo"></A>
+<H1><A NAME="SECTION045150000000000000000"></A>
+<A NAME="section:heredados"></A>
 <BR>
-Selección de Código y Gramáticas Árbol
+Manejo en <TT>jison</TT> de Atributos Heredados
 </H1>
-La generación de código es la fase en la que a partir de la 
-<A NAME="7121"></A><SPAN  CLASS="textbf">Representación intermedia</SPAN> o <A NAME="7123"></A><SPAN  CLASS="textbf">IR</SPAN> se genera 
-una secuencia de instrucciones para la máquina objeto.
-Esta tarea conlleva diversas subtareas, entre ellas destacan
-tres: 
+
+<P>
+Supongamos  que <code>jison</code> esta inmerso 
+en la construcción de la antiderivación a derechas y que la forma sentencial
+derecha en ese momento es:
+
+<P>
+<DIV ALIGN="CENTER">
+<!-- MATH
+ $X_m \ldots X_1 X_0 Y_1 \ldots  Y_n a_1 \ldots a_0$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="225" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img207.png"
+ ALT="$ X_m \ldots X_1 X_0 Y_1 \ldots Y_n a_1 \ldots a_0$"></SPAN>
+</DIV>
+
+<P>
+y que el mango es <!-- MATH
+ $B \rightarrow Y_1 \ldots  Y_n$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="109" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img208.png"
+ ALT="$ B \rightarrow Y_1 \ldots Y_n$"></SPAN> y en la entrada quedan por 
+procesar <!-- MATH
+ $a_1 \ldots a_0$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="65" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img209.png"
+ ALT="$ a_1 \ldots a_0$"></SPAN>.
+
+<P>
+No es posible acceder en <code>jison</code> a los valores de los atributos de los estados en la pila
+del analizador que se encuentran ``por debajo'' o si se quiere
+``a la izquierda'' de los estados asociados
+con la regla por la que se reduce. 
+
+<P>
+Vamos a usar un pequeño hack para acceder a los atributos asociados con símbolos vistos 
+en el pasado "remoto":
+<PRE>
+[~/jison/jison-inherited(grammar)]$ cat inherited.jison 
+%lex
+%%
+\s+                           {}
+(global|local|integer|float)  { return yytext; }
+[a-zA-Z_]\w*                  { return 'id'; }
+.                             { return yytext; }
+/lex
+%%
+D 
+  : C T L 
+  ;
+
+C
+  : global
+  | local
+  ; 
+  
+T
+  : integer
+  | float
+;
+
+L 
+  : L ',' id    { 
+                  console.log("L -&gt; L ',' id ("+yytext+")");
+                  var s =  eval('$$');
+                  console.log(s);
+                }
+  | id          {
+                  console.log("L -&gt; id ("+yytext+")");
+                  var s =  eval('$$');
+                  console.log(s);
+                }
+  ;
+%%
+</PRE>
+
+<P>
+Veamos un ejemplo de ejecución:
+
+<P>
+<PRE>
+[~/jison/jison-inherited(grammar)]$ cat input.txt 
+global integer a, b, c
+[~/jison/jison-inherited(grammar)]$ node inherited.js input.txt 
+L -&gt; id (a)
+[ null, 'global', 'integer', 'a' ]
+L -&gt; L ',' id (b)
+[ null, 'global', 'integer', 'a', ',', 'b' ]
+L -&gt; L ',' id (c)
+[ null, 'global', 'integer', 'a', ',', 'c' ]
+</PRE>
+
+<P>
+Esta forma de acceder a los atributos es especialmente útil cuando se 
+trabaja con <A NAME="8605"></A><SPAN  CLASS="textbf">atributos heredados</SPAN>. Esto es, cuando un atributo
+de un nodo del árbol sintáctico se computa en términos
+de valores de atributos de su padre y/o sus hermanos.
+Ejemplos de atributos heredados son la clase y tipo en la declaración
+de variables. 
+
+<P>
+Es importante darse cuenta que en cualquier derivación a derechas
+desde<code>D</code>, cuando se reduce por una de las reglas 
+
+<P>
+<DIV ALIGN="CENTER">
+L <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> id <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> L<SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img200.png"
+ ALT="$ _1$"></SPAN> ',' id
+
+</DIV>
+
+<P>
+el símbolo a la izquierda de L es T y el que esta a la izquierda de T es C.
+Considere, por ejemplo la derivación a derechas:
+
+<P>
+<DIV ALIGN="CENTER">
+D <!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img210.png"
+ ALT="$ \Longrightarrow$"></SPAN> C T L <!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img210.png"
+ ALT="$ \Longrightarrow$"></SPAN> C T L, id <!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img210.png"
+ ALT="$ \Longrightarrow$"></SPAN> C T L, id, id
+<!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img210.png"
+ ALT="$ \Longrightarrow$"></SPAN> C T id, id, id <!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img210.png"
+ ALT="$ \Longrightarrow$"></SPAN> 
+<BR><!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img210.png"
+ ALT="$ \Longrightarrow$"></SPAN> C float id, id, id <!-- MATH
+ $\Longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img210.png"
+ ALT="$ \Longrightarrow$"></SPAN> local float id, id, id
+
+</DIV>
+
+<P>
+Observe que el orden de recorrido de <code>jison</code> es:
+<DIV ALIGN="CENTER">
+local float id, id, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img211.png"
+ ALT="$ \Longleftarrow$"></SPAN> C float id, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img211.png"
+ ALT="$ \Longleftarrow$"></SPAN>
+C T id, id, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img211.png"
+ ALT="$ \Longleftarrow$"></SPAN>
+<BR><!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img211.png"
+ ALT="$ \Longleftarrow$"></SPAN> C T L, id, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img211.png"
+ ALT="$ \Longleftarrow$"></SPAN> C T L, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img211.png"
+ ALT="$ \Longleftarrow$"></SPAN> C T L <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img211.png"
+ ALT="$ \Longleftarrow$"></SPAN> D
+
+</DIV>
+
+<P>
+en la antiderivación, cuando el mango es una de las dos reglas 
+para listas de identificadores, L <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> id y L <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> L, id 
+es decir durante las tres ultimas antiderivaciones:
+
+<P>
+<DIV ALIGN="CENTER">
+C T L, id, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img211.png"
+ ALT="$ \Longleftarrow$"></SPAN> C T L, id <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img211.png"
+ ALT="$ \Longleftarrow$"></SPAN> C T L <!-- MATH
+ $\Longleftarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img211.png"
+ ALT="$ \Longleftarrow$"></SPAN> D
+
+</DIV>
+
+<P>
+las variables a la izquierda del mango son
+T y C. Esto ocurre siempre. 
+Estas observaciones nos conducen al siguiente
+programa <code>jison</code>: 
+
+<P>
+<PRE>
+[~/jison/jison-inherited(deepstack)]$ cat inherited.jison 
+%lex
+%%
+\s+                           {}
+(global|local|integer|float)  { return yytext; }
+[a-zA-Z_]\w*                  { return 'id'; }
+.                             { return yytext; }
+/lex
+%%
+D 
+  : C T L 
+  ;
+
+C
+  : global
+  | local
+  ; 
+  
+T
+  : integer
+  | float
+  ;
+
+L 
+  : L ',' id    { 
+                  var s =  eval('$$');
+                  var b0 = s.length - 3;
+
+                  console.log("L -&gt; L ',' id ("+yytext+")");
+                  console.log($id + ' is of type ' + s[b0-1]);
+                  console.log(s[b0] + ' is of class ' + s[b0-2]);
+                }
+  | id          {
+                  var s =  eval('$$');
+                  var b0 = s.length - 1;
+
+                  console.log("L -&gt; id ("+yytext+")");
+                  console.log($id + ' is of type ' + s[b0-1]);
+                  console.log(s[b0] + ' is of class ' + s[b0-2]);
+                }
+  ;
+%%
+</PRE>
+
+<P>
+A continuación sigue un ejemplo de ejecución:
+
+<P>
+<PRE>
+[~/jison/jison-inherited(deepstack)]$ node inherited.js input.txt 
+L -&gt; id (a)
+a is of type integer
+a is of class global
+L -&gt; L ',' id (b)
+b is of type integer
+a is of class global
+L -&gt; L ',' id (c)
+c is of type integer
+a is of class global
+</PRE>
+
+<P>
+En este caso, existen varias alternativas simples
+a esta solución:
 
 <UL>
-<LI>La selección de instrucciones o selección de código, 
+<LI>Montar la lista de identificadores  en un array y ponerles el tipo y la clase de "golpe"
+ en la regla de producción superior <code>D : C T L ;</code>
 </LI>
-<LI>La asignación de registros
-y 
+<LI>usar variables visibles (globales o atributos del objeto parser, por ejemplo) 
+como <code>current_type</code>, <code>current_class</code>
+<PRE>
+C
+  : global { current_class = 'global'; }
+  | local  { current_class = 'local'; }
+</PRE>
+y depués accederlas en las reglas de <code>L</code>
 </LI>
-<LI>La planificación de las instrucciones.
+<LI>La que posiblemente sea la mejor estrategia general: construir 
+el árbol de análisis sintáctico. Posteriormente podemos recorrer
+el árbol como queramos y tantas veces como queramos.
 </LI>
 </UL>
 
 <P>
-El problema de la <A NAME="7125"></A><SPAN  CLASS="textbf">selección de código</SPAN> surge de que
-la mayoría de las máquinas suelen tener una gran variedad de instrucciones,
-habitualmente cientos y muchas instrucciones admiten mas de una decena de modos de 
-direccionamiento.
-En consecuencia, 
-
-<P>
-<DIV ALIGN="CENTER">
-<BLOCKQUOTE>
-There Is More Than One Way To Do It (The Translation)
-
-</BLOCKQUOTE>
-</DIV>
-
-<P>
-<SPAN  CLASS="textbf">Es posible asociar 
-una gramática árbol con 
-el juego de instrucciones de una máquina</SPAN>. 
-Las partes derechas de las reglas de producción de esta gramática vienen determinadas
-por el conjunto de árboles sintácticos de las instrucciones. 
-La gramática tiene dos variables sintácticas 
-que denotan dos tipos de recursos de la máquina: los registros
-representados por la variable sintáctica <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img70.png"
- ALT="$ R$"></SPAN> y las direcciones de memoria 
-representadas por <SPAN CLASS="MATH"><IMG
- WIDTH="28" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img308.png"
- ALT="$ M.$"></SPAN> 
-Una instrucción deja su resultado en cierto lugar, normalmente un registro o
-memoria. La idea es que las variables sintácticas en los lados izquierdos
-de las reglas representan los lugares
-en los cuales las instrucciones dejan sus resultados.
-
-<P>
-Ademas, a cada instrucción le asociamos un coste:
-
-<P>
-<DIV ALIGN="CENTER">
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="CENTER" COLSPAN=3><SPAN>Gramática Arbol Para un Juego de Instrucciones Simple</SPAN></TD>
-</TR>
-<TR><TD ALIGN="LEFT">Producción</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=120>Instrucción</TD>
-<TD ALIGN="LEFT">Coste</TD>
-</TR>
-<TR><TD ALIGN="LEFT">R <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img36.png"
- ALT="$ \rightarrow$"></SPAN> NUM</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=120><code>LOADC R, NUM</code></TD>
-<TD ALIGN="LEFT">1</TD>
-</TR>
-<TR><TD ALIGN="LEFT">R <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img36.png"
- ALT="$ \rightarrow$"></SPAN> M</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=120><code>LOADM R, M</code></TD>
-<TD ALIGN="LEFT">3</TD>
-</TR>
-<TR><TD ALIGN="LEFT">M <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img36.png"
- ALT="$ \rightarrow$"></SPAN> R</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=120><code>STOREM M, R</code></TD>
-<TD ALIGN="LEFT">3</TD>
-</TR>
-<TR><TD ALIGN="LEFT">R <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img36.png"
- ALT="$ \rightarrow$"></SPAN> PLUS(R,M)</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=120><code>PLUSM R, M</code></TD>
-<TD ALIGN="LEFT">3</TD>
-</TR>
-<TR><TD ALIGN="LEFT">R <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img36.png"
- ALT="$ \rightarrow$"></SPAN> PLUS(R,R)</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=120><code>PLUSR R, R</code></TD>
-<TD ALIGN="LEFT">1</TD>
-</TR>
-<TR><TD ALIGN="LEFT">R <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img36.png"
- ALT="$ \rightarrow$"></SPAN> TIMES(R,M)</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=120><code>TIMESM R, M</code></TD>
-<TD ALIGN="LEFT">6</TD>
-</TR>
-<TR><TD ALIGN="LEFT">R <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img36.png"
- ALT="$ \rightarrow$"></SPAN> TIMES(R,R)</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=120><code>TIMESR R, R</code></TD>
-<TD ALIGN="LEFT">4</TD>
-</TR>
-<TR><TD ALIGN="LEFT">R <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img36.png"
- ALT="$ \rightarrow$"></SPAN> PLUS(R,TIMES(NUM,R))</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=120><code>PLUSCR R, NUM, R</code></TD>
-<TD ALIGN="LEFT">4</TD>
-</TR>
-<TR><TD ALIGN="LEFT">R <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img36.png"
- ALT="$ \rightarrow$"></SPAN> TIMES(R,TIMES(NUM,R))</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=120><code>TIMESCR R, NUM, R</code></TD>
-<TD ALIGN="LEFT">5</TD>
-</TR>
-</TABLE>
-</DIV>
-
-<P>
-Consideremos la IR consistente en el AST generado por el front-end del compilador
-para la expresión <code>x+3*(7*y)</code>:
-
-<P>
-<PRE>
-                           PLUS(M[x],TIMES(N[3],TIMES(N[7],M[y])
-</PRE>
-
-<P>
-Construyamos una derivación a izquierdas para el árbol anterior:
-
-<P>
-<DIV ALIGN="CENTER">
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="CENTER" COLSPAN=4><SPAN> Una derivación árbol a izquierdas para <!-- MATH
- $P(M,T(N,T(N,M)))$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="174" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img309.png"
- ALT="$ P(M,T(N,T(N,M)))$"></SPAN></SPAN></TD>
-</TR>
-<TR><TD ALIGN="LEFT">Derivación</TD>
-<TD ALIGN="LEFT">Producción</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>Instrucción</TD>
-<TD ALIGN="RIGHT">Coste</TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $R \Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="51" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img310.png"
- ALT="$ R \Longrightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT">R <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img36.png"
- ALT="$ \rightarrow$"></SPAN> PLUS(R,R)</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85><code>PLUSR R, R</code></TD>
-<TD ALIGN="RIGHT">1</TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $P(R,R) \Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="99" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img311.png"
- ALT="$ P(R,R) \Longrightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT">R <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img36.png"
- ALT="$ \rightarrow$"></SPAN> M</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85><code>LOADM R, M</code></TD>
-<TD ALIGN="RIGHT">3</TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $P(M,R) \Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="104" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img312.png"
- ALT="$ P(M,R) \Longrightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT">R <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img36.png"
- ALT="$ \rightarrow$"></SPAN> TIMES(R,R)</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85><code>TIMESR R, R</code></TD>
-<TD ALIGN="RIGHT">4</TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $P(M, T(R, R)) \Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="151" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img313.png"
- ALT="$ P(M, T(R, R)) \Longrightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT">R <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img36.png"
- ALT="$ \rightarrow$"></SPAN> NUM</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85><code>LOADC R, NUM</code></TD>
-<TD ALIGN="RIGHT">1</TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $P(M, T(N, R)) \Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="153" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img314.png"
- ALT="$ P(M, T(N, R)) \Longrightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT">R <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img36.png"
- ALT="$ \rightarrow$"></SPAN> TIMES(R,R)</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85><code>TIMESR R, R</code></TD>
-<TD ALIGN="RIGHT">4</TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $P(M, T(N, T(R, R))) \Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="200" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img315.png"
- ALT="$ P(M, T(N, T(R, R))) \Longrightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT">R <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img36.png"
- ALT="$ \rightarrow$"></SPAN> NUM</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85><code>LOADC R, NUM</code></TD>
-<TD ALIGN="RIGHT">1</TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $P(M, T(N, T(N, R))) \Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="202" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img316.png"
- ALT="$ P(M, T(N, T(N, R))) \Longrightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT">R <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img36.png"
- ALT="$ \rightarrow$"></SPAN> M</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85><code>LOADM R, M</code></TD>
-<TD ALIGN="RIGHT">3</TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $P(M,T(N,T(N,M)))$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="174" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img309.png"
- ALT="$ P(M,T(N,T(N,M)))$"></SPAN></TD>
-<TD ALIGN="LEFT">&nbsp;</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>&nbsp;</TD>
-<TD ALIGN="RIGHT">Total: 17</TD>
-</TR>
-</TABLE>
-</DIV>
-
-<P>
-Obsérvese que, si asumimos por ahora que hay suficientes registros, la secuencia
-de instrucciones resultante en la tercera columna de la tabla si se lee en orden inverso
-(esto es, si se sigue el orden de instrucciones asociadas a las reglas de producción
-en orden de anti-derivación)
-y se hace una asignación correcta de registros nos da una traducción correcta
-de la expresión <code>x+3*(7*y)</code>:
-
-<P>
-<PRE>
-LOADM R, M         # y 
-LOADC R, NUM       # 7
-TIMESR R, R        # 7*y
-LOADC R, NUM       # 3
-TIMESR R, R        # 3*(7*y)
-LOADM R, M         # x
-PLUSR R, R         # x+3*(7*y)
-</PRE>
-
-<P>
-La gramática anterior es ambigua. El árbol de <code>x+3*(7*y)</code>
-puede ser generado también mediante la siguiente derivación 
-a izquierdas:
-
-<P>
-<DIV ALIGN="CENTER">
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="CENTER" COLSPAN=4><SPAN> Otra derivación árbol a izquierdas para <!-- MATH
- $P(M,T(N,T(N,M)))$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="174" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img309.png"
- ALT="$ P(M,T(N,T(N,M)))$"></SPAN></SPAN></TD>
-</TR>
-<TR><TD ALIGN="LEFT">Derivación</TD>
-<TD ALIGN="LEFT">Producción</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113>Instrucción</TD>
-<TD ALIGN="RIGHT">Coste</TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $R \Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="51" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img310.png"
- ALT="$ R \Longrightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT">R <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img36.png"
- ALT="$ \rightarrow$"></SPAN> PLUS(R,TIMES(NUM,R))</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113><code>PLUSCR R, NUM, R</code></TD>
-<TD ALIGN="RIGHT">4</TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $P(R,T(N,R)) \Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="148" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img317.png"
- ALT="$ P(R,T(N,R)) \Longrightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT">R <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img36.png"
- ALT="$ \rightarrow$"></SPAN> M</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113><code>LOADM R, M</code></TD>
-<TD ALIGN="RIGHT">3</TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $P(M,T(N,R)) \Longrightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="153" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img314.png"
- ALT="$ P(M, T(N, R)) \Longrightarrow$"></SPAN></TD>
-<TD ALIGN="LEFT">R <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img36.png"
- ALT="$ \rightarrow$"></SPAN> TIMES(R,M)</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113><code>TIMESM R, M</code></TD>
-<TD ALIGN="RIGHT">6</TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $P(M,T(N,T(R,M)))$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="172" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img318.png"
- ALT="$ P(M,T(N,T(R,M))) $"></SPAN></TD>
-<TD ALIGN="LEFT">R <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img36.png"
- ALT="$ \rightarrow$"></SPAN> NUM</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113><code>LOADC R, NUM</code></TD>
-<TD ALIGN="RIGHT">1</TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $P(M,T(N,T(N,M)))$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="174" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img309.png"
- ALT="$ P(M,T(N,T(N,M)))$"></SPAN></TD>
-<TD ALIGN="LEFT">&nbsp;</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113>&nbsp;</TD>
-<TD ALIGN="RIGHT">Total: 14</TD>
-</TR>
-</TABLE>
-</DIV>
-
-<P>
-La nueva secuencia de instrucciones para <code>x+3*(7*y)</code> es:
-
-<P>
-<PRE>
-LOADC R, NUM        # 7
-TIMESM R, M         # 7*y
-LOADM R, M          # x
-PLUSCR R, NUM, R    # x+3*(7*y)
-</PRE>
-
-<P>
-Cada antiderivación a izquierdas produce una secuencia de instrucciones que es una traducción
-legal del AST de <code>x+3*(7*y)</code>. 
-
-<P>
-<SPAN  CLASS="textbf">El problema de la selección de código óptima
-puede aproximarse resolviendo 
-el problema de  encontrar la derivación árbol óptima que produce el árbol
-de entrada (en representación intermedia IR)</SPAN>
-
-<P>
-<P>
-<DIV><B>Definición  <SPAN CLASS="arabic">6</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Un <A NAME="7127"></A><SPAN  CLASS="textbf">generador de generadores de código</SPAN> es una componente software que toma como
-entrada una especificación de la plataforma objeto -por ejemplo mediante una gramática
-árbol- y genera un módulo que es utilizado por el compilador. Este módulo
-lee la representación intermedia (habitualmente un árbol) y 
-retorna código máquina como resultado.</I></DIV><P></P>
-
-<P>
-Un ejemplo de generador de generadores de código 
-es 
-<A NAME="tex2html166"
-  HREF="http://code.google.com/p/iburg/">iburg</A>
-[<A
- HREF="node82.html#Proebsting">7</A>].
-
-<P>
-Véase también el libro 
-<A NAME="tex2html167"
-  HREF="http://www.bytelabs.org/pub/papers/hburg07.pdf">Automatic Code Generation Using Dynamic Programming Techniques</A>
-y la página <A NAME="tex2html168"
-  HREF="http://www.bytelabs.org/hburg.html">http://www.bytelabs.org/hburg.html</A>
-<P>
-<P>
-<DIV><B>Ejercicio  <SPAN CLASS="arabic">6</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Responda a las siguientes preguntas:
-</I>
-<UL>
-<LI>Sea <SPAN CLASS="MATH"><IMG
- WIDTH="34" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img319.png"
- ALT="$ G_M$"></SPAN> la gramática árbol asociada segun la descripción anterior
-con el juego de instrucciones de la máquina <SPAN CLASS="MATH"><IMG
- WIDTH="24" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img320.png"
- ALT="$ M$"></SPAN>. Especifique formalmente
-las cuatro componentes de la gramática <!-- MATH
- $G_M = (\Sigma_M, V_M, P_M, S_M)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="199" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img321.png"
- ALT="$ G_M = (\Sigma_M, V_M, P_M, S_M)$"></SPAN> 
-</LI>
-<LI>¿Cual es el lenguaje árbol generado por <SPAN CLASS="MATH"><IMG
- WIDTH="34" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img319.png"
- ALT="$ G_M$"></SPAN>?
-</LI>
-<LI>¿A que lenguaje debe pertenecer la representación intermedia IR para
-que se pueda aplicar la aproximación presentada en esta sección?
-</LI>
-</UL></DIV><P></P>
-
-<P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1691"
+<A NAME="tex2html2005"
   HREF="node61.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1685"
-  HREF="node58.html">
+<A NAME="tex2html1999"
+  HREF="node45.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1679"
+<A NAME="tex2html1993"
   HREF="node59.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1687"
-  HREF="node78.html">
+<A NAME="tex2html2001"
+  HREF="node90.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1689"
-  HREF="node81.html">
+<A NAME="tex2html2003"
+  HREF="node93.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -674,12 +523,12 @@ que se pueda aplicar la aproximación presentada en esta sección?
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1692"
-  HREF="node61.html">Patrones Árbol y Transformaciones</A>
-<B>Sup:</B> <A NAME="tex2html1686"
-  HREF="node58.html">Transformaciones Árbol</A>
-<B> Ant:</B> <A NAME="tex2html1680"
-  HREF="node59.html">Árbol de Análisis Abstracto</A>
+<B> Sig:</B> <A NAME="tex2html2006"
+  HREF="node61.html">Definición Dirigida por la</A>
+<B>Sup:</B> <A NAME="tex2html2000"
+  HREF="node45.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html1994"
+  HREF="node59.html">Esquemas de Traducción</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
