@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Práctica: Traducción de Infijo a Postfijo</TITLE>
-<META NAME="description" CONTENT="Práctica: Traducción de Infijo a Postfijo">
+<TITLE>Construcción del Árbol Sintáctico</TITLE>
+<META NAME="description" CONTENT="Construcción del Árbol Sintáctico">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node54.html">
 <LINK REL="previous" HREF="node52.html">
-<LINK REL="up" HREF="node45.html">
+<LINK REL="up" HREF="node33.html">
 <LINK REL="next" HREF="node54.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1896"
+<A NAME="tex2html1550"
   HREF="node54.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1890"
-  HREF="node45.html">
+<A NAME="tex2html1544"
+  HREF="node33.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1884"
+<A NAME="tex2html1538"
   HREF="node52.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1892"
-  HREF="node90.html">
+<A NAME="tex2html1546"
+  HREF="node78.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1894"
-  HREF="node93.html">
+<A NAME="tex2html1548"
+  HREF="node81.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -80,128 +80,47 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1897"
-  HREF="node54.html">Práctica: Calculadora con Funciones</A>
-<B>Sup:</B> <A NAME="tex2html1891"
-  HREF="node45.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1885"
-  HREF="node52.html">Práctica: Análisis de Ámbito</A>
+<B> Sig:</B> <A NAME="tex2html1551"
+  HREF="node54.html">Consejos a seguir al</A>
+<B>Sup:</B> <A NAME="tex2html1545"
+  HREF="node33.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html1539"
+  HREF="node52.html">Depuración en jison</A>
 <B> Con:</B> 
-<A NAME="tex2html1892"
-  HREF="node90.html">
+<A NAME="tex2html1546"
+  HREF="node78.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1894"
-  HREF="node93.html">
+<A NAME="tex2html1548"
+  HREF="node81.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION04580000000000000000"></A>
-   <A NAME="7347"></A>
-  
-<A NAME="section:calculadoraampliada"></A>
-<BR>
-Práctica: Traducción de Infijo a Postfijo
+<H1><A NAME="SECTION044200000000000000000">
+Construcción del Árbol Sintáctico</A>
 </H1>
-Modifique el programa Jison realizado en la práctica 
-<A HREF="node48.html#subsectionpractica:calculadora">5.3.1</A>
-para traducir de infijo a postfijo. 
-Añada los operadores de comparación e igualdad.
-Por ejemplo
-
-<P>
-<DIV ALIGN="CENTER">
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170>Infijo</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170>Postfijo</TD>
-</TR>
-<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><code>a = 3+2*4</code></TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><code> 3 2 4 * + &amp;a = </code></TD>
-</TR>
-<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><code>b = a == 11</code></TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><code> a 11 == &amp;b = </code></TD>
-</TR>
-</TABLE>
-</DIV>
-En estas traducciones la notación 
-<code>&amp;a</code> indica la dirección de la variable <code>a</code>
-y <code>a</code> indica el valor almacenado en la variable <code>a</code>.
-
-<P>
-Añada sentencias 
-<code>if</code> ...
-<code>then</code> e <code>if</code> ... <code>then</code> ... <code>else</code>
-
-<P>
-Para realizar la traducción de estas sentencias
-añada 
-instrucciones <code>jmp label</code> y <code>jmpz label</code> (por <I>jump if zero</I>)
-y etiquetas:
-
-<P>
-<DIV ALIGN="CENTER">
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>Infijo</TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170>Postfijo</TD>
-</TR>
-<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227><PRE>
-a = (2+5)*3;
-if a == 0 then b = 5 else b = 3;
-c = b + 1;
-</PRE></TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><PRE>
-        2
-        5
-        +
-        3
-        *
-        &amp;a
-        =
-        a
-        0
-        ==
-        jmpz else1
-        5
-        &amp;b
-        =
-        jmp endif0
-:else1
-        3
-        &amp;b
-        =
-:endif0
-        b
-        1
-        +
-        &amp;c
-        =
-</PRE></TD>
-</TR>
-</TABLE>
-</DIV>
-Parta del repositorio 
-<A NAME="tex2html318"
-  HREF="https://github.com/crguezl/jison-simple-html-calc">https://github.com/crguezl/jison-simple-html-calc</A>.
+El siguiente ejemplo usa <code>jison</code> 
+para construir el árbol sintáctico de una expresión en infijo:
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1896"
+<A NAME="tex2html1550"
   HREF="node54.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1890"
-  HREF="node45.html">
+<A NAME="tex2html1544"
+  HREF="node33.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1884"
+<A NAME="tex2html1538"
   HREF="node52.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1892"
-  HREF="node90.html">
+<A NAME="tex2html1546"
+  HREF="node78.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1894"
-  HREF="node93.html">
+<A NAME="tex2html1548"
+  HREF="node81.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -240,12 +159,12 @@ Parta del repositorio
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1897"
-  HREF="node54.html">Práctica: Calculadora con Funciones</A>
-<B>Sup:</B> <A NAME="tex2html1891"
-  HREF="node45.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1885"
-  HREF="node52.html">Práctica: Análisis de Ámbito</A>
+<B> Sig:</B> <A NAME="tex2html1551"
+  HREF="node54.html">Consejos a seguir al</A>
+<B>Sup:</B> <A NAME="tex2html1545"
+  HREF="node33.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html1539"
+  HREF="node52.html">Depuración en jison</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

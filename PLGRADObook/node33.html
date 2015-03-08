@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Acciones Intermedias</TITLE>
-<META NAME="description" CONTENT="Acciones Intermedias">
+<TITLE>Análisis Sintáctico Ascendente en JavaScript</TITLE>
+<META NAME="description" CONTENT="Análisis Sintáctico Ascendente en JavaScript">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node34.html">
-<LINK REL="previous" HREF="node32.html">
-<LINK REL="up" HREF="node29.html">
+<LINK REL="next" HREF="node55.html">
+<LINK REL="previous" HREF="node17.html">
+<LINK REL="up" HREF="node6.html">
 <LINK REL="next" HREF="node34.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1498"
+<A NAME="tex2html1159"
   HREF="node34.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1492"
-  HREF="node29.html">
+<A NAME="tex2html1153"
+  HREF="node6.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1486"
+<A NAME="tex2html1147"
   HREF="node32.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1494"
-  HREF="node90.html">
+<A NAME="tex2html1155"
+  HREF="node78.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1496"
-  HREF="node93.html">
+<A NAME="tex2html1157"
+  HREF="node81.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -80,88 +80,214 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1499"
-  HREF="node34.html">PegJS en los Browser</A>
-<B>Sup:</B> <A NAME="tex2html1493"
-  HREF="node29.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html1487"
-  HREF="node32.html">Un Ejemplo Sencillo</A>
+<B> Sig:</B> <A NAME="tex2html1160"
+  HREF="node34.html">Conceptos Básicos para el</A>
+<B>Sup:</B> <A NAME="tex2html1154"
+  HREF="node6.html">PARTE: APUNTES DE PROCESADORES</A>
+<B> Ant:</B> <A NAME="tex2html1148"
+  HREF="node32.html">Práctica: Inventando un Lenguaje:</A>
 <B> Con:</B> 
-<A NAME="tex2html1494"
-  HREF="node90.html">
+<A NAME="tex2html1155"
+  HREF="node78.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1496"
-  HREF="node93.html">
+<A NAME="tex2html1157"
+  HREF="node81.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION04440000000000000000">
-Acciones Intermedias</A>
+<H1><A NAME="SECTION04400000000000000000">
+Análisis Sintáctico Ascendente en JavaScript</A>
 </H1>
+<BR> <HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<P>
-Supongamos que queremos poner una acción semántica intermedia
-en un programa  <A NAME="tex2html247"
-  HREF="http://pegjs.majda.cz/">PEG.js</A>
-:
-<PRE>
-[~/srcPLgrado/pegjs/examples(master)]$ cat direct_intermedia.pegjs 
-a = 'a'+ { console.log("acción intermedia"); } 'b'+ { 
-                     console.log("acción final"); 
-                     return "hello world!";
-                   }
-</PRE>
-Al compilar nos da un mensjae de error:
-<PRE>
-[~/srcPLgrado/pegjs/examples(master)]$ pegjs direct_intermedia.pegjs 
-1:48: Expected "/", ";", end of input or identifier but "'" found.
-</PRE>
-La solución consiste en introducir una variable sintáctica en medio que derive a la palabra vacía y que tenga asociada la correspondiente acción semántica:
-<PRE>
-[~/srcPLgrado/pegjs/examples(master)]$ cat intermedia.pegjs 
-a = 'a'+ temp 'b'+ { 
-                     console.log("acción final"); 
-                     return "hello world!";
-                   }
-temp = { console.log("acción intermedia"); }
-</PRE>
-Este es el progrma que usa el parser generado:
-<PRE>
-[~/srcPLgrado/pegjs/examples(master)]$ cat main_intermedia.js 
-var parser = require("intermedia");
-var input = process.argv[2] || 'aabb';
-var result = parser.parse(input);
-console.log(result);
-</PRE>
-al ejecutar tenemos:
-<PRE>
-[~/srcPLgrado/pegjs/examples(master)]$ pegjs intermedia.pegjs 
-[~/srcPLgrado/pegjs/examples(master)]$ node main_intermedia.js 
-acción intermedia
-acción final
-hello world!
-</PRE>
-
-<P>
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html1161"
+  HREF="node34.html">Conceptos Básicos para el Análisis Sintáctico</A>
+<UL>
+<LI><A NAME="tex2html1162"
+  HREF="node34.html#SECTION04411000000000000000">Ejercicio</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html1163"
+  HREF="node35.html">Ejemplo Simple en Jison</A>
+<UL>
+<LI><A NAME="tex2html1164"
+  HREF="node35.html#SECTION04420010000000000000">Gramática</A>
+<LI><A NAME="tex2html1165"
+  HREF="node35.html#SECTION04420020000000000000">basic2_lex.jison</A>
+<LI><A NAME="tex2html1166"
+  HREF="node35.html#SECTION04420030000000000000">index.html</A>
+<LI><A NAME="tex2html1167"
+  HREF="node35.html#SECTION04420040000000000000">Rakefile</A>
+<LI><A NAME="tex2html1168"
+  HREF="node35.html#SECTION04420050000000000000">Véase También</A>
+<LI><A NAME="tex2html1169"
+  HREF="node35.html#SECTION04420060000000000000">global.css</A>
+<LI><A NAME="tex2html1170"
+  HREF="node35.html#SECTION04421000000000000000">Véase También</A>
+<LI><A NAME="tex2html1171"
+  HREF="node35.html#SECTION04422000000000000000">Práctica: Secuencia de Asignaciones Simples</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html1172"
+  HREF="node36.html">Ejemplo en Jison: Calculadora Simple</A>
+<UL>
+<LI><A NAME="tex2html1173"
+  HREF="node36.html#SECTION04430010000000000000">calculator.jison</A>
+<LI><A NAME="tex2html1174"
+  HREF="node36.html#SECTION04430020000000000000">main.js</A>
+<LI><A NAME="tex2html1175"
+  HREF="node36.html#SECTION04430030000000000000">calculator.html</A>
+<LI><A NAME="tex2html1176"
+  HREF="node36.html#SECTION04430040000000000000">Rakefile</A>
+<LI><A NAME="tex2html1177"
+  HREF="node36.html#SECTION04430050000000000000">global.css</A>
+<LI><A NAME="tex2html1178"
+  HREF="node36.html#SECTION04430060000000000000">test/assert.html</A>
+<LI><A NAME="tex2html1179"
+  HREF="node36.html#SECTION04430070000000000000">test/test.css</A>
+<LI><A NAME="tex2html1180"
+  HREF="node36.html#SECTION04430080000000000000">test/test.html</A>
+<LI><A NAME="tex2html1181"
+  HREF="node36.html#SECTION04431000000000000000">Práctica: Calculadora con Listas de Expresiones y Variables</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html1182"
+  HREF="node37.html">Conceptos Básicos del Análisis LR</A>
+<LI><A NAME="tex2html1183"
+  HREF="node38.html">Construcción de las Tablas para el Análisis SLR</A>
+<UL>
+<LI><A NAME="tex2html1184"
+  HREF="node38.html#SECTION04451000000000000000">Los conjuntos de Primeros y Siguientes</A>
+<LI><A NAME="tex2html1185"
+  HREF="node38.html#SECTION04452000000000000000">Construcción de las Tablas</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html1186"
+  HREF="node39.html">Práctica: Analizador de PL0 Usando Jison</A>
+<UL>
+<LI><A NAME="tex2html1187"
+  HREF="node39.html#SECTION04460010000000000000">Donde</A>
+<LI><A NAME="tex2html1188"
+  HREF="node39.html#SECTION04460020000000000000">Tareas</A>
+<LI><A NAME="tex2html1189"
+  HREF="node39.html#SECTION04460030000000000000">Referencias para esta Práctica</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html1190"
+  HREF="node40.html">Práctica: Análisis de Ámbito en PL0</A>
+<UL>
+<LI><A NAME="tex2html1191"
+  HREF="node40.html#SECTION04470010000000000000">Objetivos</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html1192"
+  HREF="node41.html">Práctica: Traducción de Infijo a Postfijo</A>
+<LI><A NAME="tex2html1193"
+  HREF="node42.html">Práctica: Calculadora  con Funciones</A>
+<LI><A NAME="tex2html1194"
+  HREF="node43.html">Práctica: Calculadora con Análisis de Ámbito</A>
+<LI><A NAME="tex2html1195"
+  HREF="node44.html">Algoritmo de Análisis LR</A>
+<LI><A NAME="tex2html1196"
+  HREF="node45.html">El módulo Generado por <TT>jison</TT></A>
+<UL>
+<LI><A NAME="tex2html1197"
+  HREF="node45.html#SECTION044121000000000000000">Version</A>
+<LI><A NAME="tex2html1198"
+  HREF="node45.html#SECTION044122000000000000000">Gramática Inicial</A>
+<LI><A NAME="tex2html1199"
+  HREF="node45.html#SECTION044123000000000000000">Tablas</A>
+<LI><A NAME="tex2html1200"
+  HREF="node45.html#SECTION044124000000000000000">Acciones Semánticas</A>
+<LI><A NAME="tex2html1201"
+  HREF="node45.html#SECTION044125000000000000000">Tabla de Acciones y GOTOs</A>
+<LI><A NAME="tex2html1202"
+  HREF="node45.html#SECTION044126000000000000000">defaultActions</A>
+<LI><A NAME="tex2html1203"
+  HREF="node45.html#SECTION044127000000000000000">Reducciones</A>
+<LI><A NAME="tex2html1204"
+  HREF="node45.html#SECTION044128000000000000000">Desplazamientos/Shifts</A>
+<LI><A NAME="tex2html1205"
+  HREF="node45.html#SECTION044129000000000000000">Manejo de Errores</A>
+<LI><A NAME="tex2html1206"
+  HREF="node45.html#SECTION0441210000000000000000">Analizador Léxico</A>
+<LI><A NAME="tex2html1207"
+  HREF="node45.html#SECTION0441211000000000000000">Exportación</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html1208"
+  HREF="node46.html">Precedencia y Asociatividad</A>
+<LI><A NAME="tex2html1209"
+  HREF="node47.html">Esquemas de Traducción</A>
+<LI><A NAME="tex2html1210"
+  HREF="node48.html">Manejo en <TT>jison</TT> de Atributos Heredados</A>
+<LI><A NAME="tex2html1211"
+  HREF="node49.html">Definición Dirigida por la Sintáxis</A>
+<LI><A NAME="tex2html1212"
+  HREF="node50.html">Ejercicios: Casos de Estudio</A>
+<UL>
+<LI><A NAME="tex2html1213"
+  HREF="node50.html#SECTION044171000000000000000">Un mal diseño</A>
+<UL>
+<LI><A NAME="tex2html1214"
+  HREF="node50.html#SECTION044171010000000000000">Donde</A>
+</UL>
+<LI><A NAME="tex2html1215"
+  HREF="node50.html#SECTION044172000000000000000">Gramática no LR(1)</A>
+<UL>
+<LI><A NAME="tex2html1216"
+  HREF="node50.html#SECTION044172010000000000000">Donde</A>
+</UL>
+<LI><A NAME="tex2html1217"
+  HREF="node50.html#SECTION044173000000000000000">Un Lenguaje Intrínsecamente Ambiguo</A>
+<UL>
+<LI><A NAME="tex2html1218"
+  HREF="node50.html#SECTION044173010000000000000">Donde</A>
+</UL>
+<LI><A NAME="tex2html1219"
+  HREF="node50.html#SECTION044174000000000000000">Conflicto reduce-reduce</A>
+<UL>
+<LI><A NAME="tex2html1220"
+  HREF="node50.html#SECTION044174010000000000000">Solución</A>
+<LI><A NAME="tex2html1221"
+  HREF="node50.html#SECTION044174020000000000000">Donde</A>
+<LI><A NAME="tex2html1222"
+  HREF="node50.html#SECTION044174030000000000000">Véase</A>
+</UL>
+</UL>
+<BR>
+<LI><A NAME="tex2html1223"
+  HREF="node51.html">Recuperación de Errores</A>
+<LI><A NAME="tex2html1224"
+  HREF="node52.html">Depuración en <TT>jison</TT></A>
+<LI><A NAME="tex2html1225"
+  HREF="node53.html">Construcción del Árbol Sintáctico</A>
+<LI><A NAME="tex2html1226"
+  HREF="node54.html">Consejos a seguir al escribir un programa <TT>jison</TT></A>
+</UL>
+<!--End of Table of Child-Links-->
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1498"
+<A NAME="tex2html1159"
   HREF="node34.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1492"
-  HREF="node29.html">
+<A NAME="tex2html1153"
+  HREF="node6.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1486"
+<A NAME="tex2html1147"
   HREF="node32.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1494"
-  HREF="node90.html">
+<A NAME="tex2html1155"
+  HREF="node78.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1496"
-  HREF="node93.html">
+<A NAME="tex2html1157"
+  HREF="node81.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -200,12 +326,12 @@ hello world!
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1499"
-  HREF="node34.html">PegJS en los Browser</A>
-<B>Sup:</B> <A NAME="tex2html1493"
-  HREF="node29.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html1487"
-  HREF="node32.html">Un Ejemplo Sencillo</A>
+<B> Sig:</B> <A NAME="tex2html1160"
+  HREF="node34.html">Conceptos Básicos para el</A>
+<B>Sup:</B> <A NAME="tex2html1154"
+  HREF="node6.html">PARTE: APUNTES DE PROCESADORES</A>
+<B> Ant:</B> <A NAME="tex2html1148"
+  HREF="node32.html">Práctica: Inventando un Lenguaje:</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Ejemplo Simple en Jison</TITLE>
-<META NAME="description" CONTENT="Ejemplo Simple en Jison">
+<TITLE>Esquemas de Traducción</TITLE>
+<META NAME="description" CONTENT="Esquemas de Traducción">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node48.html">
 <LINK REL="previous" HREF="node46.html">
-<LINK REL="up" HREF="node45.html">
+<LINK REL="up" HREF="node33.html">
 <LINK REL="next" HREF="node48.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1789"
+<A NAME="tex2html1456"
   HREF="node48.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1783"
-  HREF="node45.html">
+<A NAME="tex2html1450"
+  HREF="node33.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1777"
+<A NAME="tex2html1444"
   HREF="node46.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1785"
-  HREF="node90.html">
+<A NAME="tex2html1452"
+  HREF="node78.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1787"
-  HREF="node93.html">
+<A NAME="tex2html1454"
+  HREF="node81.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -80,362 +80,174 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1790"
-  HREF="node48.html">Ejemplo en Jison: Calculadora</A>
-<B>Sup:</B> <A NAME="tex2html1784"
-  HREF="node45.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1778"
-  HREF="node46.html">Conceptos Básicos para el</A>
+<B> Sig:</B> <A NAME="tex2html1457"
+  HREF="node48.html">Manejo en jison de</A>
+<B>Sup:</B> <A NAME="tex2html1451"
+  HREF="node33.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html1445"
+  HREF="node46.html">Precedencia y Asociatividad</A>
 <B> Con:</B> 
-<A NAME="tex2html1785"
-  HREF="node90.html">
+<A NAME="tex2html1452"
+  HREF="node78.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1787"
-  HREF="node93.html">
+<A NAME="tex2html1454"
+  HREF="node81.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html1791"
-  HREF="node47.html#SECTION04520010000000000000">Gramática</A>
-<LI><A NAME="tex2html1792"
-  HREF="node47.html#SECTION04520020000000000000">basic2_lex.jison</A>
-<LI><A NAME="tex2html1793"
-  HREF="node47.html#SECTION04520030000000000000">index.html</A>
-<LI><A NAME="tex2html1794"
-  HREF="node47.html#SECTION04520040000000000000">Rakefile</A>
-<LI><A NAME="tex2html1795"
-  HREF="node47.html#SECTION04520050000000000000">Véase También</A>
-<LI><A NAME="tex2html1796"
-  HREF="node47.html#SECTION04520060000000000000">global.css</A>
-</UL>
-</UL>
-<BR>
-<LI><A NAME="tex2html1797"
-  HREF="node47.html#SECTION04521000000000000000">Véase También</A>
-<LI><A NAME="tex2html1798"
-  HREF="node47.html#SECTION04522000000000000000">Práctica: Secuencia de Asignaciones Simples</A>
-</UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION04520000000000000000">
-Ejemplo Simple en Jison</A>
+<H1><A NAME="SECTION044140000000000000000">
+Esquemas de Traducción</A>
 </H1>
+Un <A NAME="6100"></A><SPAN  CLASS="textbf">esquema de traducción</SPAN> es una gramática independiente del
+contexto en la cuál se han asociado atributos a los símbolos de la gramática.
+Un atributo queda caracterizado por un identificador
+o nombre y un tipo o clase. Además se han insertado acciones, esto es,
+código JavaScript/Perl/Python/C, ...en medio de las partes derechas.
+En ese código es posible referenciar los atributos de los
+símbolos de la gramática como variables del lenguaje subyacente.
 
 <P>
-Jison es un generador de analizadores sintácticos LALR. Otro
-analizador LALR es 
-<A NAME="tex2html278"
-  HREF="http://jscc.phorward-software.com/">JS/CC</A>.
-
-<P>
-
-<H4><A NAME="SECTION04520010000000000000">
-Gramática</A>
-</H4>
-  
-
-<P>
-<PRE>
-%%
-
-S   : A
-    ;
-A   : /* empty */  
-    | A x 
-    ;
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION04520020000000000000">
-basic2_lex.jison</A>
-</H4>
-  
-
-<PRE>
-[~/jison/examples/basic2_lex(develop)]$ cat basic2_lex.jison 
-/* description: Basic grammar that contains a nullable A nonterminal. */
-
-%lex
-%%
-
-\s+               {/* skip whitespace */}
-[a-zA-Z_]\w*      {return 'x';}
-
-/lex
-
-%%
-
-S   : A
-           { return $1+" identifiers"; }
-    ;
-A   : /* empty */  
-           { 
-              console.log("starting"); 
-              $$ = 0; 
-           }
-    | A x  { 
-              $$ = $1 + 1;  
-              console.log($$)
-           }
-    ;
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION04520030000000000000">
-index.html</A>
-</H4>
-  
-
-<PRE>
-$ cat basic2_lex.html
-&lt;!DOCTYPE HTML&gt;
-&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;meta charset="utf-8"&gt;
-    &lt;title&gt;Jison&lt;/title&gt;
-    &lt;link rel="stylesheet" href="global.css" type="text/css" media="screen" charset="utf-8" /&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;h1&gt;basic2_lex demo&lt;/h1&gt;
-    &lt;div id="content"&gt;
-      &lt;script src="jquery/jquery.js"&gt;&lt;/script&gt; 
-      &lt;script src="basic2_lex.js"&gt;&lt;/script&gt;
-      &lt;script src="main.js"&gt;&lt;/script&gt;
-      &lt;p&gt;
-        &lt;input type="text" value="x x x x" /&gt; &lt;button&gt;parse&lt;/button&gt; 
-        &lt;span id="output"&gt;&lt;/span&gt; &lt;!-- Output goes here! --&gt;
-      &lt;/p&gt;
-    &lt;/div&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-</PRE>
-
-<P>
-
-<H4><A NAME="SECTION04520040000000000000">
-Rakefile</A>
-</H4>
-  
+Recuerde que el orden en que se evalúan los fragmentos de código
+es el de un recorrido primero-profundo del árbol de análisis sintáctico.
+Mas específicamente, considerando a las acciones como hijos-hoja del nodo,
+el recorrido que realiza un esquema de traducción es:
 
 <P>
 <PRE>
-$ cat Rakefile 
-# install package:
-#     sudo npm install beautifier
-# 
-#   more about beautifier:
-#       https://github.com/rickeyski/node-beautifier
-
-dec "compile the grammar basic2_lex_ugly.jison"
-task :default =&gt; %w{basic2_lex_ugly.js} do
-  sh "mv basic2_lex.js basic2_lex_ugly.js"
-  sh "jsbeautify basic2_lex_ugly.js &gt; basic2_lex.js"
-  sh "rm -f basic2_lex_ugly.js"
-end
-
-file "basic2_lex_ugly.js" =&gt; %w{basic2_lex.jison} do
-  sh "jison basic2_lex.jison -o basic2_lex.js"
-end
+ 1     function esquema_de_traduccion(node) {
+ 2 
+ 3       for(c in node.children) { # de izquierda a derecha
+ 4         child = node.children[i];
+ 5         if (child.instanceof('SemanticAction') { # si es una acción semántica
+ 6           child.execute;
+ 7         }
+ 8         else { esquema_de_traduccion(child) }
+ 9       }
+10     }
 </PRE>
 
 <P>
+Obsérvese que, como el bucle recorre a los hijos
+de izquierda a derecha, se debe dar la siguiente
+condición para que un esquema  de traducción funcione:
 
-<OL>
-<LI><A NAME="tex2html279"
-  HREF="https://github.com/rickeyski/node-beautifier">node-beautifier</A>
-</LI>
-</OL>
+<P>
+Para cualquier regla de producción aumentada con acciones, de la forma 
+
+<P>
+<DIV ALIGN="CENTER">
+<!-- MATH
+ $A \rightarrow X_1 \ldots X_j$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="115" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img200.png"
+ ALT="$ A \rightarrow X_1 \ldots X_j$"></SPAN><code>{ action(A{b}, X</code><SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img201.png"
+ ALT="$ _1$"></SPAN><code>{c}</code><SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img202.png"
+ ALT="$ \ldots$"></SPAN><code> X</code><SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img203.png"
+ ALT="$ _n$"></SPAN><code>{d})}</code><!-- MATH
+ $X_{j+1} \ldots X_n$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="93" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img204.png"
+ ALT="$ X_{j+1} \ldots X_n$"></SPAN>
+</DIV>
+
+<P>
+debe ocurrir que los atributos evaluados en
+la acción insertada después de <SPAN CLASS="MATH"><IMG
+ WIDTH="26" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img205.png"
+ ALT="$ X_j$"></SPAN> 
+dependan de atributos y variables que fueron computadas durante
+la visita de los hermanos izquierdos o de sus ancestros.
+En particular no deberían depender de atributos asociados
+con las variables <!-- MATH
+ $X_{j+1} \ldots X_n$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="93" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img204.png"
+ ALT="$ X_{j+1} \ldots X_n$"></SPAN>. Ello no significa que
+no sea correcto evaluar atributos de <!-- MATH
+ $X_{j+1} \ldots X_n$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="93" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img204.png"
+ ALT="$ X_{j+1} \ldots X_n$"></SPAN>
+en esa acción.
+
+<P>
+Por ejemplo, el siguiente esquema no satisface el requisito:
+
+<center>
+<img src="wrongtranslationscheme.png" width="50%"/>
+</center>
+
+<P>
+porque cuando vas a ejecutar la acción <code>{ console.log(A.in) }</code> 
+el atributo <code>A.in</code> no ha sido computado.
+
+<P>
+Los atributos de cada símbolo de la gramática <!-- MATH
+ $X \in V \cup \Sigma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="88" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img206.png"
+ ALT="$ X \in V \cup \Sigma$"></SPAN>
+se dividen en dos grupos disjuntos: <A NAME="6102"></A><SPAN  CLASS="textbf">atributos sintetizados</SPAN>
+y <A NAME="6104"></A><SPAN  CLASS="textbf">atributos heredados</SPAN>: 
 
 <P>
 
-<H4><A NAME="SECTION04520050000000000000">
-Véase También</A>
-</H4>
-  
-
-<OL>
-<LI><A NAME="tex2html280"
-  HREF="http://zaach.github.com/jison/">JISON</A>
+<UL>
+<LI>Un atributo de <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img207.png"
+ ALT="$ X$"></SPAN> es un <A NAME="6106"></A><SPAN  CLASS="textbf">atributo heredado</SPAN> 
+si depende de atributos de su padre y hermános en el árbol.
 </LI>
-<LI><A NAME="tex2html281"
-  HREF="http://zaach.github.com/jison/try/usf/">Try Jison Examples</A>
+<LI>Un <A NAME="6108"></A><SPAN  CLASS="textbf">atributo sintetizado</SPAN> es aquél tal que el valor del atributo depende
+de los valores de los atributos de los hijos, 
+es decir en tal caso <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img207.png"
+ ALT="$ X$"></SPAN> ha de ser una variable sintáctica
+y los atributos en la parte derecha de la regla semántica deben
+ser atributos de símbolos en la parte derecha de la regla de producción 
+asociada.
 </LI>
-<LI><A NAME="tex2html282"
-  HREF="http://www-archive.mozilla.org/js/language/grammar14.html">JavaScript 1.4 LR(1) Grammar</A>
-1999.
-</LI>
-<LI><A NAME="tex2html283"
-  HREF="http://cjihrig.com/blog/creating-a-javascript-parser/">Creating a JavaScript Parser</A>
-Una implementación de ECMAScript 5.1 usando Jison 
-disponible 
-en GitHub
- en
-<A NAME="tex2html284"
-  HREF="https://github.com/cjihrig/jsparser">https://github.com/cjihrig/jsparser</A>.
-Puede probarse en:
-<A NAME="tex2html285"
-  HREF="http://www.cjihrig.com/development/jsparser/">http://www.cjihrig.com/development/jsparser/</A>
-</LI>
-<LI><A NAME="tex2html286"
-  HREF="http://www.rolilink.com/presentations/Jison/Charla.html">Bison on JavaScript</A>
-por Rolando Perez
-</LI>
-<LI><A NAME="tex2html287"
-  HREF="http://hansineffect.github.com/Slogo/">Slogo</A>
-a language written using Jison
-</LI>
-<LI><A NAME="tex2html288"
-  HREF="https://github.com/jashkenas/coffee-script/wiki/List-of-languages-that-compile-to-JS">List of languages that compile to JS</A>
-</LI>
-<LI><A NAME="tex2html289"
-  HREF="http://blog.kalleberg.org/post/1256702765/prototype-of-a-scannerless-generalized-left-to-right">Prototype of a Scannerless, Generalized Left-to-right Rightmost (SGLR) derivation parser for JavaScript</A>
-</LI>
-</OL>
-<H4><A NAME="SECTION04520060000000000000">
-global.css</A>
-</H4>
-  
-
-<P>
-<PRE>
-[~/jison/examples/basic2_lex(develop)]$ cat global.css 
-html *
-{
-   font-size: large; 
-   /* The !important ensures that nothing can override what you've set in this style (unless it is also important). */
-   font-family: Arial;
-}
-
-.thumb {
-    height: 75px;
-    border: 1px solid #000;
-    margin: 10px 5px 0 0;
-  }
-
-h1            { text-align: center; font-size: x-large; }
-th, td        { vertical-align: top; text-align: left; }   
-/* #finaltable  * { color: white; background-color: black; }   */
-
-/* #finaltable table { border-collapse:collapse; } */
-/* #finaltable table, td { border:1px solid white; } */
-#finaltable:hover td { background-color: blue; } 
-tr:nth-child(odd)    { background-color:#eee; }
-tr:nth-child(even)    { background-color:#00FF66; }
-input        { text-align: right;  border: none;       }     /* Align input to the right  */
-textarea     { border: outset; border-color: white;       }                        
-table        { border: inset; border-color: white; }
-.hidden      { display: none; }
-.unhidden    { display: block; }
-table.center { margin-left:auto; margin-right:auto; }
-#result      { border-color: red; }
-tr.error       { background-color: red; }
-pre.output   { background-color: white; }
-span.repeated { background-color: red }
-span.header { background-color: blue }
-span.comments { background-color: orange }
-span.blanks { background-color: green }
-span.nameEqualValue { background-color: cyan }
-span.error { background-color: red }
-
-body
-{
- background-color:#b0c4de;  /* blue */
-}
-</PRE>
-
-<P>
-
-<H2><A NAME="SECTION04521000000000000000">
-Véase También</A>
-</H2>
-
-<OL>
-<LI><A NAME="tex2html290"
-  HREF="http://zaach.github.com/jison/">JISON</A>
-</LI>
-<LI><A NAME="tex2html291"
-  HREF="http://zaach.github.com/jison/try/usf/">Try Jison Examples</A>
-</LI>
-<LI><A NAME="tex2html292"
-  HREF="http://www-archive.mozilla.org/js/language/grammar14.html">JavaScript 1.4 LR(1) Grammar</A>
-1999.
-</LI>
-<LI><A NAME="tex2html293"
-  HREF="http://cjihrig.com/blog/creating-a-javascript-parser/">Creating a JavaScript Parser</A>
-Una implementación de ECAMScript 5.1 usando Jison 
-disponible 
-en GitHub
- en
-<A NAME="tex2html294"
-  HREF="https://github.com/cjihrig/jsparser">https://github.com/cjihrig/jsparser</A>.
-Puede probarse en:
-<A NAME="tex2html295"
-  HREF="http://www.cjihrig.com/development/jsparser/">http://www.cjihrig.com/development/jsparser/</A>
-</LI>
-<LI><A NAME="tex2html296"
-  HREF="http://hansineffect.github.com/Slogo/">Slogo</A>
-a language written using Jison
-</LI>
-<LI><A NAME="tex2html297"
-  HREF="https://github.com/jashkenas/coffee-script/wiki/List-of-languages-that-compile-to-JS">List of languages that compile to JS</A>
-</LI>
-<LI><A NAME="tex2html298"
-  HREF="http://blog.kalleberg.org/post/1256702765/prototype-of-a-scannerless-generalized-left-to-right">Prototype of a Scannerless, Generalized Left-to-right Rightmost (SGLR) derivation parser for JavaScript</A>
-</LI>
-</OL>
-
-<P>
-
-<H2><A NAME="SECTION04522000000000000000"></A>
-   <A NAME="7217"></A>
-<BR>
-Práctica: Secuencia de Asignaciones Simples
-</H2>
-  
-Modifique este ejemplo para que el lenguaje acepte una secuencia
-de sentencias de asignación de la forma <code>ID = NUM</code> separadas
-por puntos y comas, por ejemplo <code>a = 4; b = 4.56; c = -8.57e34</code>.
-El analizador retorna un hash/objeto 
-cuyas claves son los identificadores y cuyos valores 
-son los números.
-Clone el repositorio en
-<A NAME="tex2html299"
-  HREF="https://github.com/crguezl/jison-basic2">https://github.com/crguezl/jison-basic2</A>.
-
-<P>
-Modifique los analizadores léxico y sintáctico de forma conveniente.
-
-<P>
-Añada acciones semánticas para que el analizador devuelva una tabla de símbolos con los identificadores y sus valores.
+</UL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1789"
+<A NAME="tex2html1456"
   HREF="node48.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1783"
-  HREF="node45.html">
+<A NAME="tex2html1450"
+  HREF="node33.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1777"
+<A NAME="tex2html1444"
   HREF="node46.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1785"
-  HREF="node90.html">
+<A NAME="tex2html1452"
+  HREF="node78.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1787"
-  HREF="node93.html">
+<A NAME="tex2html1454"
+  HREF="node81.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -474,12 +286,12 @@ Añada acciones semánticas para que el analizador devuelva una tabla de símbol
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1790"
-  HREF="node48.html">Ejemplo en Jison: Calculadora</A>
-<B>Sup:</B> <A NAME="tex2html1784"
-  HREF="node45.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1778"
-  HREF="node46.html">Conceptos Básicos para el</A>
+<B> Sig:</B> <A NAME="tex2html1457"
+  HREF="node48.html">Manejo en jison de</A>
+<B>Sup:</B> <A NAME="tex2html1451"
+  HREF="node33.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html1445"
+  HREF="node46.html">Precedencia y Asociatividad</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Práctica: Analizador de PL0 Ampliado Usando PEG.js</TITLE>
-<META NAME="description" CONTENT="Práctica: Analizador de PL0 Ampliado Usando PEG.js">
+<TITLE>Práctica: Calculadora con Funciones</TITLE>
+<META NAME="description" CONTENT="Práctica: Calculadora con Funciones">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node43.html">
 <LINK REL="previous" HREF="node41.html">
-<LINK REL="up" HREF="node29.html">
+<LINK REL="up" HREF="node33.html">
 <LINK REL="next" HREF="node43.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1650"
+<A NAME="tex2html1375"
   HREF="node43.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1644"
-  HREF="node29.html">
+<A NAME="tex2html1369"
+  HREF="node33.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1638"
+<A NAME="tex2html1363"
   HREF="node41.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1646"
-  HREF="node90.html">
+<A NAME="tex2html1371"
+  HREF="node78.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1648"
-  HREF="node93.html">
+<A NAME="tex2html1373"
+  HREF="node81.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -80,140 +80,108 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1651"
-  HREF="node43.html">Práctica: Ambiguedad en C++</A>
-<B>Sup:</B> <A NAME="tex2html1645"
-  HREF="node29.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html1639"
-  HREF="node41.html">Usando Pegjs con CoffeeScript</A>
+<B> Sig:</B> <A NAME="tex2html1376"
+  HREF="node43.html">Práctica: Calculadora con Análisis</A>
+<B>Sup:</B> <A NAME="tex2html1370"
+  HREF="node33.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html1364"
+  HREF="node41.html">Práctica: Traducción de Infijo</A>
 <B> Con:</B> 
-<A NAME="tex2html1646"
-  HREF="node90.html">
+<A NAME="tex2html1371"
+  HREF="node78.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1648"
-  HREF="node93.html">
+<A NAME="tex2html1373"
+  HREF="node81.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
-<!--Table of Child-Links-->
-<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
-<UL CLASS="ChildLinks">
-<LI><UL>
-<LI><UL>
-<LI><A NAME="tex2html1652"
-  HREF="node42.html#SECTION044130010000000000000">Donde</A>
-<LI><A NAME="tex2html1653"
-  HREF="node42.html#SECTION044130020000000000000">Tareas</A>
-<LI><A NAME="tex2html1654"
-  HREF="node42.html#SECTION044130030000000000000">Referencias para esta Práctica</A>
-</UL></UL></UL>
-<!--End of Table of Child-Links-->
-<HR>
-
-<H1><A NAME="SECTION044130000000000000000"></A>
-   <A NAME="5910"></A>
-  
-<A NAME="practica:pl0ampliado"></A>
+<H1><A NAME="SECTION04490000000000000000"></A>
+   <A NAME="4854"></A>
 <BR>
-Práctica: Analizador de PL0 Ampliado Usando PEG.js
+Práctica: Calculadora  con Funciones
 </H1>
-Reescriba el analizador sintáctico del lenguaje PL0 
-realizado en la práctica 
-<A HREF="node25.html#practica:pl0">2.6</A>
-usando  <A NAME="tex2html259"
-  HREF="http://pegjs.majda.cz/">PEG.js</A>
-.
 
 <P>
-
-<H4><A NAME="SECTION044130010000000000000">
-Donde</A>
-</H4>
-  
+Añada funciones y sentencias de llamada a función a la práctica de traducción 
+de infijo a postfijo
+<A HREF="node41.html#section:calculadoraampliada">5.8</A>. Sigue un ejemplo de traducción:
 
 <P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><PRE>
+def f(x) { x + 1 }
+def g(a, b) { a * f(b) }
+c = 3;
+f(1+c);
+g(3, 4)
+</PRE></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><PRE>
+:f      args :x
+        $x
+        1
+        +
+        return
+:g      args :a,:b
+        $a
+        $b
+        call :f
+        *
+        return
+:main:
+        3
+        &amp;c
+        =
+        1
+        c
+        +
+        call :f
+        3
+        4
+        call :g
+</PRE></TD>
+</TR>
+</TABLE>
 
 <UL>
-<LI><A NAME="tex2html260"
-  HREF="https://github.com/crguezl/pegjscalc">Repositorio en GitHub</A>
+<LI>Las funciones retornan la última expresión evaluada
 </LI>
-<LI><A NAME="tex2html261"
-  HREF="http://pegjspl0.herokuapp.com/">Despliegue en Heroku</A>
+<LI>Es un error llamar a una función con un número de argumentos 
+distinto que el número de parámetros con el que fué declarada
 </LI>
-<LI><PRE>
-[~/srcPLgrado/pegjscalc(master)]$ pwd -P
-/Users/casiano/local/src/javascript/PLgrado/pegjscalc
-</PRE>
+<LI>En la llamada, los argumentos se empujan en la pila.
+Después la instrucción <code>call :etiqueta</code> llama a
+la función con el nombre dado por la <code>etiqueta</code>
 </LI>
-<LI><PRE>
-[~/srcPLgrado/pegjscalc(master)]$ git remote -v
-heroku  git@heroku.com:pegjspl0.git (fetch)
-heroku  git@heroku.com:pegjspl0.git (push)
-origin  git@github.com:crguezl/pegjscalc.git (fetch)
-origin  git@github.com:crguezl/pegjscalc.git (push)
-</PRE>
+<LI>Dentro de la función los argumentos se sitúan por encima del puntero 
+base. La pseudo-instrucción <code>args, p1, p2, ...</code> da nombre a los 
+parámetros empujados. Dentro del cuerpo de la función nos referimos a ellos
+prefijándolos con <code>$</code>.
 </LI>
-</UL>
-
-<P>
-
-<H4><A NAME="SECTION044130020000000000000">
-Tareas</A>
-</H4>
-  
-
-<UL>
-<LI>Modifique <code>block</code> y <code>statement</code> para que los 
-<code>procedure</code> reciban argumentos y las llamadas 
-a procedimiento puedan pasar argumentos.
-Añada <code>if ... then ... else ...</code>.
-</LI>
-<LI>Actualice la documentación de la gramática para que refleje la gramática ampliada
-</LI>
-<LI>Limite el número de programas que se pueden salvar a un número prefijado, por ejemplo 10. Si se intenta salvar uno se suprime uno al azar y se guarda el nuevo.
-</LI>
-<LI>Las pruebas deben comprobar que la asociatividad a izquierdas funciona bien
-y probar todos los constructos del lenguaje así como alguna situación de error
-</LI>
-</UL>
-
-<P>
-
-<H4><A NAME="SECTION044130030000000000000">
-Referencias para esta Práctica</A>
-</H4>
-  
-
-<UL>
-<LI>Véase el capítulo <I>Heroku</I> <A HREF="node253.html#chapter:heroku"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>
-</LI>
-<LI><A NAME="tex2html262"
-  HREF="https://devcenter.heroku.com/articles/heroku-postgresql">Heroku Postgres</A>
-</LI>
-<LI>Véase el capítulo <I>DataMapper</I> <A HREF="node262.html#chapter:datamapper"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]" SRC="crossref.png"></A>
+<LI>La instrucción <code>return</code> limpia la pila dejándola en su estado anterior 
+y retorna la última expresión evaluada
 </LI>
 </UL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1650"
+<A NAME="tex2html1375"
   HREF="node43.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1644"
-  HREF="node29.html">
+<A NAME="tex2html1369"
+  HREF="node33.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1638"
+<A NAME="tex2html1363"
   HREF="node41.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1646"
-  HREF="node90.html">
+<A NAME="tex2html1371"
+  HREF="node78.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1648"
-  HREF="node93.html">
+<A NAME="tex2html1373"
+  HREF="node81.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -252,12 +220,12 @@ Referencias para esta Práctica</A>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1651"
-  HREF="node43.html">Práctica: Ambiguedad en C++</A>
-<B>Sup:</B> <A NAME="tex2html1645"
-  HREF="node29.html">Análisis Descendente mediante Parsing</A>
-<B> Ant:</B> <A NAME="tex2html1639"
-  HREF="node41.html">Usando Pegjs con CoffeeScript</A>
+<B> Sig:</B> <A NAME="tex2html1376"
+  HREF="node43.html">Práctica: Calculadora con Análisis</A>
+<B>Sup:</B> <A NAME="tex2html1370"
+  HREF="node33.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html1364"
+  HREF="node41.html">Práctica: Traducción de Infijo</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

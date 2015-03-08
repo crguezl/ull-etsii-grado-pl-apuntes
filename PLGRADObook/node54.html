@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Práctica: Calculadora con Funciones</TITLE>
-<META NAME="description" CONTENT="Práctica: Calculadora con Funciones">
+<TITLE>Consejos a seguir al escribir un programa jison</TITLE>
+<META NAME="description" CONTENT="Consejos a seguir al escribir un programa jison">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node55.html">
 <LINK REL="previous" HREF="node53.html">
-<LINK REL="up" HREF="node45.html">
+<LINK REL="up" HREF="node33.html">
 <LINK REL="next" HREF="node55.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1910"
+<A NAME="tex2html1562"
   HREF="node55.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1904"
-  HREF="node45.html">
+<A NAME="tex2html1556"
+  HREF="node33.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1898"
+<A NAME="tex2html1552"
   HREF="node53.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1906"
-  HREF="node90.html">
+<A NAME="tex2html1558"
+  HREF="node78.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1908"
-  HREF="node93.html">
+<A NAME="tex2html1560"
+  HREF="node81.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -80,108 +79,192 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1911"
-  HREF="node55.html">Práctica: Calculadora con Análisis</A>
-<B>Sup:</B> <A NAME="tex2html1905"
-  HREF="node45.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1899"
-  HREF="node53.html">Práctica: Traducción de Infijo</A>
+<B> Sig:</B> <A NAME="tex2html1563"
+  HREF="node55.html">Análisis Sintáctico Ascendente en</A>
+<B>Sup:</B> <A NAME="tex2html1557"
+  HREF="node33.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html1553"
+  HREF="node53.html">Construcción del Árbol Sintáctico</A>
 <B> Con:</B> 
-<A NAME="tex2html1906"
-  HREF="node90.html">
+<A NAME="tex2html1558"
+  HREF="node78.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1908"
-  HREF="node93.html">
+<A NAME="tex2html1560"
+  HREF="node81.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION04590000000000000000"></A>
-   <A NAME="7349"></A>
+<H1><A NAME="SECTION044210000000000000000"></A>
+<A NAME="section:consejosjison"></A>
 <BR>
-Práctica: Calculadora  con Funciones
+Consejos a seguir al escribir un programa <TT>jison</TT>
 </H1>
+Cuando escriba un programa <code>jison</code> asegurese
+de seguir los siguientes consejos:
 
 <P>
-Añada funciones y sentencias de llamada a función a la práctica de traducción 
-de infijo a postfijo
-<A HREF="node53.html#section:calculadoraampliada">5.8</A>. Sigue un ejemplo de traducción:
+
+<OL>
+<LI>Coloque el punto y coma de separación de reglas en una línea aparte.
+Un punto y coma ``pegado'' al final de una regla puede confundirse
+con un terminal de la regla.
 
 <P>
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><PRE>
-def f(x) { x + 1 }
-def g(a, b) { a * f(b) }
-c = 3;
-f(1+c);
-g(3, 4)
-</PRE></TD>
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><PRE>
-:f      args :x
-        $x
-        1
-        +
-        return
-:g      args :a,:b
-        $a
-        $b
-        call :f
-        *
-        return
-:main:
-        3
-        &amp;c
-        =
-        1
-        c
-        +
-        call :f
-        3
-        4
-        call :g
-</PRE></TD>
-</TR>
-</TABLE>
+</LI>
+<LI>Si hay una regla que produce vacío, coloquela en primer lugar y acompáñela de 
+un comentario resaltando ese hecho.
+</LI>
+<LI>Nunca escriba dos reglas de producción en la misma línea.
+</LI>
+<LI>Sangre convenientemente todas las partes derechas de las reglas
+de producción de una variable, de modo que queden
+alineadas.
+</LI>
+<LI>Ponga nombres representativos a sus variables sintácticas. No llame 
+<code>Z</code> a una variable que representa el concepto ``lista de parámetros'',
+llámela <code>ListaDeParametros</code>.
+</LI>
+<LI>Es conveniente que declare los terminales simbólicos, esto es, aquellos que 
+llevan un identificador asociado. Si no llevan prioridad asociada o no 
+es necesaria, use una declaración <code>%token</code>. De esta manera
+el lector de su programa se dará cuenta rápidamente que dichos identificadores
+no se corresponden con variables sintácticas. Por la misma razón,
+si se trata de terminales
+asociados con caracteres o cadenas no es tan necesario que los declare, 
+a menos que, 
+como en el ejemplo de la calculadora para <code>'+'</code> y <code>'*'</code>,
+sea necesario asociarles una
+precedencia.
+</LI>
+<LI>Es importante que use la opción <code>-v</code> para producir
+el fichero <code>.output</code> conteniendo información detallada sobre
+los conflictos y el autómata. Cuando haya un conflicto shift-reduce
+no resuelto busque en el fichero el estado implicado y 
+vea que LR(0) items <!-- MATH
+ $A \rightarrow \alpha_\uparrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="64" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img181.png"
+ ALT="$ A \rightarrow \alpha_\uparrow$"></SPAN>
+y <!-- MATH
+ $B \rightarrow \beta_\uparrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="73" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img217.png"
+ ALT="$ B \rightarrow \beta_\uparrow \gamma$"></SPAN> entran en conflicto.
 
-<UL>
-<LI>Las funciones retornan la última expresión evaluada
+<P>
 </LI>
-<LI>Es un error llamar a una función con un número de argumentos 
-distinto que el número de parámetros con el que fué declarada
+<LI><A NAME="item:conflictos"></A>Si según el informe de <code>jison</code>
+el conflicto se produce ante un terminal <SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img42.png"
+ ALT="$ a$"></SPAN>,
+es porque <!-- MATH
+ $a \in FOLLOW(A)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="146" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img218.png"
+ ALT="$ a \in FOLLOW(A)$"></SPAN> y
+<!-- MATH
+ $a \in FIRST(\gamma)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="119" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img219.png"
+ ALT="$ a \in FIRST(\gamma)$"></SPAN>. Busque las causas por las que esto ocurre 
+y modifique su gramática con vistas a eliminar la presencia
+del terminal <SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img42.png"
+ ALT="$ a$"></SPAN> en uno de los dos conjuntos implicados
+o bien establezca reglas de prioridad entre los terminales
+implicados que resuelvan el conflicto.
+
+<P>
 </LI>
-<LI>En la llamada, los argumentos se empujan en la pila.
-Después la instrucción <code>call :etiqueta</code> llama a
-la función con el nombre dado por la <code>etiqueta</code>
+<LI>Nótese que cuando existe un conflicto de desplazamiento 
+reducción entre <!-- MATH
+ $A \rightarrow \alpha_\uparrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="64" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img181.png"
+ ALT="$ A \rightarrow \alpha_\uparrow$"></SPAN> 
+y  <!-- MATH
+ $B \rightarrow \beta_\uparrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="73" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img217.png"
+ ALT="$ B \rightarrow \beta_\uparrow \gamma$"></SPAN>, el programa
+<code>jison</code> contabiliza un error por cada terminal 
+<!-- MATH
+ $a \in FOLLOW(A) \cap FIRST(\gamma)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="249" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img220.png"
+ ALT="$ a \in FOLLOW(A) \cap FIRST(\gamma)$"></SPAN>. Por esta razón,
+si hay 16 elementos en <!-- MATH
+ $FOLLOW(A) \cap FIRST(\gamma)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="218" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img221.png"
+ ALT="$ FOLLOW(A) \cap FIRST(\gamma)$"></SPAN>,
+el analizador <code>jison</code> informará de la existencia
+de 16 conflictos <SPAN  CLASS="textbf">shift-reduce</SPAN>,
+cuando en realidad se trata de uno sólo. No desespere, 
+los conflictos ``auténticos'' suelen
+ser menos de los que <code>jison</code> anuncia.
+
+<P>
 </LI>
-<LI>Dentro de la función los argumentos se sitúan por encima del puntero 
-base. La pseudo-instrucción <code>args, p1, p2, ...</code> da nombre a los 
-parámetros empujados. Dentro del cuerpo de la función nos referimos a ellos
-prefijándolos con <code>$</code>.
+<LI>Si necesita declarar variables globales, inicializaciones, etc.
+que afectan la conducta global del analizador, escriba el código 
+correspondiente en la cabecera del analizador, protegido
+por los delimitadores <code>%{</code> y <code>%}</code>. Estos delimitadores
+deberán aparecer en una línea aparte. Por ejemplo:
+
+<P>
+<PRE>
+%{
+our contador = 0;
+%}
+
+%token NUM
+...
+%%
+</PRE>
+
+<P>
 </LI>
-<LI>La instrucción <code>return</code> limpia la pila dejándola en su estado anterior 
-y retorna la última expresión evaluada
-</LI>
-</UL>
+</OL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1910"
+<A NAME="tex2html1562"
   HREF="node55.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1904"
-  HREF="node45.html">
+<A NAME="tex2html1556"
+  HREF="node33.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1898"
+<A NAME="tex2html1552"
   HREF="node53.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1906"
-  HREF="node90.html">
+<A NAME="tex2html1558"
+  HREF="node78.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1908"
-  HREF="node93.html">
+<A NAME="tex2html1560"
+  HREF="node81.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -220,12 +303,12 @@ y retorna la última expresión evaluada
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1911"
-  HREF="node55.html">Práctica: Calculadora con Análisis</A>
-<B>Sup:</B> <A NAME="tex2html1905"
-  HREF="node45.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html1899"
-  HREF="node53.html">Práctica: Traducción de Infijo</A>
+<B> Sig:</B> <A NAME="tex2html1563"
+  HREF="node55.html">Análisis Sintáctico Ascendente en</A>
+<B>Sup:</B> <A NAME="tex2html1557"
+  HREF="node33.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html1553"
+  HREF="node53.html">Construcción del Árbol Sintáctico</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>

@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Depuración en jison</TITLE>
-<META NAME="description" CONTENT="Depuración en jison">
+<TITLE>Práctica: Transformaciones en Los Árboles del Analizador PL0</TITLE>
+<META NAME="description" CONTENT="Práctica: Transformaciones en Los Árboles del Analizador PL0">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,29 +19,28 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
-<LINK REL="next" HREF="node65.html">
 <LINK REL="previous" HREF="node63.html">
-<LINK REL="up" HREF="node45.html">
+<LINK REL="up" HREF="node58.html">
 <LINK REL="next" HREF="node65.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html2071"
+<A NAME="tex2html1760"
   HREF="node65.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2065"
-  HREF="node45.html">
+<A NAME="tex2html1754"
+  HREF="node58.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2059"
+<A NAME="tex2html1750"
   HREF="node63.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2067"
-  HREF="node90.html">
+<A NAME="tex2html1756"
+  HREF="node78.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2069"
-  HREF="node93.html">
+<A NAME="tex2html1758"
+  HREF="node81.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -80,47 +79,124 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2072"
-  HREF="node65.html">Construcción del Árbol Sintáctico</A>
-<B>Sup:</B> <A NAME="tex2html2066"
-  HREF="node45.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html2060"
-  HREF="node63.html">Recuperación de Errores</A>
+<B> Sig:</B> <A NAME="tex2html1761"
+  HREF="node65.html">PARTE: CREATE YOUR OWN</A>
+<B>Sup:</B> <A NAME="tex2html1755"
+  HREF="node58.html">Transformaciones Árbol</A>
+<B> Ant:</B> <A NAME="tex2html1751"
+  HREF="node63.html">Treehugger</A>
 <B> Con:</B> 
-<A NAME="tex2html2067"
-  HREF="node90.html">
+<A NAME="tex2html1756"
+  HREF="node78.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html2069"
-  HREF="node93.html">
+<A NAME="tex2html1758"
+  HREF="node81.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION045190000000000000000"></A>
-<A NAME="section:depuracion"></A>
+<H1><A NAME="SECTION04660000000000000000"></A>
+   <A NAME="7221"></A>
+  
+<A NAME="practica:treetransofrmationsPL0"></A>
 <BR>
-Depuración en <TT>jison</TT>
+Práctica: Transformaciones en Los Árboles del Analizador PL0
 </H1>
+Partimos del código realizado en la práctica 
+<I>Análisis de Ámbito en PL0</I>
+<A HREF="node40.html#practica:analisisdeambitopl0">5.7</A>.
+
+<P>
+Modifique el árbol generado por el código de esa práctica
+usando las transformaciones de <A NAME="7222"></A><SPAN  CLASS="textbf">constant folding</SPAN> o
+<A NAME="7224"></A><SPAN  CLASS="textbf">plegado de las constantes</SPAN>:
+
+<P>
+<BR>
+<BR>
+<!-- MATH
+ $PLUS(NUM_1, NUM_2) \Longrightarrow NUM_3$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="277" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img325.png"
+ ALT="$ PLUS(NUM_1, NUM_2) \Longrightarrow NUM_3$"></SPAN> <code>{ $NUM_3{VAL} = $NUM_1{VAL} + $NUM_2{VAL} }</code>
+<BR>
+<BR>
+<!-- MATH
+ $MINUS(NUM_1, NUM_2) \Longrightarrow NUM_3$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="296" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img384.png"
+ ALT="$ MINUS(NUM_1, NUM_2) \Longrightarrow NUM_3$"></SPAN> <code>{ $NUM_3{VAL} = $NUM_1{VAL} - $NUM_2{VAL} }</code>
+<BR>
+<BR>
+<!-- MATH
+ $TIMES(NUM_1, NUM_2) \Longrightarrow NUM_3$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="292" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img385.png"
+ ALT="$ TIMES(NUM_1, NUM_2) \Longrightarrow NUM_3$"></SPAN> <code>{ $NUM_3{VAL} = $NUM_1{VAL} * $NUM_2{VAL} }</code>
+<BR>
+<BR>
+<!-- MATH
+ $DIV(NUM_1, NUM_2) \Longrightarrow NUM_3$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="264" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img386.png"
+ ALT="$ DIV(NUM_1, NUM_2) \Longrightarrow NUM_3$"></SPAN> <code>{ $NUM_3{VAL} = $NUM_1{VAL} / $NUM_2{VAL} }</code>
+
+<P>
+etc.
+
+<P>
+Opcionalmente si lo desea puede considerar otras transformaciones: 
+<BR>
+<BR>
+<!-- MATH
+ $TIMES(X, NUM_2)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="161" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img387.png"
+ ALT="$ TIMES(X, NUM_2)$"></SPAN> and <code>{ $NUM_2{VAL} = </code><SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img388.png"
+ ALT="$ 2^s$"></SPAN> para algún <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img180.png"
+ ALT="$ s$"></SPAN> <code>}</code> <!-- MATH
+ $\Longrightarrow SHIFTLEFT(X; NUM_3)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="244" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img389.png"
+ ALT="$ \Longrightarrow SHIFTLEFT(X; NUM_3)$"></SPAN> <code>{ $NUM_3{VAL} = s }</code>
+<BR>
+<BR>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html2071"
+<A NAME="tex2html1760"
   HREF="node65.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2065"
-  HREF="node45.html">
+<A NAME="tex2html1754"
+  HREF="node58.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2059"
+<A NAME="tex2html1750"
   HREF="node63.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2067"
-  HREF="node90.html">
+<A NAME="tex2html1756"
+  HREF="node78.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2069"
-  HREF="node93.html">
+<A NAME="tex2html1758"
+  HREF="node81.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -159,12 +235,12 @@ Depuración en <TT>jison</TT>
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2072"
-  HREF="node65.html">Construcción del Árbol Sintáctico</A>
-<B>Sup:</B> <A NAME="tex2html2066"
-  HREF="node45.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html2060"
-  HREF="node63.html">Recuperación de Errores</A>
+<B> Sig:</B> <A NAME="tex2html1761"
+  HREF="node65.html">PARTE: CREATE YOUR OWN</A>
+<B>Sup:</B> <A NAME="tex2html1755"
+  HREF="node58.html">Transformaciones Árbol</A>
+<B> Ant:</B> <A NAME="tex2html1751"
+  HREF="node63.html">Treehugger</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
