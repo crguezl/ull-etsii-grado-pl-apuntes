@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Análisis Sintáctico Predictivo Recursivo</TITLE>
-<META NAME="description" CONTENT="Análisis Sintáctico Predictivo Recursivo">
+<TITLE>Conceptos Básicos para el Análisis Sintáctico</TITLE>
+<META NAME="description" CONTENT="Conceptos Básicos para el Análisis Sintáctico">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -21,27 +21,27 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="next" HREF="node22.html">
 <LINK REL="previous" HREF="node20.html">
-<LINK REL="up" HREF="node19.html">
+<LINK REL="up" HREF="node20.html">
 <LINK REL="next" HREF="node22.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1232"
+<A NAME="tex2html1235"
   HREF="node22.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1226"
-  HREF="node19.html">
+<A NAME="tex2html1229"
+  HREF="node20.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1220"
+<A NAME="tex2html1223"
   HREF="node20.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1228"
-  HREF="node90.html">
+<A NAME="tex2html1231"
+  HREF="node91.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1230"
-  HREF="node93.html">
+<A NAME="tex2html1233"
+  HREF="node94.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -80,19 +80,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1233"
-  HREF="node22.html">Recursión por la Izquierda</A>
-<B>Sup:</B> <A NAME="tex2html1227"
-  HREF="node19.html">Analizadores Descendentes Predictivos en</A>
-<B> Ant:</B> <A NAME="tex2html1221"
-  HREF="node20.html">Conceptos Básicos para el</A>
+<B> Sig:</B> <A NAME="tex2html1236"
+  HREF="node22.html">Análisis Sintáctico Predictivo Recursivo</A>
+<B>Sup:</B> <A NAME="tex2html1230"
+  HREF="node20.html">Analizadores Descendentes Predictivos en</A>
+<B> Ant:</B> <A NAME="tex2html1224"
+  HREF="node20.html">Analizadores Descendentes Predictivos en</A>
 <B> Con:</B> 
-<A NAME="tex2html1228"
-  HREF="node90.html">
+<A NAME="tex2html1231"
+  HREF="node91.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1230"
-  HREF="node93.html">
+<A NAME="tex2html1233"
+  HREF="node94.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
@@ -101,185 +101,426 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
 
 <UL CLASS="ChildLinks">
-<LI><A NAME="tex2html1234"
-  HREF="node21.html#SECTION04221000000000000000">Introducción</A>
-<UL>
-<LI><A NAME="tex2html1235"
-  HREF="node21.html#SECTION04221010000000000000">Ejemplo</A>
-<LI><A NAME="tex2html1236"
-  HREF="node21.html#SECTION04221020000000000000">Caracterización de las Gramáticas Analizables</A>
-</UL>
-<BR>
 <LI><A NAME="tex2html1237"
-  HREF="node21.html#SECTION04222000000000000000">Ejercicio: Recorrido del árbol en un ADPR</A>
+  HREF="node21.html#SECTION04211000000000000000">Ejercicio</A>
 </UL>
 <!--End of Table of Child-Links-->
 <HR>
 
-<H1><A NAME="SECTION04220000000000000000"></A>
-<A NAME="section:predictivo"></A>
+<H1><A NAME="SECTION04210000000000000000"></A>
+<A NAME="section:conceptos"></A>
 <BR>
-Análisis Sintáctico Predictivo Recursivo
+Conceptos Básicos para el Análisis Sintáctico
 </H1>
-La siguiente fase en la construcción del analizador es la fase de 
-análisis sintáctico. Esta toma como entrada el flujo de terminales
-y construye como salida el árbol de análisis sintáctico abstracto.
+Suponemos que el lector de esta sección ha realizado con éxito
+un curso en teoría de autómatas y lenguajes formales.
+Las siguientes definiciones repasan los conceptos mas importantes.
 
 <P>
-El árbol de análisis sintáctico abstracto es una representación  compactada del árbol 
-de análisis sintáctico concreto que contiene la misma información que éste.
-
 <P>
-Existen diferentes métodos de análisis sintáctico. La mayoría caen en una de dos categorías:
-ascendentes y descendentes. Los ascendentes construyen el árbol desde las hojas
-hacia la raíz. Los descendentes lo hacen en modo inverso. El que describiremos
-aqui es uno de los mas sencillos: se denomina método de análisis predictivo descendente 
-recursivo.
-
-<P>
-
-<H2><A NAME="SECTION04221000000000000000"></A>
-<A NAME="subsection:introduccion"></A>
-<BR>
-Introducción
-</H2>
-En este método se asocia una subrutina con cada variable sintáctica <SPAN CLASS="MATH"><IMG
- WIDTH="53" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img38.png"
- ALT="$ A \in V$"></SPAN>. Dicha subrutina 
-(que llamaremos <code>A</code>) reconocerá el lenguaje generado desde la variable <SPAN CLASS="MATH"><IMG
+<DIV><B>Definición  <SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
+<I>Dado un conjunto <SPAN CLASS="MATH"><IMG
  WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
  SRC="img1.png"
- ALT="$ A$"></SPAN>:
+ ALT="$ A$"></SPAN>, se define <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="19" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$ A^*$"></SPAN> el cierre de Kleene de <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$ A$"></SPAN> como:
+</I><!-- MATH
+ \begin{math}
+A^* = \cup_{n=0}^{\infty} A^n
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="109" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$ A^* = \cup_{n=0}^{\infty} A^n
+$"></SPAN>
+<P>
+<I>Se admite que <!-- MATH
+ $A^0 = \{ \epsilon \}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="73" HEIGHT="39" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$ A^0 = \{ \epsilon \}$"></SPAN>, donde <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$ \epsilon$"></SPAN> denota la palabra vacía, esto es
+la palabra que tiene longitud cero, formada por cero símbolos del conjunto base <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$ A$"></SPAN>.</I></DIV><P></P>
 
 <P>
-<DIV ALIGN="CENTER">
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">2</SPAN></B> &nbsp; 
+<I>Una gramática <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$ G$"></SPAN> es una cuaterna <!-- MATH
+ $G =(\Sigma,V,P,S)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$ G =(\Sigma,V,P,S)$"></SPAN>. 
+<SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img8.png"
+ ALT="$ \Sigma$"></SPAN> es el conjunto de terminales. <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$ V$"></SPAN> es un conjunto (disjunto de <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img8.png"
+ ALT="$ \Sigma$"></SPAN>)
+que se denomina conjunto de <SPAN  CLASS="textbf">variables sintácticas</SPAN> o <SPAN  CLASS="textbf">categorías gramáticales</SPAN>,
+P es un conjunto de pares de <!-- MATH
+ $V \times (V \cup \Sigma )^*$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="107" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img10.png"
+ ALT="$ V \times (V \cup \Sigma )^*$"></SPAN>. En vez de escribir
+un par usando la notación <!-- MATH
+ $(A, \alpha) \in P$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="85" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$ (A, \alpha) \in P$"></SPAN> se escribe <!-- MATH
+ $A \rightarrow \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.png"
+ ALT="$ A \rightarrow \alpha$"></SPAN>.
+Un elemento de <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img13.png"
+ ALT="$ P$"></SPAN> se denomina producción. Por último, <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.png"
+ ALT="$ S$"></SPAN> es un símbolo del conjunto
+<SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$ V$"></SPAN> que se denomina símbolo de arranque.</I></DIV><P></P>
+
+<P>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">3</SPAN></B> &nbsp; 
+<I>Dada una gramática <!-- MATH
+ $G=(\Sigma,V,P,S)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$ G =(\Sigma,V,P,S)$"></SPAN> y <!-- MATH
+ $\mu = \alpha A \beta \in (V \cup \Sigma)^*$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="162" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.png"
+ ALT="$ \mu = \alpha A \beta \in (V \cup \Sigma)^*$"></SPAN>
+una frase formada por variables y terminales y <!-- MATH
+ $A \rightarrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$ A \rightarrow \gamma$"></SPAN> una producción de 
+<SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img13.png"
+ ALT="$ P$"></SPAN>, decimos que  <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$ \mu$"></SPAN> deriva en un paso en  <!-- MATH
+ $\alpha \gamma \beta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="37" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.png"
+ ALT="$ \alpha \gamma \beta$"></SPAN>. Esto es, derivar 
+una cadena <!-- MATH
+ $\alpha A \beta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="40" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.png"
+ ALT="$ \alpha A \beta$"></SPAN> es sustituir 
+una variable sintáctica <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$ A$"></SPAN> de <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$ V$"></SPAN> por la parte derecha <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.png"
+ ALT="$ \gamma$"></SPAN> de una de sus reglas de producción.
+Se dice que <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$ \mu$"></SPAN> deriva en <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img21.png"
+ ALT="$ n$"></SPAN> pasos en <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.png"
+ ALT="$ \delta$"></SPAN> si deriva en <SPAN CLASS="MATH"><IMG
+ WIDTH="45" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img23.png"
+ ALT="$ n-1$"></SPAN> pasos en una cadena
 <!-- MATH
- $L_A(G) = \{ x \in \Sigma^* : A \stackrel{*}{\Longrightarrow} x \}$
+ $\alpha A \beta$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="222" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
- SRC="img39.png"
- ALT="$ L_A(G) = \{ x \in \Sigma^* : A \stackrel{*}{\Longrightarrow} x \}$"></SPAN>
-</DIV>
-
-<P>
-En este método se escribe una rutina <code>A</code> por variable sintáctica <SPAN CLASS="MATH"><IMG
- WIDTH="53" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img38.png"
- ALT="$ A \in V$"></SPAN>. 
-Se le da a la rutina asociada el mismo nombre que a la variable sintáctica
-asociada. 
-
-<P>
-La función de la rutina <code>A</code> asociada con la variable
+ WIDTH="40" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.png"
+ ALT="$ \alpha A \beta$"></SPAN> la cual deriva en un paso en <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.png"
+ ALT="$ \delta$"></SPAN>. Se escribe entonces
+que <!-- MATH
+ $\mu  \stackrel{*}{\Longrightarrow}  \delta$
+ -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="53" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img38.png"
- ALT="$ A \in V$"></SPAN> es reconocer el lenguaje <SPAN CLASS="MATH"><IMG
- WIDTH="43" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img40.png"
- ALT="$ L(A)$"></SPAN> generado por <SPAN CLASS="MATH"><IMG
+ WIDTH="61" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.png"
+ ALT="$ \mu \stackrel{*}{\Longrightarrow} \delta$"></SPAN>. Una cadena deriva en 0 pasos en si misma.
+</I>
+<P></DIV><P></P>
+
+<P>
+<P>
+<DIV><A NAME="definition:lenguajegenerado"><B>Definición  <SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">4</SPAN></B></A> &nbsp; 
+<I>Dada una gramática <!-- MATH
+ $G=(\Sigma,V,P,S)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$ G =(\Sigma,V,P,S)$"></SPAN> se denota por <SPAN CLASS="MATH"><IMG
+ WIDTH="44" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img25.png"
+ ALT="$ L(G)$"></SPAN> o lenguaje
+generado por <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$ G$"></SPAN> al lenguaje:
+</I>
+<P>
+<DIV ALIGN="CENTER"><I><!-- MATH
+ $L(G) = \{ x \in \Sigma^* : S \stackrel{*}{\Longrightarrow} x \}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="210" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.png"
+ ALT="$ L(G) = \{ x \in \Sigma^* : S \stackrel{*}{\Longrightarrow} x \}$"></SPAN></I></DIV>
+<P>
+<I>Esto es, el lenguaje generado por la gramática <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$ G$"></SPAN> esta formado por las cadenas
+de terminales que pueden ser derivados desde el símbolo de arranque.</I></DIV><P></P>
+
+<P>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">5</SPAN></B> &nbsp; 
+<I>Una derivación que comienza en el símbolo de arranque y termina en una secuencia
+formada por sólo terminales de <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img8.png"
+ ALT="$ \Sigma$"></SPAN> se dice <SPAN  CLASS="textbf">completa</SPAN>.
+</I>
+<P>
+<I>Una derivación <!-- MATH
+ $\mu  \stackrel{*}{\Longrightarrow}  \delta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="61" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.png"
+ ALT="$ \mu \stackrel{*}{\Longrightarrow} \delta$"></SPAN> 
+en la cual en cada paso <!-- MATH
+ $\alpha A x$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="39" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img27.png"
+ ALT="$ \alpha A x$"></SPAN> la regla de producción aplicada <!-- MATH
+ $A \rightarrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$ A \rightarrow \gamma$"></SPAN>
+se aplica en la variable sintáctica mas a la derecha se dice <SPAN  CLASS="textbf">una derivación a derechas</SPAN>
+</I>
+<P>
+<I>Una derivación <!-- MATH
+ $\mu  \stackrel{*}{\Longrightarrow}  \delta$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="61" HEIGHT="45" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.png"
+ ALT="$ \mu \stackrel{*}{\Longrightarrow} \delta$"></SPAN> 
+en la cual en cada paso <!-- MATH
+ $x A \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="39" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img28.png"
+ ALT="$ x A \alpha$"></SPAN> la regla de producción aplicada <!-- MATH
+ $A \rightarrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$ A \rightarrow \gamma$"></SPAN>
+se aplica en la variable sintáctica mas a la izquierda se dice <SPAN  CLASS="textbf">una derivación a izquierdas</SPAN></I></DIV><P></P>
+
+<P>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">6</SPAN></B> &nbsp; 
+<I>Observe que una derivación puede ser representada como un árbol cuyos nodos
+están etiquetados en <!-- MATH
+ $V \cup \Sigma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="51" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img29.png"
+ ALT="$ V \cup \Sigma$"></SPAN>. La aplicación de la regla de 
+producción <!-- MATH
+ $A \rightarrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$ A \rightarrow \gamma$"></SPAN> se traduce en asignar como hijos del nodo etiquetado con <SPAN CLASS="MATH"><IMG
  WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
  SRC="img1.png"
- ALT="$ A$"></SPAN>.
-
-<P>
-La estrategia general que sigue la rutina <code>A</code> para reconocer
-<SPAN CLASS="MATH"><IMG
- WIDTH="43" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img40.png"
- ALT="$ L(A)$"></SPAN> es decidir en términos del terminal <SPAN CLASS="MATH"><IMG
- WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img41.png"
- ALT="$ a$"></SPAN> en la entrada
-que regla de producción concreta <!-- MATH
- $A \rightarrow \alpha$
+ ALT="$ A$"></SPAN>
+a los nodos etiquetados con los símbolos <!-- MATH
+ $X_1 \ldots X_n$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img12.png"
- ALT="$ A \rightarrow \alpha$"></SPAN> se aplica para
-a continuación comprobar que la entrada que sigue pertenece al lenguaje generado por 
-<SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img42.png"
- ALT="$ \alpha$"></SPAN>. 
-
-<P>
-En un analizador predictivo descendente recursivo (APDR) se asume que
-el símbolo que actualmente
-esta siendo observado (denotado habitualmente como 
-<code>lookahead</code>) permite determinar unívocamente
-que producción de <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img1.png"
- ALT="$ A$"></SPAN> hay que aplicar. 
-
-<P>
-Una vez que se ha determinado que la regla por la que continuar la derivación
-es <!-- MATH
- $A \rightarrow \alpha$
+ WIDTH="76" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img30.png"
+ ALT="$ X_1 \ldots X_n$"></SPAN> que constituyen
+la frase <!-- MATH
+ $\gamma = X_1 \ldots X_n$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img12.png"
- ALT="$ A \rightarrow \alpha$"></SPAN> se procede a reconocer <!-- MATH
- $L_{\alpha}(G)$
+ WIDTH="110" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img31.png"
+ ALT="$ \gamma = X_1 \ldots X_n$"></SPAN>.  
+Este árbol se llama <A NAME="4593"></A><SPAN  CLASS="textbf">árbol sintáctico concreto</SPAN> asociado 
+con la derivación.</I></DIV><P></P>
+
+<P>
+<P>
+<DIV><A NAME="definition:arbolconcreto"><B>Definición  <SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">7</SPAN></B></A> &nbsp; 
+<I>Observe que, dada una frase <!-- MATH
+ $x \in L(G)$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="53" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img43.png"
- ALT="$ L_{\alpha}(G)$"></SPAN>,
-el lenguaje generado por <SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img42.png"
- ALT="$ \alpha$"></SPAN>. Si <!-- MATH
- $\alpha = X_1 \ldots X_n$
+ WIDTH="75" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.png"
+ ALT="$ x \in L(G)$"></SPAN> una derivación desde el
+símbolo de arranque da lugar a  un árbol. Ese árbol tiene como raíz el 
+símbolo de arranque y como hojas los terminales 
+<!-- MATH
+ $x_1 \ldots x_n$
  -->
 <SPAN CLASS="MATH"><IMG
- WIDTH="111" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img44.png"
- ALT="$ \alpha = X_1 \ldots X_n$"></SPAN>,
-las apariciones de terminales <SPAN CLASS="MATH"><IMG
- WIDTH="25" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img45.png"
- ALT="$ X_i$"></SPAN> en <SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img42.png"
- ALT="$ \alpha$"></SPAN> son emparejadas
-con los terminales en la entrada mientras que las apariciones de variables <SPAN CLASS="MATH"><IMG
- WIDTH="62" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img46.png"
- ALT="$ X_i = B$"></SPAN>
-en <SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img42.png"
- ALT="$ \alpha$"></SPAN> se traducen en llamadas a la correspondiente subrutina asociada con <code>B</code>.
+ WIDTH="67" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img33.png"
+ ALT="$ x_1 \ldots x_n$"></SPAN> que forman <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.png"
+ ALT="$ x$"></SPAN>. Dicho árbol se denomina <SPAN  CLASS="textbf">árbol
+de análisis sintáctico concreto</SPAN> de <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.png"
+ ALT="$ x$"></SPAN>. Una derivación determina
+una forma de recorrido del árbol de análisis sintáctico concreto.</I></DIV><P></P>
+
+<P>
+<P>
+<DIV><B>Definición  <SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">1</SPAN>.<SPAN CLASS="arabic">8</SPAN></B> &nbsp; 
+<I>Una gramática <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$ G$"></SPAN> se dice ambigua si existe alguna frase <!-- MATH
+ $x \in L(G)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="75" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.png"
+ ALT="$ x \in L(G)$"></SPAN>
+con al menos dos árboles sintácticos. 
+Es claro que esta definición es equivalente a afirmar que existe 
+alguna frase <!-- MATH
+ $x \in L(G)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="75" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.png"
+ ALT="$ x \in L(G)$"></SPAN> para la cual existen dos derivaciones a 
+izquierda (derecha) distintas.</I></DIV><P></P>
 
 <P>
 
-<H4><A NAME="SECTION04221010000000000000">
-Ejemplo</A>
-</H4>
-  
+<H2><A NAME="SECTION04211000000000000000"></A>
+<A NAME="ejercicio:tutugrammar"></A>
+<BR>
+Ejercicio
+</H2>
+Dada la gramática con producciones:
 
 <P>
-Para ilustrar el método,
-simplificaremos la gramática presentada en el ejercicio
-<A HREF="node46.html#ejercicio:tutugrammar">5.1.1</A> eliminando las declaraciones:
-
-<P>
-<BR><P></P>
-<DIV ALIGN="CENTER"><A NAME="4373"></A>
-<TABLE>
-<CAPTION><STRONG>Tabla:</STRONG>
-Una Gramática Simple</CAPTION>
-<TR><TD>
-<DIV ALIGN="CENTER">
 <BR>
 <BR>
-<TABLE CELLPADDING=3 BORDER="1" ALIGN="CENTER">
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">program      <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> declarations  statements         <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> statements</TD>
+</TR>
+<TR><TD ALIGN="LEFT">declarations <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> declaration  ';'  declarations    <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> declaration ';'</TD>
+</TR>
+<TR><TD ALIGN="LEFT">declaration  <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> INT  idlist                       <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> STRING   idlist</TD>
+</TR>
 <TR><TD ALIGN="LEFT">statements   <!-- MATH
  $\rightarrow$
  -->
@@ -336,423 +577,75 @@ Una Gramática Simple</CAPTION>
  ALT="$ \vert$"></SPAN> ID <SPAN CLASS="MATH"><IMG
  WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
  SRC="img36.png"
- ALT="$ \vert$"></SPAN> NUM</TD>
+ ALT="$ \vert$"></SPAN> NUM <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> STR</TD>
+</TR>
+<TR><TD ALIGN="LEFT">idlist       <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> ID ',' idlist <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> ID</TD>
 </TR>
 </TABLE>
-</DIV>
-<A NAME="table:gramaticasimple"></A></TD></TR>
-</TABLE>
-</DIV><P></P>
-<BR>
 <BR>
 <BR>
 
 <P>
-La secuencia de llamadas cuando se procesa la entrada mediante 
-el siguiente programa construye 
-<FONT COLOR="#ff0000"> implícitamente</FONT> el <A NAME="4580"></A><SPAN  CLASS="textbf">árbol 
-de análisis sintáctico concreto</SPAN>.
+En esta gramática, <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img8.png"
+ ALT="$ \Sigma$"></SPAN> esta formado por los caracteres entre comillas simples y 
+los símbolos cuyos identificadores están en mayúsculas. Los restantes identificadores
+corresponden a elementos de <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$ V$"></SPAN>. El símbolo de arranque es <SPAN CLASS="MATH"><IMG
+ WIDTH="35" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img37.png"
+ ALT="$ S =$"></SPAN> program.
 
 <P>
-<PRE>
-parse = (input) -&gt;
-  tokens = input.tokens()
-  lookahead = tokens.shift()
-  match = (t) -&gt;
-    if lookahead.type is t
-      lookahead = tokens.shift()
-      lookahead = null  if typeof lookahead is "undefined"
-    else # Error. Throw exception
-      throw "Syntax Error. Expected #{t} found '" + 
-            lookahead.value + "' near '" + 
-            input.substr(lookahead.from) + "'"
-    return
-
-  statements = -&gt;
-    result = [statement()]
-    while lookahead and lookahead.type is ";"
-      match ";"
-      result.push statement()
-    (if result.length is 1 then result[0] else result)
-
-  statement = -&gt;
-    result = null
-    if lookahead and lookahead.type is "ID"
-      left =
-        type: "ID"
-        value: lookahead.value
-
-      match "ID"
-      match "="
-      right = expression()
-      result =
-        type: "="
-        left: left
-        right: right
-    else if lookahead and lookahead.type is "P"
-      match "P"
-      right = expression()
-      result =
-        type: "P"
-        value: right
-    else # Error!
-      throw "Syntax Error. Expected identifier but found " + 
-        (if lookahead then lookahead.value else "end of input") + 
-        " near '#{input.substr(lookahead.from)}'"
-    result
-
-  expression = -&gt;
-    result = term()
-    if lookahead and lookahead.type is "+"
-      match "+"
-      right = expression()
-      result =
-        type: "+"
-        left: result
-        right: right
-    result
-
-  term = -&gt;
-    result = factor()
-    if lookahead and lookahead.type is "*"
-      match "*"
-      right = term()
-      result =
-        type: "*"
-        left: result
-        right: right
-    result
-
-  factor = -&gt;
-    result = null
-    if lookahead.type is "NUM"
-      result =
-        type: "NUM"
-        value: lookahead.value
-
-      match "NUM"
-    else if lookahead.type is "ID"
-      result =
-        type: "ID"
-        value: lookahead.value
-
-      match "ID"
-    else if lookahead.type is "("
-      match "("
-      result = expression()
-      match ")"
-    else # Throw exception
-      throw "Syntax Error. Expected number or identifier or '(' but found " + 
-        (if lookahead then lookahead.value else "end of input") + 
-        " near '" + input.substr(lookahead.from) + "'"
-    result
-
-  tree = statements(input)
-  if lookahead?
-    throw "Syntax Error parsing statements. " + 
-      "Expected 'end of input' and found '" + 
-      input.substr(lookahead.from) + "'"  
-  tree
-</PRE>
-
-<P>
-<PRE>
-  var parse = function(input) {
-    var tokens = input.tokens();
-    var lookahead = tokens.shift();
-
-    var match = function(t) {
-      if (lookahead.type === t) {
-        lookahead = tokens.shift();
-        if (typeof lookahead === 'undefined') {
-         lookahead = null; // end of input
-        } 
-      } else { // Error. Throw exception
-          throw "Syntax Error. Expected "+t+" found '"+lookahead.value+
-                "' near '"+input.substr(lookahead.from)+"'";
-      }
-    };
-
-    var statements = function() {
-      var result = [ statement() ];
-      while (lookahead &amp;&amp; lookahead.type === ';') {
-        match(';');
-        result.push(statement());
-      }
-      return result.length === 1? result[0] : result;
-    };
-
-    var statement = function() {
-      var result = null;
-
-      if (lookahead &amp;&amp; lookahead.type === 'ID') {
-        var left = { type: 'ID', value: lookahead.value };
-        match('ID');
-        match('=');
-        right = expression();
-        result = { type: '=', left: left, right: right };
-      } else if (lookahead &amp;&amp; lookahead.type === 'P') {
-        match('P');
-        right = expression();
-        result = { type: 'P', value: right };
-      } else { // Error!
-        throw "Syntax Error. Expected identifier but found "+
-              (lookahead? lookahead.value : "end of input")+
-              " near '"+input.substr(lookahead.from)+"'";
-      }
-      return result;
-    };
-
-    var expression = function() {
-      var result = term();
-      if (lookahead &amp;&amp; lookahead.type === '+') { 
-        match('+');
-        var right = expression();
-        result = {type: '+', left: result, right: right};
-      }
-      return result;
-    };
-
-    var term = function() {
-      var result = factor();
-      if (lookahead &amp;&amp; lookahead.type === '*') { 
-        match('*');
-        var right = term();
-        result = {type: '*', left: result, right: right};
-      }
-      return result;
-    };
-
-    var factor = function() {
-      var result = null;
-
-      if (lookahead.type === 'NUM') { 
-        result = {type: 'NUM', value: lookahead.value};
-        match('NUM'); 
-      }
-      else if (lookahead.type === 'ID') {
-        result = {type: 'ID', value: lookahead.value};
-        match('ID');
-      }
-      else if (lookahead.type === '(') {
-        match('(');
-        result = expression();
-        match(')');
-      } else { // Throw exception
-        throw "Syntax Error. Expected number or identifier or '(' but found "+
-              (lookahead? lookahead.value : "end of input")+
-              " near '"+input.substr(lookahead.from)+"'";
-      }
-      return result;
-    };
-    var tree = statements(input);
-    if (lookahead != null) {
-        throw "Syntax Error parsing statements. Expected end of input and found '"+
-              input.substr(lookahead.from)+"'";
-    }
-    return tree;
-  }
-</PRE>
+Conteste a las siguientes cuestiones:
 
 <P>
 
-<H4><A NAME="SECTION04221020000000000000">
-Caracterización de las Gramáticas Analizables</A>
-</H4>
-  
-
-Como vemos en el ejemplo, el análisis predictivo confía en que, si estamos
-ejecutando la entrada del procedimiento <code>A</code>,
-el cuál está asociado con la variable <SPAN CLASS="MATH"><IMG
- WIDTH="53" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img38.png"
- ALT="$ A \in V$"></SPAN>, el símbolo terminal
-que esta en la entrada <SPAN CLASS="MATH"><IMG
- WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img41.png"
- ALT="$ a$"></SPAN> determine de manera unívoca la regla
-de producción <!-- MATH
- $A \rightarrow a \alpha$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="65" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img47.png"
- ALT="$ A \rightarrow a \alpha$"></SPAN> que debe ser procesada.
-
-<P>
-Si se piensa, esta condición requiere que todas las partes derechas <SPAN CLASS="MATH"><IMG
- WIDTH="16" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img42.png"
- ALT="$ \alpha$"></SPAN> de
-las reglas <!-- MATH
- $A \rightarrow \alpha$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="56" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img12.png"
- ALT="$ A \rightarrow \alpha$"></SPAN> de <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img1.png"
- ALT="$ A$"></SPAN> 
-<FONT COLOR="#ff0000"> comiencen</FONT> por diferentes símbolos.
-Para formalizar esta idea, introduciremos el concepto de
-conjunto <!-- MATH
- $FIRST(\alpha)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="90" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img48.png"
- ALT="$ FIRST(\alpha)$"></SPAN>:
-
-<P>
-<P>
-<DIV><B>Definición  <SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">2</SPAN>.<SPAN CLASS="arabic">1</SPAN></B> &nbsp; 
-<I>Dada una gramática 
-<!-- MATH
- $G=(\Sigma,V,P,S)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="126" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img7.png"
- ALT="$ G =(\Sigma,V,P,S)$"></SPAN> y un símbolo <!-- MATH
- $\alpha \in (V \cup \Sigma)^*$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="104" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img49.png"
- ALT="$ \alpha \in (V \cup \Sigma)^*$"></SPAN> se define el conjunto 
-<!-- MATH
- $FIRST(\alpha)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="90" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img48.png"
- ALT="$ FIRST(\alpha)$"></SPAN> como:
-</I>
-<P>
-<I><!-- MATH
- $FIRST(\alpha) = \left \{ b \in \Sigma :  \alpha  \stackrel{*}{\Longrightarrow}  b \beta \right \}
-\cup N(\alpha)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="319" HEIGHT="50" ALIGN="MIDDLE" BORDER="0"
- SRC="img50.png"
- ALT="$ FIRST(\alpha) = \left \{ b \in \Sigma : \alpha \stackrel{*}{\Longrightarrow} b \beta \right \}
-\cup N(\alpha)$"></SPAN> 
-</I>
-<P>
-<I>donde:
-</I>
-<P>
-<I><!-- MATH
- $N(\alpha) = \left \{ \begin{array}{ll}
-                         \left \{ \epsilon \right \}& \mbox{si $\alpha \stackrel{*}{\Longrightarrow} \epsilon$} \\
-                         \emptyset & \mbox{en otro caso} 
-                      \end{array}
-             \right.$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="232" HEIGHT="63" ALIGN="MIDDLE" BORDER="0"
- SRC="img51.png"
- ALT="$ N(\alpha) = \left \{ \begin{array}{ll}
-\left \{ \epsilon \right \}&amp; \mbox{si ...
-...htarrow} \epsilon$} \\
-\emptyset &amp; \mbox{en otro caso}
-\end{array} \right. $"></SPAN> 
-</I>
-<P></DIV><P></P>
-
-<P>
-Podemos reformular ahora nuestra afirmación anterior en estos términos:
-Si <!-- MATH
- $A \rightarrow \gamma_1 \mid \ldots \mid \gamma_n$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="129" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img52.png"
- ALT="$ A \rightarrow \gamma_1 \mid \ldots \mid \gamma_n$"></SPAN> y los conjuntos <!-- MATH
- $FIRST(\gamma_i)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="93" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img53.png"
- ALT="$ FIRST(\gamma_i)$"></SPAN> son 
-disjuntos podemos construir el procedimiento para la variable <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img1.png"
- ALT="$ A$"></SPAN> siguiendo
-este seudocódigo:
-
-<P>
-<PRE>
-A = function() {
-  if (lookahead in FIRST(gamma_1)) { imitar gamma_1 }
-  else if (lookahead in FIRST(gamma_2)) { imitar gamma_2 }
-  ...
-  else (lookahead in FIRST(gamma_n)) { imitar gamma_n }
-}
-</PRE>
-
-<P>
-Donde si <SPAN CLASS="MATH"><IMG
- WIDTH="21" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img54.png"
- ALT="$ \gamma_j$"></SPAN> es <!-- MATH
- $X_1 \ldots X_k$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="76" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img55.png"
- ALT="$ X_1 \ldots X_k$"></SPAN> el código <code>gamma_j</code> consiste
-en una secuencia <!-- MATH
- $i = 1 \ldots k$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="79" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img56.png"
- ALT="$ i = 1 \ldots k$"></SPAN> de llamadas de uno de estos dos tipos:
-
-<UL>
-<LI>Llamar a la subrutina <code>X_i</code> si <SPAN CLASS="MATH"><IMG
- WIDTH="25" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img45.png"
- ALT="$ X_i$"></SPAN> es una variable sintáctica
+<OL>
+<LI>Describa con palabras el lenguaje generado.
 </LI>
-<LI>Hacer una llamada a <code>match(X_i)</code> si <SPAN CLASS="MATH"><IMG
- WIDTH="25" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img45.png"
- ALT="$ X_i$"></SPAN> es un terminal
+<LI><A NAME="ejer:arbol"></A>Construya el árbol de análisis sintáctico
+concreto para cuatro frases del lenguaje.
 </LI>
-</UL>
-
-<P>
-
-<H2><A NAME="SECTION04222000000000000000"></A>
-   <A NAME="4589"></A>
-<BR>
-Ejercicio: Recorrido del árbol en un ADPR
-</H2>
-  
-¿En que forma es recorrido el árbol de análisis sintáctico concreto en un 
-analizador descendente predictivo recursivo? ¿En que orden son visitados los nodos?
+<LI>Señale a que recorridos del árbol corresponden las respectivas
+derivaciones a izquierda y a derecha en el apartado <A HREF="node47.html#ejer:arbol">2</A>.
+</LI>
+<LI>¿Es ambigua esta gramática?. Justifique su respuesta.
+</LI>
+</OL>
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1232"
+<A NAME="tex2html1235"
   HREF="node22.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1226"
-  HREF="node19.html">
+<A NAME="tex2html1229"
+  HREF="node20.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1220"
+<A NAME="tex2html1223"
   HREF="node20.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1228"
-  HREF="node90.html">
+<A NAME="tex2html1231"
+  HREF="node91.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1230"
-  HREF="node93.html">
+<A NAME="tex2html1233"
+  HREF="node94.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -791,17 +684,17 @@ analizador descendente predictivo recursivo? ¿En que orden son visitados los no
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1233"
-  HREF="node22.html">Recursión por la Izquierda</A>
-<B>Sup:</B> <A NAME="tex2html1227"
-  HREF="node19.html">Analizadores Descendentes Predictivos en</A>
-<B> Ant:</B> <A NAME="tex2html1221"
-  HREF="node20.html">Conceptos Básicos para el</A>
+<B> Sig:</B> <A NAME="tex2html1236"
+  HREF="node22.html">Análisis Sintáctico Predictivo Recursivo</A>
+<B>Sup:</B> <A NAME="tex2html1230"
+  HREF="node20.html">Analizadores Descendentes Predictivos en</A>
+<B> Ant:</B> <A NAME="tex2html1224"
+  HREF="node20.html">Analizadores Descendentes Predictivos en</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2015-03-08</I>
+2015-03-12</I>
 </ADDRESS>
 </BODY>
 </HTML>

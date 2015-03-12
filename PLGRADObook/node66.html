@@ -7,8 +7,8 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
   Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
 <HTML>
 <HEAD>
-<TITLE>Consejos a seguir al escribir un programa jison</TITLE>
-<META NAME="description" CONTENT="Consejos a seguir al escribir un programa jison">
+<TITLE>Construcción del Árbol Sintáctico</TITLE>
+<META NAME="description" CONTENT="Construcción del Árbol Sintáctico">
 <META NAME="keywords" CONTENT="javascriptexamples">
 <META NAME="resource-type" CONTENT="document">
 <META NAME="distribution" CONTENT="global">
@@ -19,28 +19,29 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 
 <LINK REL="STYLESHEET" HREF="mystyle.css">
 
+<LINK REL="next" HREF="node67.html">
 <LINK REL="previous" HREF="node65.html">
-<LINK REL="up" HREF="node45.html">
+<LINK REL="up" HREF="node46.html">
 <LINK REL="next" HREF="node67.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html2097"
+<A NAME="tex2html2103"
   HREF="node67.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2091"
-  HREF="node45.html">
+<A NAME="tex2html2097"
+  HREF="node46.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2087"
+<A NAME="tex2html2091"
   HREF="node65.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2093"
-  HREF="node90.html">
+<A NAME="tex2html2099"
+  HREF="node91.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2095"
-  HREF="node93.html">
+<A NAME="tex2html2101"
+  HREF="node94.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -79,192 +80,47 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2098"
-  HREF="node67.html">Análisis Sintáctico Ascendente en</A>
-<B>Sup:</B> <A NAME="tex2html2092"
-  HREF="node45.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html2088"
-  HREF="node65.html">Construcción del Árbol Sintáctico</A>
+<B> Sig:</B> <A NAME="tex2html2104"
+  HREF="node67.html">Consejos a seguir al</A>
+<B>Sup:</B> <A NAME="tex2html2098"
+  HREF="node46.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html2092"
+  HREF="node65.html">Depuración en jison</A>
 <B> Con:</B> 
-<A NAME="tex2html2093"
-  HREF="node90.html">
+<A NAME="tex2html2099"
+  HREF="node91.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html2095"
-  HREF="node93.html">
+<A NAME="tex2html2101"
+  HREF="node94.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
 
-<H1><A NAME="SECTION045210000000000000000"></A>
-<A NAME="section:consejosjison"></A>
-<BR>
-Consejos a seguir al escribir un programa <TT>jison</TT>
+<H1><A NAME="SECTION045200000000000000000">
+Construcción del Árbol Sintáctico</A>
 </H1>
-Cuando escriba un programa <code>jison</code> asegurese
-de seguir los siguientes consejos:
-
-<P>
-
-<OL>
-<LI>Coloque el punto y coma de separación de reglas en una línea aparte.
-Un punto y coma ``pegado'' al final de una regla puede confundirse
-con un terminal de la regla.
-
-<P>
-</LI>
-<LI>Si hay una regla que produce vacío, coloquela en primer lugar y acompáñela de 
-un comentario resaltando ese hecho.
-</LI>
-<LI>Nunca escriba dos reglas de producción en la misma línea.
-</LI>
-<LI>Sangre convenientemente todas las partes derechas de las reglas
-de producción de una variable, de modo que queden
-alineadas.
-</LI>
-<LI>Ponga nombres representativos a sus variables sintácticas. No llame 
-<code>Z</code> a una variable que representa el concepto ``lista de parámetros'',
-llámela <code>ListaDeParametros</code>.
-</LI>
-<LI>Es conveniente que declare los terminales simbólicos, esto es, aquellos que 
-llevan un identificador asociado. Si no llevan prioridad asociada o no 
-es necesaria, use una declaración <code>%token</code>. De esta manera
-el lector de su programa se dará cuenta rápidamente que dichos identificadores
-no se corresponden con variables sintácticas. Por la misma razón,
-si se trata de terminales
-asociados con caracteres o cadenas no es tan necesario que los declare, 
-a menos que, 
-como en el ejemplo de la calculadora para <code>'+'</code> y <code>'*'</code>,
-sea necesario asociarles una
-precedencia.
-</LI>
-<LI>Es importante que use la opción <code>-v</code> para producir
-el fichero <code>.output</code> conteniendo información detallada sobre
-los conflictos y el autómata. Cuando haya un conflicto shift-reduce
-no resuelto busque en el fichero el estado implicado y 
-vea que LR(0) items <!-- MATH
- $A \rightarrow \alpha_\uparrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="64" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img180.png"
- ALT="$ A \rightarrow \alpha_\uparrow$"></SPAN>
-y <!-- MATH
- $B \rightarrow \beta_\uparrow \gamma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="73" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img216.png"
- ALT="$ B \rightarrow \beta_\uparrow \gamma$"></SPAN> entran en conflicto.
-
-<P>
-</LI>
-<LI><A NAME="item:conflictos"></A>Si según el informe de <code>jison</code>
-el conflicto se produce ante un terminal <SPAN CLASS="MATH"><IMG
- WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img41.png"
- ALT="$ a$"></SPAN>,
-es porque <!-- MATH
- $a \in FOLLOW(A)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="146" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img217.png"
- ALT="$ a \in FOLLOW(A)$"></SPAN> y
-<!-- MATH
- $a \in FIRST(\gamma)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="119" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img218.png"
- ALT="$ a \in FIRST(\gamma)$"></SPAN>. Busque las causas por las que esto ocurre 
-y modifique su gramática con vistas a eliminar la presencia
-del terminal <SPAN CLASS="MATH"><IMG
- WIDTH="14" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img41.png"
- ALT="$ a$"></SPAN> en uno de los dos conjuntos implicados
-o bien establezca reglas de prioridad entre los terminales
-implicados que resuelvan el conflicto.
-
-<P>
-</LI>
-<LI>Nótese que cuando existe un conflicto de desplazamiento 
-reducción entre <!-- MATH
- $A \rightarrow \alpha_\uparrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="64" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img180.png"
- ALT="$ A \rightarrow \alpha_\uparrow$"></SPAN> 
-y  <!-- MATH
- $B \rightarrow \beta_\uparrow \gamma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="73" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
- SRC="img216.png"
- ALT="$ B \rightarrow \beta_\uparrow \gamma$"></SPAN>, el programa
-<code>jison</code> contabiliza un error por cada terminal 
-<!-- MATH
- $a \in FOLLOW(A) \cap FIRST(\gamma)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="249" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img219.png"
- ALT="$ a \in FOLLOW(A) \cap FIRST(\gamma)$"></SPAN>. Por esta razón,
-si hay 16 elementos en <!-- MATH
- $FOLLOW(A) \cap FIRST(\gamma)$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="218" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img220.png"
- ALT="$ FOLLOW(A) \cap FIRST(\gamma)$"></SPAN>,
-el analizador <code>jison</code> informará de la existencia
-de 16 conflictos <SPAN  CLASS="textbf">shift-reduce</SPAN>,
-cuando en realidad se trata de uno sólo. No desespere, 
-los conflictos ``auténticos'' suelen
-ser menos de los que <code>jison</code> anuncia.
-
-<P>
-</LI>
-<LI>Si necesita declarar variables globales, inicializaciones, etc.
-que afectan la conducta global del analizador, escriba el código 
-correspondiente en la cabecera del analizador, protegido
-por los delimitadores <code>%{</code> y <code>%}</code>. Estos delimitadores
-deberán aparecer en una línea aparte. Por ejemplo:
-
-<P>
-<PRE>
-%{
-our contador = 0;
-%}
-
-%token NUM
-...
-%%
-</PRE>
-
-<P>
-</LI>
-</OL>
+El siguiente ejemplo usa <code>jison</code> 
+para construir el árbol sintáctico de una expresión en infijo:
 
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html2097"
+<A NAME="tex2html2103"
   HREF="node67.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html2091"
-  HREF="node45.html">
+<A NAME="tex2html2097"
+  HREF="node46.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html2087"
+<A NAME="tex2html2091"
   HREF="node65.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html2093"
-  HREF="node90.html">
+<A NAME="tex2html2099"
+  HREF="node91.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html2095"
-  HREF="node93.html">
+<A NAME="tex2html2101"
+  HREF="node94.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
   WIDTH="35" ALIGN="BOTTOM" BORDER="0"
@@ -303,17 +159,17 @@ our contador = 0;
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html2098"
-  HREF="node67.html">Análisis Sintáctico Ascendente en</A>
-<B>Sup:</B> <A NAME="tex2html2092"
-  HREF="node45.html">Análisis Sintáctico Ascendente en</A>
-<B> Ant:</B> <A NAME="tex2html2088"
-  HREF="node65.html">Construcción del Árbol Sintáctico</A>
+<B> Sig:</B> <A NAME="tex2html2104"
+  HREF="node67.html">Consejos a seguir al</A>
+<B>Sup:</B> <A NAME="tex2html2098"
+  HREF="node46.html">Análisis Sintáctico Ascendente en</A>
+<B> Ant:</B> <A NAME="tex2html2092"
+  HREF="node65.html">Depuración en jison</A>
 </DIV>
 <!--End of Navigation Panel-->
 <ADDRESS>
 <I>Casiano Rodríguez León <BR>
-2015-03-08</I>
+2015-03-12</I>
 </ADDRESS>
 </BODY>
 </HTML>
