@@ -28,19 +28,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1073"
+<A NAME="tex2html1079"
   HREF="node13.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1067"
+<A NAME="tex2html1073"
   HREF="node7.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1061"
+<A NAME="tex2html1067"
   HREF="node11.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1069"
+<A NAME="tex2html1075"
   HREF="node91.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1071"
+<A NAME="tex2html1077"
   HREF="node94.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
@@ -80,31 +80,250 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1074"
+<B> Sig:</B> <A NAME="tex2html1080"
   HREF="node13.html">Comentarios y Consejos</A>
-<B>Sup:</B> <A NAME="tex2html1068"
+<B>Sup:</B> <A NAME="tex2html1074"
   HREF="node7.html">Expresiones Regulares y Análisis</A>
-<B> Ant:</B> <A NAME="tex2html1062"
+<B> Ant:</B> <A NAME="tex2html1068"
   HREF="node11.html">Práctica: Comma Separated Values.</A>
 <B> Con:</B> 
-<A NAME="tex2html1069"
+<A NAME="tex2html1075"
   HREF="node91.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1071"
+<A NAME="tex2html1077"
   HREF="node94.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
 </DIV>
 <!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsecciones</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><UL>
+<LI><UL>
+<LI><A NAME="tex2html1081"
+  HREF="node12.html#SECTION04150010000000000000">Ajax, jQuery y Express.js</A>
+<LI><A NAME="tex2html1082"
+  HREF="node12.html#SECTION04150020000000000000">Desplegando Express y Node.JS en Heroku</A>
+<LI><A NAME="tex2html1083"
+  HREF="node12.html#SECTION04150030000000000000">Requisitos</A>
+</UL></UL></UL>
+<!--End of Table of Child-Links-->
+<HR>
 
 <H1><A NAME="SECTION04150000000000000000"></A>
-   <A NAME="3976"></A>
+   <A NAME="3668"></A>
   
 <A NAME="sectionpractica:csvajax"></A>
 <BR>
 Práctica: Comma Separated Values. CSV usando Ajax
 </H1>
+
+<P>
+
+<P>
+
+<H4><A NAME="SECTION04150010000000000000">
+Ajax, jQuery y Express.js</A>
+</H4>
+  
+
+<P>
+<A NAME="tex2html122"
+  HREF="https://github.com/crguezl/how-jquery-works-tutorial/tree/getallparams">Código del server</A>:
+
+<P>
+<PRE>
+[~/javascript/jquery/how-jquery-works-tutorial(getallparams)]$ cat app.js
+var express = require('express');
+var app = express();
+var path = require('path');
+
+app.use(express.static('public'));
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
+app.get('/', function (req, res) {
+  res.render('index', { title: 'Express' });
+})
+
+app.get('/chuchu', function (req, res) {
+  var isAjaxRequest = req.xhr;
+  console.log(isAjaxRequest);
+  if (isAjaxRequest) {
+    console.log(req.query);
+    res.send('{"answer": "Server responds: hello world!"}')
+  }
+  else {
+    res.send('not an ajax request');
+  }
+});
+
+var server = app.listen(3000, function () {
+
+  var host = server.address().address
+  var port = server.address().port
+
+  console.log('Example app listening at http://%s:%s', host, port)
+
+});
+</PRE>
+
+<P>
+
+<UL>
+<LI><code>jQuery.get( url [, data ] [, success(data, textStatus, jqXHR) ] [, dataType ] )</code>
+load data from the server using a HTTP GET request.
+
+<P>
+</LI>
+<LI><code>url</code>
+
+<P>
+Type: String
+
+<P>
+A string containing the URL to which the request is sent.
+</LI>
+<LI><code>data</code>
+
+<P>
+Type: PlainObject or String
+
+<P>
+A plain object or string that is sent to the server with the request.
+</LI>
+<LI><code>success(data, textStatus, jqXHR)</code>
+
+<P>
+Type: Function()
+
+<P>
+A callback function that is executed if the request succeeds.
+</LI>
+<LI><code>dataType</code>
+
+<P>
+Type: String
+
+<P>
+The type of data expected from the server. Default: Intelligent Guess 
+(<code>xml</code>, <code>json</code>, <code>script</code>, <code>or</code> <code>html</code>).
+</LI>
+</UL>
+
+<P>
+To use callbacks, it is important to know how to pass them into their parent function.
+
+<P>
+En el directorio <code>views</code> hemos puesto el template:
+<PRE>
+[~/javascript/jquery/how-jquery-works-tutorial(getallparams)]$ cat views/index.ejs 
+&lt;!doctype html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;&lt;%- title %&gt;&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;&lt;%- title  %&gt;&lt;/h1&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href="http://jquery.com/" id="jq"&gt;jQuery&lt;/a&gt;
+      &lt;li&gt;&lt;a href="/chuchu"&gt;Visit chuchu!&lt;/a&gt;
+    &lt;/ul&gt;
+    &lt;div class="result"&gt;&lt;/div&gt;
+    &lt;script src="https://code.jquery.com/jquery-2.1.3.js"&gt;&lt;/script&gt;
+    &lt;script&gt;
+      $( document ).ready(function() {
+          $( "#jq" ).click(function( event ) {
+              event.preventDefault();
+              $.get( "/chuchu", {nombres: ["juan", "pedro"]}, function( data ) {
+                $( ".result" ).html( data["answer"]);
+                console.log(data);
+              }, 'json');
+          });
+      });
+    &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</PRE>
+Estas son las dependencias:
+<PRE>
+[~/javascript/jquery/how-jquery-works-tutorial(getallparams)]$ cat package.json 
+{
+  "name": "ajaxjquery",
+  "version": "0.0.0",
+  "description": "",
+  "main": "hello.js",
+  "dependencies": {
+    "express": "*",
+    "ejs": "*",
+    "gulp-shell": "*",
+    "body-parser": "~1.12.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node hello.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
+</PRE>
+Además hemos instalado a nivel global <code>gulp</code> y <code>node-supervisor</code>.
+
+<P>
+Podemos arrancar el servidor usando este <code>gulpfile</code>:
+
+<P>
+<PRE>
+[~/javascript/jquery/how-jquery-works-tutorial(getallparams)]$ cat gulpfile.js 
+var gulp    = require('gulp');
+var shell = require('gulp-shell');
+
+gulp.task('default', ['server']);
+
+// npm install supervisor -g
+gulp.task('server', function () {
+  return gulp.src('').pipe(shell([ 'node-supervisor app.js' ]));
+});
+
+gulp.task('open', function() {
+  return gulp.src('').
+           pipe(shell("open https://github.com/crguezl/how-jquery-works-tutorial/tree/getallparams"));
+});
+</PRE>
+
+<P>
+
+<H4><A NAME="SECTION04150020000000000000">
+Desplegando Express y Node.JS en Heroku</A>
+</H4>
+  
+
+<P>
+Véase:
+
+<UL>
+<LI>La rama heroku del repo <A NAME="tex2html123"
+  HREF="https://github.com/crguezl/how-jquery-works-tutorial/tree/heroku">how-jquery-works-tutorial</A>
+</LI>
+<LI>El tutorial de Heroku 
+<A NAME="tex2html124"
+  HREF="https://devcenter.heroku.com/articles/getting-started-with-nodejs">Getting Started with Node.js on Heroku</A>
+</LI>
+<LI>El capítulo sobre Heroku en los apuntes de LPP
+</LI>
+</UL>
+
+<P>
+
+<H4><A NAME="SECTION04150030000000000000">
+Requisitos</A>
+</H4>
+  
 
 <P>
 A los requisitos de la práctica <I>Comma Separated Values. CSV</I> <A HREF="node11.html#sectionpractica:csv">1.4</A>
@@ -138,19 +357,19 @@ Le añadimos el requisito de usar AJAX con jQuery:
 <P>
 
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1073"
+<A NAME="tex2html1079"
   HREF="node13.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1067"
+<A NAME="tex2html1073"
   HREF="node7.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1061"
+<A NAME="tex2html1067"
   HREF="node11.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1069"
+<A NAME="tex2html1075"
   HREF="node91.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1071"
+<A NAME="tex2html1077"
   HREF="node94.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
@@ -190,11 +409,11 @@ Le añadimos el requisito de usar AJAX con jQuery:
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1074"
+<B> Sig:</B> <A NAME="tex2html1080"
   HREF="node13.html">Comentarios y Consejos</A>
-<B>Sup:</B> <A NAME="tex2html1068"
+<B>Sup:</B> <A NAME="tex2html1074"
   HREF="node7.html">Expresiones Regulares y Análisis</A>
-<B> Ant:</B> <A NAME="tex2html1062"
+<B> Ant:</B> <A NAME="tex2html1068"
   HREF="node11.html">Práctica: Comma Separated Values.</A>
 </DIV>
 <!--End of Navigation Panel-->
