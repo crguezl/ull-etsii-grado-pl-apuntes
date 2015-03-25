@@ -121,7 +121,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <HR>
 
 <H1><A NAME="SECTION04260000000000000000"></A>
-   <A NAME="4858"></A>
+   <A NAME="4862"></A>
   
 <A NAME="practica:pl0"></A>
 <BR>
@@ -186,6 +186,40 @@ entrada de la Wikipedia
 <LI>
 <FONT COLOR="#ff0000"> Procure que el arbol generado refleje la asociatividad 
 correcta para las diferencias y las divisiones</FONT>. 
+
+<P>
+Una técnica es eliminar la recursión por la izquierda en
+<code>expression -&gt; expression ADDOP term | term</code>
+ por su equivalente
+ <code>expression -&gt; term (ADDOP term)*</code> e implantarlo
+mediante un bucle en el que se va construyendo el árbol de análisis 
+sintáctico abstracto (AST) de manera que se asocie a izquierdas:
+<PRE>
+ expression = -&gt;
+    result = term()
+    while lookahead and lookahead.type is "ADDOP"
+      type = lookahead.value
+      match "ADDOP"
+      right = term()
+      result =
+        type: type
+        left: result
+        right: right
+    result
+</PRE>
+Aquí el token <code>ADDOP</code> esta por las dos operaciones aditivas:
+<PRE>
+ tokens =
+    WHITES: /\s+/g
+    ID: /[a-zA-Z_]\w*/g
+    NUM: /\b\d+(\.\d*)?([eE][+-]?\d+)?\b/g
+    STRING: /('(\\.|[^'])*'|"(\\.|[^"])*")/g
+    ONELINECOMMENT: /\/\/.*/g
+    MULTIPLELINECOMMENT: /\/[*](.|\n)*?[*]\//g
+    COMPARISONOPERATOR: /[&lt;&gt;=!]=|[&lt;&gt;]/g
+    ADDOP: /[+-]/g
+    ONECHAROPERATORS: /([*\/=()&amp;|;:,{}[\]])/g
+</PRE>
 </LI>
 <LI>No es necesario que el lenguaje sea 
 <FONT COLOR="#ff0000"> exactamente igual</FONT> pero debería 
