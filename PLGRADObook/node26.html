@@ -121,7 +121,7 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <HR>
 
 <H1><A NAME="SECTION04260000000000000000"></A>
-   <A NAME="4862"></A>
+   <A NAME="4864"></A>
   
 <A NAME="practica:pl0"></A>
 <BR>
@@ -181,7 +181,35 @@ descrito por la gramática EBNF del
   HREF="http://en.wikipedia.org/wiki/Recursive_descent_parser">lenguaje PL/0</A>
 que se describe en la 
 entrada de la Wikipedia 
-<FONT COLOR="#0000ff"> Recursive descent parser</FONT>. 
+<FONT COLOR="#0000ff"> Recursive descent parser</FONT>
+<PRE>
+program = block "." .
+ 
+ block =
+     ["const" ident "=" number {"," ident "=" number} ";"]
+     ["var" ident {"," ident} ";"]
+     {"procedure" ident ";" block ";"} statement .
+ 
+ statement =
+     ident ":=" expression
+     | "call" ident
+     | "begin" statement {";" statement } "end"
+     | "if" condition "then" statement
+     | "while" condition "do" statement .
+ 
+ condition =
+     "odd" expression
+     | expression ("="|"#"|"&lt;"|"&lt;="|"&gt;"|"&gt;=") expression .
+ 
+ expression = ["+"|"-"] term {("+"|"-") term} .
+ 
+ term = factor {("*"|"/") factor} .
+ 
+ factor =
+     ident
+     | number
+     | "(" expression ")" .
+</PRE>
 </LI>
 <LI>
 <FONT COLOR="#ff0000"> Procure que el arbol generado refleje la asociatividad 
