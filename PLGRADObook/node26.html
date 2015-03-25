@@ -27,19 +27,19 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <BODY >
 
 <DIV CLASS="navigation">
-<A NAME="tex2html1357"
+<A NAME="tex2html1356"
   HREF="node27.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1351"
+<A NAME="tex2html1350"
   HREF="node20.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1347"
+<A NAME="tex2html1346"
   HREF="node25.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1353"
+<A NAME="tex2html1352"
   HREF="node95.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1355"
+<A NAME="tex2html1354"
   HREF="node98.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
@@ -79,18 +79,18 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1358"
+<B> Sig:</B> <A NAME="tex2html1357"
   HREF="node27.html">Análisis Sintáctico Mediante Precedencia</A>
-<B>Sup:</B> <A NAME="tex2html1352"
+<B>Sup:</B> <A NAME="tex2html1351"
   HREF="node20.html">Analizadores Descendentes Predictivos en</A>
-<B> Ant:</B> <A NAME="tex2html1348"
+<B> Ant:</B> <A NAME="tex2html1347"
   HREF="node25.html">Eliminación de la Recursión</A>
 <B> Con:</B> 
-<A NAME="tex2html1353"
+<A NAME="tex2html1352"
   HREF="node95.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A>
 <B> Ind:</B> 
-<A NAME="tex2html1355"
+<A NAME="tex2html1354"
   HREF="node98.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A>
 <BR> <P>
@@ -102,20 +102,18 @@ original version by:  Nikos Drakos, CBLU, University of Leeds
 <UL CLASS="ChildLinks">
 <LI><UL>
 <LI><UL>
-<LI><A NAME="tex2html1359"
+<LI><A NAME="tex2html1358"
   HREF="node26.html#SECTION04260010000000000000">Donde</A>
-<LI><A NAME="tex2html1360"
+<LI><A NAME="tex2html1359"
   HREF="node26.html#SECTION04260020000000000000">Tareas</A>
-<LI><A NAME="tex2html1361"
+<LI><A NAME="tex2html1360"
   HREF="node26.html#SECTION04260030000000000000">Express.JS</A>
-<LI><A NAME="tex2html1362"
+<LI><A NAME="tex2html1361"
   HREF="node26.html#SECTION04260040000000000000">Sass</A>
-<LI><A NAME="tex2html1363"
+<LI><A NAME="tex2html1362"
   HREF="node26.html#SECTION04260050000000000000">Jade</A>
-<LI><A NAME="tex2html1364"
+<LI><A NAME="tex2html1363"
   HREF="node26.html#SECTION04260060000000000000">CoffeeScript</A>
-<LI><A NAME="tex2html1365"
-  HREF="node26.html#SECTION04260070000000000000">Construyendo Árboles con la Asociatividad Correcta</A>
 </UL></UL></UL>
 <!--End of Table of Child-Links-->
 <HR>
@@ -216,7 +214,137 @@ program = block "." .
 correcta para las diferencias y las divisiones</FONT>. 
 
 <P>
-Una técnica es eliminar la recursión por la izquierda en
+Supongamos que añadimos el operador <code>-</code> al código de nuestra práctica. 
+
+<P>
+Para ello, podemos extender nuestro gramática  con una regla
+de producción como esta:
+<DIV ALIGN="CENTER">
+<BR>
+<BR>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">expression   <!-- MATH
+ $\rightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$ \rightarrow$"></SPAN> term '+' expression <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN>term '-' expression <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ \vert$"></SPAN> term</TD>
+</TR>
+</TABLE>
+</DIV>
+<BR>
+<BR>
+
+<P>
+Al poner <code>expression</code> a la derecha evitamos la temida recursión infinita 
+del correspondiente analizador.
+
+<P>
+Esta elección da lugar a un código como el que sigue:
+<PRE>
+  expression = -&gt;
+    result = term()
+    if lookahead and lookahead.type is "+"
+      ....
+    if lookahead and lookahead.type is "-" 
+      match "-" 
+      right = expression()
+      result =
+        type: "-" 
+        left: result
+        right: right
+</PRE>
+Pero cuando le damos como entrada <code>a = 4-2-1</code> produce el siguiente AST:
+<PRE>
+{
+  "type": "=",
+  "left": {
+    "type": "ID",
+    "value": "a"
+  },
+  "right": {
+    "type": "-",
+    "left": {
+      "type": "NUM",
+      "value": 4
+    },
+    "right": {
+      "type": "-",
+      "left": {
+        "type": "NUM",
+        "value": 2
+      },
+      "right": {
+        "type": "NUM",
+        "value": 1
+      }
+    }
+  }
+}
+</PRE>
+que se corresponde con esta parentización: <code>a = (4 - (2 - 1))</code>
+
+<P>
+
+<FONT COLOR="#ff0000"> Este árbol no se corresponde con la asociatividad a izquierdas  del operador</FONT>
+<code>-</code>. Es un árbol que refleja una asociación a derechas (<code>a = 3</code>).
+
+<P>
+Un lenguaje generado por una gramática recursiva por la izquierda 
+con dos reglas de la forma:
+<BR>
+<BR>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $A   \rightarrow A \alpha$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="69" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img58.png"
+ ALT="$ A \rightarrow A \alpha$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ alpha_action }</code></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><!-- MATH
+ $A   \rightarrow \gamma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$ A \rightarrow \gamma$"></SPAN></TD>
+<TD ALIGN="LEFT"><code>{ gamma_action }</code></TD>
+</TR>
+</TABLE>
+Es <!-- MATH
+ $\gamma \alpha *$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="35" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img73.png"
+ ALT="$ \gamma \alpha *$"></SPAN>.
+<BR>
+<BR>
+Por tanto el método asociado con <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$ A$"></SPAN> podría reescribirse como sigue:
+<PRE>
+A = () -&gt; 
+  gamma() # imitar gamma
+  gamma_action() # acción semántica asociada con gamma
+  while lookahead and lookahead.type belongs to  FIRST(alpha)
+    alpha() # imitar alpha
+    alpha_action()
+</PRE>
+
+<P>
+Así pues una técnica es eliminar la recursión por la izquierda en
 <code>expression -&gt; expression ADDOP term | term</code>
  por su equivalente
  <code>expression -&gt; term (ADDOP term)*</code> e implantarlo
@@ -374,146 +502,20 @@ CoffeeScript</A>
 
 <P>
 
-<H4><A NAME="SECTION04260070000000000000">
-Construyendo Árboles con la Asociatividad Correcta</A>
-</H4>
-  
-
-Añadamos el operador <code>-</code> al código de nuestra práctica. 
-Para ello, podemos extender nuestro gramática  con una regla
-de producción:
-<DIV ALIGN="CENTER">
-<BR>
-<BR>
-<TABLE CELLPADDING=3 BORDER="1">
-<TR><TD ALIGN="LEFT">expression   <!-- MATH
- $\rightarrow$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="22" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
- SRC="img35.png"
- ALT="$ \rightarrow$"></SPAN> term '+' expression <SPAN CLASS="MATH"><IMG
- WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img36.png"
- ALT="$ \vert$"></SPAN>term '-' expression <SPAN CLASS="MATH"><IMG
- WIDTH="10" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
- SRC="img36.png"
- ALT="$ \vert$"></SPAN> term</TD>
-</TR>
-</TABLE>
-</DIV>
-<BR>
-<BR>
-que da lugar a un código como el que sigue:
-<PRE>
-  expression = -&gt;
-    result = term()
-    if lookahead and lookahead.type is "+"
-      ....
-    if lookahead and lookahead.type is "-" 
-      match "-" 
-      right = expression()
-      result =
-        type: "-" 
-        left: result
-        right: right
-</PRE>
-Cuando le damos como entrada <code>a = 4-2-1</code> produce el siguiente AST:
-<PRE>
-{
-  "type": "=",
-  "left": {
-    "type": "ID",
-    "value": "a"
-  },
-  "right": {
-    "type": "-",
-    "left": {
-      "type": "NUM",
-      "value": 4
-    },
-    "right": {
-      "type": "-",
-      "left": {
-        "type": "NUM",
-        "value": 2
-      },
-      "right": {
-        "type": "NUM",
-        "value": 1
-      }
-    }
-  }
-}
-</PRE>
-que se corresponde con esta parentización: <code>a = (4 - (2 - 1))</code>
-
-<P>
-Este árbol no se corresponde con la asociatividad a izquierdas  del operador 
-<code>-</code>. Es un árbol que refleja una asociación a derechas (<code>a = 3</code>).
-
-<P>
-Ahora bien, el lenguaje generado por dos reglas de la forma:
-<BR>
-<BR>
-<TABLE CELLPADDING=3>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $A   \rightarrow A \alpha$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="69" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
- SRC="img58.png"
- ALT="$ A \rightarrow A \alpha$"></SPAN></TD>
-<TD ALIGN="LEFT"><code>{ alpha_action }</code></TD>
-</TR>
-<TR><TD ALIGN="LEFT"><!-- MATH
- $A   \rightarrow \gamma$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
- SRC="img16.png"
- ALT="$ A \rightarrow \gamma$"></SPAN></TD>
-<TD ALIGN="LEFT"><code>{ gamma_action }</code></TD>
-</TR>
-</TABLE>
-Es <!-- MATH
- $\gamma \alpha *$
- -->
-<SPAN CLASS="MATH"><IMG
- WIDTH="35" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
- SRC="img73.png"
- ALT="$ \gamma \alpha *$"></SPAN>.
-<BR>
-<BR>
-Por tanto el método asociado con <SPAN CLASS="MATH"><IMG
- WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
- SRC="img1.png"
- ALT="$ A$"></SPAN> podría reescribirse como sigue:
-<PRE>
-A = () -&gt; 
-  gamma() # imitar gamma
-  gamma_action() # acción semántica asociada con gamma
-  while lookahead and lookahead.type belongs to  FIRST(alpha)
-    alpha() # imitar alpha
-    alpha_action()
-</PRE>
-
-<P>
-
 <DIV CLASS="navigation"><HR>
-<A NAME="tex2html1357"
+<A NAME="tex2html1356"
   HREF="node27.html">
 <IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
-<A NAME="tex2html1351"
+<A NAME="tex2html1350"
   HREF="node20.html">
 <IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
-<A NAME="tex2html1347"
+<A NAME="tex2html1346"
   HREF="node25.html">
 <IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A> 
-<A NAME="tex2html1353"
+<A NAME="tex2html1352"
   HREF="node95.html">
 <IMG WIDTH="65" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="contents" SRC="contents.png"></A> 
-<A NAME="tex2html1355"
+<A NAME="tex2html1354"
   HREF="node98.html">
 <IMG WIDTH="43" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="index" SRC="index.png"></A> <A NAME="tex2html2"
   HREF="http://nereida.deioc.ull.es/perlexamples/index.html"><IMG
@@ -553,11 +555,11 @@ A = () -&gt;
  SRC="logopcgull.gif"
  ALT="crguezl at github"></A>
 <BR>
-<B> Sig:</B> <A NAME="tex2html1358"
+<B> Sig:</B> <A NAME="tex2html1357"
   HREF="node27.html">Análisis Sintáctico Mediante Precedencia</A>
-<B>Sup:</B> <A NAME="tex2html1352"
+<B>Sup:</B> <A NAME="tex2html1351"
   HREF="node20.html">Analizadores Descendentes Predictivos en</A>
-<B> Ant:</B> <A NAME="tex2html1348"
+<B> Ant:</B> <A NAME="tex2html1347"
   HREF="node25.html">Eliminación de la Recursión</A>
 </DIV>
 <!--End of Navigation Panel-->
